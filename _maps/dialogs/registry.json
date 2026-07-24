@@ -1,0 +1,16 @@
+{
+  "_comment": "Dialog registry. Each entry references an NPC key from _maps/npcs/registry.json and lists their Blabber dialogs.",
+  "npcs": {
+    "_template": {
+      "npc": "<key from npcs/registry.json>",
+      "dialogs": [
+        {
+          "id": "luminacion:<dialog_name>",
+          "trigger": "right_click",
+          "condition": null,
+          "description": ""
+        }
+      ]
+    }
+  }
+}

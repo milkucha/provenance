@@ -1,0 +1,13 @@
+{
+  "_comment": "Master NPC registry. All NPC data lives here. Dialogs and actions reference NPCs by their key.",
+  "npcs": {
+    "_template": {
+      "display_name": "",
+      "skin": "",
+      "city": "",
+      "taterzen_name": "",
+      "taterzen_uuid": "",
+      "spawn_position": null
+    }
+  }
+}

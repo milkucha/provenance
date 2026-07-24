@@ -1,0 +1,34 @@
+{
+  "$schema": "https://ladysnake.org/schemas/blabber/dialogue.schema.json",
+  "_usage": [
+    "One-off message from the NPC. No branching. Player dismisses when done.",
+    "For multiple variants (in order or randomly), create several copies of this file",
+    "with suffixes (_1, _2, _3) and let an external function choose which dialog ID",
+    "to start based on a scoreboard counter or random value.",
+    "Example selector call from Taterzens:",
+    "  /npc edit commands add blabber dialogue start luminacion:<name>_1 --clicker-- @e[...]",
+    "Replace <npc_key> in the 'end' action below with this NPC's key from",
+    "_maps/npcs/registry.json — it resumes the NPC's routine if it was paused",
+    "(see functions/npcs/_template/resume_routine.mcfunction). Only needed if this",
+    "NPC has a roaming movement mode; otherwise the whole 'action' field can be removed."
+  ],
+  "start_at": "message",
+  "states": {
+    "message": {
+      "text": "[NPC line goes here]",
+      "choices": [
+        {
+          "text": "...",
+          "next": "end"
+        }
+      ]
+    },
+    "end": {
+      "type": "end_dialogue",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/<npc_key>/resume_routine"
+      }
+    }
+  }
+}

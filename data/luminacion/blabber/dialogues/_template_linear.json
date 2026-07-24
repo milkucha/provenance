@@ -1,0 +1,49 @@
+{
+  "$schema": "https://ladysnake.org/schemas/blabber/dialogue.schema.json",
+  "_usage": [
+    "Linear conversation. No branching. Three NPC states.",
+    "Player must give input at each step, but there is only one choice available.",
+    "Rename states to meaningful IDs before use (e.g. 'greeting', 'offer', 'farewell').",
+    "Replace <npc_key> in the 'end' action below with this NPC's key from",
+    "_maps/npcs/registry.json — it resumes the NPC's routine if it was paused",
+    "(see functions/npcs/_template/resume_routine.mcfunction). Only needed if this",
+    "NPC has a roaming movement mode; otherwise the whole 'action' field can be removed."
+  ],
+  "start_at": "state_1",
+  "states": {
+    "state_1": {
+      "text": "[NPC line — first beat]",
+      "choices": [
+        {
+          "text": "[Player response — only option]",
+          "next": "state_2"
+        }
+      ]
+    },
+    "state_2": {
+      "text": "[NPC line — second beat]",
+      "choices": [
+        {
+          "text": "[Player response — only option]",
+          "next": "state_3"
+        }
+      ]
+    },
+    "state_3": {
+      "text": "[NPC line — closing beat]",
+      "choices": [
+        {
+          "text": "[Player response — only option]",
+          "next": "end"
+        }
+      ]
+    },
+    "end": {
+      "type": "end_dialogue",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/<npc_key>/resume_routine"
+      }
+    }
+  }
+}

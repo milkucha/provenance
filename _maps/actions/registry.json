@@ -1,0 +1,143 @@
+{
+  "_comment": "Action registry. Each entry references an NPC key from _maps/npcs/registry.json and lists their actions. Use _action_templates as reference for authoring new actions.",
+
+  "_action_templates": {
+
+    "path": {
+      "_comment": [
+        "Taterzens paths are set exclusively in-game via the path editor.",
+        "Enter editor: /npc edit path  |  Exit editor: /npc edit path  |  Clear: /npc edit path clear",
+        "In the editor, left-click a block to add it as a node (turns red); right-click to remove.",
+        "The 'waypoints' array below is a planning reference — use these coordinates to know where to click in-game.",
+        "Fallback (single destination, no loop): /npc action goto <x> <y> <z>"
+      ],
+      "type": "path",
+      "id": "",
+      "description": "",
+      "waypoints": [
+        { "x": 0, "y": 0, "z": 0, "note": "" }
+      ],
+      "movement_mode": "PATH",
+      "_fallback_command": "/npc action goto <x> <y> <z>"
+    },
+
+    "movement": {
+      "_comment": [
+        "Sets the NPC's movement behaviour.",
+        "Types: NONE | FORCED_LOOK | FORCED_PATH | PATH | FOLLOW | FREE",
+        "FORCED_LOOK: looks at players within 4 blocks.",
+        "PATH: follows path with rests and look-arounds.",
+        "FORCED_PATH: follows path strictly, no rests.",
+        "FOLLOW: pursues a target. Requires 'target' field (name or UUID).",
+        "FREE: wanders freely inside an enclosed area.",
+        "NONE: stationary."
+      ],
+      "type": "movement",
+      "mode": "NONE",
+      "target": null,
+      "target_uuid": null,
+      "_commands": {
+        "by_mode": "/npc edit movement <MODE>",
+        "follow_by_name": "/npc edit movement FOLLOW <name>",
+        "follow_by_uuid": "/npc edit movement FOLLOW UUID <uuid>"
+      }
+    },
+
+    "give_item": {
+      "_comment": [
+        "Runs a give command when a player right-clicks the NPC.",
+        "--clicker-- is replaced at runtime with the interacting player's name.",
+        "Permission level must be >= 2 for the give command to execute.",
+        "Set permission level: /npc edit commands setPermissionLevel 2"
+      ],
+      "type": "give_item",
+      "item": "minecraft:<item_id>",
+      "count": 1,
+      "nbt": null,
+      "_command": "/npc edit commands add give --clicker-- <item> <count>"
+    },
+
+    "blabber_dialog": {
+      "_comment": [
+        "Starts a Blabber dialog when a player right-clicks the NPC.",
+        "target: '--clicker--' for the interacting player, or any selector for someone else.",
+        "interlocutor: selector for the NPC entity itself (optional but recommended for @interlocutor use in dialog).",
+        "Dialog file must exist at: data/luminacion/blabber/dialogues/<dialog_name>.json",
+        "Permission level must be >= 2.",
+        "Set permission level: /npc edit commands setPermissionLevel 2"
+      ],
+      "type": "blabber_dialog",
+      "dialog_id": "luminacion:<dialog_name>",
+      "target": "--clicker--",
+      "interlocutor": "@e[type=<npc_entity_type>,limit=1,sort=nearest]",
+      "_command": "/npc edit commands add blabber dialogue start luminacion:<dialog_name> --clicker-- @e[type=<type>,limit=1,sort=nearest]"
+    },
+
+    "routine_pause_resume": {
+      "_comment": [
+        "Convention for pausing a roaming NPC's routine while it's talking to a player,",
+        "and resuming it afterwards. Applies to any NPC whose movement mode isn't NONE.",
+        "",
+        "Files involved:",
+        "  functions/npcs/_shared/pause_routine.mcfunction   — shared, sets movement NONE + tags 'luminacion.paused'",
+        "  functions/npcs/_shared/enter_dialog.mcfunction    — shared, calls pause_routine + tags 'luminacion.in_dialog'",
+        "  functions/npcs/_template/resume_routine.mcfunction   — per NPC, restores this NPC's movement mode",
+        "  functions/npcs/_template/check_proximity.mcfunction  — per NPC, tick-based stop/resume within 2 blocks",
+        "  functions/npcs/_template/end_with_gift.mcfunction    — per NPC, pattern for endings combining give+resume",
+        "  data/luminacion/tags/functions/npc_routine_tick.json — registry: add each NPC's check_proximity.mcfunction here",
+        "",
+        "Setup for a given NPC:",
+        "  1. Right-click actions (spawn.mcfunction) start with:",
+        "       npc edit commands add function luminacion:npcs/_shared/enter_dialog",
+        "     before 'blabber dialogue start ...'.",
+        "  2. Every end_dialogue state in that NPC's dialogs calls (directly, or via a",
+        "     combined-effect function like end_with_gift.mcfunction):",
+        "       execute as @interlocutor run function luminacion:npcs/<npc_key>/resume_routine",
+        "  3. Duplicate resume_routine.mcfunction and check_proximity.mcfunction into",
+        "     functions/npcs/<npc_key>/, and register check_proximity.mcfunction in",
+        "     npc_routine_tick.json.",
+        "",
+        "Why both an end_dialogue action AND a tick-based check: Blabber does not run",
+        "end_dialogue actions if the player exits the dialog early (Escape / disconnect),",
+        "so the tick check (stop within 2 blocks, resume once no player is within 2 blocks",
+        "and not mid-dialog) is the safety net that guarantees the NPC never gets stuck",
+        "paused. Confirmed from Blabber's PlayerDialogueTracker source."
+      ]
+    },
+
+    "scoreboard_set": {
+      "_comment": [
+        "Reads or writes a variable using scoreboard objectives.",
+        "Two objectives are used as data types:",
+        "  luminacion.bool  — dummy objective, values: 0 (false) or 1 (true)",
+        "  luminacion.int   — dummy objective, any integer value",
+        "The score holder name IS the variable name (fake player convention).",
+        "Operations: set | add | subtract | reset | test (compare)",
+        "Example: scoreboard players set quest_started luminacion.bool 1",
+        "These objectives must be initialised once via load function:",
+        "  scoreboard objectives add luminacion.bool dummy",
+        "  scoreboard objectives add luminacion.int dummy"
+      ],
+      "type": "scoreboard_set",
+      "objective": "luminacion.bool",
+      "variable": "<variable_name>",
+      "operation": "set",
+      "value": 0,
+      "_commands": {
+        "set":      "scoreboard players set <variable> <objective> <value>",
+        "add":      "scoreboard players add <variable> <objective> <value>",
+        "subtract": "scoreboard players remove <variable> <objective> <value>",
+        "reset":    "scoreboard players reset <variable> <objective>",
+        "test":     "execute if score <variable> <objective> matches <value>"
+      }
+    }
+
+  },
+
+  "npcs": {
+    "_template": {
+      "npc": "<key from npcs/registry.json>",
+      "actions": []
+    }
+  }
+}
