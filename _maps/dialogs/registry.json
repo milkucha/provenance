@@ -11,6 +11,17 @@
           "description": ""
         }
       ]
+    },
+    "sonoros": {
+      "npc": "sonoros",
+      "dialogs": [
+        {
+          "id": "luminacion:sonoros_lost_traveler",
+          "trigger": "right_click",
+          "condition": null,
+          "description": "First meeting: a lost traveler arrives in Balehm and finds Sonoros waiting on the westbound train. Orientation (Balhâm, rail directions), a light branch (robber suspicion), then Sonoros's work as a rail-crossing walker."
+        }
+      ]
     }
   }
 }

@@ -80,11 +80,18 @@ Add an entry to `_maps/npcs/registry.json` under `"npcs"`:
   "city": "Milkaan",
   "taterzen_name": "Maren",
   "taterzen_uuid": "",
-  "spawn_position": null
+  "spawn_position": null,
+  "backstory": "",
+  "knowledge": {
+    "sample": { "percent": null, "mode": "", "topic": null, "items": [] },
+    "surfaced_in_dialog": []
+  }
 }
 ```
 
-Leave `taterzen_uuid` empty for now — that's filled in automatically at the end (§5).
+Leave `taterzen_uuid` empty for now — that's filled in automatically at the end (§5). `backstory` and
+`knowledge` are optional for a hand-built NPC like this one — they exist for enacted characters (§8)
+and are always filled in by the `/enact` skill.
 
 ### Step 2 — Create the spawn function
 
@@ -234,3 +241,35 @@ This updates `taterzen_uuid` for every NPC in the registry that was exported. Sa
 ## 7. Where design decisions live
 
 This README documents *how the pack works*. Story content, NPC personalities, routes, and dialog writing are design decisions — they live in `_lore/` and the maps under `_maps/`, not in this file.
+
+---
+
+## 8. Writing a dialog through enactment
+
+One way to write a Blabber dialog: play the NPC in a live conversation first, then convert the transcript. This is how `sonoros_lost_traveler.json` was written. Steps below are the manual version — the `/enact` skill (`.claude/skills/enact/SKILL.md`) runs this whole procedure, including the setup questions, the two-interlocutor branching (player vs. another enacted character), and registration, and is the recommended way to do this now. The steps below are still worth knowing, since the skill just automates them.
+
+### Step 1 — Bound the character's knowledge
+
+Before playing the NPC, decide what slice of `_lore/analysis/` (`context.md`, `encodings.json`, `unknown.md`) they actually know. Don't hand-pick a flattering or convenient subset — flatten every atomic fact across the analysis (locations, concepts, characters, routes, era entries, conflicts...) into one pool and randomly sample a small percentage of it. 5% produced a character who was coherent but genuinely, unevenly gapped — knowledgeable about a handful of unrelated things, ignorant of most everything else — which is a far more natural starting point than a hand-curated backstory. Keep the sample somewhere referenceable for the length of the session, since you'll be checking answers against it constantly.
+
+### Step 2 — Enact the conversation
+
+Play the NPC strictly within that sample.
+
+- **Never invent as fact anything that contradicts or extends the lore itself.** If a question falls outside the sample, the character genuinely doesn't know — say so, in character, rather than papering over the gap with new "lore." Don't volunteer the boundary unprompted either; the honesty is about never lying when it matters, not about narrating your own limits at every turn.
+- **Personality, mannerisms, small human texture — invent freely.** A reason for being somewhere, a job, a turn of phrase, a mood: a person is more than their entry in the record, and the lore was never going to specify any of that anyway.
+- **Write short.** Blabber's dialog boxes are small. Keep both sides of the conversation to a few sentences per turn from the start — it saves a rewrite later, and it's closer to how the final dialog will actually read in-game.
+
+### Step 3 — Convert the transcript into a Blabber dialog
+
+Once the conversation feels complete, restructure it — don't add to it:
+
+- Each NPC line becomes a state's `"text"`.
+- Each player line becomes a `"choices"[].text` leading to the next state.
+- Where the conversation had a genuine fork — a moment where a different in-character reaction would plausibly lead somewhere slightly different — render it as a real multiple-choice branch (see `_template_branching.json`). Converge branches back into a shared state as soon as the divergent flavor is spent; don't let the tree sprawl past what the actual conversation supported.
+- Rename every state to a short, meaningful id (never leave `state_1`, `state_2`...).
+- Wire up the final `end_dialogue` state per the existing templates, including the `resume_routine` call *only if* the NPC ends up with a roaming movement mode (§4) — if it's stationary (`NONE`), drop that action entirely.
+
+### Step 4 — Register it
+
+Same as §3 Step 1 and Step 3 above: add the NPC to `_maps/npcs/registry.json` (a blank `skin`/`taterzen_uuid`/`spawn_position` is fine — the dialog can exist before the NPC is spawned) and register the dialog itself under that NPC's key in `_maps/dialogs/registry.json`.

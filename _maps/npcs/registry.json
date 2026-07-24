@@ -1,5 +1,5 @@
 {
-  "_comment": "Master NPC registry. All NPC data lives here. Dialogs and actions reference NPCs by their key.",
+  "_comment": "Master NPC registry. All NPC data lives here. Dialogs and actions reference NPCs by their key. 'backstory' and 'knowledge' were added 2026-07-24 for enacted characters (see the /enact skill and README §8) - both optional for hand-built NPCs, but /enact always fills them in.",
   "npcs": {
     "_template": {
       "display_name": "",
@@ -7,7 +7,35 @@
       "city": "",
       "taterzen_name": "",
       "taterzen_uuid": "",
-      "spawn_position": null
+      "spawn_position": null,
+      "backstory": "",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "sonoros": {
+      "display_name": "Sonoros",
+      "skin": "",
+      "city": "Balehm",
+      "taterzen_name": "Sonoros",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
     }
   }
 }
