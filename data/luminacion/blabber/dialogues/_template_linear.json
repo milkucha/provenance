@@ -6,7 +6,7 @@
     "Rename states to meaningful IDs before use (e.g. 'greeting', 'offer', 'farewell').",
     "Replace <npc_key> in the 'end' action below with this NPC's key from",
     "_maps/npcs/registry.json — it resumes the NPC's routine if it was paused",
-    "(see functions/npcs/_template/resume_routine.mcfunction). Only needed if this",
+    "(see _templates/npcs/resume_routine.mcfunction). Only needed if this",
     "NPC has a roaming movement mode; otherwise the whole 'action' field can be removed."
   ],
   "start_at": "state_1",

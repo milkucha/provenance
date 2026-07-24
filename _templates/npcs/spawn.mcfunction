@@ -37,8 +37,8 @@ npc edit skin <https://www.mineskin.org/ID>
 npc edit movement NONE
 
 # If this NPC's movement mode above is NOT NONE (it has a roaming routine):
-#   1. Duplicate functions/npcs/_template/resume_routine.mcfunction and
-#      functions/npcs/_template/check_proximity.mcfunction into this folder,
+#   1. Duplicate _templates/npcs/resume_routine.mcfunction and
+#      _templates/npcs/check_proximity.mcfunction into this folder,
 #      filling in the placeholders.
 #   2. Add this NPC's check_proximity.mcfunction path to
 #      data/luminacion/tags/functions/npc_routine_tick.json.
@@ -64,7 +64,7 @@ npc edit commands setPermissionLevel 2
 # routine and marks it as mid-conversation (functions/npcs/_shared/enter_dialog.mcfunction),
 # so a roaming NPC stops and stays put for the length of the conversation. The
 # matching resume happens from the dialog's end_dialogue action(s) — see
-# functions/npcs/_template/resume_routine.mcfunction.
+# _templates/npcs/resume_routine.mcfunction.
 #
 # EXAMPLE — an innkeeper NPC named "Maren" who:
 #   - pauses her routine and opens a greeting dialog

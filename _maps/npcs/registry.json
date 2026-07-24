@@ -40,16 +40,19 @@
     "gondarfolas": {
       "display_name": "Gondarfolas",
       "skin": "https://minesk.in/8e4356a7612f4b97ac864836457b274e",
-      "city": "Görff",
+      "city": "Görff, Terfila",
       "taterzen_name": "Gondarfolas",
       "taterzen_uuid": "",
       "spawn_position": null,
-      "backstory": "A seafarer normally based in Görff, travelling all around the continent. Owns a small ship he uses to take travellers from coast to coast. An avid reader of history, well versed in the history of Milkantis. Has a knack for exaggerating some things.",
+      "backstory": "A seafarer normally based in Görff, travelling all around the continent. Owns a small ship he uses to take travellers from coast to coast. An avid reader of history, well versed in the history of Milkantis. Has a knack for exaggerating some things. Per the Luminacion Register, also based in Terfila on the return leg of the ferry run (\"Sailing to Gorff\") - the same sailor working both directions, per the register's own matched pair.",
       "knowledge": {
         "sample": {
           "percent": 33,
           "mode": "skewed",
-          "topic": ["era", "history"],
+          "topic": [
+            "era",
+            "history"
+          ],
           "items": [
             "airport: Catraniz",
             "airport: Gorff",
@@ -224,11 +227,11 @@
     "nerkeli": {
       "display_name": "Nerkeli",
       "skin": "",
-      "city": "Feria del Milenio",
+      "city": "Feria del Milenio, Sid Nalta, Khol Moshin",
       "taterzen_name": "Nerkeli",
       "taterzen_uuid": "",
       "spawn_position": null,
-      "backstory": "An old childhood friend of Nuvilo. Raised in Terfila, he decided young to become a pilot and see the world - airplanes are his passion. Good sense of humor, with a running theory that ducks are the most likely descendants of the legendary Daax. At the Feria del Milenio helping run the airplane showcase. Flies the M7 corridor (Puente Intercontinental - Nvhi) regularly, reaching Nvhi's edge - though until catching up with Nuvilo at the fair, he'd never once connected the place to his old friend's family.",
+      "backstory": "An old childhood friend of Nuvilo. Raised in Terfila, he decided young to become a pilot and see the world - airplanes are his passion. Good sense of humor, with a running theory that ducks are the most likely descendants of the legendary Daax. At the Feria del Milenio helping run the airplane showcase. Flies the M7 corridor (Puente Intercontinental - Nvhi) regularly, reaching Nvhi's edge - though until catching up with Nuvilo at the fair, he'd never once connected the place to his old friend's family. Per the Luminacion Register, also flies a Sid Nalta-Terfila route, and has a separate instance stationed at Khol Moshin.",
       "knowledge": {
         "sample": {
           "percent": 19,
@@ -288,6 +291,996 @@
           "Flies M7 as an assigned freight/passenger run, not personal business - carries tools, building supplies, mail, and occasional fragile merchant goods.",
           "Openly skeptical of the Feria's 'thousand years of Milkantis' framing - says he's heard the world's starting point told three incompatible ways across his travels."
         ]
+      }
+    },
+    "bardaglis": {
+      "display_name": "Bardaglis",
+      "skin": "https://minesk.in/8ea4c00eccea4bb995d38f713abc95e6",
+      "city": "Görff",
+      "taterzen_name": "Bardaglis",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Musician.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "dagna": {
+      "display_name": "Dägna",
+      "skin": "https://minesk.in/827dba7080fb46e88562e33e5a4e6d30",
+      "city": "Görff, Khol Moshin",
+      "taterzen_name": "Dägna",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Barkeeper.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "falkorlia": {
+      "display_name": "Falkorlia",
+      "skin": "https://minesk.in/b33b3b172f2d49f1b8baa867819021a4",
+      "city": "Görff",
+      "taterzen_name": "Falkorlia",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Pedestrian.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "farlika": {
+      "display_name": "Farlika",
+      "skin": "",
+      "city": "Görff",
+      "taterzen_name": "Farlika",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Town Market Keeper.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "gorlia": {
+      "display_name": "Gorlia",
+      "skin": "https://minesk.in/45ea2dd0a15344579074de19542b413d",
+      "city": "Görff",
+      "taterzen_name": "Gorlia",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Town Market Keeper.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "gundulun": {
+      "display_name": "Gundulun",
+      "skin": "https://minesk.in/ab4f26f4184d4e649f23c4a455ed53f0",
+      "city": "Görff",
+      "taterzen_name": "Gundulun",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Pilot.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "khaasan": {
+      "display_name": "Khaasan",
+      "skin": "https://minesk.in/132db39315d3476bbcd06ffb505d5ce3",
+      "city": "Görff",
+      "taterzen_name": "Khaasan",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Teletraveller.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "khaoe": {
+      "display_name": "Khaoe",
+      "skin": "https://minesk.in/36106afb45f343e4adba20d4454a573a",
+      "city": "Görff",
+      "taterzen_name": "Khaoe",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Member of the Collective.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "kristok_jakur": {
+      "display_name": "Kristok Jakur",
+      "skin": "https://minesk.in/1c6605a380764f2aa412616082672053",
+      "city": "Görff",
+      "taterzen_name": "Kristok Jakur",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Blacksmith.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "morlia": {
+      "display_name": "Morlia",
+      "skin": "https://minesk.in/cf3390487cce4e359be468358f1a86e3",
+      "city": "Görff",
+      "taterzen_name": "Morlia",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Town Market Keeper.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "norkan": {
+      "display_name": "NORKAN",
+      "skin": "",
+      "city": "Görff",
+      "taterzen_name": "NORKAN",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Worker from Volcano.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "nuruk": {
+      "display_name": "Nuruk",
+      "skin": "https://minesk.in/512cb50415aa4398a9dfc0d541e41fa3",
+      "city": "Görff, Khol Moshin",
+      "taterzen_name": "Nuruk",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Poet.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "raika": {
+      "display_name": "Raika",
+      "skin": "https://minesk.in/8695f48ec1bf47329e0af781a743bdbb",
+      "city": "Görff, Khol Moshin",
+      "taterzen_name": "Raika",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Fish Shop Keeper.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "roburo": {
+      "display_name": "Roburo",
+      "skin": "https://minesk.in/250c87bbb647468e888053f9a0860e24",
+      "city": "Görff",
+      "taterzen_name": "Roburo",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Fisherman.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "sandarlo": {
+      "display_name": "Sandarlo",
+      "skin": "https://minesk.in/ed3697f78f4d41728577e8b0dda17c13",
+      "city": "Görff",
+      "taterzen_name": "Sandarlo",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Paint Shop Keeper.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "saski": {
+      "display_name": "Saski",
+      "skin": "",
+      "city": "Görff",
+      "taterzen_name": "Saski",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Painter.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "trentor": {
+      "display_name": "Trentor",
+      "skin": "https://minesk.in/43e96f1871f24bbd9cfa125e3f91b57b",
+      "city": "Görff, Khol Moshin",
+      "taterzen_name": "Trentor",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Innkeeper.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "azaor": {
+      "display_name": "Azaor",
+      "skin": "https://minesk.in/75f4192c66dc4daca38b4f22976b3827",
+      "city": "Görff",
+      "taterzen_name": "Azaor",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "mrek": {
+      "display_name": "Mrek",
+      "skin": "https://minesk.in/e1935ce7cc834c8babf8c96707f76335",
+      "city": "Görff",
+      "taterzen_name": "Mrek",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "nroki": {
+      "display_name": "Nroki",
+      "skin": "https://minesk.in/2c13ac725bca4bc88e4b2310b6351299",
+      "city": "Görff",
+      "taterzen_name": "Nroki",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "socorlis": {
+      "display_name": "Socorlis",
+      "skin": "https://minesk.in/e42cd3b34c18466596c555591633f31b",
+      "city": "Görff",
+      "taterzen_name": "Socorlis",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "surulor": {
+      "display_name": "Surulor",
+      "skin": "https://minesk.in/9f4e4e32b30d41cca4915c04461a590d",
+      "city": "Görff",
+      "taterzen_name": "Surulor",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "tetto": {
+      "display_name": "Tetto",
+      "skin": "https://minesk.in/db7291d6a07c433e9de68fff2f8dcb2b",
+      "city": "Görff",
+      "taterzen_name": "Tetto",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "zun": {
+      "display_name": "Zun",
+      "skin": "https://minesk.in/f065e8f0960347beb891d99b19da9d0b",
+      "city": "Görff",
+      "taterzen_name": "Zun",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "garnako": {
+      "display_name": "Garnako",
+      "skin": "https://minesk.in/1d54ce323b59430a80c137fd29f26b3c",
+      "city": "Görff",
+      "taterzen_name": "Garnako",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "farlis": {
+      "display_name": "Farlis",
+      "skin": "https://minesk.in/f9f2930426dd45b3b7f3205c1fa7d125",
+      "city": "Khol Moshin, Görff",
+      "taterzen_name": "Farlis",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Member of the Collective. Travels the Khol Moshin-Görff route on horseback.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "gondorlikas": {
+      "display_name": "Gondorlikas",
+      "skin": "https://minesk.in/d87e5486c7f243ebaa76027e3ce97630",
+      "city": "Lundria, Catraniz, Khol Moshin",
+      "taterzen_name": "Gondorlikas",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Flies between Lundria and Catraniz.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "grogar": {
+      "display_name": "Grogar / Grograr",
+      "skin": "https://minesk.in/fac216caaa654b4a96286692e471ff6b",
+      "city": "Puente Continental",
+      "taterzen_name": "Grogar / Grograr",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Unknown.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "sari": {
+      "display_name": "Sari",
+      "skin": "https://minesk.in/2f8d8ae3971f4ae2be2113defa9dabc7",
+      "city": "Puente Continental",
+      "taterzen_name": "Sari",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Trader.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "soro": {
+      "display_name": "Soro",
+      "skin": "https://minesk.in/4a03d05d7b9b431abccc8f742abd2922",
+      "city": "Puente Continental, Khol Moshin",
+      "taterzen_name": "Soro",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Trader.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "trifolis": {
+      "display_name": "Trifolis",
+      "skin": "https://minesk.in/a063fa0b970c4a55913bf46b2f9a981d",
+      "city": "Puente Continental",
+      "taterzen_name": "Trifolis",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Archiecht.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "zarkatraz": {
+      "display_name": "Zarkatraz",
+      "skin": "https://minesk.in/937d0c1467da4608b295735ccbbd86a5",
+      "city": "Puente Continental",
+      "taterzen_name": "Zarkatraz",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "lumi": {
+      "display_name": "Lumi",
+      "skin": "https://minesk.in/df7e5c49db044e7a89100b3b65e7605f",
+      "city": "Terfila",
+      "taterzen_name": "Lumi",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Kid.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "peregrin": {
+      "display_name": "Peregrin",
+      "skin": "https://minesk.in/c2373b108c984949bdeef6d7f4b86c83",
+      "city": "Terfila",
+      "taterzen_name": "Peregrin",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Peregrins.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "puri": {
+      "display_name": "Puri",
+      "skin": "https://minesk.in/79e2c27a39924bca9a6e0223dfaf61e1",
+      "city": "Terfila",
+      "taterzen_name": "Puri",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Kid.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "zarkapulos": {
+      "display_name": "Zarkapulos",
+      "skin": "https://minesk.in/b4e9654611544cce923ad749073f1ed4",
+      "city": "Terfila",
+      "taterzen_name": "Zarkapulos",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Peregrin.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "terrolis": {
+      "display_name": "Terrolis",
+      "skin": "https://minesk.in/3c0a58c55b404051ba944497bca729a7",
+      "city": "Terfila, Dragon City",
+      "taterzen_name": "Terrolis",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Pilot. Flies the Terfila-Dragon route.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "aureobalo": {
+      "display_name": "Aureobalo",
+      "skin": "https://minesk.in/b93a583bcfd145b8a52251ab4f54e90a",
+      "city": "Terfila, Khol Moshin",
+      "taterzen_name": "Aureobalo",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Banker en route. Travels the Terfila-Khol Moshin route by car.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "garfeld": {
+      "display_name": "Garfeld",
+      "skin": "https://minesk.in/0a735c1803824f66983e237f9a707eaa",
+      "city": "Terfila, Puerto Varillas",
+      "taterzen_name": "Garfeld",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Pilot. Flies the Terfila-Puerto Varilla route.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "gizen": {
+      "display_name": "Gizen",
+      "skin": "https://minesk.in/475d534001f442a393a606f1b6c61481",
+      "city": "Görff, Catraniz",
+      "taterzen_name": "Gizen",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Flies between Görff and Catraniz.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "murunu": {
+      "display_name": "Murunu",
+      "skin": "https://minesk.in/a3fca64f82f349d9894f60d5839f3683",
+      "city": "Görff, Dragon City",
+      "taterzen_name": "Murunu",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Travels between Görff and Ciudad Dragon by boat.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "saltamontabiras": {
+      "display_name": "Saltamontabiras",
+      "skin": "https://minesk.in/d50c703075064945abf6e7b68ec575a5",
+      "city": "Tyrnea, Görff, Terfila",
+      "taterzen_name": "Saltamontabiras",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Travels the Tyrnea-Görff route by camelback, by way of Terfila.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "kjon": {
+      "display_name": "Kjon",
+      "skin": "https://minesk.in/080c3e9e3d1a4ac5b7fe300f2aa534b8",
+      "city": "Khan Ice, Görff",
+      "taterzen_name": "Kjon",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Travels locally between Khan Ice and Görff by griffon.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "kjon_ukk": {
+      "display_name": "Kjon-Ukk",
+      "skin": "https://minesk.in/1f348238e92b419bb830dc3ef553db32",
+      "city": "Khan Ice, Görff",
+      "taterzen_name": "Kjon-Ukk",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Travels locally between Khan Ice and Görff by griffon.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "malkinimies": {
+      "display_name": "Malkinimies",
+      "skin": "https://minesk.in/99575cf84516454db8e0037ae4811bd7",
+      "city": "Görff, Khan Ice",
+      "taterzen_name": "Malkinimies",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Travels between Görff and Khan Ice by horseback.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "gok": {
+      "display_name": "Gok",
+      "skin": "https://minesk.in/c83858d00a5f481392648a6ab697660a",
+      "city": "Khan Ice, Catraniz",
+      "taterzen_name": "Gok",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Travels between Khan Ice and Catraniz.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "gurk": {
+      "display_name": "Gurk",
+      "skin": "https://minesk.in/ecf32e239cc04bc18e419cd6c107a236",
+      "city": "Nueva Gondola, Görff",
+      "taterzen_name": "Gurk",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Travels between Nueva Gondola and Görff.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "galandis": {
+      "display_name": "Galandis",
+      "skin": "https://minesk.in/5232adc92a8c4c84afc893c394e3f391",
+      "city": "Nvhi, Khan Ice",
+      "taterzen_name": "Galandis",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Flies between Nvhi and Khan Ice.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "jaalax": {
+      "display_name": "Jaalax",
+      "skin": "https://minesk.in/ba848738810047999b527bed1fe19b6a",
+      "city": "Görff (Volcano)",
+      "taterzen_name": "Jaalax",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Worker from Volcano.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "juori": {
+      "display_name": "Juori",
+      "skin": "https://minesk.in/ba848738810047999b527bed1fe19b6a",
+      "city": "Görff (Volcano)",
+      "taterzen_name": "Juori",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Worker from Volcano.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "kaukalus": {
+      "display_name": "Kaukalus",
+      "skin": "https://minesk.in/ba848738810047999b527bed1fe19b6a",
+      "city": "Görff (Volcano)",
+      "taterzen_name": "Kaukalus",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "Worker from Volcano.",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "el_globero": {
+      "display_name": "El Globero",
+      "skin": "https://minesk.in/92127d3046164e73a8c0aecd703938b2",
+      "city": "",
+      "taterzen_name": "El Globero",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "mragk": {
+      "display_name": "Mragk",
+      "skin": "https://minesk.in/269cdaad6e65477b83251ecc504f301b",
+      "city": "",
+      "taterzen_name": "Mragk",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "korin": {
+      "display_name": "Korin",
+      "skin": "https://minesk.in/1d94f8168354465a9385f4af746f4c1d",
+      "city": "",
+      "taterzen_name": "Korin",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
+      }
+    },
+    "nerl": {
+      "display_name": "Nerl",
+      "skin": "https://minesk.in/60525ee3850245a598707b978a1a7abe",
+      "city": "",
+      "taterzen_name": "Nerl",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "",
+      "knowledge": {
+        "sample": {
+          "percent": null,
+          "mode": "",
+          "topic": null,
+          "items": []
+        },
+        "surfaced_in_dialog": []
       }
     }
   }

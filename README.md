@@ -26,11 +26,6 @@ Luminacion/
 │       │   ├── admin/
 │       │   │   └── export_npc_uuids.mcfunction   (auto-generated — see §5)
 │       │   └── npcs/
-│       │       ├── _template/         (copy these into a new folder per NPC)
-│       │       │   ├── spawn.mcfunction
-│       │       │   ├── resume_routine.mcfunction
-│       │       │   ├── check_proximity.mcfunction
-│       │       │   └── end_with_gift.mcfunction
 │       │       ├── _shared/           (used by every NPC as-is — never copied)
 │       │       │   ├── pause_routine.mcfunction
 │       │       │   └── enter_dialog.mcfunction
@@ -47,11 +42,21 @@ Luminacion/
 │   ├── npcs/registry.json             (master NPC data: name, skin, city, UUID, spawn position)
 │   ├── dialogs/registry.json          (NPC key → dialog IDs)
 │   └── actions/registry.json          (NPC key → actions, plus reference templates for every action type)
+├── _templates/
+│   └── npcs/                          (copy these into data/luminacion/functions/npcs/<npc_key>/ per NPC)
+│       ├── spawn.mcfunction
+│       ├── resume_routine.mcfunction
+│       ├── check_proximity.mcfunction
+│       └── end_with_gift.mcfunction
 └── scripts/
     └── update_uuids.py                (automates NPC UUID capture — see §5)
 ```
 
-Anything named `_template` is a pattern to copy and fill in. Anything named `_shared` is called directly and never duplicated.
+`_templates/` holds placeholder-filled patterns to copy — kept outside `data/` on purpose, since Minecraft
+parses every `.mcfunction` file it finds under `data/`, and these still have unfilled `<placeholders>` that
+aren't valid command syntax. The Blabber dialogue templates (`_template_one_off.json` etc.) are the
+exception: they stay under `data/luminacion/blabber/dialogues/` since their placeholders live inside JSON
+string values, which parse fine either way. Anything named `_shared` is called directly and never copied.
 
 ---
 
@@ -95,7 +100,7 @@ and are always filled in by the `/enact` skill.
 
 ### Step 2 — Create the spawn function
 
-Copy `functions/npcs/_template/spawn.mcfunction` to `functions/npcs/maren/spawn.mcfunction`, then fill in every `<placeholder>` using the registry entry from Step 1. This file sets: identity, skin, movement mode, permission level, and right-click actions.
+Copy `_templates/npcs/spawn.mcfunction` to `data/luminacion/functions/npcs/maren/spawn.mcfunction`, then fill in every `<placeholder>` using the registry entry from Step 1. This file sets: identity, skin, movement mode, permission level, and right-click actions.
 
 Read the comments in the template as you go — they explain each section. In particular:
 
@@ -140,9 +145,9 @@ See §4 below.
 
 If an NPC's movement mode is anything other than `NONE`, it needs two more files so it stops for conversations instead of walking through them.
 
-1. Copy `functions/npcs/_template/resume_routine.mcfunction` → `functions/npcs/<npc_key>/resume_routine.mcfunction`. Fill in `<MODE>` to match the movement mode you set in spawn.mcfunction (for `FOLLOW`, use the `FOLLOW <name>` / `FOLLOW UUID <uuid>` form shown in the comments).
+1. Copy `_templates/npcs/resume_routine.mcfunction` → `data/luminacion/functions/npcs/<npc_key>/resume_routine.mcfunction`. Fill in `<MODE>` to match the movement mode you set in spawn.mcfunction (for `FOLLOW`, use the `FOLLOW <name>` / `FOLLOW UUID <uuid>` form shown in the comments).
 
-2. Copy `functions/npcs/_template/check_proximity.mcfunction` → `functions/npcs/<npc_key>/check_proximity.mcfunction`. Fill in `<display_name>` and `<npc_key>`.
+2. Copy `_templates/npcs/check_proximity.mcfunction` → `data/luminacion/functions/npcs/<npc_key>/check_proximity.mcfunction`. Fill in `<display_name>` and `<npc_key>`.
 
 3. Add that file's path to the `"values"` array in `data/luminacion/tags/functions/npc_routine_tick.json`:
 

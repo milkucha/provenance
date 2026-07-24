@@ -31,20 +31,20 @@ open questions about the lore itself live in `_lore/analysis/unknown.md`, not he
 
 ## Gondarfolas (Görff)
 
-- [ ] Movement mode not decided yet — material docs list his `Type` as "Hybrid" in
-      `Luminacion Register [Code].xlsx` (NPC sheet), which doesn't map cleanly onto Taterzens'
-      NONE/FORCED_LOOK/PATH/FORCED_PATH/FOLLOW/FREE modes (README §6). Needs a real decision. The
-      dialog's `end` state already wires a `resume_routine` call (matching the Sonoros precedent,
-      where the same thing was done ahead of a movement-mode decision) — if Görff ends up `NONE`,
-      remove that action and drop `resume_routine.mcfunction`/`check_proximity.mcfunction` per §4.
+- [x] Movement mode decided: `PATH` (chosen 2026-07-24 for in-game testing). Built
+      `functions/npcs/gondarfolas/spawn.mcfunction`, `resume_routine.mcfunction`, and
+      `check_proximity.mcfunction`, and registered the latter in
+      `data/luminacion/tags/functions/npc_routine_tick.json`. The actual path waypoints still need
+      to be recorded in-game via Taterzens' own `/npc path` commands — until then he'll stand still
+      even in `PATH` mode.
+- [x] Right-click action wired to start `luminacion:gondarfolas_darnis_and_bracco`.
 - [ ] `skin` is filled in from `Luminacion Register [Code].xlsx` (Mineskin column) at the user's
       request — `taterzen_uuid` and `spawn_position` are still blank, per the normal `/enact` flow.
 - [ ] Material docs also give an "Easy NPC Preset" (`gondarfolas_gorff`) and Mocap Recording
       reference (`gondarfolas_test2`) and list his role as "Sailing to Terfila" — none of that was
       used here (out of scope for `/enact`); worth checking if a spawn.mcfunction author wants it.
-- [ ] Set `spawn_position` in the registry, or stand at the spot manually before spawning.
-- [ ] Build `functions/npcs/gondarfolas/spawn.mcfunction` from the template.
-- [ ] Wire the right-click action to actually start `luminacion:gondarfolas_darnis_and_bracco`.
+- [ ] Set `spawn_position` in the registry, or stand at the spot manually before spawning (current
+      plan: manual, since `spawn_position` is still null).
 - [ ] Spawn in-game and capture `taterzen_uuid` (README §5).
 
 ## Nuvilo & Nerkeli (Feria del Milenio — hangar eavesdrop scene)

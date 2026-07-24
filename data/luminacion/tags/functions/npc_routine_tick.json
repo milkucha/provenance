@@ -1,4 +1,4 @@
 {
-  "_comment": "Runs once per tick (see functions/tick.mcfunction). Add each roaming NPC's check_proximity.mcfunction path here — see functions/npcs/_template/check_proximity.mcfunction for the workflow. Safe to be empty.",
-  "values": []
+  "_comment": "Runs once per tick (see functions/tick.mcfunction). Add each roaming NPC's check_proximity.mcfunction path here — see _templates/npcs/check_proximity.mcfunction for the workflow. Safe to be empty.",
+  "values": ["luminacion:npcs/gondarfolas/check_proximity"]
 }

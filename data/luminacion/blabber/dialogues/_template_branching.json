@@ -6,8 +6,8 @@
     "@s in commands refers to the player. @interlocutor refers to the NPC.",
     "Replace all bracketed placeholders before use, including <npc_key> (this NPC's",
     "key from _maps/npcs/registry.json) in both end states below — these resume the",
-    "NPC's routine if it was paused (see functions/npcs/_template/resume_routine.mcfunction",
-    "and functions/npcs/_template/end_with_gift.mcfunction). Only needed if this NPC has",
+    "NPC's routine if it was paused (see _templates/npcs/resume_routine.mcfunction",
+    "and _templates/npcs/end_with_gift.mcfunction). Only needed if this NPC has",
     "a roaming movement mode; otherwise simplify end_with_gift back to a plain 'give'",
     "command and remove end_no_gift's 'action' field."
   ],
