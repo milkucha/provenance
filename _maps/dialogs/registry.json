@@ -22,6 +22,39 @@
           "description": "First meeting: a lost traveler arrives in Balehm and finds Sonoros waiting on the westbound train. Orientation (Balhâm, rail directions), a light branch (robber suspicion), then Sonoros's work as a rail-crossing walker."
         }
       ]
+    },
+    "gondarfolas": {
+      "npc": "gondarfolas",
+      "dialogs": [
+        {
+          "id": "luminacion:gondarfolas_darnis_and_bracco",
+          "trigger": "right_click",
+          "condition": null,
+          "description": "A traveler seeking passage trades Gondarfolas a secondhand story - a man who sailed south and never returned, a search expedition now forming - for the ride. He recognizes it as Därnis's story, explains what he's read of it (and the Ensayo/Libro chronicles that disagree on the era), then traces where his own history books came from: a trader named Bracco."
+        }
+      ]
+    },
+    "nuvilo": {
+      "npc": "nuvilo",
+      "dialogs": [
+        {
+          "id": "luminacion:nuvilo_scholar_at_the_feria",
+          "trigger": "right_click",
+          "condition": null,
+          "description": "A traveler arriving at the Feria del Milenio meets Nuvilo, who orients them on what the fair celebrates, explains he holds no official role there (just a visiting scholar), and describes what he writes about - historical inventors and travelers, and an unresolved puzzle about two chronicles that never agree on the same centuries."
+        }
+      ]
+    },
+    "nerkeli": {
+      "npc": "nerkeli",
+      "dialogs": [
+        {
+          "id": "luminacion:nerkeli_hangar_talk",
+          "trigger": "right_click",
+          "condition": null,
+          "description": "A traveler stops by Nerkeli's hangar at the Feria del Milenio. Branches on whether they ask about the plane and his flying (the M7 route, his freight work) or steer the talk toward the Feria itself, where Nerkeli turns out skeptical of the 'thousand years' framing and ends up explaining his duck/Daax theory."
+        }
+      ]
     }
   }
 }

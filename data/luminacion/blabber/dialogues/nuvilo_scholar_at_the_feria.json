@@ -1,0 +1,55 @@
+{
+  "$schema": "https://ladysnake.org/schemas/blabber/dialogue.schema.json",
+  "start_at": "greeting",
+  "states": {
+
+    "greeting": {
+      "text": "Hi traveller, just arrived in the Feria? Perfect timing - the exhibits are only getting better as the day goes on.",
+      "choices": [
+        {
+          "text": "Can you tell me about the feria?",
+          "next": "about_feria"
+        }
+      ]
+    },
+
+    "about_feria": {
+      "text": "It's a celebration - a thousand years of Milkantis, if the reckoning's to be believed. Every exhibit's a homage to some piece of it: the cultures and building styles that grew up across the land, the landscapes, the artifacts we've built along the way - codigos, redstone work, that sort of thing - and the eras that carried us here. I'm a scholar myself, so I'll admit I'm here as much to look for something to write about as to look at the fair itself.",
+      "choices": [
+        {
+          "text": "What is your role here?",
+          "next": "role"
+        }
+      ]
+    },
+
+    "role": {
+      "text": "No official role, really - I'm not running an exhibit like some of the others here. I'm a visitor, same as you, though I come at it as a scholar: following what they call the path of knowledge, hoping something here sparks the next thing I write.",
+      "choices": [
+        {
+          "text": "A scholar? What do you normally write about?",
+          "next": "writes_about"
+        }
+      ]
+    },
+
+    "writes_about": {
+      "text": "Mostly the old chroniclers and inventors - men like Daaxagoras and Pitaglorias, who put together the first atlas of this world, or travelers like Darnis, who sailed south and found land nobody'd mapped. There's also a puzzle I keep circling back to: two different histories of the very same centuries, written by different hands, that never quite agree with each other. I haven't solved that one. Might be why I keep coming to places like this, hoping something turns up that the books missed.",
+      "choices": [
+        {
+          "text": "...",
+          "next": "end"
+        }
+      ]
+    },
+
+    "end": {
+      "type": "end_dialogue",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/nuvilo/resume_routine"
+      }
+    }
+
+  }
+}

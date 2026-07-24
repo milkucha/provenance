@@ -6,6 +6,16 @@ Every atomic fact in encodings.json (locations, concepts, conflicts, characters,
 is flattened into one pool. Sampling from that pool, rather than hand-picking, is the whole point:
 it produces a character with real, uneven gaps instead of a curated highlight reel.
 
+Individual hearsay claims (encodings.json -> hearsay.entries[].claims) are flattened into the same
+pool as their own "hearsay" category items, one per claim, sitting at equal odds alongside every
+objective-record fact. This is deliberate: a claim another NPC once made in a dialogue can become
+part of a new character's knowledge exactly as if they'd heard it secondhand - which is how rumor
+and half-remembered gossip actually spread, and how the lore is meant to accrete new, emergent
+"fact-shaped" material over time on top of the fixed objective record. A "hearsay" item is NOT
+upgraded to objective truth by being sampled - the character knows it only as something claimed by
+someone, in some dialogue, possibly wrong. Play it that way: attributed ("I heard Gondarfolas say
+once that..."), not asserted as settled history.
+
 Usage:
     python scripts/sample_lore_knowledge.py --percent 11 --mode random
     python scripts/sample_lore_knowledge.py --percent 21 --mode skewed --topic geography --topic geology
@@ -64,6 +74,11 @@ def flatten_pool(data: dict) -> list[dict]:
         add("year_esquema", str(e["year"]), " ".join(e.get("places", [])))
     for e in data["time_systems"]["libro_venidas_eras"]["list"]:
         add("era_libro", e["name"], e["name"])
+    for entry in data["hearsay"]["entries"]:
+        participants = " ".join(entry.get("participants", []))
+        location = (entry.get("location") or {}).get("as_named_in_dialog")
+        for i, claim in enumerate(entry["claims"], start=1):
+            add("hearsay", f"{entry['id']}#{i}", claim.get("text"), participants, location)
 
     return pool
 

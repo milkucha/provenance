@@ -311,7 +311,7 @@
   ],
 
   "hearsay": {
-    "_method_note": "SUBJECTIVE record, distinct from every array above. Mirrors _lore/analysis/hearsay.md exactly - one entry per real (non-template) dialog file in data/luminacion/blabber/dialogues/. 'claims' are what a character asserted, not verified facts; 'about' cross-references an id in 'locations'/'concepts'/'conflicts' above ONLY to mark topical overlap, never as corroboration. A claim's 'consistent_with_context' field records whether it happens to agree with the objective record as it currently stands - 'true' here is not a guarantee the claim is correct, only that no contradiction has been found yet.",
+    "_method_note": "SUBJECTIVE record, distinct from every array above. Mirrors _lore/analysis/hearsay.md exactly - one entry per real (non-template) dialog file in data/luminacion/blabber/dialogues/. 'claims' are what a character asserted, not verified facts; 'about' cross-references an id in 'locations'/'concepts'/'conflicts' above ONLY to mark topical overlap, never as corroboration. A claim's 'consistent_with_context' field records whether it happens to agree with the objective record as it currently stands - 'true' here is not a guarantee the claim is correct, only that no contradiction has been found yet. Since scripts/sample_lore_knowledge.py draws individual claims from this array into a character's knowledge pool at the same odds as any objective-record fact (see README §8 Step 1), a claim can now be retold by a new character and logged again as a fresh claim. Whenever that happens, scripts/lineage_coin.py rolls a flat 50/50 to decide whether the origin survives the retelling: 'traceable' sets 'derived_from' (a claim id, e.g. 'nawom_morkulo_first_meeting#5') and the dialog line may cite the source by name; 'untraceable' leaves 'derived_from' unset and sets 'oral_lore': true instead - no origin recorded, dialog line uses vague framing ('they say...'), regardless of whether the content itself has drifted. 'oral_lore' can also be set true (paired with a 'note' explaining what grew) on a claim that traces back fine but has still accumulated specifics beyond what its 'about' grounding supports. Most claims have neither field - they're unremarkable, either freshly sampled from the objective record or a faithful, traceable retelling.",
     "entries": [
       {
         "id": "sonoros_lost_traveler",
@@ -341,6 +341,63 @@
           {"text": "Morkulo studied in Tyrnea, 'long enough ago' that he says he barely recognizes who he was then.", "about": "tyrnea", "consistent_with_context": null, "note": "personal biography, not a material-sourced fact; notably Morkulo's sample also did not include the 'tyrnea' location entry itself, so his firsthand memory is deliberately not backed by (or contradicted by) the objective civic history of the place"},
           {"text": "Nvhi is 'the place they say Därnis heard whatever it was that sent him off to find that new continent.'", "about": "darnis", "consistent_with_context": true, "note": "matches ensayo_i era 9 and the nvhi location entry exactly; Morkulo's own hedge ('they say') is his, not an uncertainty in the source material"},
           {"text": "Morkulo complains that recorded coordinates for Khol Moshin and Khan Ice 'argue with themselves.'", "about": "CONFLICT-02", "consistent_with_context": true, "note": "an informal, personal echo of CONFLICT-02 - Morkulo is speaking from professional frustration with his own measurements, not citing the analysis"}
+        ]
+      },
+      {
+        "id": "gondarfolas_darnis_and_bracco",
+        "source_file": "data/luminacion/blabber/dialogues/gondarfolas_darnis_and_bracco.json",
+        "participants": ["Gondarfolas", "an unnamed traveler (the player)"],
+        "location": {"id": "gorff", "as_named_in_dialog": "Gorff"},
+        "summary": "A traveler looking for passage meets Gondarfolas, a sailor at his boat in Görff, and trades a secondhand story - a man who sailed south and never returned, with a search expedition now being organized - for the ride. Gondarfolas recognizes the story as Därnis's, walks through what he's read of it, and traces where his own history books came from.",
+        "claims": [
+          {"text": "Gondarfolas is based in Görff, sails a small ship ferrying travelers along the coast, and is an avid reader of history.", "about": "gorff", "consistent_with_context": null, "note": "Gondarfolas's trade and reading habit are invented character texture, not drawn from any material source - see README §8 step 2"},
+          {"text": "Därnis sailed south out of Sindäara and discovered a new ocean, a burning/volcanic island, and floating land, taken by historians as a sign of a new continent.", "about": "darnis", "consistent_with_context": true},
+          {"text": "Därnis 'came back long enough to tell of it,' before whatever happened to him afterward goes unrecorded.", "about": "darnis", "consistent_with_context": null, "note": "the source (ensayo_i era 9) states what Därnis discovered but does not explicitly confirm he returned to report it - Gondarfolas's reading is a plausible but unconfirmed inference"},
+          {"text": "The traveler reports hearing in Khol Moshin that Därnis's siblings are organizing an expedition to search for him, departing from where a highway ends at the continent's southern tip.", "about": "darnis", "consistent_with_context": null, "note": "siblings and a southern-terminus highway appear nowhere in the objective record - genuinely new hearsay, neither corroborated nor contradicted; Gondarfolas explicitly does not confirm it"},
+          {"text": "Khol Moshin has no coastline - Gondarfolas, a sailor, has never had reason to go there.", "about": "khol_moshin", "consistent_with_context": null, "note": "khol_moshin's exact geography isn't detailed enough in the objective record to confirm or contradict this outright, though it's consistently treated elsewhere as an inland/rail hub rather than a port"},
+          {"text": "Gondarfolas owns two chronicles, the Ensayo and the Libro, and describes them accurately as two histories of the same span of years that never reconcile with each other.", "about": "CONFLICT-01", "consistent_with_context": true},
+          {"text": "Gondarfolas bought his copies years ago from a trader in Görff he recalls as 'Bracco, or Braggo,' who sold them off cheaply and without explanation.", "about": null, "consistent_with_context": null, "note": "Bracco is invented personal texture, not a material-sourced figure - see README §8 step 2"},
+          {"text": "Gondarfolas has no idea where Bracco came from or went afterward.", "about": null, "consistent_with_context": null}
+        ]
+      },
+      {
+        "id": "nuvilo_nerkeli_feria_del_milenio",
+        "source_file": "data/luminacion/blabber/dialogues/nuvilo_nerkeli_feria_del_milenio.json",
+        "participants": ["Nuvilo", "Nerkeli"],
+        "location": {"id": null, "as_named_in_dialog": "the Feria del Milenio, by the airplane hangar"},
+        "summary": "Overheard mid-conversation by the player (no player lines - pure eavesdropping), childhood friends Nuvilo and Nerkeli catch up by the hangar Nerkeli is minding for the fair's airplane showcase. They cover codigos and the Daax symbol, Nerkeli's running joke that ducks descend from the Daax, and the highways M9/M7, both of which happen to end at Nvhi - the place Nuvilo's family claims to have founded.",
+        "claims": [
+          {"text": "Codigos ties to Era del Daax, begun under Gorff's new government, and the Daax symbol was carved into old ruins right around those same years.", "about": "codigos", "consistent_with_context": true, "note": "matches both the codigos and daax_symbol entries; symbol carved c. 372+ d.V. falls within Era del Daax's 360-504 d.V. span"},
+          {"text": "Nerkeli jokingly theorizes that ducks are the last living descendants of the Daax.", "about": "daax_symbol", "consistent_with_context": null, "note": "offered explicitly as Nerkeli's own unfounded pet theory, not asserted as history - invented character texture, see README §8 step 2"},
+          {"text": "Nuvilo claims descent from 'Navalius,' said to have founded Nvhi generations back.", "about": "nvhi", "consistent_with_context": null, "note": "Navalius appears nowhere in the objective record - a family claim, invented backstory per the user, not drawn from any material source; Nuvilo himself admits he knows little else about Nvhi's actual history"},
+          {"text": "Nuvilo cites highway M9 (Nvhi -> Khan Ice); Nerkeli cites M7 (Puente Intercontinental -> Nvhi), which he flies regularly without having connected it to Nuvilo's family before this conversation.", "about": "nvhi", "consistent_with_context": true, "note": "both routes are drawn directly from routes.highways"}
+        ]
+      },
+      {
+        "id": "nuvilo_scholar_at_the_feria",
+        "source_file": "data/luminacion/blabber/dialogues/nuvilo_scholar_at_the_feria.json",
+        "participants": ["Nuvilo", "an unnamed traveler (the player)"],
+        "location": {"id": null, "as_named_in_dialog": "the Feria del Milenio"},
+        "summary": "A traveler arriving at the fair meets Nuvilo, who orients them on what the Feria is celebrating, explains he has no official role there (just a visiting scholar), and describes what he writes about - historical inventors and travelers, and an unresolved puzzle about two chronicles of the same centuries that never agree.",
+        "claims": [
+          {"text": "The Feria del Milenio celebrates 'a thousand years of Milkantis,' with exhibits honoring the world's cultures and building styles, its landscapes, its artifacts (codigos and redstone work among them), and its historical eras.", "about": null, "consistent_with_context": null, "note": "the Feria itself is a session-level venue given directly by the user, not drawn from the objective record - see README §8 step 2"},
+          {"text": "Nuvilo holds no official role at the fair - unlike Nerkeli, running the airplane showcase, he's simply a visiting scholar 'following the path of knowledge.'", "about": null, "consistent_with_context": true, "note": "matches Nuvilo's registered backstory"},
+          {"text": "Nuvilo writes about historical inventors and travelers, naming Daaxagoras and Pitaglorias (credited with the first atlas) and Darnis (who sailed south and found unmapped land).", "about": "darnis", "consistent_with_context": true},
+          {"text": "Nuvilo describes an unsolved puzzle: two histories of the same centuries, written by different hands, that never reconcile.", "about": "CONFLICT-01", "consistent_with_context": true, "note": "an informal, personal echo of CONFLICT-01 - Nuvilo doesn't cite it as such, he's speaking from his own scholarly frustration"}
+        ]
+      },
+      {
+        "id": "nerkeli_hangar_talk",
+        "source_file": "data/luminacion/blabber/dialogues/nerkeli_hangar_talk.json",
+        "participants": ["Nerkeli", "an unnamed traveler (the player)"],
+        "location": {"id": null, "as_named_in_dialog": "the Feria del Milenio, by the airplane hangar"},
+        "summary": "A traveler stops by Nerkeli's hangar at the fair. A genuine branch: they can ask about the plane and Nerkeli's flying (the M7 route, his freight work), or steer the talk toward the Feria itself, where Nerkeli turns out skeptical of the 'thousand years' framing - and, pressed on why, ends up explaining his duck/Daax theory.",
+        "claims": [
+          {"text": "Nerkeli flies the M7 corridor (Puente Intercontinental -> Nvhi) as his regular assigned run, not for any business of his own - freight and the occasional passenger.", "about": "nvhi", "consistent_with_context": true, "note": "matches routes.highways M7"},
+          {"text": "Despite flying that route for years, Nerkeli says he couldn't tell much about Nvhi itself - he turns around at the airstrip each time without properly seeing the place.", "about": "nvhi", "consistent_with_context": true, "note": "consistent with Nerkeli's sampled knowledge not including the 'nvhi' location entry itself, only the M7 highway"},
+          {"text": "His freight is mixed: tools, building supplies, mail, and occasionally fragile merchant goods too delicate for boat or horse transport.", "about": null, "consistent_with_context": null, "note": "invented character texture, not drawn from any material source - see README §8 step 2"},
+          {"text": "Nerkeli doubts the fair's 'thousand years of Milkantis' framing, saying he's heard the world's starting point told three incompatible ways across his travels, none of which line up.", "about": "CONFLICT-12", "consistent_with_context": true, "note": "an informal, personal echo of CONFLICT-12 (three+ unreconciled 'start of the world' reference points) - Nerkeli doesn't cite it as such, he's speaking from travel-worn skepticism"},
+          {"text": "Nerkeli restates his running joke theory that ducks are the last living descendants of the Daax.", "about": "daax_symbol", "consistent_with_context": null, "note": "same invented pet theory as in nuvilo_nerkeli_feria_del_milenio - offered explicitly as his own theory, not as history"}
         ]
       }
     ]

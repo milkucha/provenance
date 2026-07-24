@@ -41,6 +41,14 @@ run, and it goes into the registry in Step 6. Do not reveal the full list to the
 (same reasoning as §8: better discovered through play than read off a list), but you may describe
 its general shape.
 
+Some drawn items will be `category: "hearsay"` (a claim from an earlier dialog's hearsay entry, not
+the objective record — see README §8 Step 1). Play those as things the character heard, not settled
+fact. The moment one of these actually gets voiced in the scene (Step 3), roll
+`scripts/lineage_coin.py` right then — the result decides how the line is phrased: a `traceable`
+roll lets the character cite the source by name ("I heard Morkulo say..."); an `untraceable` roll
+means vague framing only ("they say...," "it's told that...") — no named source, on purpose. Keep
+the roll result; it determines `derived_from`/`oral_lore` in Step 5.
+
 ## Step 2 — Second interlocutor
 
 Ask (AskUserQuestion): is the second interlocutor **the player**, or **another character**?
@@ -84,11 +92,27 @@ valid. Save to `data/luminacion/blabber/dialogues/<descriptive_name>.json`.
 ## Step 5 — Update the hearsay record
 
 Add an entry to `_lore/analysis/hearsay.md` and to `encodings.json`'s `hearsay.entries` array for
-this dialog, in the same shape as the existing two entries: participants, location, summary, and a
+this dialog, in the same shape as the existing entries: participants, location, summary, and a
 `claims` list phrased as reported assertions (not restated as fact), each with an `about` reference
 into the objective arrays where it topically overlaps, and a `consistent_with_context` flag
 (`true`/`false`/`null` — `null` when there's nothing to check the claim against either way, which is
 not the same as confirming it).
+
+Two more fields, both optional, both only relevant when this dialog surfaced a claim that came from
+a *sampled hearsay item* rather than a fresh read of the objective record (Step 1's note above):
+
+- `derived_from` — the earlier claim's id (`"<hearsay_entry_id>#<n>"`) that this claim grew out of.
+  Set it only when Step 1/3's `lineage_coin.py` roll came up `traceable` — that's what makes the
+  claim traceable as a retelling rather than an independent report. On an `untraceable` roll, leave
+  this unset even though you (the one running the skill) know perfectly well where it came from —
+  the character's dialog line didn't cite it, so the record shouldn't either.
+- `oral_lore` — `true` whenever the roll came up `untraceable` (no origin on record at all — this
+  claim is now folklore, full stop), **or** when a claim that did stay traceable has still grown to
+  include specifics that outrun what its `about` grounding actually supports — a new name, a cause,
+  a number that isn't in the referenced objective entry. Either way, pair it with a `note` explaining
+  which case applies and, for the growth case, what specifically grew. Leave both fields off
+  entirely for the common case — a claim freshly drawn from the objective record, or a faithful,
+  traceable retelling with nothing added.
 
 ## Step 6 — Register the NPC(s)
 

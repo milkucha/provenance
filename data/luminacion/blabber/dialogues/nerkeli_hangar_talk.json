@@ -1,0 +1,107 @@
+{
+  "$schema": "https://ladysnake.org/schemas/blabber/dialogue.schema.json",
+  "start_at": "greeting",
+  "states": {
+
+    "greeting": {
+      "text": "Well, come on in - don't just stand at the door gawking at the hangar like it's going to bite you. You here for the airplane showcase, or did the smell of engine oil just drag you off the fairground path?",
+      "choices": [
+        {
+          "text": "I am, yes.",
+          "next": "showcase_1"
+        },
+        {
+          "text": "I rather want to talk about the Feria.",
+          "next": "feria_1"
+        }
+      ]
+    },
+
+    "showcase_1": {
+      "text": "Ha, good - I like a straight answer. This one's my baby, the one I fly the M7 corridor with, Puente Intercontinental all the way up toward Nvhi. Ask me anything, I've got more stories about her than the placard lets me put up.",
+      "choices": [
+        {
+          "text": "Why do you fly that route often? Do you have any business there?",
+          "next": "showcase_2"
+        }
+      ]
+    },
+
+    "showcase_2": {
+      "text": "No real business of my own, no - it's just the run they've had me flying for years now, freight and the odd passenger, Puente Intercontinental up to Nvhi's edge and back. Funny thing is, for as many times as I've made that flight, I couldn't tell you much about Nvhi itself - I turn around at the strip and I'm gone again before I've properly looked at the place.",
+      "choices": [
+        {
+          "text": "What kind of freight do you carry?",
+          "next": "showcase_3"
+        }
+      ]
+    },
+
+    "showcase_3": {
+      "text": "Bit of everything, depends on the week - crates of tools and building supplies mostly, some mail, once in a while a merchant's goods too fragile to trust to a boat or a horse. Not glamorous, but the plane doesn't care what's in the hold, and neither do I, so long as it's strapped down before we hit any weather.",
+      "choices": [
+        {
+          "text": "...",
+          "next": "end_showcase"
+        }
+      ]
+    },
+
+    "feria_1": {
+      "text": "Ha, fair enough - not everyone's here for engines. The Feria del Milenio, then - a thousand years of Milkantis, if you believe the count, and every corner of the fairground's trying to say something about it. I'm just glad they gave the pilots a wing to show off in, honestly.",
+      "choices": [
+        {
+          "text": "If you believe the count? Why wouldn't you?",
+          "next": "feria_2"
+        }
+      ]
+    },
+
+    "feria_2": {
+      "text": "Because I've flown enough routes to hear it told three different ways. Depending who you ask, this world started at one point, or another point entirely, or some third one nobody agrees with either - and none of the tellings line up. So 'a thousand years' is really just whichever count somebody decided looked good on the banner.",
+      "choices": [
+        {
+          "text": "Somebody cared enough to make this whole fair, though.",
+          "next": "feria_3"
+        }
+      ]
+    },
+
+    "feria_3": {
+      "text": "Oh, no argument there - doesn't stop me enjoying the free food and the excuse to show the plane off. I just don't lose sleep over whether the number's exactly right. Somewhere out there's probably a duck who's older than all three tellings put together, and nobody's throwing him a party.",
+      "choices": [
+        {
+          "text": "A duck?",
+          "next": "feria_4"
+        }
+      ]
+    },
+
+    "feria_4": {
+      "text": "Oh, right, you wouldn't know this about me - I've got a theory nobody takes seriously, that ducks are the last living descendants of the old Daax. Symbol carved into ruins generations back, strange little creature, nobody's ever actually explained the connection. Somebody has to fill the gap history left open, so it might as well be me.",
+      "choices": [
+        {
+          "text": "...",
+          "next": "end_feria"
+        }
+      ]
+    },
+
+    "end_showcase": {
+      "type": "end_dialogue",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/nerkeli/resume_routine"
+      }
+    },
+
+    "end_feria": {
+      "type": "end_dialogue",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/nerkeli/resume_routine"
+      }
+    }
+
+  }
+}
