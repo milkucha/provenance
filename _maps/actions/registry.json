@@ -75,8 +75,18 @@
 
     "routine_pause_resume": {
       "_comment": [
-        "Convention for pausing a roaming NPC's routine while it's talking to a player,",
-        "and resuming it afterwards. Applies to any NPC whose movement mode isn't NONE.",
+        "Convention for pausing any NPC's routine while it's talking to a player, and",
+        "resuming it afterwards. Applies to EVERY NPC, regardless of movement mode —",
+        "including NONE. This used to be scoped to 'any NPC whose movement mode isn't",
+        "NONE', which was wrong: confirmed on Khaoe (2026-07-25, the pack's first NONE",
+        "npc actually built) that her skin never healed after a failed mineskin fetch,",
+        "because she shipped without check_proximity/heal_skin at all under the old",
+        "rule. The async skin-fetch race (see 'Why heal_skin.mcfunction exists' below)",
+        "and the mid-dialog pause/resume tagging both apply to a stationary NPC exactly",
+        "as much as a roaming one — movement mode was never actually the right gate.",
+        "For a NONE npc, resume_routine.mcfunction's movement line is just 'npc edit",
+        "movement NONE' again (a no-op on behavior), but the tag cleanup and the",
+        "periodic heal_skin/heal_path calls it unlocks still matter.",
         "",
         "Files involved:",
         "  functions/npcs/_shared/pause_routine.mcfunction   — shared, sets movement FORCED_LOOK + tags 'luminacion.paused'",

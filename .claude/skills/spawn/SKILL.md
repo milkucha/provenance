@@ -56,12 +56,13 @@ you'd leave a deliberate `give` or scoreboard-set action untouched.
 
 ## Step 2 — Movement mode
 
-Ask (AskUserQuestion) if not already decided in TODO.md or stated by the user:
+Ask (AskUserQuestion) if not already decided in TODO.md or stated by the user. Every mode below gets
+the same routine pause/resume + self-heal machinery (Step 5) — that used to be skipped for `NONE`,
+which was wrong (see Step 5's note), so the choice here is purely about resting behavior, not about
+which NPC "needs" the machinery:
 
-- `NONE` — stationary. Simplest: no routine pause/resume machinery needed at all.
-- `FORCED_LOOK` — stands in place, turns to face nearby players. Good for a stationary-feeling NPC
-  that still needs the roaming pause/resume machinery for some other reason (rare — usually just
-  use `NONE` unless there's a specific reason to want the face-tracking).
+- `NONE` — stationary, no face-tracking.
+- `FORCED_LOOK` — stands in place, turns to face nearby players.
 - `PATH` / `FORCED_PATH` — follows waypoints (with vs. without rests/look-arounds).
 - `FOLLOW` — pursues a named/UUID target.
 - `FREE` — wanders within an enclosed area.
@@ -119,9 +120,24 @@ above:
 - `spawn.mcfunction` — always. Follow the exact structure of an existing one for this NPC's shape
   (`data/luminacion/functions/npcs/gondarfolas/spawn.mcfunction` for a plain single-state roaming
   NPC, `nuvilo/spawn.mcfunction` + `nuvilo/states/*.mcfunction` for multi-state).
-- If movement isn't `NONE` (or this NPC has any roaming state): `resume_routine.mcfunction`,
-  `check_proximity.mcfunction`, `heal_skin.mcfunction` (skip if skin is still blank),
-  `heal_path.mcfunction` (header-only stub if no path exists yet, per Gondarfolas's).
+- **Every NPC, regardless of movement mode (including `NONE`)**: `resume_routine.mcfunction`,
+  `check_proximity.mcfunction`, `heal_skin.mcfunction` (skip only if skin is still blank),
+  `heal_path.mcfunction` (header-only stub if no path exists yet, per Gondarfolas's), and register
+  `luminacion:npcs/<npc_key>/check_proximity` in `data/luminacion/tags/functions/npc_routine_tick.json`.
+  This used to be gated on movement mode ("skip for `NONE`"), which was wrong — confirmed on Khaoe
+  (2026-07-25, the pack's first `NONE`-movement NPC actually built): she shipped without this
+  machinery under the old rule, and her skin never healed after Taterzens' async mineskin fetch lost
+  the race. That race, and the mid-dialog pause/resume tagging, apply to a stationary NPC exactly as
+  much as a roaming one — movement mode was never the right gate. For a `NONE` NPC,
+  `resume_routine.mcfunction`'s `npc edit movement NONE` line is a no-op on behavior; the tag cleanup
+  and periodic heal calls are what actually matter. **Every dialog's `end_dialogue` action must also
+  call `resume_routine` now**, regardless of movement mode:
+  ```json
+  "action": {
+    "type": "blabber:command",
+    "value": "execute as @interlocutor run function luminacion:npcs/<npc_key>/resume_routine"
+  }
+  ```
   **`check_proximity.mcfunction`'s two distance checks are NOT the same radius**: the pause trigger
   (`if entity @a[distance=..2] run pause_routine`) stays at 2 blocks, but the resume safety-net
   (`unless entity @a[distance=..6] run resume_routine`) must be 6 — confirmed in-game (Döran,
@@ -160,8 +176,9 @@ than assuming.
 
 ## Step 6 — Register everything
 
-1. If movement isn't `NONE`: add `luminacion:npcs/<npc_key>/check_proximity` to the `"values"`
-   array in `data/luminacion/tags/functions/npc_routine_tick.json`.
+1. Add `luminacion:npcs/<npc_key>/check_proximity` to the `"values"` array in
+   `data/luminacion/tags/functions/npc_routine_tick.json` — every NPC, regardless of movement mode
+   (see Step 5's note on why `NONE` is not exempt).
 2. Confirm every dialog used is registered under this NPC's key in `_maps/dialogs/registry.json`
    (add entries if missing — `id`, `trigger: "right_click"`, `condition: null`, a short
    `description`). For a random-dialog NPC, list all N dialogs under the one key with a `_comment`

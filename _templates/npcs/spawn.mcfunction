@@ -36,16 +36,28 @@ npc edit skin <https://www.mineskin.org/ID>
 # See _maps/actions/registry.json → _action_templates.movement for details
 npc edit movement NONE
 
-# If this NPC's movement mode above is NOT NONE (it has a roaming routine):
+# Regardless of movement mode (including NONE):
 #   1. Duplicate _templates/npcs/resume_routine.mcfunction,
 #      _templates/npcs/check_proximity.mcfunction, _templates/npcs/heal_skin.mcfunction
-#      and _templates/npcs/heal_path.mcfunction into this folder, filling in
-#      the placeholders.
+#      (skip only if skin is still blank) and _templates/npcs/heal_path.mcfunction
+#      (leave as a header-only stub if this NPC has no path) into this folder,
+#      filling in the placeholders.
 #   2. Add this NPC's check_proximity.mcfunction path to
 #      data/luminacion/tags/functions/npc_routine_tick.json.
 # This makes the NPC stop within 2 blocks of a player (and become interactable),
-# then resume its routine once the player leaves or the dialog ends. See
-# _action_templates.routine_pause_resume in _maps/actions/registry.json.
+# then resume its routine once the player leaves or the dialog ends, and
+# self-heals its skin/path periodically. See _action_templates.routine_pause_resume
+# in _maps/actions/registry.json — this used to be skipped for NONE-movement NPCs,
+# which was wrong: the skin self-heal race (Taterzens' async mineskin fetch) and
+# the pause/resume tagging apply to every NPC, not just roaming ones. For a NONE
+# npc, resume_routine.mcfunction's "npc edit movement NONE" doesn't change any
+# actual behavior — it's the tag cleanup and periodic heal calls that matter.
+#
+# Every dialog's end_dialogue action must also call resume_routine now, e.g.:
+#   "action": {
+#     "type": "blabber:command",
+#     "value": "execute as @interlocutor run function luminacion:npcs/<npc_key>/resume_routine"
+#   }
 #
 # If this NPC's movement mode is PATH or FORCED_PATH (it follows waypoints):
 # do NOT record them with Taterzens' in-game "/npc edit path" left-click editor —

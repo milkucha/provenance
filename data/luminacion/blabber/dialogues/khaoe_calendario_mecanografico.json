@@ -60,7 +60,11 @@
     },
 
     "end": {
-      "type": "end_dialogue"
+      "type": "end_dialogue",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/khaoe/resume_routine"
+      }
     }
 
   }

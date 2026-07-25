@@ -1,8 +1,10 @@
 # =============================================================================
 # Luminacion — NPC Proximity Check Template
 # =============================================================================
-# Only needed for NPCs with a roaming movement mode (PATH / FORCED_PATH / FREE /
-# FOLLOW). Stationary (NONE) NPCs don't need this.
+# Needed for every NPC, regardless of movement mode — including NONE. This used
+# to be scoped to roaming modes only, which was wrong: the skin self-heal race
+# (see heal_skin.mcfunction) and the pause/resume tagging apply to a stationary
+# NPC exactly the same as a roaming one.
 #
 # WORKFLOW:
 #   1. Duplicate as: functions/npcs/<npc_key>/check_proximity.mcfunction

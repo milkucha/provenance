@@ -62,20 +62,21 @@ Read every non-`end`/`end_dialogue` state's `text` (strip a two-NPC dialog's `"N
 for reading — never edit it). For each, judge whether the line's content reads as something more
 specific than a neutral "I am currently talking" nod:
 
-| Reads as... | Gesture |
-|---|---|
-| Greeting, farewell, beckoning someone in | `gesture_wave` (`gesture_wave_left` for variety when a scene already used the right-handed wave) |
-| Making a point, an enthusiastic reveal, "here's the thing" | `gesture_point` / `gesture_point_left` |
-| Formal, solemn, showing respect | `gesture_bow` |
-| Not sure / doesn't know / indifferent / conceding a point | `gesture_shrug` |
-| Open explanation, presenting or inviting, "who's to say" | `gesture_palms_up` |
-| Musing, admitting a gap, a surprised realization | `gesture_scratch_head` / `gesture_scratch_head_left` |
-| Humor, teasing, a self-deprecating aside, "Ha" | `gesture_laugh` |
-| Mild disagreement or correction | `nod_left_right` |
-| Firm refusal or rejection | `gesture_no` |
-| Deadpan disbelief, exasperation, secondhand embarrassment | `gesture_face_palm` |
-| Skeptical, defensive, or prideful stance | `gesture_cross_arms` |
-| Triumph, excitement | `gesture_jump` |
+| Reads as... | Keywords | Gesture |
+|---|---|---|
+| Greeting, farewell, beckoning someone in | greeting, farewell, hello, beckoning, goodbye | `gesture_wave` (`gesture_wave_left` for variety when a scene already used the right-handed wave) |
+| Making a point, an enthusiastic reveal, "here's the thing" | emphasis, insistence, revelation, "here's the thing", calling-out | `gesture_point` (`gesture_point_left` for variety when a scene already used the right-handed point) |
+| Formal, solemn, showing respect | respect, formality, solemnity, deference, ceremony | `gesture_bow` |
+| Not sure / doesn't know / indifferent / conceding a point | uncertainty, indifference, "who knows", concession, nonchalance | `gesture_shrug` |
+| Open explanation, presenting or inviting, "who's to say" | openness, explanation, invitation, reassurance, "who's to say" | `gesture_palms_up` |
+| Musing, admitting a gap, a surprised realization | musing, puzzlement, realization, forgetfulness, "huh" | `gesture_scratch_head` (`gesture_scratch_head_left` for variety when a scene already used the right-handed scratch-head) |
+| Humor, teasing, a self-deprecating aside, "Ha" | humor, teasing, amusement, self-deprecation, mirth | `gesture_laugh` |
+| Mild disagreement or correction | mild-disagreement, correction, "not quite", second-guessing, gentle-pushback | `nod_left_right` |
+| Firm refusal or rejection | refusal, rejection, denial, disapproval, "absolutely not" | `gesture_no` |
+| Deadpan disbelief, exasperation, secondhand embarrassment | disbelief, exasperation, embarrassment, frustration, "unbelievable" | `gesture_face_palm` |
+| Skeptical, defensive, or prideful stance | skepticism, defensiveness, pride, stubbornness, wariness | `gesture_cross_arms` |
+| Triumph, excitement | triumph, excitement, celebration, victory, elation | `gesture_jump` |
+| Playful bragging, showing off, a boastful tease | bragging, showing-off, playful-pride, confidence, teasing-boast | `gesture_flex_arm` |
 
 Everything else stays the default `nod_up_down` — most lines are informational connective tissue and
 should. Calibrate against dialogs that already have this treatment (`doran_four_castles.json`: 3 of

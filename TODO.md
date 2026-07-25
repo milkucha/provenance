@@ -164,51 +164,65 @@ open questions about the lore itself live in `_lore/analysis/unknown.md`, not he
 
 ## Khaoe & Farlis (Feria del Milenio — Castillo de Görff replica, Plaza de las Culturas)
 
-- [ ] A fourth dialog, `khaoe_calendario_mecanografico.json` (Khaoe vs. the player, at the Feria's new
-      Calendario Mecanográfico — a different spot from the castle replica scenes below), and a fifth,
-      `khaoe_banco_colectivo.json` (Khaoe vs. the player, sitting on a bench elsewhere at the Feria),
-      are already registered normally in `_maps/dialogs/registry.json` under her key, per the
-      single-NPC-vs-player flow — unlike the three ambient ones below, these don't have an open
-      registration question. Both still need actual right-click wiring once
-      `functions/npcs/khaoe/spawn.mcfunction` exists (`npc edit commands add ... blabber dialogue
-      start luminacion:<dialog_id> --clicker-- ...`, one command per dialog, since Khaoe now has more
-      than one vs.-player dialog — decide then whether they need Döran's `random_dialog` treatment too,
-      or whether each is meant to trigger only in its own specific spot, which would need a
-      location/proximity condition rather than a plain right-click gate).
-
-Three short ambient dialogs (`khaoe_farlis_el_castillo_que_fue.json`,
-`khaoe_farlis_lo_que_cambia_el_tiempo.json`, `khaoe_farlis_esperando_a_khaasan.json`), written in
-Latin American Spanish, meant to connect as fragments of one ongoing conversation but fire
-independently — the player should overhear whichever one comes up, not all three in sequence. Per
-`/enact` §8's Step 6 rule for two-NPC dialogs ("do not guess how to register a dialog that belongs to
-two NPCs"), the following is deliberately left open rather than decided silently:
-
-- [ ] **Random-pick wiring.** The existing mechanism for "N independent dialogs, picked at random on
-      right-click" is Döran's `_action_templates.random_dialog` (see `_maps/actions/registry.json` and
-      `functions/npcs/doran/roll_dialog.mcfunction`/`spawn.mcfunction`) — gametime-mod-N via
-      scoreboard, since `/random` doesn't work in this environment at all (see the Döran section
-      above). That pattern was built for one NPC picking among its own solo dialogs; here there are
-      *two* NPCs sharing *one* shared set of three dialogs. Decide: does right-clicking either Khaoe or
-      Farlis trigger the same roll into the same three files (two independent roll scores,
-      `khaoe_dialog_roll`/`farlis_dialog_roll`, both gated 1..3 against the same three
-      `khaoe_farlis_*` dialog ids), or does only one of them act as the "trigger" NPC while the other
-      just stands there silently animated? Either way, `--clicker--` still needs to resolve to
-      whichever NPC the player actually clicked, per the dispatch-commands-stay-directly-added rule.
-- [ ] **`_maps/dialogs/registry.json` registration.** Same open question as Nawom & Morkulo and
-      Nuvilo & Nerkeli above — the registry format assumes one dialog belongs to one NPC key, which
-      doesn't cleanly fit three dialogs shared by two NPCs. Decide once the wiring question above is
-      settled.
-- [ ] **Movement mode** not decided for either — they're standing still together at the Castillo de
-      Görff replica for this scene, which suggests `NONE`, but confirm. Each dialog's `end` state is
-      currently plain `end_dialogue` with no `resume_routine` action (matching the Nawom & Morkulo /
-      Nuvilo & Nerkeli precedent for undecided-movement two-NPC scenes) — add the action only if
-      either ends up roaming.
-- [ ] `spawn_position` and `taterzen_uuid` are still blank/null for both in the registry (skins were
-      already on file from before this `/enact` run and were left as-is). Decide placement — likely
-      standing at/near the Castillo de Görff replica in the Plaza de las Culturas, alongside Döran's
-      pavilion — and build `functions/npcs/khaoe/spawn.mcfunction` and
-      `functions/npcs/farlis/spawn.mcfunction` from the template once the wiring question above is
-      resolved (spawn.mcfunction is where the right-click random-dialog commands actually get added).
+- [x] **Khaoe fully wired, 2026-07-25 (`/spawn` skill).** Movement mode: `NONE` (stationary, user's
+      explicit preference — "maybe it doesn't make sense" by their own admission, kept anyway).
+      Built `functions/npcs/khaoe/spawn.mcfunction` and `functions/npcs/khaoe/roll_dialog.mcfunction`.
+      `spawn_position` stays `null` (manual placement, per user preference, same as
+      Gondarfolas/Döran) — `taterzen_uuid` still needs the normal capture pass (README §5).
+- [x] **Pack-wide policy correction, same session: the routine pause/resume + self-heal machinery is
+      now built for EVERY NPC regardless of movement mode, not just roaming ones.** Khaoe originally
+      shipped with only `spawn.mcfunction`/`roll_dialog.mcfunction` under the old "skip for `NONE`"
+      rule (README §4, the `/spawn` skill, and `_action_templates.routine_pause_resume` all said this)
+      — the user caught that her skin had broken (Taterzens' async mineskin fetch lost the race) with
+      no `heal_skin.mcfunction` around to fix it, and pointed out the async-fetch race has nothing to
+      do with movement mode. Retrofitted: built `functions/npcs/khaoe/resume_routine.mcfunction`
+      (`<MODE>` = `NONE`, a behavioral no-op but still clears the pause/dialog tags),
+      `check_proximity.mcfunction`, `heal_skin.mcfunction`, and a header-only `heal_path.mcfunction`
+      stub (no path defined); registered `luminacion:npcs/khaoe/check_proximity` in
+      `data/luminacion/tags/functions/npc_routine_tick.json`; added the
+      `execute as @interlocutor run function luminacion:npcs/khaoe/resume_routine` action to the `end`
+      state of all five of her dialogs (previously plain `end_dialogue` with no action). Updated the
+      scoping language pack-wide to match: README §4 (now "every NPC", not "roaming NPCs only"),
+      `.claude/skills/spawn/SKILL.md` (Steps 2/5/6), and `_maps/actions/registry.json` →
+      `_action_templates.routine_pause_resume`. Also fixed, while touching `heal_skin.mcfunction`'s
+      template: a stale `scoreboard players set <npc_key>_skin_cd luminacion.int 0` line that was
+      never actually part of the real pattern (Gondarfolas's built file already omitted it — the two
+      heal functions share `check_proximity.mcfunction`'s own `<npc_key>_heal_cd` counter, reset
+      there) — the template just hadn't been corrected to match. Net effect: a stationary NPC now
+      still briefly turns to face a player who gets close or talks to it (via `pause_routine`'s
+      `FORCED_LOOK`), then reverts to `NONE` once they leave/the dialog ends, same tagging as any
+      roaming NPC — this is a side effect of the fix, not something separately requested.
+- [x] **Right-click wiring resolved for all five dialogs, condition-gated rather than a plain
+      always-fire trigger:**
+      - `khaoe_calendario_mecanografico` fires when Khaoe's own live Taterzens pose is `STANDING` and
+        Farlis isn't nearby (see next point) — checked directly via
+        `execute if data entity @e[name=Khaoe,...] {TaterzenNPCTag:{Pose:"STANDING"}} run ...`.
+      - `khaoe_banco_colectivo` fires the same way for pose `SITTING`.
+      - **Taterzens has a real, previously-undocumented `/npc edit pose <name>` command** (confirmed
+        via the mod's own `PoseCommand.class`, disassembled with `javap` since it wasn't mentioned
+        anywhere in this pack's docs before now), backed by vanilla's `EntityPose` enum and persisted
+        as `TaterzenNPCTag.Pose` — same NBT nesting convention `heal_skin.mcfunction` already relies on
+        for `TaterzenNPCTag.skin.value`. `STANDING` and `SITTING` are both real, valid values; defaults
+        to `STANDING` if never set. Not added to README's command cheat-sheet yet — worth doing next
+        time that section is touched.
+      - The three `khaoe_farlis_*` ambient fragments use Döran's `random_dialog` pattern (equal odds,
+        `functions/npcs/khaoe/roll_dialog.mcfunction`, gametime-mod-3 — same reasoning as Döran, see
+        that section above) but ONLY fire when the NPC named Farlis is within 5 blocks of Khaoe
+        (`if entity @e[name=Farlis,distance=..5]`), checked as the first (highest-priority) branch —
+        this only makes sense when both Khaoe and Farlis are actually placed in-world together for the
+        scene. This priority (companion-scene overrides the pose-based solo pair when both conditions
+        could apply, e.g. she's STANDING AND Farlis is nearby) was picked as the only reasonable
+        default given the two conditions can overlap — flag if it should be inverted instead.
+      - Wired only on Khaoe's own `spawn.mcfunction` for now — whether right-clicking **Farlis**
+        himself should also trigger this same roll (mirroring it with a second `farlis_dialog_roll`
+        score) is still open, deferred to whenever `functions/npcs/farlis/spawn.mcfunction` gets built.
+- [x] **`_maps/dialogs/registry.json` registration resolved** — all five dialogs now registered under
+      Khaoe's key (she's the one whose `spawn.mcfunction` actually wires the trigger), each with a
+      `condition` field describing its actual gate (pose / Farlis-proximity) instead of `null`. See the
+      registry's own `_comment` on the `khaoe` entry for the full mechanism summary.
+- [ ] Farlis himself still has no `spawn.mcfunction`, `spawn_position`, or `taterzen_uuid` — needs its
+      own `/spawn Farlis` pass, which should also settle the open question above (does clicking Farlis
+      also roll the ambient scene, or is Khaoe the sole trigger).
 - [ ] Khaoe and Farlis both had pre-existing one-line registry stubs before this run (`"Member of the
       Collective."` / `"Member of the Collective. Travels the Khol Moshin-Görff route on
       horseback."`) with no `knowledge.education` sample drawn yet — this `/enact` run was their first
@@ -328,6 +342,24 @@ construction — every other line keeps its ordinary nod untouched.
       swapped to `gesture_laugh` — the line ("me da risa") was amusement, not disagreement, and the
       user confirmed the swap before it was made. Any *new* dialog from `/enact` still needs this
       pass — it isn't a one-time fix, `/enact` Step 8 runs it going forward.
+- [ ] **`gesture_demo_step.mcfunction`'s self-reschedule doesn't work — cause unconfirmed.** Built
+      2026-07-25 as a QA tool (`data/luminacion/functions/admin/gesture_demo_all.mcfunction` +
+      `gesture_demo_step.mcfunction`) to auto-play every gesture in sequence on the nearest Taterzen,
+      3s apart, via each step scheduling the next with `schedule function
+      luminacion:admin/gesture_demo_step 60t replace`. In-game testing (real-time watching, confirmed
+      not a window-focus-pause artifact) showed only the *first* gesture ever plays automatically —
+      diagnosed via `logs/latest.log` and manual isolation: both the per-index `execute if score ...`
+      gesture-selection branches AND the `scoreboard players add` counter increment work correctly
+      (calling `function luminacion:admin/gesture_demo_step` by hand repeatedly plays the correct next
+      gesture each time), but even `/schedule function luminacion:admin/gesture_demo_step 60t replace`
+      run standalone in chat — no `execute if score` wrapper at all — silently does nothing. So the bug
+      is specifically in `schedule function` not re-firing this function, not in anything upstream of
+      it; root cause (self-referential scheduling from within the function it's scheduling? some
+      mod interaction — this is a heavily modded Fabric/Forge pack? a `schedule`-specific quirk in this
+      environment?) wasn't pinned down before the user chose to stop debugging and use the tool as a
+      manual step-by-step trigger instead (`function luminacion:admin/gesture_demo_step`, called
+      repeatedly). The two files' own comments still describe the *intended* auto-advancing behavior,
+      not this known-broken state — worth fixing those comments if picked back up.
 
 ## Localization (per-player dialog language)
 

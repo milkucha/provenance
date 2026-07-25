@@ -5,7 +5,7 @@
   "states": {
 
     "greeting": {
-      "text": "Greetings, friend. Bienvenidi a la Plaza de las Culturas, o el pabellón arquitectónico.",
+      "text": "Bienvenido, amigo, a la Plaza de las Culturas, o el pabellón arquitectónico.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_wave"

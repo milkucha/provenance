@@ -5,151 +5,151 @@
   "states": {
 
     "greeting": {
-      "text": "Lost, are you? No shame in it. You've landed in Balhâm - the temple town, though 'town' is generous. Half of it's still scaffolding.",
+      "text": "¿Perdido, verdad? No hay vergüenza en eso. Llegaste a Balhâm — el pueblo de los templos, aunque \"pueblo\" es generoso. La mitad todavía es andamiaje.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
       },
       "choices": [
         {
-          "text": "I'm heading to Sälthos Cruzados - heard it's the biggest town on the continent.",
+          "text": "Voy hacia Sälthos Cruzados — escuché que es el pueblo más grande del continente.",
           "next": "salthos_rumor"
         }
       ]
     },
 
     "salthos_rumor": {
-      "text": "Biggest? Couldn't say. But the line runs there, near four thousand blocks by rail. Long ride, whichever way you look at it.",
+      "text": "¿El más grande? No sabría decirte. Pero la línea llega hasta allá, casi cuatro mil bloques por riel. Viaje largo, se lo mire como se lo mire.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
       },
       "choices": [
         {
-          "text": "Which way do I go?",
+          "text": "¿Hacia dónde voy?",
           "next": "directions"
         }
       ]
     },
 
     "directions": {
-      "text": "West takes you to Sälthos Cruzados. East instead, and you'd end up in Khan Ice. Small depot's past that scaffolding.",
+      "text": "Al oeste llegas a Sälthos Cruzados. Al este, en cambio, terminarías en Khan Ice. Hay un depósito pequeño pasando ese andamiaje.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
       },
       "choices": [
         {
-          "text": "Thanks. Who are you, by the way?",
+          "text": "Gracias. ¿Y tú quién eres, por cierto?",
           "next": "introduction"
         }
       ]
     },
 
     "introduction": {
-      "text": "Sonoros. Out of Görff way, mostly - though I move with the rail more than I stay put.",
+      "text": "Sonoros. De por Görff, sobre todo — aunque me muevo más con el riel de lo que me quedo quieto.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
       },
       "choices": [
         {
-          "text": "What are you doing here?",
+          "text": "¿Qué haces aquí?",
           "next": "waiting"
         }
       ]
     },
 
     "waiting": {
-      "text": "Waiting on that westbound myself. Killing time before it comes through, watching who wanders in.",
+      "text": "Esperando ese tren hacia el oeste, igual que tú. Matando el tiempo hasta que pase, viendo quién anda por aquí.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
       },
       "choices": [
         {
-          "text": "You're not a robber, are you?",
+          "text": "No eres un ladrón, ¿o sí?",
           "next": "reassure"
         },
         {
-          "text": "So what will you do in Sälthos? Meeting anyone?",
+          "text": "Entonces, ¿qué vas a hacer en Sälthos? ¿Te encuentras con alguien?",
           "next": "plans"
         }
       ]
     },
 
     "reassure": {
-      "text": "Easy now - no. Just a tired traveler, not a knife to my name.",
+      "text": "Tranquilo, no. Solo un viajero cansado, no tengo ni un cuchillo a mi nombre.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_no"
       },
       "choices": [
         {
-          "text": "Alright, I believe you. So what will you do in Sälthos? Meeting anyone?",
+          "text": "Está bien, te creo. Entonces, ¿qué vas a hacer en Sälthos? ¿Te encuentras con alguien?",
           "next": "plans"
         }
       ]
     },
 
     "plans": {
-      "text": "No one waiting on me there - never actually been. Just riding out to see it, maybe find some work.",
+      "text": "Nadie me espera allá — nunca estuve, la verdad. Solo voy a conocerlo, tal vez a buscar algo de trabajo.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
       },
       "choices": [
         {
-          "text": "Work? Don't tell me something generic - I'll catch you.",
+          "text": "¿Trabajo? No me digas algo genérico — te voy a agarrar en la mentira.",
           "next": "job_reveal"
         }
       ]
     },
 
     "job_reveal": {
-      "text": "Fair. I walk the crossings - junctions like Cruce de Trobal, out past Khol Moshin way. Mark what's broken.",
+      "text": "Justo. Recorro los cruces — empalmes como el Cruce de Trobal, más allá de Khol Moshin. Marco lo que está roto.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_point"
       },
       "choices": [
         {
-          "text": "So you work fixing the rails so you can ride the rails.",
+          "text": "O sea que trabajas arreglando los rieles para poder viajar en los rieles.",
           "next": "tautology"
         }
       ]
     },
 
     "tautology": {
-      "text": "Put that way, it does sound a bit foolish. But aye, that's about the shape of it.",
+      "text": "Dicho así, suena un poco tonto. Pero sí, más o menos es así la cosa.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_laugh"
       },
       "choices": [
         {
-          "text": "Tautological.",
+          "text": "Tautológico.",
           "next": "agree"
         }
       ]
     },
 
     "agree": {
-      "text": "Fine word for a man who checks crossings for a living. I'll take it as agreement, since I've none better.",
+      "text": "Buena palabra para un hombre que revisa cruces para vivir. Lo voy a tomar como un acuerdo, ya que no tengo uno mejor.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
       },
       "choices": [
         {
-          "text": "I'll leave you in peace. Good luck, Sonoros.",
+          "text": "Te dejo en paz. Buena suerte, Sonoros.",
           "next": "farewell"
         }
       ]
     },
 
     "farewell": {
-      "text": "Safe travels - mind the scaffolding. And if you learn whether Sälthos really is the biggest, I wouldn't mind hearing it, next time the train comes through.",
+      "text": "Buen viaje — cuidado con el andamiaje. Y si llegas a saber si Sälthos de verdad es el más grande, no me molestaría escucharlo, la próxima vez que pase el tren.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_wave"

@@ -5,21 +5,21 @@
   "states": {
 
     "greeting": {
-      "text": "Hi traveller, just arrived in the Feria? Perfect timing - the exhibits are only getting better as the day goes on.",
+      "text": "Hola, viajero, ¿recién llegas a la Feria? Justo a tiempo — los exhibidores solo van mejorando a medida que avanza el día.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_wave"
       },
       "choices": [
         {
-          "text": "Can you tell me about the feria?",
+          "text": "¿Me puedes contar sobre la feria?",
           "next": "about_feria"
         }
       ]
     },
 
     "about_feria": {
-      "text": "It's a celebration - a thousand years of Milkantis, if the reckoning's to be believed.",
+      "text": "Es una celebración — mil años de Milkantis, si le creemos a la cuenta.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
@@ -33,7 +33,7 @@
     },
 
     "about_feria_exhibits": {
-      "text": "Every exhibit's a homage to some piece of it: the cultures and building styles that grew up across the land, the landscapes, the artifacts we've built along the way - codigos, redstone work, that sort of thing - and the eras that carried us here.",
+      "text": "Cada exhibidor es un homenaje a alguna parte de eso: las culturas y estilos arquitectónicos que crecieron por toda la tierra, los paisajes, los artefactos que construimos en el camino — códigos, mecanismos de redstone, ese tipo de cosas — y las eras que nos trajeron hasta aquí.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
@@ -47,35 +47,35 @@
     },
 
     "about_feria_2": {
-      "text": "I'm a scholar myself, so I'll admit I'm here as much to look for something to write about as to look at the fair itself.",
+      "text": "Yo mismo soy un erudito, así que admito que estoy aquí tanto para buscar algo sobre qué escribir como para ver la feria en sí.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
       },
       "choices": [
         {
-          "text": "What is your role here?",
+          "text": "¿Cuál es tu papel aquí?",
           "next": "role"
         }
       ]
     },
 
     "role": {
-      "text": "No official role, really - I'm not running an exhibit like some of the others here. I'm a visitor, same as you, though I come at it as a scholar: following what they call the path of knowledge, hoping something here sparks the next thing I write.",
+      "text": "Ningún papel oficial, la verdad — no estoy a cargo de ningún exhibidor como algunos otros aquí. Soy un visitante, igual que tú, aunque lo encaro como un erudito: siguiendo lo que llaman el camino del conocimiento, con la esperanza de que algo aquí encienda lo próximo que voy a escribir.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_palms_up"
       },
       "choices": [
         {
-          "text": "A scholar? What do you normally write about?",
+          "text": "¿Un erudito? ¿Sobre qué escribes normalmente?",
           "next": "writes_about"
         }
       ]
     },
 
     "writes_about": {
-      "text": "Mostly the old chroniclers and inventors - men like Daaxagoras and Pitaglorias, who put together the first atlas of this world, or travelers like Darnis, who sailed south and found land nobody'd mapped.",
+      "text": "Sobre todo los viejos cronistas e inventores — hombres como Daaxagoras y Pitaglorias, que armaron el primer atlas de este mundo, o viajeros como Darnis, que navegó hacia el sur y encontró tierra que nadie había mapeado.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
@@ -89,7 +89,7 @@
     },
 
     "writes_about_2": {
-      "text": "There's also a puzzle I keep circling back to: two different histories of the very same centuries, written by different hands, that never quite agree with each other. I haven't solved that one. Might be why I keep coming to places like this, hoping something turns up that the books missed.",
+      "text": "También hay un enigma al que vuelvo una y otra vez: dos historias distintas de los mismos siglos, escritas por manos diferentes, que nunca terminan de coincidir. Ese no lo he resuelto. Puede que por eso siga viniendo a lugares como este, con la esperanza de que aparezca algo que los libros pasaron por alto.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_scratch_head"

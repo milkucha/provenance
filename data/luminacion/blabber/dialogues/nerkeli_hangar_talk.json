@@ -5,39 +5,39 @@
   "states": {
 
     "greeting": {
-      "text": "Well, come on in - don't just stand at the door gawking at the hangar like it's going to bite you. You here for the airplane showcase, or did the smell of engine oil just drag you off the fairground path?",
+      "text": "Bueno, entra de una vez — no te quedes ahí parado en la puerta mirando el hangar como si te fuera a morder. ¿Viniste por la exhibición de aviones, o el olor a aceite de motor te sacó del camino de la feria?",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_wave"
       },
       "choices": [
         {
-          "text": "I am, yes.",
+          "text": "Sí, así es.",
           "next": "showcase_1"
         },
         {
-          "text": "I rather want to talk about the Feria.",
+          "text": "En realidad quiero hablar sobre la Feria.",
           "next": "feria_1"
         }
       ]
     },
 
     "showcase_1": {
-      "text": "Ha, good - I like a straight answer. This one's my baby, the one I fly the M7 corridor with, Puente Intercontinental all the way up toward Nvhi. Ask me anything, I've got more stories about her than the placard lets me put up.",
+      "text": "Ja, bien — me gusta una respuesta directa. Esta es mi bebé, con la que vuelo el corredor M7, el Puente Intercontinental hasta Nvhi. Pregúntame lo que sea, tengo más historias sobre ella de las que el cartel me deja poner.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
       },
       "choices": [
         {
-          "text": "Why do you fly that route often? Do you have any business there?",
+          "text": "¿Por qué vuelas esa ruta tan seguido? ¿Tienes algún asunto por allá?",
           "next": "showcase_2"
         }
       ]
     },
 
     "showcase_2": {
-      "text": "No real business of my own, no - it's just the run they've had me flying for years now, freight and the odd passenger, Puente Intercontinental up to Nvhi's edge and back.",
+      "text": "Ningún asunto propio, la verdad — es simplemente la ruta que me tienen volando desde hace años, carga y algún que otro pasajero, el Puente Intercontinental hasta el borde de Nvhi y de vuelta.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
@@ -51,21 +51,21 @@
     },
 
     "showcase_2b": {
-      "text": "Funny thing is, for as many times as I've made that flight, I couldn't tell you much about Nvhi itself - I turn around at the strip and I'm gone again before I've properly looked at the place.",
+      "text": "Lo curioso es que, con todas las veces que hice ese vuelo, no podría contarte mucho sobre Nvhi en sí — doy la vuelta en la pista y ya me estoy yendo de nuevo antes de haber mirado bien el lugar.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_scratch_head"
       },
       "choices": [
         {
-          "text": "What kind of freight do you carry?",
+          "text": "¿Qué tipo de carga transportas?",
           "next": "showcase_3"
         }
       ]
     },
 
     "showcase_3": {
-      "text": "Bit of everything, depends on the week - crates of tools and building supplies mostly, some mail, once in a while a merchant's goods too fragile to trust to a boat or a horse.",
+      "text": "Un poco de todo, depende de la semana — cajones de herramientas y materiales de construcción sobre todo, algo de correo, y de vez en cuando mercadería de algún comerciante demasiado frágil para confiarla a un barco o a un caballo.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
@@ -79,7 +79,7 @@
     },
 
     "showcase_3b": {
-      "text": "Not glamorous, but the plane doesn't care what's in the hold, and neither do I, so long as it's strapped down before we hit any weather.",
+      "text": "No es glamoroso, pero al avión no le importa qué lleva en la bodega, y a mí tampoco, mientras esté bien asegurado antes de que nos agarre el mal tiempo.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
@@ -93,21 +93,21 @@
     },
 
     "feria_1": {
-      "text": "Ha, fair enough - not everyone's here for engines. The Feria del Milenio, then - a thousand years of Milkantis, if you believe the count, and every corner of the fairground's trying to say something about it. I'm just glad they gave the pilots a wing to show off in, honestly.",
+      "text": "Ja, tiene sentido — no todos vienen por los motores. La Feria del Milenio, entonces — mil años de Milkantis, si uno le cree a la cuenta, y cada rincón de la feria trata de decir algo al respecto. Yo, la verdad, solo me alegro de que nos dieran a los pilotos un pabellón para lucirnos.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_laugh"
       },
       "choices": [
         {
-          "text": "If you believe the count? Why wouldn't you?",
+          "text": "¿Si uno le cree a la cuenta? ¿Por qué no habrías de creerle?",
           "next": "feria_2"
         }
       ]
     },
 
     "feria_2": {
-      "text": "Because I've flown enough routes to hear it told three different ways. Depending who you ask, this world started at one point, or another point entirely, or some third one nobody agrees with either - and none of the tellings line up.",
+      "text": "Porque volé suficientes rutas como para escucharlo contado de tres maneras distintas. Según a quién le preguntes, este mundo empezó en un momento, o en otro completamente distinto, o en un tercero con el que tampoco nadie está de acuerdo — y ninguna versión coincide con la otra.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
@@ -121,35 +121,35 @@
     },
 
     "feria_2b": {
-      "text": "So 'a thousand years' is really just whichever count somebody decided looked good on the banner.",
+      "text": "Así que \"mil años\" es, en realidad, la cuenta que a alguien le pareció que quedaba bien en el cartel.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
       },
       "choices": [
         {
-          "text": "Somebody cared enough to make this whole fair, though.",
+          "text": "Aun así, a alguien le importó lo suficiente como para armar toda esta feria.",
           "next": "feria_3"
         }
       ]
     },
 
     "feria_3": {
-      "text": "Oh, no argument there - doesn't stop me enjoying the free food and the excuse to show the plane off. I just don't lose sleep over whether the number's exactly right. Somewhere out there's probably a duck who's older than all three tellings put together, and nobody's throwing him a party.",
+      "text": "Ah, en eso no te discuto — no me impide disfrutar de la comida gratis y la excusa para lucir el avión. Simplemente no pierdo el sueño por si el número es exacto o no. En algún lugar por ahí seguro hay un pato más viejo que las tres versiones juntas, y nadie le está haciendo una fiesta.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
       },
       "choices": [
         {
-          "text": "A duck?",
+          "text": "¿Un pato?",
           "next": "feria_4"
         }
       ]
     },
 
     "feria_4": {
-      "text": "Oh, right, you wouldn't know this about me - I've got a theory nobody takes seriously, that ducks are the last living descendants of the old Daax.",
+      "text": "Ah, cierto, no tendrías por qué saber esto de mí — tengo una teoría que nadie se toma en serio: que los patos son los últimos descendientes vivos de los antiguos Daax.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_point"
@@ -163,7 +163,7 @@
     },
 
     "feria_4b": {
-      "text": "Symbol carved into ruins generations back, strange little creature, nobody's ever actually explained the connection. Somebody has to fill the gap history left open, so it might as well be me.",
+      "text": "Un símbolo tallado en ruinas de hace generaciones, una criaturita rara, y nadie explicó nunca la conexión en serio. Alguien tiene que llenar el hueco que dejó la historia, así que bien puedo ser yo.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"

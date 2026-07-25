@@ -6,7 +6,7 @@
   "states": {
 
     "n1": {
-      "text": "Nawom: Sorry to bother you — I'm looking for the road to Puerto Tortuga. Would you happen to know it?",
+      "text": "Nawom: Disculpa la molestia — busco el camino a Puerto Tortuga. ¿Por casualidad lo conoces?",
       "action": {
         "type": "blabber:command",
         "value": "execute as @e[type=taterzens:npc,name=Nawom,limit=1] run function luminacion:npcs/_shared/nod_up_down"
@@ -15,7 +15,7 @@
     },
 
     "m1": {
-      "text": "Morkulo: Puerto Tortuga? Can't say I do — but I don't mind being asked. Morkulo. You've come a fair way, by that pack.",
+      "text": "Morkulo: ¿Puerto Tortuga? No podría decirte que sí — pero no me molesta que me pregunten. Morkulo. Has recorrido bastante camino, a juzgar por esa mochila.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @e[type=taterzens:npc,name=Morkulo,limit=1] run function luminacion:npcs/_shared/gesture_shrug"
@@ -24,7 +24,7 @@
     },
 
     "n2": {
-      "text": "Nawom: Nawom. Home's Terfila, though that's a longer story than it sounds. I was hoping this place might have a map somewhere.",
+      "text": "Nawom: Nawom. Soy de Terfila, aunque esa es una historia más larga de lo que parece. Tenía la esperanza de que hubiera un mapa por aquí.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @e[type=taterzens:npc,name=Nawom,limit=1] run function luminacion:npcs/_shared/nod_up_down"
@@ -33,7 +33,7 @@
     },
 
     "m2": {
-      "text": "Morkulo: Terfila — don't know it myself, but I know it by reputation. There's a banker who rides that road to Khol Moshin, Aureobalo, and a pilot or two flying in from Sid Nalta. Never been there myself.",
+      "text": "Morkulo: Terfila — no la conozco en persona, pero sí de oídas. Hay un banquero que recorre ese camino hasta Khol Moshin, Aureobalo, y uno que otro piloto que vuela desde Sid Nalta. Yo nunca he estado ahí.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @e[type=taterzens:npc,name=Morkulo,limit=1] run function luminacion:npcs/_shared/nod_up_down"
@@ -42,7 +42,7 @@
     },
 
     "n3": {
-      "text": "Nawom: And you're not from here either, I take it?",
+      "text": "Nawom: Y tú tampoco eres de aquí, supongo.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @e[type=taterzens:npc,name=Nawom,limit=1] run function luminacion:npcs/_shared/nod_up_down"
@@ -51,7 +51,7 @@
     },
 
     "m3": {
-      "text": "Morkulo: Tyrnea, originally — studied there, long enough ago I barely know the person who did. I'm here on curiosity alone. This is the place they say Därnis heard whatever it was that sent him off to find that new continent.",
+      "text": "Morkulo: De Tyrnea, originalmente — estudié ahí, hace tanto tiempo que apenas reconozco a la persona que lo hizo. Estoy aquí solo por curiosidad. Este es el lugar donde dicen que Därnis escuchó lo que fuera que lo mandó a buscar ese continente nuevo.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @e[type=taterzens:npc,name=Morkulo,limit=1] run function luminacion:npcs/_shared/nod_up_down"
@@ -60,7 +60,7 @@
     },
 
     "n4": {
-      "text": "Nawom: Never heard that name. So neither of us actually knows the way to Puerto Tortuga.",
+      "text": "Nawom: Nunca escuché ese nombre. Entonces ninguno de los dos sabe en realidad el camino a Puerto Tortuga.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @e[type=taterzens:npc,name=Nawom,limit=1] run function luminacion:npcs/_shared/nod_up_down"
@@ -69,7 +69,7 @@
     },
 
     "m4": {
-      "text": "Morkulo: Not a stitch of it. My trade's measurements, not memory — and half of those don't even agree with each other. Ask me where Khol Moshin sits, or Khan Ice, and I'll give you answers that argue with themselves.",
+      "text": "Morkulo: Ni un poquito. Mi oficio son las medidas, no la memoria — y la mitad de esas ni siquiera concuerdan entre sí. Pregúntame dónde queda Khol Moshin, o Khan Ice, y te voy a dar respuestas que se contradicen solas.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @e[type=taterzens:npc,name=Morkulo,limit=1] run function luminacion:npcs/_shared/gesture_laugh"
@@ -78,7 +78,7 @@
     },
 
     "n5": {
-      "text": "Nawom: Not exactly reassuring, geographer.",
+      "text": "Nawom: No es muy tranquilizador que digamos, geógrafo.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @e[type=taterzens:npc,name=Nawom,limit=1] run function luminacion:npcs/_shared/gesture_shrug"
@@ -87,7 +87,7 @@
     },
 
     "m5": {
-      "text": "Morkulo: Fair. But it means I know exactly who to distrust. Come on — if anyone keeps a proper map, it's inside. Worst case, they don't know either, and you're no worse off than now.",
+      "text": "Morkulo: Justo. Pero significa que sé exactamente de quién desconfiar. Vamos — si alguien tiene un mapa como corresponde, está adentro. En el peor de los casos, tampoco lo saben, y no estarás peor que ahora.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @e[type=taterzens:npc,name=Morkulo,limit=1] run function luminacion:npcs/_shared/gesture_wave"
@@ -96,7 +96,7 @@
     },
 
     "n6": {
-      "text": "Nawom: Can't argue with that. Lead on, then.",
+      "text": "Nawom: No puedo discutir eso. Guía el camino, entonces.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @e[type=taterzens:npc,name=Nawom,limit=1] run function luminacion:npcs/_shared/nod_up_down"

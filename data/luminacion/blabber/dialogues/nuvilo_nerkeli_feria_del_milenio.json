@@ -6,7 +6,7 @@
   "states": {
 
     "ner1": {
-      "text": "Nerkeli: So what is it you're actually after in all these exhibits, Nuvilo? You've been wandering the fair since this morning.",
+      "text": "Nerkeli: ¿Y qué es exactamente lo que buscas en todos estos exhibidores, Nuvilo? Andas dando vueltas por la feria desde la mañana.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @e[type=taterzens:npc,name=Nerkeli,limit=1] run function luminacion:npcs/_shared/nod_up_down"
@@ -15,7 +15,7 @@
     },
 
     "nuv1": {
-      "text": "Nuvilo: Inspiration, mostly. I'm hoping something in these exhibits sparks the next thing I write - a building style, a landscape, some old artifact nobody's looked at twice in years.",
+      "text": "Nuvilo: Inspiración, sobre todo. Tengo la esperanza de que algo en estos exhibidores encienda lo próximo que voy a escribir — un estilo arquitectónico, un paisaje, algún artefacto viejo que nadie ha vuelto a mirar en años.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @e[type=taterzens:npc,name=Nuvilo,limit=1] run function luminacion:npcs/_shared/nod_up_down"
@@ -24,7 +24,7 @@
     },
 
     "ner2": {
-      "text": "Nerkeli: Careful, half of what's on display I still don't understand myself. You seen the tech wing? Little glowing block contraptions everywhere - codigos, they call them. I fly planes, I don't build them.",
+      "text": "Nerkeli: Cuidado, la mitad de lo que exhiben ni yo mismo lo entiendo todavía. ¿Viste el pabellón de tecnología? Aparatitos de bloques brillantes por todos lados — códigos, les dicen. Yo vuelo aviones, no los construyo.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @e[type=taterzens:npc,name=Nerkeli,limit=1] run function luminacion:npcs/_shared/gesture_shrug"
@@ -33,7 +33,7 @@
     },
 
     "nuv2": {
-      "text": "Nuvilo: Codigos I actually know something about - the records tie the whole business to Era del Daax, when Gorff's new government first started using them. That symbol you'll have seen around got carved into old ruins right around those same years.",
+      "text": "Nuvilo: De códigos sí sé algo — los registros conectan todo el asunto con la Era del Daax, cuando el nuevo gobierno de Görff empezó a usarlos por primera vez. Ese símbolo que habrás visto por ahí se talló en ruinas viejas justo por esos mismos años.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @e[type=taterzens:npc,name=Nuvilo,limit=1] run function luminacion:npcs/_shared/gesture_point"
@@ -42,7 +42,7 @@
     },
 
     "ner3": {
-      "text": "Nerkeli: Now that one I do know! The Daax symbol - peace and technology, wasn't it. I've got my own theory nobody takes seriously: ducks. I'm convinced they're the last living descendants of whatever the Daax actually was.",
+      "text": "Nerkeli: ¡Ese sí lo conozco! El símbolo del Daax — paz y tecnología, ¿no era así? Tengo mi propia teoría que nadie se toma en serio: los patos. Estoy convencido de que son los últimos descendientes vivos de lo que sea que fueron los Daax.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @e[type=taterzens:npc,name=Nerkeli,limit=1] run function luminacion:npcs/_shared/gesture_point"
@@ -51,7 +51,7 @@
     },
 
     "nuv3": {
-      "text": "Nuvilo: ...Ducks.",
+      "text": "Nuvilo: ...Patos.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @e[type=taterzens:npc,name=Nuvilo,limit=1] run function luminacion:npcs/_shared/gesture_face_palm"
@@ -60,7 +60,7 @@
     },
 
     "ner4": {
-      "text": "Nerkeli: Think about it! Old symbol, strange creature, nobody's ever actually explained the connection - I'm just filling the gap history left open. Somebody has to.",
+      "text": "Nerkeli: ¡Piénsalo! Símbolo viejo, criatura rara, y nadie explicó nunca la conexión en serio — yo solo estoy llenando el hueco que dejó la historia. Alguien tiene que hacerlo.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @e[type=taterzens:npc,name=Nerkeli,limit=1] run function luminacion:npcs/_shared/nod_up_down"
@@ -69,7 +69,7 @@
     },
 
     "nuv4": {
-      "text": "Nuvilo: I can't argue you out of that one either way, which I suppose is exactly your point.",
+      "text": "Nuvilo: No puedo convencerte de lo contrario de ninguna manera, lo cual supongo que es exactamente tu punto.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @e[type=taterzens:npc,name=Nuvilo,limit=1] run function luminacion:npcs/_shared/nod_up_down"
@@ -78,7 +78,7 @@
     },
 
     "ner5": {
-      "text": "Nerkeli: Exactly my point. So - anything caught your eye yet, scholar?",
+      "text": "Nerkeli: Exactamente mi punto. Entonces — ¿ya te llamó algo la atención, erudito?",
       "action": {
         "type": "blabber:command",
         "value": "execute as @e[type=taterzens:npc,name=Nerkeli,limit=1] run function luminacion:npcs/_shared/nod_up_down"
@@ -87,7 +87,7 @@
     },
 
     "nuv5": {
-      "text": "Nuvilo: The routes exhibit, actually. M9 runs Nvhi to Khan Ice - matters more to me than most, since my family's line traces back to Navalius, who's said to have founded Nvhi, generations back.",
+      "text": "Nuvilo: El exhibidor de rutas, en realidad. La M9 va de Nvhi a Khan Ice — me importa más que a la mayoría, porque mi linaje familiar se remonta a Navalius, de quien se dice que fundó Nvhi, hace generaciones.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @e[type=taterzens:npc,name=Nuvilo,limit=1] run function luminacion:npcs/_shared/nod_up_down"
@@ -96,7 +96,7 @@
     },
 
     "ner6": {
-      "text": "Nerkeli: Wait - Nvhi? I fly the M7 corridor half the season, Puente Intercontinental all the way up to Nvhi's edge. Never once thought about who started the place. Small world, milkantis.",
+      "text": "Nerkeli: Espera — ¿Nvhi? Yo vuelo el corredor M7 medio año, el Puente Intercontinental hasta el borde de Nvhi. Nunca se me ocurrió pensar quién fundó ese lugar. Qué pequeño es Milkantis.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @e[type=taterzens:npc,name=Nerkeli,limit=1] run function luminacion:npcs/_shared/gesture_scratch_head"
@@ -105,7 +105,7 @@
     },
 
     "nuv6": {
-      "text": "Nuvilo: Smaller than either of us probably realizes. Though I know less about Nvhi itself than you'd expect from someone descended from its founder - the family kept the name, not the history.",
+      "text": "Nuvilo: Más pequeño de lo que probablemente ninguno de los dos se da cuenta. Aunque sé menos sobre Nvhi en sí de lo que esperarías de alguien descendiente de su fundador — la familia conservó el nombre, no la historia.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @e[type=taterzens:npc,name=Nuvilo,limit=1] run function luminacion:npcs/_shared/nod_up_down"
@@ -114,7 +114,7 @@
     },
 
     "ner7": {
-      "text": "Nerkeli: That's family for you. Stay a while - I'll show you the plane inside, you can tell me if any of it's older than it looks.",
+      "text": "Nerkeli: Así es la familia. Quédate un rato — te muestro el avión por dentro, me dices si alguna parte es más vieja de lo que parece.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @e[type=taterzens:npc,name=Nerkeli,limit=1] run function luminacion:npcs/_shared/nod_up_down"
@@ -123,7 +123,7 @@
     },
 
     "nuv7": {
-      "text": "Nuvilo: I might take you up on that. Good to see you again, Nerkeli - properly, and not just passing through.",
+      "text": "Nuvilo: Puede que acepte la invitación. Qué bueno verte de nuevo, Nerkeli — de verdad, y no solo de pasada.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @e[type=taterzens:npc,name=Nuvilo,limit=1] run function luminacion:npcs/_shared/nod_up_down"
@@ -132,7 +132,7 @@
     },
 
     "ner8": {
-      "text": "Nerkeli: You too. Don't let the scholars keep you all fair - some of us still remember when you couldn't tell a code block from a cobblestone.",
+      "text": "Nerkeli: Igualmente. No dejes que los eruditos te acaparen toda la feria — algunos todavía nos acordamos de cuando no distinguías un bloque de código de un adoquín.",
       "action": {
         "type": "blabber:command",
         "value": "execute as @e[type=taterzens:npc,name=Nerkeli,limit=1] run function luminacion:npcs/_shared/gesture_laugh"

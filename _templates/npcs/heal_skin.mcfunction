@@ -17,10 +17,11 @@
 #   3. Called automatically from check_proximity.mcfunction every 100 ticks.
 #      No separate registration needed — just make sure check_proximity.mcfunction
 #      has the matching call block (see _templates/npcs/check_proximity.mcfunction).
+#      Both share the same <npc_key>_heal_cd cooldown counter, reset in
+#      check_proximity.mcfunction — don't reset it again here.
 #
-# Only needed for NPCs with a roaming movement mode, same as check_proximity —
-# stationary (NONE) NPCs have no tick check to hang this off of.
+# Needed for every NPC, regardless of movement mode — the async fetch race
+# applies just as much to a stationary (NONE) NPC as a roaming one.
 # =============================================================================
 
-scoreboard players set <npc_key>_skin_cd luminacion.int 0
 execute as @e[type=taterzens:npc,name=<display_name>,limit=1] at @s unless data entity @s TaterzenNPCTag.skin.value run npc edit skin <skin_url_or_player>

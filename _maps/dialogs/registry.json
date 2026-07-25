@@ -82,18 +82,37 @@
     },
     "khaoe": {
       "npc": "khaoe",
+      "_comment": "Five dialogs total, two independent gate mechanisms, both anchored on Khaoe's own spawn.mcfunction (see functions/npcs/khaoe/spawn.mcfunction) rather than a plain always-fire right-click: (1) khaoe_calendario_mecanografico / khaoe_banco_colectivo fire based on Khaoe's own live Taterzens pose (TaterzenNPCTag.Pose - STANDING vs. SITTING respectively), checked directly in spawn.mcfunction's right-click commands; (2) the three khaoe_farlis_* ambient scene fragments are a shared two-NPC conversation with Farlis (see _maps/npcs/registry.json -> farlis) - picked at random (equal odds, functions/npcs/khaoe/roll_dialog.mcfunction, same gametime-mod-N mechanism as doran below) but ONLY when the NPC named Farlis is within 5 blocks of Khaoe, which takes priority over the pose-based pair when both conditions could apply. Registered under Khaoe's key since her spawn.mcfunction is what actually wires the trigger; Farlis's own eventual spawn.mcfunction still needs to separately decide whether right-clicking HIM also triggers this same roll (open in TODO.md, not assumed here).",
       "dialogs": [
         {
           "id": "luminacion:khaoe_calendario_mecanografico",
           "trigger": "right_click",
-          "condition": null,
+          "condition": "Khaoe's pose is STANDING and Farlis is not within 5 blocks",
           "description": "A traveler asks Khaoe about the Calendario Mecanográfico, a new machine inaugurated for the Feria del Milenio that displays the current year on a moving timeline. She explains it, then reflects on how no two temples in Lundria agreed on the year - and admits she came back from her trip more confused about timekeeping than when she left, unable to actually teach what she half-remembers."
         },
         {
           "id": "luminacion:khaoe_banco_colectivo",
           "trigger": "right_click",
-          "condition": null,
+          "condition": "Khaoe's pose is SITTING and Farlis is not within 5 blocks",
           "description": "Sitting on a bench watching people go by, Khaoe is approached by a traveler who's heard she's from the Collective. She confirms it, explains the horizontal organization when pressed, clarifies that Farlis isn't actually a prince (just from old Terfila money), and names a few fellow Görff residents plus her closer comrades Farlis and Khaasan when asked who else is part of it."
+        },
+        {
+          "id": "luminacion:khaoe_farlis_el_castillo_que_fue",
+          "trigger": "right_click",
+          "condition": "Farlis (NPC) is within 5 blocks of Khaoe; picked 1-of-3 at random against the other two khaoe_farlis_* fragments",
+          "description": "Ambient fragment, waiting at the Castillo de Görff replica in the Plaza de las Culturas: Khaoe and Farlis on the castle's history and what it means to them now."
+        },
+        {
+          "id": "luminacion:khaoe_farlis_lo_que_cambia_el_tiempo",
+          "trigger": "right_click",
+          "condition": "Farlis (NPC) is within 5 blocks of Khaoe; picked 1-of-3 at random against the other two khaoe_farlis_* fragments",
+          "description": "Ambient fragment, same waiting scene: Khaoe and Farlis reflect on how time changes things."
+        },
+        {
+          "id": "luminacion:khaoe_farlis_esperando_a_khaasan",
+          "trigger": "right_click",
+          "condition": "Farlis (NPC) is within 5 blocks of Khaoe; picked 1-of-3 at random against the other two khaoe_farlis_* fragments",
+          "description": "Ambient fragment, same waiting scene: Khaoe and Farlis waiting for Khaasan, expected to arrive by griffon."
         }
       ]
     }

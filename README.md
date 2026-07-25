@@ -27,7 +27,7 @@ orientation.** Everything past that, read only the section(s) the task at hand a
   - [Step 4 — Spawn it in-game](#step-4--spawn-it-in-game)
   - [Step 5 — Capture its UUID](#step-5--capture-its-uuid)
   - [Step 6 — Set up routine pause/resume](#step-6--set-up-routine-pauseresume-only-if-movement-isnt-none)
-- [§4 Routine pause/resume (roaming NPCs only)](#4-routine-pauseresume-roaming-npcs-only) — read only if the NPC you're touching roams
+- [§4 Routine pause/resume (every NPC)](#4-routine-pauseresume-every-npc) — read for every NPC, including stationary (`NONE`) ones
 - [§5 Capturing NPC UUIDs](#5-capturing-npc-uuids) — the `scripts/update_uuids.py` workflow
 - [§6 Reference](#6-reference) — lookup tables: scoreboard objectives, entity tags, movement modes, Blabber selectors, command cheat sheet
 - [§7 Where design decisions live](#7-where-design-decisions-live) — why lore/story content isn't in this file
@@ -100,8 +100,8 @@ Reusable patterns every NPC/dialog is built from, so each new one doesn't reinve
   several, hard-won in-game debugging notes (why `/random` never resolves in this environment, why
   the pause/resume radii must differ).
 - **Gesture dispatch** — `data/luminacion/functions/npcs/_shared/gesture_<name>.mcfunction` (wave,
-  point, bow, shrug, palms-up, scratch-head, laugh, jump, cross-arms, no, face-palm, plus left-arm
-  mirror variants `wave_left`, `point_left`, and `scratch_head_left`) plus `gesture_clear.mcfunction`
+  point, bow, shrug, palms-up, scratch-head, laugh, jump, cross-arms, no, face-palm, flex-arm, plus
+  left-arm mirror variants `wave_left`, `point_left`, and `scratch_head_left`) plus `gesture_clear.mcfunction`
   and the `nod_up_down`/`nod_left_right` family: datapack-side functions that trigger the
   resource-pack animations below via a tag + per-entity scoreboard countdown, ticked every game tick
   from `tick.mcfunction` via `gesture_tick.mcfunction`/`nod_tick.mcfunction` — each NPC's hold/beat
@@ -295,7 +295,7 @@ string values, which parse fine either way. Anything named `_shared` is called d
 
 **Action** — anything a right-click triggers: opening a dialog, giving an item, setting a scoreboard flag, etc. `_maps/actions/registry.json` documents every action type with copy-paste command patterns.
 
-**Routine pause/resume** — if an NPC roams (has a movement mode other than `NONE`), it automatically stops within 2 blocks of a player or when clicked, and resumes its route afterwards. Covered in full in §4.
+**Routine pause/resume** — every NPC, regardless of movement mode (including `NONE`), stops within 2 blocks of a player or when clicked, self-heals its skin (and path, if it has one) periodically, and resumes afterwards. Covered in full in §4.
 
 ---
 
@@ -370,9 +370,9 @@ See §4 below.
 
 ---
 
-## 4. Routine pause/resume (roaming NPCs only)
+## 4. Routine pause/resume (every NPC)
 
-If an NPC's movement mode is anything other than `NONE`, it needs two more files so it stops for conversations instead of walking through them.
+Every NPC needs two more files, regardless of movement mode — including a stationary `NONE` NPC. This used to be scoped to "roaming NPCs only," which was wrong: the skin self-heal race (Taterzens fetches skins asynchronously from mineskin.org, and the fetch can lose the race against anything else touching the NPC) applies just as much to a `NONE` NPC as a roaming one, and confirmed the hard way — Khaoe shipped without this machinery first, under the old rule, and her skin never healed after a failed fetch. For a `NONE` NPC, `resume_routine.mcfunction`'s movement line is just `npc edit movement NONE` again (a no-op on behavior) — it's the tag cleanup and the periodic heal calls that actually matter there.
 
 1. Copy `_templates/npcs/resume_routine.mcfunction` → `data/luminacion/functions/npcs/<npc_key>/resume_routine.mcfunction`. Fill in `<MODE>` to match the movement mode you set in spawn.mcfunction (for `FOLLOW`, use the `FOLLOW <name>` / `FOLLOW UUID <uuid>` form shown in the comments).
 
@@ -470,6 +470,7 @@ This updates `taterzen_uuid` for every NPC in the registry that was exported. Sa
 | Point (left) | 202 | `gesture_point_left` | Left-arm mirror of Point, same convention as Wave (left) |
 | Scratch-head (left) | 206 | `gesture_scratch_head_left` | Left-arm mirror of Scratch-head, same convention as Wave (left) |
 | Cross-arms | 111 | `gesture_cross_arms` | Both arms raised and swung in across the chest, **and** both elbows bend via the `right_forearm`/`left_forearm` bones (the first gesture to use them — see "Elbow joint" above) |
+| Flex-arm | 112 | `gesture_flex_arm` | Right arm only, raised out to the side (`ry` 90°, wider than a first-pass 60° which read as a salute); once `var.gest_flexclock` passes 0.9s the elbow bends via `right_forearm` (70°, pulled back from an initial 90°) to bring the fist up near the shoulder — sequenced raise-then-flex rather than simultaneous, own slower `var.gest_rate` of 3 |
 
 ### Blabber special selectors
 
@@ -486,6 +487,8 @@ This updates `taterzen_uuid` for every NPC in the registry that was exported. Sa
 /npc list                                   list all loaded NPCs
 /npc edit skin <mineskin URL or player>     set skin
 /npc edit movement <MODE>                   set movement mode
+/npc edit pose <EntityPose name>            set pose (e.g. STANDING, SITTING) - persisted as TaterzenNPCTag.Pose,
+                                             readable from a command via "if data entity <selector> {TaterzenNPCTag:{Pose:"<NAME>"}}"
 /npc edit commands add minecraft <command>  add a right-click action
 /npc edit commands setPermissionLevel <0-4> set execution authority for right-click actions
 /blabber dialogue start <id> <target> [interlocutor]   start a dialog
