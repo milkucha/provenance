@@ -1,81 +1,142 @@
 {
   "$schema": "https://ladysnake.org/schemas/blabber/dialogue.schema.json",
+  "layout": { "type": "blabber:rpg" },
   "name": "Nuvilo & Nerkeli",
   "start_at": "ner1",
   "states": {
 
     "ner1": {
       "text": "Nerkeli: So what is it you're actually after in all these exhibits, Nuvilo? You've been wandering the fair since this morning.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Nerkeli,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [{ "text": "...", "next": "nuv1" }]
     },
 
     "nuv1": {
       "text": "Nuvilo: Inspiration, mostly. I'm hoping something in these exhibits sparks the next thing I write - a building style, a landscape, some old artifact nobody's looked at twice in years.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Nuvilo,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [{ "text": "...", "next": "ner2" }]
     },
 
     "ner2": {
       "text": "Nerkeli: Careful, half of what's on display I still don't understand myself. You seen the tech wing? Little glowing block contraptions everywhere - codigos, they call them. I fly planes, I don't build them.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Nerkeli,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [{ "text": "...", "next": "nuv2" }]
     },
 
     "nuv2": {
       "text": "Nuvilo: Codigos I actually know something about - the records tie the whole business to Era del Daax, when Gorff's new government first started using them. That symbol you'll have seen around got carved into old ruins right around those same years.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Nuvilo,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [{ "text": "...", "next": "ner3" }]
     },
 
     "ner3": {
       "text": "Nerkeli: Now that one I do know! The Daax symbol - peace and technology, wasn't it. I've got my own theory nobody takes seriously: ducks. I'm convinced they're the last living descendants of whatever the Daax actually was.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Nerkeli,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [{ "text": "...", "next": "nuv3" }]
     },
 
     "nuv3": {
       "text": "Nuvilo: ...Ducks.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Nuvilo,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [{ "text": "...", "next": "ner4" }]
     },
 
     "ner4": {
       "text": "Nerkeli: Think about it! Old symbol, strange creature, nobody's ever actually explained the connection - I'm just filling the gap history left open. Somebody has to.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Nerkeli,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [{ "text": "...", "next": "nuv4" }]
     },
 
     "nuv4": {
       "text": "Nuvilo: I can't argue you out of that one either way, which I suppose is exactly your point.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Nuvilo,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [{ "text": "...", "next": "ner5" }]
     },
 
     "ner5": {
       "text": "Nerkeli: Exactly my point. So - anything caught your eye yet, scholar?",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Nerkeli,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [{ "text": "...", "next": "nuv5" }]
     },
 
     "nuv5": {
       "text": "Nuvilo: The routes exhibit, actually. M9 runs Nvhi to Khan Ice - matters more to me than most, since my family's line traces back to Navalius, who's said to have founded Nvhi, generations back.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Nuvilo,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [{ "text": "...", "next": "ner6" }]
     },
 
     "ner6": {
       "text": "Nerkeli: Wait - Nvhi? I fly the M7 corridor half the season, Puente Intercontinental all the way up to Nvhi's edge. Never once thought about who started the place. Small world, milkantis.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Nerkeli,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [{ "text": "...", "next": "nuv6" }]
     },
 
     "nuv6": {
       "text": "Nuvilo: Smaller than either of us probably realizes. Though I know less about Nvhi itself than you'd expect from someone descended from its founder - the family kept the name, not the history.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Nuvilo,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [{ "text": "...", "next": "ner7" }]
     },
 
     "ner7": {
       "text": "Nerkeli: That's family for you. Stay a while - I'll show you the plane inside, you can tell me if any of it's older than it looks.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Nerkeli,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [{ "text": "...", "next": "nuv7" }]
     },
 
     "nuv7": {
       "text": "Nuvilo: I might take you up on that. Good to see you again, Nerkeli - properly, and not just passing through.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Nuvilo,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [{ "text": "...", "next": "ner8" }]
     },
 
     "ner8": {
       "text": "Nerkeli: You too. Don't let the scholars keep you all fair - some of us still remember when you couldn't tell a code block from a cobblestone.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Nerkeli,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [{ "text": "...", "next": "end" }]
     },
 

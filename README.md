@@ -88,15 +88,17 @@ Add an entry to `_maps/npcs/registry.json` under `"npcs"`:
   "spawn_position": null,
   "backstory": "",
   "knowledge": {
-    "sample": { "percent": null, "mode": "", "topic": null, "items": [] },
-    "surfaced_in_dialog": []
+    "education": { "percent": null, "mode": "", "topic": null, "items": [] },
+    "experience": []
   }
 }
 ```
 
 Leave `taterzen_uuid` empty for now — that's filled in automatically at the end (§5). `backstory` and
 `knowledge` are optional for a hand-built NPC like this one — they exist for enacted characters (§8)
-and are always filled in by the `/enact` skill.
+and are always filled in by the `/enact` skill. `knowledge.education` is the lore sample drawn once
+at creation and never changed after; `knowledge.experience` (plus `backstory`, conceptually) is
+everything the character has picked up living through scenes, and keeps growing over time.
 
 ### Step 2 — Create the spawn function
 
@@ -105,7 +107,7 @@ Copy `_templates/npcs/spawn.mcfunction` to `data/luminacion/functions/npcs/maren
 Read the comments in the template as you go — they explain each section. In particular:
 
 - **Movement**: pick `NONE` (stationary) or one of `FORCED_LOOK` / `PATH` / `FORCED_PATH` / `FOLLOW` / `FREE` (roaming). If it's not `NONE`, you'll need §4 as well.
-- **Right-click actions**: the first line should always be `npc edit commands add function luminacion:npcs/_shared/enter_dialog` when a dialog is involved — it pauses the NPC and marks it mid-conversation before the dialog opens. Don't skip it, even for stationary NPCs — it costs nothing and keeps every NPC consistent.
+- **Right-click actions**: the first line should always be `npc edit commands add minecraft function luminacion:npcs/_shared/enter_dialog` when a dialog is involved — it pauses the NPC and marks it mid-conversation before the dialog opens. Don't skip it, even for stationary NPCs — it costs nothing and keeps every NPC consistent.
 
 ### Step 3 — Write the dialog
 
@@ -155,11 +157,13 @@ If an NPC's movement mode is anything other than `NONE`, it needs two more files
    { "values": ["luminacion:npcs/maren/check_proximity"] }
    ```
 
-That's it. From then on, the tick loop stops the NPC the moment a player gets within 2 blocks (or clicks it), and resumes its route once the player walks away or the dialog ends.
+That's it. From then on, the tick loop stops the NPC the moment a player gets within 2 blocks (or clicks it), and resumes its route once no player is within 6 blocks or the dialog ends.
 
 **Why both a click-pause and a proximity-pause?** So the NPC doesn't keep wandering off mid-approach before the player gets a chance to click it — it settles as soon as someone's nearby, not only once they've already interacted.
 
-**Why the tick check also handles resuming, not just the dialog ending?** Blabber does not run its end-of-dialog action if a player exits early (Escape key, disconnect, etc.) — so a "resume when the dialog action fires" rule alone can leave an NPC stuck paused forever. The tick check is the safety net: it resumes any paused NPC the moment no player is within 2 blocks, regardless of how the conversation ended.
+**Why the tick check also handles resuming, not just the dialog ending?** Blabber does not run its end-of-dialog action if a player exits early (Escape key, disconnect, etc.) — so a "resume when the dialog action fires" rule alone can leave an NPC stuck paused forever. The tick check is the safety net: it resumes any paused NPC the moment no player is within range, regardless of how the conversation ended.
+
+**Why the resume radius (6 blocks) is wider than the pause trigger (2 blocks) — don't make these match.** Blabber freezes the player's movement while its screen is open, so distance from the NPC can't grow *during* a conversation — but that only guarantees the resume check stays quiet if the player was already inside its radius the moment they clicked. Taterzens has no interact-range override (`config/Taterzens/config.json` doesn't set one), so a click can land from plain vanilla reach — 3 blocks survival, 6 creative. A resume radius of 2 would read a click from 3+ blocks away as "nobody nearby" on the very next tick and undo the pause while the dialog is still open — confirmed in-game (Döran, 2026-07-25): he visibly wandered off mid-conversation, and the resulting movement swallowed his nod animations too (walking overwrites head rotation every tick, fighting the nod's own writes). 6 blocks covers creative reach with no margin to spare — see `_maps/actions/registry.json` → `_action_templates.routine_pause_resume` for the full writeup.
 
 Full technical rationale (with source references) lives in `_maps/actions/registry.json` under `_action_templates.routine_pause_resume`.
 
@@ -236,7 +240,7 @@ This updates `taterzen_uuid` for every NPC in the registry that was exported. Sa
 /npc list                                   list all loaded NPCs
 /npc edit skin <mineskin URL or player>     set skin
 /npc edit movement <MODE>                   set movement mode
-/npc edit commands add <command>            add a right-click action
+/npc edit commands add minecraft <command>  add a right-click action
 /npc edit commands setPermissionLevel <0-4> set execution authority for right-click actions
 /blabber dialogue start <id> <target> [interlocutor]   start a dialog
 ```

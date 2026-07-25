@@ -37,14 +37,24 @@ npc edit skin <https://www.mineskin.org/ID>
 npc edit movement NONE
 
 # If this NPC's movement mode above is NOT NONE (it has a roaming routine):
-#   1. Duplicate _templates/npcs/resume_routine.mcfunction and
-#      _templates/npcs/check_proximity.mcfunction into this folder,
-#      filling in the placeholders.
+#   1. Duplicate _templates/npcs/resume_routine.mcfunction,
+#      _templates/npcs/check_proximity.mcfunction, _templates/npcs/heal_skin.mcfunction
+#      and _templates/npcs/heal_path.mcfunction into this folder, filling in
+#      the placeholders.
 #   2. Add this NPC's check_proximity.mcfunction path to
 #      data/luminacion/tags/functions/npc_routine_tick.json.
 # This makes the NPC stop within 2 blocks of a player (and become interactable),
 # then resume its routine once the player leaves or the dialog ends. See
 # _action_templates.routine_pause_resume in _maps/actions/registry.json.
+#
+# If this NPC's movement mode is PATH or FORCED_PATH (it follows waypoints):
+# do NOT record them with Taterzens' in-game "/npc edit path" left-click editor —
+# a stray click silently adds/removes nodes, and clearing them afterward leaves
+# a stale internal movement restriction behind, so the NPC keeps walking toward
+# an old point even with an empty path. Instead, after running this spawn
+# function, duplicate _templates/npcs/paths/select_path.mcfunction as
+# functions/npcs/<npc_key>/paths/<path_name>.mcfunction and run it as an
+# operator. Until you do, the NPC just stands still in PATH mode.
 
 
 # --- PERMISSION LEVEL ---------------------------------------------------------
@@ -71,17 +81,17 @@ npc edit commands setPermissionLevel 2
 #   - gives the clicker a bread loaf
 #   - sets a scoreboard flag recording that this NPC has been met
 #
-#   npc edit commands add function luminacion:npcs/_shared/enter_dialog
-#   npc edit commands add blabber dialogue start luminacion:maren_greeting --clicker-- @e[name=Maren,limit=1,sort=nearest]
-#   npc edit commands add give --clicker-- minecraft:bread 1
-#   npc edit commands add scoreboard players set met_maren luminacion.bool 1
+#   npc edit commands add minecraft function luminacion:npcs/_shared/enter_dialog
+#   npc edit commands add minecraft blabber dialogue start luminacion:maren_greeting --clicker-- @e[name=Maren,limit=1,sort=nearest]
+#   npc edit commands add minecraft give --clicker-- minecraft:bread 1
+#   npc edit commands add minecraft scoreboard players set met_maren luminacion.bool 1
 #
 # Replace the example lines below with this NPC's actual actions:
 
-npc edit commands add function luminacion:npcs/_shared/enter_dialog
-npc edit commands add blabber dialogue start luminacion:<dialog_id> --clicker-- @e[name=<display_name>,limit=1,sort=nearest]
-npc edit commands add give --clicker-- minecraft:<item_id> <count>
-npc edit commands add scoreboard players set <variable> luminacion.bool <value>
+npc edit commands add minecraft function luminacion:npcs/_shared/enter_dialog
+npc edit commands add minecraft blabber dialogue start luminacion:<dialog_id> --clicker-- @e[name=<display_name>,limit=1,sort=nearest]
+npc edit commands add minecraft give --clicker-- minecraft:<item_id> <count>
+npc edit commands add minecraft scoreboard players set <variable> luminacion.bool <value>
 
 
 # --- REGISTRATION REMINDER ----------------------------------------------------

@@ -28,6 +28,19 @@ source; on an untraceable roll, no origin is recorded at all, the dialog line us
 ("they say...," "it's told that..."), and the claim is marked **oral lore** — folklore now, whether
 or not the underlying content has drifted from where it started.
 
+Every dialog gets an entry here, full stop - not only the ones where a character explicitly retells
+something they heard from someone else. A character's own fresh invention (a venue's description, a
+personal theory, an on-the-spot guess) belongs in the record exactly as much as an attributed
+retelling does. Oral tradition isn't only fantasy layered on top of a fixed truth - plenty of what
+gets said aloud, invented in the moment or not, turns out to be true, or half true, or true with the
+names filed off. The record doesn't presume otherwise: an unverified claim sits at `null` until
+something confirms or contradicts it, not at "assumed false." This is also the actual mechanism by
+which an idea becomes folklore - not a special flag, just repetition. A kernel that gets said once
+stays a single claim with a small chance of resurfacing; a kernel repeated across several dialogs (by
+the same character or several) accumulates more copies of itself in the sampling pool, which raises
+the odds it gets drawn again by some future character, and each retelling is another chance for it to
+mutate a little further from wherever it started.
+
 Each entry below covers one dialog file in `data/luminacion/blabber/dialogues/` (templates
 excluded). "Claims on record" are phrased as reported assertions, not restated as fact, on purpose.
 
@@ -170,3 +183,128 @@ excluded). "Claims on record" are phrased as reported assertions, not restated a
   - Nerkeli restates his running joke theory (also given in `nuvilo_nerkeli_feria_del_milenio.json`)
     that ducks are the last living descendants of the Daax — offered explicitly as his own unfounded
     pet theory, not as history.
+
+## `doran_plaza_orientation.json`
+
+- **Participants:** Döran; an unnamed traveler (the player)
+- **Location:** la Plaza de las Culturas, Feria del Milenio (a pavilion, not itself in the objective
+  record)
+- **Summary:** A visitor at the Plaza de las Culturas asks Döran what the pavilion is about. He
+  orients them on the four castle replicas on display and the pavilion's AI-powered architectural
+  holograms, then branches on the unfamiliar cities, the holograms' cost, or what "minor wonder"
+  means.
+- **Claims on record:**
+  - The Plaza de las Culturas is one of the Feria del Milenio's pavilions, honoring the diversity of
+    architectural styles and urbanity across Milkantis, from small villages to great cities.
+  - The Plaza displays castle replicas of Görff, Ciudad Dragón, and Salthos Cruzados, and the palace
+    of Khan Icé — the fortresses of the largest cities.
+  - The Plaza's pedestals sometimes display miniature AI-powered holograms of five other
+    architectural marvels of Milkantis, built on a separate datapack — costly in energy, and if left
+    running too long, the fabric of time itself grows tense and starts to crackle.
+  - Döran calls Görff the oldest of the four represented castles, "curtida en más de una guerra"
+    (weathered by more than one war).
+  - Döran says he knows Khan Icé's palace only through what train travelers tell him passing through,
+    not firsthand.
+
+## `doran_four_castles.json`
+
+- **Participants:** Döran; an unnamed traveler (the player)
+- **Location:** la Plaza de las Culturas, Feria del Milenio
+- **Summary:** Döran invites a visitor to ask about any of the four castles in the Plaza, branching
+  per city: Salthos Cruzados (his own hometown, and its tie to the legendary prince Döran and the
+  discovery of Plathinëa), Ciudad Dragón (its growth and his wariness over the destroyed map of
+  Salthos Cruzados), Görff (its wars and its many travelers), and Khan Icé (where he speaks with more
+  confidence than his firsthand knowledge supports).
+- **Claims on record:**
+  - Prince Döran built the castle at Salthos Cruzados after the discovery of Plathinëa, and world
+    cartography began there — matches the objective record closely.
+  - This Döran shares his name with the legendary prince, and wonders whether that shaped his own
+    path into maps and miniatures, or the other way around — a personal descent/namesake claim, not
+    corroborated by (nor contradicted by) the objective record.
+  - Plathinëa is described as "the other half of the world" — the region discovered after Milkäan.
+  - Ciudad Dragón grew from Península Dragón, absorbed a neighboring village, and became the largest
+    city in all of Milkantis.
+  - Ciudad Dragón's mages are blamed for destroying the great map of Salthos Cruzados — matches the
+    `codigos` concept entry.
+  - Görff's castle carries so many scars that an entire era was named for its wars, "Las Guerras de
+    Görff."
+  - Döran says more familiar faces pass through the fair from Görff than from anywhere else — a
+    personal impression, not verifiable.
+  - Khan Icé is connected by rail to both Görff and Balhâm.
+  - Döran speculates, from the palace's defensive architecture, that Khan Icé served as a wartime
+    refuge and possibly a capital "when the world closed in on itself" — delivered as unconfirmed
+    speculation, not sourced from his own knowledge sample, but it happens to match the objective
+    record (Khan Icé: "refuge built end of era 1; world capital in Era del Confinamiento"). A
+    confident bluff that landed on the truth, not a knowing lie.
+
+## `doran_eras_of_culture.json`
+
+- **Participants:** Döran; an unnamed traveler (the player)
+- **Location:** la Plaza de las Culturas, Feria del Milenio
+- **Summary:** Döran muses that cultural differences are temporal as well as spatial, then branches
+  on the oldest culture he knows well (Görff, leading into the Era del Daax), a rundown of the ages
+  he can name, what era they're currently living in (the Era de la Magia), and a light tease about
+  how poetic he sounds.
+- **Claims on record:**
+  - Döran considers Görff, tied to "Las Guerras de Görff," the oldest culture among the four he can
+    speak to with confidence — and admits a gap in what he knows between that era and the Era del
+    Daax.
+  - Döran describes the Era del Daax as the first age of the códigos and the era when architecture
+    itself expanded most, noting the two chronicles disagree on when it began (360 d.V. vs. 294 d.V.)
+    though both close it at 504 d.V. — matches the objective record's own boundary mismatch exactly.
+  - Döran names the Era de las Maravillas, starting around 804 d.V. with no end he knows of, among
+    the ages he can speak to.
+  - Döran says the present era is the Era de la Magia — when the tools that shape the world began
+    transforming themselves, when people learned to "mod the game" and bend the rules of the universe
+    within this plane. The era's existence and dates are in the objective record; this specific
+    framing is a session-given elaboration, plausible as written but not independently verifiable.
+
+## `khaoe_farlis_el_castillo_que_fue.json`
+
+- **Participants:** Khaoe; Farlis
+- **Location:** la Plaza de las Culturas, frente a la réplica del Castillo de Görff, Feria del Milenio
+- **Summary:** Standing in front of the miniature replica of the Castillo de Görff, Khaoe and Farlis —
+  both members of the Collective that now lives there — reflect on what the castle used to be versus
+  what it is now.
+- **Claims on record:**
+  - Before the Collective, and before the citadel was left abandoned, a tyrant ruled from the castle
+    at Görff — his name no longer remembered.
+  - Farlis calls it poetic justice that he and Khaoe now live in the same castle that once belonged to
+    that tyrant.
+  - Khaoe pushes back on the "poetic justice" framing — to her it's not symbolism, just that someone
+    had to take up the stones.
+
+## `khaoe_farlis_lo_que_cambia_el_tiempo.json`
+
+- **Participants:** Khaoe; Farlis
+- **Location:** la Plaza de las Culturas, frente a la réplica del Castillo de Görff, Feria del Milenio
+- **Summary:** Still by the castle replica, Farlis wonders what the Feria del Milenio's "mil años" is
+  actually counted from; Khaoe, just back from Lundria, says every temple there kept its own calendar;
+  both conclude meaning shifts given enough time, or enough deliberate effort.
+- **Claims on record:**
+  - Farlis says he was never told exactly what event the Feria's "thousand years" framing counts from
+    — echoes the same unreconciled origin-point problem documented as `CONFLICT-12` (also independently
+    echoed by Nerkeli in `nerkeli_hangar_talk.json`), though Farlis doesn't cite it as such.
+  - Khaoe says every temple in Lundria kept its own calendar, as if the world began again at each door
+    — the objective `lundria` entry records temple-building and the "culto del cubo flotante de
+    Lundria" (era 7) but says nothing about calendars specifically; plausible given the temple culture
+    on record, not confirmed. Khaoe's own sampled knowledge of Lundria was bounded to the location's
+    name/region/type, not this detail, so this is a personal impression from her actual visit, not
+    drawn from her sample.
+  - Both agree a thing can end up meaning something else entirely, if enough time passes, or if
+    someone puts in the work to change it.
+
+## `khaoe_farlis_esperando_a_khaasan.json`
+
+- **Participants:** Khaoe; Farlis
+- **Location:** la Plaza de las Culturas, frente a la réplica del Castillo de Görff, Feria del Milenio
+- **Summary:** Still waiting by the castle replica, Khaoe and Farlis look out for their comrade
+  Khaasan, who said he was coming straight to the fair but hasn't been sighted yet.
+- **Claims on record:**
+  - Khaasan told Khaoe and Farlis he was coming straight to the Feria del Milenio — a social claim
+    about a third party, nothing in the objective record to check it against.
+  - Khaoe and Farlis expect Khaasan to arrive by griffon, and are watching the sky for it. The
+    objective inhabitant record lists Khaasan's role as "Teletraveller," not a griffon rider — a
+    genuine divergence, logged here rather than silently reconciled (see this file's own rule above).
+    Could mean Khaoe and Farlis are simply wrong about how he travels, or that "Teletraveller" and
+    "arrives by griffon" aren't actually mutually exclusive — left open, not resolved here.

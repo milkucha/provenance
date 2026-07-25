@@ -1,110 +1,253 @@
 {
   "$schema": "https://ladysnake.org/schemas/blabber/dialogue.schema.json",
+  "layout": { "type": "blabber:rpg" },
   "start_at": "greeting",
   "states": {
 
     "greeting": {
-      "text": "*looks up from coiling a rope* Well now, a face I don't know! Come to book passage, or just come to admire the finest hull ever to cross these waters? *pats the boat's side*",
+      "text": "¡Vaya, una cara que no conozco! ¿Vienes a reservar pasaje, o solo a admirar el mejor casco que jamás haya cruzado estas aguas?",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [
         {
-          "text": "I'm looking for a ride. Where are you sailing to?",
+          "text": "Busco un viaje. ¿Hacia dónde navegas?",
           "next": "destination"
         }
       ]
     },
 
     "destination": {
-      "text": "Depends who's paying and how the wind's feeling! Regular run takes me down past Catraniz, and I've put in at Sit Nalta more times than I can count - though don't ask me to count, arithmetic was never my trade. *grins* Where's it you're headed?",
+      "text": "¡Depende de quién pague y de cómo se sienta el viento! Mi ruta habitual me lleva más allá de Catraniz, y he atracado en Sit Nalta más veces de las que puedo contar, aunque no me pidas que cuente, la aritmética nunca fue mi oficio. ¿Y tú, hacia dónde te diriges?",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [
         {
-          "text": "Wherever you want to take me. I don't have much to trade. What do you ask in return?",
+          "text": "A donde tú quieras llevarme. No tengo mucho para intercambiar. ¿Qué pides a cambio?",
           "next": "payment"
         }
       ]
     },
 
     "payment": {
-      "text": "*waves a hand* Lazulis are nice, sure, but I've hauled men across for nothing more than a good story I hadn't heard before. Mind you, I've heard most of them twice over - I read, you see, more than a sailor ought to. *taps his temple* So tell me something worth the passage, and we'll call it settled.",
+      "text": "Los lázulis están bien, claro, pero he llevado a hombres al otro lado por nada más que una buena historia que no hubiera oído antes. Eso sí, ya he oído la mayoría dos veces, verás, leo más de lo que le conviene a un marinero. Así que cuéntame algo que valga el pasaje, y lo damos por saldado.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [
         {
-          "text": "I heard someone sailed south to a new continent and never came back. Their siblings are organizing a search, leaving from a highway's southern end. I heard this in Khol Moshin - know anything about it?",
+          "text": "Oí que alguien navegó al sur hacia un continente nuevo y nunca volvió. Sus hermanos están organizando una búsqueda, que parte del extremo sur de una carretera. Oí esto en Khol Moshin, ¿sabes algo al respecto?",
           "next": "darnis_reveal"
         }
       ]
     },
 
     "darnis_reveal": {
-      "text": "*sits up straight, all trader-charm dropped* Därnis! That's the name you're circling round, unless I miss my guess - sailed south out of Sindäara and came back changed, talking of a new ocean, a burning island, land that floated. Historians took that as a sign there was a whole continent down there waiting. But siblings chasing after him, a highway running clean to the southern tip - that part's new to me, and I won't pretend otherwise. Khol Moshin's a fair place to hear it, mind. Lot of talk passes through there I never catch.",
+      "text": "¡Därnis! Ese es el nombre que estás rondando, a menos que me equivoque, zarpó rumbo al sur desde Sindäara y volvió cambiado, hablando de un océano nuevo, una isla en llamas, tierra que flotaba.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [
         {
-          "text": "Guess it's off the beaten path for a wise sailman like you - nowhere near the coast. Have you been there?",
+          "text": "...",
+          "next": "darnis_reveal_2"
+        }
+      ]
+    },
+
+    "darnis_reveal_2": {
+      "text": "Los historiadores lo tomaron como señal de que había todo un continente esperando allá abajo. Pero eso de sus hermanos persiguiéndolo, una carretera que llega limpia hasta la punta sur, esa parte es nueva para mí, y no voy a fingir lo contrario.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [
+        {
+          "text": "...",
+          "next": "darnis_reveal_3"
+        }
+      ]
+    },
+
+    "darnis_reveal_3": {
+      "text": "Khol Moshin es buen lugar para oírlo, eso sí. Por ahí pasa mucho rumor que a mí se me escapa.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [
+        {
+          "text": "Supongo que está fuera del camino trillado para un marinero sabio como tú, lejos de cualquier costa. ¿Has estado ahí?",
           "next": "khol_moshin_no"
         }
       ]
     },
 
     "khol_moshin_no": {
-      "text": "*laughs, waving it off* Been there? Man, I've got sea legs, not mountain boots - if there's no coastline, I've got no business there. I know the name, know the trains run through it, but Khol Moshin's someone else's country to walk, not mine.",
+      "text": "¿Que si he estado ahí? Amigo, yo tengo piernas de marinero, no botas de montaña, si no hay costa, no tengo nada que hacer ahí. Conozco el nombre, sé que pasan trenes por esa zona, pero Khol Moshin es tierra que otro debe caminar, no yo.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [
         {
-          "text": "Makes sense. So you said Därnis made it back? I thought he'd gone missing. Where did you hear this?",
+          "text": "Tiene sentido. Entonces, ¿dijiste que Därnis logró volver? Pensé que había desaparecido. ¿Dónde oíste esto?",
           "next": "ensayo_source"
         }
       ]
     },
 
     "ensayo_source": {
-      "text": "Read it, not heard it - I've got an old copy of the Ensayo, era nine and all. Way it's written, aye, he came back long enough to tell of it: the new ocean, the burning island, land that floated on the water like it hadn't decided to be land yet. *shrugs* What happened to him after that telling, the book doesn't say - and I've learned not to trust a chronicle to finish a story just because it started one.",
+      "text": "Lo leí, no lo oí, tengo una copia vieja del Ensayo, era nueve y todo. Según está escrito, sí, volvió el tiempo suficiente para contarlo: el océano nuevo, la isla en llamas, tierra que flotaba sobre el agua como si aún no hubiera decidido ser tierra.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [
         {
-          "text": "Ensayo? What's that? I haven't heard of it.",
+          "text": "...",
+          "next": "ensayo_source_2"
+        }
+      ]
+    },
+
+    "ensayo_source_2": {
+      "text": "Qué le pasó después de contarlo, el libro no lo dice, y he aprendido a no confiar en que una crónica termine una historia solo porque la empezó.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [
+        {
+          "text": "¿El Ensayo? ¿Qué es eso? No había oído hablar de él.",
           "next": "ensayo_explain"
         }
       ]
     },
 
     "ensayo_explain": {
-      "text": "Ensayo - full history of the world, near as anyone's bothered to write one, era by era, dated by this Vortex-reckoning folk use here. Only thing is, it's not the only one - there's a Libro too, tells the same stretch of years its own way, different names for the eras, different lines drawn between them, and neither book so much as nods at the other. *spreads hands* I've read both. Doesn't make me any wiser on which one's lying - could be neither, far as I know, just two men who never compared notes.",
+      "text": "El Ensayo: la historia completa del mundo, o lo más parecido a eso que alguien se haya molestado en escribir, era por era, fechada según ese cómputo del Vórtice que usa la gente por aquí.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [
         {
-          "text": "And where did you find these books? Are they accessible to anyone?",
+          "text": "...",
+          "next": "ensayo_explain_libro"
+        }
+      ]
+    },
+
+    "ensayo_explain_libro": {
+      "text": "Lo único es que no es el único, también está el Libro, que cuenta el mismo tramo de años a su manera, con nombres distintos para las eras, líneas distintas entre ellas, y ninguno de los dos libros ni siquiera menciona al otro.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [
+        {
+          "text": "...",
+          "next": "ensayo_explain_2"
+        }
+      ]
+    },
+
+    "ensayo_explain_2": {
+      "text": "Los he leído los dos. Eso no me hace más sabio sobre cuál miente, podría ser que ninguno, hasta donde sé, solo dos hombres que nunca compararon sus notas.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [
+        {
+          "text": "¿Y dónde encontraste estos libros? ¿Son accesibles para cualquiera?",
           "next": "bracco_intro"
         }
       ]
     },
 
     "bracco_intro": {
-      "text": "*scratches beard* Mine own copies, traded off a fella in Gorff years back - paid more in fish than I'd like to admit. Whether there's some proper library holding the 'real' ones, official-like, anyone could just walk into? Couldn't tell you. Never gone looking myself - a sailor reads what falls in his lap, not what he has to hunt for.",
+      "text": "Copias mías propias, las cambié con un tipo en Gorff hace años, pagué más pescado del que quisiera admitir. ¿Que si hay alguna biblioteca como es debido guardando las 'reales', de forma oficial, a la que cualquiera pueda simplemente entrar? No sabría decirte.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [
         {
-          "text": "Remember the name of that fella? Or what they looked like at least?",
+          "text": "...",
+          "next": "bracco_intro_2"
+        }
+      ]
+    },
+
+    "bracco_intro_2": {
+      "text": "Nunca fui a buscar yo mismo, un marinero lee lo que le cae en el regazo, no lo que tiene que ir a cazar.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [
+        {
+          "text": "¿Recuerdas el nombre de ese tipo? ¿O al menos cómo se veía?",
           "next": "bracco_desc"
         }
       ]
     },
 
     "bracco_desc": {
-      "text": "*thinking* Called himself Bracco, or Braggo - something like that, I never trust a name a stranger gives twice the same way. Big fella, more scars than a proper trader ought to have, sold me the books like he wanted rid of them more than he wanted my lazulis. *shrugs* Didn't ask questions. Man selling cheap history isn't a man you interrogate.",
+      "text": "Se hacía llamar Bracco, o Braggo, algo así, nunca confío en un nombre que un desconocido dice igual dos veces. Tipo grande, con más cicatrices de las que debería tener un comerciante decente, me vendió los libros como si quisiera deshacerse de ellos más de lo que quería mis lázulis.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [
         {
-          "text": "Bracco. Interesting. Any idea where he was coming from, or where he was going?",
+          "text": "...",
+          "next": "bracco_desc_2"
+        }
+      ]
+    },
+
+    "bracco_desc_2": {
+      "text": "No hice preguntas. A un hombre que vende historia barata no se le interroga.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [
+        {
+          "text": "Bracco. Interesante. ¿Alguna idea de dónde venía, o hacia dónde iba?",
           "next": "bracco_unknown"
         }
       ]
     },
 
     "bracco_unknown": {
-      "text": "Not a clue, truth told. He wasn't the talking kind - paid, took my fish, walked off toward the docks and I never saw which boat he took, or if he even had one. *taps table* For all I know he swam. Man like that, wouldn't put it past him.",
+      "text": "Ni idea, la verdad. No era de los que hablaban, pagó, tomó mi pescado, se fue caminando hacia los muelles y nunca vi qué barco tomó, ni si acaso tenía uno. Por lo que sé, pudo haber nadado. Un tipo así, no me extrañaría.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [
         {
-          "text": "Thank you. I think I'll stick around a bit longer - I'd like to know more about this Bracco.",
+          "text": "Gracias. Creo que me voy a quedar un poco más, me gustaría saber más sobre este tal Bracco.",
           "next": "farewell"
         }
       ]
     },
 
     "farewell": {
-      "text": "*tips an imaginary hat* Suit yourself - this dock isn't going anywhere, and neither am I till the tide turns proper. Ask around, someone'll point you the right way if Bracco's still working these parts. And hey - if you find him, tell him his book cost me a week's catch. I'd like that on record somewhere.",
+      "text": "Como quieras, este muelle no se va a ninguna parte, y yo tampoco hasta que la marea cambie de verdad. Pregunta por ahí, alguien te va a señalar el camino si Bracco todavía anda trabajando por estos rumbos. Y oye, si lo encuentras, dile que su libro me costó una semana de pesca. Me gustaría que eso quedara registrado en algún lado.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [
         {
           "text": "...",

@@ -19,12 +19,15 @@ npc edit skin https://minesk.in/8e4356a7612f4b97ac864836457b274e
 
 # --- MOVEMENT -----------------------------------------------------------------
 
-# PATH: follows a set path with rests/look-arounds. Requires resume_routine.mcfunction
-# and check_proximity.mcfunction (both built alongside this file) and this NPC's
-# check_proximity registered in data/luminacion/tags/functions/npc_routine_tick.json.
-# The actual path waypoints are recorded in-game via Taterzens' own /npc path
-# commands, separately from this file — until a path is recorded, he'll simply
-# stand still in PATH mode.
+# PATH: follows a set path with rests/look-arounds. Requires resume_routine.mcfunction,
+# check_proximity.mcfunction and heal_skin.mcfunction (all built alongside this file),
+# and this NPC's check_proximity registered in
+# data/luminacion/tags/functions/npc_routine_tick.json.
+# Waypoints are NOT recorded via Taterzens' in-game "/npc path" left-click editor —
+# that's what causes the stale-restriction bug (see
+# _templates/npcs/paths/select_path.mcfunction). Instead, after running this spawn
+# function, run one of functions/npcs/gondarfolas/paths/<path_name>.mcfunction to
+# give him a route. Until you do, he just stands still in PATH mode.
 npc edit movement PATH
 
 
@@ -35,8 +38,8 @@ npc edit commands setPermissionLevel 2
 
 # --- RIGHT-CLICK ACTIONS ------------------------------------------------------
 
-npc edit commands add function luminacion:npcs/_shared/enter_dialog
-npc edit commands add blabber dialogue start luminacion:gondarfolas_darnis_and_bracco --clicker-- @e[name=Gondarfolas,limit=1,sort=nearest]
+npc edit commands add minecraft function luminacion:npcs/_shared/enter_dialog
+npc edit commands add minecraft blabber dialogue start luminacion:gondarfolas_darnis_and_bracco --clicker-- @e[name=Gondarfolas,limit=1,sort=nearest]
 
 
 # --- REGISTRATION REMINDER ----------------------------------------------------

@@ -1,4 +1,10 @@
 {
   "_comment": "Runs once per tick (see functions/tick.mcfunction). Add each roaming NPC's check_proximity.mcfunction path here — see _templates/npcs/check_proximity.mcfunction for the workflow. Safe to be empty.",
-  "values": ["luminacion:npcs/gondarfolas/check_proximity"]
+  "values": [
+    "luminacion:npcs/gondarfolas/check_proximity",
+    "luminacion:npcs/nuvilo/check_proximity",
+    "luminacion:npcs/nerkeli/check_proximity",
+    "luminacion:npcs/nuvilo/hangar_look_tick",
+    "luminacion:npcs/doran/check_proximity"
+  ]
 }

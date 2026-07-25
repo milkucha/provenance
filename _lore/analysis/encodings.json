@@ -399,6 +399,86 @@
           {"text": "Nerkeli doubts the fair's 'thousand years of Milkantis' framing, saying he's heard the world's starting point told three incompatible ways across his travels, none of which line up.", "about": "CONFLICT-12", "consistent_with_context": true, "note": "an informal, personal echo of CONFLICT-12 (three+ unreconciled 'start of the world' reference points) - Nerkeli doesn't cite it as such, he's speaking from travel-worn skepticism"},
           {"text": "Nerkeli restates his running joke theory that ducks are the last living descendants of the Daax.", "about": "daax_symbol", "consistent_with_context": null, "note": "same invented pet theory as in nuvilo_nerkeli_feria_del_milenio - offered explicitly as his own theory, not as history"}
         ]
+      },
+      {
+        "id": "doran_plaza_orientation",
+        "source_file": "data/luminacion/blabber/dialogues/doran_plaza_orientation.json",
+        "participants": ["Döran", "an unnamed traveler (the player)"],
+        "location": {"id": null, "as_named_in_dialog": "la Plaza de las Culturas, Feria del Milenio"},
+        "summary": "A visitor at the Plaza de las Culturas asks Döran what the pavilion is about. He orients them on the four castle replicas on display and the pavilion's AI-powered architectural holograms, then branches on the unfamiliar cities, the holograms' cost, or what \"minor wonder\" means.",
+        "claims": [
+          {"text": "The Plaza de las Culturas is one of the Feria del Milenio's pavilions, honoring the diversity of architectural styles and urbanity across Milkantis, from small villages to great cities.", "about": null, "consistent_with_context": null, "note": "the Plaza is a session-level venue given directly by the user, not drawn from the objective record - see README §8 step 2"},
+          {"text": "The Plaza displays castle replicas of Görff, Ciudad Dragón, and Salthos Cruzados, and the palace of Khan Icé - the fortresses of the largest cities.", "about": null, "consistent_with_context": null, "note": "describes the pavilion's own exhibits, not itself a claim about the objective record"},
+          {"text": "The Plaza's pedestals sometimes display miniature AI-powered holograms of five other architectural marvels of Milkantis, built on a separate datapack - costly in energy, and if left running too long, the fabric of time itself grows tense and starts to crackle.", "about": null, "consistent_with_context": null},
+          {"text": "Döran calls Görff the oldest of the four represented castles, \"curtida en más de una guerra\" (weathered by more than one war).", "about": "gorff", "consistent_with_context": true, "note": "matches era_ensayo 'Las Guerras de Gorff' and the gorff location entry's castle/war history"},
+          {"text": "Döran says he knows Khan Icé's palace only through what train travelers tell him passing through, not firsthand.", "about": "khan_ice", "consistent_with_context": null, "note": "a personal admission, not independently verifiable"}
+        ]
+      },
+      {
+        "id": "doran_four_castles",
+        "source_file": "data/luminacion/blabber/dialogues/doran_four_castles.json",
+        "participants": ["Döran", "an unnamed traveler (the player)"],
+        "location": {"id": null, "as_named_in_dialog": "la Plaza de las Culturas, Feria del Milenio"},
+        "summary": "Döran invites a visitor to ask about any of the four castles in the Plaza, branching per city: Salthos Cruzados (his own hometown, and its tie to the legendary prince Döran and the discovery of Plathinëa), Ciudad Dragón (its growth and his wariness over the destroyed map of Salthos Cruzados), Görff (its wars and its many travelers), and Khan Icé (where he speaks with more confidence than his firsthand knowledge supports).",
+        "claims": [
+          {"text": "Prince Döran built the castle at Salthos Cruzados after the discovery of Plathinëa, and world cartography began there.", "about": "salthos_cruzados", "consistent_with_context": true, "note": "matches the objective record closely (ensayo_i: castle built by prince Doran after Plathinea's discovery, ~72 d.V.; cartography begins here)"},
+          {"text": "This Döran shares his name with the legendary prince, and wonders whether that shaped his own path into maps and miniatures, or the other way around.", "about": "doran", "consistent_with_context": null, "note": "a personal descent/namesake claim, given by the user as this character's backstory - see README §8 step 2; the objective record says nothing about the prince having descendants, so this is neither confirmed nor contradicted"},
+          {"text": "Plathinëa is described as 'the other half of the world' - the region discovered after Milkäan.", "about": null, "consistent_with_context": true, "note": "matches the objective record's two-region split (Milkäan / Platinhüa) documented in unknown.md"},
+          {"text": "Ciudad Dragón grew from Península Dragón, absorbed a neighboring village, and became the largest city in all of Milkantis.", "about": "dragon_city", "consistent_with_context": true, "note": "matches the dragon_city location entry's merger narrative exactly"},
+          {"text": "Ciudad Dragón's mages are blamed for destroying the great map of Salthos Cruzados.", "about": "codigos", "consistent_with_context": true, "note": "matches the codigos concept entry: misuse of codigos by Dragon City's mages destroys the great map of Salthos Cruzados in 850 d.V."},
+          {"text": "Görff's castle carries so many scars that an entire era was named for its wars, 'Las Guerras de Görff.'", "about": "gorff", "consistent_with_context": true, "note": "matches era_ensayo 'Las Guerras de Gorff' (era 2) and the gorff location entry's castle/war history"},
+          {"text": "Döran says more familiar faces pass through the fair from Görff than from anywhere else.", "about": null, "consistent_with_context": null, "note": "a personal impression, not verifiable against the objective record"},
+          {"text": "Khan Icé is connected by rail to both Görff and Balhâm.", "about": "khan_ice", "consistent_with_context": true, "note": "matches the train_segment entries for Gorff-Khan Ice and Khan Ice-Balham"},
+          {"text": "Döran speculates, from the palace's defensive architecture, that Khan Icé served as a wartime refuge and possibly a capital 'when the world closed in on itself.'", "about": "khan_ice", "consistent_with_context": true, "note": "delivered as unconfirmed speculation - not sourced from Döran's own knowledge sample - but it happens to match the objective record: khan_ice's sources note 'refuge built end of era 1; world capital in Era del Confinamiento.' A confident bluff that landed on the truth, not a knowing lie; worth watching if a future retelling drops the hedge and states it as settled fact"}
+        ]
+      },
+      {
+        "id": "doran_eras_of_culture",
+        "source_file": "data/luminacion/blabber/dialogues/doran_eras_of_culture.json",
+        "participants": ["Döran", "an unnamed traveler (the player)"],
+        "location": {"id": null, "as_named_in_dialog": "la Plaza de las Culturas, Feria del Milenio"},
+        "summary": "Döran muses that cultural differences are temporal as well as spatial, then branches on the oldest culture he knows well (Görff, leading into the Era del Daax), a rundown of the ages he can name, what era they're currently living in (the Era de la Magia), and a light tease about how poetic he sounds.",
+        "claims": [
+          {"text": "Döran considers Görff, tied to 'Las Guerras de Görff,' the oldest culture among the four he can speak to with confidence - and admits a gap in what he knows between that era and the Era del Daax.", "about": "gorff", "consistent_with_context": true},
+          {"text": "Döran describes the Era del Daax as the first age of the códigos and the era when architecture itself expanded most, noting the two chronicles disagree on when it began (360 d.V. vs. 294 d.V.) though both close it at 504 d.V.", "about": "Era del Daax", "consistent_with_context": true, "note": "matches the objective record's own boundary mismatch exactly"},
+          {"text": "Döran names the Era de las Maravillas, starting around 804 d.V. with no end he knows of, among the ages he can speak to.", "about": "Era de las Maravillas", "consistent_with_context": true},
+          {"text": "Döran says the present era is the Era de la Magia - when the tools that shape the world began transforming themselves, when people learned to 'mod the game' and bend the rules of the universe within this plane.", "about": "Era de la Magia", "consistent_with_context": true, "note": "the era's existence and dates are in the objective record; this specific framing is a session-given elaboration, plausible as written but not independently verifiable"}
+        ]
+      },
+      {
+        "id": "khaoe_farlis_el_castillo_que_fue",
+        "source_file": "data/luminacion/blabber/dialogues/khaoe_farlis_el_castillo_que_fue.json",
+        "participants": ["Khaoe", "Farlis"],
+        "location": {"id": "gorff", "as_named_in_dialog": "la Plaza de las Culturas, frente a la réplica del Castillo de Görff, Feria del Milenio"},
+        "summary": "Standing in front of the miniature replica of the Castillo de Görff, Khaoe and Farlis - both members of the Collective that now lives there - reflect on what the castle used to be versus what it is now.",
+        "claims": [
+          {"text": "Before the Collective, and before the citadel was left abandoned, a tyrant ruled from the castle at Görff - his name no longer remembered.", "about": "gorff", "consistent_with_context": null, "note": "the objective gorff entry records the castle built in era 2 ('Las Guerras de Gorff') and an industrial restoration, but names no ruler and never uses the word 'tyrant' - compatible in timing, not confirmed in substance; first voiced here as the Collective's own telling of its origin, not drawn from either character's sampled knowledge"},
+          {"text": "Farlis calls it poetic justice that he and Khaoe now live in the same castle that once belonged to that tyrant.", "about": "gorff", "consistent_with_context": null, "note": "Farlis's own framing, given as his personal backstory reason for joining the Collective - not a lore claim to verify"},
+          {"text": "Khaoe pushes back on the 'poetic justice' framing - to her it's not symbolism, just that someone had to take up the stones.", "about": null, "consistent_with_context": null, "note": "personal disposition, not a factual claim"}
+        ]
+      },
+      {
+        "id": "khaoe_farlis_lo_que_cambia_el_tiempo",
+        "source_file": "data/luminacion/blabber/dialogues/khaoe_farlis_lo_que_cambia_el_tiempo.json",
+        "participants": ["Khaoe", "Farlis"],
+        "location": {"id": "gorff", "as_named_in_dialog": "la Plaza de las Culturas, frente a la réplica del Castillo de Görff, Feria del Milenio"},
+        "summary": "Still by the castle replica, Farlis wonders what the Feria del Milenio's 'mil años' is actually counted from; Khaoe, just back from Lundria, says every temple there kept its own calendar; both conclude meaning shifts given enough time, or enough deliberate effort.",
+        "claims": [
+          {"text": "Farlis says he was never told exactly what event the Feria's 'thousand years' framing counts from.", "about": "CONFLICT-12", "consistent_with_context": true, "note": "echoes the same unreconciled origin-point problem documented as CONFLICT-12 (also independently echoed by Nerkeli in nerkeli_hangar_talk.json) - Farlis doesn't cite it as such, just voices the same gap"},
+          {"text": "Khaoe says every temple in Lundria kept its own calendar, as if the world began again at each door.", "about": "lundria", "consistent_with_context": null, "note": "the objective lundria entry records temple-building and the 'culto del cubo flotante de Lundria' (era 7) but says nothing about calendars specifically - plausible given the temple culture on record, not confirmed; Khaoe's own sampled knowledge of Lundria was bounded to the location's name/region/type, not this detail, so this is personal impression from her actual visit, not drawn from her sample"},
+          {"text": "Both agree a thing can end up meaning something else entirely, if enough time passes, or if someone puts in the work to change it.", "about": null, "consistent_with_context": null, "note": "shared philosophical conclusion, not a factual claim"}
+        ]
+      },
+      {
+        "id": "khaoe_farlis_esperando_a_khaasan",
+        "source_file": "data/luminacion/blabber/dialogues/khaoe_farlis_esperando_a_khaasan.json",
+        "participants": ["Khaoe", "Farlis"],
+        "location": {"id": "gorff", "as_named_in_dialog": "la Plaza de las Culturas, frente a la réplica del Castillo de Görff, Feria del Milenio"},
+        "summary": "Still waiting by the castle replica, Khaoe and Farlis look out for their comrade Khaasan, who said he was coming straight to the fair but hasn't been sighted yet.",
+        "claims": [
+          {"text": "Khaasan told Khaoe and Farlis he was coming straight to the Feria del Milenio.", "about": null, "consistent_with_context": null, "note": "a social claim about a third party, nothing in the objective record to check it against"},
+          {"text": "Khaoe and Farlis expect Khaasan to arrive by griffon, and are watching the sky for it.", "about": "Khaasan (Gorff)", "consistent_with_context": false, "note": "the objective inhabitant record lists Khaasan's role as 'Teletraveller,' not a griffon rider - a genuine divergence, logged rather than silently reconciled per this file's own rule; could mean Khaoe and Farlis are simply wrong about how he travels, or that 'Teletraveller' and 'arrives by griffon' aren't actually mutually exclusive - left open, not resolved here"}
+        ]
       }
     ]
   }

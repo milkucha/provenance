@@ -1,12 +1,16 @@
 {
   "$schema": "https://ladysnake.org/schemas/blabber/dialogue.schema.json",
+  "layout": { "type": "blabber:rpg" },
   "_usage": [
     "One-off message from the NPC. No branching. Player dismisses when done.",
     "For multiple variants (in order or randomly), create several copies of this file",
     "with suffixes (_1, _2, _3) and let an external function choose which dialog ID",
     "to start based on a scoreboard counter or random value.",
     "Example selector call from Taterzens:",
-    "  /npc edit commands add blabber dialogue start luminacion:<name>_1 --clicker-- @e[...]",
+    "  /npc edit commands add minecraft blabber dialogue start luminacion:<name>_1 --clicker-- @e[...]",
+    "The 'message' state fires nod_up_down on entry by default (the NPC nods as it",
+    "speaks) — this only works cleanly for single-NPC dialogues, since @interlocutor",
+    "is one fixed entity. Delete the action if a nod would look wrong here.",
     "Replace <npc_key> in the 'end' action below with this NPC's key from",
     "_maps/npcs/registry.json — it resumes the NPC's routine if it was paused",
     "(see _templates/npcs/resume_routine.mcfunction). Only needed if this",
@@ -16,6 +20,10 @@
   "states": {
     "message": {
       "text": "[NPC line goes here]",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [
         {
           "text": "...",

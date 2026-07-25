@@ -55,6 +55,30 @@
           "description": "A traveler stops by Nerkeli's hangar at the Feria del Milenio. Branches on whether they ask about the plane and his flying (the M7 route, his freight work) or steer the talk toward the Feria itself, where Nerkeli turns out skeptical of the 'thousand years' framing and ends up explaining his duck/Daax theory."
         }
       ]
+    },
+    "doran": {
+      "npc": "doran",
+      "_comment": "Three independent dialogs, picked at random (equal odds) on interaction rather than always firing the same one - see _maps/actions/registry.json -> _action_templates.random_dialog for the mechanism, and functions/npcs/doran/spawn.mcfunction for the wired right-click commands. trigger:right_click below is still accurate (each dialog is still started by a right-click-triggered command, just a conditionally-gated one).",
+      "dialogs": [
+        {
+          "id": "luminacion:doran_plaza_orientation",
+          "trigger": "right_click",
+          "condition": null,
+          "description": "A visitor at the Plaza de las Culturas asks what the pavilion is about. Döran orients them on the four castle replicas (Görff, Ciudad Dragón, Salthos Cruzados, Khan Icé), then branches on whether they ask about the unfamiliar cities, the pedestals' AI-powered architectural holograms (and their energy/time-stability cost), or what 'minor' wonder means."
+        },
+        {
+          "id": "luminacion:doran_four_castles",
+          "trigger": "right_click",
+          "condition": null,
+          "description": "Döran invites a visitor to ask about any of the four castles in the Plaza. Branches per city: Salthos Cruzados (his own hometown, and its link to the legendary prince Döran and the discovery of Plathinëa), Ciudad Dragón (its growth and his wariness over the destroyed map of Salthos Cruzados), Görff (its wars and its many travelers), and Khan Icé (where he speaks with more confidence than his actual firsthand knowledge supports)."
+        },
+        {
+          "id": "luminacion:doran_eras_of_culture",
+          "trigger": "right_click",
+          "condition": null,
+          "description": "Döran muses that cultural differences are temporal as well as spatial, then branches on the oldest culture he knows (Görff, leading into the Era del Daax), a rundown of the ages he can name, what era they're currently in (the Era de la Magia), or a light tease about how poetic he sounds."
+        }
+      ]
     }
   }
 }

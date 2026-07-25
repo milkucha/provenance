@@ -1,5 +1,5 @@
 {
-  "_comment": "Master NPC registry. All NPC data lives here. Dialogs and actions reference NPCs by their key. 'backstory' and 'knowledge' were added 2026-07-24 for enacted characters (see the /enact skill and README §8) - both optional for hand-built NPCs, but /enact always fills them in.",
+  "_comment": "Master NPC registry. All NPC data lives here. Dialogs and actions reference NPCs by their key. 'backstory' and 'knowledge' were added 2026-07-24 for enacted characters (see the /enact skill and README §8) - both optional for hand-built NPCs, but /enact always fills them in. As of 2026-07-25, knowledge is split into 'education' (the immutable sample drawn once at creation - never redrawn or edited after) and 'experience' (what the character has picked up since: their own dialog lines beyond the sample, plus - conceptually - their 'backstory' field above, which is also experience-knowledge, just kept as its own top-level field since it predates this split and is used elsewhere as plain character description).",
   "npcs": {
     "_template": {
       "display_name": "",
@@ -10,13 +10,13 @@
       "spawn_position": null,
       "backstory": "",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "sonoros": {
@@ -28,13 +28,13 @@
       "spawn_position": null,
       "backstory": "",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "gondarfolas": {
@@ -46,7 +46,7 @@
       "spawn_position": null,
       "backstory": "A seafarer normally based in Görff, travelling all around the continent. Owns a small ship he uses to take travellers from coast to coast. An avid reader of history, well versed in the history of Milkantis. Has a knack for exaggerating some things. Per the Luminacion Register, also based in Terfila on the return leg of the ferry run (\"Sailing to Gorff\") - the same sailor working both directions, per the register's own matched pair.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": 33,
           "mode": "skewed",
           "topic": [
@@ -129,7 +129,7 @@
             "year_esquema: 2021"
           ]
         },
-        "surfaced_in_dialog": [
+        "experience": [
           "Owns a small ship and regularly runs a route past Catraniz and Sit Nalta.",
           "Has an old copy of the Ensayo (era nine) and a copy of the Libro, and knows the two chronicles don't reconcile with each other (CONFLICT-01).",
           "Bought his history books years ago from a trader in Görff he recalls as 'Bracco, or Braggo' - a big, heavily scarred man who sold them off cheaply and asked no questions; Gondarfolas has no idea where the man came from or went.",
@@ -147,7 +147,7 @@
       "spawn_position": null,
       "backstory": "A distant descendant of Navalius, the founder of Nvhi. Like many in his line, he has chosen to follow the path of knowledge, seeking to bring new light into the world through discovery. He has traveled to the Feria del Milenio to celebrate the 1000 years of Milkantis, hoping to find inspiration for his work among its exhibits - a homage to Milkantis's cultures and building styles, its landscapes, its artifacts (redstone contraptions, datapacks, mods), and its historical eras. Old childhood friend of Nerkeli, a pilot he ran into again at the fair. Despite the family's claimed tie to Nvhi's founding, he readily admits he knows little of the place's actual history - the family kept the name, not the history.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": 27,
           "mode": "composite",
           "topic": [
@@ -214,7 +214,7 @@
             "year_esquema: 2019"
           ]
         },
-        "surfaced_in_dialog": [
+        "experience": [
           "Is pursuing 'the path of knowledge' at the Feria del Milenio, hoping the exhibits inspire his next work.",
           "Claims descent from 'Navalius,' said to have founded Nvhi generations back - though he admits he knows little else about Nvhi's actual history, just the family name.",
           "Cites highway M9 (Nvhi -> Khan Ice) as personally significant given that claimed family connection.",
@@ -233,7 +233,7 @@
       "spawn_position": null,
       "backstory": "An old childhood friend of Nuvilo. Raised in Terfila, he decided young to become a pilot and see the world - airplanes are his passion. Good sense of humor, with a running theory that ducks are the most likely descendants of the legendary Daax. At the Feria del Milenio helping run the airplane showcase. Flies the M7 corridor (Puente Intercontinental - Nvhi) regularly, reaching Nvhi's edge - though until catching up with Nuvilo at the fair, he'd never once connected the place to his old friend's family. Per the Luminacion Register, also flies a Sid Nalta-Terfila route, and has a separate instance stationed at Khol Moshin.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": 19,
           "mode": "composite",
           "topic": [
@@ -283,13 +283,119 @@
             "year_esquema: 2018"
           ]
         },
-        "surfaced_in_dialog": [
+        "experience": [
           "Is minding the Feria del Milenio's airplane hangar exhibit for the fair's showcase; old childhood friend of Nuvilo.",
           "Has a running, self-aware joke theory that ducks are the last living descendants of the Daax.",
           "Flies the M7 corridor (Puente Intercontinental -> Nvhi) regularly, reaching Nvhi's edge.",
           "Picked up from Nuvilo in this conversation: that Nuvilo's family claims descent from 'Navalius,' said to have founded Nvhi - new to Nerkeli despite flying past the place often.",
           "Flies M7 as an assigned freight/passenger run, not personal business - carries tools, building supplies, mail, and occasional fragile merchant goods.",
           "Openly skeptical of the Feria's 'thousand years of Milkantis' framing - says he's heard the world's starting point told three incompatible ways across his travels."
+        ]
+      }
+    },
+    "doran": {
+      "display_name": "Döran",
+      "skin": "https://minesk.in/c336e48215fb4759908960d4a2748b2a",
+      "city": "Salthos Cruzados",
+      "taterzen_name": "Döran",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "From Salthos Cruzados, and in charge of the Plaza de las Culturas at the Feria del Milenio (held this session in his own hometown) - one of the fair's 5 pavilions, dedicated to honoring the diversity of architectural styles and urbanity across Milkantis, from small villages to great cities. The Plaza holds castle replicas of Görff, Ciudad Dragón, and Salthos Cruzados, and the palace of Khan Icé - the fortresses of the largest cities. Its pedestals sometimes (when the tech behind them cooperates) display miniature AI-powered holograms of 5 other architectural marvels of Milkantis, built on a separate datapack - visually striking, but costly: run too long, the fabric of time itself grows tense and starts to crackle, which is why the pedestals aren't always lit. He's thrilled to be meeting people from every corner of the continent right in his home city, and sees his role as answering questions and opening new conversations. Naturally curious. Likely a descendant or namesake of the legendary prince Döran, who built the Salthos Cruzados castle after Plathinëa's discovery and began world cartography there - he's not sure if sharing the name shaped his path into maps and miniatures, or the other way around. Knowledgeable, but young and a little impulsive: faced with a gap in what's supposed to be his own territory, he'd rather speculate with confidence than admit ignorance, though he stops short of outright lying. Believes (correctly) that the present era is the Era de la Magia - when the tools that shape the world began transforming themselves, learning to mod the game and bend the rules of the universe within this plane.",
+      "knowledge": {
+        "education": {
+          "percent": 35,
+          "mode": "composite",
+          "topic": [
+            "12% salthos (skewed)",
+            "10% gorff/dragon/khan ice - the other 3 Plaza cities (skewed)",
+            "8% hearsay-only",
+            "5% random"
+          ],
+          "items": [
+            "airport: Soti",
+            "character_legendary: forlan",
+            "character_legendary: forlias",
+            "concept: antiguo_continente_and_mapa_del_milenio",
+            "concept: orikal",
+            "concept: world_name_variants",
+            "conflict: CONFLICT-01",
+            "conflict: CONFLICT-09",
+            "era_ensayo: Era del Daax",
+            "era_ensayo: Las Guerras de Gorff",
+            "era_esquema: Era de las Maravillas",
+            "era_esquema: Era del Dääx",
+            "hearsay: gondarfolas_darnis_and_bracco#1",
+            "hearsay: gondarfolas_darnis_and_bracco#2",
+            "hearsay: gondarfolas_darnis_and_bracco#3",
+            "hearsay: gondarfolas_darnis_and_bracco#4",
+            "hearsay: gondarfolas_darnis_and_bracco#5",
+            "hearsay: gondarfolas_darnis_and_bracco#7",
+            "hearsay: gondarfolas_darnis_and_bracco#8",
+            "hearsay: nawom_morkulo_first_meeting#2",
+            "hearsay: nawom_morkulo_first_meeting#5",
+            "hearsay: nerkeli_hangar_talk#1",
+            "hearsay: nerkeli_hangar_talk#2",
+            "hearsay: nerkeli_hangar_talk#5",
+            "hearsay: nuvilo_nerkeli_feria_del_milenio#1",
+            "hearsay: nuvilo_nerkeli_feria_del_milenio#2",
+            "hearsay: nuvilo_nerkeli_feria_del_milenio#3",
+            "hearsay: nuvilo_nerkeli_feria_del_milenio#4",
+            "hearsay: nuvilo_scholar_at_the_feria#2",
+            "hearsay: nuvilo_scholar_at_the_feria#3",
+            "hearsay: sonoros_lost_traveler#1",
+            "hearsay: sonoros_lost_traveler#3",
+            "hearsay: sonoros_lost_traveler#4",
+            "hearsay: sonoros_lost_traveler#5",
+            "highway: M9",
+            "inhabitant: Bardaglis (Gorff)",
+            "inhabitant: Farlika (Gorff)",
+            "inhabitant: Farlis (Khol Moshin (Taterzen sheet, distinct from the NPC-sheet locality list above))",
+            "inhabitant: Gizen (cross-locality travelers/routes (named, with a mode of travel))",
+            "inhabitant: Gok (cross-locality travelers/routes (named, with a mode of travel))",
+            "inhabitant: Grogar / Grograr (Puente Continental)",
+            "inhabitant: Gundulun (Gorff)",
+            "inhabitant: Jaalax (Volcano-Gorff)",
+            "inhabitant: Juori (Volcano-Gorff)",
+            "inhabitant: Kaukalus (Volcano-Gorff)",
+            "inhabitant: Kristok Jakur (Gorff)",
+            "inhabitant: Mrek (Gorff)",
+            "inhabitant: Nroki (Gorff)",
+            "inhabitant: Puri (Terfila)",
+            "inhabitant: Roburo (Gorff)",
+            "inhabitant: Saltamontabiras (cross-locality travelers/routes (named, with a mode of travel))",
+            "inhabitant: Socorlis (Gorff)",
+            "inhabitant: Terrolis (cross-locality travelers/routes (named, with a mode of travel))",
+            "inhabitant: Tetto (Gorff)",
+            "inhabitant: Trentor (Gorff)",
+            "inhabitant: Zarkatraz (Puente Continental)",
+            "inhabitant: Zun (Gorff)",
+            "location: bahia_pelicanos",
+            "location: dragon_city",
+            "location: puerto_del_este",
+            "location: puerto_pastizal",
+            "location: puerto_tortuga",
+            "location: salthos_cruzados",
+            "location: sit_nalta",
+            "location: soti",
+            "location: thrul_mahotta",
+            "route_named: Ruta Lundria-Salthos Cruzados",
+            "train_segment: Balhâm - Salthos Cruzados",
+            "train_segment: Gorff - Khan Ice",
+            "train_segment: Khan Ice - Balhâm",
+            "year_esquema: 2013",
+            "year_esquema: 2014",
+            "year_esquema: 2015",
+            "year_esquema: 2016",
+            "year_esquema: 2023"
+          ]
+        },
+        "experience": [
+          "Considers Görff the oldest culture among the four he can speak to with real confidence, tied to 'Las Guerras de Görff' - and openly admits a historical gap between that and the Era del Daax.",
+          "Knows Khan Icé only through the two train segments that reach it (Görff-Khan Icé, Khan Icé-Balhâm) and what passengers say in passing - but as the Plaza's official host, speaks with authority about it anyway, reading the palace's defensive architecture as evidence it once served as a wartime capital, rather than admit he's never actually been.",
+          "Holds a personal wariness toward Ciudad Dragón, over the claim that its mages were the ones who destroyed Salthos Cruzados's great map.",
+          "Says more familiar faces pass through the fair from Görff than from anywhere else.",
+          "Names the Era de las Maravillas (from 804 d.V.) among the ages he can speak to, alongside the Era del Daax and the current Era de la Magia.",
+          "His colleagues at the Plaza tease him for turning solemn and poetic whenever he talks about it."
         ]
       }
     },
@@ -302,13 +408,13 @@
       "spawn_position": null,
       "backstory": "Musician.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "dagna": {
@@ -320,13 +426,13 @@
       "spawn_position": null,
       "backstory": "Barkeeper.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "falkorlia": {
@@ -338,13 +444,13 @@
       "spawn_position": null,
       "backstory": "Pedestrian.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "farlika": {
@@ -356,13 +462,13 @@
       "spawn_position": null,
       "backstory": "Town Market Keeper.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "gorlia": {
@@ -374,13 +480,13 @@
       "spawn_position": null,
       "backstory": "Town Market Keeper.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "gundulun": {
@@ -392,13 +498,13 @@
       "spawn_position": null,
       "backstory": "Pilot.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "khaasan": {
@@ -410,31 +516,105 @@
       "spawn_position": null,
       "backstory": "Teletraveller.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "khaoe": {
       "display_name": "Khaoe",
       "skin": "https://minesk.in/36106afb45f343e4adba20d4454a573a",
-      "city": "Görff",
+      "city": "Görff, Feria del Milenio",
       "taterzen_name": "Khaoe",
       "taterzen_uuid": "",
       "spawn_position": null,
-      "backstory": "Member of the Collective.",
+      "backstory": "Originally from Görff, born and raised there, though her family comes from Khol Moshin, and before that from Khan Icé. Belongs to the Collective that runs Görff in the present — a horizontally-organized structure made up of the diverse peoples who came to the abandoned citadel and farms and turned it into an incipient revolutionary community built on agriculture, a bit of technology and magic, and above all an entrenched idea of pluriversality. Regularly meets with Farlis and Khaasan, her comrades and good friends. Just back from a trip to the temple in Lundria, and stopping at the Feria del Milenio on her way home — nobody misses the Feria, it only happens once in a lifetime, at least for most.",
       "knowledge": {
-        "sample": {
-          "percent": null,
-          "mode": "",
-          "topic": null,
-          "items": []
+        "education": {
+          "percent": 27,
+          "mode": "composite",
+          "topic": [
+            "10% gorff/collective (skewed: gorff, collective, pluriversal, horizontal)",
+            "6% khol moshin/khan ice (skewed: khol moshin, khan ice)",
+            "5% lundria/temple/feria (skewed: lundria, temple, feria)",
+            "6% random"
+          ],
+          "items": [
+            "airport: Lundria",
+            "concept: seasons_eas",
+            "era_ensayo: Era del Mosaico",
+            "era_libro: Tercera Venida",
+            "hearsay: doran_four_castles#8",
+            "hearsay: doran_plaza_orientation#3",
+            "hearsay: doran_plaza_orientation#5",
+            "hearsay: gondarfolas_darnis_and_bracco#2",
+            "hearsay: gondarfolas_darnis_and_bracco#3",
+            "hearsay: gondarfolas_darnis_and_bracco#4",
+            "hearsay: gondarfolas_darnis_and_bracco#5",
+            "hearsay: gondarfolas_darnis_and_bracco#7",
+            "hearsay: nawom_morkulo_first_meeting#3",
+            "hearsay: nerkeli_hangar_talk#1",
+            "hearsay: nerkeli_hangar_talk#2",
+            "hearsay: nerkeli_hangar_talk#4",
+            "hearsay: nerkeli_hangar_talk#5",
+            "hearsay: nuvilo_nerkeli_feria_del_milenio#1",
+            "hearsay: nuvilo_nerkeli_feria_del_milenio#4",
+            "hearsay: nuvilo_scholar_at_the_feria#3",
+            "hearsay: nuvilo_scholar_at_the_feria#4",
+            "hearsay: sonoros_lost_traveler#4",
+            "hearsay: sonoros_lost_traveler#6",
+            "inhabitant: Azaor (Gorff)",
+            "inhabitant: Bardaglis (Gorff)",
+            "inhabitant: Dägna (Gorff)",
+            "inhabitant: Dägna (Khol Moshin (Taterzen sheet, distinct from the NPC-sheet locality list above))",
+            "inhabitant: Farlika (Gorff)",
+            "inhabitant: Farlis (Khol Moshin (Taterzen sheet, distinct from the NPC-sheet locality list above))",
+            "inhabitant: Farlis (cross-locality travelers/routes (named, with a mode of travel))",
+            "inhabitant: Galandis (cross-locality travelers/routes (named, with a mode of travel))",
+            "inhabitant: Garnako (Gorff)",
+            "inhabitant: Gondarfolas (Gorff)",
+            "inhabitant: Gondarfolas (Terfila)",
+            "inhabitant: Gorlia (Gorff)",
+            "inhabitant: Kaukalus (Volcano-Gorff)",
+            "inhabitant: Kjon (cross-locality travelers/routes (named, with a mode of travel))",
+            "inhabitant: Kjon-Ukk (cross-locality travelers/routes (named, with a mode of travel))",
+            "inhabitant: Kristok Jakur (Gorff)",
+            "inhabitant: Mrek (Gorff)",
+            "inhabitant: Murunu (cross-locality travelers/routes (named, with a mode of travel))",
+            "inhabitant: Nroki (Gorff)",
+            "inhabitant: Nuruk (Khol Moshin (Taterzen sheet, distinct from the NPC-sheet locality list above))",
+            "inhabitant: Raika (Gorff)",
+            "inhabitant: Raika (Khol Moshin (Taterzen sheet, distinct from the NPC-sheet locality list above))",
+            "inhabitant: Sari (Puente Continental)",
+            "inhabitant: Saltamontabiras (cross-locality travelers/routes (named, with a mode of travel))",
+            "inhabitant: Socorlis (Gorff)",
+            "inhabitant: Trentor (Khol Moshin (Taterzen sheet, distinct from the NPC-sheet locality list above))",
+            "inhabitant: Zun (Gorff)",
+            "location: aldea_de_selenne",
+            "location: bahia_pelicanos",
+            "location: gorff",
+            "location: isla_tortuga",
+            "location: khan_ice",
+            "location: khol_moshin",
+            "location: lundria",
+            "location: milkantida_as_place",
+            "location: pueblo_camilo_ricarda",
+            "location: puerto_tortuga",
+            "train_segment: Balhâm - Salthos Cruzados",
+            "train_segment: Gorff - Khan Ice",
+            "train_segment: Khan Ice - Balhâm",
+            "train_segment: Khol Moshin"
+          ]
         },
-        "surfaced_in_dialog": []
+        "experience": [
+          "Just back from a trip to the temple in Lundria; hasn't fully unpacked the experience yet, and speaks about it in personal terms rather than citing anything specific about the cult or calendar practice there.",
+          "Considers the castle at Görff practical rather than symbolic — someone had to take up the stones after the tyrant was gone, in her view, not poetic justice.",
+          "Is waiting at the Feria del Milenio (by the Castillo de Görff replica in the Plaza de las Culturas) for Khaasan, expecting him to arrive by griffon."
+        ]
       }
     },
     "kristok_jakur": {
@@ -446,13 +626,13 @@
       "spawn_position": null,
       "backstory": "Blacksmith.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "morlia": {
@@ -464,13 +644,13 @@
       "spawn_position": null,
       "backstory": "Town Market Keeper.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "norkan": {
@@ -482,13 +662,13 @@
       "spawn_position": null,
       "backstory": "Worker from Volcano.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "nuruk": {
@@ -500,13 +680,13 @@
       "spawn_position": null,
       "backstory": "Poet.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "raika": {
@@ -518,13 +698,13 @@
       "spawn_position": null,
       "backstory": "Fish Shop Keeper.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "roburo": {
@@ -536,13 +716,13 @@
       "spawn_position": null,
       "backstory": "Fisherman.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "sandarlo": {
@@ -554,13 +734,13 @@
       "spawn_position": null,
       "backstory": "Paint Shop Keeper.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "saski": {
@@ -572,13 +752,13 @@
       "spawn_position": null,
       "backstory": "Painter.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "trentor": {
@@ -590,13 +770,13 @@
       "spawn_position": null,
       "backstory": "Innkeeper.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "azaor": {
@@ -608,13 +788,13 @@
       "spawn_position": null,
       "backstory": "",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "mrek": {
@@ -626,13 +806,13 @@
       "spawn_position": null,
       "backstory": "",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "nroki": {
@@ -644,13 +824,13 @@
       "spawn_position": null,
       "backstory": "",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "socorlis": {
@@ -662,13 +842,13 @@
       "spawn_position": null,
       "backstory": "",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "surulor": {
@@ -680,13 +860,13 @@
       "spawn_position": null,
       "backstory": "",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "tetto": {
@@ -698,13 +878,13 @@
       "spawn_position": null,
       "backstory": "",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "zun": {
@@ -716,13 +896,13 @@
       "spawn_position": null,
       "backstory": "",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "garnako": {
@@ -734,13 +914,13 @@
       "spawn_position": null,
       "backstory": "",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "farlis": {
@@ -752,13 +932,13 @@
       "spawn_position": null,
       "backstory": "Member of the Collective. Travels the Khol Moshin-Görff route on horseback.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "gondorlikas": {
@@ -770,13 +950,13 @@
       "spawn_position": null,
       "backstory": "Flies between Lundria and Catraniz.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "grogar": {
@@ -788,13 +968,13 @@
       "spawn_position": null,
       "backstory": "Unknown.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "sari": {
@@ -806,13 +986,13 @@
       "spawn_position": null,
       "backstory": "Trader.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "soro": {
@@ -824,13 +1004,13 @@
       "spawn_position": null,
       "backstory": "Trader.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "trifolis": {
@@ -842,13 +1022,13 @@
       "spawn_position": null,
       "backstory": "Archiecht.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "zarkatraz": {
@@ -860,13 +1040,13 @@
       "spawn_position": null,
       "backstory": "",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "lumi": {
@@ -878,13 +1058,13 @@
       "spawn_position": null,
       "backstory": "Kid.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "peregrin": {
@@ -896,13 +1076,13 @@
       "spawn_position": null,
       "backstory": "Peregrins.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "puri": {
@@ -914,13 +1094,13 @@
       "spawn_position": null,
       "backstory": "Kid.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "zarkapulos": {
@@ -932,13 +1112,13 @@
       "spawn_position": null,
       "backstory": "Peregrin.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "terrolis": {
@@ -950,13 +1130,13 @@
       "spawn_position": null,
       "backstory": "Pilot. Flies the Terfila-Dragon route.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "aureobalo": {
@@ -968,13 +1148,13 @@
       "spawn_position": null,
       "backstory": "Banker en route. Travels the Terfila-Khol Moshin route by car.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "garfeld": {
@@ -986,13 +1166,13 @@
       "spawn_position": null,
       "backstory": "Pilot. Flies the Terfila-Puerto Varilla route.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "gizen": {
@@ -1004,13 +1184,13 @@
       "spawn_position": null,
       "backstory": "Flies between Görff and Catraniz.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "murunu": {
@@ -1022,13 +1202,13 @@
       "spawn_position": null,
       "backstory": "Travels between Görff and Ciudad Dragon by boat.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "saltamontabiras": {
@@ -1040,13 +1220,13 @@
       "spawn_position": null,
       "backstory": "Travels the Tyrnea-Görff route by camelback, by way of Terfila.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "kjon": {
@@ -1058,13 +1238,13 @@
       "spawn_position": null,
       "backstory": "Travels locally between Khan Ice and Görff by griffon.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "kjon_ukk": {
@@ -1076,13 +1256,13 @@
       "spawn_position": null,
       "backstory": "Travels locally between Khan Ice and Görff by griffon.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "malkinimies": {
@@ -1094,13 +1274,13 @@
       "spawn_position": null,
       "backstory": "Travels between Görff and Khan Ice by horseback.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "gok": {
@@ -1112,13 +1292,13 @@
       "spawn_position": null,
       "backstory": "Travels between Khan Ice and Catraniz.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "gurk": {
@@ -1130,13 +1310,13 @@
       "spawn_position": null,
       "backstory": "Travels between Nueva Gondola and Görff.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "galandis": {
@@ -1148,13 +1328,13 @@
       "spawn_position": null,
       "backstory": "Flies between Nvhi and Khan Ice.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "jaalax": {
@@ -1166,13 +1346,13 @@
       "spawn_position": null,
       "backstory": "Worker from Volcano.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "juori": {
@@ -1184,13 +1364,13 @@
       "spawn_position": null,
       "backstory": "Worker from Volcano.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "kaukalus": {
@@ -1202,13 +1382,13 @@
       "spawn_position": null,
       "backstory": "Worker from Volcano.",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "el_globero": {
@@ -1220,13 +1400,13 @@
       "spawn_position": null,
       "backstory": "",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "mragk": {
@@ -1238,13 +1418,13 @@
       "spawn_position": null,
       "backstory": "",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "korin": {
@@ -1256,13 +1436,13 @@
       "spawn_position": null,
       "backstory": "",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     },
     "nerl": {
@@ -1274,13 +1454,13 @@
       "spawn_position": null,
       "backstory": "",
       "knowledge": {
-        "sample": {
+        "education": {
           "percent": null,
           "mode": "",
           "topic": null,
           "items": []
         },
-        "surfaced_in_dialog": []
+        "experience": []
       }
     }
   }

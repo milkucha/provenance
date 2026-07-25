@@ -1,10 +1,15 @@
 {
   "$schema": "https://ladysnake.org/schemas/blabber/dialogue.schema.json",
+  "layout": { "type": "blabber:rpg" },
   "start_at": "greeting",
   "states": {
 
     "greeting": {
       "text": "Well, come on in - don't just stand at the door gawking at the hangar like it's going to bite you. You here for the airplane showcase, or did the smell of engine oil just drag you off the fairground path?",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [
         {
           "text": "I am, yes.",
@@ -19,6 +24,10 @@
 
     "showcase_1": {
       "text": "Ha, good - I like a straight answer. This one's my baby, the one I fly the M7 corridor with, Puente Intercontinental all the way up toward Nvhi. Ask me anything, I've got more stories about her than the placard lets me put up.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [
         {
           "text": "Why do you fly that route often? Do you have any business there?",
@@ -28,7 +37,25 @@
     },
 
     "showcase_2": {
-      "text": "No real business of my own, no - it's just the run they've had me flying for years now, freight and the odd passenger, Puente Intercontinental up to Nvhi's edge and back. Funny thing is, for as many times as I've made that flight, I couldn't tell you much about Nvhi itself - I turn around at the strip and I'm gone again before I've properly looked at the place.",
+      "text": "No real business of my own, no - it's just the run they've had me flying for years now, freight and the odd passenger, Puente Intercontinental up to Nvhi's edge and back.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [
+        {
+          "text": "...",
+          "next": "showcase_2b"
+        }
+      ]
+    },
+
+    "showcase_2b": {
+      "text": "Funny thing is, for as many times as I've made that flight, I couldn't tell you much about Nvhi itself - I turn around at the strip and I'm gone again before I've properly looked at the place.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [
         {
           "text": "What kind of freight do you carry?",
@@ -38,7 +65,25 @@
     },
 
     "showcase_3": {
-      "text": "Bit of everything, depends on the week - crates of tools and building supplies mostly, some mail, once in a while a merchant's goods too fragile to trust to a boat or a horse. Not glamorous, but the plane doesn't care what's in the hold, and neither do I, so long as it's strapped down before we hit any weather.",
+      "text": "Bit of everything, depends on the week - crates of tools and building supplies mostly, some mail, once in a while a merchant's goods too fragile to trust to a boat or a horse.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [
+        {
+          "text": "...",
+          "next": "showcase_3b"
+        }
+      ]
+    },
+
+    "showcase_3b": {
+      "text": "Not glamorous, but the plane doesn't care what's in the hold, and neither do I, so long as it's strapped down before we hit any weather.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [
         {
           "text": "...",
@@ -49,6 +94,10 @@
 
     "feria_1": {
       "text": "Ha, fair enough - not everyone's here for engines. The Feria del Milenio, then - a thousand years of Milkantis, if you believe the count, and every corner of the fairground's trying to say something about it. I'm just glad they gave the pilots a wing to show off in, honestly.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [
         {
           "text": "If you believe the count? Why wouldn't you?",
@@ -58,7 +107,25 @@
     },
 
     "feria_2": {
-      "text": "Because I've flown enough routes to hear it told three different ways. Depending who you ask, this world started at one point, or another point entirely, or some third one nobody agrees with either - and none of the tellings line up. So 'a thousand years' is really just whichever count somebody decided looked good on the banner.",
+      "text": "Because I've flown enough routes to hear it told three different ways. Depending who you ask, this world started at one point, or another point entirely, or some third one nobody agrees with either - and none of the tellings line up.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [
+        {
+          "text": "...",
+          "next": "feria_2b"
+        }
+      ]
+    },
+
+    "feria_2b": {
+      "text": "So 'a thousand years' is really just whichever count somebody decided looked good on the banner.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [
         {
           "text": "Somebody cared enough to make this whole fair, though.",
@@ -69,6 +136,10 @@
 
     "feria_3": {
       "text": "Oh, no argument there - doesn't stop me enjoying the free food and the excuse to show the plane off. I just don't lose sleep over whether the number's exactly right. Somewhere out there's probably a duck who's older than all three tellings put together, and nobody's throwing him a party.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [
         {
           "text": "A duck?",
@@ -78,7 +149,25 @@
     },
 
     "feria_4": {
-      "text": "Oh, right, you wouldn't know this about me - I've got a theory nobody takes seriously, that ducks are the last living descendants of the old Daax. Symbol carved into ruins generations back, strange little creature, nobody's ever actually explained the connection. Somebody has to fill the gap history left open, so it might as well be me.",
+      "text": "Oh, right, you wouldn't know this about me - I've got a theory nobody takes seriously, that ducks are the last living descendants of the old Daax.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [
+        {
+          "text": "...",
+          "next": "feria_4b"
+        }
+      ]
+    },
+
+    "feria_4b": {
+      "text": "Symbol carved into ruins generations back, strange little creature, nobody's ever actually explained the connection. Somebody has to fill the gap history left open, so it might as well be me.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [
         {
           "text": "...",
@@ -88,19 +177,11 @@
     },
 
     "end_showcase": {
-      "type": "end_dialogue",
-      "action": {
-        "type": "blabber:command",
-        "value": "execute as @interlocutor run function luminacion:npcs/nerkeli/resume_routine"
-      }
+      "type": "end_dialogue"
     },
 
     "end_feria": {
-      "type": "end_dialogue",
-      "action": {
-        "type": "blabber:command",
-        "value": "execute as @interlocutor run function luminacion:npcs/nerkeli/resume_routine"
-      }
+      "type": "end_dialogue"
     }
 
   }

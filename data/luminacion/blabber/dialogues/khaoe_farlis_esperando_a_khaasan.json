@@ -1,0 +1,45 @@
+{
+  "$schema": "https://ladysnake.org/schemas/blabber/dialogue.schema.json",
+  "layout": { "type": "blabber:rpg" },
+  "name": "Khaoe & Farlis",
+  "start_at": "f1",
+  "states": {
+
+    "f1": {
+      "text": "Farlis: ¿Y Khaasan? Dijo que venía derecho para acá.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Farlis,limit=1] run function luminacion:npcs/_shared/look_up"
+      },
+      "choices": [{ "text": "...", "next": "k1" }]
+    },
+
+    "k1": {
+      "text": "Khaoe: Todavía no veo su grifo. Conociéndolo, se entretuvo con el primer puesto de comida que encontró.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/nod_left_right"
+      },
+      "choices": [{ "text": "...", "next": "f2" }]
+    },
+
+    "f2": {
+      "text": "Farlis: O se quedó admirando otro castillo que no es el suyo.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Farlis,limit=1] run function luminacion:npcs/_shared/nod_left_right"
+      },
+      "choices": [{ "text": "...", "next": "k2" }]
+    },
+
+    "k2": {
+      "text": "Khaoe: Le damos media hora más. Después empezamos sin él, como siempre.",
+      "choices": [{ "text": "...", "next": "end" }]
+    },
+
+    "end": {
+      "type": "end_dialogue"
+    }
+
+  }
+}

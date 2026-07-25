@@ -1,0 +1,54 @@
+{
+  "$schema": "https://ladysnake.org/schemas/blabber/dialogue.schema.json",
+  "layout": { "type": "blabber:rpg" },
+  "name": "Khaoe & Farlis",
+  "start_at": "k1",
+  "states": {
+
+    "k1": {
+      "text": "Khaoe: Nunca me acostumbro a verlo así. Tan pequeño, tan quieto. Cabe en una mano.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/look_up"
+      },
+      "choices": [{ "text": "...", "next": "f1" }]
+    },
+
+    "f1": {
+      "text": "Farlis: A mí me da risa, la verdad. Todo ese peso de piedra, reducido a un adorno de feria.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Farlis,limit=1] run function luminacion:npcs/_shared/nod_left_right"
+      },
+      "choices": [{ "text": "...", "next": "k2" }]
+    },
+
+    "k2": {
+      "text": "Khaoe: Y pensar que antes de nosotros, antes de que quedara abandonado, ahí vivía un tirano. Ya ni se sabe bien el nombre.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/look_down"
+      },
+      "choices": [{ "text": "...", "next": "f2" }]
+    },
+
+    "f2": {
+      "text": "Farlis: Y ahora es donde tú y yo dormimos. Hay algo de justicia poética en eso, ¿no te parece?",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Farlis,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "k3" }]
+    },
+
+    "k3": {
+      "text": "Khaoe: O simplemente costumbre. Alguien tenía que quedarse con las piedras.",
+      "choices": [{ "text": "...", "next": "end" }]
+    },
+
+    "end": {
+      "type": "end_dialogue"
+    }
+
+  }
+}

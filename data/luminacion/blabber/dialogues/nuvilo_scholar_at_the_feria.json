@@ -1,10 +1,15 @@
 {
   "$schema": "https://ladysnake.org/schemas/blabber/dialogue.schema.json",
+  "layout": { "type": "blabber:rpg" },
   "start_at": "greeting",
   "states": {
 
     "greeting": {
       "text": "Hi traveller, just arrived in the Feria? Perfect timing - the exhibits are only getting better as the day goes on.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [
         {
           "text": "Can you tell me about the feria?",
@@ -14,7 +19,39 @@
     },
 
     "about_feria": {
-      "text": "It's a celebration - a thousand years of Milkantis, if the reckoning's to be believed. Every exhibit's a homage to some piece of it: the cultures and building styles that grew up across the land, the landscapes, the artifacts we've built along the way - codigos, redstone work, that sort of thing - and the eras that carried us here. I'm a scholar myself, so I'll admit I'm here as much to look for something to write about as to look at the fair itself.",
+      "text": "It's a celebration - a thousand years of Milkantis, if the reckoning's to be believed.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [
+        {
+          "text": "...",
+          "next": "about_feria_exhibits"
+        }
+      ]
+    },
+
+    "about_feria_exhibits": {
+      "text": "Every exhibit's a homage to some piece of it: the cultures and building styles that grew up across the land, the landscapes, the artifacts we've built along the way - codigos, redstone work, that sort of thing - and the eras that carried us here.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [
+        {
+          "text": "...",
+          "next": "about_feria_2"
+        }
+      ]
+    },
+
+    "about_feria_2": {
+      "text": "I'm a scholar myself, so I'll admit I'm here as much to look for something to write about as to look at the fair itself.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [
         {
           "text": "What is your role here?",
@@ -25,6 +62,10 @@
 
     "role": {
       "text": "No official role, really - I'm not running an exhibit like some of the others here. I'm a visitor, same as you, though I come at it as a scholar: following what they call the path of knowledge, hoping something here sparks the next thing I write.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [
         {
           "text": "A scholar? What do you normally write about?",
@@ -34,7 +75,25 @@
     },
 
     "writes_about": {
-      "text": "Mostly the old chroniclers and inventors - men like Daaxagoras and Pitaglorias, who put together the first atlas of this world, or travelers like Darnis, who sailed south and found land nobody'd mapped. There's also a puzzle I keep circling back to: two different histories of the very same centuries, written by different hands, that never quite agree with each other. I haven't solved that one. Might be why I keep coming to places like this, hoping something turns up that the books missed.",
+      "text": "Mostly the old chroniclers and inventors - men like Daaxagoras and Pitaglorias, who put together the first atlas of this world, or travelers like Darnis, who sailed south and found land nobody'd mapped.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [
+        {
+          "text": "...",
+          "next": "writes_about_2"
+        }
+      ]
+    },
+
+    "writes_about_2": {
+      "text": "There's also a puzzle I keep circling back to: two different histories of the very same centuries, written by different hands, that never quite agree with each other. I haven't solved that one. Might be why I keep coming to places like this, hoping something turns up that the books missed.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
       "choices": [
         {
           "text": "...",
