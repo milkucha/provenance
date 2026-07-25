@@ -100,7 +100,8 @@ Reusable patterns every NPC/dialog is built from, so each new one doesn't reinve
   several, hard-won in-game debugging notes (why `/random` never resolves in this environment, why
   the pause/resume radii must differ).
 - **Gesture dispatch** — `data/luminacion/functions/npcs/_shared/gesture_<name>.mcfunction` (wave,
-  point, bow, shrug, palms-up, scratch-head, laugh) plus `gesture_clear.mcfunction` and the
+  point, bow, shrug, palms-up, scratch-head, laugh, jump, cross-arms, no, plus left-arm mirror variants
+  `wave_left`, `point_left`, and `scratch_head_left`) plus `gesture_clear.mcfunction` and the
   `nod_up_down`/`nod_left_right` family: datapack-side functions that trigger the resource-pack
   animations below via a tag + `schedule ... replace` pattern. They physically live under
   `data/luminacion/` (layer 3) but belong here conceptually — templated dispatch for content that's
@@ -120,7 +121,7 @@ Custom client-side content shipped alongside the datapack, version-controlled in
 Currently:
 
 - **Gestures** — a forked `player.jem`/`player_slim.jem` EMF/Iris override giving Taterzens NPCs (and
-  real players) 7 animated poses, each triggered by a `CustomModelData`-tagged invisible stick in the
+  real players) 12 animated poses, each triggered by a `CustomModelData`-tagged invisible stick in the
   main hand. Coexists with the installed Fresh Animations + FA+Player pack by forking only the two
   files that need the gesture hook — every other file (movement math, textures, cape) still falls
   through to FA+Player underneath. Full breakdown below.
@@ -142,7 +143,7 @@ keyframed animation: giving the NPC (or a real player) an invisible
 `minecraft:stick{CustomModelData:<N>}` in `weapon.mainhand` makes `player.jem`/`player_slim.jem`
 override that limb's rotation to a fixed (or, for wave/shrug/scratch-head/laugh, `sin()`-oscillating)
 angle for as long as the item is held. Both `.jem` files are a single minified JSON line each — the
-whole rig (head, body, both arms, both legs, all 7 gestures) lives in one blob of nested
+whole rig (head, body, both arms, both legs, all 12 gestures) lives in one blob of nested
 `if(nbt(SelectedItem.tag.CustomModelData,<N>), <pose>, <next gesture's case>)` expressions per axis
 (`right_arm.rx`/`.ry`/`.rz`, `var.body_rx`, `var.gest_headrx`, ...), eased in over a few frames by a
 self-referencing `var.*` low-pass filter (proven more reliable than easing the bone key directly,
@@ -175,6 +176,14 @@ which jittered). See §6 for the `CustomModelData` value of each gesture.
   ```
   item replace entity @s weapon.mainhand with minecraft:stick{CustomModelData:101}
   ```
+
+- *Elbow joint*: attempted 2026-07-25 as a nested `submodels` child bone (`right_forearm`/
+  `left_forearm`) under `right_arm`/`left_arm`, reverted same day — this CEM/EMF build doesn't compose
+  a nested submodel's rotation with its parent's, so the child rendered at its raw `translate`
+  position, unrotated by the arm, completely detached from the elbow (and broke the base player model
+  for everyone, not just the gesture, since the box split was unconditional). See TODO.md for the
+  follow-up note; real elbow articulation needs forward-kinematics math baked into the expression
+  language, not simple nesting.
 
 ---
 
@@ -410,6 +419,12 @@ This updates `taterzen_uuid` for every NPC in the registry that was exported. Sa
 | Palms-up | 105 | `gesture_palms_up` | Both arms raised + rotated, static — originally prototyped as "cross-arms", renamed once it visually read as palms-up instead |
 | Scratch-head | 106 | `gesture_scratch_head` | Right arm to head height, with an intermittent scratching wobble |
 | Laugh | 107 | `gesture_laugh` | Both arms + body + head all animated — overrides head pitch too, so never pair with a `nod_*` action on the same dialogue state |
+| No | 108 | `gesture_no` | Both arms raised in front of the chest and swept side to side in sync (`ry` oscillates, `sin(age*3)`, mirrored between arms) while the head shakes side to side (`sin(age*4)`) via a new `var.gest_headry` low-pass filter — the yaw counterpart to Laugh's `var.gest_headrx` pitch override, since no earlier gesture touched head yaw. A "no, no" rejection gesture. Overrides head yaw as well as both arms, so never pair with a `nod_left_right` action on the same dialogue state, same caveat as Laugh/`nod_up_down` |
+| Jump | 110 | `gesture_jump` | Right arm raised straight overhead (fist-pump; own faster `var.gest_rate` of 10 so the arm snaps up quickly), `body.ty`/`right_leg.ty`/`left_leg.ty` all share a new `var.gest_bodyty` term — a Mario level-clear-style victory jump. Unlike the other 7 gestures, this one moves body **translation**, not just limb rotation, and it's a genuine one-shot: `var.gest_jumpclock` is a self-resetting per-gesture stopwatch (`if(CMD110, var.gest_jumpclock+frame_time, 0)`, in real seconds via `frame_time`, not the entity's global `age`) driving a single `sin()` hump clamped at its peak (`min(var.gest_jumpclock,pi/9)*9`) so the bounce fires exactly once, in sync with the arm raising, instead of repeating or drifting out of phase with an arbitrary `age` offset the way a naive `sin(age*rate)` would. Also the only gesture with a non-standard hold: `gesture_jump.mcfunction` schedules its own clear at `12t` (0.6s) instead of the usual `50t` (2.5s), so the arm drops the instant the ~7-tick hop lands instead of staying pumped for a held pose — see that file's docstring for the tradeoff this creates with the shared/global `gesture_clear` schedule |
+| Wave (left) | 201 | `gesture_wave_left` | Left-arm mirror of Wave: `left_arm.rx` shares Wave's `rx` (unmirrored — raise/lower reads the same on either arm), `ry`/`rz` are sign-flipped from Wave's values, including the `sin(age*0.65)` oscillation term. Mirror-variant `CustomModelData` numbering convention: base gesture's number + 100 |
+| Point (left) | 202 | `gesture_point_left` | Left-arm mirror of Point, same convention as Wave (left) |
+| Scratch-head (left) | 206 | `gesture_scratch_head_left` | Left-arm mirror of Scratch-head, same convention as Wave (left) |
+| Cross-arms | 111 | `gesture_cross_arms` | Both arms raised and swung in across the chest, shoulder-only (straight arms) — elbow-bend version attempted and reverted, see "Elbow joint" below |
 
 ### Blabber special selectors
 

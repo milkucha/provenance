@@ -223,6 +223,111 @@ two NPCs"), the following is deliberately left open rather than decided silently
       `_lore/analysis/hearsay.md`). Left unresolved on purpose — see that entry's note before deciding
       whether Khaasan's own eventual `/enact` pass should reconcile it or lean into the contradiction.
 
+## Gesture animation system (resource pack)
+
+Built 2026-07-25/26: a custom EMF/Iris `player.jem`/`player_slim.jem` override giving Taterzens NPCs
+(and real players) 7 animated gestures — wave, point, bow, shrug, palms-up (originally prototyped as
+"cross-arms", renamed once it visually read as the former instead), scratch-head, and laugh — each
+triggered by an invisible `minecraft:stick{CustomModelData:<101-107>}` in the main hand, smoothly eased
+via a self-referencing `var.*` low-pass filter pattern (proven more reliable than self-referencing the
+bone key directly, which jittered). Coexists with the already-installed Fresh Animations + FA+Player by
+forking only `player.jem`/`player_slim.jem` (the two files that needed the gesture hook) rather than the
+whole pack — every other file (movement/idle/equipment math, textures, cape) still falls through to
+FA+Player underneath, since Minecraft resolves each asset path independently across the active pack
+stack. Full technical writeup lives in this conversation's history (2026-07-25/26 session), not yet
+copied into README/registry docs.
+
+Wired into Döran's three dialogs (`doran_plaza_orientation`, `doran_four_castles`,
+`doran_eras_of_culture`) via 7 new `functions/npcs/_shared/gesture_<name>.mcfunction` files (already
+git-tracked, datapack-side) + a shared `gesture_clear.mcfunction`, following the same
+tag+`schedule ... replace` pattern as `nod_up_down.mcfunction`. Each wired dialogue state's action
+*replaces* its `nod_up_down` call rather than adding to it, so gesture and nod are mutually exclusive by
+construction — every other line keeps its ordinary nod untouched.
+
+- [ ] **Multi-NPC gesture/nod scheduling collision** (found 2026-07-25 building the jump gesture, not
+      yet fixed): `gesture_clear.mcfunction`, and the `nod_up_down_2/_3/_4` / `nod_left_right_2/_3/_4`
+      continuation chains, all advance via `schedule function <id> <ticks>t replace` — but
+      `schedule function` is a single global timer *per function ID* in vanilla Minecraft, not
+      per-entity. Every `gesture_<name>.mcfunction` schedules the same `gesture_clear`, so if NPC A
+      starts a gesture and NPC B starts any gesture a few ticks later, B's `replace` call overwrites
+      A's pending timer — A's hold then gets cut short or stretched to whenever B's schedule actually
+      fires, and when it fires, `gesture_clear` clears *every* entity currently tagged
+      `luminacion.gesture_active` at once, not just the one whose hold time actually expired. Harmless
+      so far (all testing has been one NPC gesturing at a time), but jump's much shorter `12t` hold vs.
+      everyone else's `50t` (see `gesture_jump.mcfunction`'s own docstring, where this was first
+      flagged) makes the collision far more likely to actually manifest once enough NPCs exist that two
+      might gesture within a few ticks of each other. The identical flaw exists independently in
+      `nod_up_down`/`nod_left_right`: confirmed by reading `nod_up_down_4.mcfunction` — beat 4 applies
+      to *every* `@e[tag=luminacion.gesture_nod_ud]` at once, so a second NPC nodding mid-way through a
+      first NPC's nod compresses/desyncs both nods' beat timing (`nod_left_right` mirrors this exactly,
+      via `luminacion.gesture_nod_lr`). System-wide fix needed, not a jump-specific patch.
+
+      **Planned fix — per-entity scoreboard countdown instead of global `schedule`.** 1.20.1 has no
+      `mcfunction` macros (`$(arg)`, added 1.20.2+), which is what would otherwise let a scheduled
+      callback carry per-entity context — so the fix has to route around `schedule` entirely for
+      anything needing true per-entity independence:
+        1. Add a new `dummy` scoreboard objective (e.g. `luminacion.gest_timer`) in `load.mcfunction`,
+           alongside the existing `luminacion.bool`/`luminacion.int`.
+        2. Every `gesture_<name>.mcfunction` sets `scoreboard players set @s luminacion.gest_timer
+           <duration>` (its own per-gesture hold — 12 for jump, 50 for the rest) instead of calling
+           `schedule function .../gesture_clear ... replace`.
+        3. `tick.mcfunction` gets one new line calling a shared function that, every tick: decrements
+           `luminacion.gest_timer` for every `@e[tag=luminacion.gesture_active]`, then runs a
+           "clear self" step (item off, tag off) only `as`/`at` whichever entities' timer has just hit
+           0 — each NPC's gesture then ends exactly `<duration>` ticks after *it* started, independent
+           of what any other NPC is doing.
+        4. Same treatment for the nod families, though scope this as its own decision once the
+           gesture-side fix is proven: replace the `nod_up_down_2/_3/_4` (and `_left_right` equivalent)
+           schedule chain with per-entity beat state on the same countdown pattern — nods are a fixed
+           ~9-tick, 4-beat sequence rather than "hold then clear", so this is more naturally a per-tick
+           state machine keyed off one countdown value (current beat = f(ticks remaining)) than four
+           separately-scheduled function hops.
+        5. Update every `gesture_*.mcfunction`/`nod_*.mcfunction` docstring that currently describes
+           the `schedule ... replace` caveat (worded near-identically in several files) once the
+           mechanism underneath them actually changes.
+        6. `gesture_clear.mcfunction` itself gets simplified/renamed once it's driven from the tick
+           loop with an already-narrowed selector, rather than unconditionally clearing every tagged
+           entity on a global timer.
+- [ ] **Not yet version-controlled**: the resource pack itself (`pack.mcmeta` +
+      `assets/minecraft/emf/cem/player.jem`/`player_slim.jem` + the invisible item model/texture under
+      `assets/minecraft/models/item/stick.json` + `assets/luminacion/...`) still lives only at
+      `resourcepacks/luminacion-gesture-test/` in the PrismLauncher instance — outside this git repo,
+      named as a throwaway test folder. User wants it moved into the production/version-controlled
+      folder; deferred to decide **where** exactly (2026-07-26 session ran out of day before deciding).
+      Two options were on the table, both with real tradeoffs:
+        1. New standalone git repo initialized directly at `resourcepacks/<name>/` — mirrors exactly how
+           *this* datapack repo already works (the repo IS the live folder Minecraft loads from, no
+           symlink/copy step ever needed) — but is a second repo to manage.
+        2. Move it into *this* repo as a subfolder (e.g. `assets/` alongside `data/`, matching the
+           Localization section's existing plan below — see `scripts/build_resourcepack.py`), then
+           symlink `resourcepacks/<name>/` to it — one repo, but needs a working Windows symlink
+           (Developer Mode or admin rights) and silently breaks if that link is ever lost/not recreated
+           on a new machine.
+      **Relevant precedent already on record** (see Localization section immediately below): this
+      project already planned for `assets/luminacion/lang/en_us.json` to live alongside `data/` in this
+      same repo, plus a future `scripts/build_resourcepack.py` that zips `assets/` + its own
+      `pack.mcmeta` into a resource pack — i.e. the project's own established intended pattern already
+      leans toward option 2 (single repo). Worth weighing against symlink reliability before deciding.
+      Also applies here regardless of which option is picked: the Localization section's "need a second
+      `pack.mcmeta` for the resource pack" point is the same constraint the gesture pack already has
+      (it already ships its own separate `pack.mcmeta`, currently sitting outside this repo).
+- [ ] Once the location is settled: move/copy the pack's contents there, rename away from
+      `-gesture-test`/`-test` naming now that it's graduating from prototype, and update this repo's own
+      `resourcepacks/` reference (the live folder Minecraft actually loads) to match — either by having
+      the new repo live there directly (option 1) or via the symlink (option 2).
+- [ ] Still main-hand only (off-hand path never built — would need the trickier
+      `Inventory`/slot-`-106` NBT path discovered for real players, unconfirmed for Taterzens).
+- [ ] Elbow joint (separate forearm bone) — attempted 2026-07-25 for the new cross-arms gesture as a
+      nested `submodels` child bone of `right_arm`/`left_arm`, reverted same day: this CEM/EMF build
+      does **not** compose a nested submodel's rotation with its parent's — the child renders at its
+      raw `translate` position, unrotated by the arm, so it visually detached from the elbow (and broke
+      the base player model, not just the gesture, since the split was unconditional). Real elbow
+      articulation would need explicit forward-kinematics math (rotate the elbow pivot by the shoulder's
+      current rotation) baked into the expression language, not simple nesting — bigger scope than
+      previously estimated, not started.
+- [ ] Only Döran has gestures wired so far — Gondarfolas, Nuvilo, Nerkeli, and any future NPCs' dialogs
+      don't use them yet.
+
 ## Localization (per-player dialog language)
 
 - [ ] Add a top-level `assets/luminacion/lang/en_us.json` (and other language files as they're
@@ -250,6 +355,17 @@ two NPCs"), the following is deliberately left open rather than decided silently
       root `pack.mcmeta` can't serve both.
 - [ ] Convert existing dialogue files to translation keys via the extractor once it exists (currently
       all six non-template dialogues use literal `text`).
+
+## Lore integration skill (`/integrate`)
+
+- [x] Built 2026-07-25: `.claude/skills/integrate/SKILL.md`, documented in README §0 (Layer 1).
+      Three passes — analyse new `_lore/material/` into `context.md`/`encodings.json`/`unknown.md`;
+      audit `data/luminacion/blabber/dialogues/` for missing `hearsay.entries` coverage; check for
+      drift between what's referenced elsewhere (registries, sampled knowledge) and what's actually
+      recorded in `encodings.json`.
+- [ ] Not yet run end-to-end against real material or a real drift case — worth a first live pass
+      next time material is added or a periodic audit is due, to confirm the three passes hold up in
+      practice rather than just on paper.
 
 ## General
 

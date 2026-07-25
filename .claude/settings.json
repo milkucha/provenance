@@ -1,5 +1,12 @@
 {
   "worktree": {
     "bgIsolation": "none"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(curl -s \"https://raw.githubusercontent.com/*\")",
+      "Bash(curl -s \"https://api.github.com/*\")",
+      "Bash(curl -s \"https://api.modrinth.com/*\")"
+    ]
   }
 }
