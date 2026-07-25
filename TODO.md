@@ -162,6 +162,55 @@ open questions about the lore itself live in `_lore/analysis/unknown.md`, not he
 - [ ] Spawn in-game, position him at the Plaza de las Culturas, decide and record path waypoints, and
       capture `taterzen_uuid` (README §5).
 
+## Khaoe & Farlis (Feria del Milenio — Castillo de Görff replica, Plaza de las Culturas)
+
+Three short ambient dialogs (`khaoe_farlis_el_castillo_que_fue.json`,
+`khaoe_farlis_lo_que_cambia_el_tiempo.json`, `khaoe_farlis_esperando_a_khaasan.json`), written in
+Latin American Spanish, meant to connect as fragments of one ongoing conversation but fire
+independently — the player should overhear whichever one comes up, not all three in sequence. Per
+`/enact` §8's Step 6 rule for two-NPC dialogs ("do not guess how to register a dialog that belongs to
+two NPCs"), the following is deliberately left open rather than decided silently:
+
+- [ ] **Random-pick wiring.** The existing mechanism for "N independent dialogs, picked at random on
+      right-click" is Döran's `_action_templates.random_dialog` (see `_maps/actions/registry.json` and
+      `functions/npcs/doran/roll_dialog.mcfunction`/`spawn.mcfunction`) — gametime-mod-N via
+      scoreboard, since `/random` doesn't work in this environment at all (see the Döran section
+      above). That pattern was built for one NPC picking among its own solo dialogs; here there are
+      *two* NPCs sharing *one* shared set of three dialogs. Decide: does right-clicking either Khaoe or
+      Farlis trigger the same roll into the same three files (two independent roll scores,
+      `khaoe_dialog_roll`/`farlis_dialog_roll`, both gated 1..3 against the same three
+      `khaoe_farlis_*` dialog ids), or does only one of them act as the "trigger" NPC while the other
+      just stands there silently animated? Either way, `--clicker--` still needs to resolve to
+      whichever NPC the player actually clicked, per the dispatch-commands-stay-directly-added rule.
+- [ ] **`_maps/dialogs/registry.json` registration.** Same open question as Nawom & Morkulo and
+      Nuvilo & Nerkeli above — the registry format assumes one dialog belongs to one NPC key, which
+      doesn't cleanly fit three dialogs shared by two NPCs. Decide once the wiring question above is
+      settled.
+- [ ] **Movement mode** not decided for either — they're standing still together at the Castillo de
+      Görff replica for this scene, which suggests `NONE`, but confirm. Each dialog's `end` state is
+      currently plain `end_dialogue` with no `resume_routine` action (matching the Nawom & Morkulo /
+      Nuvilo & Nerkeli precedent for undecided-movement two-NPC scenes) — add the action only if
+      either ends up roaming.
+- [ ] `spawn_position` and `taterzen_uuid` are still blank/null for both in the registry (skins were
+      already on file from before this `/enact` run and were left as-is). Decide placement — likely
+      standing at/near the Castillo de Görff replica in the Plaza de las Culturas, alongside Döran's
+      pavilion — and build `functions/npcs/khaoe/spawn.mcfunction` and
+      `functions/npcs/farlis/spawn.mcfunction` from the template once the wiring question above is
+      resolved (spawn.mcfunction is where the right-click random-dialog commands actually get added).
+- [ ] Khaoe and Farlis both had pre-existing one-line registry stubs before this run (`"Member of the
+      Collective."` / `"Member of the Collective. Travels the Khol Moshin-Görff route on
+      horseback."`) with no `knowledge.education` sample drawn yet — this `/enact` run was their first
+      real pass, so both got a full backstory merge (new detail layered onto what was already there,
+      not replacing it) and a fresh 27% composite knowledge sample each. Nothing left open on that
+      front, noted here only for context if a future run wonders why their samples look freshly drawn
+      despite the stub predating this session.
+- [ ] Khaasan (mentioned in all three dialogs, expected to arrive by griffon, not yet seen) was not
+      enacted this run and his registry entry was left untouched — his one-word backstory tag is
+      "Teletraveller," which the hearsay record for `khaoe_farlis_esperando_a_khaasan.json` already
+      flags as a divergence from the "arrives by griffon" expectation voiced in-scene (see
+      `_lore/analysis/hearsay.md`). Left unresolved on purpose — see that entry's note before deciding
+      whether Khaasan's own eventual `/enact` pass should reconcile it or lean into the contradiction.
+
 ## Localization (per-player dialog language)
 
 - [ ] Add a top-level `assets/luminacion/lang/en_us.json` (and other language files as they're
