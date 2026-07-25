@@ -1,0 +1,36 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "minecraft:item/stick"
+  },
+  "overrides": [
+    {
+      "predicate": { "custom_model_data": 101 },
+      "model": "luminacion:item/gesture_marker_blank"
+    },
+    {
+      "predicate": { "custom_model_data": 102 },
+      "model": "luminacion:item/gesture_marker_blank"
+    },
+    {
+      "predicate": { "custom_model_data": 103 },
+      "model": "luminacion:item/gesture_marker_blank"
+    },
+    {
+      "predicate": { "custom_model_data": 104 },
+      "model": "luminacion:item/gesture_marker_blank"
+    },
+    {
+      "predicate": { "custom_model_data": 105 },
+      "model": "luminacion:item/gesture_marker_blank"
+    },
+    {
+      "predicate": { "custom_model_data": 106 },
+      "model": "luminacion:item/gesture_marker_blank"
+    },
+    {
+      "predicate": { "custom_model_data": 107 },
+      "model": "luminacion:item/gesture_marker_blank"
+    }
+  ]
+}

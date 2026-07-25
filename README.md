@@ -1,12 +1,180 @@
 # Luminacion
 
-Luminacion is the NPC storytelling system for **Milkantis** (a 12-year-old Minecraft world). NPCs are Taterzens that react to player right-clicks, run Blabber dialogs, and follow their own routines (paths, wandering, etc.) — pausing to talk, then picking their routine back up.
+Luminacion is the AI-assisted NPC storytelling system for **Milkantis** (a 12-year-old Minecraft world). Raw lore material gets analysed into structured encodings, NPCs are enacted and wired up through Claude Code skills, and the system outputs two packs that ship together: a **datapack** (this repo's `data/`) and a **resource pack** (gestures, localization, sounds). NPCs are Taterzens that react to player right-clicks, run Blabber dialogs, and follow their own routines (paths, wandering, etc.) — pausing to talk, then picking their routine back up.
 
-This document is a practical, step-by-step guide to building things with the pack. It assumes you already know *what* NPC or story you want to add — this is about *how* to wire it up.
+This document is a practical, step-by-step guide to building things with the pack, plus (§0) the architecture of the system as a whole — read that first in a new session to get oriented without having to re-read the whole codebase. The rest assumes you already know *what* NPC or story you want to add — it's about *how* to wire it up.
 
 - Minecraft 1.20.1, datapack pack format 15
 - Namespace: `luminacion`
 - Requires: [Taterzens](https://modrinth.com/mod/taterzens) 1.11.7, [Blabber](https://modrinth.com/mod/blabber) 1.6.2
+
+## Index
+
+**Starting a new session? Read the intro above plus §0–§2 first — that's the compulsory minimum for
+orientation.** Everything past that, read only the section(s) the task at hand actually needs.
+
+- [§0 System architecture](#0-system-architecture) — the four-layer system, start here every session
+  - [Layer 1 — Foundation: skills + lore](#layer-1--foundation-skills--lore)
+  - [Layer 2 — Supporting functions](#layer-2--supporting-functions)
+  - [Layer 3 — Datapack](#layer-3--datapack)
+  - [Layer 4 — Resource pack](#layer-4--resource-pack)
+- [§1 Folder structure](#1-folder-structure) — compulsory: the literal `data/`/`_maps/`/`_templates/` tree
+- [§2 Core concepts](#2-core-concepts) — compulsory: NPC / Dialog / Action / routine pause-resume, defined
+- [§3 Building a new NPC, start to finish](#3-building-a-new-npc-start-to-finish) — the manual walkthrough (`/spawn` automates this)
+  - [Step 1 — Register it](#step-1--register-it)
+  - [Step 2 — Create the spawn function](#step-2--create-the-spawn-function)
+  - [Step 3 — Write the dialog](#step-3--write-the-dialog)
+  - [Step 4 — Spawn it in-game](#step-4--spawn-it-in-game)
+  - [Step 5 — Capture its UUID](#step-5--capture-its-uuid)
+  - [Step 6 — Set up routine pause/resume](#step-6--set-up-routine-pauseresume-only-if-movement-isnt-none)
+- [§4 Routine pause/resume (roaming NPCs only)](#4-routine-pauseresume-roaming-npcs-only) — read only if the NPC you're touching roams
+- [§5 Capturing NPC UUIDs](#5-capturing-npc-uuids) — the `scripts/update_uuids.py` workflow
+- [§6 Reference](#6-reference) — lookup tables: scoreboard objectives, entity tags, movement modes, Blabber selectors, command cheat sheet
+- [§7 Where design decisions live](#7-where-design-decisions-live) — why lore/story content isn't in this file
+- [§8 Writing a dialog through enactment](#8-writing-a-dialog-through-enactment) — the manual walkthrough (`/enact` automates this)
+  - [Step 1 — Bound the character's knowledge](#step-1--bound-the-characters-knowledge)
+  - [Step 2 — Enact the conversation](#step-2--enact-the-conversation)
+  - [Step 3 — Convert the transcript into a Blabber dialog](#step-3--convert-the-transcript-into-a-blabber-dialog)
+  - [Step 4 — Register it](#step-4--register-it)
+
+---
+
+## 0. System architecture
+
+The system has four layers, each authored from the one below it:
+
+```
+4. Resource pack      gestures (EMF/Iris model overrides), localization, custom sounds
+        ↑
+3. Datapack           data/luminacion/ — functions, predicates, tags, dialogues Minecraft loads
+        ↑
+2. Supporting layer   _templates/, _maps/actions/registry.json (_action_templates), gesture dispatch
+        ↑
+1. Foundation         skills (/enact, /spawn, /integrate) + _lore/ (material → analysis)
+```
+
+### Layer 1 — Foundation: skills + lore
+
+- **Skills** (`.claude/skills/`) — repeatable procedures, invoked as slash commands:
+  - **`/enact`** (`enact/SKILL.md`) — plays an NPC in a live conversation, sampled from a bounded
+    slice of the lore, then converts the transcript into a registered Blabber dialog. See §8.
+  - **`/spawn`** (`spawn/SKILL.md`) — builds a registered NPC's `spawn.mcfunction` (and every
+    supporting function) from `_templates/npcs/`. See §3/§4.
+  - **`/integrate`** (`integrate/SKILL.md`) — three independent passes: analyse newly-added
+    `_lore/material/` files into `context.md`/`encodings.json`/`unknown.md` per the conventions those
+    files already establish (below); audit every dialogue under `data/luminacion/blabber/dialogues/`
+    for a matching `hearsay.entries` record (§8 Step 5 — unconditional by rule, but easy to miss on a
+    hand-written dialogue that skipped `/enact`); and check for drift between what's referenced
+    elsewhere (registries, sampled knowledge) and what's actually recorded in `encodings.json`. Run
+    whichever pass(es) fit the situation, not necessarily all three.
+- **`_lore/`** — the raw material and its analysis:
+  - `_lore/material/` — source artifacts as uploaded: screenshots of in-game books, maps,
+    spreadsheets (`Luminacion Register [Code].xlsx`, `Catastro Milkaan y Platinhëa.xlsx`, ...),
+    documents. Treated as excavated primary sources — never edited, only read.
+  - `_lore/analysis/context.md` — one section per material artifact, transcribing only what that
+    specific source says or shows, with no cross-source reconciliation. Contradictions between
+    sources are noted here, not resolved.
+  - `_lore/analysis/encodings.json` — the structured, queryable form of the same material:
+    `time_systems`, `locations`, `routes`, `characters`, `concepts`, `conflicts` (cross-source
+    disagreements, each with a `user_resolution` once settled), and `hearsay` (claims made *in*
+    dialogues — §8 Step 5). This is what `scripts/sample_lore_knowledge.py` draws an NPC's knowledge
+    pool from.
+  - `_lore/analysis/unknown.md` — gaps and open questions the material itself doesn't answer, plus a
+    log of which have since been resolved by the user.
+  - `_lore/analysis/hearsay.md` — the human-readable counterpart to `encodings.json`'s `hearsay`
+    array: what's been said, by whom, where, and whether it checked out against the record.
+
+### Layer 2 — Supporting functions
+
+Reusable patterns every NPC/dialog is built from, so each new one doesn't reinvent structure:
+
+- `_templates/npcs/` — placeholder-filled `.mcfunction` patterns (`spawn.mcfunction`,
+  `resume_routine.mcfunction`, `check_proximity.mcfunction`, `end_with_gift.mcfunction`, plus
+  `paths/` and `states/` variants for roaming/multi-state NPCs) — copied per NPC, never called
+  directly. See §1.
+- `data/luminacion/blabber/dialogues/_template_*.json` — the three dialog shapes (one-off, linear,
+  branching). See §1/§3.
+- `_maps/actions/registry.json`'s `_action_templates` — documents every right-click action pattern
+  (`movement`, `give_item`, `blabber_dialog`, `routine_pause_resume`, `scripted_path`,
+  `multi_state_npc`, `random_dialog`, `scoreboard_set`) with copy-paste command patterns and, for
+  several, hard-won in-game debugging notes (why `/random` never resolves in this environment, why
+  the pause/resume radii must differ).
+- **Gesture dispatch** — `data/luminacion/functions/npcs/_shared/gesture_<name>.mcfunction` (wave,
+  point, bow, shrug, palms-up, scratch-head, laugh) plus `gesture_clear.mcfunction` and the
+  `nod_up_down`/`nod_left_right` family: datapack-side functions that trigger the resource-pack
+  animations below via a tag + `schedule ... replace` pattern. They physically live under
+  `data/luminacion/` (layer 3) but belong here conceptually — templated dispatch for content that's
+  actually defined one layer up.
+
+### Layer 3 — Datapack
+
+`data/luminacion/` — the pack Minecraft actually loads and calls: `functions/` (per-NPC and shared
+`.mcfunction` files), `predicates/`, `tags/functions/` (load/tick hooks, the routine-tick registry),
+and `blabber/dialogues/` (the written dialogs). This is what gets built *from* layers 1–2 for a given
+NPC — see §1 for the full folder breakdown and §3 for the build sequence.
+
+### Layer 4 — Resource pack
+
+Custom client-side content shipped alongside the datapack, version-controlled in this repo's
+`resourcepack/` folder (own `pack.mcmeta` + `assets/`, same idea as `data/` is to the datapack).
+Currently:
+
+- **Gestures** — a forked `player.jem`/`player_slim.jem` EMF/Iris override giving Taterzens NPCs (and
+  real players) 7 animated poses, each triggered by a `CustomModelData`-tagged invisible stick in the
+  main hand. Coexists with the installed Fresh Animations + FA+Player pack by forking only the two
+  files that need the gesture hook — every other file (movement math, textures, cape) still falls
+  through to FA+Player underneath. Full breakdown below.
+- **Localization** (planned) — `assets/luminacion/lang/*.json`, generated from dialogue files by a
+  not-yet-written `scripts/extract_dialogue_lang.py`.
+- **Custom sounds** (planned) — not yet started.
+
+**Wiring: repo ↔ live pack.** `resourcepack/` in this repo *is* the pack — there's no build/copy/zip
+step for local dev. The live folder Minecraft/PrismLauncher actually reads from,
+`resourcepacks/luminacion/`, is a Windows directory **junction** pointing back at `resourcepack/` here
+(created with `New-Item -ItemType Junction`; unlike a symbolic link this needs no admin rights or
+Developer Mode, since both paths are on the same local drive). Editing a file under `resourcepack/`
+edits the live pack instantly — reload with `F3+T`, or a full restart if that doesn't pick it up. A
+zip-based `scripts/build_resourcepack.py` (see `TODO.md`) is a separate, not-yet-built concern for
+*distributing* a finished pack — irrelevant to day-to-day gesture editing.
+
+**Gestures: how they're built, modified, and called.** Each gesture is a held **pose**, not a
+keyframed animation: giving the NPC (or a real player) an invisible
+`minecraft:stick{CustomModelData:<N>}` in `weapon.mainhand` makes `player.jem`/`player_slim.jem`
+override that limb's rotation to a fixed (or, for wave/shrug/scratch-head/laugh, `sin()`-oscillating)
+angle for as long as the item is held. Both `.jem` files are a single minified JSON line each — the
+whole rig (head, body, both arms, both legs, all 7 gestures) lives in one blob of nested
+`if(nbt(SelectedItem.tag.CustomModelData,<N>), <pose>, <next gesture's case>)` expressions per axis
+(`right_arm.rx`/`.ry`/`.rz`, `var.body_rx`, `var.gest_headrx`, ...), eased in over a few frames by a
+self-referencing `var.*` low-pass filter (proven more reliable than easing the bone key directly,
+which jittered). See §6 for the `CustomModelData` value of each gesture.
+
+- *To modify a pose* (e.g. the wave's arm-height/outward-swing adjustment made 2026-07-25): find the
+  gesture's `CustomModelData` number in the §6 table, then in **both** `player.jem` and
+  `player_slim.jem` locate every `if(nbt(...,<N>), torad(<deg>), ...)` branch for the axis you want to
+  change (`rx` = raise/lower, `ry` = swing in/out sideways, `rz` = twist, or the oscillation term for
+  gestures that move) and edit the `torad(<deg>)` value. The two `.jem` files aren't generated from one
+  another — keep them in sync by hand. Because each file is one line with every gesture's branches
+  nested together, edit by exact substring match (e.g. `CustomModelData,101),torad(-130)`) rather than
+  by line/offset, and re-parse the file as JSON afterward — a stray bracket silently breaks a
+  *different* gesture's branch instead of erroring.
+- *To call a gesture* on an NPC mid-dialogue: `execute as @interlocutor run function
+  luminacion:npcs/_shared/gesture_<name>` (see "Gesture dispatch" in Layer 2 above) — tags the NPC
+  `luminacion.gesture_active`, gives it the marker stick, and schedules `gesture_clear.mcfunction` to
+  remove it after 2.5s. Never call a gesture on an NPC already mid-gesture, and never pair a gesture
+  action with a `nod_up_down`/`nod_left_right` action on the same dialogue state — gestures fully own
+  the pose while active (worst case for laugh, which also overrides head pitch).
+- *To test a gesture* without going through a dialog, either target the nearest Taterzen directly:
+
+  ```
+  execute as @e[type=taterzens:npc,sort=nearest,limit=1] run function luminacion:npcs/_shared/gesture_wave
+  ```
+
+  or give yourself the marker item to preview the pose on your own model — a faster loop when you're
+  just iterating on numbers, since the `.jem` logic keys off whoever's holding the item, NPC or player:
+
+  ```
+  item replace entity @s weapon.mainhand with minecraft:stick{CustomModelData:101}
+  ```
 
 ---
 
@@ -48,6 +216,12 @@ Luminacion/
 │       ├── resume_routine.mcfunction
 │       ├── check_proximity.mcfunction
 │       └── end_with_gift.mcfunction
+├── resourcepack/                      (the resource pack — §0 Layer 4; junctioned into
+│   │                                   resourcepacks/luminacion/ in the PrismLauncher instance)
+│   ├── pack.mcmeta
+│   └── assets/
+│       ├── luminacion/                (invisible gesture-marker item model + texture)
+│       └── minecraft/emf/cem/         (player.jem, player_slim.jem — the gesture pose overrides)
 └── scripts/
     └── update_uuids.py                (automates NPC UUID capture — see §5)
 ```
@@ -224,6 +398,18 @@ This updates `taterzen_uuid` for every NPC in the registry that was exported. Sa
 | `FORCED_PATH` | Follows its path strictly, no rests |
 | `FOLLOW` | Pursues a named/UUID target |
 | `FREE` | Wanders freely within an enclosed area |
+
+### Gesture `CustomModelData` values (see Layer 4 for how these work)
+
+| Gesture | `CustomModelData` | `mcfunction` | Pose |
+|---|---|---|---|
+| Wave | 101 | `gesture_wave` | Right arm raised + swung outward; `rz` oscillates (`sin(age*0.65)`) for the side-to-side wave motion |
+| Point | 102 | `gesture_point` | Right arm extended forward, static |
+| Bow | 103 | `gesture_bow` | Body pitches forward 25°; arms untouched, hang naturally |
+| Shrug | 104 | `gesture_shrug` | Both arms raised symmetrically, with a small idle bounce (`sin(age*0.4)`) |
+| Palms-up | 105 | `gesture_palms_up` | Both arms raised + rotated, static — originally prototyped as "cross-arms", renamed once it visually read as palms-up instead |
+| Scratch-head | 106 | `gesture_scratch_head` | Right arm to head height, with an intermittent scratching wobble |
+| Laugh | 107 | `gesture_laugh` | Both arms + body + head all animated — overrides head pitch too, so never pair with a `nod_*` action on the same dialogue state |
 
 ### Blabber special selectors
 
