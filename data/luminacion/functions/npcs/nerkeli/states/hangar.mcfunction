@@ -14,8 +14,11 @@
 # dance while active_state is "roaming" (see states/roaming.mcfunction).
 #
 # Note: the two-NPC eavesdrop dialog (nuvilo_nerkeli_feria_del_milenio) is
-# triggered from Nuvilo's hangar state only, not Nerkeli's — one trigger is
-# enough since they're standing together.
+# proximity-triggered (2026-07-26 change), not right-click, by a player
+# getting within 2 blocks of EITHER Nuvilo or Nerkeli — see
+# functions/npcs/nuvilo/hangar_dialog_tick.mcfunction, which lives under
+# nuvilo/ but reads and checks both NPCs. This solo dialog's right-click
+# wiring below is unrelated and unaffected.
 #
 # Faces him toward Nuvilo continuously — see
 # functions/npcs/nuvilo/hangar_look_tick.mcfunction (registered in

@@ -15,9 +15,7 @@
 
 npc create Nerkeli
 
-# TODO: skin not decided yet (blank in _maps/npcs/registry.json). Uncomment
-# and fill in once chosen, then also fill in heal_skin.mcfunction to match:
-# npc edit skin <https://www.mineskin.org/ID>
+npc edit skin https://minesk.in/7338c1b2f7b540e0b831728ddd0792bf
 
 
 # --- PERMISSION LEVEL ---------------------------------------------------------

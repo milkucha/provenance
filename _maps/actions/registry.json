@@ -234,6 +234,46 @@
       ]
     },
 
+    "proximity_dialog": {
+      "_comment": [
+        "Convention for a dialog that starts when a player walks within range of an NPC, instead of",
+        "right-clicking it. First worked example: nuvilo_nerkeli_feria_del_milenio (2026-07-26, the",
+        "hangar scene from multi_state_npc above) — the eavesdrop scene now starts the moment a player",
+        "gets within 2 blocks of EITHER Nuvilo or Nerkeli, rather than requiring a click on Nuvilo.",
+        "",
+        "Files involved (this worked example):",
+        "  functions/npcs/nuvilo/hangar_dialog_tick.mcfunction  — the trigger + guard logic",
+        "  functions/npcs/nuvilo/start_hangar_dialog.mcfunction — actually starts the dialog",
+        "  data/luminacion/tags/functions/npc_routine_tick.json — hangar_dialog_tick registered here",
+        "",
+        "Right-click wiring is removed entirely for a proximity-triggered dialog — states/hangar.mcfunction",
+        "runs 'npc edit commands clear' and adds nothing back for this scene.",
+        "",
+        "GATING (multi-NPC scene, e.g. two NPCs meant to be standing together): don't trust the two",
+        "NPCs' active_state flags alone as proof they're actually near each other — states/hangar.mcfunction",
+        "never teleports either one (positioned manually), so a misplaced NPC could otherwise still fire",
+        "the scene alone. Add an explicit distance check between the two NPCs themselves on top of the",
+        "state check. This worked example uses 3 blocks for that NPC-to-NPC check (tighter than the",
+        "player-facing radii below — tuned down from an initial 6 per user request, 2026-07-26).",
+        "",
+        "TARGETING: since there's no right-click, there's no --clicker--. Use an explicit selector",
+        "instead, e.g. '@a[distance=..2,sort=nearest,limit=1]' switched into via 'execute as ... at @s",
+        "run blabber dialogue start <dialog_id> @s <interlocutor_selector>' — safe to call from inside a",
+        "regular .mcfunction (unlike --clicker--, which only substitutes correctly in a top-level command",
+        "added via 'npc edit commands add' — see random_dialog below for that caveat's original writeup).",
+        "",
+        "GUARD: use a value in the 'luminacion:npcs' command storage (the same storage active_state",
+        "already lives in), NOT an entity tag, whenever more than one NPC's proximity can fire the same",
+        "trigger — a tag only lives on whichever entity set it, so a check from the OTHER NPC wouldn't",
+        "see it. A storage flag is readable from either NPC's execution context. Prevents re-triggering",
+        "every tick while a player stays inside the radius for the whole (frozen) dialog. Clear it using",
+        "the same asymmetric enter/exit radius the pause/resume dance uses elsewhere (2 in, 6 out for the",
+        "player-facing check) — checked against BOTH NPCs in a multi-NPC scene, since either one's",
+        "proximity could have opened the dialog, so both must be clear of nearby players before the",
+        "guard resets and a later approach can replay the scene."
+      ]
+    },
+
     "random_dialog": {
       "_comment": [
         "Convention for an NPC with multiple independent dialogs that should be picked at random on",

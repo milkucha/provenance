@@ -5,6 +5,7 @@
     "luminacion:npcs/nuvilo/check_proximity",
     "luminacion:npcs/nerkeli/check_proximity",
     "luminacion:npcs/nuvilo/hangar_look_tick",
+    "luminacion:npcs/nuvilo/hangar_dialog_tick",
     "luminacion:npcs/doran/check_proximity",
     "luminacion:npcs/khaoe/check_proximity"
   ]
