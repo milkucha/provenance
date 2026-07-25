@@ -1,0 +1,67 @@
+{
+  "$schema": "https://ladysnake.org/schemas/blabber/dialogue.schema.json",
+  "layout": { "type": "blabber:rpg" },
+  "start_at": "torre",
+  "states": {
+
+    "torre": {
+      "text": "Le dicen el Calendario Mecanográfico. Lo inauguraron para el milenio — marca el año actual sobre una línea de tiempo, dicen que gira sola, día a día. En Lundria cada templo llevaba su propio calendario. Aquí parece que quisieron meter todos en uno solo.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/look_up"
+      },
+      "choices": [
+        { "text": "A qué te refieres?", "next": "calendarios_lundria_1" }
+      ]
+    },
+
+    "calendarios_lundria_1": {
+      "text": "Que allá nadie se pone de acuerdo en qué año es. Un templo cuenta desde una cosa, el de al lado desde otra — y a nadie le importa que no coincidan.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [
+        { "text": "...", "next": "calendarios_lundria_2" }
+      ]
+    },
+
+    "calendarios_lundria_2": {
+      "text": "Yo llegué pensando que iba a aprender el calendario de Lundria, y salí sin saber cuál de todos era. Y aquí, en cambio, alguien construyó una torre para que nadie tenga esa duda.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [
+        { "text": "Interesante... qué otras formas de medir el tiempo conociste en Lundria. Enséñame.", "next": "no_te_puedo_ensenar_1" }
+      ]
+    },
+
+    "no_te_puedo_ensenar_1": {
+      "text": "¿Enseñarte? No, ahí te equivocas conmigo. Yo salí de allá más perdida de lo que entré. Me acuerdo de algo con las lunas en un templo, y en otro contaban desde la última vez que se juntó toda la gente del pueblo — pero no te sabría decir cuál es cuál, ni si entendí bien.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_left_right"
+      },
+      "choices": [
+        { "text": "...", "next": "no_te_puedo_ensenar_2" }
+      ]
+    },
+
+    "no_te_puedo_ensenar_2": {
+      "text": "Si quieres un calendario en serio, mejor pregúntale a alguien de Lundria. Yo solo pasé por ahí.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [
+        { "text": "...", "next": "end" }
+      ]
+    },
+
+    "end": {
+      "type": "end_dialogue"
+    }
+
+  }
+}

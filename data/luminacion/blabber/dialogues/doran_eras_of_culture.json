@@ -104,7 +104,7 @@
       "text": "¡Ah, la Era de la Magia — la más interesante de todas, si me preguntas!",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_point"
       },
       "choices": [
         {
@@ -132,7 +132,7 @@
       "text": "Es que la Plaza me pone así — paso el día entero rodeado de castillos y templos, es difícil no ponerse un poco solemne. Mis colegas dicen que a veces se me va la mano.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_laugh"
       },
       "choices": [
         {

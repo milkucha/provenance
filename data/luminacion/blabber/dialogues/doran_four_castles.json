@@ -34,7 +34,7 @@
       "text": "Ah, mi propia ciudad. Cuentan que el príncipe Döran construyó ese castillo tras el descubrimiento de Plathinëa, y que ahí empezó la cartografía del mundo. Compartimos el nombre — no sé si por eso terminé rodeado de mapas y maquetas, o si fue al revés.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_scratch_head"
       },
       "choices": [
         {
@@ -76,7 +76,7 @@
       "text": "Aunque te confieso que le tengo un poco de recelo: dicen que fueron mages de allá los que destruyeron el gran mapa de mi Salthos Cruzados.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_shrug"
       },
       "choices": [
         {
@@ -104,7 +104,7 @@
       "text": "El tren la conecta con Görff y con Balhâm. Y ese palacio, amigo, fue refugio en tiempos difíciles — la capital misma, cuando el mundo se encerró sobre sí. Así se construye cuando hace falta resistir.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_bow"
       },
       "choices": [
         {

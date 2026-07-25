@@ -479,6 +479,34 @@
           {"text": "Khaasan told Khaoe and Farlis he was coming straight to the Feria del Milenio.", "about": null, "consistent_with_context": null, "note": "a social claim about a third party, nothing in the objective record to check it against"},
           {"text": "Khaoe and Farlis expect Khaasan to arrive by griffon, and are watching the sky for it.", "about": "Khaasan (Gorff)", "consistent_with_context": false, "note": "the objective inhabitant record lists Khaasan's role as 'Teletraveller,' not a griffon rider - a genuine divergence, logged rather than silently reconciled per this file's own rule; could mean Khaoe and Farlis are simply wrong about how he travels, or that 'Teletraveller' and 'arrives by griffon' aren't actually mutually exclusive - left open, not resolved here"}
         ]
+      },
+      {
+        "id": "khaoe_calendario_mecanografico",
+        "source_file": "data/luminacion/blabber/dialogues/khaoe_calendario_mecanografico.json",
+        "participants": ["Khaoe", "an unnamed traveler (the player)"],
+        "location": {"id": null, "as_named_in_dialog": "la Feria del Milenio, frente al Calendario Mecanográfico"},
+        "summary": "A traveler asks Khaoe about the large new machine she's standing in front of. She explains what it is and what it's for, then, pressed to clarify her own aside about Lundria, admits she came back from her temple trip more confused about timekeeping than she left - and can't actually teach what she only half-remembers.",
+        "claims": [
+          {"text": "The Calendario Mecanográfico is a new machine, inaugurated for the Feria del Milenio, that marks the current year on a moving timeline.", "about": null, "consistent_with_context": null, "note": "a session-level venue fixture given directly by the user, not drawn from the objective record - see README §8 step 2"},
+          {"text": "Khaoe says every temple in Lundria disagreed on what year it was, each counting from something different, with nobody troubled by the mismatch.", "about": "lundria", "consistent_with_context": null, "note": "restates, in more detail, the same impression already on record from khaoe_farlis_lo_que_cambia_el_tiempo#2 - not drawn from a sampled hearsay item, just the same character carrying the same established impression into a later dialogue, so derived_from/oral_lore don't apply here"},
+          {"text": "Khaoe says she went to Lundria hoping to learn 'the' calendar there and came back without knowing which of the many was the real one.", "about": "lundria", "consistent_with_context": null, "note": "personal account of her own trip, not independently verifiable"},
+          {"text": "Khaoe vaguely recalls one temple that counted by moons and another that counted from the last time the whole town gathered.", "about": "lundria", "consistent_with_context": null, "note": "offered explicitly as a half-remembered, unreliable impression, not asserted as fact - she declines to 'teach' it and redirects to 'someone from Lundria' instead. None of these specific details appear in the objective lundria entry, which records only temple-building and the 'culto del cubo flotante de Lundria' (era 7) - plausible given that record, not confirmed or contradicted; Khaoe's own sampled knowledge of Lundria was bounded to the location's name/region/type, so this is personal impression from her visit, not drawn from her sample, consistent with the same caveat already logged for khaoe_farlis_lo_que_cambia_el_tiempo#2"}
+        ]
+      },
+      {
+        "id": "khaoe_banco_colectivo",
+        "source_file": "data/luminacion/blabber/dialogues/khaoe_banco_colectivo.json",
+        "participants": ["Khaoe", "an unnamed traveler (the player)"],
+        "location": {"id": null, "as_named_in_dialog": "la Feria del Milenio, un banco"},
+        "summary": "Sitting on a bench watching people go by, Khaoe is approached by a traveler who's heard she's from the Collective. She confirms it, explains the horizontal organization when pressed, clarifies that Farlis isn't actually a prince, and names a few fellow Görff residents plus her closer comrades Farlis and Khaasan when asked who else is part of it.",
+        "claims": [
+          {"text": "Khaoe confirms she's a member of the Collective, and jokes that either it shows or someone's been talking about her.", "about": "gorff", "consistent_with_context": true, "note": "matches her own registered backstory"},
+          {"text": "Khaoe says the Collective has spent years rebuilding Görff 'their own way,' and that people talk about it, for better or worse.", "about": null, "consistent_with_context": null, "note": "a personal impression, not independently verifiable"},
+          {"text": "Khaoe clarifies that Farlis isn't literally a prince - his family has had money in Terfila for generations, but she's never been clear on the exact title, and he doesn't press the point either.", "about": null, "consistent_with_context": true, "note": "matches Farlis's own registered backstory (aristocratic Terfila family, old money)"},
+          {"text": "Khaoe describes the Collective as horizontal in a specific sense: nobody leads just for arriving first, or for their surname.", "about": "gorff", "consistent_with_context": true, "note": "matches her own registered backstory's framing of the Collective"},
+          {"text": "Khaoe says she doesn't know an exact headcount for the Collective - more or less everyone living in Görff counts, given how the horizontal structure works.", "about": "gorff", "consistent_with_context": true, "note": "matches her own registered backstory, which frames the Collective as made up of 'the diversity of peoples that inhabit the Gorff farms and citadel'"},
+          {"text": "Khaoe names Bardaglis (a musician), Kristok Jakur (works the forge), and Dägna (runs the tavern) as fellow Görff residents, then Farlis and Khaasan as the comrades she sees most often.", "about": "gorff", "consistent_with_context": true, "note": "all five names match items in Khaoe's own sampled knowledge (inhabitant: Bardaglis (Gorff), inhabitant: Kristok Jakur (Gorff), inhabitant: Dägna (Gorff)) and their registered roles"}
+        ]
       }
     ]
   }

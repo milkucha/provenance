@@ -308,3 +308,59 @@ excluded). "Claims on record" are phrased as reported assertions, not restated a
     genuine divergence, logged here rather than silently reconciled (see this file's own rule above).
     Could mean Khaoe and Farlis are simply wrong about how he travels, or that "Teletraveller" and
     "arrives by griffon" aren't actually mutually exclusive — left open, not resolved here.
+
+## `khaoe_calendario_mecanografico.json`
+
+- **Participants:** Khaoe; an unnamed traveler (the player)
+- **Location:** the Feria del Milenio, in front of the Calendario Mecanográfico
+- **Summary:** A traveler asks Khaoe about the large new machine she's standing in front of. She
+  explains what it is and what it's for, then, pressed to clarify her own aside about Lundria, admits
+  she came back from her temple trip more confused about timekeeping than she left — and can't
+  actually teach what she only half-remembers.
+- **Claims on record:**
+  - The Calendario Mecanográfico is a new machine, inaugurated for the Feria del Milenio, that marks
+    the current year on a moving timeline.
+  - Khaoe says every temple in Lundria disagreed on what year it was, each counting from something
+    different, with nobody troubled by the mismatch — restates, in more detail, the same impression
+    already on record from `khaoe_farlis_lo_que_cambia_el_tiempo.json`.
+  - Khaoe says she went to Lundria hoping to learn "the" calendar there and came back without knowing
+    which of the many was the real one.
+  - Khaoe recalls, vaguely and without confidence, one temple that counted by moons and another that
+    counted from the last time the whole town gathered — offered explicitly as a half-remembered,
+    unreliable impression, not asserted as fact; she declines to "teach" it and redirects to "someone
+    from Lundria" instead.
+  - Consistency note: none of these specific temple-counting details (moons; counting from a town
+    gathering) appear in the objective `lundria` location entry, which records only temple-building
+    and the "culto del cubo flotante de Lundria" (era 7) — plausible given that record, not confirmed
+    or contradicted by it; Khaoe's own sampled knowledge of Lundria was bounded to the location's
+    name/region/type, so this is personal impression from her actual visit, not drawn from her sample,
+    consistent with how the same caveat was already logged for
+    `khaoe_farlis_lo_que_cambia_el_tiempo.json`.
+
+## `khaoe_banco_colectivo.json`
+
+- **Participants:** Khaoe; an unnamed traveler (the player)
+- **Location:** the Feria del Milenio, a bench
+- **Summary:** Sitting on a bench watching people go by, Khaoe is approached by a traveler who's heard
+  she's from the Collective. She confirms it, explains the horizontal organization when pressed,
+  clarifies that Farlis isn't actually a prince, and names a few fellow Görff residents plus her
+  closer comrades Farlis and Khaasan when asked who else is part of it.
+- **Claims on record:**
+  - Khaoe confirms she's a member of the Collective, and jokes that either it shows or someone's been
+    talking about her.
+  - Khaoe says the Collective has spent years rebuilding Görff "their own way," and that people talk
+    about it, for better or worse — a personal impression, not independently verifiable.
+  - Khaoe clarifies that Farlis isn't literally a prince — his family has had money in Terfila for
+    generations, but she admits she's never been clear on the exact title, and he doesn't press the
+    point either. Consistent with Farlis's own registered backstory (aristocratic Terfila family, old
+    money).
+  - Khaoe describes the Collective as horizontal in a specific sense: nobody leads just for arriving
+    first, or for their surname.
+  - Khaoe says, when asked how many are in the Collective, that she doesn't know an exact number —
+    more or less everyone living in Görff counts, given how the horizontal structure works. Consistent
+    with her own registered backstory, which frames the Collective as made up of "the diversity of
+    peoples that inhabit the Gorff farms and citadel."
+  - Khaoe names Bardaglis (a musician), Kristok Jakur (works the forge), and Dägna (runs the tavern)
+    as fellow Görff residents, then Farlis and Khaasan as the comrades she sees most often. All five
+    names match items in Khaoe's own sampled knowledge (`inhabitant: Bardaglis (Gorff)`,
+    `inhabitant: Kristok Jakur (Gorff)`, `inhabitant: Dägna (Gorff)`) and their registered roles.

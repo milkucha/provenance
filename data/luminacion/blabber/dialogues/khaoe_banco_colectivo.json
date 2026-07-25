@@ -1,0 +1,78 @@
+{
+  "$schema": "https://ladysnake.org/schemas/blabber/dialogue.schema.json",
+  "layout": { "type": "blabber:rpg" },
+  "start_at": "saludo",
+  "states": {
+
+    "saludo": {
+      "text": "Sí, así es. ¿Se me nota tanto, o alguien anduvo hablando de más? Siéntate, si quieres. No muerdo, y ya me cansé de solo mirar pasar gente.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_left_right"
+      },
+      "choices": [
+        { "text": "Gracias. Y sí, escuché a gente hablar. Supongo que no hay tantos \"colectivos\" en el mundo, así que se hacen notar.", "next": "reconstruccion" }
+      ]
+    },
+
+    "reconstruccion": {
+      "text": "Puede ser. O capaz es que no nos callamos nunca — llevamos años reconstruyendo Görff a nuestra manera, y a la gente le gusta hablar de eso, para bien o para mal. ¿Qué es lo que escuchaste, si se puede saber? Prefiero que me lo digas tú a que yo adivine qué historia anda circulando esta vez.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [
+        { "text": "Nada, que se organizan horizontalmente, y que uno de los \"príncipes\" de Terfila es también parte.", "next": "farlis_1" }
+      ]
+    },
+
+    "farlis_1": {
+      "text": "Ah, seguro te hablaron de Farlis. Príncipe no es, pero la familia sí tiene plata en Terfila desde hace generaciones — nunca me quedó claro bien el título exacto, y él tampoco insiste mucho en aclararlo.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_left_right"
+      },
+      "choices": [
+        { "text": "...", "next": "farlis_2" }
+      ]
+    },
+
+    "farlis_2": {
+      "text": "Y sí, horizontal. Nadie manda solo porque llegó primero, ni porque tiene apellido. Eso es más o menos toda la gracia del asunto.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [
+        { "text": "¿Quién más es parte del colectivo? ¿Cuántos son?", "next": "miembros_1" }
+      ]
+    },
+
+    "miembros_1": {
+      "text": "¿Cuántos? Ni idea exacta, la verdad — todo el que vive en Görff es parte, más o menos, así funciona la horizontalidad. Bardaglis el músico, Kristok Jakur que trabaja el hierro, Dägna que atiende la taberna... la lista sigue.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [
+        { "text": "...", "next": "miembros_2" }
+      ]
+    },
+
+    "miembros_2": {
+      "text": "Después están los más cercanos — Farlis, que ya conociste por rumor, y Khaasan, que se supone que hoy también viene a la feria. Con esos dos me junto más seguido.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [
+        { "text": "...", "next": "end" }
+      ]
+    },
+
+    "end": {
+      "type": "end_dialogue"
+    }
+
+  }
+}

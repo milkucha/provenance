@@ -164,6 +164,18 @@ open questions about the lore itself live in `_lore/analysis/unknown.md`, not he
 
 ## Khaoe & Farlis (Feria del Milenio — Castillo de Görff replica, Plaza de las Culturas)
 
+- [ ] A fourth dialog, `khaoe_calendario_mecanografico.json` (Khaoe vs. the player, at the Feria's new
+      Calendario Mecanográfico — a different spot from the castle replica scenes below), and a fifth,
+      `khaoe_banco_colectivo.json` (Khaoe vs. the player, sitting on a bench elsewhere at the Feria),
+      are already registered normally in `_maps/dialogs/registry.json` under her key, per the
+      single-NPC-vs-player flow — unlike the three ambient ones below, these don't have an open
+      registration question. Both still need actual right-click wiring once
+      `functions/npcs/khaoe/spawn.mcfunction` exists (`npc edit commands add ... blabber dialogue
+      start luminacion:<dialog_id> --clicker-- ...`, one command per dialog, since Khaoe now has more
+      than one vs.-player dialog — decide then whether they need Döran's `random_dialog` treatment too,
+      or whether each is meant to trigger only in its own specific spot, which would need a
+      location/proximity condition rather than a plain right-click gate).
+
 Three short ambient dialogs (`khaoe_farlis_el_castillo_que_fue.json`,
 `khaoe_farlis_lo_que_cambia_el_tiempo.json`, `khaoe_farlis_esperando_a_khaasan.json`), written in
 Latin American Spanish, meant to connect as fragments of one ongoing conversation but fire

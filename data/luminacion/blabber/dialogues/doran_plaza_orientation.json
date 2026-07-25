@@ -8,7 +8,7 @@
       "text": "Greetings, friend. Bienvenidi a la Plaza de las Culturas, o el pabellón arquitectónico.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_wave"
       },
       "choices": [
         {
@@ -100,7 +100,7 @@
       "text": "Menor solo en tamaño, amigo — son miniaturas, no los castillos de verdad. En importancia no le faltan a nada; algunas de esas maravillas yo mismo no las conocía hasta que llegaron a estos pedestales.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_palms_up"
       },
       "choices": [
         {
