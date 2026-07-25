@@ -52,7 +52,7 @@
       "text": "¿Cuántos? Ni idea exacta, la verdad — todo el que vive en Görff es parte, más o menos, así funciona la horizontalidad. Bardaglis el músico, Kristok Jakur que trabaja el hierro, Dägna que atiende la taberna... la lista sigue.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_shrug"
       },
       "choices": [
         { "text": "...", "next": "miembros_2" }

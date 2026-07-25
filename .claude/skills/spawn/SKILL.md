@@ -31,9 +31,8 @@ Confirm before starting, and stop to resolve any gap rather than guessing past i
 
 ## Step 1 — Verify the nod standard on every dialog involved
 
-Every non-`end_dialogue` state in every Luminacion dialog fires a nod on entry — this is the house
-style, not optional per-dialog flavor. Read each dialog file this NPC will use and check that
-every state except `end`/`end_dialogue` types has:
+Every non-`end_dialogue` state in every Luminacion dialog fires an action on entry — this is the
+house style, not optional per-dialog flavor. The baseline is `nod_up_down`:
 
 ```json
 "action": {
@@ -42,16 +41,18 @@ every state except `end`/`end_dialogue` types has:
 }
 ```
 
-(`nod_left_right` is the only other acceptable entry point for a "no" gesture where that reads
-better — e.g. a state where the NPC is declining something. Never call `nod_up_down_2/_3/_4` or
-`nod_left_right_2/_3/_4` directly from a dialog — those are internal continuation beats fired via
-`schedule function`, not standalone gestures; see `_shared/nod_up_down.mcfunction`'s header.)
+but a minority of states in a fully-baked dialog carry a more specific gesture instead
+(`gesture_wave`, `gesture_shrug`, `nod_left_right` for a negation, ...) where the line's own text
+supports it — see the `bake_dialog` skill for the full gesture vocabulary and how that selection is
+made. Never call `nod_up_down_clear`, `nod_left_right_clear`, or `nod_tick` directly from a dialog —
+those are internal, fired only from `nod_tick.mcfunction`'s own per-entity countdown, not standalone
+gestures; see `_shared/nod_up_down.mcfunction`'s header.
 
-If any non-end state is missing this action, add it (default to `nod_up_down` unless the line's
-content clearly reads as a refusal/negation). Don't ask the user about this — it's a fixed
-convention, not a judgment call, unless a state's `action` field is already something else
-deliberate (e.g. a `give` or scoreboard set), in which case leave it and flag it back to the user
-rather than overwriting a real effect.
+If any non-end state is missing an `action` entirely, that's a gap, not a stylistic choice — add
+`nod_up_down` as the safe default, then run `bake_dialog` on the file if it hasn't been through that
+pass yet (check by the same signal `bake_dialog` uses: uniform `nod_up_down` everywhere means
+unbaked). Don't second-guess an existing non-default gesture already on a state — leave it, same as
+you'd leave a deliberate `give` or scoreboard-set action untouched.
 
 ## Step 2 — Movement mode
 

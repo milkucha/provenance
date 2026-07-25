@@ -7,7 +7,9 @@
 # yaw counterpart to Laugh's existing `var.gest_headrx` pitch override) while
 # both arms raise in front of the chest and sweep side to side in sync
 # (`ry` oscillates, mirrored between arms) — a "no, no" rejection gesture.
-# Clears itself automatically after 2.5s via gesture_clear.mcfunction.
+# Clears itself automatically after 2.5s (50t) via the per-entity
+# luminacion.gest_timer countdown in gesture_tick.mcfunction — see
+# gesture_wave.mcfunction for the full mechanism writeup.
 #
 # CALL CONTEXT: must be called with @s = the NPC itself, same as the nod_*
 # functions (e.g. "execute as @interlocutor run function ...").
@@ -23,4 +25,4 @@
 tag @s add luminacion.gesture_active
 item replace entity @s weapon.mainhand with minecraft:stick{CustomModelData:108}
 
-schedule function luminacion:npcs/_shared/gesture_clear 50t replace
+scoreboard players set @s luminacion.gest_timer 50

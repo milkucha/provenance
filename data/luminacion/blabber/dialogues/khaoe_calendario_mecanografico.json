@@ -30,7 +30,7 @@
       "text": "Yo llegué pensando que iba a aprender el calendario de Lundria, y salí sin saber cuál de todos era. Y aquí, en cambio, alguien construyó una torre para que nadie tenga esa duda.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_shrug"
       },
       "choices": [
         { "text": "Interesante... qué otras formas de medir el tiempo conociste en Lundria. Enséñame.", "next": "no_te_puedo_ensenar_1" }

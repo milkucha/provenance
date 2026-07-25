@@ -27,13 +27,17 @@
       "text": "Farlis: Un castillo de guerra hecho huerta común. Un templo con mil comienzos. Todo termina significando otra cosa, si esperas lo suficiente.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Farlis,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Farlis,limit=1] run function luminacion:npcs/_shared/gesture_palms_up"
       },
       "choices": [{ "text": "...", "next": "k2" }]
     },
 
     "k2": {
       "text": "Khaoe: O si alguien se toma el trabajo de cambiarlo.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/gesture_point"
+      },
       "choices": [{ "text": "...", "next": "end" }]
     },
 

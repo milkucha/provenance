@@ -3,16 +3,24 @@
 # =============================================================================
 # Plays a short two-beat downward nod (dip, return, smaller dip, return) that
 # decays back to whatever pitch the NPC already had — a prior look_up/
-# look_down pose is preserved, not reset to level. Takes ~9 ticks (0.45s),
-# advanced via "schedule function". The continuation beats live in
-# nod_up_down_2/_3/_4.mcfunction — internal, don't call those directly.
+# look_down pose is preserved, not reset to level. Takes ~9 ticks (0.45s):
+# this function plays beat 1 immediately and sets luminacion.nod_timer to 9,
+# then nod_tick.mcfunction (called every tick from tick.mcfunction) counts
+# it down per-entity and plays beats 2/3/4 (in nod_up_down_clear.mcfunction
+# for beat 4) at the score values matching 3/6/9 ticks elapsed. Each NPC's
+# nod timing is independent of every other NPC's — this replaced an earlier
+# "schedule function ... replace" design (nod_up_down_2/_3/_4.mcfunction,
+# removed) that used one datapack-wide timer per continuation step, which
+# broke as soon as two NPCs nodded within a few ticks of each other (see
+# TODO.md "Multi-NPC gesture/nod scheduling collision" for the full
+# history).
 #
 # CALL CONTEXT: must be called with @s = the NPC itself (from a Taterzens
 # right-click/blabber command action, or "execute as <npc> run function ...").
-# Safe to trigger on multiple NPCs at once: the baseline pitch is stored in
-# the "@s" scoreboard slot, i.e. keyed to each entity's own UUID, and the
-# continuation beats re-select every NPC currently mid-nod via a tag rather
-# than a hardcoded name — no cross-NPC interference.
+# Safe to trigger on multiple NPCs at once: the baseline pitch is preserved
+# via relative "tp" deltas that sum to zero, and every beat after the first
+# is keyed to each entity's own luminacion.nod_timer score — no cross-NPC
+# interference.
 #
 # Don't retrigger this on an NPC that's already mid-nod (or mid look_up/
 # look_down change) — the queued continuation beats will stomp on it.
@@ -45,4 +53,4 @@ execute if entity @s[tag=luminacion.paused] run npc edit movement NONE
 # Beat 1: dip down 12 degrees from current pitch.
 execute at @s run tp @s ~ ~ ~ ~ ~12
 
-schedule function luminacion:npcs/_shared/nod_up_down_2 3t replace
+scoreboard players set @s luminacion.nod_timer 9

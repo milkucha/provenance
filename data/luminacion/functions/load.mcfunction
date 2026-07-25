@@ -6,3 +6,5 @@
 # exists but does not crash and does not overwrite existing scores.
 scoreboard objectives add luminacion.bool dummy
 scoreboard objectives add luminacion.int dummy
+scoreboard objectives add luminacion.gest_timer dummy
+scoreboard objectives add luminacion.nod_timer dummy

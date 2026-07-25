@@ -3,16 +3,24 @@
 # =============================================================================
 # Plays a short two-beat head shake (turn left, return to center, smaller
 # turn right, return to center) that decays back to whatever yaw the NPC
-# already had. Takes ~9 ticks (0.45s), advanced via "schedule function". The
-# continuation beats live in nod_left_right_2/_3/_4.mcfunction — internal,
-# don't call those directly.
+# already had. Takes ~9 ticks (0.45s): this function plays beat 1
+# immediately and sets luminacion.nod_timer to 9, then nod_tick.mcfunction
+# (called every tick from tick.mcfunction) counts it down per-entity and
+# plays beats 2/3/4 (in nod_left_right_clear.mcfunction for beat 4) at the
+# score values matching 3/6/9 ticks elapsed. Each NPC's shake timing is
+# independent of every other NPC's — this replaced an earlier
+# "schedule function ... replace" design (nod_left_right_2/_3/_4.mcfunction,
+# removed) that used one datapack-wide timer per continuation step, which
+# broke as soon as two NPCs shook within a few ticks of each other (see
+# TODO.md "Multi-NPC gesture/nod scheduling collision" for the full
+# history).
 #
 # CALL CONTEXT: must be called with @s = the NPC itself (from a Taterzens
 # right-click/blabber command action, or "execute as <npc> run function ...").
-# Safe to trigger on multiple NPCs at once: the baseline yaw is stored in the
-# "@s" scoreboard slot, i.e. keyed to each entity's own UUID, and the
-# continuation beats re-select every NPC currently mid-shake via a tag
-# rather than a hardcoded name — no cross-NPC interference.
+# Safe to trigger on multiple NPCs at once: the baseline yaw is preserved
+# via relative "tp" deltas that sum to zero, and every beat after the first
+# is keyed to each entity's own luminacion.nod_timer score — no cross-NPC
+# interference.
 #
 # Don't retrigger this on an NPC that's already mid-shake (or turning via
 # Taterzens' own movement/look behavior) — the queued continuation beats
@@ -46,4 +54,4 @@ execute if entity @s[tag=luminacion.paused] run npc edit movement NONE
 # Beat 1: turn 15 degrees left of current yaw.
 execute at @s run tp @s ~ ~ ~ ~-15 ~
 
-schedule function luminacion:npcs/_shared/nod_left_right_2 3t replace
+scoreboard players set @s luminacion.nod_timer 9

@@ -82,7 +82,7 @@
       "text": "Easy now - no. Just a tired traveler, not a knife to my name.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_no"
       },
       "choices": [
         {
@@ -110,7 +110,7 @@
       "text": "Fair. I walk the crossings - junctions like Cruce de Trobal, out past Khol Moshin way. Mark what's broken.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_point"
       },
       "choices": [
         {
@@ -124,7 +124,7 @@
       "text": "Put that way, it does sound a bit foolish. But aye, that's about the shape of it.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_laugh"
       },
       "choices": [
         {
@@ -152,7 +152,7 @@
       "text": "Safe travels - mind the scaffolding. And if you learn whether Sälthos really is the biggest, I wouldn't mind hearing it, next time the train comes through.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_wave"
       },
       "choices": [
         {

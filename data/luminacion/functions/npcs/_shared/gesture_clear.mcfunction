@@ -1,22 +1,18 @@
 # =============================================================================
-# Luminacion — Shared: Gesture — Clear
+# Luminacion — Shared: Gesture — Clear (internal)
 # =============================================================================
-# Ends whichever gesture is currently active on any NPC: empties the main
-# hand (dropping the invisible CustomModelData marker item that the gesture
-# resource pack reads) and clears the tracking tag. Selects by tag, not @s —
-# "schedule function" loses the calling entity's context by the time this
-# fires, same reasoning as nod_up_down_4.mcfunction.
+# Ends the current NPC's gesture: empties the main hand (dropping the
+# invisible CustomModelData marker item that the gesture resource pack
+# reads) and clears the tracking tag. Called as
+# "execute as <npc> run function ..." from gesture_tick.mcfunction, once per
+# tick, only for whichever entity's own luminacion.gest_timer has just
+# reached 0 — @s is already scoped to that one NPC, not every currently-
+# gesturing NPC (that was the old behavior when this fired off a single
+# global "schedule function ... replace" timer shared by every gesture —
+# see TODO.md "Multi-NPC gesture/nod scheduling collision").
 #
-# Internal — called only via "schedule function ... <ticks>t replace" from
-# the individual gesture_<name>.mcfunction files below. Don't call directly.
-#
-# Same multi-NPC caveat as the nod system: "replace" scheduling is keyed to
-# this function's id globally, not per-entity, so if two NPCs' gestures
-# happen to overlap, the later one's schedule call can push out the earlier
-# one's clear time by a beat. Harmless here (worst case a gesture holds very
-# slightly longer/shorter than its own intended duration) — see
-# nod_up_down.mcfunction's docstring for the same tradeoff explained in full.
+# Internal — called only from gesture_tick.mcfunction. Don't call directly.
 # =============================================================================
 
-execute as @e[tag=luminacion.gesture_active] run item replace entity @s weapon.mainhand with minecraft:air
-tag @e[tag=luminacion.gesture_active] remove luminacion.gesture_active
+item replace entity @s weapon.mainhand with minecraft:air
+tag @s remove luminacion.gesture_active

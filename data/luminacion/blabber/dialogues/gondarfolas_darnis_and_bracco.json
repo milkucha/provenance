@@ -8,7 +8,7 @@
       "text": "¡Vaya, una cara que no conozco! ¿Vienes a reservar pasaje, o solo a admirar el mejor casco que jamás haya cruzado estas aguas?",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_wave"
       },
       "choices": [
         {
@@ -36,7 +36,7 @@
       "text": "Los lázulis están bien, claro, pero he llevado a hombres al otro lado por nada más que una buena historia que no hubiera oído antes. Eso sí, ya he oído la mayoría dos veces, verás, leo más de lo que le conviene a un marinero. Así que cuéntame algo que valga el pasaje, y lo damos por saldado.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_palms_up"
       },
       "choices": [
         {
@@ -50,7 +50,7 @@
       "text": "¡Därnis! Ese es el nombre que estás rondando, a menos que me equivoque, zarpó rumbo al sur desde Sindäara y volvió cambiado, hablando de un océano nuevo, una isla en llamas, tierra que flotaba.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_point"
       },
       "choices": [
         {
@@ -92,7 +92,7 @@
       "text": "¿Que si he estado ahí? Amigo, yo tengo piernas de marinero, no botas de montaña, si no hay costa, no tengo nada que hacer ahí. Conozco el nombre, sé que pasan trenes por esa zona, pero Khol Moshin es tierra que otro debe caminar, no yo.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_no"
       },
       "choices": [
         {
@@ -162,7 +162,7 @@
       "text": "Los he leído los dos. Eso no me hace más sabio sobre cuál miente, podría ser que ninguno, hasta donde sé, solo dos hombres que nunca compararon sus notas.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_shrug"
       },
       "choices": [
         {
@@ -204,7 +204,7 @@
       "text": "Se hacía llamar Bracco, o Braggo, algo así, nunca confío en un nombre que un desconocido dice igual dos veces. Tipo grande, con más cicatrices de las que debería tener un comerciante decente, me vendió los libros como si quisiera deshacerse de ellos más de lo que quería mis lázulis.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_scratch_head"
       },
       "choices": [
         {
@@ -246,7 +246,7 @@
       "text": "Como quieras, este muelle no se va a ninguna parte, y yo tampoco hasta que la marea cambie de verdad. Pregunta por ahí, alguien te va a señalar el camino si Bracco todavía anda trabajando por estos rumbos. Y oye, si lo encuentras, dile que su libro me costó una semana de pesca. Me gustaría que eso quedara registrado en algún lado.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_wave"
       },
       "choices": [
         {

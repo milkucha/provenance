@@ -8,7 +8,7 @@
       "text": "Well, come on in - don't just stand at the door gawking at the hangar like it's going to bite you. You here for the airplane showcase, or did the smell of engine oil just drag you off the fairground path?",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_wave"
       },
       "choices": [
         {
@@ -54,7 +54,7 @@
       "text": "Funny thing is, for as many times as I've made that flight, I couldn't tell you much about Nvhi itself - I turn around at the strip and I'm gone again before I've properly looked at the place.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_scratch_head"
       },
       "choices": [
         {
@@ -96,7 +96,7 @@
       "text": "Ha, fair enough - not everyone's here for engines. The Feria del Milenio, then - a thousand years of Milkantis, if you believe the count, and every corner of the fairground's trying to say something about it. I'm just glad they gave the pilots a wing to show off in, honestly.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_laugh"
       },
       "choices": [
         {
@@ -152,7 +152,7 @@
       "text": "Oh, right, you wouldn't know this about me - I've got a theory nobody takes seriously, that ducks are the last living descendants of the old Daax.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_point"
       },
       "choices": [
         {

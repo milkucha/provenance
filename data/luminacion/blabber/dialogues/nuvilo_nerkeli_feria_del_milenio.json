@@ -27,7 +27,7 @@
       "text": "Nerkeli: Careful, half of what's on display I still don't understand myself. You seen the tech wing? Little glowing block contraptions everywhere - codigos, they call them. I fly planes, I don't build them.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Nerkeli,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Nerkeli,limit=1] run function luminacion:npcs/_shared/gesture_shrug"
       },
       "choices": [{ "text": "...", "next": "nuv2" }]
     },
@@ -36,7 +36,7 @@
       "text": "Nuvilo: Codigos I actually know something about - the records tie the whole business to Era del Daax, when Gorff's new government first started using them. That symbol you'll have seen around got carved into old ruins right around those same years.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Nuvilo,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Nuvilo,limit=1] run function luminacion:npcs/_shared/gesture_point"
       },
       "choices": [{ "text": "...", "next": "ner3" }]
     },
@@ -45,7 +45,7 @@
       "text": "Nerkeli: Now that one I do know! The Daax symbol - peace and technology, wasn't it. I've got my own theory nobody takes seriously: ducks. I'm convinced they're the last living descendants of whatever the Daax actually was.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Nerkeli,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Nerkeli,limit=1] run function luminacion:npcs/_shared/gesture_point"
       },
       "choices": [{ "text": "...", "next": "nuv3" }]
     },
@@ -54,7 +54,7 @@
       "text": "Nuvilo: ...Ducks.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Nuvilo,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Nuvilo,limit=1] run function luminacion:npcs/_shared/gesture_face_palm"
       },
       "choices": [{ "text": "...", "next": "ner4" }]
     },
@@ -99,7 +99,7 @@
       "text": "Nerkeli: Wait - Nvhi? I fly the M7 corridor half the season, Puente Intercontinental all the way up to Nvhi's edge. Never once thought about who started the place. Small world, milkantis.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Nerkeli,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Nerkeli,limit=1] run function luminacion:npcs/_shared/gesture_scratch_head"
       },
       "choices": [{ "text": "...", "next": "nuv6" }]
     },
@@ -135,7 +135,7 @@
       "text": "Nerkeli: You too. Don't let the scholars keep you all fair - some of us still remember when you couldn't tell a code block from a cobblestone.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Nerkeli,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Nerkeli,limit=1] run function luminacion:npcs/_shared/gesture_laugh"
       },
       "choices": [{ "text": "...", "next": "end" }]
     },

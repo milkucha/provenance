@@ -4,7 +4,15 @@
 # Gives the NPC's own main hand an invisible marker item (CustomModelData
 # 101), which the gesture resource pack (player.jem/player_slim.jem override
 # in the Iris/EMF pipeline) reads to raise and swing the right arm side to
-# side. Clears itself automatically after 2.5s via gesture_clear.mcfunction.
+# side. Clears itself automatically after 2.5s (50 ticks): sets
+# luminacion.gest_timer to 50, and gesture_tick.mcfunction (called every
+# tick from tick.mcfunction) counts it down per-entity, running
+# gesture_clear.mcfunction on this NPC alone once it reaches 0. Each NPC's
+# hold time is independent of every other NPC's — this replaced an earlier
+# "schedule function ... replace" design that used one datapack-wide timer
+# for every gesture, which broke as soon as two NPCs gestured within a few
+# ticks of each other (see TODO.md "Multi-NPC gesture/nod scheduling
+# collision" for the full history).
 #
 # CALL CONTEXT: must be called with @s = the NPC itself, same as the nod_*
 # functions (e.g. "execute as @interlocutor run function ...").
@@ -20,4 +28,4 @@
 tag @s add luminacion.gesture_active
 item replace entity @s weapon.mainhand with minecraft:stick{CustomModelData:101}
 
-schedule function luminacion:npcs/_shared/gesture_clear 50t replace
+scoreboard players set @s luminacion.gest_timer 50

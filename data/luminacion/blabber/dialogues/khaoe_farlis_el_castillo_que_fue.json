@@ -18,7 +18,7 @@
       "text": "Farlis: A mí me da risa, la verdad. Todo ese peso de piedra, reducido a un adorno de feria.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Farlis,limit=1] run function luminacion:npcs/_shared/nod_left_right"
+        "value": "execute as @e[type=taterzens:npc,name=Farlis,limit=1] run function luminacion:npcs/_shared/gesture_laugh"
       },
       "choices": [{ "text": "...", "next": "k2" }]
     },
@@ -43,6 +43,10 @@
 
     "k3": {
       "text": "Khaoe: O simplemente costumbre. Alguien tenía que quedarse con las piedras.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/gesture_shrug"
+      },
       "choices": [{ "text": "...", "next": "end" }]
     },
 

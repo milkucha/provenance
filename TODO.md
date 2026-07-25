@@ -244,50 +244,30 @@ tag+`schedule ... replace` pattern as `nod_up_down.mcfunction`. Each wired dialo
 *replaces* its `nod_up_down` call rather than adding to it, so gesture and nod are mutually exclusive by
 construction — every other line keeps its ordinary nod untouched.
 
-- [ ] **Multi-NPC gesture/nod scheduling collision** (found 2026-07-25 building the jump gesture, not
-      yet fixed): `gesture_clear.mcfunction`, and the `nod_up_down_2/_3/_4` / `nod_left_right_2/_3/_4`
-      continuation chains, all advance via `schedule function <id> <ticks>t replace` — but
-      `schedule function` is a single global timer *per function ID* in vanilla Minecraft, not
-      per-entity. Every `gesture_<name>.mcfunction` schedules the same `gesture_clear`, so if NPC A
-      starts a gesture and NPC B starts any gesture a few ticks later, B's `replace` call overwrites
-      A's pending timer — A's hold then gets cut short or stretched to whenever B's schedule actually
-      fires, and when it fires, `gesture_clear` clears *every* entity currently tagged
-      `luminacion.gesture_active` at once, not just the one whose hold time actually expired. Harmless
-      so far (all testing has been one NPC gesturing at a time), but jump's much shorter `12t` hold vs.
-      everyone else's `50t` (see `gesture_jump.mcfunction`'s own docstring, where this was first
-      flagged) makes the collision far more likely to actually manifest once enough NPCs exist that two
-      might gesture within a few ticks of each other. The identical flaw exists independently in
-      `nod_up_down`/`nod_left_right`: confirmed by reading `nod_up_down_4.mcfunction` — beat 4 applies
-      to *every* `@e[tag=luminacion.gesture_nod_ud]` at once, so a second NPC nodding mid-way through a
-      first NPC's nod compresses/desyncs both nods' beat timing (`nod_left_right` mirrors this exactly,
-      via `luminacion.gesture_nod_lr`). System-wide fix needed, not a jump-specific patch.
-
-      **Planned fix — per-entity scoreboard countdown instead of global `schedule`.** 1.20.1 has no
-      `mcfunction` macros (`$(arg)`, added 1.20.2+), which is what would otherwise let a scheduled
-      callback carry per-entity context — so the fix has to route around `schedule` entirely for
-      anything needing true per-entity independence:
-        1. Add a new `dummy` scoreboard objective (e.g. `luminacion.gest_timer`) in `load.mcfunction`,
-           alongside the existing `luminacion.bool`/`luminacion.int`.
-        2. Every `gesture_<name>.mcfunction` sets `scoreboard players set @s luminacion.gest_timer
-           <duration>` (its own per-gesture hold — 12 for jump, 50 for the rest) instead of calling
-           `schedule function .../gesture_clear ... replace`.
-        3. `tick.mcfunction` gets one new line calling a shared function that, every tick: decrements
-           `luminacion.gest_timer` for every `@e[tag=luminacion.gesture_active]`, then runs a
-           "clear self" step (item off, tag off) only `as`/`at` whichever entities' timer has just hit
-           0 — each NPC's gesture then ends exactly `<duration>` ticks after *it* started, independent
-           of what any other NPC is doing.
-        4. Same treatment for the nod families, though scope this as its own decision once the
-           gesture-side fix is proven: replace the `nod_up_down_2/_3/_4` (and `_left_right` equivalent)
-           schedule chain with per-entity beat state on the same countdown pattern — nods are a fixed
-           ~9-tick, 4-beat sequence rather than "hold then clear", so this is more naturally a per-tick
-           state machine keyed off one countdown value (current beat = f(ticks remaining)) than four
-           separately-scheduled function hops.
-        5. Update every `gesture_*.mcfunction`/`nod_*.mcfunction` docstring that currently describes
-           the `schedule ... replace` caveat (worded near-identically in several files) once the
-           mechanism underneath them actually changes.
-        6. `gesture_clear.mcfunction` itself gets simplified/renamed once it's driven from the tick
-           loop with an already-narrowed selector, rather than unconditionally clearing every tagged
-           entity on a global timer.
+- [x] **Multi-NPC gesture/nod scheduling collision** (found 2026-07-25 building the jump gesture,
+      fixed same day): `schedule function <id> <ticks>t replace` is a single global timer *per
+      function ID*, not per-entity — every gesture shared one `gesture_clear` timer and every nod
+      direction shared one `_2/_3/_4` continuation-beat timer, so a second NPC gesturing/nodding a few
+      ticks after a first one would silently overwrite the first one's pending timing. Replaced with a
+      per-entity scoreboard countdown for both systems:
+        - `luminacion.gest_timer` / `luminacion.nod_timer` (new `dummy` objectives, `load.mcfunction`).
+        - Every `gesture_<name>.mcfunction` now does `scoreboard players set @s luminacion.gest_timer
+          <duration>` instead of scheduling `gesture_clear`. `tick.mcfunction` calls the new
+          `gesture_tick.mcfunction` every tick, which decrements the score for every
+          `@e[tag=luminacion.gesture_active]` and runs `gesture_clear.mcfunction` (now simplified to
+          act on `@s` alone) only for entities whose score has reached 0.
+        - `nod_up_down.mcfunction`/`nod_left_right.mcfunction` now set `luminacion.nod_timer` to `9`
+          instead of scheduling `_2`. The new `nod_tick.mcfunction` (also called from `tick.mcfunction`)
+          decrements it per-entity and fires each beat at the score matching 3/6/9 ticks elapsed,
+          landing beat 4 in the new `nod_up_down_clear.mcfunction`/`nod_left_right_clear.mcfunction`.
+          The old `nod_up_down_2/_3/_4.mcfunction` and `nod_left_right_2/_3/_4.mcfunction` files are
+          deleted — superseded by this tick+score design, one shared `nod_timer` objective for both
+          directions since an NPC is never tagged mid-nod in both at once.
+      Each NPC's hold/beat timing is now fully independent of every other NPC's, regardless of how
+      many NPCs gesture/nod concurrently or how staggered their start times are. Docstrings across every
+      touched `gesture_*`/`nod_*.mcfunction`, the README (Layer 2 gesture dispatch, the "to call a
+      gesture" walkthrough, the Jump reference-table row), and `.claude/skills/spawn/SKILL.md` (which
+      named the now-deleted nod continuation files) were updated to match.
 - [ ] **Not yet version-controlled**: the resource pack itself (`pack.mcmeta` +
       `assets/minecraft/emf/cem/player.jem`/`player_slim.jem` + the invisible item model/texture under
       `assets/minecraft/models/item/stick.json` + `assets/luminacion/...`) still lives only at
@@ -317,16 +297,37 @@ construction — every other line keeps its ordinary nod untouched.
       the new repo live there directly (option 1) or via the symlink (option 2).
 - [ ] Still main-hand only (off-hand path never built — would need the trickier
       `Inventory`/slot-`-106` NBT path discovered for real players, unconfirmed for Taterzens).
-- [ ] Elbow joint (separate forearm bone) — attempted 2026-07-25 for the new cross-arms gesture as a
-      nested `submodels` child bone of `right_arm`/`left_arm`, reverted same day: this CEM/EMF build
-      does **not** compose a nested submodel's rotation with its parent's — the child renders at its
-      raw `translate` position, unrotated by the arm, so it visually detached from the elbow (and broke
-      the base player model, not just the gesture, since the split was unconditional). Real elbow
-      articulation would need explicit forward-kinematics math (rotate the elbow pivot by the shoulder's
-      current rotation) baked into the expression language, not simple nesting — bigger scope than
-      previously estimated, not started.
-- [ ] Only Döran has gestures wired so far — Gondarfolas, Nuvilo, Nerkeli, and any future NPCs' dialogs
-      don't use them yet.
+- [x] **Elbow joint (separate forearm bone) — working, landed 2026-07-25.** `right_arm`/`left_arm` are
+      each split at the vertical midpoint into a shortened shoulder segment and a nested `submodels`
+      child bone (`right_forearm`/`left_forearm`), pivoted at the elbow. First attempt (same day) used
+      absolute-frame-style `translate`/`coordinates` numbers for the nested bone and got the rotation
+      approach backwards, causing it to render fully detached — see the README "Elbow joint" writeup for
+      what was actually wrong and how it was diagnosed (a real Fresh Animations `wolf.jem` — the same
+      author this rig already credits — was pulled from GitHub to reverse-engineer the correct nested
+      `translate`/`coordinates` scale). Position tracking through the parent's rotation turned out to be
+      automatic; only the pivot's local-frame numbers needed calibrating, which took extensive in-game
+      trial and error (see README for final values). A small elbow seam remains and is considered
+      acceptable — the blocky character style camouflages it. `cross_arms` (CustomModelData 111) is the
+      first gesture using it, bending `right_forearm.rx`/`left_forearm.rx` by `torad(-90)`. Not yet wired
+      into any other gesture (scratch-head/palms-up could plausibly use it too, unexplored).
+- [ ] Forearm sleeve overlay (`right_forearm_sleeve`/`left_forearm_sleeve`) isn't positionally
+      calibrated to match the tuned forearm bone — nesting it under `right_sleeve`/`left_sleeve` the
+      same way `right_forearm` nests under `right_arm` was tried and reverted, since that bone only
+      inherits the shoulder's rotation (not the forearm's own local elbow bend), breaking `cross_arms`'s
+      bend for the sleeve layer specifically. Needs either its own copy of `var.gest_rforearmrx` or
+      nesting under `right_forearm` instead of `right_sleeve` (untried). See README "Elbow joint".
+- [x] Packaged the manual gesture-selection pass as its own skill, `.claude/skills/bake_dialog/SKILL.md`
+      (2026-07-25) — callable standalone on any dialog file, or automatically as `/enact`'s new Step 8.
+- [x] Ran `bake_dialog` over every remaining non-template dialog (2026-07-25): `nerkeli_hangar_talk`,
+      `nuvilo_scholar_at_the_feria`, `gondarfolas_darnis_and_bracco`, all five `khaoe_*` dialogs,
+      `sonoros_lost_traveler`, `nawom_morkulo_first_meeting`. Every dialog in the pack now has at
+      least one gesture beyond the uniform default nod. The three `khaoe_farlis_*` states that were
+      missing an `action` entirely (see the entry above this one, and the "always a nod" question
+      that surfaced it) got filled in as part of this same pass rather than left as a separate gap.
+      One pre-existing `nod_left_right` in `khaoe_farlis_el_castillo_que_fue.json` (state `f1`) was
+      swapped to `gesture_laugh` — the line ("me da risa") was amusement, not disagreement, and the
+      user confirmed the swap before it was made. Any *new* dialog from `/enact` still needs this
+      pass — it isn't a one-time fix, `/enact` Step 8 runs it going forward.
 
 ## Localization (per-player dialog language)
 

@@ -5,20 +5,19 @@
 # 110), which the gesture resource pack (player.jem/player_slim.jem override
 # in the Iris/EMF pipeline) reads to raise the right arm straight overhead
 # (victory fist-pump) and bounce the whole body up and down — a Mario
-# level-clear-style victory jump. Clears itself after 12t (0.6s) via
-# gesture_clear.mcfunction — deliberately much shorter than every other
-# gesture's 50t (2.5s): the jump's own one-shot hop (var.gest_jumpclock in
-# the .jem) finishes in ~7 ticks, and the arm is meant to drop the instant
-# landing happens rather than stay pumped for a held victory pose, so the
-# marker item (and with it the arm pose) is pulled well before 2.5s would
-# elapse. Since gesture_clear's "schedule ... replace" is a single global
-# timer shared across every gesture/NPC (see gesture_clear.mcfunction's own
-# docstring), if this gesture's call happens to overlap another NPC's
-# longer-held gesture in the same tick window, the later schedule call wins
-# and can cut the earlier gesture's hold short (or stretch this one out) by
-# a beat — acceptable here given how rarely two NPCs gesture in the same
-# instant, but worth knowing if a gesture is ever seen holding oddly long or
-# cutting off early.
+# level-clear-style victory jump. Clears itself after 12t (0.6s) via the
+# per-entity luminacion.gest_timer countdown in gesture_tick.mcfunction —
+# deliberately much shorter than every other gesture's 50t (2.5s): the
+# jump's own one-shot hop (var.gest_jumpclock in the .jem) finishes in ~7
+# ticks, and the arm is meant to drop the instant landing happens rather
+# than stay pumped for a held victory pose, so the marker item (and with it
+# the arm pose) is pulled well before 2.5s would elapse. Because the timer
+# is per-entity (see gesture_wave.mcfunction for the full mechanism
+# writeup), this shorter hold no longer risks colliding with any other
+# NPC's differently-timed gesture the way it did under the old shared
+# "schedule ... replace" design — that was the original motivation for this
+# whole per-entity-timer system (see TODO.md "Multi-NPC gesture/nod
+# scheduling collision" for the history).
 #
 # CALL CONTEXT: must be called with @s = the NPC itself, same as the nod_*
 # functions (e.g. "execute as @interlocutor run function ...").
@@ -34,4 +33,4 @@
 tag @s add luminacion.gesture_active
 item replace entity @s weapon.mainhand with minecraft:stick{CustomModelData:110}
 
-schedule function luminacion:npcs/_shared/gesture_clear 12t replace
+scoreboard players set @s luminacion.gest_timer 12

@@ -34,6 +34,10 @@
 
     "k2": {
       "text": "Khaoe: Le damos media hora más. Después empezamos sin él, como siempre.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/gesture_shrug"
+      },
       "choices": [{ "text": "...", "next": "end" }]
     },
 

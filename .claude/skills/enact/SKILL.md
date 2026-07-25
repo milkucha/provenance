@@ -205,3 +205,13 @@ Add or update a section in `TODO.md` for each newly-enacted character (and the d
 registration was left unresolved in Step 6): skin, movement mode, `spawn_position`,
 `spawn.mcfunction`, UUID capture — the same shape as the existing Sonoros and Nawom & Morkulo
 sections. Don't silently resolve anything there either.
+
+## Step 8 — Bake gestures
+
+Every dialog this skill produces starts uniform — `nod_up_down` on every non-`end` state, straight
+from the templates. Invoke the `bake_dialog` skill (Skill tool, `skill: "bake_dialog"`, `args:` the
+dialog file's path from Step 4) to replace a minority of those with an emotionally-matched gesture
+where the line's own text supports it — the same manual pass Döran's dialogues and
+`nuvilo_nerkeli_feria_del_milenio.json` got, now packaged so it doesn't depend on being asked for by
+name each time. `bake_dialog` handles its own confirmation with the user before writing anything;
+nothing further needed here once it returns.

@@ -18,7 +18,7 @@
       "text": "Morkulo: Puerto Tortuga? Can't say I do — but I don't mind being asked. Morkulo. You've come a fair way, by that pack.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Morkulo,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Morkulo,limit=1] run function luminacion:npcs/_shared/gesture_shrug"
       },
       "choices": [{ "text": "...", "next": "n2" }]
     },
@@ -72,7 +72,7 @@
       "text": "Morkulo: Not a stitch of it. My trade's measurements, not memory — and half of those don't even agree with each other. Ask me where Khol Moshin sits, or Khan Ice, and I'll give you answers that argue with themselves.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Morkulo,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Morkulo,limit=1] run function luminacion:npcs/_shared/gesture_laugh"
       },
       "choices": [{ "text": "...", "next": "n5" }]
     },
@@ -81,7 +81,7 @@
       "text": "Nawom: Not exactly reassuring, geographer.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Nawom,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Nawom,limit=1] run function luminacion:npcs/_shared/gesture_shrug"
       },
       "choices": [{ "text": "...", "next": "m5" }]
     },
@@ -90,7 +90,7 @@
       "text": "Morkulo: Fair. But it means I know exactly who to distrust. Come on — if anyone keeps a proper map, it's inside. Worst case, they don't know either, and you're no worse off than now.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Morkulo,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Morkulo,limit=1] run function luminacion:npcs/_shared/gesture_wave"
       },
       "choices": [{ "text": "...", "next": "n6" }]
     },
