@@ -29,7 +29,11 @@ opposite the later-discovered "región de Plathinëa." Treating Milkäan as just
 whole world's name would contradict that consistent regional split. **Worth a direct check when
 convenient: is Milkäan (a) a region distinct from the world-name entirely, (b) the region that later
 lent its name to the whole world (or vice versa), or (c) actually meant to collapse into the same
-name after all?**
+name after all?** New, still-inconclusive evidence as of the 2026-07-26 material drop: `ensayo_i_final`'s
+retitle drops "Milkäan y Plathinëa" from the essay's subtitle entirely, replacing it with "Milkäntis"
+alone — i.e., when the author needed one name for the whole subject, she reached for "Milkäntis," not
+"Milkäan." That's a data point *against* reading (c) (Milkäan collapsing into the world-name), but it's
+the author's title choice, not a stated claim about naming — not treated as a resolution.
 
 ## Still open: Catastro's "Continente: Antiguo" — but there's a new lead
 Asked the user directly; the answer was "not sure yet." This stays a genuine open question rather than
@@ -114,6 +118,9 @@ source document itself never filled them in.
 - **"The Seasons" / "Eras After the Seasons"** (`CONFLICT-12`) — `timelines.py` introduces a threshold
   (Ox = 2025-12-31) after which in-world days run 3x slower, tied to neither the Vórtex nor the Venidas
   system, plus yet another candidate "start of the world" date (2012-07-01) that matches nothing else.
+  **Partially corroborated (2026-07-26):** `ensayo_i_final` describes the same 3x day-length slowdown,
+  undated by name but dated to 964 d.V./enero 2026 — a month off from Ox, same mechanism. The slowdown
+  itself is no longer unique to `timelines.py`; the separate O=2012-07-01 origin point still is.
 - **`Terfila Old` — old relative to what?** The three screenshots are labeled "Old" but undated, unlike
   every other dated screenshot pair. Is there a "new" Térfila elsewhere in someone's screenshot
   collection, or does "Old" just mean "this screenshot itself is old"?
@@ -133,6 +140,25 @@ source document itself never filled them in.
   gap one number higher).
 - **`Holistick` vs `Jölystick`** — same 2023 date in both `esquema` and `ensayo_i`; treated as a likely
   spelling variant of the same place, not confirmed.
+
+## New open questions from the third material drop (2026-07-26)
+`ENSAYO I (Final Version).pdf`, cited as `ensayo_i_final` — see `context.md` entry 21 for the full
+comparison against the November 2025 edition, and `CONFLICT-15`/`CONFLICT-16`/`CONFLICT-17`.
+- **Per-era artifact tags** — eras 1–6 each gained a short parenthetical after their date range
+  ("Cuadro de la isla com living," "antepasado de Gorff," "loot," "cofre con materiales," "mimiatura,"
+  and an unfinished, unclosed "(" for era 6). They read like labels for a physical artifact/exhibit
+  item, but nothing in the document says what they're for, and eras 7–10 carry none at all.
+- **Era 1's extra breakpoint** — "-96 - 30 a.V. - 0 a.V." (real: octubre 2011-julio 2012 - diciembre
+  2012) splits what the November 2025 edition renders as one continuous span. Nothing marks what
+  happens at 30 a.V./julio 2012.
+- **`Tax de rich`** — founded 968 d.V. "en el nuevo continente"; the name is transcribed as-extracted
+  and completely unexplained.
+- **The unnamed first prison** — built 966 d.V. on an island west of Milkän; no proper name given,
+  unlike every other settlement in the passage.
+- **`Kursuviros` and `Puerto de las Lunas`** — founded/built in the same 964 d.V. sentence as the
+  "época del World Edit," with no region stated; whether they're on the old continent (as their
+  grouping with Shonogami/the prison suggests) or the new one (like `Tax de rich`, called out
+  explicitly as "en el nuevo continente" two sentences later) is not stated either way.
 
 ## Correction (2026-07-24): `Luminacion Register` and `Terraforming Purge Register` ARE lore — split, not excluded
 An earlier pass in this file wrongly treated these two spreadsheets as misplaced production files. The
@@ -182,22 +208,31 @@ X/Y is inferred (grid cell number ≈ coordinate ÷ 1000), not stated. Whether "
 means Minecraft's Z-axis (north/south) or true altitude is never specified.
 
 ## Undefined concepts
-- **örikal** — named once as a theoretical mineral tied to "an ancient power of manifestation"
-  discovered ~900 d.V.; never defined further, and never explicitly tied to "Era de la Magia" (952+
-  d.V.) despite the adjacency.
-- **El hechizo que fuerza a vivir en subsistencia** (the spell discovered by aldea Camilo Ricarda,
-  era 9) — described in one sentence, no mechanic, origin, or connection to the Muro Norte/Wasteland
-  given.
-- **Predicciones para el año 1000 d.V.** (Arkän, Prismätika, Mirage Citadel, Zafiria) — `ensayo_i` itself
-  labels these as proposals/predictions, explicitly not established history. They should not be treated
-  as canon places unless the user confirms otherwise.
+- **örikal** — named once (twice, counting `ensayo_i_final`) as a mineral tied to "an ancient power of
+  manifestation." The two editions of `ensayo_i` disagree on both when (~900 d.V. vs. 882 d.V.) and how
+  confidently (speculative/hedged vs. stated plainly) — see `CONFLICT-17` — and neither edition ever
+  explicitly ties it to "Era de la Magia" (952+ d.V.) despite the adjacency. `ensayo_i_final`'s era 10
+  predictions list "El auge del Orikäl" as still a future event as of 1000 d.V., so it hasn't fully
+  "risen" in either edition.
+- **El hechizo que fuerza a vivir en subsistencia** (the spell discovered at the founding of aldea
+  Camilo Ricarda / Humucherry, era 9 — see `CONFLICT-15` for the name mismatch) — described in one
+  sentence in both editions, no mechanic, origin, or connection to the Muro Norte/Wasteland given.
+  `ensayo_i_final` widens the frontier it applies to from "norte" to "norte y oeste," but adds nothing
+  about how it works.
+- **Predicciones para el año 1000 d.V.** — the two editions give two entirely different, non-overlapping
+  lists (`ensayo_i`: Arkän, Prismätika, Mirage Citadel, Zafiria; `ensayo_i_final`: el auge del Orikäl, la
+  resurrección de Tÿrnia y Têrfyla, el colapso del muro del norte, el Museo de las Estructuras y el
+  Jardín de las Naciones, el Ministerio del Tiempo funcionando — see `CONFLICT-16`). Both editions label
+  this section as prediction/speculation, not history. None of it should be treated as canon unless the
+  user confirms otherwise.
 
 ## Identity questions
-- Is **Iläria desde Lündria** (credited author of `ENSAYO I`) an in-world narrator persona, a real
-  player's pen name, or a name for someone not otherwise listed anywhere? She does not appear in
-  `libro`'s player roster. Per the user, the credited authors as a group are a *mix* of real-player
-  personas and purely legendary figures — but which one Iläria is specifically is still unspecified.
-  (`CONFLICT-05`, see "Resolved by the user" above)
+- Is **Iläria** (credited author of `ENSAYO I`; "Iläria desde Lündria" in the November 2025 edition,
+  "Iläria Astraëa desde la lejana ciudad de Lündria" in the July 2026 Final Version) an in-world
+  narrator persona, a real player's pen name, or a name for someone not otherwise listed anywhere? She
+  does not appear in `libro`'s player roster. Per the user, the credited authors as a group are a *mix*
+  of real-player personas and purely legendary figures — but which one Iläria is specifically is still
+  unspecified. (`CONFLICT-05`, see "Resolved by the user" above)
 - Are **Pitaglorias/Fitaglorias**, **Daaxagoras**, and **Storfilias** (the credited figures/authors of
   the two Atlax books) in-world legendary/mythic figures, real players' in-world personas, or something
   else? Same partial answer as above — confirmed to be a mix, individual assignments still open.
@@ -214,5 +249,8 @@ resolved; Milkäan still open) · `CONFLICT-04` Pitaglorias vs Fitaglorias spell
 Amistad, Nalhuë) · `CONFLICT-07` Sid Nalta vs Sit:Nalta · `CONFLICT-08` Villa Naranja vs Orange Manor ·
 `CONFLICT-09` Puerto Tortuga vs Isla Tortuga · `CONFLICT-10` Casa De Esteban vs the legend of Esteban ·
 `CONFLICT-11` Bahia Pelicanos vs Bahía de las Estatuas · `CONFLICT-12` timelines.py's origin dates and
-"the Seasons" threshold vs. every other epoch · `CONFLICT-13` Aerörea vs Milkäan · `CONFLICT-14` a third,
-poster-based era-naming scheme (`ESQUEMA.pdf`) that doesn't cleanly match `ensayo_i` or `libro`.
+"the Seasons" threshold vs. every other epoch (slowdown itself now corroborated by `ensayo_i_final`) ·
+`CONFLICT-13` Aerörea vs Milkäan · `CONFLICT-14` a third, poster-based era-naming scheme (`ESQUEMA.pdf`)
+that doesn't cleanly match `ensayo_i` or `libro` · `CONFLICT-15` Pueblo Camilo Ricarda vs Humucherry ·
+`CONFLICT-16` two editions' era 10 predictions don't overlap at all · `CONFLICT-17` örikal's discovery
+date/framing differs between `ensayo_i` editions.

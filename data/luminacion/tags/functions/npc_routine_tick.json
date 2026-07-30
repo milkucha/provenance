@@ -7,6 +7,7 @@
     "luminacion:npcs/nuvilo/hangar_look_tick",
     "luminacion:npcs/nuvilo/hangar_dialog_tick",
     "luminacion:npcs/doran/check_proximity",
-    "luminacion:npcs/khaoe/check_proximity"
+    "luminacion:npcs/khaoe/check_proximity",
+    "luminacion:npcs/ilaria/check_proximity"
   ]
 }

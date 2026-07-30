@@ -1,0 +1,94 @@
+{
+  "$schema": "https://ladysnake.org/schemas/blabber/dialogue.schema.json",
+  "layout": { "type": "blabber:rpg" },
+  "start_at": "bienvenida",
+  "states": {
+
+    "bienvenida": {
+      "text": "¡Bienvenido a la Feria del Milenio! Estás justo en la entrada del Espiral de la Historia — el primer pabellón, y, si me permites decirlo, el más importante de los cinco. Adelante, adelante, no muerdo... la mayoría de los días.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_wave"
+      },
+      "choices": [
+        {
+          "text": "¿Dónde estoy?",
+          "next": "donde_estoy"
+        },
+        {
+          "text": "¿Qué es el Espiral de la Historia?",
+          "next": "que_es_espiral"
+        },
+        {
+          "text": "¿Quién eres tú?",
+          "next": "quien_eres"
+        }
+      ]
+    },
+
+    "donde_estoy": {
+      "text": "En la Feria del Milenio, para ser exactos — y ahora mismo, en la entrada del primer pabellón: el Espiral de la Historia.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [
+        {
+          "text": "...",
+          "next": "convergencia"
+        }
+      ]
+    },
+
+    "que_es_espiral": {
+      "text": "Un laberinto con nueve recámaras, una por cada era del mundo — artefactos, documentos, arte, hasta personajes que la representan. Yo estoy en el centro, que es la era actual: la Era de la Magia.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [
+        {
+          "text": "...",
+          "next": "convergencia"
+        }
+      ]
+    },
+
+    "quien_eres": {
+      "text": "Iläria Astraëa, para servirte — la autora del Ensayo que documenta todo esto, y quien tiene la dudosa suerte de estar a cargo de este pabellón.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/gesture_laugh"
+      },
+      "choices": [
+        {
+          "text": "...",
+          "next": "convergencia"
+        }
+      ]
+    },
+
+    "convergencia": {
+      "text": "En fin, cualquiera sea tu pregunta, el resultado es el mismo: estás por entrar a nueve eras de historia. ¿Empezamos?",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [
+        {
+          "text": "...",
+          "next": "end"
+        }
+      ]
+    },
+
+    "end": {
+      "type": "end_dialogue",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @interlocutor run function luminacion:npcs/ilaria/resume_routine"
+      }
+    }
+
+  }
+}

@@ -364,3 +364,25 @@ excluded). "Claims on record" are phrased as reported assertions, not restated a
     as fellow Görff residents, then Farlis and Khaasan as the comrades she sees most often. All five
     names match items in Khaoe's own sampled knowledge (`inhabitant: Bardaglis (Gorff)`,
     `inhabitant: Kristok Jakur (Gorff)`, `inhabitant: Dägna (Gorff)`) and their registered roles.
+
+## `ilaria_espiral_de_la_historia.json`
+
+- **Participants:** Iläria; an unnamed traveler (the player)
+- **Location:** the Espiral de la Historia, entrance to the Feria del Milenio (the Feria itself is now
+  in the objective record — see `feria_del_milenio` — but the Espiral's own internal structure is not)
+- **Summary:** A visitor arrives at the entrance to the Espiral de la Historia, the Feria del Milenio's
+  first pavilion. Iläria welcomes them and branches on where they are, what the Espiral is, and who she
+  is, before converging on an invitation to start the tour.
+- **Claims on record:**
+  - Iläria says the Espiral de la Historia is, in her own opinion, the most important of the Feria's
+    five pavilions — a personal, self-interested claim from its own curator, not independently
+    checkable.
+  - The Espiral de la Historia is a labyrinth of nine chambers, one per era of the world, holding
+    artifacts, documents, art, and figures representing each; Iläria stations herself at the center,
+    which represents the current era, la Era de la Magia. This structural detail is Iläria's own
+    established backstory (see `_maps/npcs/registry.json`), not stated in `ensayo_i_final`'s brief
+    passage on the Feria, which gives only the pavilion count and inauguration date.
+  - Iläria identifies herself as the author of the Ensayo documenting the world's history, and as the
+    one in charge of this pavilion — consistent with the objective record's `ilaria` character entry
+    (credited author of ENSAYO I); her charge over this specific pavilion is backstory-level detail,
+    not contradicted by anything in the objective record.

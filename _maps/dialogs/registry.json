@@ -115,6 +115,17 @@
           "description": "Ambient fragment, same waiting scene: Khaoe and Farlis waiting for Khaasan, expected to arrive by griffon."
         }
       ]
+    },
+    "ilaria": {
+      "npc": "ilaria",
+      "dialogs": [
+        {
+          "id": "luminacion:ilaria_espiral_de_la_historia",
+          "trigger": "right_click",
+          "condition": null,
+          "description": "A visitor arrives at the entrance to the Espiral de la Historia, the Feria del Milenio's first pavilion. Iläria welcomes them and branches on where they are, what the Espiral is, and who she is, before converging on an invitation to start the tour."
+        }
+      ]
     }
   }
 }

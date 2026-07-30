@@ -90,6 +90,25 @@ open questions about the lore itself live in `_lore/analysis/unknown.md`, not he
 - [ ] Spawn in-game and capture `taterzen_uuid` (README §5) — shared with the eavesdrop-scene entry
       above; only needs doing once.
 
+## Iläria (Feria del Milenio — Espiral de la Historia)
+
+- [x] Movement mode decided: `NONE` (stationary) — matches her backstory of being permanently
+      stationed at the center of the Espiral's labyrinth. `resume_routine.mcfunction`,
+      `check_proximity.mcfunction`, `heal_skin.mcfunction`, `heal_path.mcfunction` all built per the
+      current house rule (every NPC gets this machinery regardless of movement mode), and
+      `ilaria_espiral_de_la_historia.json`'s `end` state now calls `resume_routine`.
+- [x] Skin decided: `https://minesk.in/016a5789bc0145a19b63db9a2ae65ed1` (in the registry and wired
+      into `spawn.mcfunction`/`heal_skin.mcfunction`).
+- [ ] `spawn_position` left `null` on purpose (user's choice) — position her manually in-game at the
+      entrance to the Espiral de la Historia, once that structure exists.
+- [x] `functions/npcs/ilaria/spawn.mcfunction` built from the template.
+- [x] Right-click wired to `luminacion:ilaria_espiral_de_la_historia` (single dialog, no side effects).
+- [x] `luminacion:npcs/ilaria/check_proximity` registered in
+      `data/luminacion/tags/functions/npc_routine_tick.json`.
+- [ ] No path needed (`NONE`, no waypoints) — `heal_path.mcfunction` is a header-only stub, matching
+      Khaoe's precedent.
+- [ ] Spawn in-game and capture `taterzen_uuid` (README §5).
+
 ## Döran (Salthos Cruzados — Plaza de las Culturas, Feria del Milenio)
 
 - [x] Movement mode decided: `PATH` (chosen 2026-07-25, via the new `/spawn` skill — a plaza host who
