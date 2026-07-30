@@ -303,11 +303,10 @@ excluded). "Claims on record" are phrased as reported assertions, not restated a
 - **Claims on record:**
   - Khaasan told Khaoe and Farlis he was coming straight to the Feria del Milenio — a social claim
     about a third party, nothing in the objective record to check it against.
-  - Khaoe and Farlis expect Khaasan to arrive by griffon, and are watching the sky for it. The
-    objective inhabitant record lists Khaasan's role as "Teletraveller," not a griffon rider — a
-    genuine divergence, logged here rather than silently reconciled (see this file's own rule above).
-    Could mean Khaoe and Farlis are simply wrong about how he travels, or that "Teletraveller" and
-    "arrives by griffon" aren't actually mutually exclusive — left open, not resolved here.
+  - Khaoe and Farlis expect Khaasan to arrive by griffon, and are watching the sky for it. Resolved
+    2026-07-30 (Khaasan's own `/enact` pass, per the user): he always travels by griffon, full stop —
+    "Teletraveller" describes the distance he covers, not a contradiction with the mount. Previously
+    logged here as a genuine, unresolved divergence; no longer open.
 
 ## `khaoe_calendario_mecanografico.json`
 
@@ -386,3 +385,77 @@ excluded). "Claims on record" are phrased as reported assertions, not restated a
     one in charge of this pavilion — consistent with the objective record's `ilaria` character entry
     (credited author of ENSAYO I); her charge over this specific pavilion is backstory-level detail,
     not contradicted by anything in the objective record.
+
+## `farlis_aureobalo_bar_salthos_cruzados.json`
+
+- **Participants:** Farlis; Aureobalo
+- **Location:** a bar in Salthos Cruzados, the first evening after the Feria del Milenio's inauguration
+- **Summary:** Farlis and Aureobalo, already acquainted from their overlapping travel routes, run into
+  each other for the first time at this particular bar on the Feria's opening night. Aureobalo brings
+  up a vague story he's heard about Farlis and a castle; Farlis confirms it and fills in his own side.
+- **Claims on record:**
+  - Aureobalo has heard, vaguely, that someone corrected Farlis over something he'd said about a
+    castle and "the stones someone had to hold up" — voiced with deliberately vague framing (an
+    untraceable `lineage_coin.py` roll), though it traces back to Khaoe's rebuttal in
+    `khaoe_farlis_el_castillo_que_fue.json`.
+  - Farlis confirms it was about him: he'd called it poetic justice, living in the tyrant's own former
+    castle; he was told flatly that it isn't poetry, someone just has to do it — consistent with his
+    own registered stance and Khaoe's on-record rebuttal.
+
+## `aureobalo_khaasan_bar_salthos_cruzados.json`
+
+- **Participants:** Aureobalo; Khaasan
+- **Location:** a bar in Salthos Cruzados, the first evening after the Feria del Milenio's inauguration
+  (same bar, same evening as `farlis_aureobalo_bar_salthos_cruzados.json`)
+- **Summary:** Aureobalo and Khaasan cross paths. Khaasan says he's only passing through, on his way
+  from Khan Ice; Aureobalo buys him a drink for it.
+- **Claims on record:**
+  - Khaasan says he was just passing through Salthos Cruzados, coming from Khan Ice — not there for
+    the Feria itself. Consistent with his own registered knowledge sample, skewed toward Khan Ice.
+  - Aureobalo toasts him for the long road; Khaasan accepts but says he prefers short drinks —
+    personal texture, invented in-scene.
+
+## `farlis_khaoe_bar_salthos_cruzados.json`
+
+- **Participants:** Farlis; Khaoe
+- **Location:** a bar in Salthos Cruzados, the first evening after the Feria del Milenio's inauguration
+  (same bar, same evening)
+- **Summary:** Khaoe notes she saw Farlis talking with Aureobalo earlier; the conversation turns to her
+  own recent trip to Lundria.
+- **Claims on record:**
+  - Khaoe noticed Farlis had been talking with Aureobalo earlier that same evening — same-evening
+    continuity with `farlis_aureobalo_bar_salthos_cruzados.json`, not a lore claim.
+  - Khaoe says Lundria was different from how she remembered it, and that she came back with more
+    questions than she left with — restates, in general terms, the same impression already on her own
+    registered experience (see `khaoe_calendario_mecanografico.json`).
+
+## `khaoe_khaasan_bar_salthos_cruzados.json`
+
+- **Participants:** Khaoe; Khaasan
+- **Location:** a bar in Salthos Cruzados, the first evening after the Feria del Milenio's inauguration
+  (same bar, same evening)
+- **Summary:** Khaasan finally reaches Khaoe, griffon and all; light banter about whether she ever
+  doubted he'd make it.
+- **Claims on record:**
+  - Khaasan arrives by griffon, as always, and leaves it outside eating something it shouldn't —
+    firsthand, not hearsay, since both participants were actually there. Matches the griffon-travel
+    resolution recorded this same run in the `khaoe_farlis_esperando_a_khaasan` entry above.
+  - Khaoe teases that she never doubted he'd arrive on time; Khaasan calls it a lie, and she admits it,
+    a little — banter/personal texture, invented in-scene.
+
+## `farlis_bardaglis_bar_salthos_cruzados.json`
+
+- **Participants:** Farlis; Bardaglis
+- **Location:** a bar in Salthos Cruzados, the first evening after the Feria del Milenio's inauguration
+  (same bar, same evening)
+- **Summary:** Farlis and Bardaglis meet; Bardaglis reveals he's already turned the castle story into a
+  song that's catching on, and Farlis learns his own line to Khaoe outlived the moment it was said in.
+- **Claims on record:**
+  - Bardaglis has turned the castle story into a song — specifically Khaoe's line about the stones
+    someone had to hold up — and it's on its way to becoming popular. Traceable `lineage_coin.py` roll;
+    matches Bardaglis's own registered backstory (a song "on the verge of becoming popular") and his
+    sampled knowledge, which includes all three `khaoe_farlis_el_castillo_que_fue` claims. Notable
+    irony, not asserted in-dialog: the line that stuck was Khaoe's rebuttal, not Farlis's original
+    poetic-justice framing.
+  - Farlis confirms he was the one who said the poetic-justice line the song answers, and that he said
+    it to Khaoe, in front of the castle — matches Farlis's own established stance.

@@ -1,5 +1,5 @@
 {
-  "_method_note": "Structured cross-references between locations, time periods, characters, and concepts found across the material set. Every entry lists its source file(s). Nothing here is asserted beyond what a source states; where sources disagree, both values are kept and a matching entry is added to 'conflicts'. Full prose per source lives in context.md; this file is the associative index. Sources are abbreviated: atlax_i, atlax_ii, catastro, ensayo_i, libro, timelines_py (timelines.py), esquema (ESQUEMA.pdf), book_of_inventions, cartography_highways/cartography_trains/cartography_airports (Cartography (Map Markers) [Code].xlsx), luminacion_register (Luminacion Register [Code].xlsx), mapa_del_milenio (El Antiguo Continente de Milkan - Mapa del Milenio.png), plus 5 dated/named screenshots (Khan Ice WP, Sid Nalta WP, Milka General Map, Milka Oceans Plan and Continent Outline, Ruta Lundria-Salthos Cruzados) referenced inline by filename. Per the user (2026-07-24), 'Luminacion Register' and 'Terraforming Regions Purge Register.xlsx' ARE lore sources, split into a narrative layer (named characters/locations/actions - captured under characters.named_inhabitants) and a technical/'mysterious formula' layer (Clock-worldTime triggers, Taterzen movement logic, region-purge flags - left undeciphered, see unknown.md) - not excluded, just not yet interpreted. Some conflict entries also carry a 'user_resolution' field: a design decision the user gave directly (not derived from any document), dated. These sit alongside the documentary facts rather than replacing them. IMPORTANT (2026-07-24): everything above this line, and everything in 'locations'/'time_systems'/'routes'/'characters'/'concepts'/'conflicts' below, is the OBJECTIVE record - reconstructed from primary materials, per the archaeologist method. There is now a second, SUBJECTIVE record: the top-level 'hearsay' array near the end of this file, mirroring _lore/analysis/hearsay.md, logging what characters have actually said in played Blabber dialogues. Hearsay entries are never merged into the objective arrays above and never treated as corroborating them, even when they happen to agree - they are a distinct kind of source, logged separately on purpose. Update (2026-07-26): 'ensayo_i_final' is a later, July 2026 edition of ensayo_i ('ENSAYO I (Final Version).pdf'), by the same credited author under an expanded byline ('Iläria Astraëa desde la lejana ciudad de Lündria'). Where the two editions disagree, both are kept, per the same disagreement rule as every other source pair - see CONFLICT-15, CONFLICT-16, CONFLICT-17.",
+  "_method_note": "Structured cross-references between locations, time periods, characters, and concepts found across the material set. Every entry lists its source file(s). Nothing here is asserted beyond what a source states; where sources disagree, both values are kept and a matching entry is added to 'conflicts'. Full prose per source lives in context.md; this file is the associative index. Sources are abbreviated: atlax_i, atlax_ii, catastro, ensayo_i, libro, timelines_py (timelines.py), esquema (ESQUEMA.pdf), book_of_inventions, cartography_highways/cartography_trains/cartography_airports (Cartography (Map Markers) [Code].xlsx), luminacion_register (Luminacion Register [Code].xlsx), mapa_del_milenio (El Antiguo Continente de Milkan - Mapa del Milenio.png), plus 5 dated/named screenshots (Khan Ice WP, Sid Nalta WP, Milka General Map, Milka Oceans Plan and Continent Outline, Ruta Lundria-Salthos Cruzados) referenced inline by filename. Per the user (2026-07-24), 'Luminacion Register' and 'Terraforming Regions Purge Register.xlsx' ARE lore sources, split into a narrative layer (named characters/locations/actions - captured under characters.named_inhabitants) and a technical/'mysterious formula' layer (Clock-worldTime triggers, Taterzen movement logic, region-purge flags - left undeciphered, see unknown.md) - not excluded, just not yet interpreted. Some conflict entries also carry a 'user_resolution' field: a design decision the user gave directly (not derived from any document), dated. These sit alongside the documentary facts rather than replacing them. IMPORTANT (2026-07-24): everything above this line, and everything in 'locations'/'time_systems'/'routes'/'characters'/'concepts'/'conflicts' below, is the OBJECTIVE record - reconstructed from primary materials, per the archaeologist method. There is now a second, SUBJECTIVE record: the top-level 'hearsay' array near the end of this file, mirroring _lore/analysis/hearsay.md, logging what characters have actually said in played Blabber dialogues. Hearsay entries are never merged into the objective arrays above and never treated as corroborating them, even when they happen to agree - they are a distinct kind of source, logged separately on purpose. Update (2026-07-26): 'ensayo_i_final' is a later, July 2026 edition of ensayo_i ('ENSAYO I (Final Version).pdf'), by the same credited author under an expanded byline ('Iläria Astraëa desde la lejana ciudad de Lündria'). Where the two editions disagree, both are kept, per the same disagreement rule as every other source pair - see CONFLICT-15, CONFLICT-16, CONFLICT-17. Update (2026-07-30): there are now two more sources, both OBJECTIVE-track like the arrays above (not subjective like 'hearsay'): 'tales' and 'discoveries', two top-level arrays near the end of this file, fed respectively by the /tell and /discover skills and mirrored in _lore/tale/ and _lore/discoveries/. A tale or discovery is told/stated directly by the user, the world's author - not excavated from a document and not a character's in-fiction claim - and IS folded into locations/characters/concepts/routes/time_systems above via a 'tale:<id>'/'discovery:<id>' source tag, and into 'conflicts' on disagreement, by the same rules as any material source. See each array's own _method_note for the exact shape.",
   "time_systems": {
     "real_time_to_game_time": {
       "source": "ensayo_i",
@@ -2092,11 +2092,13 @@
           },
           {
             "name": "Peregrin",
-            "role": "Peregrins (sic)"
+            "role": "Peregrins (sic)",
+            "note": "see concept 'peregrins' (tale:peregrins)"
           },
           {
             "name": "Zarkapulos",
-            "role": "Peregrin"
+            "role": "Peregrin",
+            "note": "see concept 'peregrins' (tale:peregrins)"
           },
           {
             "name": "Gondarfolas",
@@ -2274,7 +2276,8 @@
           {
             "role": "Peregrin",
             "locality": "Gorff",
-            "count": 3
+            "count": 3,
+            "note": "see concept 'peregrins' (tale:peregrins)"
           }
         ]
       },
@@ -2330,6 +2333,54 @@
         "ensayo_i_final, era 8"
       ],
       "notes": "not defined further in either edition; era 9 is named 'Era de la Magia' but neither edition explicitly reconnects it to örikal. ensayo_i_final's era 10 predictions for 1000 d.V. include 'El auge del Orikäl' as still-future, consistent with a mineral that's newly discovered rather than already risen. See CONFLICT-17."
+    },
+    {
+      "id": "peregrins",
+      "names": [
+        "Peregrin",
+        "Peregrins"
+      ],
+      "description": "itinerant holy pilgrims, on this pilgrimage for hundreds of years. Each year they set out to encounter every temple in the world, in search of 'the diverse divinity.' Having once committed to their own religion, they took a vow of understanding and peace, promising to travel the land, the sea, and the air in search of the other truths of the world. In doing this they renounce their identity and embrace the secret of their origin, becoming a canvas onto which the cultures of the world's peoples find expression and permanence.",
+      "sources": [
+        "tale:peregrins"
+      ],
+      "notes": "resolves what was previously just a bare census role tag - see characters.named_inhabitants.by_locality.Terfila ('Peregrin'/'Zarkapulos') and .generic_crowd_instances_not_individually_named (Gorff, count 3), both from luminacion_register, neither previously explained by any source"
+    },
+    {
+      "id": "world_hazards",
+      "names": [
+        "creepers",
+        "night monsters"
+      ],
+      "description": "creepers explode; monsters come out at night wherever it's dark. Stated as having always been known, not newly figured out by anyone in particular.",
+      "sources": [
+        "discovery:creepers_and_night_monsters"
+      ],
+      "notes": null
+    },
+    {
+      "id": "redstone",
+      "names": [
+        "redstone"
+      ],
+      "description": "redstone powers things. Stated plainly, with no further mechanism given.",
+      "sources": [
+        "discovery:redstone_and_basic_needs"
+      ],
+      "notes": "thematically adjacent to the 'codigos' concept (command-block automation) but kept as its own entry - redstone is never named alongside codigos in any source except a hearsay claim (ilaria_espiral_de_la_historia#1, 'codigos y redstone work' among the Feria del Milenio's honored artifacts), which does not equate the two"
+    },
+    {
+      "id": "basic_needs",
+      "names": [
+        "hunger",
+        "sleep",
+        "rest"
+      ],
+      "description": "people need to eat, need to sleep, need to rest. Stated plainly, as a basic fact of how the world works.",
+      "sources": [
+        "discovery:redstone_and_basic_needs"
+      ],
+      "notes": null
     },
     {
       "id": "waystones",
@@ -3080,8 +3131,8 @@
           {
             "text": "Khaoe and Farlis expect Khaasan to arrive by griffon, and are watching the sky for it.",
             "about": "Khaasan (Gorff)",
-            "consistent_with_context": false,
-            "note": "the objective inhabitant record lists Khaasan's role as 'Teletraveller,' not a griffon rider - a genuine divergence, logged rather than silently reconciled per this file's own rule; could mean Khaoe and Farlis are simply wrong about how he travels, or that 'Teletraveller' and 'arrives by griffon' aren't actually mutually exclusive - left open, not resolved here"
+            "consistent_with_context": true,
+            "note": "resolved 2026-07-30 (Khaasan's own /enact pass, per the user): he always travels by griffon, full stop - 'Teletraveller' describes the distance he covers, not a contradiction with the mount. Previously flagged here as a genuine divergence (consistent_with_context: false); no longer open."
           }
         ]
       },
@@ -3206,6 +3257,187 @@
             "consistent_with_context": true,
             "note": "matches the 'ilaria' character entry (credited author of ENSAYO I); her charge over this specific pavilion is backstory-level detail, not contradicted by anything in the objective record."
           }
+        ]
+      },
+      {
+        "id": "farlis_aureobalo_bar_salthos_cruzados",
+        "source_file": "data/luminacion/blabber/dialogues/farlis_aureobalo_bar_salthos_cruzados.json",
+        "participants": [
+          "Farlis",
+          "Aureobalo"
+        ],
+        "location": {
+          "id": null,
+          "as_named_in_dialog": "a bar in Salthos Cruzados, the first evening after the Feria del Milenio's inauguration"
+        },
+        "summary": "Farlis and Aureobalo, already acquainted from their overlapping travel routes, run into each other for the first time at this particular bar on the Feria's opening night. Aureobalo brings up a vague story he's heard about Farlis and a castle; Farlis confirms it and fills in his own side.",
+        "claims": [
+          {
+            "text": "Aureobalo has heard, vaguely, that someone corrected Farlis over something he'd said about a castle and 'the stones someone had to hold up.'",
+            "about": "khaoe_farlis_el_castillo_que_fue#3",
+            "consistent_with_context": true,
+            "oral_lore": true,
+            "note": "voiced with deliberately vague framing ('dicen que') per an untraceable lineage_coin.py roll - no source named in-line, though the claim traces back to Khaoe's rebuttal in khaoe_farlis_el_castillo_que_fue.json"
+          },
+          {
+            "text": "Farlis confirms it was about him: he'd called it poetic justice, living in the same castle that once belonged to the tyrant it was taken from; he was told flatly it isn't poetry, someone just has to do it.",
+            "about": "khaoe_farlis_el_castillo_que_fue#2",
+            "consistent_with_context": true,
+            "note": "matches Farlis's own established stance and Khaoe's on-record rebuttal in khaoe_farlis_el_castillo_que_fue.json"
+          }
+        ]
+      },
+      {
+        "id": "aureobalo_khaasan_bar_salthos_cruzados",
+        "source_file": "data/luminacion/blabber/dialogues/aureobalo_khaasan_bar_salthos_cruzados.json",
+        "participants": [
+          "Aureobalo",
+          "Khaasan"
+        ],
+        "location": {
+          "id": null,
+          "as_named_in_dialog": "a bar in Salthos Cruzados, the first evening after the Feria del Milenio's inauguration"
+        },
+        "summary": "Same bar, same evening as farlis_aureobalo_bar_salthos_cruzados. Aureobalo and Khaasan cross paths; Khaasan says he's only passing through, on his way from Khan Ice, and Aureobalo buys him a drink for it.",
+        "claims": [
+          {
+            "text": "Khaasan says he was just passing through Salthos Cruzados, coming from Khan Ice - not there for the Feria itself.",
+            "about": "khan_ice",
+            "consistent_with_context": true,
+            "note": "consistent with Khaasan's own registered knowledge sample, skewed toward Khan Ice"
+          },
+          {
+            "text": "Aureobalo toasts him for the long road; Khaasan accepts the drink but says he prefers short ones.",
+            "about": null,
+            "consistent_with_context": null,
+            "note": "personal texture invented in-scene, not lore-bearing"
+          }
+        ]
+      },
+      {
+        "id": "farlis_khaoe_bar_salthos_cruzados",
+        "source_file": "data/luminacion/blabber/dialogues/farlis_khaoe_bar_salthos_cruzados.json",
+        "participants": [
+          "Farlis",
+          "Khaoe"
+        ],
+        "location": {
+          "id": null,
+          "as_named_in_dialog": "a bar in Salthos Cruzados, the first evening after the Feria del Milenio's inauguration"
+        },
+        "summary": "Same bar, same evening. Khaoe notes she saw Farlis talking with Aureobalo earlier; the conversation turns to her own recent trip to Lundria.",
+        "claims": [
+          {
+            "text": "Khaoe noticed Farlis had been talking with Aureobalo earlier that same evening.",
+            "about": null,
+            "consistent_with_context": true,
+            "note": "same-evening continuity with farlis_aureobalo_bar_salthos_cruzados, not a lore claim"
+          },
+          {
+            "text": "Khaoe says Lundria was different from how she remembered it, and that she came back with more questions than she left with.",
+            "about": "lundria",
+            "consistent_with_context": true,
+            "note": "restates, in general terms, the same impression already on Khaoe's own registered experience (returned from Lundria more confused about timekeeping than she left) - see khaoe_calendario_mecanografico.json"
+          }
+        ]
+      },
+      {
+        "id": "khaoe_khaasan_bar_salthos_cruzados",
+        "source_file": "data/luminacion/blabber/dialogues/khaoe_khaasan_bar_salthos_cruzados.json",
+        "participants": [
+          "Khaoe",
+          "Khaasan"
+        ],
+        "location": {
+          "id": null,
+          "as_named_in_dialog": "a bar in Salthos Cruzados, the first evening after the Feria del Milenio's inauguration"
+        },
+        "summary": "Same bar, same evening. Khaasan finally reaches Khaoe, griffon and all; light banter about whether she ever doubted he'd make it.",
+        "claims": [
+          {
+            "text": "Khaasan arrives by griffon, as always, and leaves it outside eating something it shouldn't.",
+            "about": "Khaasan (Gorff)",
+            "consistent_with_context": true,
+            "note": "firsthand, not hearsay - both participants were actually there. Matches the griffon-travel resolution recorded this same run in the khaoe_farlis_esperando_a_khaasan entry."
+          },
+          {
+            "text": "Khaoe teases that she never doubted he'd arrive on time; Khaasan calls it a lie, and she admits it, a little.",
+            "about": null,
+            "consistent_with_context": null,
+            "note": "banter/personal texture invented in-scene, not lore-bearing"
+          }
+        ]
+      },
+      {
+        "id": "farlis_bardaglis_bar_salthos_cruzados",
+        "source_file": "data/luminacion/blabber/dialogues/farlis_bardaglis_bar_salthos_cruzados.json",
+        "participants": [
+          "Farlis",
+          "Bardaglis"
+        ],
+        "location": {
+          "id": null,
+          "as_named_in_dialog": "a bar in Salthos Cruzados, the first evening after the Feria del Milenio's inauguration"
+        },
+        "summary": "Same bar, same evening. Farlis and Bardaglis meet; Bardaglis reveals he's already turned the castle story into a song that's catching on, and Farlis learns his own line to Khaoe outlived the moment it was said in.",
+        "claims": [
+          {
+            "text": "Bardaglis has turned the castle story into a song - specifically Khaoe's line about the stones someone had to hold up - and it's on its way to becoming popular.",
+            "about": "khaoe_farlis_el_castillo_que_fue#3",
+            "consistent_with_context": true,
+            "derived_from": "khaoe_farlis_el_castillo_que_fue#3",
+            "note": "traceable lineage_coin.py roll; matches Bardaglis's own registered backstory (a song 'on the verge of becoming popular') and his sampled knowledge, which includes all three khaoe_farlis_el_castillo_que_fue claims. Notable irony, not asserted in-dialog: the line that stuck was Khaoe's rebuttal, not Farlis's original poetic-justice framing."
+          },
+          {
+            "text": "Farlis confirms he was the one who said the poetic-justice line the song answers, and that he said it to Khaoe, in front of the castle.",
+            "about": "khaoe_farlis_el_castillo_que_fue#2",
+            "consistent_with_context": true,
+            "note": "matches Farlis's own established stance"
+          }
+        ]
+      }
+    ]
+  },
+  "tales": {
+    "_method_note": "A THIRD kind of source, distinct from both the objective record above and 'hearsay' - see _lore/tale/_index.md. A tale is told directly by the user, the world's author, outside any character's mouth and outside any excavated document. Unlike hearsay, a tale IS folded into the objective arrays above (locations/characters/concepts/routes/time_systems) wherever it overlaps an existing entry - via a 'tale:<id>' item added to that entry's 'sources' list, exactly like a material-file abbreviation - never by overwriting an existing entry. A genuine disagreement with something already on record gets a new 'conflicts' entry (next CONFLICT-NN id), 'user_resolution' left unset. Populated by the /tell skill (.claude/skills/tell/SKILL.md). Each entry here is a manifest of one tale, not a duplicate of its content: 'touches' lists every id (in any array above, including 'conflicts') this tale added or amended - the full text lives in _lore/tale/<id>.md.",
+    "entries": [
+      {
+        "id": "peregrins",
+        "source_file": "_lore/tale/peregrins.md",
+        "told_date": "2026-07-30",
+        "summary": "Peregrins are itinerant holy pilgrims, hundreds of years into a tradition of setting out yearly to encounter every temple in the world in search of 'the diverse divinity.' Bound by a vow of understanding and peace, they travel land, sea, and air, renouncing their own identity to become a canvas onto which the world's cultures express themselves and endure.",
+        "touches": [
+          "concepts.peregrins",
+          "characters.named_inhabitants.by_locality.Terfila (Peregrin, Zarkapulos)",
+          "characters.named_inhabitants.by_locality.generic_crowd_instances_not_individually_named (Peregrin, Gorff)"
+        ]
+      }
+    ]
+  },
+  "discoveries": {
+    "_method_note": "A FOURTH kind of source, processed identically to 'tales' above (see that array's _method_note for the integration rule) but for a plain statement of fact rather than a told story, and carrying its own provenance: 'responsible' names who is credited with the discovery (a character, a person, an institution) or is explicitly null with 'responsible_note': \"known - no one responsible\" when the user says it's simply now known. Folded into the objective arrays the same way, via a 'discovery:<id>' source tag; disagreements raise a new 'conflicts' entry the same way. Populated by the /discover skill (.claude/skills/discover/SKILL.md). Each entry here is a manifest, not a duplicate of the discovery's content - the full text lives in _lore/discoveries/<id>.md.",
+    "entries": [
+      {
+        "id": "creepers_and_night_monsters",
+        "source_file": "_lore/discoveries/creepers_and_night_monsters.md",
+        "discovered_date": "2026-07-30",
+        "responsible": null,
+        "responsible_note": "known - no one responsible",
+        "summary": "Creepers explode, and monsters emerge at night wherever it's dark - stated as having always been known, with no one credited for finding it out.",
+        "touches": [
+          "concepts.world_hazards"
+        ]
+      },
+      {
+        "id": "redstone_and_basic_needs",
+        "source_file": "_lore/discoveries/redstone_and_basic_needs.md",
+        "discovered_date": "2026-07-30",
+        "responsible": null,
+        "responsible_note": "known - no one responsible",
+        "summary": "Redstone powers things; people need to eat, sleep, and rest - stated plainly, with no one credited for finding it out.",
+        "touches": [
+          "concepts.redstone",
+          "concepts.basic_needs"
         ]
       }
     ]

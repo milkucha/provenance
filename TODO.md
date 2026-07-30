@@ -254,6 +254,30 @@ open questions about the lore itself live in `_lore/analysis/unknown.md`, not he
       `_lore/analysis/hearsay.md`). Left unresolved on purpose — see that entry's note before deciding
       whether Khaasan's own eventual `/enact` pass should reconcile it or lean into the contradiction.
 
+## Farlis, Aureobalo, Khaoe, Khaasan & Bardaglis (bar in Salthos Cruzados — Feria del Milenio, opening night)
+
+Five two-NPC scenes from the same evening, enacted via `/enact` 2026-07-30 in Latin American Spanish,
+each written short (per the user's explicit "keep it shorter" feedback) rather than exhaustively
+covering everything each character's sample would allow.
+
+- [ ] All five scenes below are enacted and recorded (hearsay.md/encodings.json, registry experience
+      for every participant) 2026-07-30, but **none are yet converted to a Blabber dialog file**
+      (§8 Step 4) — deferred at the user's explicit request this run. Transcripts live in this
+      conversation's history until converted: `farlis_aureobalo_bar_salthos_cruzados`,
+      `aureobalo_khaasan_bar_salthos_cruzados`, `farlis_khaoe_bar_salthos_cruzados`,
+      `khaoe_khaasan_bar_salthos_cruzados`, `farlis_bardaglis_bar_salthos_cruzados`.
+- [ ] Two-NPC dialog registration is an open question for all five scenes in this section, same as the
+      Nawom & Morkulo precedent: `_maps/dialogs/registry.json` assumes one dialog per NPC key. Ask the
+      user how these should be registered once converted.
+- [ ] Khaasan resolved this run (2026-07-30): drew his first `knowledge.education` sample (26%,
+      composite — see registry) and the user confirmed he always travels by griffon ("Teletraveller"
+      describes the distance he covers, not the means) — folds into the correction now made to
+      `hearsay.md`/`encodings.json`'s `khaoe_farlis_esperando_a_khaasan` entry and resolves the open
+      question the Khaoe & Farlis section above had left on this exact point.
+- [ ] Aureobalo, Khaasan, and Bardaglis all still need `spawn_position`, `taterzen_uuid`, and a
+      `spawn.mcfunction` of their own — skins are already set for all three (see registry). Farlis's
+      and Khaoe's builds are tracked separately in the Khaoe & Farlis section above.
+
 ## Gesture animation system (resource pack)
 
 Built 2026-07-25/26: a custom EMF/Iris `player.jem`/`player_slim.jem` override giving Taterzens NPCs

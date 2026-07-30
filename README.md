@@ -65,9 +65,15 @@ The system has four layers, each authored from the one below it:
     files already establish (below); audit every dialogue under `data/luminacion/blabber/dialogues/`
     for a matching `hearsay.entries` record (§8 Step 5 — unconditional by rule, but easy to miss on a
     hand-written dialogue that skipped `/enact`); and check for drift between what's referenced
-    elsewhere (registries, sampled knowledge) and what's actually recorded in `encodings.json`. Run
-    whichever pass(es) fit the situation, not necessarily all three.
-- **`_lore/`** — the raw material and its analysis:
+    elsewhere (registries, sampled knowledge, and `tales`/`discoveries` `touches` refs) and what's
+    actually recorded in `encodings.json`. Run whichever pass(es) fit the situation, not necessarily
+    all three.
+  - **`/tell`** (`tell/SKILL.md`) — records a tale the user tells directly, outside any excavated
+    document or character's mouth, into `_lore/tale/` and `encodings.json`'s `tales` category.
+  - **`/discover`** (`discover/SKILL.md`) — records a discovery the user states directly, with its own
+    credited (or explicitly uncredited) responsible party, into `_lore/discoveries/` and
+    `encodings.json`'s `discoveries` category.
+- **`_lore/`** — the raw material and its analysis, plus two more directly-told sources of truth:
   - `_lore/material/` — source artifacts as uploaded: screenshots of in-game books, maps,
     spreadsheets (`Luminacion Register [Code].xlsx`, `Catastro Milkaan y Platinhëa.xlsx`, ...),
     documents. Treated as excavated primary sources — never edited, only read.
@@ -83,6 +89,13 @@ The system has four layers, each authored from the one below it:
     log of which have since been resolved by the user.
   - `_lore/analysis/hearsay.md` — the human-readable counterpart to `encodings.json`'s `hearsay`
     array: what's been said, by whom, where, and whether it checked out against the record.
+  - `_lore/tale/` — a third source of truth, populated by `/tell`: tales told directly by the user,
+    the world's author, one file per tale (`<slug>.md`). Unlike hearsay, a tale **is** folded into the
+    objective arrays above (via a `tale:<id>` source tag), never overwriting an existing entry. See
+    `_lore/tale/_index.md` and `encodings.json`'s `tales` category.
+  - `_lore/discoveries/` — a fourth source of truth, populated by `/discover`: facts the user states
+    directly, each crediting a responsible party or explicitly none. Processed identically to a tale.
+    See `_lore/discoveries/_index.md` and `encodings.json`'s `discoveries` category.
 
 ### Layer 2 — Supporting functions
 
@@ -259,6 +272,11 @@ Luminacion/
 │               ├── _template_one_off.json
 │               ├── _template_linear.json
 │               └── _template_branching.json
+├── _lore/
+│   ├── material/                      (excavated primary sources — read-only)
+│   ├── analysis/                      (context.md, encodings.json, unknown.md, hearsay.md)
+│   ├── tale/                          (told directly by the user — /tell, see _index.md)
+│   └── discoveries/                   (stated directly by the user — /discover, see _index.md)
 ├── _maps/
 │   ├── npcs/registry.json             (master NPC data: name, skin, city, UUID, spawn position)
 │   ├── dialogs/registry.json          (NPC key → dialog IDs)

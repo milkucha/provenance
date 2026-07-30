@@ -67,11 +67,17 @@ dialogue (not produced via `/enact`) can skip README §8 Step 5 entirely without
    NPC, plus every `hearsay.entries[].claims[].about` reference in `encodings.json`. Confirm every
    `about` id that isn't `null` or a bare era/`CONFLICT-##` name resolves to a real entry somewhere in
    `locations`/`characters`/`concepts`/etc.
-2. Cross-check `_maps/dialogs/registry.json` against `data/luminacion/blabber/dialogues/`: flag any
+2. Walk every `tales.entries[].touches` and `discoveries.entries[].touches` array. Confirm each id
+   listed actually exists where it claims to (an added/amended entry in `locations`/`characters`/
+   `concepts`/`routes`/`time_systems`, or a `CONFLICT-##` id in `conflicts`), and that the referenced
+   entry actually carries the matching `tale:<id>`/`discovery:<id>` source tag. Flag either direction
+   of drift: a `touches` id that doesn't resolve, or a `tale:`/`discovery:` source tag in the objective
+   arrays with no corresponding id in that tale's/discovery's own `touches` list.
+3. Cross-check `_maps/dialogs/registry.json` against `data/luminacion/blabber/dialogues/`: flag any
    registered dialog id with no matching file, and any dialogue file with no registry entry (the
    latter is expected for a few in-flight two-NPC scenes still open in `TODO.md` — check there before
    flagging one as a bug).
-3. Report every dangling reference found, with enough detail (file, field, the id in question) that
+4. Report every dangling reference found, with enough detail (file, field, the id in question) that
    the user can decide the fix. Never auto-repair a dangling `about` reference by guessing the
    intended target — a wrong guess corrupts the provenance the hearsay/encodings system depends on;
    surface it instead.

@@ -220,7 +220,8 @@
           "Cites highway M9 (Nvhi -> Khan Ice) as personally significant given that claimed family connection.",
           "Picked up from Nerkeli in this conversation: Nerkeli's joke theory that ducks descend from the Daax, and that Nerkeli's own M7 route (Puente Intercontinental -> Nvhi) passes right by Nvhi's edge.",
           "Holds no official role at the Feria - just a visiting scholar looking for inspiration, unlike friends of his (e.g. Nerkeli) actually running an exhibit.",
-          "Writes about historical inventors and travelers - naming Daaxagoras, Pitaglorias, and Darnis to a traveler - and keeps circling an unsolved puzzle about the two chronicles' conflicting histories of the same centuries."
+          "Writes about historical inventors and travelers - naming Daaxagoras, Pitaglorias, and Darnis to a traveler - and keeps circling an unsolved puzzle about the two chronicles' conflicting histories of the same centuries.",
+          "Wandered into a bar in Salthos Cruzados late on the Feria's opening night, hungry after hours moving between pavilions; met Bardaglis and Khaasan there for the first time."
         ]
       }
     },
@@ -510,7 +511,18 @@
             "year_esquema: 2021"
           ]
         },
-        "experience": []
+        "experience": [
+          "Sang a new song for the first time outside his own camp, at the Salthos Cruzados bar the night the Feria del Milenio was inaugurated.",
+          "Knows the way between Khol Moshin and Salthos Cruzados firsthand - follows the train line through Khan Icé and Balham - though he first plays coy about it, claiming to navigate 'by ear, not by map' before admitting he actually knows the route.",
+          "Knows Soti and Lundria well from personal travel: about a day's walk apart on the same stretch, which locals just call 'el camino de Soti' since it has no official name - further along it joins the named Ruta Lundria-Salthos Cruzados.",
+          "Has performed and collected material in Görff, Khan Icé, and Ciudad Dragón (spent a season there gathering stories people tie to the city's name, though no one agrees on the real one), plus the Isla de la Amistad.",
+          "Wrote an older song about the Isla de la Amistad - opening line 'Isla que no pide nombre, isla que no pide guerra' - about strangers being welcomed in; still occasionally requested.",
+          "Would rather be paid in a good story than in coin, though he won't turn down coin either - a traveler at the Salthos Cruzados bar tipped him 17 lázulis after his set.",
+          "Met Farlis at that same bar, that same night — told him the castle story (Khaoe's 'stones' line) had already become a song of his own, catching on. Learned in return that the line it answers, the poetic-justice one, was Farlis's own, said to Khaoe herself in front of the castle.",
+          "Also spent that evening with Aureobalo, Khaasan, and Khaoe at the same table, talking about the Feria - retold what he'd heard about Iläria's Espiral de la Historia (the nine-chamber labyrinth, one room per era) as her own words.",
+          "Stayed on after Aureobalo and Khaoe left, one-on-one with Khaasan - traded light jabs about travel: Khaasan by griffon, Bardaglis on foot, unwilling to spend his earnings feeding a bird.",
+          "Later that same night, Nuvilo wandered in hungry from a night of pavilion-hopping - a first meeting; Bardaglis waved him to a seat."
+        ]
       }
     },
     "dagna": {
@@ -610,15 +622,96 @@
       "taterzen_name": "Khaasan",
       "taterzen_uuid": "",
       "spawn_position": null,
-      "backstory": "Teletraveller.",
+      "backstory": "Teletraveller. Always travels by griffon — never on foot or by any other means.",
       "knowledge": {
         "education": {
-          "percent": null,
-          "mode": "",
-          "topic": null,
-          "items": []
+          "percent": 26,
+          "mode": "composite",
+          "topic": [
+            "10% khan ice (skewed: khan ice)",
+            "4% bird (skewed: bird, griffon)",
+            "3% battle (skewed: battle, war, guerra)",
+            "5% history (skewed: history, historia)",
+            "3% random",
+            "1% hearsay-only"
+          ],
+          "items": [
+            "airport: Nalhué",
+            "character_legendary: esteban",
+            "character_legendary: forlan",
+            "concept: feria_del_milenio",
+            "concept: orikal",
+            "conflict: CONFLICT-02",
+            "conflict: CONFLICT-07",
+            "conflict: CONFLICT-09",
+            "conflict: CONFLICT-16",
+            "conflict: CONFLICT-17",
+            "era_ensayo: Las Guerras de Gorff",
+            "era_esquema: Guerras de Görff",
+            "era_esquema: Guerras de Görff (repeated name, likely extraction artifact)",
+            "era_esquema: Isla de la Amistad",
+            "hearsay: doran_eras_of_culture#1",
+            "hearsay: doran_four_castles#2",
+            "hearsay: doran_four_castles#6",
+            "hearsay: doran_four_castles#9",
+            "hearsay: doran_plaza_orientation#3",
+            "hearsay: gondarfolas_darnis_and_bracco#1",
+            "hearsay: gondarfolas_darnis_and_bracco#2",
+            "hearsay: gondarfolas_darnis_and_bracco#3",
+            "hearsay: gondarfolas_darnis_and_bracco#5",
+            "hearsay: gondarfolas_darnis_and_bracco#8",
+            "hearsay: ilaria_espiral_de_la_historia#1",
+            "hearsay: ilaria_espiral_de_la_historia#2",
+            "hearsay: ilaria_espiral_de_la_historia#3",
+            "hearsay: khaoe_calendario_mecanografico#2",
+            "hearsay: khaoe_calendario_mecanografico#3",
+            "hearsay: khaoe_farlis_el_castillo_que_fue#3",
+            "hearsay: khaoe_farlis_esperando_a_khaasan#2",
+            "hearsay: nawom_morkulo_first_meeting#5",
+            "hearsay: nawom_morkulo_first_meeting#6",
+            "hearsay: nuvilo_nerkeli_feria_del_milenio#4",
+            "hearsay: sonoros_lost_traveler#3",
+            "hearsay: sonoros_lost_traveler#4",
+            "hearsay: sonoros_lost_traveler#5",
+            "highway: M9",
+            "inhabitant: Azaor (Gorff)",
+            "inhabitant: Dägna (Gorff)",
+            "inhabitant: Galandis (cross-locality travelers/routes (named, with a mode of travel))",
+            "inhabitant: Gok (cross-locality travelers/routes (named, with a mode of travel))",
+            "inhabitant: Kjon (cross-locality travelers/routes (named, with a mode of travel))",
+            "inhabitant: Kjon-Ukk (cross-locality travelers/routes (named, with a mode of travel))",
+            "inhabitant: Malkinimies (cross-locality travelers/routes (named, with a mode of travel))",
+            "inhabitant: Murunu (cross-locality travelers/routes (named, with a mode of travel))",
+            "inhabitant: Nuruk (Gorff)",
+            "inhabitant: Sari (Puente Continental)",
+            "inhabitant: Socorlis (Gorff)",
+            "inhabitant: Zarkatraz (Puente Continental)",
+            "location: aurora",
+            "location: dragon_city",
+            "location: fuerte_fabian",
+            "location: grosslor",
+            "location: isla_tortuga",
+            "location: khan_ae_mogulac",
+            "location: khan_ice",
+            "location: kuritsa",
+            "location: monte_pastizal",
+            "location: muro_norte",
+            "location: puerto_del_este",
+            "location: sit_nalta",
+            "location: villa_naranja",
+            "train_segment: Gorff - Khan Ice",
+            "train_segment: Khan Ice - Balhâm",
+            "train_segment: Khan Ice - Puerto del Norte",
+            "year_esquema: 2012"
+          ]
         },
-        "experience": []
+        "experience": [
+          "Met Aureobalo at a bar in Salthos Cruzados, the evening of the Feria del Milenio's opening — mentioned coming from Khan Ice, just passing through, not there for the fair itself.",
+          "Reached Khaoe at the same bar later that evening, griffon in tow as always, and left it outside eating something it shouldn't have; she teased him for cutting it close, and he called her out on pretending she wasn't worried.",
+          "Stayed on at the bar after Aureobalo and Khaoe left, talking one-on-one with Bardaglis - teased him about not owning a griffon; Bardaglis said he'd rather keep his earnings than feed one.",
+          "Met Nuvilo that same night, when he wandered in hungry after a night of pavilion-hopping - joked that a writer and a bard do the same job, just one sings his.",
+          "Left the bar last among the original group, undecided yet on where he needs to be early the next morning."
+        ]
       }
     },
     "khaoe": {
@@ -713,7 +806,10 @@
           "Stood in front of the newly-inaugurated Calendario Mecanográfico at the Feria and explained what it is — a machine marking the current year on a moving timeline — to a traveler who asked.",
           "Admits she came back from Lundria more confused about timekeeping than she left, unable to say which temple's calendar was the 'real' one; vaguely recalls one counting by moons and another counting from the last time the whole town gathered, but doesn't trust her own memory of it enough to teach it, and redirects anyone asking to someone actually from Lundria.",
           "When asked, describes the Collective as roughly coextensive with everyone living in Görff, no exact headcount in mind; names Bardaglis, Kristok Jakur, and Dägna by name and trade as fellow residents when pressed for who else is part of it.",
-          "Clarifies, when a traveler repeated a rumor calling Farlis a 'prince' of Terfila, that he isn't one — his family just has old money there — and that she's never gotten a straight answer from him on the exact title."
+          "Clarifies, when a traveler repeated a rumor calling Farlis a 'prince' of Terfila, that he isn't one — his family just has old money there — and that she's never gotten a straight answer from him on the exact title.",
+          "At a bar in Salthos Cruzados, the Feria's opening night: noticed Farlis had been talking with Aureobalo, then talked with him about her own trip to Lundria — came back with more questions than she left with, and still hasn't decided if that makes it a good trip or a wasted one.",
+          "Same evening, same bar: Khaasan reached her by griffon, as always, leaving it outside to eat something it shouldn't. Teased him that she never doubted he'd make it — a small lie, and she admitted as much.",
+          "Left the bar early that same night, planning to be back at the Calendario Mecanográfico first thing next morning, ahead of the crowds."
         ]
       }
     },
@@ -1116,7 +1212,11 @@
         "experience": [
           "Waiting with Khaoe at the Feria del Milenio, by the Castillo de Görff replica in the Plaza de las Culturas, for Khaasan, expecting him to arrive by griffon.",
           "Picked up from Khaoe in this conversation: that every temple in Lundria kept its own calendar, as if the world began again at each door.",
-          "Finds it poetic justice that he and Khaoe now live in the same castle that once belonged to a tyrant, long before the Collective — Khaoe doesn't share the romantic framing, sees it as plain necessity instead."
+          "Finds it poetic justice that he and Khaoe now live in the same castle that once belonged to a tyrant, long before the Collective — Khaoe doesn't share the romantic framing, sees it as plain necessity instead.",
+          "Ran into Aureobalo at a bar in Salthos Cruzados, the first evening of the Feria del Milenio — already knew him from before (their routes cross), but a first for meeting at this particular place.",
+          "Confirmed to Aureobalo, when he brought back a vaguer version of it secondhand, that the castle/poetic-justice remark really was his own, and that Khaoe was the one who shot it down.",
+          "Same evening, same bar: Khaoe noticed he'd been talking with Aureobalo; asked her in turn about her trip to Lundria, and got back that she came home with more questions than she left with.",
+          "Learned from Bardaglis, same evening, that the castle line has already become a song lyric — though the part that stuck was Khaoe's rebuttal, not his own poetic-justice framing."
         ]
       }
     },
@@ -1420,7 +1520,12 @@
             "year_esquema: 2019"
           ]
         },
-        "experience": []
+        "experience": [
+          "Ran into Farlis at a bar in Salthos Cruzados, the first evening of the Feria del Milenio — already knew him from before (their routes cross), but a first for meeting at this particular place.",
+          "Brought up a vague, secondhand version of a story about Farlis and a castle — someone correcting him over 'the stones someone had to hold up' — and got it confirmed directly from Farlis that it was about him, and that Khaoe was the one who said it.",
+          "Same evening, same bar: ran into Khaasan, just passing through Salthos Cruzados on his way from Khan Ice. Bought him a drink for the long road; Khaasan said he prefers short ones.",
+          "Also met Bardaglis and Khaoe at that same bar that night; left before the others, citing an early drive back to Khol Moshin the next morning."
+        ]
       }
     },
     "garfeld": {
