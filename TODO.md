@@ -17,17 +17,19 @@ open questions about the lore itself live in `_lore/analysis/unknown.md`, not he
 
 ## Nawom & Morkulo (Nvhi — first meeting scene)
 
-- [ ] Neither is registered in `_maps/npcs/registry.json` yet at all — no skin, city, or spawn
-      position decided for either.
-- [ ] Decide who "hosts" `nawom_morkulo_first_meeting.json` — which of the two is the Blabber
-      `interlocutor` when the dialog starts, or whether this needs a different trigger entirely
-      (e.g. a proximity/scene trigger rather than a right-click on one specific NPC).
+- [x] Trigger/hosting decided (2026-07-30): proximity-based, same mechanism as the khaoe_farlis_*
+      fragments — hosted under Nawom's key (his spawn.mcfunction will own the proximity check),
+      rather than a plain right-click on either NPC.
+- [ ] Neither is registered in `_maps/npcs/registry.json` yet at all — no skin, city, backstory, or
+      spawn position decided for either. Run `/character` for both before building spawn functions.
 - [ ] Decide the dialog's `end` state action: resume routines for both NPCs, just the triggering
       one, or none at all (relying on the §4 proximity safety net)? Currently left with no `action`
       on purpose, pending this.
-- [ ] Register the dialog in `_maps/dialogs/registry.json` once the above is settled — the registry
-      format assumes one dialog belongs to one NPC key, which doesn't cleanly fit a two-NPC scene.
-- [ ] Decide movement modes for both and build their spawn functions.
+- [ ] Register the dialog in `_maps/dialogs/registry.json` under Nawom's key once he's registered and
+      the proximity check exists — same shape as Nerkeli's `_comment` for
+      `nuvilo_nerkeli_feria_del_milenio`.
+- [ ] Decide movement modes for both and build their spawn functions — Nawom's also needs the
+      proximity roll/check logic once his movement mode is decided.
 
 ## Gondarfolas (Görff)
 
@@ -49,21 +51,17 @@ open questions about the lore itself live in `_lore/analysis/unknown.md`, not he
 
 ## Nuvilo & Nerkeli (Feria del Milenio — hangar eavesdrop scene)
 
-- [ ] Neither is registered in `_maps/npcs/registry.json` with a `spawn_position`, skin, or
-      movement mode yet — decide these for both.
-- [ ] Decide movement modes for both (they're standing together by the hangar for this scene —
-      likely `NONE` for at least the duration of the conversation, but confirm).
-- [ ] This dialog is an eavesdrop scene, not a right-click trigger on either NPC — decide how the
-      player actually starts/overhears it (proximity trigger? walking near the hangar? a
-      `blabber:command` fired from a pressure plate or region check?) rather than the usual
-      `enter_dialog` right-click wiring.
-- [ ] Decide who (if either) "hosts" `nuvilo_nerkeli_feria_del_milenio.json` for registry purposes,
-      or whether it needs a different registration shape entirely — same open question as the
-      Nawom & Morkulo entry above, and for the same reason: `_maps/dialogs/registry.json` assumes
-      one dialog belongs to one NPC key, which doesn't cleanly fit a two-NPC eavesdrop scene.
-- [ ] Decide the dialog's `end` state action — currently left with no `action` at all (matching the
-      Nawom & Morkulo precedent), pending the movement-mode and trigger decisions above.
-- [ ] Build spawn functions for both once the above is settled.
+- [x] Trigger/hosting decided (2026-07-30): proximity-based, same mechanism as the khaoe_farlis_*
+      fragments — hosted under Nerkeli's key (his hangar, his spawn.mcfunction will own the proximity
+      check against Nuvilo). Registered in `_maps/dialogs/registry.json`.
+- [ ] Neither is registered in `_maps/npcs/registry.json` with a `spawn_position` or skin yet —
+      decide these for both.
+- [ ] Movement modes for both — likely `NONE` for at least the duration of the conversation (they're
+      standing together by the hangar), but confirm.
+- [ ] Decide the dialog's `end` state action — currently left with no `action` at all, pending the
+      movement-mode decision above.
+- [ ] Build spawn functions for both — Nerkeli's needs the proximity roll/check logic against Nuvilo
+      added, matching Khaoe's `roll_dialog.mcfunction` pattern.
 
 ## Nuvilo (Feria del Milenio — scholar dialog vs. the player)
 

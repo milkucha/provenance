@@ -47,12 +47,19 @@
     },
     "nerkeli": {
       "npc": "nerkeli",
+      "_comment": "nuvilo_nerkeli_feria_del_milenio is a shared two-NPC eavesdrop scene with Nuvilo (see _maps/npcs/registry.json -> nuvilo). Registered under Nerkeli's key since it's his hangar and his spawn.mcfunction is what will own the proximity check (decided 2026-07-30, same reasoning as Khaoe hosting the khaoe_farlis_* fragments). The actual proximity roll/check logic isn't built yet - see TODO.md.",
       "dialogs": [
         {
           "id": "luminacion:nerkeli_hangar_talk",
           "trigger": "right_click",
           "condition": null,
           "description": "A traveler stops by Nerkeli's hangar at the Feria del Milenio. Branches on whether they ask about the plane and his flying (the M7 route, his freight work) or steer the talk toward the Feria itself, where Nerkeli turns out skeptical of the 'thousand years' framing and ends up explaining his duck/Daax theory."
+        },
+        {
+          "id": "luminacion:nuvilo_nerkeli_feria_del_milenio",
+          "trigger": "proximity",
+          "condition": "Nuvilo (NPC) is within proximity of Nerkeli (exact radius not yet decided - see TODO.md)",
+          "description": "Eavesdrop scene by Nerkeli's hangar: Nuvilo and Nerkeli in conversation, overheard rather than started by a right-click on either."
         }
       ]
     },
