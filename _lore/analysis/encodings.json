@@ -3395,6 +3395,420 @@
             "note": "matches Farlis's own established stance"
           }
         ]
+      },
+      {
+        "id": "khaoe_khaasan_partida_a_khan_ice",
+        "source_file": "data/luminacion/blabber/dialogues/khaoe_khaasan_partida_a_khan_ice.json",
+        "participants": [
+          "Khaoe",
+          "Khaasan"
+        ],
+        "location": {
+          "id": null,
+          "as_named_in_dialog": "the entrance of the Feria del Milenio, early on the second morning"
+        },
+        "summary": "Khaoe arrives ahead of the crowds as Khaasan is leaving for Khan Ice to see his uncle. They agree without saying so that only someone who was there gets to describe a place; she asks him to check whether a house her grandmother spoke of is still standing, and refuses to be told what it meant.",
+        "claims": [
+          {
+            "text": "Khaasan is travelling to Khan Ice to see his uncle, who has expected him without fail for years.",
+            "about": "Khan Ice",
+            "consistent_with_context": null,
+            "note": "New personal texture, given by the author this run. Nothing in the record speaks to Khaasan having family; nothing contradicts it either."
+          },
+          {
+            "text": "Khaasan's uncle has never left Khan Ice.",
+            "about": "Khan Ice",
+            "consistent_with_context": null
+          },
+          {
+            "text": "Khaoe's family came from Khan Ice before Khol Moshin, and she has never set foot there herself.",
+            "about": "Khan Ice",
+            "consistent_with_context": true,
+            "note": "Matches Khaoe's registered backstory exactly (Gorff, family from Khol Moshin, and before that Khan Ice). That she has never been is new, and consistent with a backstory that only ever claims descent."
+          },
+          {
+            "text": "It is said there is a rail line to Khan Ice from Gorff, and another running down to Balham.",
+            "about": "doran_four_castles#8",
+            "consistent_with_context": true,
+            "oral_lore": true,
+            "note": "Untraceable lineage_coin.py roll: Khaoe holds doran_four_castles#8 in her sample but voiced it as 'dicen que' with no source named, so derived_from is deliberately unset even though the origin is known. The rail claim itself checks out against the train_segment record (Gorff - Khan Ice, Khan Ice - Balham)."
+          },
+          {
+            "text": "Khaasan refuses every means of travel but his griffon, saying the train leaves you where the train wants.",
+            "about": null,
+            "consistent_with_context": true,
+            "note": "Matches his registered backstory - always by griffon, never on foot or by any other means."
+          },
+          {
+            "text": "Doran is going around saying Khan Ice was a capital in wartime, deduced from its walls, without ever having been there - Khaasan dismisses it on exactly that ground.",
+            "about": "doran_four_castles#9",
+            "consistent_with_context": true,
+            "derived_from": "doran_four_castles#9",
+            "note": "Traceable lineage_coin.py roll, so Khaasan names Doran. Two things are true and worth separating: Doran did say it (it is his claim #9, and he did frame it as speculation from architecture), and Doran has in fact never been to Khan Ice (his own registered experience). Khaasan does not know the second part - he rejects the claim purely because its author was not present, which is his recorded epistemology, not inside knowledge."
+          },
+          {
+            "text": "Khaoe came back from Lundria unable to say which temple's calendar was the true one, and will not teach what she cannot answer for.",
+            "about": "khaoe_calendario_mecanografico#2",
+            "consistent_with_context": true,
+            "note": "Restatement of her own established position, said here to a comrade rather than to a stranger asking."
+          },
+          {
+            "text": "Khaoe's grandmother spoke of a house in Khan Ice near the water; Khaoe knows neither the street nor whether it exists, and asks Khaasan only to report whether it is still standing.",
+            "about": "Khan Ice",
+            "consistent_with_context": null,
+            "note": "New personal texture, invented in-scene. The refusal attached to it - 'no me traigas lo que significaba, traeme si esta parada o no' - is her criterion showing without being stated."
+          }
+        ]
+      },
+      {
+        "id": "aureobalo_farlis_castillo_en_miniatura",
+        "source_file": "data/luminacion/blabber/dialogues/aureobalo_farlis_castillo_en_miniatura.json",
+        "participants": [
+          "Aureobalo",
+          "Farlis"
+        ],
+        "location": {
+          "id": null,
+          "as_named_in_dialog": "the Plaza de las Culturas at the Feria del Milenio, second day, in front of the Castillo de Gorff replica"
+        },
+        "summary": "Farlis shows Aureobalo his favourite exhibit - the miniature of the castle he actually lives in. Aureobalo brings back Khaoe's rebuttal to its subject rather than repeating it behind his back, and Farlis concedes the part that matters. They end on inherited surnames: Farlis left his in Terfila, Aureobalo is still working out what to do with one that was never his.",
+        "claims": [
+          {
+            "text": "The Plaza de las Culturas' Castillo de Gorff replica is, to Farlis, the single thing worth seeing across all five pavilions - and he says you cannot see the shape of a castle from inside it.",
+            "about": "doran_four_castles#6",
+            "consistent_with_context": null,
+            "note": "Personal texture. Consistent with his registered backstory (waited years for the Feria, going pavilion to pavilion) and with the replica's existence, which is established in Doran's own registered backstory."
+          },
+          {
+            "text": "Before the Collective, a tyrant ruled from the castle at Gorff, and his name is no longer remembered.",
+            "about": "khaoe_farlis_el_castillo_que_fue#1",
+            "consistent_with_context": null,
+            "derived_from": "khaoe_farlis_el_castillo_que_fue#1",
+            "note": "Traceable lineage_coin.py roll - Aureobalo names Khaoe as the source, in keeping with his recorded habit of carrying a story back to whoever it is about."
+          },
+          {
+            "text": "Khaoe rejects the poetic-justice reading of the castle - to her someone simply had to take up the stones - and Farlis holds the reading she rejects.",
+            "about": "khaoe_farlis_el_castillo_que_fue#3",
+            "consistent_with_context": true,
+            "derived_from": "khaoe_farlis_el_castillo_que_fue#3",
+            "note": "Traceable roll; Aureobalo names Khaoe. He already had this confirmed by Farlis directly at the bar (farlis_aureobalo_bar_salthos_cruzados), so it is a retelling to its own subject rather than gossip."
+          },
+          {
+            "text": "Farlis concedes Khaoe is right in the part that matters: whether or not it is poetic, the castle belonged to one man and no longer does, and his joke about it changes nothing.",
+            "about": "khaoe_farlis_el_castillo_que_fue#2",
+            "consistent_with_context": true,
+            "note": "First time Farlis has conceded this. His earlier position (khaoe_farlis_el_castillo_que_fue#2) framed it as poetic justice and he defended it when Khaoe pushed back. He keeps the joke and drops the claim it was making."
+          },
+          {
+            "text": "It is said that in the Collective nobody leads for having arrived first, or for their surname.",
+            "about": "khaoe_banco_colectivo#4",
+            "consistent_with_context": true,
+            "oral_lore": true,
+            "note": "Untraceable lineage_coin.py roll: Aureobalo holds khaoe_banco_colectivo#4 but voiced it as 'dicen que' with no source named, so derived_from stays unset. Farlis confirms it firsthand in the next line, which is a stronger grounding than the retelling had."
+          },
+          {
+            "text": "Farlis arrived at the Collective with an aristocratic Terfila surname and left it behind in Terfila, saying it is useful for nothing there, which is exactly what it is for.",
+            "about": "khaoe_banco_colectivo#3",
+            "consistent_with_context": true,
+            "note": "Consistent with Khaoe's earlier clarification that Farlis is not literally a prince and does not press the point."
+          },
+          {
+            "text": "Aureobalo's surname resembles those of the losing side of the Guerras de Gorff; he is not related to them, his parents admired the loyalists, and he never chose the association.",
+            "about": "Las Guerras de Gorff",
+            "consistent_with_context": null,
+            "note": "Straight from Aureobalo's registered backstory, said aloud in a scene for the first time. Backstory is experience-knowledge and is held true regardless of his education sample, which does not itself contain the Guerras de Gorff."
+          }
+        ]
+      },
+      {
+        "id": "bardaglis_ilaria_khaoe_segunda_noche",
+        "source_file": "data/luminacion/blabber/dialogues/bardaglis_ilaria_khaoe_segunda_noche.json",
+        "participants": [
+          "Bardaglis",
+          "Iläria",
+          "Khaoe"
+        ],
+        "location": {
+          "id": null,
+          "as_named_in_dialog": "the bar in Salthos Cruzados, the second night of the Feria del Milenio"
+        },
+        "summary": "Khaoe hears her own offhand line sung back by strangers. Bardaglis argues a song is only finished once it has lost its author; Ilaria, who turns out to be the Ensayo's author, argues the opposite and writes the attribution down. Bardaglis holds the line for their own songs and refuses it for Khaoe's - hers keeps a name.",
+        "claims": [
+          {
+            "text": "Khaoe's castle line was said offhand two nights earlier and is already being sung by people who do not know who she is.",
+            "about": "khaoe_farlis_el_castillo_que_fue#3",
+            "consistent_with_context": true,
+            "note": "Continues the lineage recorded in farlis_bardaglis_bar_salthos_cruzados, where Bardaglis first reported the line had become a song."
+          },
+          {
+            "text": "Bardaglis holds that a song is only finished once it has lost its author - that being sung by people who do not know whose it is is the best thing that can happen to one.",
+            "about": null,
+            "consistent_with_context": null,
+            "note": "Bardaglis's standard, stated in a scene for the first time. Personal texture, not a lore claim."
+          },
+          {
+            "text": "Ilaria holds the opposite: that an unrecorded line becomes everyone's and no one's within twenty years, leaving a historian nothing to write but 'se dice que'.",
+            "about": null,
+            "consistent_with_context": null
+          },
+          {
+            "text": "Khaoe claims the castle line as her own, said in front of the castle, and consents to it being written down with her name.",
+            "about": "khaoe_farlis_el_castillo_que_fue#3",
+            "consistent_with_context": true
+          },
+          {
+            "text": "It is said Ilaria wrote the Ensayo - Bardaglis repeats it without being able to say who they heard it from, and Ilaria confirms it herself on the spot.",
+            "about": "ilaria_espiral_de_la_historia#3",
+            "consistent_with_context": true,
+            "oral_lore": true,
+            "note": "Untraceable lineage_coin.py roll: Bardaglis holds ilaria_espiral_de_la_historia#3 but could name no source, so derived_from stays unset and the line says as much out loud. Unusually, the claim is then confirmed firsthand by its own subject in the same breath, which is far stronger grounding than the retelling had."
+          },
+          {
+            "text": "Ilaria says there is another book covering the same centuries differently, that the two do not agree, and that she would rather have two accounts that contradict each other than one that sounds whole.",
+            "about": "CONFLICT-01",
+            "consistent_with_context": true,
+            "note": "She names herself as the author of one of the two, which is what makes her refusal to adjudicate between them costly rather than neutral."
+          },
+          {
+            "text": "Bardaglis has an older song about the Isla de la Amistad opening 'isla que no pide nombre, isla que no pide guerra', written from having played a season there and listened.",
+            "about": "isla_de_la_amistad",
+            "consistent_with_context": true,
+            "note": "Matches Bardaglis's registered experience, which already carries both the song and the opening line."
+          },
+          {
+            "text": "Bardaglis refuses to put their own name to their song while insisting Khaoe's line keeps hers - theirs was made to leave, hers got away from her.",
+            "about": null,
+            "consistent_with_context": null,
+            "note": "The distinction is the whole of Bardaglis's position: the standard applies to what they made, not to what they carry for other people."
+          }
+        ]
+      },
+      {
+        "id": "khaoe_milkucha_jardin_de_los_parajes",
+        "source_file": "data/luminacion/blabber/dialogues/khaoe_milkucha_jardin_de_los_parajes.json",
+        "participants": [
+          "Khaoe",
+          "Milkucha"
+        ],
+        "location": {
+          "id": null,
+          "as_named_in_dialog": "the Jardín de los Parajes at the Feria del Milenio"
+        },
+        "summary": "Khaoe encountered Milkucha at the entrance to the Jardín and walked the pavilion's five biome zones with them. Milkucha explained the geographical design and the real-world locations each represents, revealing they designed the space, built the Cinema in Grosslor, and can move mountains through mod power. Cherry trees from Dragón were planted in many cities as diplomatic gifts.",
+        "claims": [
+          {
+            "text": "The Jardín de los Parajes was designed by Milkucha to represent the known world's classical biomes — an ode to classical geography.",
+            "about": "jardin_de_los_parajes",
+            "consistent_with_context": true
+          },
+          {
+            "text": "The podzol forest biome has no significant construction in known history.",
+            "about": null,
+            "consistent_with_context": null
+          },
+          {
+            "text": "The terracotta mountains in the Feria represent the Cuna de Grosslor, with reddish mountainous terrain and desert-like foreign air.",
+            "about": "grosslor",
+            "consistent_with_context": true
+          },
+          {
+            "text": "Milkucha built the Cinema in Grosslor, though not alone — many others were involved.",
+            "about": "grosslor",
+            "consistent_with_context": null,
+            "note": "New fact about a specific construction attributed to Milkucha as participant."
+          },
+          {
+            "text": "The Cordillera de Eurasori adorns the northern border of Khan Icé and was said to have been raised by gods, possibly Eurasori himself, sculpted by hands inspired by the creators' worlds.",
+            "about": "Khan Ice",
+            "consistent_with_context": null
+          },
+          {
+            "text": "Milkucha can move mountains using mod power and other-planes-of-existence skills, saying it is not difficult once one is accustomed to it.",
+            "about": null,
+            "consistent_with_context": null,
+            "note": "Personal texture about Milkucha's capabilities, not a lore fact about a place."
+          },
+          {
+            "text": "The taiga biome with cherry forests mixes elements of Khan Icé and Plathinëa. Cherry trees were used as diplomatic and ceremonial gifts by Dragón, with small saplings planted in friendly cities.",
+            "about": "Khan Ice",
+            "consistent_with_context": true
+          },
+          {
+            "text": "Cherry trees from Dragón are found in almost every city Milkucha has visited.",
+            "about": "isla_de_la_amistad",
+            "consistent_with_context": true,
+            "note": "Observation of cherry-tree prevalence attributed to Dragón's diplomatic strategy."
+          },
+          {
+            "text": "The Desert of Experimentation was the first desert, a vast zone where redstone inventions were tested and eventually abandoned.",
+            "about": null,
+            "consistent_with_context": null
+          },
+          {
+            "text": "The Desert of Balahm is the land of temples.",
+            "about": "balahm",
+            "consistent_with_context": true
+          },
+          {
+            "text": "Grosslor, Fuerte de la Cruz del Dragón, and Meseta del Pequeño Elefante are places on the continent of Milkaan — Milkucha's world.",
+            "about": "grosslor",
+            "consistent_with_context": null,
+            "note": "Milkucha revealed in passing that these places belong to 'this continent of Milkaan,' implying personal ownership or authorship of that world."
+          }
+        ]
+      },
+      {
+        "id": "gok_milkucha_alcove#1",
+        "dialog_file": "gok_milkucha_alcove.json",
+        "participants": [
+          "Gok",
+          "Milkucha"
+        ],
+        "location": {
+          "id": null,
+          "as_named_in_dialog": "Alcove of Legends, Espiral de las Eras, Feria del Milenio"
+        },
+        "claims": [
+          {
+            "text": "The Grandes Juegos occurred in the year_esquema 2013-2015",
+            "about": [
+              "year_esquema: 2013",
+              "year_esquema: 2015"
+            ],
+            "consistent_with_context": true
+          },
+          {
+            "text": "Hotel Kholi was built during the Grandes Juegos to host athletes and representatives",
+            "about": [
+              "location: khan_ice",
+              "concept: hotel_kholi"
+            ],
+            "consistent_with_context": true
+          },
+          {
+            "text": "The current year is 1000 in the Milkantis calendar",
+            "about": [
+              "era_ensayo: Era de la Imaginación"
+            ],
+            "consistent_with_context": true
+          },
+          {
+            "text": "The time-ratio between real-world and Milkantis years changed at the end of 2025",
+            "about": [
+              "concept: seasons_eas"
+            ],
+            "consistent_with_context": true
+          },
+          {
+            "text": "The Grandes Juegos approximately correspond to Milkantis years 73-219, making them roughly 850 years ago",
+            "about": [
+              "era_ensayo: Era del Confinamiento"
+            ],
+            "consistent_with_context": true
+          },
+          {
+            "text": "A witness to Khan Ice's development affirms the city's documented history is accurate",
+            "about": [
+              "location: khan_ice"
+            ],
+            "consistent_with_context": null
+          },
+          {
+            "text": "We are reflections of the things we do not want to lose",
+            "about": [
+              "concept: preservation",
+              "concept: memory"
+            ],
+            "consistent_with_context": null
+          }
+        ]
+      },
+      {
+        "id": "farlis_gok_alcove#1",
+        "dialog_file": "farlis_gok_alcove.json",
+        "participants": [
+          "Farlis",
+          "Gok"
+        ],
+        "location": "feria_del_milenio",
+        "claims": [
+          {
+            "text": "The Hotel Kholi still stands from the Grandes Juegos era, unchanged",
+            "about": [
+              "location: khan_ice",
+              "era_ensayo: Era del Confinamiento"
+            ],
+            "consistent_with_context": true
+          },
+          {
+            "text": "The Hotel Kholi is a bridge between past and present Khan Ice",
+            "about": [
+              "location: khan_ice"
+            ],
+            "consistent_with_context": true
+          },
+          {
+            "text": "The Castillo de Görff was transformed from a tyrant's castle to a shared space",
+            "about": [
+              "location: castillo_del_sol"
+            ],
+            "consistent_with_context": true
+          },
+          {
+            "text": "Monuments are only living stones if kept alive through story and presence",
+            "about": [
+              "concept: preservation",
+              "concept: memory"
+            ],
+            "consistent_with_context": null
+          },
+          {
+            "text": "Things can be different from what they were, without ceasing to be themselves",
+            "about": [
+              "concept: transformation"
+            ],
+            "consistent_with_context": null
+          }
+        ]
+      },
+      {
+        "id": "auroboro_iii_farlis_alcoba",
+        "source_file": "data/luminacion/blabber/dialogues/auroboro_iii_farlis_alcoba.json",
+        "participants": [
+          "Auroboro III",
+          "Farlis"
+        ],
+        "location": {
+          "id": null,
+          "as_named_in_dialog": "Alcoba of the Guerras de Görff, Espiral de las Eras, Feria del Milenio"
+        },
+        "summary": "Farlis, from Görff and a member of the Collective, visits Auroboro III's alcoba. Their disagreement is immediate: Auroboro III clings to military glory and ancestral honor; Farlis sees those wars as a hierarchy to be rejected, not preserved. The clash is fundamental — about memory, about what deserves to be kept.",
+        "claims": [
+          {
+            "text": "Farlis claims the Guerras de Görff were merely officers and nobles fighting over borders—a hierarchy-struggle, not heroic sacrifice. Auroboro III's ancestors meant more than that.",
+            "about": "era_ensayo: Las Guerras de Gorff",
+            "consistent_with_context": true,
+            "note": "Auroboro III's interpretation: Farlis reduces genuine ancestral honor to political power-struggle. Refusal to see the valor in the wars. Mutated through rejection of Farlis's radical reframing."
+          },
+          {
+            "text": "Auroboro III argues that without memory, people are adrift and lose identity. Farlis counters that he knows who he is—someone who builds real things, not someone trapped talking about ghosts.",
+            "about": null,
+            "consistent_with_context": null,
+            "note": "Core collision between preservation and rejection. Each sees the other as trapped: Auroboro in nostalgia, Farlis in denial of the past's value."
+          },
+          {
+            "text": "Farlis is from Görff and a member of the Collective, which dismantled the old military families and their hierarchy. Auroboro III sees this as erasure; Farlis sees it as liberation.",
+            "about": null,
+            "consistent_with_context": true,
+            "note": "Ideological divide: Auroboro mutates this as 'radical destruction of heritage'; Farlis mutates it as 'necessary dismantling of oppression.'"
+          },
+          {
+            "text": "Auroboro III believes honoring the Guerras means keeping his ancestors alive, not forgetting them. Farlis sees the alcoba as a man sitting alone with his ghosts, refusing to move forward.",
+            "about": "era_ensayo: Las Guerras de Gorff",
+            "consistent_with_context": true,
+            "note": "Auroboro's mutation: his work is life-giving memory-keeping. Farlis's mutation: his work is sterile nostalgia. Same act, opposite framings."
+          }
+        ]
       }
     ]
   },

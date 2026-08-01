@@ -1,0 +1,41 @@
+{
+  "_comment": "Universal knowledge - the fifth source of truth, and the only one that is never sampled. Every character knows every fact here in full, from creation, regardless of their education percent/mode/topic. These entries must NEVER be folded into _lore/analysis/encodings.json and must never reach scripts/sample_lore_knowledge.py's pool: a fact that can be drawn at 5% odds is a bug. Facts have no provenance, cannot be attributed, cannot be dismissed, and carry no consistent_with_context flag - they are the floor a criterion's contestable anchor stands on, not part of the argument. Loaded unconditionally by /character (criterion derivation) and /enact (every scene, every character). See _index.md.",
+  "facts": [
+    {
+      "id": "life_is_finite",
+      "title": "Life is finite",
+      "text": "A life comes to an end. Everyone knows this about themselves and about everyone they meet.",
+      "known": [
+        "That their life will end.",
+        "That the encounters left to them are a real, fixed quantity - not endless, not renewable.",
+        "That other people's lives end too, which is why what someone leaves in others outlasts them."
+      ],
+      "withheld": [
+        "The number itself. It lives in _maps/npcs/lifespans.json, deliberately NOT in the registry entry /enact loads to play them; the enactment asks scripts/horizon.py, which answers with a coarse band (early/established/late/final) and never the figure. Never revealed as a count, a countdown, or a hint that they are running low.",
+        "The single exception: when a character enters what turns out to be their final encounter, they know it is the final one and play it knowing. That knowledge arrives with the scene and never one scene early."
+      ],
+      "effects": [
+        "Forces ranking: a character with a closing horizon must decide what matters most, which is where personality becomes visible behavior.",
+        "Governs drift: as remaining span shortens against the scale of what a criterion demands, the character becomes more susceptible to having it broken."
+      ],
+      "file": "life_is_finite.md"
+    },
+    {
+      "id": "a_worthwhile_life",
+      "title": "A life should be full and worthwhile",
+      "text": "Everyone wants their life to have been worth living. Nobody is neutral about this, nobody has to be persuaded of it, and nobody arrives at it by reasoning.",
+      "known": [
+        "That they want their life to amount to something, and would be pained to find it hadn't.",
+        "That this is true of everyone else too - including people whose idea of a worthwhile life is nothing like their own."
+      ],
+      "withheld": [
+        "What 'worthwhile' actually means. The impulse is universal; the criterion is not. A character's particular answer is derived from the collision of their knowledge with their backstory (see criterion in _maps/npcs/registry.json and the derivation procedure in .claude/skills/character/SKILL.md), is inherited from somewhere specific, and can be argued with or lost."
+      ],
+      "effects": [
+        "It is the engine: paired with life_is_finite, it is the will to live - time is short and it matters what the time was spent on.",
+        "It is what makes a broken criterion a crisis rather than a shrug: a character who loses the story they were living by still wants their life to be worthwhile, they just no longer know what that would look like."
+      ],
+      "file": "a_worthwhile_life.md"
+    }
+  ]
+}

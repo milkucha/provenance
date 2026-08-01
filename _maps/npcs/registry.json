@@ -1,5 +1,5 @@
 {
-  "_comment": "Master NPC registry. All NPC data lives here. Dialogs and actions reference NPCs by their key. 'backstory' and 'knowledge' were added 2026-07-24 for enacted characters (see the /enact skill and README §8) - both optional for hand-built NPCs, but /enact always fills them in. As of 2026-07-25, knowledge is split into 'education' (the immutable sample drawn once at creation - never redrawn or edited after) and 'experience' (what the character has picked up since: their own dialog lines beyond the sample, plus - conceptually - their 'backstory' field above, which is also experience-knowledge, just kept as its own top-level field since it predates this split and is used elsewhere as plain character description).",
+  "_comment": "Master NPC registry. All NPC data lives here. Dialogs and actions reference NPCs by their key. 'backstory' and 'knowledge' were added 2026-07-24 for enacted characters (see the /enact skill and README §8) - both optional for hand-built NPCs, but /enact always fills them in. As of 2026-07-25, knowledge is split into 'education' (the immutable sample drawn once at creation - never redrawn or edited after) and 'experience' (what the character has picked up since: their own dialog lines beyond the sample, plus - conceptually - their 'backstory' field above, which is also experience-knowledge, just kept as its own top-level field since it predates this split and is used elsewhere as plain character description). As of 2026-07-31, two more fields: 'criterion' (what this character counts as a life well spent - derived once at creation from the collision of their education sample with their backstory, then revisable only by a shock that references its anchor; its 'trusts'/'distrusts' pair is the epistemology that criterion implies, derived from the anchor's own pool category, and it makes a claim's credibility subjective to the character - facts are exempt from it; see .claude/skills/character/SKILL.md for the derivation and revision procedure) and 'life' ('lived' - how many scenes this character has had, which is only their history, plus 'deceased' - a plain, non-secret boolean, false until /enact closes them out on their last scene. Their total span is NOT here: it lives in _maps/npcs/lifespans.json, because this file is what /enact loads in order to PLAY a character, and a span sitting here would put the number in that character's own context at exactly the moment it must not be. Ask scripts/horizon.py, which answers with a coarse band and never the figure). As of 2026-08-01, death also triggers scripts/notify_death.py: 30% of the character's 'circle' (scene co-participants plus anyone named in their own backstory) gets a forced knowledge.experience entry recording the news immediately; everyone else can only learn of it the normal way, via a matching _lore/discoveries/ entry re-entering the sampling pool. See .claude/skills/enact/SKILL.md Step 5b point 6. Note the three knowledge mutability classes still in play: knowledge.education is frozen at creation, knowledge.experience appends freely, and criterion is sticky-but-revisable - it changes only when a referencing shock lands on a susceptible character, and the default outcome of any given scene is no change at all.",
   "npcs": {
     "_template": {
       "display_name": "",
@@ -17,6 +17,21 @@
           "items": []
         },
         "experience": []
+      },
+      "criterion": {
+        "standard": "",
+        "wasted_life": "",
+        "anchor": "",
+        "origin": "",
+        "trusts": "",
+        "distrusts": "",
+        "tempered": 0,
+        "cost_ledger": [],
+        "history": []
+      },
+      "life": {
+        "lived": 0,
+        "deceased": false
       }
     },
     "sonoros": {
@@ -398,6 +413,24 @@
           "Names the Era de las Maravillas (from 804 d.V.) among the ages he can speak to, alongside the Era del Daax and the current Era de la Magia.",
           "His colleagues at the Plaza tease him for turning solemn and poetic whenever he talks about it."
         ]
+      },
+      "criterion": {
+        "standard": "counts a life well spent if the map is more complete when he leaves it than when he found it",
+        "wasted_life": "leaving a blank in the one place he was supposed to be the one who knew",
+        "anchor": "concept: antiguo_continente_and_mapa_del_milenio",
+        "origin": "derived",
+        "trusts": "what is drawn, built, or still standing where he can walk around it",
+        "distrusts": "someone else's secondhand account of a place inside his own Plaza",
+        "tempered": 0,
+        "cost_ledger": [
+          "Spoke with authority about Khan Ice's palace from its defensive architecture alone rather than admit he has never been there - his standard costs him the admission (doran_four_castles).",
+          "Carries a personal wariness toward Ciudad Dragon over the claim its mages destroyed the great map of Salthos Cruzados (doran_four_castles#5)."
+        ],
+        "history": []
+      },
+      "life": {
+        "lived": 3,
+        "deceased": false
       }
     },
     "bardaglis": {
@@ -521,8 +554,39 @@
           "Met Farlis at that same bar, that same night — told him the castle story (Khaoe's 'stones' line) had already become a song of his own, catching on. Learned in return that the line it answers, the poetic-justice one, was Farlis's own, said to Khaoe herself in front of the castle.",
           "Also spent that evening with Aureobalo, Khaasan, and Khaoe at the same table, talking about the Feria - retold what he'd heard about Iläria's Espiral de la Historia (the nine-chamber labyrinth, one room per era) as her own words.",
           "Stayed on after Aureobalo and Khaoe left, one-on-one with Khaasan - traded light jabs about travel: Khaasan by griffon, Bardaglis on foot, unwilling to spend his earnings feeding a bird.",
-          "Later that same night, Nuvilo wandered in hungry from a night of pavilion-hopping - a first meeting; Bardaglis waved him to a seat."
+          "Later that same night, Nuvilo wandered in hungry from a night of pavilion-hopping - a first meeting; Bardaglis waved him to a seat.",
+          "Sang the castle song at the Salthos Cruzados bar on the Feria's second night with Khaoe herself at the table, and told her strangers had sung it back the night before without knowing who she was.",
+          "Holds that a song is only finished once it has lost its author - and refused, to Ilaria's face, to put their name to the Isla de la Amistad song.",
+          "Insists Khaoe's line keeps Khaoe's name: theirs was made to leave, hers got away from her.",
+          "Met Ilaria for the first time and learned firsthand, from her, that she wrote the Ensayo - having previously only heard it said, with no idea from whom.",
+          "Picked up from Ilaria: that a second book covers the same centuries differently, that the two do not agree, and that she would rather keep both than pick one."
         ]
+      },
+      "criterion": {
+        "standard": "counts a song well made only once strangers are singing it back without knowing whose it was",
+        "wasted_life": "one spent where everyone already knows your name - nothing carried in, nothing carried out",
+        "anchor": "location: isla_de_la_amistad",
+        "origin": "derived",
+        "trusts": "what someone will say out loud in a room, and what strangers keep repeating after",
+        "distrusts": "a written account whose writer can't be found and asked a second question - though one whose writer is sitting at the table is another matter",
+        "tempered": 1,
+        "cost_ledger": [
+          "Would rather be paid in a good story than in coin, and mostly is - travels on foot because a griffon would eat the difference (aureobalo_khaasan_bar_salthos_cruzados, farlis_bardaglis_bar_salthos_cruzados).",
+          "Turned down being named as the source of their own song when a historian offered to record it (bardaglis_ilaria_khaoe_segunda_noche)."
+        ],
+        "history": [
+          {
+            "dialog": "bardaglis_ilaria_khaoe_segunda_noche",
+            "move": "reinterpreted",
+            "cause": "Ilaria's challenge - 'entonces eres fuente, pon tu nombre' - aimed at the Isla de la Amistad song, which is read off the anchor location: isla_de_la_amistad",
+            "note": "Gate matched and the standard held, sharpened rather than changed: it applies to what Bardaglis made, not to what they carry for someone else. Standard unchanged, tempered 0 -> 1.",
+            "trust_note": "distrusts amended, and this is the first trust movement in the pack. Bardaglis distrusted written accounts precisely because they 'can't be asked a second question' - and then met a written account's author in a bar and asked her. The objection survives in narrowed form rather than being dropped."
+          }
+        ]
+      },
+      "life": {
+        "lived": 2,
+        "deceased": false
       }
     },
     "dagna": {
@@ -622,7 +686,7 @@
       "taterzen_name": "Khaasan",
       "taterzen_uuid": "",
       "spawn_position": null,
-      "backstory": "Teletraveller. Always travels by griffon — never on foot or by any other means.",
+      "backstory": "Teletraveller. Always travels by griffon — never on foot or by any other means. Has an uncle in Khan Ice who has never left the place and who expects him without fail; Khaasan has never missed the visit.",
       "knowledge": {
         "education": {
           "percent": 26,
@@ -710,8 +774,39 @@
           "Reached Khaoe at the same bar later that evening, griffon in tow as always, and left it outside eating something it shouldn't have; she teased him for cutting it close, and he called her out on pretending she wasn't worried.",
           "Stayed on at the bar after Aureobalo and Khaoe left, talking one-on-one with Bardaglis - teased him about not owning a griffon; Bardaglis said he'd rather keep his earnings than feed one.",
           "Met Nuvilo that same night, when he wandered in hungry after a night of pavilion-hopping - joked that a writer and a bard do the same job, just one sings his.",
-          "Left the bar last among the original group, undecided yet on where he needs to be early the next morning."
+          "Left the bar last among the original group, undecided yet on where he needs to be early the next morning.",
+          "Left the Feria del Milenio early on its second morning for Khan Ice, to see the uncle who expects him - crossing Khaoe at the entrance on her way in.",
+          "Refuses the rail even where it runs (Gorff-Khan Ice, Khan Ice-Balham): 'el tren te deja donde el tren quiere.'",
+          "Dismisses Doran's claim that Khan Ice was a wartime capital, on the ground that Doran deduced it from walls without ever having gone.",
+          "Agreed to look, with his own eyes, for a house near the water in Khan Ice that Khaoe's grandmother spoke of - and to report only whether it is still standing.",
+          "Picked up from Khaoe: her family came from Khan Ice before Khol Moshin, and she has never been."
         ]
+      },
+      "criterion": {
+        "standard": "counts on being the one who turns up, however far out and however late",
+        "wasted_life": "one where someone stopped expecting him",
+        "anchor": "experience: khaoe_khaasan_bar_salthos_cruzados",
+        "origin": "derived",
+        "trusts": "being there - his own eyes, his own bird, his own arrival",
+        "distrusts": "anyone reporting on a place they only ever heard about",
+        "tempered": 1,
+        "cost_ledger": [
+          "Keeps and feeds a griffon rather than travel any other way, and gets teased for the expense - Bardaglis would rather keep the earnings (aureobalo_khaasan_bar_salthos_cruzados).",
+          "Cut it close reaching Khaoe at the bar and left the griffon outside eating something it shouldn't (khaoe_khaasan_bar_salthos_cruzados).",
+          "Left the Feria del Milenio - which happens once in a lifetime - on its second morning, because his uncle was expecting him (khaoe_khaasan_partida_a_khan_ice)."
+        ],
+        "history": [
+          {
+            "dialog": "khaoe_khaasan_partida_a_khan_ice",
+            "move": "reinterpreted",
+            "cause": "khaoe_khaasan_partida_a_khan_ice: Khaoe's tease that he arrived last time with his tongue out and the bird eating something it shouldn't - a direct reference to his anchor scene",
+            "note": "Gate matched: the tease references khaoe_khaasan_bar_salthos_cruzados, his anchor, and challenges the manner of his arrival. He accepted it and reread the case rather than abandoning it - 'Llegue. Es lo unico que se me pide.' Standard unchanged, tempered 0 -> 1. trusts/distrusts deliberately untouched: the challenge came from firsthand testimony by someone who was there, which is exactly the kind of knowing he already trusts, so there is nothing to harden against."
+          }
+        ]
+      },
+      "life": {
+        "lived": 3,
+        "deceased": false
       }
     },
     "khaoe": {
@@ -809,8 +904,36 @@
           "Clarifies, when a traveler repeated a rumor calling Farlis a 'prince' of Terfila, that he isn't one — his family just has old money there — and that she's never gotten a straight answer from him on the exact title.",
           "At a bar in Salthos Cruzados, the Feria's opening night: noticed Farlis had been talking with Aureobalo, then talked with him about her own trip to Lundria — came back with more questions than she left with, and still hasn't decided if that makes it a good trip or a wasted one.",
           "Same evening, same bar: Khaasan reached her by griffon, as always, leaving it outside to eat something it shouldn't. Teased him that she never doubted he'd make it — a small lie, and she admitted as much.",
-          "Left the bar early that same night, planning to be back at the Calendario Mecanográfico first thing next morning, ahead of the crowds."
+          "Left the bar early that same night, planning to be back at the Calendario Mecanográfico first thing next morning, ahead of the crowds.",
+          "Crossed Khaasan at the Feria's entrance on its second morning, arriving ahead of the crowds as he was leaving for Khan Ice.",
+          "Has never set foot in Khan Ice, though her family came from there before Khol Moshin; her grandmother spoke of a house near the water, street unknown.",
+          "Asked Khaasan to report only whether that house is still standing - explicitly not what it meant.",
+          "Repeats that she will not teach the Lundria calendars she cannot answer for, now to a comrade rather than to a stranger asking.",
+          "Heard her own castle line sung back at the Salthos Cruzados bar on the Feria's second night by people who did not know it was hers, and said she wasn't sure she liked it.",
+          "Claimed the line aloud and consented to it being recorded with her name, place, and witnesses - and told Ilaria to write down Bardaglis's song too, so nobody has to guess in twenty years.",
+          "Met Ilaria; learned from her that the Ensayo is hers and that a second book disagrees with it.",
+          "Walked through the Jardín de los Parajes with Milkucha, who designed it as an ode to classical geography representing the known world's biomes.",
+          "Learned that Milkucha built the Cinema in Grosslor with others, can move mountains using mod power, and belongs to the continent of Milkaan.",
+          "Heard that cherry trees from Dragón were planted in many cities as diplomatic and ceremonial gifts."
         ]
+      },
+      "criterion": {
+        "standard": "measures a life by whether the work was actually taken up - someone lifted the stones, and it still stands",
+        "wasted_life": "one spent making a thing mean something instead of keeping it standing",
+        "anchor": "location: gorff",
+        "origin": "derived",
+        "trusts": "someone who was there and still has to live with it",
+        "distrusts": "a meaning laid over a thing afterwards by someone who didn't do the lifting",
+        "tempered": 0,
+        "cost_ledger": [
+          "Came back from the temple at Lundria unable to say which calendar was the real one, and refused to teach what she couldn't vouch for - redirects anyone asking to someone actually from Lundria, and still hasn't decided whether that makes the trip good or wasted (khaoe_calendario_mecanografico, farlis_khaoe_bar_salthos_cruzados).",
+          "Asked after her own grandmother's house and refused in advance to be told what it meant - kept the question to whether it still stands (khaoe_khaasan_partida_a_khan_ice)."
+        ],
+        "history": []
+      },
+      "life": {
+        "lived": 10,
+        "deceased": false
       }
     },
     "kristok_jakur": {
@@ -1216,8 +1339,44 @@
           "Ran into Aureobalo at a bar in Salthos Cruzados, the first evening of the Feria del Milenio — already knew him from before (their routes cross), but a first for meeting at this particular place.",
           "Confirmed to Aureobalo, when he brought back a vaguer version of it secondhand, that the castle/poetic-justice remark really was his own, and that Khaoe was the one who shot it down.",
           "Same evening, same bar: Khaoe noticed he'd been talking with Aureobalo; asked her in turn about her trip to Lundria, and got back that she came home with more questions than she left with.",
-          "Learned from Bardaglis, same evening, that the castle line has already become a song lyric — though the part that stuck was Khaoe's rebuttal, not his own poetic-justice framing."
+          "Learned from Bardaglis, same evening, that the castle line has already become a song lyric — though the part that stuck was Khaoe's rebuttal, not his own poetic-justice framing.",
+          "Names the Castillo de Gorff replica in the Plaza de las Culturas as his favourite thing in the whole Feria - you cannot see the shape of a castle from inside it.",
+          "Conceded to Aureobalo that Khaoe was right in the part that matters: poetic or not, the castle was one man's and no longer is, and his joke about it changes nothing. Keeps the joke, drops the claim.",
+          "Says he arrived at the Collective with a Terfila surname and left it in Terfila - it is useful for nothing there, which is exactly what it is for.",
+          "Picked up from Aureobalo: that his surname resembles the losing side of the Guerras de Gorff, that he is unrelated to them, and that his parents' admiration for the loyalists was never his choice.",
+          "Found Gok at the Espiral de las Eras alcove, a man keeping the Hotel Kholi's story alive at the Feria del Milenio, who understands that monuments are the keeper's work, not the stone.",
+          "Recognized in Gok's devotion to the Hotel Kholi the same principle he lives by with the Castillo de Görff — that what we leave behind, and how we hold it, is what makes it matter.",
+          "Visited the Alcoba of the Guerras de Görff in the Espiral de las Eras and met Auroboro III, an old descendant of officers from those wars.",
+          "Auroboro III clings to the Guerras as glorious heritage and ancestral honor; sees forgetting as spiritual death.",
+          "Auroboro III called Farlis a fool for rejecting the past, but Farlis holds that he builds real things rather than talking about ghosts."
         ]
+      },
+      "criterion": {
+        "standard": "counts a life well spent if what he leaves behind is a place that used to be one man's and isn't anymore",
+        "wasted_life": "inheriting a name and a house and handing both on unchanged",
+        "anchor": "hearsay: doran_four_castles#6",
+        "origin": "derived",
+        "trusts": "a magnificent tale, and whoever is willing to put their name to it",
+        "distrusts": "a plain accounting that leaves out why the thing mattered",
+        "tempered": 1,
+        "cost_ledger": [
+          "Khaoe rejected his poetic-justice framing of the castle to his face - to her it was plain necessity, someone had to take up the stones (khaoe_farlis_el_castillo_que_fue).",
+          "Learned from Bardaglis that the line which survived into song was Khaoe's rebuttal, not his own framing (farlis_bardaglis_bar_salthos_cruzados).",
+          "Gave up the poetic-justice framing itself in front of Aureobalo - the third time the reading has been contested and the first time he let it go (aureobalo_farlis_castillo_en_miniatura)."
+        ],
+        "history": [
+          {
+            "dialog": "aureobalo_farlis_castillo_en_miniatura",
+            "move": "reinterpreted",
+            "cause": "khaoe_farlis_el_castillo_que_fue#3, retold to him by Aureobalo",
+            "note": "Gate matched: the claim references the castle at Gorff, the case his anchor (doran_four_castles#6) is read off. He could not dismiss it - it came from Khaoe, named and firsthand, which is exactly the kind of source he trusts, and he had already heard it from her directly. Susceptibility was high: two prior cost_ledger entries on this same reading. Outcome is reinterpretation rather than a break, because the anchor fact (the castle's scarred past) is untouched - what he gave up was the ornament, not the standard. Standard unchanged, tempered 0 -> 1.",
+            "trust_note": "trusts/distrusts deliberately left untouched. Step 6's rule that surviving a refutation hardens distrust against that kind of source only makes sense for the *reject* move; hardening him against named firsthand testimony after he accepted it would be backwards. See TODO."
+          }
+        ]
+      },
+      "life": {
+        "lived": 9,
+        "deceased": false
       }
     },
     "gondorlikas": {
@@ -1524,8 +1683,30 @@
           "Ran into Farlis at a bar in Salthos Cruzados, the first evening of the Feria del Milenio — already knew him from before (their routes cross), but a first for meeting at this particular place.",
           "Brought up a vague, secondhand version of a story about Farlis and a castle — someone correcting him over 'the stones someone had to hold up' — and got it confirmed directly from Farlis that it was about him, and that Khaoe was the one who said it.",
           "Same evening, same bar: ran into Khaasan, just passing through Salthos Cruzados on his way from Khan Ice. Bought him a drink for the long road; Khaasan said he prefers short ones.",
-          "Also met Bardaglis and Khaoe at that same bar that night; left before the others, citing an early drive back to Khol Moshin the next morning."
+          "Also met Bardaglis and Khaoe at that same bar that night; left before the others, citing an early drive back to Khol Moshin the next morning.",
+          "Postponed his drive back to Khol Moshin by a day to stay a second day at the Feria.",
+          "Carried Khaoe's rebuttal about the castle back to Farlis himself rather than repeat it elsewhere - explicitly, so he would not be the one spreading it behind his back.",
+          "Told Farlis, for the first time aloud, that his surname resembles the losing side of the Guerras de Gorff, that he is unrelated to them, and that his parents' admiration was never his choice.",
+          "Picked up from Farlis: that he arrived at the Collective with a Terfila surname and deliberately left it behind, and that nobody there leads for a surname - confirmed firsthand rather than as something said."
         ]
+      },
+      "criterion": {
+        "standard": "counts only what he has given away, since it is the one part of the money he chose",
+        "wasted_life": "one where the name he inherited did the talking for him",
+        "anchor": "hearsay: khaoe_banco_colectivo#4",
+        "origin": "derived",
+        "trusts": "a story he can carry back to whoever it is about and have them say it plainly",
+        "distrusts": "a name that arrives ahead of the person",
+        "tempered": 0,
+        "cost_ledger": [
+          "Carried a vague secondhand version of the castle story to Farlis's face and had to be corrected on it - the price of always taking a story back to its subject (farlis_aureobalo_bar_salthos_cruzados).",
+          "Chose to tell Farlis to his face what Khaoe had said about him, rather than hold a story he would then be carrying around unspoken (aureobalo_farlis_castillo_en_miniatura)."
+        ],
+        "history": []
+      },
+      "life": {
+        "lived": 3,
+        "deceased": false
       }
     },
     "garfeld": {
@@ -1661,15 +1842,179 @@
       "taterzen_name": "Gok",
       "taterzen_uuid": "",
       "spawn_position": null,
-      "backstory": "Travels between Khan Ice and Catraniz.",
+      "backstory": "Works at Hotel Kholi, the main and oldest hotel in Khan Ice — a staple of Khanician architecture and flagship of Milkaan's hospitality. Built during the Grandes Juegos (Era del Confinamiento) and hosted all athletes and representatives from the world corners. Now stationed at the Feria del Milenio, in charge of one alcove of the Primer Pabellón's Espiral de las Eras: the station for Era del Confinamiento. Greets visitors there and tells them about the era.",
       "knowledge": {
         "education": {
-          "percent": null,
-          "mode": "",
-          "topic": null,
-          "items": []
+          "percent": 40,
+          "mode": "composite",
+          "topic": [
+            "Era del Confinamiento (skewed)",
+            "4% Khan Ice",
+            "3% Catraniz",
+            "2% Salthos Cruzados",
+            "5% Hospitality",
+            "3% random"
+          ],
+          "items": [
+            "airport: Catraniz",
+            "airport: Nalhuè",
+            "airport: Nvhi",
+            "character_legendary: Auroboro",
+            "character_legendary: Daaxagoras",
+            "character_legendary: Darnis",
+            "character_legendary: Esteban",
+            "character_legendary: Forlias",
+            "character_legendary: Storfilias",
+            "character_real: player_roster",
+            "concept: academia_de_sitnalta",
+            "concept: códigos",
+            "concept: orikal",
+            "concept: redstone",
+            "concept: tiempo_divino_interno",
+            "conflict: CONFLICT-01",
+            "conflict: CONFLICT-02",
+            "conflict: CONFLICT-07",
+            "conflict: CONFLICT-09",
+            "conflict: CONFLICT-11",
+            "conflict: CONFLICT-14",
+            "conflict: CONFLICT-15",
+            "era_ensayo: Era de la Imaginación",
+            "era_ensayo: Era de los Continentes",
+            "era_ensayo: Era del Confinamiento",
+            "era_ensayo: Las Guerras de Gorff",
+            "era_esquema: Guerras de Gorff",
+            "era_libro: Primera Venida",
+            "era_libro: Segunda Venida",
+            "hearsay: aureobalo_farlis_castillo_en_miniatura#1",
+            "hearsay: aureobalo_farlis_castillo_en_miniatura#3",
+            "hearsay: aureobalo_farlis_castillo_en_miniatura#7",
+            "hearsay: aureobalo_khaasan_bar_salthos_cruzados#1",
+            "hearsay: aureobalo_khaasan_bar_salthos_cruzados#2",
+            "hearsay: bardaglis_ilaria_khaoe_segunda_noche#1",
+            "hearsay: bardaglis_ilaria_khaoe_segunda_noche#2",
+            "hearsay: bardaglis_ilaria_khaoe_segunda_noche#3",
+            "hearsay: bardaglis_ilaria_khaoe_segunda_noche#4",
+            "hearsay: bardaglis_ilaria_khaoe_segunda_noche#5",
+            "hearsay: bardaglis_ilaria_khaoe_segunda_noche#6",
+            "hearsay: bardaglis_ilaria_khaoe_segunda_noche#7",
+            "hearsay: bardaglis_ilaria_khaoe_segunda_noche#8",
+            "hearsay: doran_four_castles#1",
+            "hearsay: doran_four_castles#2",
+            "hearsay: doran_four_castles#5",
+            "hearsay: doran_plaza_orientation#2",
+            "hearsay: doran_plaza_orientation#5",
+            "hearsay: farlis_aureobalo_bar_salthos_cruzados#1",
+            "hearsay: farlis_aureobalo_bar_salthos_cruzados#2",
+            "hearsay: farlis_bardaglis_bar_salthos_cruzados#1",
+            "hearsay: farlis_bardaglis_bar_salthos_cruzados#2",
+            "hearsay: farlis_khaoe_bar_salthos_cruzados#1",
+            "hearsay: farlis_khaoe_bar_salthos_cruzados#2",
+            "hearsay: gondarfolas_darnis_and_bracco#4",
+            "hearsay: gondarfolas_darnis_and_bracco#8",
+            "hearsay: ilaria_espiral_de_la_historia#2",
+            "hearsay: khaoe_banco_colectivo#2",
+            "hearsay: khaoe_banco_colectivo#3",
+            "hearsay: khaoe_farlis_lo_que_cambia_el_tiempo#3",
+            "hearsay: khaoe_khaasan_bar_salthos_cruzados#1",
+            "hearsay: khaoe_khaasan_bar_salthos_cruzados#2",
+            "hearsay: khaoe_khaasan_partida_a_khan_ice#1",
+            "hearsay: khaoe_khaasan_partida_a_khan_ice#2",
+            "hearsay: khaoe_khaasan_partida_a_khan_ice#3",
+            "hearsay: khaoe_khaasan_partida_a_khan_ice#4",
+            "hearsay: khaoe_khaasan_partida_a_khan_ice#6",
+            "hearsay: khaoe_khaasan_partida_a_khan_ice#7",
+            "hearsay: khaoe_khaasan_partida_a_khan_ice#8",
+            "hearsay: nawom_morkulo_first_meeting#5",
+            "hearsay: nawom_morkulo_first_meeting#6",
+            "hearsay: nerkeli_hangar_talk#1",
+            "hearsay: nerkeli_hangar_talk#2",
+            "hearsay: nerkeli_hangar_talk#3",
+            "hearsay: nerkeli_hangar_talk#4",
+            "hearsay: nuvilo_nerkeli_feria_del_milenio#3",
+            "hearsay: nuvilo_nerkeli_feria_del_milenio#4",
+            "hearsay: sonoros_lost_traveler#2",
+            "hearsay: sonoros_lost_traveler#3",
+            "hearsay: sonoros_lost_traveler#4",
+            "hearsay: sonoros_lost_traveler#6",
+            "highway: M9",
+            "inhabitant: Bardaglis (Gorff)",
+            "inhabitant: Galandis (cross-locality travelers/routes (named, with a mode of travel))",
+            "inhabitant: Garfeld (cross-locality travelers/routes (named, with a mode of travel))",
+            "inhabitant: Gizen (cross-locality travelers/routes (named, with a mode of travel))",
+            "inhabitant: Gok (cross-locality travelers/routes (named, with a mode of travel))",
+            "inhabitant: Gondarfolas (Terfila)",
+            "inhabitant: Gondorlikas (cross-locality travelers/routes (named, with a mode of travel))",
+            "inhabitant: Gorlia (Gorff)",
+            "inhabitant: Khaasan (Gorff)",
+            "inhabitant: Kjon (cross-locality travelers/routes (named, with a mode of travel))",
+            "inhabitant: Kjon-Ukk (cross-locality travelers/routes (named, with a mode of travel))",
+            "inhabitant: Malkinimies (cross-locality travelers/routes (named, with a mode of travel))",
+            "inhabitant: NORKAN (Gorff)",
+            "inhabitant: Nerl (unlocated (skin only, no locality/role given))",
+            "inhabitant: Nuruk (Gorff)",
+            "inhabitant: Nuruk (Khol Moshin (Taterzen sheet, distinct from the NPC-sheet locality list above))",
+            "inhabitant: Peregrin (Terfila)",
+            "inhabitant: Puri (Terfila)",
+            "inhabitant: Terrolis (cross-locality travelers/routes (named, with a mode of travel))",
+            "inhabitant: Trentor (Gorff)",
+            "inhabitant: Trentor (Khol Moshin (Taterzen sheet, distinct from the NPC-sheet locality list above))",
+            "location: aurali",
+            "location: bahia_pelicanos",
+            "location: balham",
+            "location: casa_de_esteban",
+            "location: catraniz",
+            "location: cruce_de_trobal",
+            "location: gas_stop",
+            "location: gondola",
+            "location: grosslor",
+            "location: jolystick",
+            "location: khan_ae_mogulac",
+            "location: khan_ice",
+            "location: kuritsa",
+            "location: mausoleos",
+            "location: nvhi",
+            "location: puerto_de_las_lunas",
+            "location: puerto_del_este",
+            "location: puerto_tortuga",
+            "location: puerto_varillas",
+            "location: salthos_cruzados",
+            "location: sindaara",
+            "location: soti",
+            "location: tax_de_rich",
+            "location: templo_del_gato",
+            "location: terfyla",
+            "location: villa_naranja",
+            "location: wasteland",
+            "route_named: Ruta Lundria-Salthos Cruzados",
+            "train_segment: Balham - Salthos Cruzados",
+            "train_segment: Gorff - Khan Ice",
+            "train_segment: Khan Ice - Balham",
+            "train_segment: Khan Ice - Puerto del Norte",
+            "year_esquema: 2013",
+            "year_esquema: 2015"
+          ]
         },
-        "experience": []
+        "experience": [
+          "Encountered a time traveler from the Grandes Juegos era (year_esquema 2013-2015) who witnessed Khan Ice's entire development and confirmed the city's documented history.",
+          "Confirmed through first-hand testimony that the Hotel Kholi's presence from the Grandes Juegos era onward is an accurate historical record.",
+          "Met Farlis at his alcove during the Feria del Milenio, who understood immediately that monuments are living only when kept alive through story and presence.",
+          "Farlis drew a parallel between the Hotel Kholi and the Castillo de Görff in the Collective — both transformed spaces that remain themselves, proof that things can be different from what they were."
+        ]
+      },
+      "criterion": {
+        "standard": "counts keeping Khan Ice facing its past",
+        "wasted_life": "one that lets Khan Ice turn its face away from Era del Confinamiento",
+        "anchor": "era_ensayo: Era del Confinamiento",
+        "origin": "derived",
+        "trusts": "what's written down and documented — records that can be checked",
+        "distrusts": "rumor and unattributed claims — 'they say' without a source",
+        "tempered": 0,
+        "cost_ledger": [],
+        "history": []
+      },
+      "life": {
+        "lived": 2,
+        "deceased": false
       }
     },
     "gurk": {
@@ -1973,7 +2318,31 @@
             "year_esquema: 2020"
           ]
         },
-        "experience": []
+        "experience": [
+          "Was at the Salthos Cruzados bar on the Feria's second night, and interrupted a table of strangers to ask whose line the song was quoting.",
+          "Wrote down the attribution for Khaoe's castle line on the spot - name, place, and who was present.",
+          "States plainly that she wrote the Ensayo, that another book covers the same centuries differently, and that she would rather have two accounts that contradict each other than one that sounds whole.",
+          "Failed to get Bardaglis to put their name to the Isla de la Amistad song, having established they were there for it firsthand.",
+          "Picked up from Khaoe: that she came back from Lundria unable to say which calendar was the true one and refuses to teach it."
+        ]
+      },
+      "criterion": {
+        "standard": "keeps only what she can attribute - which source said it, and when",
+        "wasted_life": "a history written smoothly enough that nobody can tell where it was guessed",
+        "anchor": "conflict: CONFLICT-01",
+        "origin": "derived",
+        "trusts": "two sources that disagree, and a note saying so",
+        "distrusts": "a clean account in one voice with no seams showing",
+        "tempered": 0,
+        "cost_ledger": [
+          "Wrote the Ensayo out of an absence of documents rather than an abundance, travelling to gather what she could - and it is one of the two chronicles that do not reconcile (CONFLICT-01).",
+          "Declined to say which of the two chronicles is right when asked outright, though she wrote one of them (bardaglis_ilaria_khaoe_segunda_noche)."
+        ],
+        "history": []
+      },
+      "life": {
+        "lived": 2,
+        "deceased": false
       }
     },
     "morkulo": {
@@ -2178,6 +2547,111 @@
           ]
         },
         "experience": []
+      }
+    },
+    "auroboro_iii": {
+      "display_name": "Auroboro III",
+      "skin": "",
+      "city": "Espiral de las Eras, Feria del Milenio",
+      "taterzen_name": "",
+      "taterzen_uuid": "",
+      "spawn_position": null,
+      "backstory": "A descendant of officers from the Guerras de Görff. Lonely, proud of his ancestors' military glory, never got over it. Keeps a replica of his old manor's living room in the alcove of that era within the Espiral de las Eras, receiving visitors to tell the story of the Guerras. Wine in hand, sweet deep down but rough around the edges, obnoxious about his topic. No script — says whatever he wants.",
+      "knowledge": {
+        "education": {
+          "percent": 15,
+          "mode": "skewed",
+          "topic": [
+            "military",
+            "horses"
+          ],
+          "items": [
+            "character_legendary: daaxagoras",
+            "character_legendary: ilaria",
+            "concept: feria_del_milenio",
+            "concept: peregrins",
+            "concept: redstone",
+            "concept: townland",
+            "concept: waystones",
+            "conflict: CONFLICT-10",
+            "conflict: CONFLICT-12",
+            "conflict: CONFLICT-15",
+            "era_ensayo: Las Guerras de Gorff",
+            "era_libro: Era de los Reinos Naturales",
+            "era_libro: Segunda Venida",
+            "hearsay: aureobalo_farlis_castillo_en_miniatura#6",
+            "hearsay: aureobalo_khaasan_bar_salthos_cruzados#2",
+            "hearsay: bardaglis_ilaria_khaoe_segunda_noche#2",
+            "hearsay: bardaglis_ilaria_khaoe_segunda_noche#5",
+            "hearsay: bardaglis_ilaria_khaoe_segunda_noche#8",
+            "hearsay: farlis_aureobalo_bar_salthos_cruzados#1",
+            "hearsay: farlis_bardaglis_bar_salthos_cruzados#1",
+            "hearsay: farlis_bardaglis_bar_salthos_cruzados#2",
+            "hearsay: farlis_khaoe_bar_salthos_cruzados#1",
+            "hearsay: gok_milkucha_alcove#1#7",
+            "hearsay: gondarfolas_darnis_and_bracco#2",
+            "hearsay: ilaria_espiral_de_la_historia#2",
+            "hearsay: khaoe_calendario_mecanografico#4",
+            "hearsay: khaoe_farlis_el_castillo_que_fue#3",
+            "hearsay: khaoe_farlis_lo_que_cambia_el_tiempo#2",
+            "hearsay: khaoe_khaasan_partida_a_khan_ice#4",
+            "hearsay: khaoe_milkucha_jardin_de_los_parajes#5",
+            "hearsay: khaoe_milkucha_jardin_de_los_parajes#7",
+            "hearsay: nawom_morkulo_first_meeting#5",
+            "hearsay: nerkeli_hangar_talk#5",
+            "hearsay: nuvilo_nerkeli_feria_del_milenio#1",
+            "highway: M7",
+            "inhabitant: Azaor (Gorff)",
+            "inhabitant: Bardaglis (Gorff)",
+            "inhabitant: El Globero (unlocated (skin only, no locality/role given))",
+            "inhabitant: Garnako (Gorff)",
+            "inhabitant: Gizen (cross-locality travelers/routes (named, with a mode of travel))",
+            "inhabitant: Khaasan (Gorff)",
+            "inhabitant: Khaoe (Gorff)",
+            "inhabitant: Mragk (unlocated (skin only, no locality/role given))",
+            "inhabitant: Nerkeli (cross-locality travelers/routes (named, with a mode of travel))",
+            "inhabitant: Soro (Puente Continental)",
+            "location: catraniz",
+            "location: fuerte_fabian",
+            "location: milkantida_as_place",
+            "location: monte_pastizal",
+            "location: nvhi",
+            "location: orange_manor",
+            "location: templo_del_gato",
+            "location: wasteland",
+            "year_esquema: 2013"
+          ]
+        },
+        "experience": [
+          "Met Farlis, a member of the Collective, at his alcoba in the Espiral de las Eras.",
+          "Farlis is from Görff and reads the Guerras not as honor but as hierarchy and oppression.",
+          "Farlis argues the Collective rejected those old military families and their worldview.",
+          "Farlis said Auroboro III sits in a room talking about ghosts while others build real things."
+        ]
+      },
+      "criterion": {
+        "standard": "Measures life by whether the old stories still live in someone's mind — whether he's kept the era real through telling.",
+        "wasted_life": "One where the Guerras de Görff are forgotten, where his ancestors' glory goes unremarked, where he sits alone and nobody comes to hear.",
+        "anchor": "era_ensayo: Las Guerras de Gorff",
+        "origin": "derived",
+        "trusts": "the written record and anyone who listens to it",
+        "distrusts": "people who dismiss the past as irrelevant; those who would erase or reframe military honor as oppression",
+        "tempered": 1,
+        "cost_ledger": [
+          "Farlis rejected the Guerras as a glorious legacy — called them mere hierarchy-fighting. Auroboro III argued but was not persuaded to agree (auroboro_iii_farlis_alcoba)."
+        ],
+        "history": [
+          {
+            "dialog": "auroboro_iii_farlis_alcoba",
+            "move": "rejected",
+            "cause": "auroboro_iii_farlis_alcoba: Farlis's claim that the Guerras were just officers and nobles fighting over hierarchy, not a glorious legacy worth preserving",
+            "note": "Gate matched: the claim references the era directly (Auroboro III's anchor). Outcome: rejection. Auroboro III defended his standard and distrusted Farlis's radical reframing. Distrusts amended to include resistance to egalitarian dismissal of military heritage. No hard change to standard; it survives the challenge and hardens against future critique from this angle."
+          }
+        ]
+      },
+      "life": {
+        "lived": 1,
+        "deceased": false
       }
     }
   }

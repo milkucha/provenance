@@ -3,6 +3,44 @@
 Open implementation decisions and work, deferred for later. This is a build/production backlog —
 open questions about the lore itself live in `_lore/analysis/unknown.md`, not here.
 
+## Knowledge mutation system (2026-08-01)
+
+Implemented: Step 5 of `/enact` now records hearsay with mutations applied. Each character's
+understanding is filtered through their criterion/trusts/distrusts/wasted_life. Original unmutated
+versions are not recorded (unless they had separate hearsay entries). The lineage_coin mechanism
+already decides traceable vs untraceable origins.
+
+- [ ] **Retroactive mutation.** All existing hearsay entries (Nawom/Morkulo, Feria scenes, Khaoe/Farlis entries) should be reviewed and updated to reflect mutations. Priority: entries that spawned into major characters' education (Bardaglis's song from Khaoe/Farlis; Farlis/Aureobalo bar scene). Lower priority: one-off encounters (Gok/Nerkeli).
+- [ ] **Material mutation.** When characters cite objective material (eras, locations), record how they reframed it. Current scenes may have missed this — not retroactive work needed, but forward pattern to apply from now on.
+- [ ] **Auroboro III & Farlis hearsay:** Entry rewritten with mutations applied (2026-08-01). Both perspectives recorded; claims reflect each character's interpretation, not objective fact.
+
+## Auroboro III & Farlis, Alcoba de las Guerras (2026-08-01)
+
+Dialog written: `auroboro_iii_farlis_alcoba.json`. Hearsay entry recorded (27 total).
+Auroboro III: lived 0→1, tempered 0→1 (first shock — rejected Farlis's radical reframing of the Guerras as hierarchy-oppression).
+Farlis: lived 8→9. No shock (anchor not referenced).
+
+- [ ] **Dialog registration ambiguous.** Auroboro III is a new NPC with no existing dialog registry entry. Farlis already has one (`khaoe_farlis_*`). Should Auroboro III's key point to this new dialog, or should both be listed somehow? Same multi-NPC registration question as Nawom & Morkulo.
+- [ ] **Auroboro III spawn work** — skin, movement mode, `spawn_position`, UUID. Placeholder logged here pending those decisions.
+- [ ] **Gestures not baked** — passed `-nobake`, uniform `nod_up_down` on all states. Pending `/bake_dialog` pass when wanted in-game.
+
+## Khaoe & Milkucha, Jardín de los Parajes (2026-08-01)
+
+Dialog written: `khaoe_milkucha_jardin_de_los_parajes.json`. Hearsay entry recorded (24 total).
+Khaoe lived: 9 → 10. No shocks (anchor not referenced).
+
+- [ ] **Dialog registration ambiguous.** Khaoe already has an entry in `_maps/dialogs/registry.json`
+      pointing to `khaoe_banco_colectivo.json`. This new dialog is a second conversation she has,
+      this time with Milkucha (the player). Should it overwrite that entry, or should Khaoe's key
+      point to a list, or should it stay separate in TODO until the registry format decision is made?
+      Same question as the three Feria scenes (Nawom & Morkulo precedent).
+- [ ] **Milkucha is a new NPC, introduced only through this scene.** They're the player, so they're
+      not being added to the NPC roster (same as Sonoros), but if you want to track them for
+      reference, note it in TODO or create a light entry tagged "player-character" and leave it
+      untracked.
+- [ ] **Gestures not baked** — passed `-nobake`, so every non-`end` state carries uniform
+      `nod_up_down`. Pending `/bake_dialog` pass when/if the dialog is wanted in-game.
+
 ---
 
 ## Sonoros (Balehm)
@@ -441,6 +479,16 @@ construction — every other line keeps its ordinary nod untouched.
       next time material is added or a periodic audit is due, to confirm the three passes hold up in
       practice rather than just on paper.
 
+## Random character location selection in `/enact` (pinned 2026-08-01)
+
+When setting a scene location in `/enact` Step 1 (or any step that needs to pick a place), if the character's `city` field lists multiple locations or is blank, use weighted location selection rather than the user specifying it outright or picking at random:
+
+1. **Primary locus:** the character's registered `city` (split on commas if multiple are listed) — each listed location gets equal weight within this group.
+2. **Secondary locus:** locations where people the character has shared scenes with are based (drawn from `hearsay.entries` — count unique co-participants and look up their `city` fields) — these are offered at lower weight than primary, and only if the user hasn't overridden the location in the scene prompt.
+3. **Rationale:** makes the world feel organically connected — characters naturally gravitate toward places they know or toward people they've already met, rather than appearing randomly across the map. Also prevents unnatural isolation: a character who's been to a place twice already and knows someone there has more reason to return than to go somewhere fresh.
+4. **Implementation:** proposed as a heuristic for the human running `/enact` rather than a code-level feature. Decision should come up naturally when the user specifies only characters, not a location (e.g., `Farlis and Gok at his station in the Espiral` over-specifies and doesn't need this logic; `Gok runs into Nuvilo` does).
+5. **Open:** should the weight favor the character's *most-visited* city over others in their list? And should repeated co-participants (met in multiple scenes) carry more weight than meeting someone once? Current leaning: keep it simple and equal, let narrative preference override via explicit scene prompts.
+
 ## General
 
 - [ ] Once one of the above ships, consider adding it as a second worked example in README §8
@@ -453,3 +501,134 @@ construction — every other line keeps its ordinary nod untouched.
       directly against a custom `Merchant` implementation, no entity required — see
       [VillagerConfig](https://modrinth.com/mod/villagerconfig)'s `/vc test villager` for a working
       precedent of this pattern. Decide which approach before any NPC needs trading.
+
+## Feria del Milenio, second day — three scenes enacted 2026-07-31
+
+Dialogs written and fully recorded (hearsay entry, `hearsay.md`, registry experience, Step 5b
+resolution, `life.lived`): `khaoe_khaasan_partida_a_khan_ice.json`,
+`aureobalo_farlis_castillo_en_miniatura.json`, `bardaglis_ilaria_khaoe_segunda_noche.json`.
+
+- [ ] **None of the three is registered in `_maps/dialogs/registry.json`** — all are multi-NPC, and
+      the registry format assumes one dialog per NPC key. Same unresolved question as the Nawom &
+      Morkulo precedent; not guessed. Decide the shape (host under one participant's key? a new
+      multi-NPC section?) and apply it to all four at once.
+- [ ] **`bardaglis_ilaria_khaoe_segunda_noche` has three speakers**, which `/enact` Step 4 doesn't
+      cover — it only specifies the two-NPC case. The `"Name: "` prefix plus single `"..."` choice
+      generalises without any change, and the file validates, but the skill should say so explicitly
+      rather than leave the next run to infer it.
+- [ ] **Spawn work for the six participants** — Khaoe, Khaasan, Farlis, Aureobalo, Bardaglis, Iläria
+      all still need movement mode, `spawn_position`, `spawn.mcfunction`, and UUID capture. Iläria
+      and Aureobalo also have no `skin`. Because no movement mode is decided, all three new dialogs
+      use the bare `{"type": "end_dialogue"}` terminal state with **no `resume_routine` call**,
+      matching the `nawom_morkulo_first_meeting` / `nuvilo_nerkeli_feria_del_milenio` precedent. Add
+      the resume action to each when the modes are settled.
+- [ ] **Gestures deliberately not baked on any of the three** — the author called these three
+      lore-only runs (2026-07-31) and asked for Minecraft-facing work to be skipped, so every
+      non-`end` state still carries the uniform `nod_up_down` it was written with. Run
+      `/bake_dialog <path>` on each of the three if and when they're wanted in-game.
+- [x] **`-nobake` flag added to `/enact`** (2026-07-31, author's request): skips Step 8 only.
+      Everything through Step 7 still runs in full — the hearsay record, criterion resolution, and
+      `life.lived` are the point of an enactment and aren't Minecraft-facing. Documented in a new
+      Flags section at the top of `enact/SKILL.md`, which also states explicitly that it does *not*
+      skip Step 4 or Step 5/5b.
+- [ ] **`bake_dialog` still can't be invoked from `/enact`.** `bake_dialog/SKILL.md` sets
+      `disable-model-invocation: true`, so Step 8's Skill-tool call is refused outright — the
+      instruction was never executable. Step 8 now documents the blocker and routes to the user
+      instead, but the underlying contradiction stands: either drop that flag from `bake_dialog`, or
+      accept that baking is permanently user-initiated and simplify Step 8 to say so.
+- [ ] **Khaasan is off-map until further notice** — he left the Feria for Khan Ice to see his uncle,
+      carrying an errand for Khaoe (check whether a house near the water still stands). Two threads
+      to pay off whenever he next appears: what he found, and Döran's Khan Ice claim, which he went
+      to check with his own eyes and which Döran made without ever having been.
+
+## Criterion model — gaps found by using it (2026-07-31)
+
+Surfaced by running the three scenes above; all three are places `/character` Step 6 is
+underspecified, not bugs in the data.
+
+- [ ] **The "hardening" rule only fits the *reject* move.** Step 6 says surviving a refutation hardens
+      `distrusts` against that kind of source. That's right when a character survives by *dismissing*
+      the claim — but when they survive by *accepting and reinterpreting*, hardening against the
+      source that just corrected them is backwards. Farlis accepted Khaoe's rebuttal via Aureobalo;
+      hardening him against named firsthand testimony would have been wrong, so his trust fields were
+      left untouched. Make the rule conditional on the move.
+- [ ] **Reaffirmation has no defined outcome.** The gate matched three times this run where the claim
+      *confirmed* rather than challenged the anchor (Iläria asked which chronicle is right and
+      declined to say; Khaoe's own castle line came up in her presence). The three moves are all
+      responses to a refutation, so these were recorded as "no change," which feels right but isn't
+      written down anywhere. Decide whether a reaffirmation ever tempers, and say so.
+- [ ] **No guidance on how often tempering should fire.** It fired in two of three scenes here, which
+      may be too eager for a mechanic meant to make characters gradually rigid. Worth a sentence on
+      what does *not* count as a challenge (banter, a friendly restatement) versus what does.
+
+## Pre-existing dialog issues (found 2026-07-31 while validating)
+
+- [ ] **Two shipped dialogs break the 300-character hard cap** that `/enact` Step 4 states as a rule:
+      `gondarfolas_darnis_and_bracco.json` (`farewell`, 332) and `nuvilo_scholar_at_the_feria.json`
+      (`writes_about_2`, 308). Both predate the rule being enforced. Fix by splitting at a clause
+      boundary with a `"..."` connector state, per the same Step 4.
+
+## Criterion / will-to-live system (landed 2026-07-31)
+
+Shipped this round: `_lore/facts/` (the fifth, never-sampled source of truth),
+`scripts/roll_lifespan.py`, `criterion`/`life` on the registry `_template`, `/character` Steps 4–7
+(derivation, lifespan, and the reference model for how a criterion changes), and `/enact`'s facts
+loading, in-scene modulation, and Step 5b shock/drift resolution. Still open:
+
+- [ ] **`/temperament` skill.** The disposition that governs move 2 vs. move 3 when a character
+      accepts a refuting claim — rebuild the meaning, or let the criterion go. Deferred by the user
+      on 2026-07-31; until it exists, `/character` Step 6 says to decide on provenance, proximity,
+      and susceptibility alone and bias toward reinterpretation. Should be set at creation from the
+      backstory and drift slowly with `knowledge.experience` (the working split: knowledge changes
+      your criterion, experience changes your temperament).
+- [ ] **Inherited criteria (city/trade fallback).** `/character` Step 4e currently leaves
+      `criterion` blank with `"origin": "uncollided"` when nothing in the sample touches the
+      backstory or city, because the fallback implies giving every city (and trade) its own ambient
+      criterion. Pinned by the user on 2026-07-31. Worth building — it's what produces shared
+      culture rather than a hundred idiosyncratic philosophies, and it's the common case for
+      ordinary people, who inherit their town's answer rather than authoring one.
+- [ ] **No `/fact` skill.** Adding a fact means hand-editing `_lore/facts/facts.json`, a new `.md`,
+      and the `_index.md` table. Fine for now given how rarely facts should be added, but the other
+      four sources of truth all have skills (`/integrate`, `/tell`, `/discover`).
+- [x] **Backfilled 2026-07-31:** Bardaglis, Farlis, Khaoe, Khaasan, Aureobalo, Döran, and Iläria all
+      have a derived criterion (with anchor, `trusts`/`distrusts`, and a seeded `cost_ledger` drawn
+      from what their recorded history already cost them) and a rolled lifespan. `life.lived` was
+      backfilled from the hearsay record — one `hearsay.entries[]` record is one scene — per the new
+      rule in `/character` Step 5.
+- [ ] **Still without a criterion or lifespan:** Gondarfolas, Nuvilo, Nerkeli, Nawom, and Morkulo
+      (drawn samples, so derivable now), plus the ~50 entries whose `knowledge.education.percent` is
+      still `null` — those can't be derived at all until they have both a backstory and a sample.
+      Let it happen lazily as each next comes up in an `/enact` run, or batch them like the seven
+      above.
+- [ ] **Lifespan range set to 30–60** (author decision, 2026-07-31, replacing the initial 4–14) and
+      written into `scripts/roll_lifespan.py`'s defaults. Nobody is anywhere near their span yet —
+      the most-lived character, Khaoe, is 7 scenes into 51 — so the endgame path in `/enact` Step 5b
+      is written but has never actually fired. Worth testing deliberately with a throwaway character
+      on `--min 2 --max 4` rather than waiting for it.
+- [x] **Death notification, landed 2026-08-01.** `scripts/notify_death.py` computes a dying
+      character's "circle" (scene co-participants + everyone named in their own backstory) and
+      mechanically samples 30% of it (min 1) to notify immediately via a forced
+      `knowledge.experience` entry; it also flags which notified characters have a `criterion.anchor`
+      referencing the deceased, so `/enact` Step 5b point 6 can resolve that as a shock through the
+      existing reject/reinterpret/break machinery. Everyone else only learns later, the ordinary way
+      — the death is recorded as a `_lore/discoveries/` entry (same shape `/discover` produces,
+      `responsible: null` unless a cause was established in the closing scene) and re-enters the
+      normal sampling pool. `life.deceased` (plain, non-secret bool) added to the registry `life`
+      object and to every already-touched character (`false`); Step 1 now refuses to re-enact anyone
+      with `deceased: true`. Tested against real data: `notify_death.py khaoe`/`bardaglis` correctly
+      compute their circles, and the shock flag was confirmed to fire (seed 9 on `khaoe` selects
+      Khaasan, whose anchor is `experience: khaoe_khaasan_bar_salthos_cruzados` — Khaoe is a
+      participant in that scene, so it flags).
+- [ ] **Still open: what a dead character's *NPC* does in-game.** Nothing yet stops a *spawned*
+      Taterzen from standing in the world with a working right-click dialog after `life.deceased`
+      flips true — this is the Minecraft-facing half the notification mechanism deliberately doesn't
+      touch. Decide: despawn, stay as a silent fixture, or get replaced by someone retelling them.
+- [ ] **Not yet exercised on a real death.** No character is anywhere near their span (see the
+      lifespan entry below), so `notify_death.py` has only been tested by hypothetically running it
+      against living characters, never through an actual `/enact` Step 5b point 6 closing-out. Worth
+      running the short-lifespan test suggested below specifically to watch the full death procedure
+      fire end to end, including the discovery-record write and a real shock resolution.
+- [ ] **`python` on PATH is the Microsoft Store stub** on this machine, and the repo's `.venv/` is a
+      dead Codespace artifact (`.venv/bin/python` points at `/home/codespace/...`). `py -3` works.
+      Either fix the venv, or update the `python scripts/...` invocations in README §5 and the
+      skills to `py -3`.

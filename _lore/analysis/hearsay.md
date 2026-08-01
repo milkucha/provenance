@@ -459,3 +459,158 @@ excluded). "Claims on record" are phrased as reported assertions, not restated a
     poetic-justice framing.
   - Farlis confirms he was the one who said the poetic-justice line the song answers, and that he said
     it to Khaoe, in front of the castle — matches Farlis's own established stance.
+
+## `khaoe_khaasan_partida_a_khan_ice.json`
+
+- **Participants:** Khaoe; Khaasan
+- **Location:** the entrance of the Feria del Milenio, early on the second morning
+- **Summary:** Khaoe arrives ahead of the crowds as Khaasan is leaving for Khan Ice to see his uncle.
+  They agree without saying so that only someone who was there gets to describe a place; she asks him
+  to check whether a house her grandmother spoke of is still standing, and refuses in advance to be
+  told what it meant.
+- **Claims on record:**
+  - Khaasan is travelling to Khan Ice to see his uncle, who has expected him without fail for years,
+    and who has never left the place — new personal texture given by the author this run. Nothing in
+    the record speaks to Khaasan having family; nothing contradicts it either.
+  - Khaoe's family came from Khan Ice before Khol Moshin, and she has never set foot there — matches
+    her registered backstory exactly; that she has never been is new and consistent with a backstory
+    that only ever claims descent.
+  - It is said there is a rail line to Khan Ice from Görff, and another running down to Balhâm —
+    **untraceable** `lineage_coin.py` roll. Khaoe holds `doran_four_castles#8` in her sample but
+    voiced it as "dicen que" with no source named, so `derived_from` stays unset even though the
+    origin is known. The rail claim itself checks out against the `train_segment` record.
+  - Khaasan refuses every means of travel but his griffon — "el tren te deja donde el tren quiere."
+    Matches his registered backstory.
+  - Döran is going around saying Khan Ice was a capital in wartime, deduced from its walls, without
+    ever having been — and Khaasan dismisses it on exactly that ground. **Traceable** roll, so
+    Khaasan names Döran. Two separate things are true: Döran did say it (his claim #9, framed as
+    speculation from architecture), and Döran has in fact never been to Khan Ice (his own registered
+    experience). Khaasan doesn't know the second part — he rejects it purely because its author
+    wasn't present, which is his recorded epistemology, not inside knowledge.
+  - Khaoe came back from Lundria unable to say which temple's calendar was the true one, and won't
+    teach what she can't answer for — restatement of her established position, said here to a comrade
+    rather than to a stranger asking.
+  - Khaoe's grandmother spoke of a house in Khan Ice near the water; Khaoe knows neither the street
+    nor whether it exists, and asks Khaasan only to report whether it still stands. New personal
+    texture; the refusal attached to it — "no me traigas lo que significaba, tráeme si está parada o
+    no" — is her criterion showing without being stated.
+
+## `aureobalo_farlis_castillo_en_miniatura.json`
+
+- **Participants:** Aureobalo; Farlis
+- **Location:** the Plaza de las Culturas at the Feria del Milenio, second day, in front of the
+  Castillo de Görff replica
+- **Summary:** Farlis shows Aureobalo his favourite exhibit — the miniature of the castle he actually
+  lives in. Aureobalo brings Khaoe's rebuttal back to its subject rather than repeating it behind his
+  back, and Farlis concedes the part that matters. They end on inherited surnames: Farlis left his in
+  Terfila, Aureobalo is still working out what to do with one that was never his.
+- **Claims on record:**
+  - The Castillo de Görff replica is, to Farlis, the single thing worth seeing across all five
+    pavilions — and you cannot see the shape of a castle from inside it. Personal texture, consistent
+    with his backstory and with the replica's existence (established in Döran's registered backstory).
+  - Before the Collective, a tyrant ruled from the castle at Görff and his name is no longer
+    remembered — **traceable** roll, Aureobalo names Khaoe.
+  - Khaoe rejects the poetic-justice reading of the castle; Farlis holds the reading she rejects —
+    **traceable** roll, Aureobalo names Khaoe. He had this confirmed by Farlis directly at the bar,
+    so it is a retelling to its own subject rather than gossip.
+  - **Farlis concedes Khaoe is right in the part that matters:** poetic or not, the castle was one
+    man's and no longer is, and his joke changes nothing. First time he has conceded this — he
+    defended the framing when she pushed back in person. He keeps the joke and drops the claim it was
+    making.
+  - It is said that in the Collective nobody leads for arriving first, or for their surname —
+    **untraceable** roll, so no source named and `derived_from` stays unset. Farlis then confirms it
+    firsthand, which is a stronger grounding than the retelling had.
+  - Farlis arrived with an aristocratic Terfila surname and left it in Terfila: "no sirve para nada,
+    que es exactamente para lo que sirve." Consistent with Khaoe's earlier clarification that he
+    isn't literally a prince and doesn't press the point.
+  - Aureobalo's surname resembles the losing side of the Guerras de Görff; he is unrelated to them,
+    his parents admired the loyalists, and he never chose the association. Straight from his
+    registered backstory, said aloud in a scene for the first time — backstory is experience-knowledge
+    and holds regardless of his education sample, which doesn't contain the Guerras de Görff.
+
+## `bardaglis_ilaria_khaoe_segunda_noche.json`
+
+- **Participants:** Bardaglis; Iläria; Khaoe
+- **Location:** the bar in Sälthos Cruzados, the second night of the Feria del Milenio
+- **Summary:** Khaoe hears her own offhand line sung back by strangers. Bardaglis argues a song is
+  only finished once it has lost its author; Iläria, who turns out to be the Ensayo's author, argues
+  the opposite and writes the attribution down. Bardaglis holds the line for their own songs and
+  refuses it for Khaoe's — hers keeps a name.
+- **Claims on record:**
+  - Khaoe's castle line was said offhand two nights earlier and is already being sung by people who
+    don't know who she is — continues the lineage from `farlis_bardaglis_bar_salthos_cruzados`.
+  - Bardaglis holds that a song is only finished once it has lost its author. Personal texture, their
+    standard stated in a scene for the first time.
+  - Iläria holds the opposite: an unrecorded line becomes everyone's and no one's within twenty
+    years, leaving a historian nothing to write but "se dice que."
+  - Khaoe claims the line as her own, said in front of the castle, and consents to it being recorded
+    with her name.
+  - It is said Iläria wrote the Ensayo — **untraceable** roll, so Bardaglis repeats it while saying
+    outright they never knew who they heard it from, and `derived_from` stays unset. Unusually, the
+    claim is then confirmed firsthand by its own subject in the same breath, which is far stronger
+    grounding than the retelling had.
+  - Iläria says another book covers the same centuries differently, that the two don't agree, and
+    that she'd rather have two accounts that contradict each other than one that sounds whole. She
+    names herself as author of one of them, which is what makes the refusal to adjudicate costly.
+  - Bardaglis has an older song about the Isla de la Amistad opening "isla que no pide nombre, isla
+    que no pide guerra," written from having played a season there — matches their registered
+    experience, which already carries both the song and the line.
+  - Bardaglis refuses to put their own name to their song while insisting Khaoe's line keeps hers:
+    theirs was made to leave, hers got away from her. The distinction is the whole of their position
+    — the standard applies to what they made, not to what they carry for other people.
+
+## `khaoe_milkucha_jardin_de_los_parajes.json`
+
+- **Participants:** Khaoe; Milkucha (player)
+- **Location:** the Jardín de los Parajes at the Feria del Milenio
+- **Summary:** Khaoe encountered Milkucha at the entrance and walked the pavilion's biome zones
+  together. Milkucha revealed they designed the space as an ode to classical geography, can move
+  mountains via mod power, built the Cinema in Grosslor, and hail from the continent of Milkaan.
+  Cherry trees from Dragón were planted in many cities as diplomatic gifts.
+- **Claims on record:**
+  - The Jardín de los Parajes was designed to represent classical biomes — an ode to geographical
+    accuracy.
+  - The podzol forest has no significant construction in known history.
+  - Terracotta mountains represent the Cuna de Grosslor's reddish, desert-like terrain.
+  - Milkucha built the Cinema in Grosslor (with others).
+  - The Cordillera de Eurasori at Khan Icé's northern border was said to be raised by gods,
+    possibly Eurasori, and sculpted by hands inspired by the creators' worlds.
+  - Milkucha can move mountains using mod power and skills in other planes of existence.
+  - Taiga with cherry forests mixes Khan Icé and Plathinëa; cherry saplings were planted in friendly
+    cities as Dragón's diplomatic gift.
+  - Cherry trees from Dragón are found in almost every city Milkucha has visited.
+  - The Desert of Experimentation was the first desert, where redstone inventions were tested and
+    abandoned.
+  - The Desert of Balahm is the land of temples.
+  - Grosslor, Fuerte de la Cruz del Dragón, and Meseta del Pequeño Elefante belong to the continent
+    of Milkaan — Milkucha's world.
+
+## `gok_milkucha_alcove.json`
+
+- **Participants:** Gok; Milkucha (player)
+- **Location:** the Alcove of the Espiral de las Eras (Era del Confinamiento station) at the Feria del Milenio
+- **Summary:** A time traveler from the era of the Grandes Juegos meets Gok, the Hotel Kholi receptionist, at the Feria. They discuss the timeline mapping between the real-world year_esquema system (2013-2015 for the games) and the Milkantis calendar (approximately year 850 in a 1000-year cycle). The traveler witnessed Khan Ice's entire development from discovery through the present.
+- **Claims on record:**
+  - The Grandes Juegos occurred in the year_esquema 2013-2015.
+  - Hotel Kholi was built during the Grandes Juegos to host athletes and representatives from around the world.
+  - According to the parallelized timeline in timelines.py, the current year is 1000 in the Milkantis calendar.
+  - The time-ratio between real-world and Milkantis years changed at the end of 2025 (Eras After Seasons boundary).
+  - Using the two-part calculation (120 hours/Milkantis year before 2025, 360 hours after), the Grandes Juegos approximately correspond to Milkantis year 73-219, making them roughly 850 years ago.
+  - A witness to Khan Ice's development since its discovery affirms that the city's documented history is accurate.
+  - Gok holds that the Hotel Kholi standing in Khan Ice, unaltered from when it was built, is proof that historical records are reliable.
+  - We are reflections of the things we do not want to lose.
+
+## `farlis_gok_alcove.json`
+
+- **Participants:** Farlis; Gok
+- **Location:** the Alcove of the Espiral de las Eras (Era del Confinamiento station) at the Feria del Milenio
+- **Summary:** Farlis, wandering the Feria's labyrinth, discovers Gok at his alcove and they recognize each other in a shared understanding: monuments are not just stones, but living testimony. Farlis shares his story of the Castillo de Görff's transformation and finds in Gok's work with the Hotel Kholi a parallel devotion to preservation-through-inhabitation.
+- **Claims on record:**
+  - The Hotel Kholi still stands from the Grandes Juegos era, unchanged in its essential form.
+  - The Hotel Kholi is a bridge between what Khan Ice was and what it is now, and its persistence allows people to return and verify that the past was real.
+  - Many buildings disappear or transform entirely, but some — like the Hotel Kholi — remain themselves even as eras change around them.
+  - The Castillo de Görff in the Collective (referenced by Farlis) was once a tyrant's castle and is now a place where people share and live together.
+  - The Castillo's transformation — from one man's possession to a shared space — is meaningful not for romance but for the fact that it happened and remained.
+  - The parallel between the Castillo and the Hotel Kholi: both are monuments that prove things can be different from what they were, without ceasing to be themselves.
+  - Monuments are only stone if no one keeps them alive through story and presence — they become living when inhabited and retold.
+  - Gok's belief: the Hotel Kholi standing is proof that historical records are not lies, and that while people understand transformed spaces as testimony, Khan Ice keeps its face toward the past.

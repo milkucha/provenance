@@ -1,0 +1,775 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Luminacion — graph</title>
+<style>
+:root{
+  --bg:#faf9f7; --panel:#ffffff; --line:#e2ded7; --ink:#1c1a17; --dim:#6b6558;
+  --accent:#b5502a; --shadow:0 1px 2px rgba(0,0,0,.06),0 8px 24px rgba(0,0,0,.06);
+  --edge:rgba(28,26,23,.16); --edge-hi:rgba(181,80,42,.75);
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#131316; --panel:#1b1b1f; --line:#2e2e34; --ink:#eceae6; --dim:#918b80;
+    --accent:#e8845c; --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+    --edge:rgba(236,234,230,.14); --edge-hi:rgba(232,132,92,.8);
+  }
+}
+:root[data-theme="light"]{
+  --bg:#faf9f7; --panel:#ffffff; --line:#e2ded7; --ink:#1c1a17; --dim:#6b6558;
+  --accent:#b5502a; --edge:rgba(28,26,23,.16); --edge-hi:rgba(181,80,42,.75);
+}
+:root[data-theme="dark"]{
+  --bg:#131316; --panel:#1b1b1f; --line:#2e2e34; --ink:#eceae6; --dim:#918b80;
+  --accent:#e8845c; --edge:rgba(236,234,230,.14); --edge-hi:rgba(232,132,92,.8);
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  background:var(--bg); color:var(--ink); overflow:hidden;
+  font:14px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+#app{display:grid;grid-template-columns:264px 1fr;grid-template-rows:auto 1fr;height:100dvh}
+header{
+  grid-column:1/-1;display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+  padding:10px 18px;border-bottom:1px solid var(--line);background:var(--panel);
+}
+h1{font-size:15px;margin:0;letter-spacing:.02em;font-weight:650}
+h1 small{color:var(--dim);font-weight:400;margin-left:8px;letter-spacing:0}
+.tabs{display:flex;gap:4px;background:var(--bg);padding:3px;border-radius:9px;border:1px solid var(--line)}
+.tabs button{
+  border:0;background:transparent;color:var(--dim);font:inherit;font-size:13px;
+  padding:5px 13px;border-radius:6px;cursor:pointer;transition:.15s;
+}
+.tabs button:hover{color:var(--ink)}
+.tabs button[aria-selected="true"]{background:var(--panel);color:var(--ink);box-shadow:var(--shadow);font-weight:600}
+.spacer{flex:1}
+.hint{color:var(--dim);font-size:12px}
+button.ghost{
+  border:1px solid var(--line);background:var(--panel);color:var(--dim);font:inherit;font-size:12px;
+  padding:5px 11px;border-radius:7px;cursor:pointer;transition:.15s;
+}
+button.ghost:hover{color:var(--ink);border-color:var(--dim)}
+aside{
+  border-right:1px solid var(--line);background:var(--panel);overflow-y:auto;
+  padding:14px;display:flex;flex-direction:column;gap:16px;
+}
+aside h2{
+  font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--dim);
+  margin:0 0 8px;font-weight:650;
+}
+#search{
+  width:100%;padding:7px 10px;border:1px solid var(--line);border-radius:8px;
+  background:var(--bg);color:var(--ink);font:inherit;font-size:13px;
+}
+#search:focus{outline:2px solid var(--accent);outline-offset:-1px;border-color:transparent}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{
+  display:inline-flex;align-items:center;gap:6px;font-size:11.5px;padding:3px 9px 3px 6px;
+  border:1px solid var(--line);border-radius:999px;cursor:pointer;user-select:none;
+  background:var(--bg);transition:.12s;white-space:nowrap;
+}
+.chip:hover{border-color:var(--dim)}
+.chip .sw{width:9px;height:9px;border-radius:50%;flex:none}
+.chip .n{color:var(--dim);font-variant-numeric:tabular-nums;font-size:10.5px}
+.chip.off{opacity:.32}
+.stat{display:flex;justify-content:space-between;font-size:12px;color:var(--dim);padding:1px 0}
+.stat b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.presets{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.presets button{
+  border:1px solid var(--line);background:var(--bg);color:var(--dim);font:inherit;font-size:11.5px;
+  padding:4px 10px;border-radius:999px;cursor:pointer;transition:.12s;
+}
+.presets button:hover{color:var(--ink);border-color:var(--dim)}
+.presets button.active{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:600}
+.sliders{display:flex;flex-direction:column;gap:11px}
+.sliderow .lbl{display:flex;justify-content:space-between;font-size:12px;color:var(--dim);margin-bottom:4px}
+.sliderow .lbl b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.sliderow input[type=range]{
+  -webkit-appearance:none;appearance:none;width:100%;height:4px;border-radius:99px;
+  background:var(--line);outline:none;display:block;margin:0;
+}
+.sliderow input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:var(--accent);
+  cursor:pointer;border:2px solid var(--panel);box-shadow:0 1px 2px rgba(0,0,0,.3);
+}
+.sliderow input[type=range]::-moz-range-thumb{
+  width:13px;height:13px;border-radius:50%;background:var(--accent);cursor:pointer;
+  border:2px solid var(--panel);box-shadow:0 1px 2px rgba(0,0,0,.3);
+}
+main{position:relative;overflow:hidden}
+canvas{display:block;width:100%;height:100%;cursor:grab}
+canvas.grabbing{cursor:grabbing}
+#detail{
+  position:absolute;top:14px;right:14px;width:330px;max-height:calc(100% - 28px);
+  background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);
+  padding:15px 16px;overflow-y:auto;display:none;
+}
+#detail.on{display:block}
+#detail .kind{
+  display:inline-flex;align-items:center;gap:6px;font-size:10.5px;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--dim);font-weight:650;
+}
+#detail h3{margin:7px 0 3px;font-size:17px;line-height:1.25;font-weight:650}
+#detail .path{font:11.5px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--dim);word-break:break-all;margin-bottom:10px}
+#detail dl{margin:0 0 12px;display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:12.5px}
+#detail dt{color:var(--dim)}
+#detail dd{margin:0}
+#detail p{font-size:12.5px;color:var(--ink);margin:0 0 11px;line-height:1.55}
+#detail .rel{margin-bottom:10px}
+#detail .rel h4{
+  margin:0 0 4px;font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--dim);font-weight:650;
+}
+#detail .rel a{
+  display:flex;align-items:center;gap:6px;padding:2px 0;color:var(--ink);
+  text-decoration:none;font-size:12.5px;cursor:pointer;
+}
+#detail .rel a:hover{color:var(--accent)}
+#detail .rel .sw{width:7px;height:7px;border-radius:50%;flex:none}
+#close{position:absolute;top:11px;right:12px;border:0;background:transparent;color:var(--dim);
+  font-size:19px;line-height:1;cursor:pointer;padding:2px 5px;border-radius:5px}
+#close:hover{color:var(--ink);background:var(--bg)}
+#tip{
+  position:absolute;pointer-events:none;background:var(--panel);border:1px solid var(--line);
+  border-radius:7px;padding:5px 9px;font-size:12px;box-shadow:var(--shadow);display:none;
+  max-width:260px;z-index:5;
+}
+#legendbar{position:absolute;left:14px;bottom:14px;font-size:11.5px;color:var(--dim);
+  background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 11px;
+  box-shadow:var(--shadow)}
+@media (max-width:900px){
+  #app{grid-template-columns:1fr}
+  aside{display:none}
+  #detail{width:auto;left:14px;right:14px}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <h1>Luminacion <small id="gen"></small></h1>
+    <div class="tabs" role="tablist">
+      <button role="tab" data-view="lore" aria-selected="true">Lore</button>
+      <button role="tab" data-view="structure" aria-selected="false">Structure</button>
+      <button role="tab" data-view="concept" aria-selected="false">Architecture</button>
+    </div>
+    <span class="spacer"></span>
+    <span class="hint">drag to pan · scroll to zoom · click a node</span>
+    <button class="ghost" id="refit">Fit</button>
+    <button class="ghost" id="theme">Theme</button>
+  </header>
+
+  <aside>
+    <div>
+      <h2>Search</h2>
+      <input id="search" type="search" placeholder="name, city, path…" autocomplete="off">
+    </div>
+    <div>
+      <h2>Node types</h2>
+      <div class="chips" id="kinds"></div>
+    </div>
+    <div>
+      <h2>Relations</h2>
+      <div class="chips" id="rels"></div>
+    </div>
+    <div>
+      <h2>Layout</h2>
+      <div class="presets" id="presets"></div>
+      <div class="sliders">
+        <div class="sliderow"><div class="lbl"><span>Repulsion</span><b id="vRepulsion"></b></div>
+          <input type="range" id="pRepulsion" min="200" max="4000" step="25"></div>
+        <div class="sliderow"><div class="lbl"><span>Link length</span><b id="vLinkDistance"></b></div>
+          <input type="range" id="pLinkDistance" min="0.3" max="3" step="0.05"></div>
+        <div class="sliderow"><div class="lbl"><span>Link strength</span><b id="vLinkStrength"></b></div>
+          <input type="range" id="pLinkStrength" min="0.1" max="3" step="0.05"></div>
+        <div class="sliderow"><div class="lbl"><span>Gravity</span><b id="vGravity"></b></div>
+          <input type="range" id="pGravity" min="0.1" max="3" step="0.05"></div>
+        <div class="sliderow"><div class="lbl"><span>Size by connections</span><b id="vSizeContrast"></b></div>
+          <input type="range" id="pSizeContrast" min="0" max="4" step="0.1"></div>
+      </div>
+    </div>
+    <div>
+      <h2>Showing</h2>
+      <div class="stat"><span>Nodes</span><b id="nn">0</b></div>
+      <div class="stat"><span>Edges</span><b id="ne">0</b></div>
+      <div class="stat"><span>Most connected</span><b id="hub">—</b></div>
+    </div>
+  </aside>
+
+  <main>
+    <canvas id="cv"></canvas>
+    <div id="tip"></div>
+    <div id="legendbar"></div>
+    <div id="detail"><button id="close" title="Close">×</button><div id="dbody"></div></div>
+  </main>
+</div>
+
+<script>
+const DATA = /*__GRAPH_DATA__*/null;
+
+const COLORS = {
+  npc:"#e8643c", dialogue:"#3d8bfd", location:"#2fa87a", concept:"#a463d9",
+  character:"#d4a017", author:"#b0741f", inhabitant:"#7a9a4f", conflict:"#d64545",
+  era:"#d97ab0", route:"#47b0c4", tale:"#8a63d2", discovery:"#5cb85c", fact:"#9aa0a6",
+  layer:"#6b7280", root:"#e8643c", dir:"#8892a0", skill:"#e8643c", script:"#3d8bfd",
+  registry:"#d4a017", template:"#a463d9", function:"#2fa87a", datapack:"#2fa87a",
+  resourcepack:"#47b0c4", material:"#b0741f", lore:"#a463d9", doc:"#7a9a4f",
+  source:"#a463d9", other:"#9aa0a6"
+};
+const color = k => COLORS[k] || "#9aa0a6";
+
+// link rest-length and stiffness per relation, so the layout reads meaningfully
+const LINK = {
+  contains:{d:46,k:.55}, holds:{d:110,k:.30}, authors:{d:190,k:.45},
+  lives_in:{d:115,k:.30}, speaks:{d:80,k:.45}, set_in:{d:100,k:.35},
+  claims_about:{d:140,k:.14}, knows:{d:190,k:.03}, touches:{d:120,k:.24},
+  disputed_by:{d:125,k:.20}, connects:{d:95,k:.35}, census:{d:95,k:.24},
+  founds:{d:105,k:.28}, is:{d:42,k:.6}
+};
+// user-tunable shape handles - read live by tick()/radius(), so a slider reshapes the
+// layout in place without rebuilding the graph
+const DEFAULT_PARAMS = {repulsion:1350, linkDistance:1, linkStrength:1, gravity:1, sizeContrast:1.35};
+let PARAMS = {...DEFAULT_PARAMS};
+const PRESETS = {
+  balanced: {repulsion:1350, linkDistance:1,    linkStrength:1,    gravity:1,    sizeContrast:1.35},
+  spread:   {repulsion:2800, linkDistance:1.6,  linkStrength:.55,  gravity:.55,  sizeContrast:1.35},
+  tight:    {repulsion:600,  linkDistance:.55,  linkStrength:1.9,  gravity:1.7,  sizeContrast:1},
+  hubs:     {repulsion:1700, linkDistance:1.1,  linkStrength:.75,  gravity:.85,  sizeContrast:3.4},
+  flat:     {repulsion:1350, linkDistance:1,    linkStrength:1,    gravity:1,    sizeContrast:0},
+};
+
+// hubs need proportionally more room than leaves, or they crush their neighbourhood
+const linkOf = (r,a,b) => {
+  const L = LINK[r] || {d:110,k:.25};
+  const spread = 1 + Math.log1p(Math.max(a.vdeg||0, b.vdeg||0)) * .17;
+  return {d:L.d*spread*PARAMS.linkDistance, k:L.k*PARAMS.linkStrength};
+};
+
+const cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+const tip = document.getElementById("tip"), detail = document.getElementById("detail");
+let view="lore", G=null, nodes=[], edges=[], adj=new Map();
+let hidKind=new Set(), hidRel=new Set(), query="";
+let cam={x:0,y:0,z:1}, alpha=1, raf=null, ring=600, coreN=1, needFit=false;
+let hover=null, sel=null, drag=null, dragMoved=false, dragFrom={x:0,y:0}, pan=null, dpr=1;
+
+/* ---------- quadtree for Barnes-Hut repulsion ---------- */
+class QT{
+  constructor(x,y,s){this.x=x;this.y=y;this.s=s;this.m=0;this.cx=0;this.cy=0;this.n=null;this.kids=null;}
+  insert(p){
+    if(this.kids){this.push(p);this.acc(p);return;}
+    if(!this.n){this.n=p;this.m=1;this.cx=p.x;this.cy=p.y;return;}
+    if(this.s<.5){this.acc(p);return;}
+    const old=this.n;this.n=null;this.kids=[];
+    const h=this.s/2;
+    for(let i=0;i<4;i++) this.kids.push(new QT(this.x+(i%2)*h,this.y+((i>>1)?h:0),h));
+    this.m=0;this.cx=0;this.cy=0;
+    this.push(old);this.acc(old);this.push(p);this.acc(p);
+  }
+  push(p){
+    const h=this.s/2;
+    this.kids[(p.x>=this.x+h?1:0)+(p.y>=this.y+h?2:0)].insert(p);
+  }
+  acc(p){const m=this.m+1;this.cx=(this.cx*this.m+p.x)/m;this.cy=(this.cy*this.m+p.y)/m;this.m=m;}
+  force(p,k,theta=.85){
+    if(this.m===0) return;
+    if(this.n){
+      if(this.n===p) return;
+      let dx=p.x-this.n.x, dy=p.y-this.n.y, d2=dx*dx+dy*dy;
+      if(d2<1e-3){dx=(Math.random()-.5)*.1;dy=(Math.random()-.5)*.1;d2=dx*dx+dy*dy;}
+      const f=k/d2; p.vx+=dx*f; p.vy+=dy*f; return;
+    }
+    let dx=p.x-this.cx, dy=p.y-this.cy, d2=dx*dx+dy*dy||1e-3;
+    if(this.s*this.s/d2 < theta*theta){
+      const f=k*this.m/d2; p.vx+=dx*f; p.vy+=dy*f; return;
+    }
+    if(this.kids) for(const c of this.kids) c.force(p,k,theta);
+  }
+}
+
+/* ---------- build the active view ---------- */
+function radius(n){
+  if(n.kind==="layer") return 26;
+  if(n.kind==="root") return 16;
+  if(n.size!=null) return Math.max(3.2, Math.min(15, 2.6+Math.log10(n.size+1)*2.4));
+  const base=4.2, growth=Math.sqrt(n.degree||0)*PARAMS.sizeContrast;
+  return Math.max(base, Math.min(base+46, base+growth));
+}
+function applySizes(){ nodes.forEach(n=>{ n.r=radius(n); }); }
+
+// 'knows' is ~70% of all lore edges; start with it off so the structure is readable,
+// and let the chip turn the full knowledge web back on.
+const MUTED = {lore:["knows"], structure:[], concept:[]};
+
+function setView(v){
+  view=v; G=DATA[v]; hidKind=new Set(); hidRel=new Set(MUTED[v]||[]); query="";
+  document.getElementById("search").value="";
+  sel=null; detail.classList.remove("on");
+  const byId=new Map();
+  const R=Math.sqrt(G.nodes.length)*36+120;
+  nodes=G.nodes.map((n,i)=>{
+    const a=i*2.399963, r=R*Math.sqrt(i/G.nodes.length);
+    const o={...n, x:Math.cos(a)*r, y:Math.sin(a)*r, vx:0, vy:0, pin:false};
+    o.r=radius(o); byId.set(o.id,o); return o;
+  });
+  // the architecture view reads as layers, so pin each tier to its own band
+  // README §0 draws layer 4 on top and layer 1 at the bottom; canvas y grows downward
+  if(v==="concept") nodes.forEach(n=>{ if(n.tier) n.ty=(2.5-n.tier)*230; });
+  edges=G.edges.map(e=>({...e, s:byId.get(e.source), t:byId.get(e.target)}))
+               .filter(e=>e.s&&e.t);
+  adj=new Map(nodes.map(n=>[n.id,[]]));
+  edges.forEach(e=>{adj.get(e.s.id).push({o:e.t,rel:e.rel,out:true});
+                    adj.get(e.t.id).push({o:e.s,rel:e.rel,out:false});});
+  buildChips(); alpha=1; needFit=true; fit(); kick();
+}
+
+function visible(n){
+  if(hidKind.has(n.kind)) return false;
+  if(query && !matches(n)) return false;
+  return true;
+}
+function matches(n){
+  const q=query.toLowerCase();
+  return (n.label||"").toLowerCase().includes(q) || (n.id||"").toLowerCase().includes(q)
+      || (n.city||"").toLowerCase().includes(q) || (n.path||"").toLowerCase().includes(q)
+      || (n.role||"").toLowerCase().includes(q);
+}
+const eVisible = e => !hidRel.has(e.rel) && visible(e.s) && visible(e.t);
+
+function buildChips(){
+  const kc={}, rc={};
+  G.nodes.forEach(n=>kc[n.kind]=(kc[n.kind]||0)+1);
+  G.edges.forEach(e=>rc[e.rel]=(rc[e.rel]||0)+1);
+  const mk=(host,counts,hidden,cls)=>{
+    host.innerHTML="";
+    Object.entries(counts).sort((a,b)=>b[1]-a[1]).forEach(([k,n])=>{
+      const c=document.createElement("span");
+      c.className="chip"+(hidden.has(k)?" off":""); c.dataset.key=k;
+      c.innerHTML=`<span class="sw" style="background:${cls?color(k):"var(--dim)"}"></span>`
+        +`${k.replace(/_/g," ")}<span class="n">${n}</span>`;
+      c.onclick=()=>{hidden.has(k)?hidden.delete(k):hidden.add(k);
+        c.classList.toggle("off",hidden.has(k)); draw(); stats(); kick(.35);};
+      host.appendChild(c);
+    });
+  };
+  mk(document.getElementById("kinds"),kc,hidKind,true);
+  mk(document.getElementById("rels"),rc,hidRel,false);
+  document.getElementById("legendbar").textContent =
+    view==="lore" ? "every NPC, dialogue, place and claim, wired together"
+    : view==="structure" ? "the repo on disk — node size follows file size"
+    : "the four layers of README §0, each authored from the one below";
+  stats();
+}
+
+function stats(){
+  const vn=nodes.filter(visible), ve=edges.filter(eVisible);
+  document.getElementById("nn").textContent=vn.length;
+  document.getElementById("ne").textContent=ve.length;
+  const deg=new Map(vn.map(n=>[n.id,0]));
+  ve.forEach(e=>{deg.set(e.s.id,deg.get(e.s.id)+1);deg.set(e.t.id,deg.get(e.t.id)+1);});
+  // nodes with nothing attached under the current filter get parked in a halo,
+  // rather than collapsing into a ball at the centre
+  let orphans=0;
+  vn.forEach(n=>{ n.vdeg=deg.get(n.id)||0; if(!n.vdeg) orphans++; });
+  coreN = Math.max(1, vn.length-orphans);
+  // wide enough for the core, and for the halo to seat its orphans side by side
+  ring = Math.max(Math.sqrt(vn.length)*46 + 200, orphans*3.4);
+  let best=null,bv=-1;
+  deg.forEach((v,k)=>{if(v>bv){bv=v;best=k;}});
+  const n=nodes.find(x=>x.id===best);
+  document.getElementById("hub").textContent = n?`${n.label} (${bv})`:"—";
+}
+
+/* ---------- simulation ---------- */
+function tick(){
+  const act=nodes.filter(visible);
+  if(!act.length) return;
+  let minx=1e9,miny=1e9,maxx=-1e9,maxy=-1e9;
+  for(const n of act){minx=Math.min(minx,n.x);miny=Math.min(miny,n.y);
+                      maxx=Math.max(maxx,n.x);maxy=Math.max(maxy,n.y);}
+  const s=Math.max(maxx-minx,maxy-miny)+40;
+  const qt=new QT(minx-20,miny-20,s);
+  for(const n of act) qt.insert(n);
+  // Every force below is scaled by alpha, not just this frame count-down: repulsion,
+  // gravity and springs all shrink together (same ratio, so equilibrium is unaffected -
+  // only how hard the system still pushes toward it). Without this, a spot the springs
+  // and the no-overlap constraint can't both satisfy - a crowded hub - just oscillates at
+  // full strength until the frame countdown runs out and freezes it mid-motion: shimmer.
+  // QT.force pushes along (p - other), so the constant must stay positive to repel.
+  const REP=PARAMS.repulsion*alpha;
+  for(const n of act){ if(!n.pin) qt.force(n,REP); }
+  // Repulsion on an edge node is ~N*REP/R and gravity is G*R, so picking G from the
+  // radius we actually want puts equilibrium there whatever the filters leave visible.
+  // only the connected core is held by gravity, so size it from that count alone -
+  // counting the halo too would over-estimate repulsion and crush the core inward
+  const target=Math.max(160, ring*.62);
+  const grav=coreN*REP/(target*target)*PARAMS.gravity;
+
+  for(const e of edges){
+    if(!eVisible(e)) continue;
+    const L=linkOf(e.rel,e.s,e.t);
+    let dx=e.t.x-e.s.x, dy=e.t.y-e.s.y;
+    const d=Math.hypot(dx,dy)||.01;
+    const f=(d-L.d)/d*L.k*alpha;
+    dx*=f; dy*=f;
+    if(!e.s.pin){e.s.vx+=dx;e.s.vy+=dy;}
+    if(!e.t.pin){e.t.vx-=dx;e.t.vy-=dy;}
+  }
+  for(const n of act){
+    if(n.pin){n.vx=n.vy=0;continue;}
+    if(n.vdeg===0){                                       // unattached: hold the halo
+      const d=Math.hypot(n.x,n.y)||.01, f=(ring-d)/d*.05*alpha;
+      n.vx += n.x*f; n.vy += n.y*f;
+    } else if(n.ty!=null){
+      // banded: x only, and loosely, so a row spreads wide enough to read its labels
+      n.vx -= n.x*grav*.12;
+    } else {
+      n.vx -= n.x*grav; n.vy -= n.y*grav;
+    }
+    n.vx*=.72; n.vy*=.72;
+    n.x+=Math.max(-28,Math.min(28,n.vx));
+    n.y+=Math.max(-28,Math.min(28,n.vy));
+    // last-resort bound, well outside equilibrium so it never shapes the layout
+    if(n.ty==null){
+      const d=Math.hypot(n.x,n.y), cap=ring*1.8;
+      if(d>cap){ n.x*=cap/d; n.y*=cap/d; n.vx*=.4; n.vy*=.4; }
+    }
+  }
+  collide(act);
+  // a layer is a row: hold y exactly, after collide has had its say
+  for(const n of act) if(n.ty!=null){ n.y=n.ty; n.vy=0; }
+  alpha*=.988;
+}
+
+// hard separation, so dense neighbourhoods stay countable instead of stacking.
+// In a crowded neighbourhood (many nodes pulled to the same rest length off one hub)
+// the springs and the no-overlap constraint can be mutually unsatisfiable - full-strength
+// correction every frame then fights the springs forever and never settles, which reads
+// as shimmering. Easing the push down as alpha falls lets it settle into a light, static
+// overlap instead of an undamped fight, the same way the springs settle via alpha.
+function collide(act){
+  const pad=5, cell=48, grid=new Map();
+  // no floor: it must be able to reach ~0 as alpha does, or crowded spots never truly rest
+  const soften=Math.min(1,alpha);
+  for(const n of act){
+    const k=((n.x/cell)|0)+","+((n.y/cell)|0);
+    (grid.get(k)||grid.set(k,[]).get(k)).push(n);
+  }
+  for(const n of act){
+    const gx=(n.x/cell)|0, gy=(n.y/cell)|0;
+    for(let dx=-1;dx<=1;dx++) for(let dy=-1;dy<=1;dy++){
+      const bucket=grid.get((gx+dx)+","+(gy+dy));
+      if(!bucket) continue;
+      for(const m of bucket){
+        if(m===n) continue;
+        const min=n.r+m.r+pad;
+        let ux=m.x-n.x, uy=m.y-n.y, d=Math.hypot(ux,uy);
+        if(d>=min) continue;
+        if(d<1e-4){ ux=Math.random()-.5; uy=Math.random()-.5; d=.5; }
+        const push=(min-d)/d*.5*soften;
+        if(!n.pin){ n.x-=ux*push; n.y-=uy*push; }
+        if(!m.pin){ m.x+=ux*push; m.y+=uy*push; }
+      }
+    }
+  }
+}
+
+function kick(a=1){ alpha=Math.max(alpha,a); if(!raf) loop(); }
+function loop(){
+  const running = alpha>.008 || drag;
+  if(running) tick();
+  draw();
+  raf = running ? requestAnimationFrame(loop) : null;
+  // the layout only knows its true extent once it has settled
+  if(!raf && needFit){ needFit=false; fit(); }
+}
+
+/* ---------- drawing ---------- */
+function resize(){
+  dpr=Math.min(2,window.devicePixelRatio||1);
+  const r=cv.getBoundingClientRect();
+  cv.width=r.width*dpr; cv.height=r.height*dpr;
+  draw();
+}
+const toScreen = p => ({x:(p.x-cam.x)*cam.z+cv.width/dpr/2, y:(p.y-cam.y)*cam.z+cv.height/dpr/2});
+const toWorld = (sx,sy) => ({x:(sx-cv.width/dpr/2)/cam.z+cam.x, y:(sy-cv.height/dpr/2)/cam.z+cam.y});
+
+function fit(){
+  const act=nodes.filter(visible);
+  if(!act.length) return;
+  let minx=1e9,miny=1e9,maxx=-1e9,maxy=-1e9;
+  for(const n of act){minx=Math.min(minx,n.x-n.r);miny=Math.min(miny,n.y-n.r);
+                      maxx=Math.max(maxx,n.x+n.r);maxy=Math.max(maxy,n.y+n.r);}
+  const w=cv.width/dpr, h=cv.height/dpr;
+  cam.x=(minx+maxx)/2; cam.y=(miny+maxy)/2;
+  cam.z=Math.max(.004,Math.min(2.4, .88*Math.min(w/(maxx-minx+1), h/(maxy-miny+1))));
+  draw();
+}
+
+function draw(){
+  const w=cv.width/dpr, h=cv.height/dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.clearRect(0,0,w,h);
+  const css=getComputedStyle(document.documentElement);
+  const edgeC=css.getPropertyValue("--edge").trim();
+  const edgeH=css.getPropertyValue("--edge-hi").trim();
+  const inkC=css.getPropertyValue("--ink").trim();
+  const dimC=css.getPropertyValue("--dim").trim();
+  const bgC=css.getPropertyValue("--bg").trim();
+  const focus = sel||hover;
+  const near = focus ? new Set([focus.id,...(adj.get(focus.id)||[]).map(a=>a.o.id)]) : null;
+
+  ctx.lineCap="round";
+  for(const e of edges){
+    if(!eVisible(e)) continue;
+    const on = near && (near.has(e.s.id)&&near.has(e.t.id))
+                    && (e.s.id===focus.id||e.t.id===focus.id);
+    if(near && !on) continue;
+    const a=toScreen(e.s), b=toScreen(e.t);
+    ctx.strokeStyle = on?edgeH:edgeC;
+    ctx.lineWidth = on ? 1.7 : Math.min(2.2,.55+ (e.weight-1)*.16);
+    ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+  }
+  if(near){ // ghost the rest so structure stays legible
+    ctx.globalAlpha=.10;
+    for(const e of edges){
+      if(!eVisible(e)) continue;
+      if(near.has(e.s.id)&&near.has(e.t.id)&&(e.s.id===focus.id||e.t.id===focus.id)) continue;
+      const a=toScreen(e.s), b=toScreen(e.t);
+      ctx.strokeStyle=edgeC; ctx.lineWidth=.5;
+      ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+    }
+    ctx.globalAlpha=1;
+  }
+
+  const sparse = nodes.filter(visible).length<=60;   // small graphs can afford every label
+  const showLabel = n => sparse || cam.z>1.05 || n.r*cam.z>7.5 || (near&&near.has(n.id))
+                      || (query&&matches(n)) || n.kind==="layer";
+  for(const n of nodes){
+    if(!visible(n)) continue;
+    const p=toScreen(n), r=Math.max(1.6,n.r*Math.sqrt(cam.z));
+    const dimmed = near && !near.has(n.id);
+    ctx.globalAlpha = dimmed ? .16 : 1;
+    ctx.beginPath(); ctx.arc(p.x,p.y,r,0,6.2832);
+    ctx.fillStyle=color(n.kind); ctx.fill();
+    if(n===sel||n===hover){
+      ctx.lineWidth=2.2; ctx.strokeStyle=inkC; ctx.stroke();
+    } else if(n.developed===false){
+      // hollow = a registered NPC with no backstory yet. Painting the middle in the page
+      // colour keeps it a ring; erasing it would punch holes through the edges behind.
+      ctx.beginPath(); ctx.arc(p.x,p.y,Math.max(.5,r-1.5),0,6.2832);
+      ctx.fillStyle=bgC; ctx.fill();
+    }
+    if(!dimmed && showLabel(n)){
+      ctx.globalAlpha = n.kind==="layer"?1:Math.min(1,Math.max(.4,cam.z));
+      ctx.font = n.kind==="layer" ? "650 13px ui-sans-serif,system-ui,sans-serif"
+                                  : "12px ui-sans-serif,system-ui,sans-serif";
+      ctx.fillStyle = (near&&near.has(n.id))||n===sel ? inkC : dimC;
+      ctx.textAlign="center"; ctx.textBaseline="top";
+      ctx.fillText(n.label, p.x, p.y+r+3);
+    }
+    ctx.globalAlpha=1;
+  }
+}
+
+/* ---------- picking + interaction ---------- */
+function pick(sx,sy){
+  let best=null,bd=1e9;
+  for(const n of nodes){
+    if(!visible(n)) continue;
+    const p=toScreen(n), d=Math.hypot(p.x-sx,p.y-sy);
+    const r=Math.max(6,n.r*Math.sqrt(cam.z)+4);
+    if(d<r && d<bd){bd=d;best=n;}
+  }
+  return best;
+}
+cv.addEventListener("mousemove",ev=>{
+  const r=cv.getBoundingClientRect(), sx=ev.clientX-r.left, sy=ev.clientY-r.top;
+  if(drag){
+    // a click is not a drag: only pin once the pointer has actually travelled
+    if(!dragMoved && Math.hypot(sx-dragFrom.x, sy-dragFrom.y) < 4) return;
+    if(!dragMoved){ dragMoved=true; drag.pin=true; kick(.25); }
+    const w=toWorld(sx,sy); drag.x=w.x; drag.y=w.y; drag.vx=drag.vy=0;
+    draw(); return;
+  }
+  if(pan){
+    cam.x-=(sx-pan.x)/cam.z; cam.y-=(sy-pan.y)/cam.z; pan={x:sx,y:sy}; draw(); return;
+  }
+  const h=pick(sx,sy);
+  if(h!==hover){hover=h; draw();}
+  if(h){
+    tip.style.display="block";
+    tip.style.left=Math.min(sx+14, r.width-270)+"px"; tip.style.top=(sy+14)+"px";
+    tip.innerHTML=`<b>${esc(h.label)}</b> <span style="color:var(--dim)">${esc(h.kind)}</span>`
+      + (h.path?`<br><span style="color:var(--dim);font-size:11px">${esc(h.path)}</span>`:"")
+      + (h.city?`<br><span style="color:var(--dim);font-size:11px">${esc(h.city)}</span>`:"")
+      + (h.note?`<br><span style="color:var(--dim);font-size:11px">${esc(h.note)}</span>`:"");
+  } else tip.style.display="none";
+});
+cv.addEventListener("mousedown",ev=>{
+  const r=cv.getBoundingClientRect(), sx=ev.clientX-r.left, sy=ev.clientY-r.top;
+  const n=pick(sx,sy);
+  if(n){ drag=n; dragMoved=false; dragFrom={x:sx,y:sy}; }
+  else { pan={x:sx,y:sy}; cv.classList.add("grabbing"); }
+});
+window.addEventListener("mouseup",()=>{
+  drag=null; pan=null; cv.classList.remove("grabbing");
+});
+cv.addEventListener("click",ev=>{
+  if(dragMoved) return;  // that was a drag-to-pin, not a click-to-select
+  const r=cv.getBoundingClientRect();
+  const n=pick(ev.clientX-r.left, ev.clientY-r.top);
+  select(n);
+});
+cv.addEventListener("dblclick",ev=>{
+  const r=cv.getBoundingClientRect();
+  const n=pick(ev.clientX-r.left, ev.clientY-r.top);
+  if(n){n.pin=false; kick(.5);}
+});
+cv.addEventListener("wheel",ev=>{
+  ev.preventDefault();
+  const r=cv.getBoundingClientRect(), sx=ev.clientX-r.left, sy=ev.clientY-r.top;
+  const before=toWorld(sx,sy);
+  cam.z=Math.max(.03,Math.min(6,cam.z*Math.exp(-ev.deltaY*.0015)));
+  const after=toWorld(sx,sy);
+  cam.x+=before.x-after.x; cam.y+=before.y-after.y;
+  draw();
+},{passive:false});
+
+const esc = s => String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function select(n){
+  sel=n;
+  if(!n){detail.classList.remove("on"); draw(); return;}
+  const rows=[];
+  const add=(k,v)=>{ if(v!==undefined&&v!==null&&v!==""&&v!==false) rows.push([k,v]); };
+  add("Kind",n.kind); add("City",n.city); add("Region",n.region); add("Role",n.role);
+  add("Type",n.type); add("Condition",n.condition); add("Locality",n.locality);
+  add("Education",n.education!=null?n.education+"%":null); add("Sampling",n.mode);
+  add("Knows",n.known); add("States",n.states); add("Choices",n.choices);
+  add("Claims",n.claims); add("Hearsay",n.has_hearsay===false?"missing":null);
+  add("Mode",n.mode2||n.route_mode); add("Distance",n.distance&&Math.round(n.distance));
+  add("System",n.system); add("Span",n.span); add("Resolved",n.resolved?"yes":
+      n.kind==="conflict"?"open":null);
+  add("Lifespan",n.lifespan); add("Criterion",n.criterion);
+  add("Size",n.size!=null?fmtBytes(n.size):null);
+  add("Connections",n.degree);
+  if(n.coords&&n.coords.x!=null) add("Coords",`${n.coords.x}, ${n.coords.y}`);
+  else if(Array.isArray(n.coords)) add("Coords",n.coords.join(", "));
+
+  const groups={};
+  (adj.get(n.id)||[]).forEach(a=>{
+    if(hidRel.has(a.rel)||hidKind.has(a.o.kind)) return;
+    const key=(a.out?"":"← ")+a.rel.replace(/_/g," ");
+    (groups[key]=groups[key]||[]).push(a.o);
+  });
+
+  document.getElementById("dbody").innerHTML =
+    `<span class="kind"><span class="sw" style="width:9px;height:9px;border-radius:50%;
+       background:${color(n.kind)};display:inline-block"></span>${esc(n.kind)}</span>
+     <h3>${esc(n.label)}</h3>`
+    + (n.file||n.path?`<div class="path">${esc(n.file||n.path)}</div>`:"")
+    + (rows.length?`<dl>${rows.map(([k,v])=>`<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}</dl>`:"")
+    + (n.summary?`<p>${esc(n.summary)}</p>`:"")
+    + (n.backstory?`<p>${esc(n.backstory)}</p>`:"")
+    + (n.description?`<p>${esc(n.description)}</p>`:"")
+    + (n.detail?`<p>${esc(n.detail)}</p>`:"")
+    + (n.resolution?`<p><b>Resolved:</b> ${esc(n.resolution)}</p>`:"")
+    + (n.note?`<p>${esc(n.note)}</p>`:"")
+    + (n.notes?`<p>${esc(n.notes)}</p>`:"")
+    + (Array.isArray(n.experience)&&n.experience.length
+        ? `<div class="rel"><h4>Experience</h4>${n.experience.map(x=>`<p>${esc(x)}</p>`).join("")}</div>`:"")
+    + Object.entries(groups).sort((a,b)=>b[1].length-a[1].length).map(([rel,list])=>
+        `<div class="rel"><h4>${esc(rel)} · ${list.length}</h4>`
+        + list.slice(0,40).map(o=>`<a data-id="${esc(o.id)}">
+            <span class="sw" style="background:${color(o.kind)}"></span>${esc(o.label)}</a>`).join("")
+        + (list.length>40?`<a style="color:var(--dim)">+${list.length-40} more</a>`:"")
+        + `</div>`).join("");
+
+  detail.classList.add("on");
+  detail.querySelectorAll("a[data-id]").forEach(a=>a.onclick=()=>{
+    const t=nodes.find(x=>x.id===a.dataset.id);
+    if(t){select(t); cam.x=t.x; cam.y=t.y; draw();}
+  });
+  draw();
+}
+function fmtBytes(b){
+  if(b<1024) return b+" B";
+  if(b<1048576) return (b/1024).toFixed(1)+" KB";
+  return (b/1048576).toFixed(1)+" MB";
+}
+
+/* ---------- layout controls ---------- */
+const SLIDERS = {
+  repulsion:    {el:"pRepulsion",    out:"vRepulsion",    fmt:v=>Math.round(v)},
+  linkDistance: {el:"pLinkDistance", out:"vLinkDistance", fmt:v=>"×"+v.toFixed(2)},
+  linkStrength: {el:"pLinkStrength", out:"vLinkStrength", fmt:v=>"×"+v.toFixed(2)},
+  gravity:      {el:"pGravity",      out:"vGravity",      fmt:v=>"×"+v.toFixed(2)},
+  sizeContrast: {el:"pSizeContrast", out:"vSizeContrast", fmt:v=>v.toFixed(1)},
+};
+const PRESET_LABELS = {balanced:"Balanced", spread:"Spread out", tight:"Tight cluster",
+                        hubs:"Hub emphasis", flat:"Flat (uniform size)"};
+
+function syncSliderUI(){
+  for(const [key,s] of Object.entries(SLIDERS)){
+    document.getElementById(s.el).value = PARAMS[key];
+    document.getElementById(s.out).textContent = s.fmt(PARAMS[key]);
+  }
+  const active = Object.entries(PRESETS).find(([,p])=>
+    Object.keys(p).every(k=>Math.abs(p[k]-PARAMS[k])<1e-9));
+  // toggle(class, undefined) is spec'd to mean "no force given" (flips the class) rather
+  // than "force false" - `active && ...` returns undefined, not false, when active is
+  // falsy, so this must be coerced to a real boolean or stale highlights pile up.
+  document.querySelectorAll("#presets button").forEach(b=>
+    b.classList.toggle("active", !!active && b.dataset.preset===active[0]));
+}
+
+function setParam(key,val){
+  PARAMS[key]=val;
+  if(key==="sizeContrast") applySizes();
+  syncSliderUI();
+  kick(1);
+}
+
+for(const [key,s] of Object.entries(SLIDERS)){
+  document.getElementById(s.el).oninput=e=>setParam(key, parseFloat(e.target.value));
+}
+
+const presetsHost = document.getElementById("presets");
+for(const name of Object.keys(PRESETS)){
+  const b=document.createElement("button");
+  b.textContent=PRESET_LABELS[name]; b.dataset.preset=name;
+  b.onclick=()=>{
+    PARAMS={...PRESETS[name]};
+    applySizes(); syncSliderUI();
+    alpha=1; needFit=true; kick(1);
+  };
+  presetsHost.appendChild(b);
+}
+syncSliderUI();
+
+document.getElementById("close").onclick=()=>select(null);
+document.addEventListener("keydown",e=>{if(e.key==="Escape")select(null);});
+document.getElementById("refit").onclick=fit;
+document.getElementById("theme").onclick=()=>{
+  const cur=document.documentElement.getAttribute("data-theme");
+  const sysDark=matchMedia("(prefers-color-scheme:dark)").matches;
+  document.documentElement.setAttribute("data-theme",
+    cur ? (cur==="dark"?"light":"dark") : (sysDark?"light":"dark"));
+  draw();
+};
+document.getElementById("search").oninput=e=>{query=e.target.value.trim(); draw(); stats();};
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".tabs button").forEach(x=>x.setAttribute("aria-selected",x===b));
+  setView(b.dataset.view);
+});
+window.addEventListener("resize",resize);
+
+document.getElementById("gen").textContent = "· graph of "+DATA.generated;
+resize(); setView("lore");
+</script>
+</body>
+</html>

@@ -16,6 +16,12 @@ upgraded to objective truth by being sampled - the character knows it only as so
 someone, in some dialogue, possibly wrong. Play it that way: attributed ("I heard Gondarfolas say
 once that..."), not asserted as settled history.
 
+NOT sampled, ever: _lore/facts/facts.json. Facts are the handful of things true of being a person in
+this world at all (life ends; a life should be worthwhile) - every character knows every one of them
+in full, regardless of their education percentage, so drawing them at 5% odds would be a bug. They
+live outside encodings.json on purpose and must never be folded into it; /enact loads them
+separately. See _lore/facts/_index.md.
+
 Usage:
     python scripts/sample_lore_knowledge.py --percent 11 --mode random
     python scripts/sample_lore_knowledge.py --percent 21 --mode skewed --topic geography --topic geology
@@ -35,6 +41,13 @@ def flatten_pool(data: dict) -> list[dict]:
     """Every atomic fact in encodings.json, as {category, id, text} dicts. 'text' is a loose
     bag of words used only for --mode skewed keyword matching, not shown to the user."""
     pool: list[dict] = []
+
+    if "facts" in data:
+        raise SystemExit(
+            "encodings.json contains a 'facts' key. Facts are universal knowledge and must never be\n"
+            "sampled - every character knows all of them in full. Move them back to\n"
+            "_lore/facts/facts.json and out of encodings.json. See _lore/facts/_index.md."
+        )
 
     def add(category: str, item_id: str, *text_parts) -> None:
         text = " ".join(str(p) for p in text_parts if p)

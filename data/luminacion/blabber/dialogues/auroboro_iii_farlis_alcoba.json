@@ -1,0 +1,95 @@
+{
+  "$schema": "https://ladysnake.org/schemas/blabber/dialogue.schema.json",
+  "layout": { "type": "blabber:rpg" },
+  "name": "Auroboro III & Farlis",
+  "start_at": "a1",
+  "states": {
+
+    "a1": {
+      "text": "Auroboro III: Ah, un visitante. Entra, entra. No muchos se detienen estos días.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Auroboro_III,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "a2" }]
+    },
+
+    "a2": {
+      "text": "Auroboro III: Este es el alcoba de las Guerras — mis guerras. Mis abuelos las pelearon.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Auroboro_III,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "f1" }]
+    },
+
+    "f1": {
+      "text": "Farlis: Conozco el alcoba. Soy de Görff. He caminado esa tierra.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Farlis,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "f2" }]
+    },
+
+    "f2": {
+      "text": "Farlis: Y sé lo que esas guerras fueron — oficiales y nobles peleando por fronteras. No es algo que celebre.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Farlis,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "a3" }]
+    },
+
+    "a3": {
+      "text": "Auroboro III: ¿No celebrar? Sangraron por su tierra. Por honor. Por —",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Auroboro_III,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "f3" }]
+    },
+
+    "f3": {
+      "text": "Farlis: ¿Por qué? ¿Para mantener la jerarquía en pie? Vivo en un lugar que eso derribó. El Colectivo no adora a las viejas familias militares.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Farlis,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "a4" }]
+    },
+
+    "a4": {
+      "text": "Auroboro III: ¿El Colectivo? Por supuesto. Eres uno de esos. ¿Y crees que derribar significa olvidar? Así es como la gente se convierte en nada — borra dónde viniste.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Auroboro_III,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "f4" }]
+    },
+
+    "f4": {
+      "text": "Farlis: No lo borro. Me niego a glorificarlo. Mis ancestros pueden haber estado en cualquier lado de tus guerras. Eso no me obliga a reverenciarlo.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Farlis,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "a5" }]
+    },
+
+    "a5": {
+      "text": "Auroboro III: Entonces eres un tonto. Sin memoria, solo estás a la deriva. Al menos yo sé quién soy.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Auroboro_III,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "f5" }]
+    },
+
+    "f5": {
+      "text": "Farlis: Yo también sé quién soy. Alguien que construye algo real en lugar de sentarse en una sala hablando de fantasmas.",
+      "type": "end_dialogue"
+    }
+
+  }
+}

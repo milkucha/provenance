@@ -1,0 +1,320 @@
+{
+  "$schema": "https://ladysnake.org/schemas/blabber/dialogue.schema.json",
+  "layout": { "type": "blabber:rpg" },
+  "name": "Khaoe & Milkucha",
+  "start_at": "k1",
+  "states": {
+
+    "k1": {
+      "text": "Khaoe: Sí. Quería verlo bien. Entra, hay mucho que recorrer aquí.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "m1" }]
+    },
+
+    "m1": {
+      "text": "Milkucha: ¿Vives en la Feria, o viniste de fuera?",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Milkucha,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "k2" }]
+    },
+
+    "k2": {
+      "text": "Khaoe: Construirlo. Eso es diferente. Mira alrededor del jardín. ¿Qué hiciste tú específicamente en esto?",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "m2" }]
+    },
+
+    "m2": {
+      "text": "Milkucha: Un poco de aquí y un poco de allá. El diseño principalmente, y tal vez algo de tierra moví.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Milkucha,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "k3" }]
+    },
+
+    "k3": {
+      "text": "Khaoe: Sí. Quiero verlo. El diseño es donde se ve si alguien entendió lo que hacía, o solo pasó moviendo tierra sin pensar. ¿Qué pensaste cuando lo diseñaste?",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "m3" }]
+    },
+
+    "m3": {
+      "text": "Milkucha: Bueno, la idea de este Pabellón es representar los distintos biomes del mundo. Va, los biomes del mundo conocido hasta la llegada del milenio. Pero son principalmente los clásicos. Una oda a la geografía clásica. Aquí como ves, a la entrada, tenemos la pradera entrando al bosque.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Milkucha,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "k4" }]
+    },
+
+    "k4": {
+      "text": "Khaoe: Pradera y bosque. ¿Por qué empezar ahí? ¿Era la entrada más lógica, o quisiste que la gente entrara en algo familiar antes de lo demás?",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "m4" }]
+    },
+
+    "m4": {
+      "text": "Milkucha: La verdad es que fue por instinto. Como ir pintando. Pero no creo que tuvo un significado muy profundo.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Milkucha,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "k5" }]
+    },
+
+    "k5": {
+      "text": "Khaoe: Asiente, como si la respuesta de instinto le pareciera honesta. Sin construcciones. ¿Por qué crees que pasó eso?",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "m5" }]
+    },
+
+    "m5": {
+      "text": "Milkucha: Tal vez el hecho de que era muy bello. Continuemos. En frente tuyo hay una montaña de terracota. La cuna de Grosslor.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Milkucha,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "k6" }]
+    },
+
+    "k6": {
+      "text": "Khaoe: Toca la terracota, sintiendo la textura. Grosslor. Nunca he estado. ¿Cómo decidiste que este era el color correcto?",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "m6" }]
+    },
+
+    "m6": {
+      "text": "Milkucha: No se trata de decidir. Sólo de observar.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Milkucha,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "k7" }]
+    },
+
+    "k7": {
+      "text": "Khaoe: No sé por qué dije eso. No conozco a nadie de Grosslor bien. He oído hablar de gente de allá, pero no es lo mío. Tú en cambio, parece que conoces los lugares de verdad.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "m7" }]
+    },
+
+    "m7": {
+      "text": "Milkucha: El Cine. Pero eso no lo hice solo. Fuimos muchos más. Continuemos con el recorrido. A tu derecha, montañas de granito, un monumento a la Cordillera de Eurasori.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Milkucha,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "k8" }]
+    },
+
+    "k8": {
+      "text": "Khaoe: No. No conozco la Cordillera de Eurasori. ¿De dónde es? ¿Qué tipo de lugar?",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "m8" }]
+    },
+
+    "m8": {
+      "text": "Milkucha: Las montañas que adornan el límite norte de Khan Icé. Dicen que fueron levantadas por los mismos dioses, por Eurasori incluso tal vez. Fue elevada con las manos esculpiéndose a partir de la inspiración de los mundos de donde los creadores vienen.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Milkucha,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "k9" }]
+    },
+
+    "k9": {
+      "text": "Khaoe: Entonces alguien — o algo — realmente levantó esa montaña. No es solo una historia. ¿Y quién la esculpió aquí? ¿Cómo decidieron hacerla así, en miniatura?",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "m9" }]
+    },
+
+    "m9": {
+      "text": "Milkucha: Lo hicimos con el poder de los mods. Una vez te acostumbras, puedes literalmente mover montañas. No es tan difícil. Pero requiere ciertas habilidades, principalmente en otros planos de existencia.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Milkucha,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "k10" }]
+    },
+
+    "k10": {
+      "text": "Khaoe: Mover montañas. Eso explica algunas cosas sobre este lugar. ¿Cuál es el siguiente bioma?",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "m10" }]
+    },
+
+    "m10": {
+      "text": "Milkucha: La taiga con bosques de cerezos, una mezcla del hogar de Khan Icé, pero también los árboles que pueblan buena parte de Plathinëa. Usados como árbol diplomático y ceremonial. Pequeños retoños fueron plantados en ciudades amigas, como un regalo de los ciudadanos de Dragón.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Milkucha,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "k11" }]
+    },
+
+    "k11": {
+      "text": "Khaoe: Khan Icé de nuevo. Y árboles plantados en ciudades amigas como regalo. Eso es trabajo que perdura. ¿Dragón plantó estos árboles en muchos lugares?",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "m11" }]
+    },
+
+    "m11": {
+      "text": "Milkucha: La verdad te mentiría si te dijera que los sé todos. Pero en casi todas las ciudades que he estado, hay un cerezo.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Milkucha,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "k12" }]
+    },
+
+    "k12": {
+      "text": "Khaoe: Casi todas las ciudades. Eso es más que un gesto — es presencia. Trabajo que se ve. Entonces Dragón plantó su marca en el mundo sin necesidad de decirlo. ¿Qué sigue?",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "m12" }]
+    },
+
+    "m12": {
+      "text": "Milkucha: El pantano.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Milkucha,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "k13" }]
+    },
+
+    "k13": {
+      "text": "Khaoe: ¿De dónde es este? Cada uno de estos lugares que has mostrado tiene una historia real detrás. ¿Este también?",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "m13" }]
+    },
+
+    "m13": {
+      "text": "Milkucha: Sorprendentemente no. La verdad es que no mucho ha pasado en los pantanos en los últimos mil años. Pero muchas de las luces del mundo son froglights. Este pantano está aquí por fidelidad de representación geográfica.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Milkucha,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "k14" }]
+    },
+
+    "k14": {
+      "text": "Khaoe: No necesitas saberlo todo. Incluir algo porque es verdad geográficamente, sin inventarle una historia grandiosa, eso es honestidad. ¿Qué más hay?",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "m14" }]
+    },
+
+    "m14": {
+      "text": "Milkucha: Quedan dos. A tu izquierda, está el desierto. De desiertos algo te puedo contar.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Milkucha,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "k15" }]
+    },
+
+    "k15": {
+      "text": "Khaoe: Cuéntame. He visto desiertos en historias, pero nunca he estado en uno.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "m15" }]
+    },
+
+    "m15": {
+      "text": "Milkucha: El Desierto de Experimentación, ese fue el destino del primer desierto del mundo. Una vasta zona donde distintas invenciones en redstone fueron testeadas, y eventualmente abandonadas. Y el Desierto de Balahm, la tierra de los templos. Y Grosslor, que está allí en frente.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Milkucha,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "k16" }]
+    },
+
+    "k16": {
+      "text": "Khaoe: Un desierto de experimentación. Inventos de redstone testeados y abandonados. Trabajo que no fue sostenido. Pero Balahm — los templos — eso suena como algo que perduró. ¿Y cuál es el último bioma?",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "m16" }]
+    },
+
+    "m16": {
+      "text": "Milkucha: La savanna. Un biome relativamente común, donde lugares como Curitza han crecido, o también Fuerte de la Cruz del Dragón o la Meseta del Pequeño Elefante — aunque estos dos últimos nos pertenecen a este continente de Milkaan.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Milkucha,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "k17" }]
+    },
+
+    "k17": {
+      "text": "Khaoe: Milkaan. Entonces esto no es solo geografía — es tu mundo. Los lugares que conoces, que has construido. Has mostrado toda una historia sin contar una sola. Solo moviendo tierra, plantando árboles, recordando.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "m17" }]
+    },
+
+    "m17": {
+      "text": "Milkucha: No lo hice. Aquí estabas tú. Y yo simplemente aparecí. Pero es hora de que me vaya. No te dije mi nombre, pero es milkucha. Hasta la próxima vez.",
+      "action": {
+        "type": "blabber:command",
+        "value": "execute as @e[type=taterzens:npc,name=Milkucha,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+      },
+      "choices": [{ "text": "...", "next": "end" }]
+    },
+
+    "end": {
+      "text": "Khaoe: Se queda quieta un momento, procesando. El nombre. Milkucha. Mira alrededor del Jardín. Buen trabajo. Volveremos a encontrarnos.",
+      "type": "end_dialogue"
+    }
+
+  }
+}
