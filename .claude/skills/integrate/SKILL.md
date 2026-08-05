@@ -1,5 +1,5 @@
 ---
-description: Integrate newly-added _lore/material/ into _lore/analysis/ (context.md, encodings.json, unknown.md), audit that every dialogue has a matching hearsay entry, and check for drift between what's referenced elsewhere in the pack and what's actually recorded in encodings.json. Use when new material has been uploaded to _lore/material/, or for a periodic consistency pass over the lore analysis.
+description: Integrate newly-added _lore/material/ into the analysis (_lore/material/_context.md, _lore/encodings.json, _lore/unknown.md), audit that every dialogue has a matching hearsay entry, and check for drift between what's referenced elsewhere in the pack and what's actually recorded in encodings.json. Use when new material has been uploaded to _lore/material/, or for a periodic consistency pass over the lore analysis.
 disable-model-invocation: true
 ---
 
@@ -9,17 +9,17 @@ not obvious from how the skill was invoked, ask (AskUserQuestion): new material 
 Pass 3. Default to running all three when unsure — a pass with nothing to do is cheap to finish
 quickly.
 
-Nothing here silently resolves a judgment call. Every place the existing `_lore/analysis/` files
-already draw a line between "recorded fact" and "open question" (see README §0 Layer 1), this skill
-holds that same line — new material can add entries and flag conflicts, never overwrite an existing
-entry or invent a resolution.
+Nothing here silently resolves a judgment call. Every place the existing analysis files (`_context.md`,
+`encodings.json`, `unknown.md`) already draw a line between "recorded fact" and "open question" (see
+README §0 Layer 1), this skill holds that same line — new material can add entries and flag conflicts,
+never overwrite an existing entry or invent a resolution.
 
 ## Pass 1 — Analyse new material
 
-**Trigger:** one or more files in `_lore/material/` aren't reflected yet in `_lore/analysis/context.md`
+**Trigger:** one or more files in `_lore/material/` aren't reflected yet in `_lore/material/_context.md`
 (diff the material folder's contents against that file's section headers to find them).
 
-1. For each new/unanalysed file, add a section to `context.md`, following the method note at the top
+1. For each new/unanalysed file, add a section to `_context.md`, following the method note at the top
    of that file exactly: treat the source as an independently recovered artifact; transcribe only
    what it actually says or shows; preserve the source's own blanks/open questions as gaps rather
    than filling them in; note (don't resolve) any disagreement with other sources.
@@ -44,16 +44,23 @@ dialogue (not produced via `/enact`) can skip README §8 Step 5 entirely without
 
 1. List every non-template file in `data/luminacion/blabber/dialogues/` (exclude `_template_*.json`).
 2. Cross-check each against `encodings.json`'s `hearsay.entries` array (`source_file` field) and
-   `_lore/analysis/hearsay.md`. Both are meant to mirror each other exactly (see `hearsay._method_note`
+   `_lore/hearsay/hearsay.md`. Both are meant to mirror each other exactly (see `hearsay._method_note`
    in `encodings.json`) — a dialogue needs a matching entry in *both*.
 3. For any dialogue missing coverage, build the entry per README §8 Step 5: `participants`,
    `location`, `summary`, and a `claims` list phrased as reported assertions (not restated as fact),
-   each with an `about` reference into the objective arrays (or a bare era/`CONFLICT-##` name) and a
-   `consistent_with_context` flag (`true`/`false`/`null`). Read the dialogue's actual `text`/
-   `choices[].text` fields to extract claims — don't invent ones that weren't actually said. Set
-   `derived_from`/`oral_lore` only where the dialogue's own content makes the lineage clear (a line
-   citing a named source, or vague "they say..." framing); when it's genuinely ambiguous, leave both
-   unset rather than guess.
+   each with an `about` reference into the objective arrays (or a bare era/`CONFLICT-##` name). Check
+   each claim against the record and add `inconsistent_with_record` (array of `{about, source_kind,
+   note}`, `source_kind` one of `material`/`tale`) or `inconsistent_with_facts` (a short
+   string) only when a genuine contradiction is found — leave both unset in the ordinary case, since
+   absence already means "no contradiction found" and recording that explicitly on every claim would
+   just be noise. Read the dialogue's actual `text`/`choices[].text` fields to extract claims — don't
+   invent ones that weren't actually said. Set `derived_from`/`oral_lore` only where the dialogue's own
+   content makes the lineage clear (a line citing a named source, or vague "they say..." framing); when
+   it's genuinely ambiguous, leave both unset rather than guess. If a claim raises a genuine question
+   the objective record has never addressed at all (not a contradiction — a gap) and it resonates with
+   the existing corpus, log it in `_lore/unknown.md`, cross-referencing the claim's id, matching the
+   file's existing shape. Not every claim produces one; skip rather than manufacturing a question that
+   isn't genuinely there.
 4. If the two copies of an existing entry (the JSON array vs. `hearsay.md`) have drifted apart,
    reconcile them — but flag the discrepancy to the user rather than silently picking one side when
    it's not obvious which is current.
@@ -67,12 +74,12 @@ dialogue (not produced via `/enact`) can skip README §8 Step 5 entirely without
    NPC, plus every `hearsay.entries[].claims[].about` reference in `encodings.json`. Confirm every
    `about` id that isn't `null` or a bare era/`CONFLICT-##` name resolves to a real entry somewhere in
    `locations`/`characters`/`concepts`/etc.
-2. Walk every `tales.entries[].touches` and `discoveries.entries[].touches` array. Confirm each id
-   listed actually exists where it claims to (an added/amended entry in `locations`/`characters`/
-   `concepts`/`routes`/`time_systems`, or a `CONFLICT-##` id in `conflicts`), and that the referenced
-   entry actually carries the matching `tale:<id>`/`discovery:<id>` source tag. Flag either direction
-   of drift: a `touches` id that doesn't resolve, or a `tale:`/`discovery:` source tag in the objective
-   arrays with no corresponding id in that tale's/discovery's own `touches` list.
+2. Walk every `tales.entries[].touches` array. Confirm each id listed actually exists where it claims
+   to (an added/amended entry in `locations`/`characters`/`concepts`/`routes`/`time_systems`, or a
+   `CONFLICT-##` id in `conflicts`), and that the referenced entry actually carries the matching
+   `tale:<id>` source tag. Flag either direction of drift: a `touches` id that doesn't resolve, or a
+   `tale:` source tag in the objective arrays with no corresponding id in that tale's own `touches`
+   list.
 3. Cross-check `_maps/dialogs/registry.json` against `data/luminacion/blabber/dialogues/`: flag any
    registered dialog id with no matching file, and any dialogue file with no registry entry (the
    latter is expected for a few in-flight two-NPC scenes still open in `TODO.md` — check there before

@@ -1,5 +1,5 @@
 ---
-description: Set up and run an enacted character conversation for Luminacion — against the player or against another enacted character — sampling each character's lore knowledge from _lore/analysis/encodings.json, then convert the result into a registered Blabber dialog. Use when the user wants to enact/roleplay an NPC and turn it into pack content.
+description: Set up and run an enacted character conversation for Luminacion — against the player or against another enacted character — sampling each character's lore knowledge from _lore/encodings.json, then convert the result into a registered Blabber dialog. Use when the user wants to enact/roleplay an NPC and turn it into pack content.
 disable-model-invocation: true
 ---
 
@@ -261,17 +261,25 @@ as often as embellishment, and an unverified claim is not the same as a false on
 step on "did anyone say 'I heard X say...'" — that test only decides the two optional fields below,
 not whether the step happens at all.
 
-Add an entry to `_lore/analysis/hearsay.md` and to `encodings.json`'s `hearsay.entries` array for
+Add an entry to `_lore/hearsay/hearsay.md` and to `encodings.json`'s `hearsay.entries` array for
 this dialog, in the same shape as the existing entries: participants, location, summary, and a
 `claims` list phrased as reported assertions (not restated as fact), each with an `about` reference
 into the objective arrays where it topically overlaps (a bare era name from `time_systems` is a valid
-`about` target too, e.g. `"Era del Daax"`), and a `consistent_with_context` flag (`true`/`false`/
-`null` — `null` when there's nothing to check the claim against either way, which is not the same as
-confirming it). Claims don't need to cover every sentence spoken — capture the kernels: the ideas
-someone could plausibly repeat later, not the connective tissue. A kernel that resurfaces across
-several entries (restated, elaborated, half-remembered) naturally ends up with more copies in the
-sampling pool in `sample_lore_knowledge.py` — that's the actual mechanism by which an idea becomes
-folklore and keeps mutating, not a special flag to set.
+`about` target too, e.g. `"Era del Daax"`). Check each claim against the record and set
+`inconsistent_with_record` (an array of `{about, source_kind, note}` — `source_kind` is
+`material`/`tale`, naming which kind of objective source the contradicted entry rests on)
+only if it genuinely contradicts something, and `inconsistent_with_facts` (a short string explaining
+the contradiction) only if it contradicts one of the two entries in `_lore/facts/facts.json`. Leave
+both unset in the ordinary case — that's most claims, and recording "no contradiction found" on every
+one of them would just be noise; absence already means that. If a claim raises a genuine question the
+objective record has never addressed at all (a gap, not a contradiction) and it resonates with the
+existing corpus, log it in `_lore/unknown.md`, cross-referencing the claim's id, matching the file's
+existing shape — not every claim produces one, skip rather than manufacturing a question that isn't
+genuinely there. Claims don't need to cover every sentence
+spoken — capture the kernels: the ideas someone could plausibly repeat later, not the connective
+tissue. A kernel that resurfaces across several entries (restated, elaborated, half-remembered)
+naturally ends up with more copies in the sampling pool in `sample_lore_knowledge.py` — that's the
+actual mechanism by which an idea becomes folklore and keeps mutating, not a special flag to set.
 
 Two more fields, both optional, both only relevant when this dialog surfaced a claim that came from
 a *sampled hearsay item* rather than a fresh read of the objective record (Step 1's note above):
@@ -309,9 +317,10 @@ and reinterpret** (increment `criterion.tempered`), or **accept and break** (cle
 proximity, and susceptibility; bias toward reinterpretation. Temperament isn't built yet
 (`/temperament`, see `TODO.md`), so don't pretend to consult it.
 
-Dismissal is gated by the claim's recorded credibility (`traceable` + `consistent_with_context: true`
-is hard to wave away; `oral_lore`/`null` is easy) **combined with whether this character trusts that
-kind of knowing at all** (`criterion.trusts`/`distrusts`). Credibility is not objective to the
+Dismissal is gated by the claim's recorded credibility (`traceable` + no `inconsistent_with_record`/
+`inconsistent_with_facts` flag is hard to wave away; `oral_lore`, or a claim that IS flagged
+inconsistent, is easy) **combined with whether this character trusts that kind of knowing at all**
+(`criterion.trusts`/`distrusts`). Credibility is not objective to the
 character: a weak claim from a source they trust can land, and a well-sourced one from a source they
 distrust can be waved off — at the usual cost of knowingly carrying something the record contradicts
 and retelling it anyway. If both trust fields are blank, judge on credibility alone.
@@ -344,12 +353,12 @@ to the world at large. Do all of the following:
 - **Set `life.deceased: true`** on their registry entry. This is a plain, non-secret fact — unlike
   `life.span`, nothing about death itself is hidden — and it's what stops a future `/enact` run from
   accidentally reusing them (see the Step 1 guard below).
-- **Record it as an objective fact of the world**, in the same shape `/discover` produces (see
-  `.claude/skills/discover/SKILL.md`) but written directly rather than asked for interactively, since
-  every fact needed is already known at this point: a new `_lore/discoveries/<slug>.md` file (title,
-  `**Discovered by:** no one; simply now known` in the ordinary case — a named cause only if the
-  scene actually established one — the fact of the death itself as the discovery's content), a
-  matching `discoveries.entries` manifest row in `encodings.json`, and a `characters` entry update if
+- **Record it as an objective fact of the world**, in the same shape `/tell` produces (see
+  `.claude/skills/tell/SKILL.md`) but written directly rather than asked for interactively, since every
+  fact needed is already known at this point: a new `_lore/tale/<slug>.md` file (title, `**Told by:**
+  no one; simply now known` in the ordinary case — a named cause only if the scene actually
+  established one — the fact of the death itself as the tale's content), a matching `tales.entries`
+  manifest row in `encodings.json`, a `_lore/tale/_authors.md` row, and a `characters` entry update if
   one exists for them. This is what makes death re-enter the ordinary sampling pool for characters
   created later, at ordinary odds — the *only* channel anyone outside the circle below has.
 - **Run `python scripts/notify_death.py <npc_key>`.** It computes the character's *circle* — everyone

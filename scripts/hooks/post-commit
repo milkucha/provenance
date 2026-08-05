@@ -1,0 +1,17 @@
+#!/bin/sh
+# Refreshes the graphifyish knowledge graph after every commit, so it never
+# drifts stale from the repo it's supposed to describe. Regenerates the
+# output files in place; does not stage or commit them - that's a manual step.
+#
+# Not wired up by default: each clone must opt in once with
+#   git config core.hooksPath scripts/hooks
+
+if command -v py >/dev/null 2>&1; then
+  PYTHON="py"
+else
+  PYTHON="python3"
+fi
+
+"$PYTHON" scripts/graphifyish.py --json >/dev/null 2>&1 \
+  && echo "[post-commit] graphifyish graph refreshed" \
+  || echo "[post-commit] graphifyish graph refresh failed (see scripts/graphifyish.py)"

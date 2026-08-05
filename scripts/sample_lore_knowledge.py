@@ -1,5 +1,5 @@
 """
-Draw a bounded knowledge sample for an enacted character from _lore/analysis/encodings.json.
+Draw a bounded knowledge sample for an enacted character from _lore/encodings.json.
 
 Used by the /enact skill (.claude/skills/enact/SKILL.md) and documented in README.md §8.
 Every atomic fact in encodings.json (locations, concepts, conflicts, characters, routes, eras...)
@@ -34,7 +34,7 @@ from pathlib import Path
 from random import Random
 
 ROOT = Path(__file__).resolve().parent.parent
-ENCODINGS_PATH = ROOT / "_lore" / "analysis" / "encodings.json"
+ENCODINGS_PATH = ROOT / "_lore" / "encodings.json"
 
 
 def flatten_pool(data: dict) -> list[dict]:

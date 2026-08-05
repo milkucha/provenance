@@ -243,9 +243,9 @@ a degree**:
 
 1. **Reject the claim.** The refutation never lands because it isn't believed. Gated by two things
    together:
-   - *The claim's own credibility*, already recorded: a named, `traceable` source whose claim is
-     `consistent_with_context: true` is hard to wave away; an `oral_lore`/`untraceable` "they say"
-     flagged `null` is easy.
+   - *The claim's own credibility*, already recorded: a named, `traceable` source whose claim carries
+     no `inconsistent_with_record`/`inconsistent_with_facts` flag is hard to wave away; an
+     `oral_lore`/`untraceable` "they say," or a claim that IS flagged inconsistent, is easy.
    - *Whether this character trusts that kind of knowing at all* (`criterion.trusts`/`distrusts`,
      Step 4d). **Credibility is not objective to the character.** Someone whose life is built on
      testimony finds an unattributed "they say" more moving than a chronicle that contradicts it, and

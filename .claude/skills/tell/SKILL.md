@@ -1,21 +1,32 @@
 ---
-description: Record a tale told directly by the user - a third source of truth for Milkantis, alongside the excavated objective record (_lore/material/analysis) and the in-fiction subjective record (hearsay.md). Registers the tale in its own file under _lore/tale/, adds a manifest entry to encodings.json's tales category, folds its content into other encodings categories where it overlaps, and logs any notable unresolved thread to unknown.md. Use when the user wants to tell a tale/story to add to the world's lore.
+description: Record a tale told directly by the user - a third source of truth for Milkantis, alongside the excavated objective record (_lore/material/_context.md, _lore/encodings.json) and the in-fiction subjective record (_lore/hearsay/hearsay.md). Covers both a narrated story and a plain statement of fact now known. Registers the tale in its own file under _lore/tale/, adds a manifest entry to encodings.json's tales category, folds its content into other encodings categories where it overlaps, records real-world provenance in _lore/tale/_authors.md, and logs any notable unresolved thread to _lore/unknown.md. Use when the user wants to tell a tale, or state something as now known, to add to the world's lore.
 disable-model-invocation: true
 ---
 
 Read `_lore/tale/_index.md` first if it hasn't been read yet this session - it states the rule this
 skill exists to enforce: a tale is told directly by the user, outside any character's mouth and
-outside any excavated document, and unlike `hearsay` it **is** folded into the objective record, the
-same way a newly-analysed `_lore/material/` file is per `.claude/skills/integrate/SKILL.md` Pass 1.
-Nothing here gets decided silently - a genuine disagreement with something already on record becomes
-a new `conflicts` entry, never a silent overwrite, and `user_resolution` is never set by this skill.
+outside any excavated document - narrated as a story or stated plainly as a fact, both the same
+category - and unlike `hearsay` it **is** folded into the objective record, the same way a
+newly-analysed `_lore/material/` file is per `.claude/skills/integrate/SKILL.md` Pass 1. Nothing here
+gets decided silently - a genuine disagreement with something already on record becomes a new
+`conflicts` entry, never a silent overwrite, and `user_resolution` is never set by this skill.
 
-## Step 1 — Ask what tale they wish to tell
+## Step 1 — Ask what they want to tell
 
-Ask, as plain conversation, not multiple-choice: **"What tale would you like to tell?"** Then let them
+Ask, as plain conversation, not multiple-choice: **"What would you like to tell?"** Then let them
 actually tell it - don't summarize preemptively, don't interrupt to impose structure, don't ask
 clarifying questions mid-telling unless they stall and ask you to prompt them. Wait for a clear signal
-the telling is over (they say so, or trail off with nothing more to add) before moving on.
+the telling is over (they say so, or trail off with nothing more to add) before moving on. This works
+whether what comes out is a narrated story or a short, plainly stated fact - don't push a flat
+statement into narrative shape, and don't cut a real telling short because it turned out longer than a
+one-liner.
+
+## Step 1a — Ask about in-world credit
+
+Ask directly: **"Is this credited to anyone or anything in-world, or is it just known?"** A name
+(character, person, institution) is one valid answer; "nobody in particular," or the question simply
+not applying, is equally valid - this is `told_by`, and it's optional. Don't force an answer or invent
+one that wasn't given.
 
 ## Step 2 — Title and slug
 
@@ -30,7 +41,10 @@ Create `_lore/tale/<slug>.md`:
 ```markdown
 # <Title>
 
-**Told by:** <user's name/handle> - the world's author, not an in-fiction source
+**Responsible:** <user's name/handle> - real-world provenance only, never an in-fiction detail
+**Told by:** <in-world source, if the tale itself is framed as coming through one - a character, an
+institution, a legend> - optional; omit this line entirely when there isn't one (the common case: most
+tales are just told directly, with no in-world frame)
 **Told on:** <date>
 **Encodings id:** `tales.entries[].id = "<slug>"`
 
@@ -58,6 +72,7 @@ Add to the `tales.entries` array (currently empty - this may be the first):
   "id": "<slug>",
   "source_file": "_lore/tale/<slug>.md",
   "told_date": "<date>",
+  "told_by": <in-world source as a string, or null>,
   "summary": "<one or two sentences - what the tale actually says, not editorializing>",
   "touches": []
 }
@@ -67,6 +82,19 @@ Add to the `tales.entries` array (currently empty - this may be the first):
 `locations`/`characters`/`concepts`/`routes`/`time_systems`/`conflicts`) this tale added or amended,
 so a later `/integrate` Pass 3 drift check can confirm the manifest matches reality without re-reading
 the tale's full text.
+
+Then add a row to `_lore/tale/_authors.md`'s table:
+
+```markdown
+| `<slug>` | <user's name/handle> | <date> |
+```
+
+Default `responsible` to the current git `user.name` (`git config user.name`) unless the person
+telling the tale identifies themselves as someone else - this field exists so a multi-author project
+can later tell who recorded what. **Never write `responsible` into `encodings.json`.** It has no
+in-fiction meaning and must stay structurally out of `scripts/sample_lore_knowledge.py`'s reach, the
+same way `_lore/facts/facts.json` is kept out of `encodings.json` - see `_lore/tale/_authors.md`'s own
+intro.
 
 ## Step 5 — Fold into the other categories
 
@@ -92,7 +120,7 @@ the tale file's own "Touches"/"Conflicts raised" lines from Step 3.
 ## Step 6 — Notable unknowns
 
 If the tale poses a question it doesn't itself answer, and that question resonates with the existing
-corpus - either it extends a gap already logged in `_lore/analysis/unknown.md`, or it's clearly the
+corpus - either it extends a gap already logged in `_lore/unknown.md`, or it's clearly the
 kind of thing the rest of the record would want an answer to - log it there, matching the file's
 existing shape (cross-reference the tale's id, and a `CONFLICT-##` id if applicable). Not every tale
 produces one; skip this step rather than manufacturing a question that isn't genuinely there. Update
@@ -100,6 +128,7 @@ the tale file's "Open questions logged" line accordingly.
 
 ## Step 7 — Update the index and report back
 
-Add a row to `_lore/tale/_index.md`'s table (told date, title, filename, a short `touches` summary).
-Then report back to the user: what was recorded, what it touched or added, every new conflict raised
-(don't bury one in a large diff), and any notable unknown logged.
+Add a row to `_lore/tale/_index.md`'s table (told date, title, told by, responsible, filename, a short
+`touches` summary). Then report back to the user: what was recorded, who (if anyone) was credited
+in-world, what it touched or added, every new conflict raised (don't bury one in a large diff), and
+any notable unknown logged.

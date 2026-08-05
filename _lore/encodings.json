@@ -1,5 +1,5 @@
 {
-  "_method_note": "Structured cross-references between locations, time periods, characters, and concepts found across the material set. Every entry lists its source file(s). Nothing here is asserted beyond what a source states; where sources disagree, both values are kept and a matching entry is added to 'conflicts'. Full prose per source lives in context.md; this file is the associative index. Sources are abbreviated: atlax_i, atlax_ii, catastro, ensayo_i, libro, timelines_py (timelines.py), esquema (ESQUEMA.pdf), book_of_inventions, cartography_highways/cartography_trains/cartography_airports (Cartography (Map Markers) [Code].xlsx), luminacion_register (Luminacion Register [Code].xlsx), mapa_del_milenio (El Antiguo Continente de Milkan - Mapa del Milenio.png), plus 5 dated/named screenshots (Khan Ice WP, Sid Nalta WP, Milka General Map, Milka Oceans Plan and Continent Outline, Ruta Lundria-Salthos Cruzados) referenced inline by filename. Per the user (2026-07-24), 'Luminacion Register' and 'Terraforming Regions Purge Register.xlsx' ARE lore sources, split into a narrative layer (named characters/locations/actions - captured under characters.named_inhabitants) and a technical/'mysterious formula' layer (Clock-worldTime triggers, Taterzen movement logic, region-purge flags - left undeciphered, see unknown.md) - not excluded, just not yet interpreted. Some conflict entries also carry a 'user_resolution' field: a design decision the user gave directly (not derived from any document), dated. These sit alongside the documentary facts rather than replacing them. IMPORTANT (2026-07-24): everything above this line, and everything in 'locations'/'time_systems'/'routes'/'characters'/'concepts'/'conflicts' below, is the OBJECTIVE record - reconstructed from primary materials, per the archaeologist method. There is now a second, SUBJECTIVE record: the top-level 'hearsay' array near the end of this file, mirroring _lore/analysis/hearsay.md, logging what characters have actually said in played Blabber dialogues. Hearsay entries are never merged into the objective arrays above and never treated as corroborating them, even when they happen to agree - they are a distinct kind of source, logged separately on purpose. Update (2026-07-26): 'ensayo_i_final' is a later, July 2026 edition of ensayo_i ('ENSAYO I (Final Version).pdf'), by the same credited author under an expanded byline ('Iläria Astraëa desde la lejana ciudad de Lündria'). Where the two editions disagree, both are kept, per the same disagreement rule as every other source pair - see CONFLICT-15, CONFLICT-16, CONFLICT-17. Update (2026-07-30): there are now two more sources, both OBJECTIVE-track like the arrays above (not subjective like 'hearsay'): 'tales' and 'discoveries', two top-level arrays near the end of this file, fed respectively by the /tell and /discover skills and mirrored in _lore/tale/ and _lore/discoveries/. A tale or discovery is told/stated directly by the user, the world's author - not excavated from a document and not a character's in-fiction claim - and IS folded into locations/characters/concepts/routes/time_systems above via a 'tale:<id>'/'discovery:<id>' source tag, and into 'conflicts' on disagreement, by the same rules as any material source. See each array's own _method_note for the exact shape.",
+  "_method_note": "Structured cross-references between locations, time periods, characters, and concepts found across the material set. Every entry lists its source file(s). Nothing here is asserted beyond what a source states; where sources disagree, both values are kept and a matching entry is added to 'conflicts'. Full prose per source lives in material/_context.md; this file is the associative index. Sources are abbreviated: atlax_i, atlax_ii, catastro, ensayo_i, libro, timelines_py (timelines.py), esquema (ESQUEMA.pdf), book_of_inventions, cartography_highways/cartography_trains/cartography_airports (Cartography (Map Markers) [Code].xlsx), luminacion_register (Luminacion Register [Code].xlsx), mapa_del_milenio (El Antiguo Continente de Milkan - Mapa del Milenio.png), plus 5 dated/named screenshots (Khan Ice WP, Sid Nalta WP, Milka General Map, Milka Oceans Plan and Continent Outline, Ruta Lundria-Salthos Cruzados) referenced inline by filename. Per the user (2026-07-24), 'Luminacion Register' and 'Terraforming Regions Purge Register.xlsx' ARE lore sources, split into a narrative layer (named characters/locations/actions - captured under characters.named_inhabitants) and a technical/'mysterious formula' layer (Clock-worldTime triggers, Taterzen movement logic, region-purge flags - left undeciphered, see unknown.md) - not excluded, just not yet interpreted. Some conflict entries also carry a 'user_resolution' field: a design decision the user gave directly (not derived from any document), dated. These sit alongside the documentary facts rather than replacing them. IMPORTANT: everything above this line, and everything in 'locations'/'time_systems'/'routes'/'characters'/'concepts'/'conflicts' below, is the OBJECTIVE record - reconstructed from primary materials, per the archaeologist method. A second, SUBJECTIVE record sits alongside it: the top-level 'hearsay' array near the end of this file, mirroring _lore/hearsay/hearsay.md, logging what characters have actually said in played Blabber dialogues - never merged into the objective arrays above and never treated as corroborating them, even when they happen to agree; see 'hearsay._method_note' for the exact shape, including how a claim's consistency with the record and with facts is tracked. A third, OBJECTIVE-track array (not subjective like 'hearsay') is 'tales', fed by the /tell skill and mirrored in _lore/tale/: told/stated directly by the user, the world's author, folded into locations/characters/concepts/routes/time_systems via a 'tale:<id>' source tag, and into 'conflicts' on disagreement, by the same rules as any material source; see that array's own _method_note for the exact shape, including 'told_by' vs 'responsible'. Update (2026-07-26): 'ensayo_i_final' is a later, July 2026 edition of ensayo_i ('ENSAYO I (Final Version).pdf'), by the same credited author under an expanded byline ('Iläria Astraëa desde la lejana ciudad de Lündria'). Where the two editions disagree, both are kept, per the same disagreement rule as every other source pair - see CONFLICT-15, CONFLICT-16, CONFLICT-17.",
   "time_systems": {
     "real_time_to_game_time": {
       "source": "ensayo_i",
@@ -2354,7 +2354,7 @@
       ],
       "description": "creepers explode; monsters come out at night wherever it's dark. Stated as having always been known, not newly figured out by anyone in particular.",
       "sources": [
-        "discovery:creepers_and_night_monsters"
+        "tale:creepers_and_night_monsters"
       ],
       "notes": null
     },
@@ -2365,7 +2365,7 @@
       ],
       "description": "redstone powers things. Stated plainly, with no further mechanism given.",
       "sources": [
-        "discovery:redstone_and_basic_needs"
+        "tale:redstone_and_basic_needs"
       ],
       "notes": "thematically adjacent to the 'codigos' concept (command-block automation) but kept as its own entry - redstone is never named alongside codigos in any source except a hearsay claim (ilaria_espiral_de_la_historia#1, 'codigos y redstone work' among the Feria del Milenio's honored artifacts), which does not equate the two"
     },
@@ -2378,7 +2378,7 @@
       ],
       "description": "people need to eat, need to sleep, need to rest. Stated plainly, as a basic fact of how the world works.",
       "sources": [
-        "discovery:redstone_and_basic_needs"
+        "tale:redstone_and_basic_needs"
       ],
       "notes": null
     },
@@ -2609,7 +2609,7 @@
     }
   ],
   "hearsay": {
-    "_method_note": "SUBJECTIVE record, distinct from every array above. Mirrors _lore/analysis/hearsay.md exactly - one entry per real (non-template) dialog file in data/luminacion/blabber/dialogues/. 'claims' are what a character asserted, not verified facts; 'about' cross-references an id in 'locations'/'concepts'/'conflicts' above ONLY to mark topical overlap, never as corroboration. A claim's 'consistent_with_context' field records whether it happens to agree with the objective record as it currently stands - 'true' here is not a guarantee the claim is correct, only that no contradiction has been found yet. Since scripts/sample_lore_knowledge.py draws individual claims from this array into a character's knowledge pool at the same odds as any objective-record fact (see README §8 Step 1), a claim can now be retold by a new character and logged again as a fresh claim. Whenever that happens, scripts/lineage_coin.py rolls a flat 50/50 to decide whether the origin survives the retelling: 'traceable' sets 'derived_from' (a claim id, e.g. 'nawom_morkulo_first_meeting#5') and the dialog line may cite the source by name; 'untraceable' leaves 'derived_from' unset and sets 'oral_lore': true instead - no origin recorded, dialog line uses vague framing ('they say...'), regardless of whether the content itself has drifted. 'oral_lore' can also be set true (paired with a 'note' explaining what grew) on a claim that traces back fine but has still accumulated specifics beyond what its 'about' grounding supports. Most claims have neither field - they're unremarkable, either freshly sampled from the objective record or a faithful, traceable retelling.",
+    "_method_note": "SUBJECTIVE record, distinct from every array above. Mirrors _lore/hearsay/hearsay.md exactly - one entry per real (non-template) dialog file in data/luminacion/blabber/dialogues/. 'claims' are what a character asserted, not verified facts; 'about' cross-references an id in 'locations'/'concepts'/'conflicts' above ONLY to mark topical overlap, never as corroboration. Consistency is recorded INCONSISTENT-ONLY: a field is present on a claim only when a genuine contradiction was actually found; absence means either 'checked and matches' or 'nothing to check against yet' - recording the unremarkable case explicitly on every claim would just be noise. Two independent flags: (1) 'inconsistent_with_record', an array of {about, source_kind, note} objects - present only when the claim contradicts something in the objective arrays above ('about' names the contradicted entry/CONFLICT id, 'source_kind' is 'material'/'tale' naming which of the two kinds of objective source the contradicted entry rests on, since disbelieving a written map and disbelieving something someone was told directly are different in kind - a character might reasonably distrust one and not the other; 'note' explains the contradiction in one sentence). (2) 'inconsistent_with_facts', a plain string (present only when true, value = the explanation) - set when a claim contradicts one of the two universal facts in _lore/facts/facts.json. No 'fact_ref' id is needed: there are only two facts, they are baked into every character unconditionally, and checking against them means reading facts.json directly, not looking up an id. A claim can also surface a genuine gap rather than a contradiction - something the objective record has never addressed at all, not something it disagrees with; when that happens and it resonates with the existing corpus, log it in _lore/unknown.md (cross-referencing the claim's id), matching the file's existing shape, the same way material and tale do. Not every claim produces one - skip rather than manufacturing a question that isn't genuinely there. Since scripts/sample_lore_knowledge.py draws individual claims from this array into a character's knowledge pool at the same odds as any objective-record fact (see README §8 Step 1), a claim can now be retold by a new character and logged again as a fresh claim. Whenever that happens, scripts/lineage_coin.py rolls a flat 50/50 to decide whether the origin survives the retelling: 'traceable' sets 'derived_from' (a claim id, e.g. 'nawom_morkulo_first_meeting#5') and the dialog line may cite the source by name; 'untraceable' leaves 'derived_from' unset and sets 'oral_lore': true instead - no origin recorded, dialog line uses vague framing ('they say...'), regardless of whether the content itself has drifted. 'oral_lore' can also be set true (paired with a 'note' explaining what grew) on a claim that traces back fine but has still accumulated specifics beyond what its 'about' grounding supports. Most claims have none of these fields - they're unremarkable, either freshly sampled from the objective record or a faithful, traceable retelling.",
     "entries": [
       {
         "id": "sonoros_lost_traveler",
@@ -2626,36 +2626,30 @@
         "claims": [
           {
             "text": "Balhâm is a 'ciudad sagrada' (sacred city), still mostly unfinished.",
-            "about": "balham",
-            "consistent_with_context": true
+            "about": "balham"
           },
           {
             "text": "Balhâm has been 'going up since 354' - Sonoros explicitly does not know what that number counts from.",
             "about": "balham",
-            "consistent_with_context": true,
             "note": "the not-knowing is itself an accurate reflection of the objective record, which never explains the a.V./d.V. system to a bystander either"
           },
           {
             "text": "A monument called 'El Dragón de Balham' exists and is worth seeing.",
-            "about": "balham",
-            "consistent_with_context": true
+            "about": "balham"
           },
           {
             "text": "Rail lines run from Balhâm west to Sälthos Cruzados (~4000 blocks) and east to Khan Ice.",
             "about": null,
-            "consistent_with_context": true,
             "note": "matches the 'Khan Ice - Balhâm' and 'Balhâm - Salthos Cruzados' train segments in routes.trains, though Sonoros never cites exact figures - he rounds"
           },
           {
             "text": "Sälthos Cruzados is rumored to be the biggest town on the continent - Sonoros does not confirm this, only reports the rumor.",
             "about": "salthos_cruzados",
-            "consistent_with_context": null,
             "note": "the objective record never states which city is 'biggest' at any given moment consistently across eras - see ensayo_i's shifting 'largest city' claims for Sälthos Cruzados, Khân-Ice, and Dragon City at different eras - so this claim is neither confirmed nor contradicted, appropriately left as a rumor"
           },
           {
             "text": "Sonoros identifies as being 'out of Görff way' and works walking rail crossings, naming Cruce de Trobal near Khol Moshin as one he checks regularly.",
             "about": "cruce_de_trobal",
-            "consistent_with_context": true,
             "note": "Sonoros's profession and Görff connection are invented character texture, not drawn from any material source - see README §8 step 2"
           }
         ]
@@ -2676,37 +2670,31 @@
           {
             "text": "Neither Nawom nor Morkulo knows the route to Puerto Tortuga.",
             "about": "puerto_tortuga",
-            "consistent_with_context": true,
             "note": "puerto_tortuga is not in either character's sampled knowledge - this is accurate ignorance, not an oversight"
           },
           {
             "text": "Nawom is from Terfila, but declines to explain how his family came to be there.",
             "about": "terfyla",
-            "consistent_with_context": null,
             "note": "Nawom's family origin is a user-given personal fact, not drawn from any material source and not resolved even in Nawom's own knowledge - deliberately left open"
           },
           {
             "text": "Morkulo knows of Terfila only via travelers: a banker, Aureobalo, who rides to Khol Moshin, and pilots arriving from Sid Nalta.",
             "about": "terfyla",
-            "consistent_with_context": true,
             "note": "correctly reflects that 'terfyla' itself was NOT in Morkulo's sampled knowledge, only the named travelers Aureobalo/Nerkeli/Terrolis were"
           },
           {
             "text": "Morkulo studied in Tyrnea, 'long enough ago' that he says he barely recognizes who he was then.",
             "about": "tyrnea",
-            "consistent_with_context": null,
             "note": "personal biography, not a material-sourced fact; notably Morkulo's sample also did not include the 'tyrnea' location entry itself, so his firsthand memory is deliberately not backed by (or contradicted by) the objective civic history of the place"
           },
           {
             "text": "Nvhi is 'the place they say Därnis heard whatever it was that sent him off to find that new continent.'",
             "about": "darnis",
-            "consistent_with_context": true,
             "note": "matches ensayo_i era 9 and the nvhi location entry exactly; Morkulo's own hedge ('they say') is his, not an uncertainty in the source material"
           },
           {
             "text": "Morkulo complains that recorded coordinates for Khol Moshin and Khan Ice 'argue with themselves.'",
             "about": "CONFLICT-02",
-            "consistent_with_context": true,
             "note": "an informal, personal echo of CONFLICT-02 - Morkulo is speaking from professional frustration with his own measurements, not citing the analysis"
           }
         ]
@@ -2727,47 +2715,39 @@
           {
             "text": "Gondarfolas is based in Görff, sails a small ship ferrying travelers along the coast, and is an avid reader of history.",
             "about": "gorff",
-            "consistent_with_context": null,
             "note": "Gondarfolas's trade and reading habit are invented character texture, not drawn from any material source - see README §8 step 2"
           },
           {
             "text": "Därnis sailed south out of Sindäara and discovered a new ocean, a burning/volcanic island, and floating land, taken by historians as a sign of a new continent.",
-            "about": "darnis",
-            "consistent_with_context": true
+            "about": "darnis"
           },
           {
             "text": "Därnis 'came back long enough to tell of it,' before whatever happened to him afterward goes unrecorded.",
             "about": "darnis",
-            "consistent_with_context": null,
             "note": "the source (ensayo_i era 9) states what Därnis discovered but does not explicitly confirm he returned to report it - Gondarfolas's reading is a plausible but unconfirmed inference"
           },
           {
             "text": "The traveler reports hearing in Khol Moshin that Därnis's siblings are organizing an expedition to search for him, departing from where a highway ends at the continent's southern tip.",
             "about": "darnis",
-            "consistent_with_context": null,
             "note": "siblings and a southern-terminus highway appear nowhere in the objective record - genuinely new hearsay, neither corroborated nor contradicted; Gondarfolas explicitly does not confirm it"
           },
           {
             "text": "Khol Moshin has no coastline - Gondarfolas, a sailor, has never had reason to go there.",
             "about": "khol_moshin",
-            "consistent_with_context": null,
             "note": "khol_moshin's exact geography isn't detailed enough in the objective record to confirm or contradict this outright, though it's consistently treated elsewhere as an inland/rail hub rather than a port"
           },
           {
             "text": "Gondarfolas owns two chronicles, the Ensayo and the Libro, and describes them accurately as two histories of the same span of years that never reconcile with each other.",
-            "about": "CONFLICT-01",
-            "consistent_with_context": true
+            "about": "CONFLICT-01"
           },
           {
             "text": "Gondarfolas bought his copies years ago from a trader in Görff he recalls as 'Bracco, or Braggo,' who sold them off cheaply and without explanation.",
             "about": null,
-            "consistent_with_context": null,
             "note": "Bracco is invented personal texture, not a material-sourced figure - see README §8 step 2"
           },
           {
             "text": "Gondarfolas has no idea where Bracco came from or went afterward.",
-            "about": null,
-            "consistent_with_context": null
+            "about": null
           }
         ]
       },
@@ -2787,25 +2767,21 @@
           {
             "text": "Codigos ties to Era del Daax, begun under Gorff's new government, and the Daax symbol was carved into old ruins right around those same years.",
             "about": "codigos",
-            "consistent_with_context": true,
             "note": "matches both the codigos and daax_symbol entries; symbol carved c. 372+ d.V. falls within Era del Daax's 360-504 d.V. span"
           },
           {
             "text": "Nerkeli jokingly theorizes that ducks are the last living descendants of the Daax.",
             "about": "daax_symbol",
-            "consistent_with_context": null,
             "note": "offered explicitly as Nerkeli's own unfounded pet theory, not asserted as history - invented character texture, see README §8 step 2"
           },
           {
             "text": "Nuvilo claims descent from 'Navalius,' said to have founded Nvhi generations back.",
             "about": "nvhi",
-            "consistent_with_context": null,
             "note": "Navalius appears nowhere in the objective record - a family claim, invented backstory per the user, not drawn from any material source; Nuvilo himself admits he knows little else about Nvhi's actual history"
           },
           {
             "text": "Nuvilo cites highway M9 (Nvhi -> Khan Ice); Nerkeli cites M7 (Puente Intercontinental -> Nvhi), which he flies regularly without having connected it to Nuvilo's family before this conversation.",
             "about": "nvhi",
-            "consistent_with_context": true,
             "note": "both routes are drawn directly from routes.highways"
           }
         ]
@@ -2826,24 +2802,20 @@
           {
             "text": "The Feria del Milenio celebrates 'a thousand years of Milkantis,' with exhibits honoring the world's cultures and building styles, its landscapes, its artifacts (codigos and redstone work among them), and its historical eras.",
             "about": null,
-            "consistent_with_context": null,
             "note": "the Feria itself is a session-level venue given directly by the user, not drawn from the objective record - see README §8 step 2"
           },
           {
             "text": "Nuvilo holds no official role at the fair - unlike Nerkeli, running the airplane showcase, he's simply a visiting scholar 'following the path of knowledge.'",
             "about": null,
-            "consistent_with_context": true,
             "note": "matches Nuvilo's registered backstory"
           },
           {
             "text": "Nuvilo writes about historical inventors and travelers, naming Daaxagoras and Pitaglorias (credited with the first atlas) and Darnis (who sailed south and found unmapped land).",
-            "about": "darnis",
-            "consistent_with_context": true
+            "about": "darnis"
           },
           {
             "text": "Nuvilo describes an unsolved puzzle: two histories of the same centuries, written by different hands, that never reconcile.",
             "about": "CONFLICT-01",
-            "consistent_with_context": true,
             "note": "an informal, personal echo of CONFLICT-01 - Nuvilo doesn't cite it as such, he's speaking from his own scholarly frustration"
           }
         ]
@@ -2864,31 +2836,26 @@
           {
             "text": "Nerkeli flies the M7 corridor (Puente Intercontinental -> Nvhi) as his regular assigned run, not for any business of his own - freight and the occasional passenger.",
             "about": "nvhi",
-            "consistent_with_context": true,
             "note": "matches routes.highways M7"
           },
           {
             "text": "Despite flying that route for years, Nerkeli says he couldn't tell much about Nvhi itself - he turns around at the airstrip each time without properly seeing the place.",
             "about": "nvhi",
-            "consistent_with_context": true,
             "note": "consistent with Nerkeli's sampled knowledge not including the 'nvhi' location entry itself, only the M7 highway"
           },
           {
             "text": "His freight is mixed: tools, building supplies, mail, and occasionally fragile merchant goods too delicate for boat or horse transport.",
             "about": null,
-            "consistent_with_context": null,
             "note": "invented character texture, not drawn from any material source - see README §8 step 2"
           },
           {
             "text": "Nerkeli doubts the fair's 'thousand years of Milkantis' framing, saying he's heard the world's starting point told three incompatible ways across his travels, none of which line up.",
             "about": "CONFLICT-12",
-            "consistent_with_context": true,
             "note": "an informal, personal echo of CONFLICT-12 (three+ unreconciled 'start of the world' reference points) - Nerkeli doesn't cite it as such, he's speaking from travel-worn skepticism"
           },
           {
             "text": "Nerkeli restates his running joke theory that ducks are the last living descendants of the Daax.",
             "about": "daax_symbol",
-            "consistent_with_context": null,
             "note": "same invented pet theory as in nuvilo_nerkeli_feria_del_milenio - offered explicitly as his own theory, not as history"
           }
         ]
@@ -2909,30 +2876,25 @@
           {
             "text": "The Plaza de las Culturas is one of the Feria del Milenio's pavilions, honoring the diversity of architectural styles and urbanity across Milkantis, from small villages to great cities.",
             "about": null,
-            "consistent_with_context": null,
             "note": "the Plaza is a session-level venue given directly by the user, not drawn from the objective record - see README §8 step 2"
           },
           {
             "text": "The Plaza displays castle replicas of Görff, Ciudad Dragón, and Salthos Cruzados, and the palace of Khan Icé - the fortresses of the largest cities.",
             "about": null,
-            "consistent_with_context": null,
             "note": "describes the pavilion's own exhibits, not itself a claim about the objective record"
           },
           {
             "text": "The Plaza's pedestals sometimes display miniature AI-powered holograms of five other architectural marvels of Milkantis, built on a separate datapack - costly in energy, and if left running too long, the fabric of time itself grows tense and starts to crackle.",
-            "about": null,
-            "consistent_with_context": null
+            "about": null
           },
           {
             "text": "Döran calls Görff the oldest of the four represented castles, \"curtida en más de una guerra\" (weathered by more than one war).",
             "about": "gorff",
-            "consistent_with_context": true,
             "note": "matches era_ensayo 'Las Guerras de Gorff' and the gorff location entry's castle/war history"
           },
           {
             "text": "Döran says he knows Khan Icé's palace only through what train travelers tell him passing through, not firsthand.",
             "about": "khan_ice",
-            "consistent_with_context": null,
             "note": "a personal admission, not independently verifiable"
           }
         ]
@@ -2953,55 +2915,46 @@
           {
             "text": "Prince Döran built the castle at Salthos Cruzados after the discovery of Plathinëa, and world cartography began there.",
             "about": "salthos_cruzados",
-            "consistent_with_context": true,
             "note": "matches the objective record closely (ensayo_i: castle built by prince Doran after Plathinea's discovery, ~72 d.V.; cartography begins here)"
           },
           {
             "text": "This Döran shares his name with the legendary prince, and wonders whether that shaped his own path into maps and miniatures, or the other way around.",
             "about": "doran",
-            "consistent_with_context": null,
             "note": "a personal descent/namesake claim, given by the user as this character's backstory - see README §8 step 2; the objective record says nothing about the prince having descendants, so this is neither confirmed nor contradicted"
           },
           {
             "text": "Plathinëa is described as 'the other half of the world' - the region discovered after Milkäan.",
             "about": null,
-            "consistent_with_context": true,
             "note": "matches the objective record's two-region split (Milkäan / Platinhüa) documented in unknown.md"
           },
           {
             "text": "Ciudad Dragón grew from Península Dragón, absorbed a neighboring village, and became the largest city in all of Milkantis.",
             "about": "dragon_city",
-            "consistent_with_context": true,
             "note": "matches the dragon_city location entry's merger narrative exactly"
           },
           {
             "text": "Ciudad Dragón's mages are blamed for destroying the great map of Salthos Cruzados.",
             "about": "codigos",
-            "consistent_with_context": true,
             "note": "matches the codigos concept entry: misuse of codigos by Dragon City's mages destroys the great map of Salthos Cruzados in 850 d.V."
           },
           {
             "text": "Görff's castle carries so many scars that an entire era was named for its wars, 'Las Guerras de Görff.'",
             "about": "gorff",
-            "consistent_with_context": true,
             "note": "matches era_ensayo 'Las Guerras de Gorff' (era 2) and the gorff location entry's castle/war history"
           },
           {
             "text": "Döran says more familiar faces pass through the fair from Görff than from anywhere else.",
             "about": null,
-            "consistent_with_context": null,
             "note": "a personal impression, not verifiable against the objective record"
           },
           {
             "text": "Khan Icé is connected by rail to both Görff and Balhâm.",
             "about": "khan_ice",
-            "consistent_with_context": true,
             "note": "matches the train_segment entries for Gorff-Khan Ice and Khan Ice-Balham"
           },
           {
             "text": "Döran speculates, from the palace's defensive architecture, that Khan Icé served as a wartime refuge and possibly a capital 'when the world closed in on itself.'",
             "about": "khan_ice",
-            "consistent_with_context": true,
             "note": "delivered as unconfirmed speculation - not sourced from Döran's own knowledge sample - but it happens to match the objective record: khan_ice's sources note 'refuge built end of era 1; world capital in Era del Confinamiento.' A confident bluff that landed on the truth, not a knowing lie; worth watching if a future retelling drops the hedge and states it as settled fact"
           }
         ]
@@ -3021,24 +2974,20 @@
         "claims": [
           {
             "text": "Döran considers Görff, tied to 'Las Guerras de Görff,' the oldest culture among the four he can speak to with confidence - and admits a gap in what he knows between that era and the Era del Daax.",
-            "about": "gorff",
-            "consistent_with_context": true
+            "about": "gorff"
           },
           {
             "text": "Döran describes the Era del Daax as the first age of the códigos and the era when architecture itself expanded most, noting the two chronicles disagree on when it began (360 d.V. vs. 294 d.V.) though both close it at 504 d.V.",
             "about": "Era del Daax",
-            "consistent_with_context": true,
             "note": "matches the objective record's own boundary mismatch exactly"
           },
           {
             "text": "Döran names the Era de las Maravillas, starting around 804 d.V. with no end he knows of, among the ages he can speak to.",
-            "about": "Era de las Maravillas",
-            "consistent_with_context": true
+            "about": "Era de las Maravillas"
           },
           {
             "text": "Döran says the present era is the Era de la Magia - when the tools that shape the world began transforming themselves, when people learned to 'mod the game' and bend the rules of the universe within this plane.",
             "about": "Era de la Magia",
-            "consistent_with_context": true,
             "note": "the era's existence and dates are in the objective record; this specific framing is a session-given elaboration, plausible as written but not independently verifiable"
           }
         ]
@@ -3059,19 +3008,16 @@
           {
             "text": "Before the Collective, and before the citadel was left abandoned, a tyrant ruled from the castle at Görff - his name no longer remembered.",
             "about": "gorff",
-            "consistent_with_context": null,
             "note": "the objective gorff entry records the castle built in era 2 ('Las Guerras de Gorff') and an industrial restoration, but names no ruler and never uses the word 'tyrant' - compatible in timing, not confirmed in substance; first voiced here as the Collective's own telling of its origin, not drawn from either character's sampled knowledge"
           },
           {
             "text": "Farlis calls it poetic justice that he and Khaoe now live in the same castle that once belonged to that tyrant.",
             "about": "gorff",
-            "consistent_with_context": null,
             "note": "Farlis's own framing, given as his personal backstory reason for joining the Collective - not a lore claim to verify"
           },
           {
             "text": "Khaoe pushes back on the 'poetic justice' framing - to her it's not symbolism, just that someone had to take up the stones.",
             "about": null,
-            "consistent_with_context": null,
             "note": "personal disposition, not a factual claim"
           }
         ]
@@ -3092,19 +3038,16 @@
           {
             "text": "Farlis says he was never told exactly what event the Feria's 'thousand years' framing counts from.",
             "about": "CONFLICT-12",
-            "consistent_with_context": true,
             "note": "echoes the same unreconciled origin-point problem documented as CONFLICT-12 (also independently echoed by Nerkeli in nerkeli_hangar_talk.json) - Farlis doesn't cite it as such, just voices the same gap"
           },
           {
             "text": "Khaoe says every temple in Lundria kept its own calendar, as if the world began again at each door.",
             "about": "lundria",
-            "consistent_with_context": null,
             "note": "the objective lundria entry records temple-building and the 'culto del cubo flotante de Lundria' (era 7) but says nothing about calendars specifically - plausible given the temple culture on record, not confirmed; Khaoe's own sampled knowledge of Lundria was bounded to the location's name/region/type, not this detail, so this is personal impression from her actual visit, not drawn from her sample"
           },
           {
             "text": "Both agree a thing can end up meaning something else entirely, if enough time passes, or if someone puts in the work to change it.",
             "about": null,
-            "consistent_with_context": null,
             "note": "shared philosophical conclusion, not a factual claim"
           }
         ]
@@ -3125,13 +3068,11 @@
           {
             "text": "Khaasan told Khaoe and Farlis he was coming straight to the Feria del Milenio.",
             "about": null,
-            "consistent_with_context": null,
             "note": "a social claim about a third party, nothing in the objective record to check it against"
           },
           {
             "text": "Khaoe and Farlis expect Khaasan to arrive by griffon, and are watching the sky for it.",
             "about": "Khaasan (Gorff)",
-            "consistent_with_context": true,
             "note": "resolved 2026-07-30 (Khaasan's own /enact pass, per the user): he always travels by griffon, full stop - 'Teletraveller' describes the distance he covers, not a contradiction with the mount. Previously flagged here as a genuine divergence (consistent_with_context: false); no longer open."
           }
         ]
@@ -3152,25 +3093,21 @@
           {
             "text": "The Calendario Mecanográfico is a new machine, inaugurated for the Feria del Milenio, that marks the current year on a moving timeline.",
             "about": null,
-            "consistent_with_context": null,
             "note": "a session-level venue fixture given directly by the user, not drawn from the objective record - see README §8 step 2"
           },
           {
             "text": "Khaoe says every temple in Lundria disagreed on what year it was, each counting from something different, with nobody troubled by the mismatch.",
             "about": "lundria",
-            "consistent_with_context": null,
             "note": "restates, in more detail, the same impression already on record from khaoe_farlis_lo_que_cambia_el_tiempo#2 - not drawn from a sampled hearsay item, just the same character carrying the same established impression into a later dialogue, so derived_from/oral_lore don't apply here"
           },
           {
             "text": "Khaoe says she went to Lundria hoping to learn 'the' calendar there and came back without knowing which of the many was the real one.",
             "about": "lundria",
-            "consistent_with_context": null,
             "note": "personal account of her own trip, not independently verifiable"
           },
           {
             "text": "Khaoe vaguely recalls one temple that counted by moons and another that counted from the last time the whole town gathered.",
             "about": "lundria",
-            "consistent_with_context": null,
             "note": "offered explicitly as a half-remembered, unreliable impression, not asserted as fact - she declines to 'teach' it and redirects to 'someone from Lundria' instead. None of these specific details appear in the objective lundria entry, which records only temple-building and the 'culto del cubo flotante de Lundria' (era 7) - plausible given that record, not confirmed or contradicted; Khaoe's own sampled knowledge of Lundria was bounded to the location's name/region/type, so this is personal impression from her visit, not drawn from her sample, consistent with the same caveat already logged for khaoe_farlis_lo_que_cambia_el_tiempo#2"
           }
         ]
@@ -3191,37 +3128,31 @@
           {
             "text": "Khaoe confirms she's a member of the Collective, and jokes that either it shows or someone's been talking about her.",
             "about": "gorff",
-            "consistent_with_context": true,
             "note": "matches her own registered backstory"
           },
           {
             "text": "Khaoe says the Collective has spent years rebuilding Görff 'their own way,' and that people talk about it, for better or worse.",
             "about": null,
-            "consistent_with_context": null,
             "note": "a personal impression, not independently verifiable"
           },
           {
             "text": "Khaoe clarifies that Farlis isn't literally a prince - his family has had money in Terfila for generations, but she's never been clear on the exact title, and he doesn't press the point either.",
             "about": null,
-            "consistent_with_context": true,
             "note": "matches Farlis's own registered backstory (aristocratic Terfila family, old money)"
           },
           {
             "text": "Khaoe describes the Collective as horizontal in a specific sense: nobody leads just for arriving first, or for their surname.",
             "about": "gorff",
-            "consistent_with_context": true,
             "note": "matches her own registered backstory's framing of the Collective"
           },
           {
             "text": "Khaoe says she doesn't know an exact headcount for the Collective - more or less everyone living in Görff counts, given how the horizontal structure works.",
             "about": "gorff",
-            "consistent_with_context": true,
             "note": "matches her own registered backstory, which frames the Collective as made up of 'the diversity of peoples that inhabit the Gorff farms and citadel'"
           },
           {
             "text": "Khaoe names Bardaglis (a musician), Kristok Jakur (works the forge), and Dägna (runs the tavern) as fellow Görff residents, then Farlis and Khaasan as the comrades she sees most often.",
             "about": "gorff",
-            "consistent_with_context": true,
             "note": "all five names match items in Khaoe's own sampled knowledge (inhabitant: Bardaglis (Gorff), inhabitant: Kristok Jakur (Gorff), inhabitant: Dägna (Gorff)) and their registered roles"
           }
         ]
@@ -3242,19 +3173,16 @@
           {
             "text": "El Espiral de la Historia es, según Iläria, el más importante de los cinco pabellones de la Feria del Milenio.",
             "about": "feria_del_milenio",
-            "consistent_with_context": null,
             "note": "a personal, self-interested opinion from the pavilion's own curator, not a checkable objective claim."
           },
           {
             "text": "El Espiral de la Historia es un laberinto de nueve recámaras, una por cada era del mundo, con artefactos, documentos, arte y personajes; Iläria se ubica en el centro, que representa la Era de la Magia (la era actual).",
             "about": "feria_del_milenio",
-            "consistent_with_context": null,
             "note": "structural detail invented as Iläria's personal backstory via /enact, not stated in ensayo_i_final's brief passage on the Feria (which gives only the pavilion count and inauguration date) - see _maps/npcs/registry.json."
           },
           {
             "text": "Iläria Astraëa es la autora del Ensayo que documenta la historia del mundo, y está a cargo de este pabellón.",
             "about": "ilaria",
-            "consistent_with_context": true,
             "note": "matches the 'ilaria' character entry (credited author of ENSAYO I); her charge over this specific pavilion is backstory-level detail, not contradicted by anything in the objective record."
           }
         ]
@@ -3275,14 +3203,12 @@
           {
             "text": "Aureobalo has heard, vaguely, that someone corrected Farlis over something he'd said about a castle and 'the stones someone had to hold up.'",
             "about": "khaoe_farlis_el_castillo_que_fue#3",
-            "consistent_with_context": true,
             "oral_lore": true,
             "note": "voiced with deliberately vague framing ('dicen que') per an untraceable lineage_coin.py roll - no source named in-line, though the claim traces back to Khaoe's rebuttal in khaoe_farlis_el_castillo_que_fue.json"
           },
           {
             "text": "Farlis confirms it was about him: he'd called it poetic justice, living in the same castle that once belonged to the tyrant it was taken from; he was told flatly it isn't poetry, someone just has to do it.",
             "about": "khaoe_farlis_el_castillo_que_fue#2",
-            "consistent_with_context": true,
             "note": "matches Farlis's own established stance and Khaoe's on-record rebuttal in khaoe_farlis_el_castillo_que_fue.json"
           }
         ]
@@ -3303,13 +3229,11 @@
           {
             "text": "Khaasan says he was just passing through Salthos Cruzados, coming from Khan Ice - not there for the Feria itself.",
             "about": "khan_ice",
-            "consistent_with_context": true,
             "note": "consistent with Khaasan's own registered knowledge sample, skewed toward Khan Ice"
           },
           {
             "text": "Aureobalo toasts him for the long road; Khaasan accepts the drink but says he prefers short ones.",
             "about": null,
-            "consistent_with_context": null,
             "note": "personal texture invented in-scene, not lore-bearing"
           }
         ]
@@ -3330,13 +3254,11 @@
           {
             "text": "Khaoe noticed Farlis had been talking with Aureobalo earlier that same evening.",
             "about": null,
-            "consistent_with_context": true,
             "note": "same-evening continuity with farlis_aureobalo_bar_salthos_cruzados, not a lore claim"
           },
           {
             "text": "Khaoe says Lundria was different from how she remembered it, and that she came back with more questions than she left with.",
             "about": "lundria",
-            "consistent_with_context": true,
             "note": "restates, in general terms, the same impression already on Khaoe's own registered experience (returned from Lundria more confused about timekeeping than she left) - see khaoe_calendario_mecanografico.json"
           }
         ]
@@ -3357,13 +3279,11 @@
           {
             "text": "Khaasan arrives by griffon, as always, and leaves it outside eating something it shouldn't.",
             "about": "Khaasan (Gorff)",
-            "consistent_with_context": true,
             "note": "firsthand, not hearsay - both participants were actually there. Matches the griffon-travel resolution recorded this same run in the khaoe_farlis_esperando_a_khaasan entry."
           },
           {
             "text": "Khaoe teases that she never doubted he'd arrive on time; Khaasan calls it a lie, and she admits it, a little.",
             "about": null,
-            "consistent_with_context": null,
             "note": "banter/personal texture invented in-scene, not lore-bearing"
           }
         ]
@@ -3384,14 +3304,12 @@
           {
             "text": "Bardaglis has turned the castle story into a song - specifically Khaoe's line about the stones someone had to hold up - and it's on its way to becoming popular.",
             "about": "khaoe_farlis_el_castillo_que_fue#3",
-            "consistent_with_context": true,
             "derived_from": "khaoe_farlis_el_castillo_que_fue#3",
             "note": "traceable lineage_coin.py roll; matches Bardaglis's own registered backstory (a song 'on the verge of becoming popular') and his sampled knowledge, which includes all three khaoe_farlis_el_castillo_que_fue claims. Notable irony, not asserted in-dialog: the line that stuck was Khaoe's rebuttal, not Farlis's original poetic-justice framing."
           },
           {
             "text": "Farlis confirms he was the one who said the poetic-justice line the song answers, and that he said it to Khaoe, in front of the castle.",
             "about": "khaoe_farlis_el_castillo_que_fue#2",
-            "consistent_with_context": true,
             "note": "matches Farlis's own established stance"
           }
         ]
@@ -3412,50 +3330,42 @@
           {
             "text": "Khaasan is travelling to Khan Ice to see his uncle, who has expected him without fail for years.",
             "about": "Khan Ice",
-            "consistent_with_context": null,
             "note": "New personal texture, given by the author this run. Nothing in the record speaks to Khaasan having family; nothing contradicts it either."
           },
           {
             "text": "Khaasan's uncle has never left Khan Ice.",
-            "about": "Khan Ice",
-            "consistent_with_context": null
+            "about": "Khan Ice"
           },
           {
             "text": "Khaoe's family came from Khan Ice before Khol Moshin, and she has never set foot there herself.",
             "about": "Khan Ice",
-            "consistent_with_context": true,
             "note": "Matches Khaoe's registered backstory exactly (Gorff, family from Khol Moshin, and before that Khan Ice). That she has never been is new, and consistent with a backstory that only ever claims descent."
           },
           {
             "text": "It is said there is a rail line to Khan Ice from Gorff, and another running down to Balham.",
             "about": "doran_four_castles#8",
-            "consistent_with_context": true,
             "oral_lore": true,
             "note": "Untraceable lineage_coin.py roll: Khaoe holds doran_four_castles#8 in her sample but voiced it as 'dicen que' with no source named, so derived_from is deliberately unset even though the origin is known. The rail claim itself checks out against the train_segment record (Gorff - Khan Ice, Khan Ice - Balham)."
           },
           {
             "text": "Khaasan refuses every means of travel but his griffon, saying the train leaves you where the train wants.",
             "about": null,
-            "consistent_with_context": true,
             "note": "Matches his registered backstory - always by griffon, never on foot or by any other means."
           },
           {
             "text": "Doran is going around saying Khan Ice was a capital in wartime, deduced from its walls, without ever having been there - Khaasan dismisses it on exactly that ground.",
             "about": "doran_four_castles#9",
-            "consistent_with_context": true,
             "derived_from": "doran_four_castles#9",
             "note": "Traceable lineage_coin.py roll, so Khaasan names Doran. Two things are true and worth separating: Doran did say it (it is his claim #9, and he did frame it as speculation from architecture), and Doran has in fact never been to Khan Ice (his own registered experience). Khaasan does not know the second part - he rejects the claim purely because its author was not present, which is his recorded epistemology, not inside knowledge."
           },
           {
             "text": "Khaoe came back from Lundria unable to say which temple's calendar was the true one, and will not teach what she cannot answer for.",
             "about": "khaoe_calendario_mecanografico#2",
-            "consistent_with_context": true,
             "note": "Restatement of her own established position, said here to a comrade rather than to a stranger asking."
           },
           {
             "text": "Khaoe's grandmother spoke of a house in Khan Ice near the water; Khaoe knows neither the street nor whether it exists, and asks Khaasan only to report whether it is still standing.",
             "about": "Khan Ice",
-            "consistent_with_context": null,
             "note": "New personal texture, invented in-scene. The refusal attached to it - 'no me traigas lo que significaba, traeme si esta parada o no' - is her criterion showing without being stated."
           }
         ]
@@ -3476,46 +3386,39 @@
           {
             "text": "The Plaza de las Culturas' Castillo de Gorff replica is, to Farlis, the single thing worth seeing across all five pavilions - and he says you cannot see the shape of a castle from inside it.",
             "about": "doran_four_castles#6",
-            "consistent_with_context": null,
             "note": "Personal texture. Consistent with his registered backstory (waited years for the Feria, going pavilion to pavilion) and with the replica's existence, which is established in Doran's own registered backstory."
           },
           {
             "text": "Before the Collective, a tyrant ruled from the castle at Gorff, and his name is no longer remembered.",
             "about": "khaoe_farlis_el_castillo_que_fue#1",
-            "consistent_with_context": null,
             "derived_from": "khaoe_farlis_el_castillo_que_fue#1",
             "note": "Traceable lineage_coin.py roll - Aureobalo names Khaoe as the source, in keeping with his recorded habit of carrying a story back to whoever it is about."
           },
           {
             "text": "Khaoe rejects the poetic-justice reading of the castle - to her someone simply had to take up the stones - and Farlis holds the reading she rejects.",
             "about": "khaoe_farlis_el_castillo_que_fue#3",
-            "consistent_with_context": true,
             "derived_from": "khaoe_farlis_el_castillo_que_fue#3",
             "note": "Traceable roll; Aureobalo names Khaoe. He already had this confirmed by Farlis directly at the bar (farlis_aureobalo_bar_salthos_cruzados), so it is a retelling to its own subject rather than gossip."
           },
           {
             "text": "Farlis concedes Khaoe is right in the part that matters: whether or not it is poetic, the castle belonged to one man and no longer does, and his joke about it changes nothing.",
             "about": "khaoe_farlis_el_castillo_que_fue#2",
-            "consistent_with_context": true,
             "note": "First time Farlis has conceded this. His earlier position (khaoe_farlis_el_castillo_que_fue#2) framed it as poetic justice and he defended it when Khaoe pushed back. He keeps the joke and drops the claim it was making."
           },
           {
             "text": "It is said that in the Collective nobody leads for having arrived first, or for their surname.",
             "about": "khaoe_banco_colectivo#4",
-            "consistent_with_context": true,
             "oral_lore": true,
             "note": "Untraceable lineage_coin.py roll: Aureobalo holds khaoe_banco_colectivo#4 but voiced it as 'dicen que' with no source named, so derived_from stays unset. Farlis confirms it firsthand in the next line, which is a stronger grounding than the retelling had."
           },
           {
             "text": "Farlis arrived at the Collective with an aristocratic Terfila surname and left it behind in Terfila, saying it is useful for nothing there, which is exactly what it is for.",
             "about": "khaoe_banco_colectivo#3",
-            "consistent_with_context": true,
             "note": "Consistent with Khaoe's earlier clarification that Farlis is not literally a prince and does not press the point."
           },
           {
             "text": "Aureobalo's surname resembles those of the losing side of the Guerras de Gorff; he is not related to them, his parents admired the loyalists, and he never chose the association.",
             "about": "Las Guerras de Gorff",
-            "consistent_with_context": null,
             "note": "Straight from Aureobalo's registered backstory, said aloud in a scene for the first time. Backstory is experience-knowledge and is held true regardless of his education sample, which does not itself contain the Guerras de Gorff."
           }
         ]
@@ -3537,48 +3440,40 @@
           {
             "text": "Khaoe's castle line was said offhand two nights earlier and is already being sung by people who do not know who she is.",
             "about": "khaoe_farlis_el_castillo_que_fue#3",
-            "consistent_with_context": true,
             "note": "Continues the lineage recorded in farlis_bardaglis_bar_salthos_cruzados, where Bardaglis first reported the line had become a song."
           },
           {
             "text": "Bardaglis holds that a song is only finished once it has lost its author - that being sung by people who do not know whose it is is the best thing that can happen to one.",
             "about": null,
-            "consistent_with_context": null,
             "note": "Bardaglis's standard, stated in a scene for the first time. Personal texture, not a lore claim."
           },
           {
             "text": "Ilaria holds the opposite: that an unrecorded line becomes everyone's and no one's within twenty years, leaving a historian nothing to write but 'se dice que'.",
-            "about": null,
-            "consistent_with_context": null
+            "about": null
           },
           {
             "text": "Khaoe claims the castle line as her own, said in front of the castle, and consents to it being written down with her name.",
-            "about": "khaoe_farlis_el_castillo_que_fue#3",
-            "consistent_with_context": true
+            "about": "khaoe_farlis_el_castillo_que_fue#3"
           },
           {
             "text": "It is said Ilaria wrote the Ensayo - Bardaglis repeats it without being able to say who they heard it from, and Ilaria confirms it herself on the spot.",
             "about": "ilaria_espiral_de_la_historia#3",
-            "consistent_with_context": true,
             "oral_lore": true,
             "note": "Untraceable lineage_coin.py roll: Bardaglis holds ilaria_espiral_de_la_historia#3 but could name no source, so derived_from stays unset and the line says as much out loud. Unusually, the claim is then confirmed firsthand by its own subject in the same breath, which is far stronger grounding than the retelling had."
           },
           {
             "text": "Ilaria says there is another book covering the same centuries differently, that the two do not agree, and that she would rather have two accounts that contradict each other than one that sounds whole.",
             "about": "CONFLICT-01",
-            "consistent_with_context": true,
             "note": "She names herself as the author of one of the two, which is what makes her refusal to adjudicate between them costly rather than neutral."
           },
           {
             "text": "Bardaglis has an older song about the Isla de la Amistad opening 'isla que no pide nombre, isla que no pide guerra', written from having played a season there and listened.",
             "about": "isla_de_la_amistad",
-            "consistent_with_context": true,
             "note": "Matches Bardaglis's registered experience, which already carries both the song and the opening line."
           },
           {
             "text": "Bardaglis refuses to put their own name to their song while insisting Khaoe's line keeps hers - theirs was made to leave, hers got away from her.",
             "about": null,
-            "consistent_with_context": null,
             "note": "The distinction is the whole of Bardaglis's position: the standard applies to what they made, not to what they carry for other people."
           }
         ]
@@ -3598,61 +3493,50 @@
         "claims": [
           {
             "text": "The Jardín de los Parajes was designed by Milkucha to represent the known world's classical biomes — an ode to classical geography.",
-            "about": "jardin_de_los_parajes",
-            "consistent_with_context": true
+            "about": "jardin_de_los_parajes"
           },
           {
             "text": "The podzol forest biome has no significant construction in known history.",
-            "about": null,
-            "consistent_with_context": null
+            "about": null
           },
           {
             "text": "The terracotta mountains in the Feria represent the Cuna de Grosslor, with reddish mountainous terrain and desert-like foreign air.",
-            "about": "grosslor",
-            "consistent_with_context": true
+            "about": "grosslor"
           },
           {
             "text": "Milkucha built the Cinema in Grosslor, though not alone — many others were involved.",
             "about": "grosslor",
-            "consistent_with_context": null,
             "note": "New fact about a specific construction attributed to Milkucha as participant."
           },
           {
             "text": "The Cordillera de Eurasori adorns the northern border of Khan Icé and was said to have been raised by gods, possibly Eurasori himself, sculpted by hands inspired by the creators' worlds.",
-            "about": "Khan Ice",
-            "consistent_with_context": null
+            "about": "Khan Ice"
           },
           {
             "text": "Milkucha can move mountains using mod power and other-planes-of-existence skills, saying it is not difficult once one is accustomed to it.",
             "about": null,
-            "consistent_with_context": null,
             "note": "Personal texture about Milkucha's capabilities, not a lore fact about a place."
           },
           {
             "text": "The taiga biome with cherry forests mixes elements of Khan Icé and Plathinëa. Cherry trees were used as diplomatic and ceremonial gifts by Dragón, with small saplings planted in friendly cities.",
-            "about": "Khan Ice",
-            "consistent_with_context": true
+            "about": "Khan Ice"
           },
           {
             "text": "Cherry trees from Dragón are found in almost every city Milkucha has visited.",
             "about": "isla_de_la_amistad",
-            "consistent_with_context": true,
             "note": "Observation of cherry-tree prevalence attributed to Dragón's diplomatic strategy."
           },
           {
             "text": "The Desert of Experimentation was the first desert, a vast zone where redstone inventions were tested and eventually abandoned.",
-            "about": null,
-            "consistent_with_context": null
+            "about": null
           },
           {
             "text": "The Desert of Balahm is the land of temples.",
-            "about": "balahm",
-            "consistent_with_context": true
+            "about": "balahm"
           },
           {
             "text": "Grosslor, Fuerte de la Cruz del Dragón, and Meseta del Pequeño Elefante are places on the continent of Milkaan — Milkucha's world.",
             "about": "grosslor",
-            "consistent_with_context": null,
             "note": "Milkucha revealed in passing that these places belong to 'this continent of Milkaan,' implying personal ownership or authorship of that world."
           }
         ]
@@ -3674,52 +3558,45 @@
             "about": [
               "year_esquema: 2013",
               "year_esquema: 2015"
-            ],
-            "consistent_with_context": true
+            ]
           },
           {
             "text": "Hotel Kholi was built during the Grandes Juegos to host athletes and representatives",
             "about": [
               "location: khan_ice",
               "concept: hotel_kholi"
-            ],
-            "consistent_with_context": true
+            ]
           },
           {
             "text": "The current year is 1000 in the Milkantis calendar",
             "about": [
               "era_ensayo: Era de la Imaginación"
-            ],
-            "consistent_with_context": true
+            ]
           },
           {
             "text": "The time-ratio between real-world and Milkantis years changed at the end of 2025",
             "about": [
               "concept: seasons_eas"
-            ],
-            "consistent_with_context": true
+            ]
           },
           {
             "text": "The Grandes Juegos approximately correspond to Milkantis years 73-219, making them roughly 850 years ago",
             "about": [
               "era_ensayo: Era del Confinamiento"
-            ],
-            "consistent_with_context": true
+            ]
           },
           {
             "text": "A witness to Khan Ice's development affirms the city's documented history is accurate",
             "about": [
               "location: khan_ice"
-            ],
-            "consistent_with_context": null
+            ]
           },
           {
             "text": "We are reflections of the things we do not want to lose",
             "about": [
               "concept: preservation",
               "concept: memory"
-            ],
-            "consistent_with_context": null
+            ]
           }
         ]
       },
@@ -3730,44 +3607,42 @@
           "Farlis",
           "Gok"
         ],
-        "location": "feria_del_milenio",
+        "location": {
+          "id": "feria_del_milenio",
+          "as_named_in_dialog": "Feria del Milenio"
+        },
         "claims": [
           {
             "text": "The Hotel Kholi still stands from the Grandes Juegos era, unchanged",
             "about": [
               "location: khan_ice",
               "era_ensayo: Era del Confinamiento"
-            ],
-            "consistent_with_context": true
+            ]
           },
           {
             "text": "The Hotel Kholi is a bridge between past and present Khan Ice",
             "about": [
               "location: khan_ice"
-            ],
-            "consistent_with_context": true
+            ]
           },
           {
             "text": "The Castillo de Görff was transformed from a tyrant's castle to a shared space",
             "about": [
               "location: castillo_del_sol"
-            ],
-            "consistent_with_context": true
+            ]
           },
           {
             "text": "Monuments are only living stones if kept alive through story and presence",
             "about": [
               "concept: preservation",
               "concept: memory"
-            ],
-            "consistent_with_context": null
+            ]
           },
           {
             "text": "Things can be different from what they were, without ceasing to be themselves",
             "about": [
               "concept: transformation"
-            ],
-            "consistent_with_context": null
+            ]
           }
         ]
       },
@@ -3787,25 +3662,21 @@
           {
             "text": "Farlis claims the Guerras de Görff were merely officers and nobles fighting over borders—a hierarchy-struggle, not heroic sacrifice. Auroboro III's ancestors meant more than that.",
             "about": "era_ensayo: Las Guerras de Gorff",
-            "consistent_with_context": true,
             "note": "Auroboro III's interpretation: Farlis reduces genuine ancestral honor to political power-struggle. Refusal to see the valor in the wars. Mutated through rejection of Farlis's radical reframing."
           },
           {
             "text": "Auroboro III argues that without memory, people are adrift and lose identity. Farlis counters that he knows who he is—someone who builds real things, not someone trapped talking about ghosts.",
             "about": null,
-            "consistent_with_context": null,
             "note": "Core collision between preservation and rejection. Each sees the other as trapped: Auroboro in nostalgia, Farlis in denial of the past's value."
           },
           {
             "text": "Farlis is from Görff and a member of the Collective, which dismantled the old military families and their hierarchy. Auroboro III sees this as erasure; Farlis sees it as liberation.",
             "about": null,
-            "consistent_with_context": true,
             "note": "Ideological divide: Auroboro mutates this as 'radical destruction of heritage'; Farlis mutates it as 'necessary dismantling of oppression.'"
           },
           {
             "text": "Auroboro III believes honoring the Guerras means keeping his ancestors alive, not forgetting them. Farlis sees the alcoba as a man sitting alone with his ghosts, refusing to move forward.",
             "about": "era_ensayo: Las Guerras de Gorff",
-            "consistent_with_context": true,
             "note": "Auroboro's mutation: his work is life-giving memory-keeping. Farlis's mutation: his work is sterile nostalgia. Same act, opposite framings."
           }
         ]
@@ -3813,30 +3684,25 @@
     ]
   },
   "tales": {
-    "_method_note": "A THIRD kind of source, distinct from both the objective record above and 'hearsay' - see _lore/tale/_index.md. A tale is told directly by the user, the world's author, outside any character's mouth and outside any excavated document. Unlike hearsay, a tale IS folded into the objective arrays above (locations/characters/concepts/routes/time_systems) wherever it overlaps an existing entry - via a 'tale:<id>' item added to that entry's 'sources' list, exactly like a material-file abbreviation - never by overwriting an existing entry. A genuine disagreement with something already on record gets a new 'conflicts' entry (next CONFLICT-NN id), 'user_resolution' left unset. Populated by the /tell skill (.claude/skills/tell/SKILL.md). Each entry here is a manifest of one tale, not a duplicate of its content: 'touches' lists every id (in any array above, including 'conflicts') this tale added or amended - the full text lives in _lore/tale/<id>.md.",
+    "_method_note": "A THIRD kind of source, distinct from both the objective record above and 'hearsay' - see _lore/tale/_index.md. A tale is told directly by the user, the world's author, outside any character's mouth and outside any excavated document - whether framed as a narrated story or stated plainly as a fact now known. Deliberately not distinguishing those two framings with a fact/fiction label: a tale can be partly true, the way a real legend often is, and that ambiguity is the point. Unlike hearsay, a tale IS folded into the objective arrays above (locations/characters/concepts/routes/time_systems) wherever it overlaps an existing entry - via a 'tale:<id>' item added to that entry's 'sources' list, exactly like a material-file abbreviation - never by overwriting an existing entry. A genuine disagreement with something already on record gets a new 'conflicts' entry (next CONFLICT-NN id), 'user_resolution' left unset. Populated by the /tell skill (.claude/skills/tell/SKILL.md). Each entry here is a manifest of one tale, not a duplicate of its content: 'touches' lists every id (in any array above, including 'conflicts') this tale added or amended - the full text lives in _lore/tale/<id>.md. 'told_by' (nullable) names who is credited IN-FICTION with this tale, if it's framed that way (a character, an institution, a legend) - both a name and 'nobody' are genuine, deliberate answers; most tales leave it null since there's usually no in-world frame at all. Who (which real-world user) actually recorded the entry is a separate question, answered in _lore/tale/_authors.md, never here.",
     "entries": [
       {
         "id": "peregrins",
         "source_file": "_lore/tale/peregrins.md",
         "told_date": "2026-07-30",
+        "told_by": null,
         "summary": "Peregrins are itinerant holy pilgrims, hundreds of years into a tradition of setting out yearly to encounter every temple in the world in search of 'the diverse divinity.' Bound by a vow of understanding and peace, they travel land, sea, and air, renouncing their own identity to become a canvas onto which the world's cultures express themselves and endure.",
         "touches": [
           "concepts.peregrins",
           "characters.named_inhabitants.by_locality.Terfila (Peregrin, Zarkapulos)",
           "characters.named_inhabitants.by_locality.generic_crowd_instances_not_individually_named (Peregrin, Gorff)"
         ]
-      }
-    ]
-  },
-  "discoveries": {
-    "_method_note": "A FOURTH kind of source, processed identically to 'tales' above (see that array's _method_note for the integration rule) but for a plain statement of fact rather than a told story, and carrying its own provenance: 'responsible' names who is credited with the discovery (a character, a person, an institution) or is explicitly null with 'responsible_note': \"known - no one responsible\" when the user says it's simply now known. Folded into the objective arrays the same way, via a 'discovery:<id>' source tag; disagreements raise a new 'conflicts' entry the same way. Populated by the /discover skill (.claude/skills/discover/SKILL.md). Each entry here is a manifest, not a duplicate of the discovery's content - the full text lives in _lore/discoveries/<id>.md.",
-    "entries": [
+      },
       {
         "id": "creepers_and_night_monsters",
-        "source_file": "_lore/discoveries/creepers_and_night_monsters.md",
-        "discovered_date": "2026-07-30",
-        "responsible": null,
-        "responsible_note": "known - no one responsible",
+        "source_file": "_lore/tale/creepers_and_night_monsters.md",
+        "told_date": "2026-07-30",
+        "told_by": null,
         "summary": "Creepers explode, and monsters emerge at night wherever it's dark - stated as having always been known, with no one credited for finding it out.",
         "touches": [
           "concepts.world_hazards"
@@ -3844,10 +3710,9 @@
       },
       {
         "id": "redstone_and_basic_needs",
-        "source_file": "_lore/discoveries/redstone_and_basic_needs.md",
-        "discovered_date": "2026-07-30",
-        "responsible": null,
-        "responsible_note": "known - no one responsible",
+        "source_file": "_lore/tale/redstone_and_basic_needs.md",
+        "told_date": "2026-07-30",
+        "told_by": null,
         "summary": "Redstone powers things; people need to eat, sleep, and rest - stated plainly, with no one credited for finding it out.",
         "touches": [
           "concepts.redstone",

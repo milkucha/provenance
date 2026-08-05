@@ -1,10 +1,11 @@
 # Redstone and Basic Needs
 
-**Discovered by:** no one; simply now known
-**Discovered on:** 2026-07-30
-**Encodings id:** `discoveries.entries[].id = "redstone_and_basic_needs"`
+**Told by:** no one; simply now known
+**Responsible:** milkucha - real-world provenance only, never an in-fiction detail (also recorded in `_lore/tale/_authors.md`)
+**Told on:** 2026-07-30
+**Encodings id:** `tales.entries[].id = "redstone_and_basic_needs"`
 
-## The discovery
+## The tale
 
 Redstone powers things, we need to eat, we need to sleep, we need to rest.
 

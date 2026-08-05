@@ -1,7 +1,7 @@
 # TODO
 
 Open implementation decisions and work, deferred for later. This is a build/production backlog —
-open questions about the lore itself live in `_lore/analysis/unknown.md`, not here.
+open questions about the lore itself live in `_lore/unknown.md`, not here.
 
 ## Knowledge mutation system (2026-08-01)
 
@@ -289,7 +289,7 @@ Khaoe lived: 9 → 10. No shocks (anchor not referenced).
       enacted this run and his registry entry was left untouched — his one-word backstory tag is
       "Teletraveller," which the hearsay record for `khaoe_farlis_esperando_a_khaasan.json` already
       flags as a divergence from the "arrives by griffon" expectation voiced in-scene (see
-      `_lore/analysis/hearsay.md`). Left unresolved on purpose — see that entry's note before deciding
+      `_lore/hearsay/hearsay.md`). Left unresolved on purpose — see that entry's note before deciding
       whether Khaasan's own eventual `/enact` pass should reconcile it or lean into the contradiction.
 
 ## Farlis, Aureobalo, Khaoe, Khaasan & Bardaglis (bar in Salthos Cruzados — Feria del Milenio, opening night)
@@ -479,6 +479,26 @@ construction — every other line keeps its ordinary nod untouched.
       next time material is added or a periodic audit is due, to confirm the three passes hold up in
       practice rather than just on paper.
 
+## Conflict-resolution skill (proposed, pinned 2026-08-05)
+
+No skill exists yet to help work through `encodings.json`'s `conflicts` array. As of 2026-08-05, 14 of
+17 entries (all but `CONFLICT-01`/`03`/`05`) have no `user_resolution` — every disagreement `/tell`
+and `/integrate` have ever logged is append-only by design: neither is allowed to set
+`user_resolution` themselves, that's the one thing only the user can do (see each skill's own docs).
+Right now the only way to resolve one is to notice it while reading the file directly.
+
+- [ ] A proposed `/resolve` (name not fixed) skill would surface open conflicts one at a time — topic,
+      full `detail`, and every entry elsewhere in `encodings.json` that carries a matching
+      `conflict_ref`/`"see CONFLICT-NN"` note, so the user has the full picture without hunting for
+      it — and, only on the user's own explicit call, write `user_resolution` (dated, "per user,
+      <date>", matching the existing convention). It must never suggest a resolution, never infer one
+      from majority-source-agreement or recency, and never resolve more than the one conflict the user
+      is actively looking at. Skipping a conflict (not ready to decide) must be a first-class,
+      no-op-safe choice, not just leaving the skill mid-run.
+- [ ] Worth deciding whether it should also handle the analogous case in `_lore/unknown.md`
+      (a gap the user is now ready to close) — same "only the user decides, never inferred" rule, but
+      currently no skill touches `unknown.md` at all except to add to it.
+
 ## Random character location selection in `/enact` (pinned 2026-08-01)
 
 When setting a scene location in `/enact` Step 1 (or any step that needs to pick a place), if the character's `city` field lists multiple locations or is blank, use weighted location selection rather than the user specifying it outright or picking at random:
@@ -589,7 +609,7 @@ loading, in-scene modulation, and Step 5b shock/drift resolution. Still open:
       ordinary people, who inherit their town's answer rather than authoring one.
 - [ ] **No `/fact` skill.** Adding a fact means hand-editing `_lore/facts/facts.json`, a new `.md`,
       and the `_index.md` table. Fine for now given how rarely facts should be added, but the other
-      four sources of truth all have skills (`/integrate`, `/tell`, `/discover`).
+      sources of truth all have skills (`/integrate` for material/analysis, `/tell` for tale).
 - [x] **Backfilled 2026-07-31:** Bardaglis, Farlis, Khaoe, Khaasan, Aureobalo, Döran, and Iläria all
       have a derived criterion (with anchor, `trusts`/`distrusts`, and a seeded `cost_ledger` drawn
       from what their recorded history already cost them) and a rolled lifespan. `life.lived` was
@@ -611,8 +631,8 @@ loading, in-scene modulation, and Step 5b shock/drift resolution. Still open:
       `knowledge.experience` entry; it also flags which notified characters have a `criterion.anchor`
       referencing the deceased, so `/enact` Step 5b point 6 can resolve that as a shock through the
       existing reject/reinterpret/break machinery. Everyone else only learns later, the ordinary way
-      — the death is recorded as a `_lore/discoveries/` entry (same shape `/discover` produces,
-      `responsible: null` unless a cause was established in the closing scene) and re-enters the
+      — the death is recorded as a `_lore/tale/` entry (same shape `/tell` produces,
+      `told_by: null` unless a cause was established in the closing scene) and re-enters the
       normal sampling pool. `life.deceased` (plain, non-secret bool) added to the registry `life`
       object and to every already-touched character (`false`); Step 1 now refuses to re-enact anyone
       with `deceased: true`. Tested against real data: `notify_death.py khaoe`/`bardaglis` correctly
@@ -627,7 +647,7 @@ loading, in-scene modulation, and Step 5b shock/drift resolution. Still open:
       lifespan entry below), so `notify_death.py` has only been tested by hypothetically running it
       against living characters, never through an actual `/enact` Step 5b point 6 closing-out. Worth
       running the short-lifespan test suggested below specifically to watch the full death procedure
-      fire end to end, including the discovery-record write and a real shock resolution.
+      fire end to end, including the tale-record write and a real shock resolution.
 - [ ] **`python` on PATH is the Microsoft Store stub** on this machine, and the repo's `.venv/` is a
       dead Codespace artifact (`.venv/bin/python` points at `/home/codespace/...`). `py -3` works.
       Either fix the venv, or update the `python scripts/...` invocations in README §5 and the

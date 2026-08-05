@@ -15,8 +15,8 @@
      "libro (Ciudades A.V., 2012)"
     ],
     "notes": "start-year mismatch between catastro (2011) and libro (2012); see CONFLICT-06",
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 4
+    "file": "_lore/encodings.json#locations",
+    "degree": 6
    },
    {
     "id": "loc:puerto_pastizal",
@@ -37,7 +37,7 @@
      "libro (Ciudades A.V., 2012)"
     ],
     "notes": null,
-    "file": "_lore/analysis/encodings.json#locations",
+    "file": "_lore/encodings.json#locations",
     "degree": 4
    },
    {
@@ -60,8 +60,8 @@
      "'Khan Ice (WP 17.11.2020).png' - a web-map (Dynmap/BlueMap-style) render showing a dense gridded city and the same colosseum-like structure seen in the 26.08.2020 screenshots"
     ],
     "notes": "three mutually inconsistent coordinate values across three sources; see CONFLICT-02. No airport code recorded for Khan Ice in the Cartography Airports sheet despite catastro listing it as 'En Construccion' for aeropuerto.",
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 19
+    "file": "_lore/encodings.json#locations",
+    "degree": 20
    },
    {
     "id": "loc:khol_moshin",
@@ -81,7 +81,7 @@
      "libro (Ciudades D.V., 2013)"
     ],
     "notes": "X-coordinates roughly agree (1275 vs 1300); Y-coordinates disagree in sign (225 vs -200); see CONFLICT-02",
-    "file": "_lore/analysis/encodings.json#locations",
+    "file": "_lore/encodings.json#locations",
     "degree": 14
    },
    {
@@ -104,7 +104,7 @@
      "Luminacion Register NPC roster: home locality for ~19 of the ~40 listed NPCs (Bardaglis the musician, Dägna the barkeeper, Farlika/Gorlia/Morlia the market keepers, Kristok Jakur the blacksmith, etc.) - production data, not lore, see unknown.md"
     ],
     "notes": "atlas/grid coordinates agree exactly (1000,1000); the airport coordinate (1239,1017) is close but not identical, consistent with an airport built near but not at the city's marked center",
-    "file": "_lore/analysis/encodings.json#locations",
+    "file": "_lore/encodings.json#locations",
     "degree": 79
    },
    {
@@ -128,7 +128,7 @@
      "'Sid Nalta (WP 17.11.2020).png' - first visual documentation: three connected built areas (a walled village zone, a desert zone with an octagonal stadium, and a rocky/snow-capped zone with a dish/observatory structure), linked by a bridge or rail line"
     ],
     "notes": "atlax_i's raw coords (-130,1250, far west) do not match image7's grid cell 2,-1; the airport coordinate (-1004,1123) is further west still, in the same general direction as atlax_i's value but not matching it either - three-way mismatch, see CONFLICT-02. Also unclear whether 'Sid Nalta' (atlax_i/image7/Luminacion Register/screenshot spelling) and 'Sit:Nalta' (ensayo_i/catastro/libro/airports spelling) are definitely the same place - treated as same pending confirmation, see CONFLICT-07",
-    "file": "_lore/analysis/encodings.json#locations",
+    "file": "_lore/encodings.json#locations",
     "degree": 11
    },
    {
@@ -152,8 +152,8 @@
      "cartography_highways/trains: banco de Terfila referenced (2019); Terfila is an endpoint/waypoint for multiple named routes (Terfila-Khol Moshin, Terfila-Varilla, Terfila-Dragon in the Luminacion Register's NPC data)"
     ],
     "notes": "atlas/grid coordinates closely agree; the airport coordinate is in the same neighborhood but not identical. 'Terfila Old' images are unexplained - not clear if 'old' means a earlier build superseded by a newer Terfila, or simply an old screenshot",
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 24
+    "file": "_lore/encodings.json#locations",
+    "degree": 25
    },
    {
     "id": "loc:tyrnea",
@@ -173,7 +173,7 @@
      "libro (as 'Universidad de Tyrnea', Ciudades D.V., 2013)"
     ],
     "notes": "coordinates roughly agree",
-    "file": "_lore/analysis/encodings.json#locations",
+    "file": "_lore/encodings.json#locations",
     "degree": 6
    },
    {
@@ -192,8 +192,8 @@
      "catastro (start 2012, aeropuerto No)"
     ],
     "notes": "coordinates closely agree; not mentioned in ensayo_i or libro's Ciudades lists",
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 4
+    "file": "_lore/encodings.json#locations",
+    "degree": 5
    },
    {
     "id": "loc:catraniz",
@@ -214,8 +214,8 @@
      "esquema (2015)"
     ],
     "notes": "coordinates match exactly across three independent sources (atlax_i, libro text, image7) - the highest-confidence coordinate in the whole set. The airport coordinate is close but distinct, as expected for airport-vs-city-center. libro/esquema both flag 2015 with some uncertainty; ensayo_i implies Era del Mosaico (150-360 d.V. / 2015-2017 real) which is compatible",
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 9
+    "file": "_lore/encodings.json#locations",
+    "degree": 11
    },
    {
     "id": "loc:balham",
@@ -236,8 +236,8 @@
      "libro (as 'Balham', 2017; 'Dragon de Balham' listed as a monument)"
     ],
     "notes": "four spellings for one place across four sources",
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 9
+    "file": "_lore/encodings.json#locations",
+    "degree": 10
    },
    {
     "id": "loc:nvhi",
@@ -259,8 +259,8 @@
      "esquema (2018)"
     ],
     "notes": "airport coord and highway-route coord are both far northeast (x~2000-2200, y~5700-6200), in the same rough neighborhood as each other but not identical - internally consistent-ish, distinct from grid7's implied position",
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 11
+    "file": "_lore/encodings.json#locations",
+    "degree": 13
    },
    {
     "id": "loc:soti",
@@ -280,8 +280,8 @@
      "cartography_airports"
     ],
     "notes": "not mentioned in ensayo_i or libro; airport coordinate is new data",
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 4
+    "file": "_lore/encodings.json#locations",
+    "degree": 5
    },
    {
     "id": "loc:nalhue",
@@ -302,7 +302,7 @@
      "cartography_airports"
     ],
     "notes": "start-year mismatch (ensayo_i implies 2023, catastro says 2024); see CONFLICT-06. The airport coordinate (x=-11374) is dramatically farther west than any other located place in the entire dataset, consistent with ensayo_i describing it as a remote mountain site",
-    "file": "_lore/analysis/encodings.json#locations",
+    "file": "_lore/encodings.json#locations",
     "degree": 6
    },
    {
@@ -322,7 +322,7 @@
      "Book of Inventions only: site of a deactivated collection of three 'Explosive Artefacts' command-block machines, deactivated on '94 SBW'"
     ],
     "notes": "not mentioned in any other source; not in the catastro or any atlas",
-    "file": "_lore/analysis/encodings.json#locations",
+    "file": "_lore/encodings.json#locations",
     "degree": 3
    },
    {
@@ -341,8 +341,8 @@
      "cartography_trains only"
     ],
     "notes": "a named train-route waypoint/junction ('cruce' = crossing), not confirmed to be a settlement in its own right",
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 3
+    "file": "_lore/encodings.json#locations",
+    "degree": 4
    },
    {
     "id": "loc:monte_pastizal",
@@ -360,8 +360,8 @@
      "cartography_trains only"
     ],
     "notes": "name suggests proximity/relation to Puerto Pastizal ('Mount Pastizal'); not documented as a separate place anywhere else",
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 4
+    "file": "_lore/encodings.json#locations",
+    "degree": 5
    },
    {
     "id": "loc:puerto_del_norte",
@@ -381,7 +381,7 @@
      "catastro (start 2020, aeropuerto No)"
     ],
     "notes": null,
-    "file": "_lore/analysis/encodings.json#locations",
+    "file": "_lore/encodings.json#locations",
     "degree": 2
    },
    {
@@ -401,8 +401,8 @@
      "libro/image7 only"
     ],
     "notes": "not mentioned in any other source",
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 3
+    "file": "_lore/encodings.json#locations",
+    "degree": 4
    },
    {
     "id": "loc:fuerte_fabian",
@@ -421,8 +421,8 @@
      "libro/image7 only"
     ],
     "notes": "not mentioned in any other source",
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 2
+    "file": "_lore/encodings.json#locations",
+    "degree": 3
    },
    {
     "id": "loc:milkantida_as_place",
@@ -441,8 +441,8 @@
      "libro/image7 only"
     ],
     "notes": "listed on the grid map as a discrete place alongside cities, distinct from its separate use as a candidate name for the world/continent as a whole (see concept 'world_name_variants' and CONFLICT-03)",
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 4
+    "file": "_lore/encodings.json#locations",
+    "degree": 5
    },
    {
     "id": "loc:salthos_cruzados",
@@ -465,8 +465,8 @@
      "esquema (2013)"
     ],
     "notes": "atlax_ii's raw coordinates do not correspond to image7's grid cell 4,-1; the airport coord and train-endpoint coord are both in the same general area (roughly x=-25 to -516, z=3100-3249) and reasonably close to each other, but neither matches atlax_ii's numbers; see CONFLICT-02",
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 11
+    "file": "_lore/encodings.json#locations",
+    "degree": 12
    },
    {
     "id": "loc:kuritsa",
@@ -482,8 +482,8 @@
      "esquema (2020, as 'Kurista')"
     ],
     "notes": null,
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 2
+    "file": "_lore/encodings.json#locations",
+    "degree": 3
    },
    {
     "id": "loc:dragon_city",
@@ -505,7 +505,7 @@
      "esquema (2020, as 'Peninsula Dragon')"
     ],
     "notes": "three names for stages of the same place's history, per ensayo_i's explicit merger narrative. The airport coordinate (-3078,4161) is far from image7's implied grid position (grid 4,-3 implies roughly +4000,-3000) - another coordinate-sign/scale mismatch, see CONFLICT-02",
-    "file": "_lore/analysis/encodings.json#locations",
+    "file": "_lore/encodings.json#locations",
     "degree": 13
    },
    {
@@ -528,7 +528,7 @@
      "Luminacion Register (locality for NPC Gondorlikas, listed as both 'Lundria' and, in the Code sheet, en-route 'Lundria-Catraniz')"
     ],
     "notes": null,
-    "file": "_lore/analysis/encodings.json#locations",
+    "file": "_lore/encodings.json#locations",
     "degree": 7
    },
    {
@@ -544,8 +544,8 @@
      "catastro (as 'Nueva Gondola', start 2024, aeropuerto Si)"
     ],
     "notes": "ensayo_i treats these as two distinct foundings (original lost city, then a 'New' one); catastro only records the newer one",
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 3
+    "file": "_lore/encodings.json#locations",
+    "degree": 4
    },
    {
     "id": "loc:orange_manor",
@@ -560,8 +560,8 @@
      "catastro (start 2024, aeropuerto Si)"
     ],
     "notes": "possibly related to 'Villa Naranja' (see CONFLICT-08), not confirmed",
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 3
+    "file": "_lore/encodings.json#locations",
+    "degree": 4
    },
    {
     "id": "loc:sindaara",
@@ -576,8 +576,8 @@
      "catastro (two entries: 'Sindäara' and 'Bosques De Sindäara', both start 2024)"
     ],
     "notes": null,
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 1
+    "file": "_lore/encodings.json#locations",
+    "degree": 2
    },
    {
     "id": "loc:grosslor",
@@ -592,8 +592,8 @@
      "catastro (start 2024, aeropuerto Pendiente)"
     ],
     "notes": null,
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 2
+    "file": "_lore/encodings.json#locations",
+    "degree": 4
    },
    {
     "id": "loc:serenity_village",
@@ -608,7 +608,7 @@
      "catastro (start 2023, aeropuerto Pendiente)"
     ],
     "notes": null,
-    "file": "_lore/analysis/encodings.json#locations",
+    "file": "_lore/encodings.json#locations",
     "degree": 4
    },
    {
@@ -624,8 +624,8 @@
      "catastro (start 2023, aeropuerto No)"
     ],
     "notes": null,
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 2
+    "file": "_lore/encodings.json#locations",
+    "degree": 4
    },
    {
     "id": "loc:muro_norte",
@@ -640,7 +640,7 @@
      "catastro (start 2023, aeropuerto No, size left blank)"
     ],
     "notes": "treated as the same wall by name and date match, not stated as identical in either source",
-    "file": "_lore/analysis/encodings.json#locations",
+    "file": "_lore/encodings.json#locations",
     "degree": 4
    },
    {
@@ -656,8 +656,8 @@
      "catastro (start 2019, aeropuerto No)"
     ],
     "notes": "possibly, but not confirmed, the same place as 'Isla Tortuga' on image7 (grid 7,3); see CONFLICT-09",
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 6
+    "file": "_lore/encodings.json#locations",
+    "degree": 7
    },
    {
     "id": "loc:isla_tortuga",
@@ -676,7 +676,7 @@
      "libro/image7 only"
     ],
     "notes": "see CONFLICT-09",
-    "file": "_lore/analysis/encodings.json#locations",
+    "file": "_lore/encodings.json#locations",
     "degree": 5
    },
    {
@@ -692,8 +692,8 @@
      "catastro (as 'Puerto Varilla', start 2020, aeropuerto Si)"
     ],
     "notes": null,
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 2
+    "file": "_lore/encodings.json#locations",
+    "degree": 3
    },
    {
     "id": "loc:casa_de_esteban",
@@ -707,8 +707,8 @@
      "catastro only (start year uncertain, written '?2012?', aeropuerto No)"
     ],
     "notes": "possibly, but not confirmed, connected to the legendary figure 'Esteban' referenced in ensayo_i (see character 'esteban'); see CONFLICT-10",
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 4
+    "file": "_lore/encodings.json#locations",
+    "degree": 5
    },
    {
     "id": "loc:ciudad_del_viento",
@@ -723,7 +723,7 @@
      "catastro (start 2024, aeropuerto No)"
     ],
     "notes": null,
-    "file": "_lore/analysis/encodings.json#locations",
+    "file": "_lore/encodings.json#locations",
     "degree": 1
    },
    {
@@ -739,8 +739,8 @@
      "catastro (start 2024, aeropuerto No, size left blank)"
     ],
     "notes": null,
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 3
+    "file": "_lore/encodings.json#locations",
+    "degree": 5
    },
    {
     "id": "loc:aurora",
@@ -754,7 +754,7 @@
      "catastro only, nearly all fields blank (aeropuerto No)"
     ],
     "notes": null,
-    "file": "_lore/analysis/encodings.json#locations",
+    "file": "_lore/encodings.json#locations",
     "degree": 5
    },
    {
@@ -770,7 +770,7 @@
      "catastro (start 2025, aeropuerto No)"
     ],
     "notes": "ensayo_i_final (era 9) names this village Humucherry instead of the earlier edition's parenthetical 'aldea Camilo Ricarda' - which matches the Catastro's own 'Pueblo Camilo Ricarda' (start 2025). Both names kept on record, not merged. See CONFLICT-15.",
-    "file": "_lore/analysis/encodings.json#locations",
+    "file": "_lore/encodings.json#locations",
     "degree": 4
    },
    {
@@ -785,7 +785,7 @@
      "catastro only (start 2013, aeropuerto No)"
     ],
     "notes": "not mentioned in any other source",
-    "file": "_lore/analysis/encodings.json#locations",
+    "file": "_lore/encodings.json#locations",
     "degree": 1
    },
    {
@@ -801,7 +801,7 @@
      "catastro (start 2023, aeropuerto No)"
     ],
     "notes": null,
-    "file": "_lore/analysis/encodings.json#locations",
+    "file": "_lore/encodings.json#locations",
     "degree": 1
    },
    {
@@ -816,8 +816,8 @@
      "catastro only (start 2024, aeropuerto No)"
     ],
     "notes": "not confirmed to be the same as 'Bahia de las Estatuas' (spawn point / monument); kept as a separate entry, see CONFLICT-11",
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 7
+    "file": "_lore/encodings.json#locations",
+    "degree": 8
    },
    {
     "id": "loc:bahia_de_las_estatuas",
@@ -832,7 +832,7 @@
      "libro (listed under 'Monumentos')"
     ],
     "notes": "see CONFLICT-11",
-    "file": "_lore/analysis/encodings.json#locations",
+    "file": "_lore/encodings.json#locations",
     "degree": 2
    },
    {
@@ -847,8 +847,8 @@
      "catastro only (start 2024, aeropuerto No)"
     ],
     "notes": "not mentioned in any other source",
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 2
+    "file": "_lore/encodings.json#locations",
+    "degree": 3
    },
    {
     "id": "loc:zotti",
@@ -862,7 +862,7 @@
      "ensayo_i only ('se re habita Zotti', Nov 2023/802 d.V.)"
     ],
     "notes": "not in catastro or elsewhere; implies Zotti pre-existed and was repopulated, but its founding is not recorded anywhere in the material set",
-    "file": "_lore/analysis/encodings.json#locations",
+    "file": "_lore/encodings.json#locations",
     "degree": 1
    },
    {
@@ -877,8 +877,8 @@
      "ensayo_i only (built Nov 2023/802 d.V.)"
     ],
     "notes": "not mentioned elsewhere",
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 1
+    "file": "_lore/encodings.json#locations",
+    "degree": 2
    },
    {
     "id": "loc:villa_naranja",
@@ -892,8 +892,8 @@
      "ensayo_i only (founded 714 d.V., '85.000 al este', start of the Camino del Dragon)"
     ],
     "notes": "possibly, but not confirmed, related to 'Orange Manor' by name meaning ('naranja' = orange); dates do not obviously match; see CONFLICT-08",
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 4
+    "file": "_lore/encodings.json#locations",
+    "degree": 5
    },
    {
     "id": "loc:friendly_village",
@@ -907,7 +907,7 @@
      "ensayo_i only (built July 2022/702 d.V.), survival village, dragon armor forged here"
     ],
     "notes": "not mentioned elsewhere",
-    "file": "_lore/analysis/encodings.json#locations",
+    "file": "_lore/encodings.json#locations",
     "degree": 2
    },
    {
@@ -927,7 +927,7 @@
      "libro/image7 only"
     ],
     "notes": "not mentioned in any other source",
-    "file": "_lore/analysis/encodings.json#locations",
+    "file": "_lore/encodings.json#locations",
     "degree": 4
    },
    {
@@ -946,7 +946,7 @@
      "atlax_i only"
     ],
     "notes": "not mentioned in any other source",
-    "file": "_lore/analysis/encodings.json#locations",
+    "file": "_lore/encodings.json#locations",
     "degree": 4
    },
    {
@@ -968,8 +968,8 @@
      "libro (lists three mausoleos with raw coordinates, under a 'Mausoleos' header)"
     ],
     "notes": "ensayo_i's 'first'/'second' mausoleo are not explicitly matched by name to libro's 'Mausoleo 1'/'Mausoleo 1.1'/'Mausoleo 2' - plausible correspondence, not confirmed",
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 1
+    "file": "_lore/encodings.json#locations",
+    "degree": 2
    },
    {
     "id": "loc:aurali",
@@ -983,8 +983,8 @@
      "ensayo_i_final, era 9"
     ],
     "notes": "founded by Därnis immediately after discovering the world's first floating lands; absent from ensayo_i's original telling of the same passage. See character 'darnis'.",
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 1
+    "file": "_lore/encodings.json#locations",
+    "degree": 2
    },
    {
     "id": "loc:kursuviros",
@@ -998,7 +998,7 @@
      "ensayo_i_final, era 9"
     ],
     "notes": "founded at the opening of the 964 d.V. 'época del World Edit'; region not stated.",
-    "file": "_lore/analysis/encodings.json#locations",
+    "file": "_lore/encodings.json#locations",
     "degree": 1
    },
    {
@@ -1013,8 +1013,8 @@
      "ensayo_i_final, era 9"
     ],
     "notes": "cargo terminal built first (964 d.V. era-opening), passenger terminal and 'el gran Faro' (lighthouse) added 968 d.V.; region not stated.",
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 1
+    "file": "_lore/encodings.json#locations",
+    "degree": 2
    },
    {
     "id": "loc:shonogami",
@@ -1028,7 +1028,7 @@
      "ensayo_i_final, era 9"
     ],
     "notes": "founded 966 d.V. by an unnamed new player who began their journey near the Sit:Nalta ruins.",
-    "file": "_lore/analysis/encodings.json#locations",
+    "file": "_lore/encodings.json#locations",
     "degree": 0
    },
    {
@@ -1043,7 +1043,7 @@
      "ensayo_i_final, era 9"
     ],
     "notes": "built 966 d.V.; described as the world's first prison; no proper name given.",
-    "file": "_lore/analysis/encodings.json#locations",
+    "file": "_lore/encodings.json#locations",
     "degree": 2
    },
    {
@@ -1058,8 +1058,8 @@
      "ensayo_i_final, era 9"
     ],
     "notes": "founded 968 d.V.; name transcribed as-extracted, unexplained.",
-    "file": "_lore/analysis/encodings.json#locations",
-    "degree": 0
+    "file": "_lore/encodings.json#locations",
+    "degree": 1
    },
    {
     "id": "con:vortex",
@@ -1069,7 +1069,7 @@
     "sources": [
      "ensayo_i"
     ],
-    "file": "_lore/analysis/encodings.json#concepts",
+    "file": "_lore/encodings.json#concepts",
     "degree": 2
    },
    {
@@ -1081,7 +1081,7 @@
      "ensayo_i",
      "atlax_ii"
     ],
-    "file": "_lore/analysis/encodings.json#concepts",
+    "file": "_lore/encodings.json#concepts",
     "degree": 6
    },
    {
@@ -1092,7 +1092,7 @@
     "sources": [
      "ensayo_i"
     ],
-    "file": "_lore/analysis/encodings.json#concepts",
+    "file": "_lore/encodings.json#concepts",
     "degree": 5
    },
    {
@@ -1104,8 +1104,8 @@
      "ensayo_i, era 8",
      "ensayo_i_final, era 8"
     ],
-    "file": "_lore/analysis/encodings.json#concepts",
-    "degree": 5
+    "file": "_lore/encodings.json#concepts",
+    "degree": 6
    },
    {
     "id": "con:peregrins",
@@ -1115,8 +1115,8 @@
     "sources": [
      "tale:peregrins"
     ],
-    "file": "_lore/analysis/encodings.json#concepts",
-    "degree": 1
+    "file": "_lore/encodings.json#concepts",
+    "degree": 2
    },
    {
     "id": "con:world_hazards",
@@ -1124,9 +1124,9 @@
     "kind": "concept",
     "description": "creepers explode; monsters come out at night wherever it's dark. Stated as having always been known, not newly figured out by anyone in particular.",
     "sources": [
-     "discovery:creepers_and_night_monsters"
+     "tale:creepers_and_night_monsters"
     ],
-    "file": "_lore/analysis/encodings.json#concepts",
+    "file": "_lore/encodings.json#concepts",
     "degree": 1
    },
    {
@@ -1135,10 +1135,10 @@
     "kind": "concept",
     "description": "redstone powers things. Stated plainly, with no further mechanism given.",
     "sources": [
-     "discovery:redstone_and_basic_needs"
+     "tale:redstone_and_basic_needs"
     ],
-    "file": "_lore/analysis/encodings.json#concepts",
-    "degree": 1
+    "file": "_lore/encodings.json#concepts",
+    "degree": 3
    },
    {
     "id": "con:basic_needs",
@@ -1146,9 +1146,9 @@
     "kind": "concept",
     "description": "people need to eat, need to sleep, need to rest. Stated plainly, as a basic fact of how the world works.",
     "sources": [
-     "discovery:redstone_and_basic_needs"
+     "tale:redstone_and_basic_needs"
     ],
-    "file": "_lore/analysis/encodings.json#concepts",
+    "file": "_lore/encodings.json#concepts",
     "degree": 1
    },
    {
@@ -1159,8 +1159,8 @@
     "sources": [
      "ensayo_i, era 8"
     ],
-    "file": "_lore/analysis/encodings.json#concepts",
-    "degree": 2
+    "file": "_lore/encodings.json#concepts",
+    "degree": 3
    },
    {
     "id": "con:world_name_variants",
@@ -1174,7 +1174,7 @@
      "esquema",
      "mapa_del_milenio"
     ],
-    "file": "_lore/analysis/encodings.json#concepts",
+    "file": "_lore/encodings.json#concepts",
     "degree": 6
    },
    {
@@ -1185,7 +1185,7 @@
     "sources": [
      "mapa_del_milenio (El Antiguo Continente de Milkan - Mapa del Milenio.png)"
     ],
-    "file": "_lore/analysis/encodings.json#concepts",
+    "file": "_lore/encodings.json#concepts",
     "degree": 4
    },
    {
@@ -1196,8 +1196,8 @@
     "sources": [
      "esquema"
     ],
-    "file": "_lore/analysis/encodings.json#concepts",
-    "degree": 0
+    "file": "_lore/encodings.json#concepts",
+    "degree": 1
    },
    {
     "id": "con:seasons_eas",
@@ -1208,7 +1208,7 @@
      "timelines_py",
      "ensayo_i_final, era 9"
     ],
-    "file": "_lore/analysis/encodings.json#concepts",
+    "file": "_lore/encodings.json#concepts",
     "degree": 4
    },
    {
@@ -1219,7 +1219,7 @@
     "sources": [
      "ensayo_i"
     ],
-    "file": "_lore/analysis/encodings.json#concepts",
+    "file": "_lore/encodings.json#concepts",
     "degree": 3
    },
    {
@@ -1230,8 +1230,8 @@
     "sources": [
      "ensayo_i, era 2"
     ],
-    "file": "_lore/analysis/encodings.json#concepts",
-    "degree": 1
+    "file": "_lore/encodings.json#concepts",
+    "degree": 2
    },
    {
     "id": "con:juegos_de_milkaan",
@@ -1241,7 +1241,7 @@
     "sources": [
      "ensayo_i"
     ],
-    "file": "_lore/analysis/encodings.json#concepts",
+    "file": "_lore/encodings.json#concepts",
     "degree": 2
    },
    {
@@ -1252,7 +1252,7 @@
     "sources": [
      "ensayo_i, era 9"
     ],
-    "file": "_lore/analysis/encodings.json#concepts",
+    "file": "_lore/encodings.json#concepts",
     "degree": 2
    },
    {
@@ -1263,8 +1263,8 @@
     "sources": [
      "book_of_inventions"
     ],
-    "file": "_lore/analysis/encodings.json#concepts",
-    "degree": 2
+    "file": "_lore/encodings.json#concepts",
+    "degree": 3
    },
    {
     "id": "con:feria_del_milenio",
@@ -1274,8 +1274,8 @@
     "sources": [
      "ensayo_i_final, era 9"
     ],
-    "file": "_lore/analysis/encodings.json#concepts",
-    "degree": 9
+    "file": "_lore/encodings.json#concepts",
+    "degree": 11
    },
    {
     "id": "chr:pitaglorias",
@@ -1288,7 +1288,7 @@
     ],
     "notes": "spelling conflict between the two atlas books; see CONFLICT-04",
     "legendary": true,
-    "file": "_lore/analysis/encodings.json#characters.in_world_or_legendary",
+    "file": "_lore/encodings.json#characters.in_world_or_legendary",
     "degree": 1
    },
    {
@@ -1301,8 +1301,8 @@
     ],
     "notes": "possible name relation to the concept 'Dääx' (unconfirmed - see concept entry)",
     "legendary": true,
-    "file": "_lore/analysis/encodings.json#characters.in_world_or_legendary",
-    "degree": 1
+    "file": "_lore/encodings.json#characters.in_world_or_legendary",
+    "degree": 2
    },
    {
     "id": "chr:storfilias",
@@ -1314,7 +1314,7 @@
     ],
     "notes": null,
     "legendary": true,
-    "file": "_lore/analysis/encodings.json#characters.in_world_or_legendary",
+    "file": "_lore/encodings.json#characters.in_world_or_legendary",
     "degree": 2
    },
    {
@@ -1327,7 +1327,7 @@
     ],
     "notes": null,
     "legendary": true,
-    "file": "_lore/analysis/encodings.json#characters.in_world_or_legendary",
+    "file": "_lore/encodings.json#characters.in_world_or_legendary",
     "degree": 3
    },
    {
@@ -1340,7 +1340,7 @@
     ],
     "notes": "honored again by the c. 900 d.V. reconstruction of Görff, era 8",
     "legendary": true,
-    "file": "_lore/analysis/encodings.json#characters.in_world_or_legendary",
+    "file": "_lore/encodings.json#characters.in_world_or_legendary",
     "degree": 5
    },
    {
@@ -1353,7 +1353,7 @@
     ],
     "notes": null,
     "legendary": true,
-    "file": "_lore/analysis/encodings.json#characters.in_world_or_legendary",
+    "file": "_lore/encodings.json#characters.in_world_or_legendary",
     "degree": 2
    },
    {
@@ -1366,7 +1366,7 @@
     ],
     "notes": null,
     "legendary": true,
-    "file": "_lore/analysis/encodings.json#characters.in_world_or_legendary",
+    "file": "_lore/encodings.json#characters.in_world_or_legendary",
     "degree": 2
    },
    {
@@ -1379,7 +1379,7 @@
     ],
     "notes": null,
     "legendary": true,
-    "file": "_lore/analysis/encodings.json#characters.in_world_or_legendary",
+    "file": "_lore/encodings.json#characters.in_world_or_legendary",
     "degree": 0
    },
    {
@@ -1392,7 +1392,7 @@
     ],
     "notes": "possibly, but not confirmed, connected to the Catastro site 'Casa De Esteban'; see CONFLICT-10",
     "legendary": true,
-    "file": "_lore/analysis/encodings.json#characters.in_world_or_legendary",
+    "file": "_lore/encodings.json#characters.in_world_or_legendary",
     "degree": 4
    },
    {
@@ -1405,7 +1405,7 @@
     ],
     "notes": null,
     "legendary": true,
-    "file": "_lore/analysis/encodings.json#characters.in_world_or_legendary",
+    "file": "_lore/encodings.json#characters.in_world_or_legendary",
     "degree": 7
    },
    {
@@ -1419,8 +1419,8 @@
     ],
     "notes": "not listed among the real-world player roster in libro; status (in-world chronicler persona vs. real player) is unclear, see CONFLICT-05",
     "legendary": true,
-    "file": "_lore/analysis/encodings.json#characters.in_world_or_legendary",
-    "degree": 4
+    "file": "_lore/encodings.json#characters.in_world_or_legendary",
+    "degree": 5
    },
    {
     "id": "chr:milkucha",
@@ -1431,7 +1431,7 @@
      "libro",
      "book_of_inventions"
     ],
-    "file": "_lore/analysis/encodings.json#characters.real_world_authors_and_players",
+    "file": "_lore/encodings.json#characters.real_world_authors_and_players",
     "degree": 2
    },
    {
@@ -1442,7 +1442,7 @@
     "sources": [
      "libro"
     ],
-    "file": "_lore/analysis/encodings.json#characters.real_world_authors_and_players",
+    "file": "_lore/encodings.json#characters.real_world_authors_and_players",
     "degree": 0
    },
    {
@@ -1453,8 +1453,8 @@
     "sources": [
      "libro"
     ],
-    "file": "_lore/analysis/encodings.json#characters.real_world_authors_and_players",
-    "degree": 3
+    "file": "_lore/encodings.json#characters.real_world_authors_and_players",
+    "degree": 4
    },
    {
     "id": "inh:Gorff/Bardaglis",
@@ -1464,8 +1464,8 @@
     "locality": "Gorff",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
-    "degree": 6
+    "file": "_lore/encodings.json#characters.named_inhabitants",
+    "degree": 8
    },
    {
     "id": "inh:Gorff/Dägna",
@@ -1475,7 +1475,7 @@
     "locality": "Gorff",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 5
    },
    {
@@ -1486,7 +1486,7 @@
     "locality": "Gorff",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 5
    },
    {
@@ -1497,7 +1497,7 @@
     "locality": "Gorff",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 5
    },
    {
@@ -1508,8 +1508,8 @@
     "locality": "Gorff",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
-    "degree": 5
+    "file": "_lore/encodings.json#characters.named_inhabitants",
+    "degree": 6
    },
    {
     "id": "inh:Gorff/Morlia",
@@ -1519,7 +1519,7 @@
     "locality": "Gorff",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 4
    },
    {
@@ -1530,7 +1530,7 @@
     "locality": "Gorff",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 4
    },
    {
@@ -1541,8 +1541,8 @@
     "locality": "Gorff",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
-    "degree": 3
+    "file": "_lore/encodings.json#characters.named_inhabitants",
+    "degree": 5
    },
    {
     "id": "inh:Gorff/Khaoe",
@@ -1552,8 +1552,8 @@
     "locality": "Gorff",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
-    "degree": 4
+    "file": "_lore/encodings.json#characters.named_inhabitants",
+    "degree": 5
    },
    {
     "id": "inh:Gorff/Kristok Jakur",
@@ -1563,7 +1563,7 @@
     "locality": "Gorff",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 6
    },
    {
@@ -1574,8 +1574,8 @@
     "locality": "Gorff",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
-    "degree": 3
+    "file": "_lore/encodings.json#characters.named_inhabitants",
+    "degree": 4
    },
    {
     "id": "inh:Gorff/Nuruk",
@@ -1585,8 +1585,8 @@
     "locality": "Gorff",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
-    "degree": 7
+    "file": "_lore/encodings.json#characters.named_inhabitants",
+    "degree": 8
    },
    {
     "id": "inh:Gorff/Raika",
@@ -1596,7 +1596,7 @@
     "locality": "Gorff",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 5
    },
    {
@@ -1607,7 +1607,7 @@
     "locality": "Gorff",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 5
    },
    {
@@ -1618,7 +1618,7 @@
     "locality": "Gorff",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 4
    },
    {
@@ -1629,7 +1629,7 @@
     "locality": "Gorff",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 3
    },
    {
@@ -1640,8 +1640,8 @@
     "locality": "Gorff",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
-    "degree": 6
+    "file": "_lore/encodings.json#characters.named_inhabitants",
+    "degree": 7
    },
    {
     "id": "inh:Gorff/Azaor",
@@ -1651,8 +1651,8 @@
     "locality": "Gorff",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
-    "degree": 4
+    "file": "_lore/encodings.json#characters.named_inhabitants",
+    "degree": 5
    },
    {
     "id": "inh:Gorff/Mrek",
@@ -1662,7 +1662,7 @@
     "locality": "Gorff",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 5
    },
    {
@@ -1673,7 +1673,7 @@
     "locality": "Gorff",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 4
    },
    {
@@ -1684,7 +1684,7 @@
     "locality": "Gorff",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 7
    },
    {
@@ -1695,7 +1695,7 @@
     "locality": "Gorff",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 3
    },
    {
@@ -1706,7 +1706,7 @@
     "locality": "Gorff",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 4
    },
    {
@@ -1717,7 +1717,7 @@
     "locality": "Gorff",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 6
    },
    {
@@ -1728,8 +1728,8 @@
     "locality": "Gorff",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
-    "degree": 4
+    "file": "_lore/encodings.json#characters.named_inhabitants",
+    "degree": 5
    },
    {
     "id": "inh:Gorff/Gondarfolas",
@@ -1739,7 +1739,7 @@
     "locality": "Gorff",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 9
    },
    {
@@ -1750,7 +1750,7 @@
     "locality": "Terfila",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 7
    },
    {
@@ -1761,8 +1761,8 @@
     "locality": "Terfila",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
-    "degree": 10
+    "file": "_lore/encodings.json#characters.named_inhabitants",
+    "degree": 11
    },
    {
     "id": "inh:Terfila/Peregrin",
@@ -1772,8 +1772,8 @@
     "locality": "Terfila",
     "count": null,
     "notes": "see concept 'peregrins' (tale:peregrins)",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
-    "degree": 6
+    "file": "_lore/encodings.json#characters.named_inhabitants",
+    "degree": 7
    },
    {
     "id": "inh:Terfila/Zarkapulos",
@@ -1783,7 +1783,7 @@
     "locality": "Terfila",
     "count": null,
     "notes": "see concept 'peregrins' (tale:peregrins)",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 8
    },
    {
@@ -1794,8 +1794,8 @@
     "locality": "Terfila",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
-    "degree": 8
+    "file": "_lore/encodings.json#characters.named_inhabitants",
+    "degree": 9
    },
    {
     "id": "inh:Puente Continental/Grogar / Grograr",
@@ -1805,7 +1805,7 @@
     "locality": "Puente Continental",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 4
    },
    {
@@ -1816,7 +1816,7 @@
     "locality": "Puente Continental",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 5
    },
    {
@@ -1827,8 +1827,8 @@
     "locality": "Puente Continental",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
-    "degree": 3
+    "file": "_lore/encodings.json#characters.named_inhabitants",
+    "degree": 4
    },
    {
     "id": "inh:Puente Continental/Trifolis",
@@ -1838,7 +1838,7 @@
     "locality": "Puente Continental",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 2
    },
    {
@@ -1849,7 +1849,7 @@
     "locality": "Puente Continental",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 3
    },
    {
@@ -1860,7 +1860,7 @@
     "locality": "Volcano-Gorff",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 6
    },
    {
@@ -1871,7 +1871,7 @@
     "locality": "Volcano-Gorff",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 4
    },
    {
@@ -1882,7 +1882,7 @@
     "locality": "Volcano-Gorff",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 4
    },
    {
@@ -1893,7 +1893,7 @@
     "locality": "Khol Moshin (Taterzen sheet, distinct from the NPC-sheet locality list above)",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 1
    },
    {
@@ -1904,7 +1904,7 @@
     "locality": "Khol Moshin (Taterzen sheet, distinct from the NPC-sheet locality list above)",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 4
    },
    {
@@ -1915,8 +1915,8 @@
     "locality": "Khol Moshin (Taterzen sheet, distinct from the NPC-sheet locality list above)",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
-    "degree": 2
+    "file": "_lore/encodings.json#characters.named_inhabitants",
+    "degree": 3
    },
    {
     "id": "inh:Khol Moshin (Taterzen sheet, distinct from the NPC-sheet locality list above)/Raika",
@@ -1926,7 +1926,7 @@
     "locality": "Khol Moshin (Taterzen sheet, distinct from the NPC-sheet locality list above)",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 2
    },
    {
@@ -1937,8 +1937,8 @@
     "locality": "Khol Moshin (Taterzen sheet, distinct from the NPC-sheet locality list above)",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
-    "degree": 4
+    "file": "_lore/encodings.json#characters.named_inhabitants",
+    "degree": 5
    },
    {
     "id": "inh:Khol Moshin (Taterzen sheet, distinct from the NPC-sheet locality list above)/Farlis",
@@ -1948,7 +1948,7 @@
     "locality": "Khol Moshin (Taterzen sheet, distinct from the NPC-sheet locality list above)",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 4
    },
    {
@@ -1959,7 +1959,7 @@
     "locality": "Khol Moshin (Taterzen sheet, distinct from the NPC-sheet locality list above)",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 2
    },
    {
@@ -1970,7 +1970,7 @@
     "locality": "Khol Moshin (Taterzen sheet, distinct from the NPC-sheet locality list above)",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 0
    },
    {
@@ -1981,8 +1981,8 @@
     "locality": "cross-locality travelers/routes (named, with a mode of travel)",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
-    "degree": 5
+    "file": "_lore/encodings.json#characters.named_inhabitants",
+    "degree": 6
    },
    {
     "id": "inh:cross-locality travelers/routes (named, with a mode of travel)/Garfeld",
@@ -1992,8 +1992,8 @@
     "locality": "cross-locality travelers/routes (named, with a mode of travel)",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
-    "degree": 5
+    "file": "_lore/encodings.json#characters.named_inhabitants",
+    "degree": 6
    },
    {
     "id": "inh:cross-locality travelers/routes (named, with a mode of travel)/Gizen",
@@ -2003,8 +2003,8 @@
     "locality": "cross-locality travelers/routes (named, with a mode of travel)",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
-    "degree": 3
+    "file": "_lore/encodings.json#characters.named_inhabitants",
+    "degree": 5
    },
    {
     "id": "inh:cross-locality travelers/routes (named, with a mode of travel)/Gondorlikas",
@@ -2014,8 +2014,8 @@
     "locality": "cross-locality travelers/routes (named, with a mode of travel)",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
-    "degree": 0
+    "file": "_lore/encodings.json#characters.named_inhabitants",
+    "degree": 1
    },
    {
     "id": "inh:cross-locality travelers/routes (named, with a mode of travel)/Nerkeli",
@@ -2025,8 +2025,8 @@
     "locality": "cross-locality travelers/routes (named, with a mode of travel)",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
-    "degree": 7
+    "file": "_lore/encodings.json#characters.named_inhabitants",
+    "degree": 8
    },
    {
     "id": "inh:cross-locality travelers/routes (named, with a mode of travel)/Terrolis",
@@ -2036,8 +2036,8 @@
     "locality": "cross-locality travelers/routes (named, with a mode of travel)",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
-    "degree": 7
+    "file": "_lore/encodings.json#characters.named_inhabitants",
+    "degree": 8
    },
    {
     "id": "inh:cross-locality travelers/routes (named, with a mode of travel)/Murunu",
@@ -2047,7 +2047,7 @@
     "locality": "cross-locality travelers/routes (named, with a mode of travel)",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 4
    },
    {
@@ -2058,7 +2058,7 @@
     "locality": "cross-locality travelers/routes (named, with a mode of travel)",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 9
    },
    {
@@ -2069,7 +2069,7 @@
     "locality": "cross-locality travelers/routes (named, with a mode of travel)",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 2
    },
    {
@@ -2080,8 +2080,8 @@
     "locality": "cross-locality travelers/routes (named, with a mode of travel)",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
-    "degree": 5
+    "file": "_lore/encodings.json#characters.named_inhabitants",
+    "degree": 6
    },
    {
     "id": "inh:cross-locality travelers/routes (named, with a mode of travel)/Kjon-Ukk",
@@ -2091,8 +2091,8 @@
     "locality": "cross-locality travelers/routes (named, with a mode of travel)",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
-    "degree": 4
+    "file": "_lore/encodings.json#characters.named_inhabitants",
+    "degree": 5
    },
    {
     "id": "inh:cross-locality travelers/routes (named, with a mode of travel)/Farlis",
@@ -2102,7 +2102,7 @@
     "locality": "cross-locality travelers/routes (named, with a mode of travel)",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 2
    },
    {
@@ -2113,8 +2113,8 @@
     "locality": "cross-locality travelers/routes (named, with a mode of travel)",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
-    "degree": 3
+    "file": "_lore/encodings.json#characters.named_inhabitants",
+    "degree": 4
    },
    {
     "id": "inh:cross-locality travelers/routes (named, with a mode of travel)/Gurk",
@@ -2124,7 +2124,7 @@
     "locality": "cross-locality travelers/routes (named, with a mode of travel)",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 3
    },
    {
@@ -2135,8 +2135,8 @@
     "locality": "cross-locality travelers/routes (named, with a mode of travel)",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
-    "degree": 3
+    "file": "_lore/encodings.json#characters.named_inhabitants",
+    "degree": 4
    },
    {
     "id": "inh:unlocated (skin only, no locality/role given)/El Globero",
@@ -2146,8 +2146,8 @@
     "locality": "unlocated (skin only, no locality/role given)",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
-    "degree": 2
+    "file": "_lore/encodings.json#characters.named_inhabitants",
+    "degree": 3
    },
    {
     "id": "inh:unlocated (skin only, no locality/role given)/Mragk",
@@ -2157,8 +2157,8 @@
     "locality": "unlocated (skin only, no locality/role given)",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
-    "degree": 3
+    "file": "_lore/encodings.json#characters.named_inhabitants",
+    "degree": 4
    },
    {
     "id": "inh:unlocated (skin only, no locality/role given)/Korin",
@@ -2168,7 +2168,7 @@
     "locality": "unlocated (skin only, no locality/role given)",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 1
    },
    {
@@ -2179,8 +2179,8 @@
     "locality": "unlocated (skin only, no locality/role given)",
     "count": null,
     "notes": "",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
-    "degree": 2
+    "file": "_lore/encodings.json#characters.named_inhabitants",
+    "degree": 3
    },
    {
     "id": "inh:generic_crowd_instances_not_individually_named/Boater",
@@ -2190,7 +2190,7 @@
     "locality": "generic_crowd_instances_not_individually_named",
     "count": 6,
     "notes": "one NPC role run at 6 different Clock times (1000/3000/5000/7000/9000/11000)",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 1
    },
    {
@@ -2201,7 +2201,7 @@
     "locality": "generic_crowd_instances_not_individually_named",
     "count": 6,
     "notes": "instances a-f",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
+    "file": "_lore/encodings.json#characters.named_inhabitants",
     "degree": 1
    },
    {
@@ -2212,8 +2212,8 @@
     "locality": "generic_crowd_instances_not_individually_named",
     "count": 3,
     "notes": "see concept 'peregrins' (tale:peregrins)",
-    "file": "_lore/analysis/encodings.json#characters.named_inhabitants",
-    "degree": 0
+    "file": "_lore/encodings.json#characters.named_inhabitants",
+    "degree": 1
    },
    {
     "id": "cfl:CONFLICT-01",
@@ -2223,8 +2223,8 @@
     "detail": "ensayo_i gives a fully narrated 10-part era system dated in a.V./d.V. against real-world dates 2011-2026. libro gives a separate, only-outlined 6-part 'Venidas'/era system with different names, different boundary years, and no a.V./d.V. framing at all (e.g. libro's 'Era del Daax o de las Maquinas' spans 2018-2020, while ensayo_i's 'Era del Daax' spans only 2018-2019 and 'Era del Confinamiento' covers 2020-2021 separately). Both are kept as distinct systems, not merged.",
     "resolution": "Both timelines coexist in-world as separate, non-overriding reckonings - neither supersedes the other (per user, 2026-07-24).",
     "resolved": true,
-    "file": "_lore/analysis/encodings.json#conflicts",
-    "degree": 8
+    "file": "_lore/encodings.json#conflicts",
+    "degree": 10
    },
    {
     "id": "cfl:CONFLICT-02",
@@ -2234,8 +2234,8 @@
     "detail": "Khan Ice, Khol Moshin, Sit:Nalta, and Sälthos Cruzados each have coordinate or grid values from two+ sources that do not consistently agree (see each location's 'coords' array and 'notes' field for specifics). Catraniz is the notable exception, where three sources agree exactly.",
     "resolution": "",
     "resolved": false,
-    "file": "_lore/analysis/encodings.json#conflicts",
-    "degree": 9
+    "file": "_lore/encodings.json#conflicts",
+    "degree": 10
    },
    {
     "id": "cfl:CONFLICT-03",
@@ -2245,7 +2245,7 @@
     "detail": "See concept 'world_name_variants'. Milkantis, Milkäan, Milkantida, and 'Mundo de Milka' are never explicitly related to one another in any source, and libro poses its own unanswered question about whether 'Milkhantida' has another name.",
     "resolution": "Milkantis, Milkantida, and 'Mundo de Milka' are the same world-name with spelling drift over time (per user, 2026-07-24). NOT yet extended to Milkäan: across ensayo_i, catastro, and libro, 'Milkäan' is consistently used as one of two named regions (paired against Platinhëa/Plathinëa), not as a name for the whole world - e.g. catastro's every row is tagged Zona=Milkäan or Zona=Platinhëa, and ensayo_i places 'Puerto Pastizal, en la region de Milkäan' opposite the later-discovered 'region de Plathinëa'. Folding Milkäan into the same-name-as-the-world reading would contradict that regional split, so this is held open pending a direct check with the user rather than applied automatically.",
     "resolved": true,
-    "file": "_lore/analysis/encodings.json#conflicts",
+    "file": "_lore/encodings.json#conflicts",
     "degree": 4
    },
    {
@@ -2256,7 +2256,7 @@
     "detail": "Atlax I's dedication names 'PITAGLORIAS' as the inventor/explorer honored by that book. Atlax II's body text refers to the same original-atlas author as 'Fitaglorias'. Treated as the same person under entry 'pitaglorias', but the spelling is not reconciled by any source.",
     "resolution": "",
     "resolved": false,
-    "file": "_lore/analysis/encodings.json#conflicts",
+    "file": "_lore/encodings.json#conflicts",
     "degree": 2
    },
    {
@@ -2267,7 +2267,7 @@
     "detail": "ENSAYO I is credited to 'Iläria desde Lündria', written in an in-world voice. Libro's player roster (Milkucha, Nikkostratos, Termixdelosandes, etc.) does not include this name. Whether 'Iläria' is an in-world persona used by one of the real players, or a distinct authorial identity, is not stated.",
     "resolution": "The credited in-world authors (Pitaglorias/Fitaglorias, Daaxagoras, Storfilias, Iläria) are a mix: some are in-world personas of real players, others are purely legendary/fictional figures with no player behind them (per user, 2026-07-24). Which specific name falls into which category was not yet specified - follow-up needed before this can be applied per-character in the characters.in_world_or_legendary list.",
     "resolved": true,
-    "file": "_lore/analysis/encodings.json#conflicts",
+    "file": "_lore/encodings.json#conflicts",
     "degree": 2
    },
    {
@@ -2278,7 +2278,7 @@
     "detail": "Isla de la Amistad: catastro says 2011, libro's 'Ciudades A.V.' list says 2012. Nalhuë/Ministerio del Tiempo: ensayo_i implies construction started 2023 (798 d.V. era), catastro says 'Inicio' 2024.",
     "resolution": "",
     "resolved": false,
-    "file": "_lore/analysis/encodings.json#conflicts",
+    "file": "_lore/encodings.json#conflicts",
     "degree": 6
    },
    {
@@ -2289,8 +2289,8 @@
     "detail": "atlax_i and image7 both use 'Sid Nalta' (no colon, different second syllable) while ensayo_i, catastro, and libro's prose use 'Sit:Nalta' or 'Sït:Nâlta'. Treated as the same place given the near-identical spelling and shared thematic role (ancient magical fortress/island), but no source confirms this equivalence outright, and the coordinate conflict in CONFLICT-02 does not help resolve it.",
     "resolution": "",
     "resolved": false,
-    "file": "_lore/analysis/encodings.json#conflicts",
-    "degree": 3
+    "file": "_lore/encodings.json#conflicts",
+    "degree": 4
    },
    {
     "id": "cfl:CONFLICT-08",
@@ -2300,7 +2300,7 @@
     "detail": "'naranja' is Spanish for 'orange', raising the possibility that ensayo_i's 'Villa Naranja' (founded 714 d.V., far east) and catastro's 'Orange Manor' (Platinhëa, start 2024) are the same place under a bilingual name-swap. Dates and described locations do not obviously line up, so this is flagged as unconfirmed, not merged.",
     "resolution": "",
     "resolved": false,
-    "file": "_lore/analysis/encodings.json#conflicts",
+    "file": "_lore/encodings.json#conflicts",
     "degree": 4
    },
    {
@@ -2311,8 +2311,8 @@
     "detail": "ensayo_i/catastro's 'Puerto Tortuga' (a port, Milkäan) and image7's 'Isla Tortuga' (an island, grid 7,3) share the 'Tortuga' name but are described with different generic types (puerto vs isla) and no source states they are the same place.",
     "resolution": "",
     "resolved": false,
-    "file": "_lore/analysis/encodings.json#conflicts",
-    "degree": 7
+    "file": "_lore/encodings.json#conflicts",
+    "degree": 8
    },
    {
     "id": "cfl:CONFLICT-10",
@@ -2322,8 +2322,8 @@
     "detail": "catastro lists a research site called 'Casa De Esteban' (Milkäan). ensayo_i separately references a legendary figure, Esteban, tied to 'el Reloj de Sol', whose legend inspired era 2's maritime exploration. No source explicitly ties the site to the legendary figure.",
     "resolution": "",
     "resolved": false,
-    "file": "_lore/analysis/encodings.json#conflicts",
-    "degree": 4
+    "file": "_lore/encodings.json#conflicts",
+    "degree": 5
    },
    {
     "id": "cfl:CONFLICT-11",
@@ -2333,8 +2333,8 @@
     "detail": "catastro lists 'Bahia Pelicanos' (Platinhëa, Hospitality type). ensayo_i and libro separately reference 'Bahía de las Estatuas' as the world's third spawn point and as a listed 'Monumento'. Different names (Pelícanos vs Estatuas); kept as separate entries.",
     "resolution": "",
     "resolved": false,
-    "file": "_lore/analysis/encodings.json#conflicts",
-    "degree": 4
+    "file": "_lore/encodings.json#conflicts",
+    "degree": 5
    },
    {
     "id": "cfl:CONFLICT-12",
@@ -2344,8 +2344,8 @@
     "detail": "timelines.py's Parallelized Timeline sets its origin O at 2012-07-01, distinct from ensayo_i's stated epoch (0 = 1 enero 2013) and from libro/book_of_inventions's own reference point ('94 SBW, 2022 AD' as the date those books were begun, not the world's origin). The script also introduces 'the Seasons' and 'Eras After the Seasons' (EAS) as a before/after threshold at Ox=2025-12-31, with in-world days running 3x slower afterward - this threshold, and the 3x day-length change, appear nowhere else in the material. Not reconciled with any other source's era boundaries.",
     "resolution": "",
     "resolved": false,
-    "file": "_lore/analysis/encodings.json#conflicts",
-    "degree": 7
+    "file": "_lore/encodings.json#conflicts",
+    "degree": 8
    },
    {
     "id": "cfl:CONFLICT-13",
@@ -2355,7 +2355,7 @@
     "detail": "esquema's poster names Milkäntis's 'dos continentes más importantes' as Aerörea and Platinhëa. Every other source that pairs a region against Platinhëa/Plathinëa (catastro's Zona column, ensayo_i's 'región de Milkäan' vs 'región de Plathinëa', libro's CONTINENTES list) uses 'Milkäan' in that role instead - 'Aerörea' does not appear in any other source at all. This conflict was found after the user's 2026-07-24 resolution of CONFLICT-03 (which covered Milkantis/Milkantida/'Mundo de Milka' but explicitly did not extend to Milkäan) - whether Aerörea is a synonym for Milkäan, a different region entirely, or an error/renaming, is unaddressed.",
     "resolution": "",
     "resolved": false,
-    "file": "_lore/analysis/encodings.json#conflicts",
+    "file": "_lore/encodings.json#conflicts",
     "degree": 3
    },
    {
@@ -2366,8 +2366,8 @@
     "detail": "See time_systems.esquema_poster_eras for the full era-by-era comparison. Two patterns recur: (a) same era name, different date range than ensayo_i's era of the same name (e.g. 'Era de los Continentes' = 504-648 d.V. on the poster vs. 664-808 d.V. in ensayo_i); (b) same date range as an ensayo_i era, but a different name (e.g. the poster's 504-648 d.V. range matches ensayo_i's 'Era del Confinamiento' by dates, not by name). This is a third timeline system, found after the user's 2026-07-24 'both timelines coexist' resolution, which was given only for ensayo_i vs. libro's Venidas system - whether that resolution extends to this poster as well is unaddressed.",
     "resolution": "",
     "resolved": false,
-    "file": "_lore/analysis/encodings.json#conflicts",
-    "degree": 3
+    "file": "_lore/encodings.json#conflicts",
+    "degree": 4
    },
    {
     "id": "cfl:CONFLICT-15",
@@ -2377,8 +2377,8 @@
     "detail": "catastro records 'Pueblo Camilo Ricarda' (start 2025, Milkäan, Aldea, Incompleto), matching ensayo_i's parenthetical '(aldea Camilo Ricarda)' for the village founded at the opening of era 9. ensayo_i_final names the same village-founding beat (952 d.V., 'llega una nueva jugadora y se funda...') Humucherry instead. Both names kept on record, not merged.",
     "resolution": "",
     "resolved": false,
-    "file": "_lore/analysis/encodings.json#conflicts",
-    "degree": 3
+    "file": "_lore/encodings.json#conflicts",
+    "degree": 5
    },
    {
     "id": "cfl:CONFLICT-16",
@@ -2388,7 +2388,7 @@
     "detail": "ensayo_i (nov 2025) predicts four new cities for 1000 d.V.: Arkän, Prismätika, Mirage Citadel, Zafiria. ensayo_i_final (jul 2026) replaces this wholesale with five different, non-overlapping predicted developments: el auge del Orikäl, la resurrección de Tÿrnia y Têrfyla, el colapso del muro del norte, la construcción del Museo de las Estructuras y el Jardín de las Naciones, el Ministerio del Tiempo funcionando. Both editions explicitly label this section as prediction/speculation, not history; both lists are kept on record as successive states of the same still-speculative section, not merged or resolved in favor of either.",
     "resolution": "",
     "resolved": false,
-    "file": "_lore/analysis/encodings.json#conflicts",
+    "file": "_lore/encodings.json#conflicts",
     "degree": 4
    },
    {
@@ -2399,7 +2399,7 @@
     "detail": "ensayo_i (era 8, ~900 d.V.) frames the örikal-related documents as speculative - 'podría traer nuevos minerales teóricos, como el örikal y la magia' - and pairs the discovery sentence with an otherwise-unique detail (artists/architects rebuilding the war-torn zones around creativity) that ensayo_i_final drops entirely from the same paragraph. ensayo_i_final (era 8, 882 d.V.) states plainly that the documents 'revelan el proceso de manifestación de un nuevo mineral, el örikal' - no hedge, no 'la magia' pairing, and dated roughly 18 years earlier than ensayo_i's 'para 900 d.V.' framing. See concept 'orikal'.",
     "resolution": "",
     "resolved": false,
-    "file": "_lore/analysis/encodings.json#conflicts",
+    "file": "_lore/encodings.json#conflicts",
     "degree": 3
    },
    {
@@ -2409,7 +2409,7 @@
     "system": "ensayo",
     "span": "octubre 2011 - diciembre 2012",
     "notes": "ensayo_i_final adds an extra breakpoint mid-era: '-96 - 30 a.V. - 0 a.V.' (real: octubre 2011-julio 2012 - diciembre 2012), splitting what ensayo_i renders as one continuous span. Not explained in either edition. See unknown.md.",
-    "file": "_lore/analysis/encodings.json#time_systems.ensayo_i_eras",
+    "file": "_lore/encodings.json#time_systems.ensayo_i_eras",
     "degree": 2
    },
    {
@@ -2419,8 +2419,8 @@
     "system": "ensayo",
     "span": "abril 2013 - julio 2014",
     "notes": "",
-    "file": "_lore/analysis/encodings.json#time_systems.ensayo_i_eras",
-    "degree": 4
+    "file": "_lore/encodings.json#time_systems.ensayo_i_eras",
+    "degree": 6
    },
    {
     "id": "era:ensayo/Okasia y la Segunda Etapa de Subsistencia",
@@ -2429,7 +2429,7 @@
     "system": "ensayo",
     "span": "finales 2014",
     "notes": "",
-    "file": "_lore/analysis/encodings.json#time_systems.ensayo_i_eras",
+    "file": "_lore/encodings.json#time_systems.ensayo_i_eras",
     "degree": 2
    },
    {
@@ -2439,7 +2439,7 @@
     "system": "ensayo",
     "span": "enero 2015 - diciembre 2017",
     "notes": "",
-    "file": "_lore/analysis/encodings.json#time_systems.ensayo_i_eras",
+    "file": "_lore/encodings.json#time_systems.ensayo_i_eras",
     "degree": 2
    },
    {
@@ -2449,7 +2449,7 @@
     "system": "ensayo",
     "span": "enero 2018 - diciembre 2019",
     "notes": "as printed; very likely a typo for 'miniatura'.",
-    "file": "_lore/analysis/encodings.json#time_systems.ensayo_i_eras",
+    "file": "_lore/encodings.json#time_systems.ensayo_i_eras",
     "degree": 4
    },
    {
@@ -2459,8 +2459,8 @@
     "system": "ensayo",
     "span": "enero 2020 - diciembre 2021",
     "notes": "ensayo_i_final leaves this era's artifact tag empty/unclosed - a bare '(' with no closing text.",
-    "file": "_lore/analysis/encodings.json#time_systems.ensayo_i_eras",
-    "degree": 4
+    "file": "_lore/encodings.json#time_systems.ensayo_i_eras",
+    "degree": 5
    },
    {
     "id": "era:ensayo/Era de los Continentes",
@@ -2469,8 +2469,8 @@
     "system": "ensayo",
     "span": "enero 2022 - febrero 2024",
     "notes": "",
-    "file": "_lore/analysis/encodings.json#time_systems.ensayo_i_eras",
-    "degree": 3
+    "file": "_lore/encodings.json#time_systems.ensayo_i_eras",
+    "degree": 4
    },
    {
     "id": "era:ensayo/Era de la Imaginacion",
@@ -2479,7 +2479,7 @@
     "system": "ensayo",
     "span": "marzo 2024 - octubre 2025",
     "notes": "",
-    "file": "_lore/analysis/encodings.json#time_systems.ensayo_i_eras",
+    "file": "_lore/encodings.json#time_systems.ensayo_i_eras",
     "degree": 1
    },
    {
@@ -2489,7 +2489,7 @@
     "system": "ensayo",
     "span": "noviembre 2025 - actualidad",
     "notes": "ensayo_i_final extends this era substantially. The village founded at its opening is named Humucherry (ensayo_i's parenthetical 'aldea Camilo Ricarda'; see CONFLICT-15), and the subsistence-forcing spell's frontier widens from 'norte' to 'norte y oeste'. Därnis's expedition additionally founds Auräli (absent from ensayo_i's telling of the same passage). A new closing arc (964-980 d.V.) follows, absent from ensayo_i entirely: a 3x time-slowdown from 964 d.V./enero 2026 (60 min real = 1 dia, down from 20 min - see concept 'seasons_eas' and CONFLICT-12), the founding of Kursuviros, Puerto de las Lunas (cargo then passenger terminal, plus 'el gran Faro'), Shonogami (966 d.V., near the Sit:Nalta ruins), an unnamed first prison (966 d.V., an island west of Milkän), and Tax de rich (968 d.V., on the new continent); full mapping of the new continent and a day/night-manipulation ban at 970 d.V.; and confirmation that the Feria del Milenio began construction ~980 d.V. and was inaugurated 26 julio 2026, '1000 años SBW' - see concept 'feria_del_milenio' and context.md entry 21.",
-    "file": "_lore/analysis/encodings.json#time_systems.ensayo_i_eras",
+    "file": "_lore/encodings.json#time_systems.ensayo_i_eras",
     "degree": 2
    },
    {
@@ -2499,7 +2499,7 @@
     "system": "ensayo",
     "span": "agosto 2026",
     "notes": "ensayo_i (nov 2025) lists four proposed new cities: Arkän, Prismätika, Mirage Citadel, Zafiria. ensayo_i_final (jul 2026) replaces this wholesale with five different predicted developments: el auge del Orikäl, la resurrección de Tÿrnia y Têrfyla, el colapso del muro del norte, la construcción del Museo de las Estructuras y el Jardín de las Naciones, el Ministerio del Tiempo funcionando - no overlap between the two lists. ensayo_i_final also gives an exact date, 26 julio 2026, matching the Feria del Milenio's own inauguration date, in place of the vaguer 'agosto 2026'. See CONFLICT-16.",
-    "file": "_lore/analysis/encodings.json#time_systems.ensayo_i_eras",
+    "file": "_lore/encodings.json#time_systems.ensayo_i_eras",
     "degree": 1
    },
    {
@@ -2509,8 +2509,8 @@
     "system": "libro",
     "span": "2012 (Sep-Dic)",
     "notes": "Creacion de la cultura",
-    "file": "_lore/analysis/encodings.json#time_systems.libro_venidas_eras.list",
-    "degree": 1
+    "file": "_lore/encodings.json#time_systems.libro_venidas_eras.list",
+    "degree": 2
    },
    {
     "id": "era:libro/Segunda Venida",
@@ -2519,8 +2519,8 @@
     "system": "libro",
     "span": "2013 (Ene-Mar)",
     "notes": "",
-    "file": "_lore/analysis/encodings.json#time_systems.libro_venidas_eras.list",
-    "degree": 2
+    "file": "_lore/encodings.json#time_systems.libro_venidas_eras.list",
+    "degree": 4
    },
    {
     "id": "era:libro/Tercera Venida",
@@ -2529,7 +2529,7 @@
     "system": "libro",
     "span": "2013 ago - 2014 jul",
     "notes": "Se fundan las primeras ciudades",
-    "file": "_lore/analysis/encodings.json#time_systems.libro_venidas_eras.list",
+    "file": "_lore/encodings.json#time_systems.libro_venidas_eras.list",
     "degree": 2
    },
    {
@@ -2539,7 +2539,7 @@
     "system": "libro",
     "span": "2016-2017",
     "notes": "Se fundan nuevas ciudades",
-    "file": "_lore/analysis/encodings.json#time_systems.libro_venidas_eras.list",
+    "file": "_lore/encodings.json#time_systems.libro_venidas_eras.list",
     "degree": 1
    },
    {
@@ -2549,7 +2549,7 @@
     "system": "libro",
     "span": "2018-2020",
     "notes": "Expansion de las estructuras y edificios",
-    "file": "_lore/analysis/encodings.json#time_systems.libro_venidas_eras.list",
+    "file": "_lore/encodings.json#time_systems.libro_venidas_eras.list",
     "degree": 4
    },
    {
@@ -2559,8 +2559,8 @@
     "system": "libro",
     "span": "2020-actualidad",
     "notes": "Llegada de mas jugadores al mundo. Creacion de Oceanos, Montanias y Rutas",
-    "file": "_lore/analysis/encodings.json#time_systems.libro_venidas_eras.list",
-    "degree": 5
+    "file": "_lore/encodings.json#time_systems.libro_venidas_eras.list",
+    "degree": 6
    },
    {
     "id": "era:esquema/Isla de la Amistad",
@@ -2569,7 +2569,7 @@
     "system": "esquema",
     "span": "-96 a.V. - 0",
     "notes": "ensayo_i era 1 exactly",
-    "file": "_lore/analysis/encodings.json#time_systems.esquema_poster_eras.era_row",
+    "file": "_lore/encodings.json#time_systems.esquema_poster_eras.era_row",
     "degree": 2
    },
    {
@@ -2579,7 +2579,7 @@
     "system": "esquema",
     "span": "18 d.V. - 114 d.V.",
     "notes": "ensayo_i era 2 exactly",
-    "file": "_lore/analysis/encodings.json#time_systems.esquema_poster_eras.era_row",
+    "file": "_lore/encodings.json#time_systems.esquema_poster_eras.era_row",
     "degree": 1
    },
    {
@@ -2589,7 +2589,7 @@
     "system": "esquema",
     "span": "120 d.V. - 144 d.V.",
     "notes": "identical range to ensayo_i's Okasia era (era 3); the name is almost certainly a rotated-label misread, not a genuine second Guerras de Görff - transcribed as-extracted",
-    "file": "_lore/analysis/encodings.json#time_systems.esquema_poster_eras.era_row",
+    "file": "_lore/encodings.json#time_systems.esquema_poster_eras.era_row",
     "degree": 2
    },
    {
@@ -2599,7 +2599,7 @@
     "system": "esquema",
     "span": "150 d.V. - 288 d.V.",
     "notes": "ensayo_i's Era del Mosaico is 150-360 d.V. - different end boundary",
-    "file": "_lore/analysis/encodings.json#time_systems.esquema_poster_eras.era_row",
+    "file": "_lore/encodings.json#time_systems.esquema_poster_eras.era_row",
     "degree": 2
    },
    {
@@ -2609,7 +2609,7 @@
     "system": "esquema",
     "span": "294 d.V. - 504 d.V.",
     "notes": "ensayo_i's Era del Daax is 360-504 d.V. - different start boundary, same end",
-    "file": "_lore/analysis/encodings.json#time_systems.esquema_poster_eras.era_row",
+    "file": "_lore/encodings.json#time_systems.esquema_poster_eras.era_row",
     "degree": 2
    },
    {
@@ -2619,7 +2619,7 @@
     "system": "esquema",
     "span": "504 d.V. - 648 d.V.",
     "notes": "this range matches ensayo_i's Era del Confinamiento (510-648 d.V.), NOT ensayo_i's own era also named 'Era de los Continentes' (664-808 d.V.) - same name as one ensayo_i era, same range as a different ensayo_i era",
-    "file": "_lore/analysis/encodings.json#time_systems.esquema_poster_eras.era_row",
+    "file": "_lore/encodings.json#time_systems.esquema_poster_eras.era_row",
     "degree": 3
    },
    {
@@ -2629,7 +2629,7 @@
     "system": "esquema",
     "span": "664 d.V. - 804 d.V.",
     "notes": "near-identical range to ensayo_i's 'Era de los Continentes' (664-808 d.V.), under a different name",
-    "file": "_lore/analysis/encodings.json#time_systems.esquema_poster_eras.era_row",
+    "file": "_lore/encodings.json#time_systems.esquema_poster_eras.era_row",
     "degree": 1
    },
    {
@@ -2639,7 +2639,7 @@
     "system": "esquema",
     "span": "804 d.V. - ? (no end extracted)",
     "notes": "unclear; possibly analogous to ensayo_i's Era de la Imaginacion or Era de la Magia",
-    "file": "_lore/analysis/encodings.json#time_systems.esquema_poster_eras.era_row",
+    "file": "_lore/encodings.json#time_systems.esquema_poster_eras.era_row",
     "degree": 3
    },
    {
@@ -2647,7 +2647,7 @@
     "label": "2011",
     "kind": "year",
     "span": "108 a.V. - 18 a.V.",
-    "file": "_lore/analysis/encodings.json#time_systems.esquema_poster_eras.year_by_year_foundations",
+    "file": "_lore/encodings.json#time_systems.esquema_poster_eras.year_by_year_foundations",
     "degree": 2
    },
    {
@@ -2655,7 +2655,7 @@
     "label": "2012",
     "kind": "year",
     "span": "72 a.V. - 18 a.V.",
-    "file": "_lore/analysis/encodings.json#time_systems.esquema_poster_eras.year_by_year_foundations",
+    "file": "_lore/encodings.json#time_systems.esquema_poster_eras.year_by_year_foundations",
     "degree": 6
    },
    {
@@ -2663,15 +2663,15 @@
     "label": "2013",
     "kind": "year",
     "span": "18 d.V. - 72 d.V.",
-    "file": "_lore/analysis/encodings.json#time_systems.esquema_poster_eras.year_by_year_foundations",
-    "degree": 9
+    "file": "_lore/encodings.json#time_systems.esquema_poster_eras.year_by_year_foundations",
+    "degree": 11
    },
    {
     "id": "year:2014",
     "label": "2014",
     "kind": "year",
     "span": "72 d.V. - 144 a.V. (sic, mixed a.V./d.V. on one row, transcribed as printed)",
-    "file": "_lore/analysis/encodings.json#time_systems.esquema_poster_eras.year_by_year_foundations",
+    "file": "_lore/encodings.json#time_systems.esquema_poster_eras.year_by_year_foundations",
     "degree": 1
    },
    {
@@ -2679,15 +2679,15 @@
     "label": "2015",
     "kind": "year",
     "span": "144 d.V. - 216 a.V. (sic)",
-    "file": "_lore/analysis/encodings.json#time_systems.esquema_poster_eras.year_by_year_foundations",
-    "degree": 3
+    "file": "_lore/encodings.json#time_systems.esquema_poster_eras.year_by_year_foundations",
+    "degree": 4
    },
    {
     "id": "year:2016",
     "label": "2016",
     "kind": "year",
     "span": "216 d.V. - 288 a.V. (sic)",
-    "file": "_lore/analysis/encodings.json#time_systems.esquema_poster_eras.year_by_year_foundations",
+    "file": "_lore/encodings.json#time_systems.esquema_poster_eras.year_by_year_foundations",
     "degree": 2
    },
    {
@@ -2695,7 +2695,7 @@
     "label": "2017",
     "kind": "year",
     "span": "288 d.V. - 360 a.V. (sic)",
-    "file": "_lore/analysis/encodings.json#time_systems.esquema_poster_eras.year_by_year_foundations",
+    "file": "_lore/encodings.json#time_systems.esquema_poster_eras.year_by_year_foundations",
     "degree": 3
    },
    {
@@ -2703,7 +2703,7 @@
     "label": "2018",
     "kind": "year",
     "span": "360 d.V. - 432 a.V. (sic)",
-    "file": "_lore/analysis/encodings.json#time_systems.esquema_poster_eras.year_by_year_foundations",
+    "file": "_lore/encodings.json#time_systems.esquema_poster_eras.year_by_year_foundations",
     "degree": 5
    },
    {
@@ -2711,7 +2711,7 @@
     "label": "2019",
     "kind": "year",
     "span": "432 d.V. - 504 a.V. (sic, printed '504a.V.')",
-    "file": "_lore/analysis/encodings.json#time_systems.esquema_poster_eras.year_by_year_foundations",
+    "file": "_lore/encodings.json#time_systems.esquema_poster_eras.year_by_year_foundations",
     "degree": 5
    },
    {
@@ -2719,7 +2719,7 @@
     "label": "2020",
     "kind": "year",
     "span": "504 d.V. - 576 d.V.",
-    "file": "_lore/analysis/encodings.json#time_systems.esquema_poster_eras.year_by_year_foundations",
+    "file": "_lore/encodings.json#time_systems.esquema_poster_eras.year_by_year_foundations",
     "degree": 5
    },
    {
@@ -2727,7 +2727,7 @@
     "label": "2021",
     "kind": "year",
     "span": "576 d.V. - 648 d.V.",
-    "file": "_lore/analysis/encodings.json#time_systems.esquema_poster_eras.year_by_year_foundations",
+    "file": "_lore/encodings.json#time_systems.esquema_poster_eras.year_by_year_foundations",
     "degree": 3
    },
    {
@@ -2735,7 +2735,7 @@
     "label": "2022",
     "kind": "year",
     "span": "648 d.V. - 720 d.V.",
-    "file": "_lore/analysis/encodings.json#time_systems.esquema_poster_eras.year_by_year_foundations",
+    "file": "_lore/encodings.json#time_systems.esquema_poster_eras.year_by_year_foundations",
     "degree": 2
    },
    {
@@ -2743,7 +2743,7 @@
     "label": "2023",
     "kind": "year",
     "span": "720 d.V. - 792 d.V.",
-    "file": "_lore/analysis/encodings.json#time_systems.esquema_poster_eras.year_by_year_foundations",
+    "file": "_lore/encodings.json#time_systems.esquema_poster_eras.year_by_year_foundations",
     "degree": 5
    },
    {
@@ -2753,8 +2753,8 @@
     "mode": "highway",
     "name": "Ruta Puente Intercontinental - Nvhi",
     "distance": 3987.57,
-    "file": "_lore/analysis/encodings.json#routes.highways",
-    "degree": 3
+    "file": "_lore/encodings.json#routes.highways",
+    "degree": 4
    },
    {
     "id": "rte:hw/M9",
@@ -2763,8 +2763,8 @@
     "mode": "highway",
     "name": "Ruta Nvhi - Khan Ice",
     "distance": 6630.93,
-    "file": "_lore/analysis/encodings.json#routes.highways",
-    "degree": 7
+    "file": "_lore/encodings.json#routes.highways",
+    "degree": 8
    },
    {
     "id": "rte:hw/A33",
@@ -2773,7 +2773,7 @@
     "mode": "highway",
     "name": "Ruta A33",
     "distance": 7334.8,
-    "file": "_lore/analysis/encodings.json#routes.highways",
+    "file": "_lore/encodings.json#routes.highways",
     "degree": 1
    },
    {
@@ -2783,7 +2783,7 @@
     "mode": "highway",
     "name": "Ruta P-33 (Extension)",
     "distance": 4188.38,
-    "file": "_lore/analysis/encodings.json#routes.highways",
+    "file": "_lore/encodings.json#routes.highways",
     "degree": 1
    },
    {
@@ -2792,8 +2792,8 @@
     "kind": "route",
     "mode": "train",
     "distance": 3769.37,
-    "file": "_lore/analysis/encodings.json#routes.trains",
-    "degree": 8
+    "file": "_lore/encodings.json#routes.trains",
+    "degree": 9
    },
    {
     "id": "rte:tr/Khan Ice - Puerto del Norte",
@@ -2801,8 +2801,8 @@
     "kind": "route",
     "mode": "train",
     "distance": 2057.77,
-    "file": "_lore/analysis/encodings.json#routes.trains",
-    "degree": 5
+    "file": "_lore/encodings.json#routes.trains",
+    "degree": 6
    },
    {
     "id": "rte:tr/Khol Moshin",
@@ -2810,7 +2810,7 @@
     "kind": "route",
     "mode": "train",
     "distance": null,
-    "file": "_lore/analysis/encodings.json#routes.trains",
+    "file": "_lore/encodings.json#routes.trains",
     "degree": 5
    },
    {
@@ -2819,8 +2819,8 @@
     "kind": "route",
     "mode": "train",
     "distance": 3713.01,
-    "file": "_lore/analysis/encodings.json#routes.trains",
-    "degree": 5
+    "file": "_lore/encodings.json#routes.trains",
+    "degree": 6
    },
    {
     "id": "rte:tr/Balhâm - Salthos Cruzados",
@@ -2828,8 +2828,8 @@
     "kind": "route",
     "mode": "train",
     "distance": 3992.24,
-    "file": "_lore/analysis/encodings.json#routes.trains",
-    "degree": 5
+    "file": "_lore/encodings.json#routes.trains",
+    "degree": 6
    },
    {
     "id": "rte:air/Catraniz",
@@ -2841,8 +2841,8 @@
      2923,
      -1757
     ],
-    "file": "_lore/analysis/encodings.json#routes.airports",
-    "degree": 2
+    "file": "_lore/encodings.json#routes.airports",
+    "degree": 3
    },
    {
     "id": "rte:air/Gorff",
@@ -2854,7 +2854,7 @@
      1239,
      1017
     ],
-    "file": "_lore/analysis/encodings.json#routes.airports",
+    "file": "_lore/encodings.json#routes.airports",
     "degree": 3
    },
    {
@@ -2867,7 +2867,7 @@
      699,
      1794
     ],
-    "file": "_lore/analysis/encodings.json#routes.airports",
+    "file": "_lore/encodings.json#routes.airports",
     "degree": 6
    },
    {
@@ -2880,7 +2880,7 @@
      -1004,
      1123
     ],
-    "file": "_lore/analysis/encodings.json#routes.airports",
+    "file": "_lore/encodings.json#routes.airports",
     "degree": 1
    },
    {
@@ -2893,7 +2893,7 @@
      -4883,
      1576
     ],
-    "file": "_lore/analysis/encodings.json#routes.airports",
+    "file": "_lore/encodings.json#routes.airports",
     "degree": 4
    },
    {
@@ -2906,7 +2906,7 @@
      -3078,
      4161
     ],
-    "file": "_lore/analysis/encodings.json#routes.airports",
+    "file": "_lore/encodings.json#routes.airports",
     "degree": 3
    },
    {
@@ -2919,7 +2919,7 @@
      -25,
      3249
     ],
-    "file": "_lore/analysis/encodings.json#routes.airports",
+    "file": "_lore/encodings.json#routes.airports",
     "degree": 4
    },
    {
@@ -2932,7 +2932,7 @@
      -3157,
      3065
     ],
-    "file": "_lore/analysis/encodings.json#routes.airports",
+    "file": "_lore/encodings.json#routes.airports",
     "degree": 3
    },
    {
@@ -2945,8 +2945,8 @@
      -11374,
      1940
     ],
-    "file": "_lore/analysis/encodings.json#routes.airports",
-    "degree": 4
+    "file": "_lore/encodings.json#routes.airports",
+    "degree": 5
    },
    {
     "id": "rte:air/Nvhi",
@@ -2958,8 +2958,8 @@
      2200,
      6243
     ],
-    "file": "_lore/analysis/encodings.json#routes.airports",
-    "degree": 3
+    "file": "_lore/encodings.json#routes.airports",
+    "degree": 4
    },
    {
     "id": "rte:named/Ruta Lundria-Salthos Cruzados",
@@ -2967,8 +2967,57 @@
     "kind": "route",
     "mode": "unplotted",
     "notes": "a route name not matching any of the highway/train segments already plotted in Cartography...xlsx; the image shows a purple traced line but no accompanying coordinate table, so its actual waypoints are not captured here",
-    "file": "_lore/analysis/encodings.json#routes.named_but_unplotted",
-    "degree": 3
+    "file": "_lore/encodings.json#routes.named_but_unplotted",
+    "degree": 4
+   },
+   {
+    "id": "dlg:aureobalo_farlis_castillo_en_miniatura",
+    "label": "aureobalo farlis castillo en miniatura",
+    "kind": "dialogue",
+    "states": 21,
+    "choices": 20,
+    "has_hearsay": true,
+    "summary": "Farlis shows Aureobalo his favourite exhibit - the miniature of the castle he actually lives in. Aureobalo brings back Khaoe's rebuttal to its subject rather than repeating it behind his back, and Farlis concedes the part that matters. They end on inherited surnames: Farlis left his in Terfila, Aureobalo is still working out what to do with one that was never his.",
+    "participants": [
+     "Aureobalo",
+     "Farlis"
+    ],
+    "claims": 7,
+    "file": "data/luminacion/blabber/dialogues/aureobalo_farlis_castillo_en_miniatura.json",
+    "degree": 2
+   },
+   {
+    "id": "dlg:auroboro_iii_farlis_alcoba",
+    "label": "auroboro iii farlis alcoba",
+    "kind": "dialogue",
+    "states": 10,
+    "choices": 9,
+    "has_hearsay": true,
+    "summary": "Farlis, from Görff and a member of the Collective, visits Auroboro III's alcoba. Their disagreement is immediate: Auroboro III clings to military glory and ancestral honor; Farlis sees those wars as a hierarchy to be rejected, not preserved. The clash is fundamental — about memory, about what deserves to be kept.",
+    "participants": [
+     "Auroboro III",
+     "Farlis"
+    ],
+    "claims": 4,
+    "file": "data/luminacion/blabber/dialogues/auroboro_iii_farlis_alcoba.json",
+    "degree": 0
+   },
+   {
+    "id": "dlg:bardaglis_ilaria_khaoe_segunda_noche",
+    "label": "bardaglis ilaria khaoe segunda noche",
+    "kind": "dialogue",
+    "states": 23,
+    "choices": 22,
+    "has_hearsay": true,
+    "summary": "Khaoe hears her own offhand line sung back by strangers. Bardaglis argues a song is only finished once it has lost its author; Ilaria, who turns out to be the Ensayo's author, argues the opposite and writes the attribution down. Bardaglis holds the line for their own songs and refuses it for Khaoe's - hers keeps a name.",
+    "participants": [
+     "Bardaglis",
+     "Iläria",
+     "Khaoe"
+    ],
+    "claims": 8,
+    "file": "data/luminacion/blabber/dialogues/bardaglis_ilaria_khaoe_segunda_noche.json",
+    "degree": 4
    },
    {
     "id": "dlg:doran_eras_of_culture",
@@ -3000,7 +3049,7 @@
     ],
     "claims": 9,
     "file": "data/luminacion/blabber/dialogues/doran_four_castles.json",
-    "degree": 15
+    "degree": 16
    },
    {
     "id": "dlg:doran_plaza_orientation",
@@ -3016,7 +3065,7 @@
     ],
     "claims": 5,
     "file": "data/luminacion/blabber/dialogues/doran_plaza_orientation.json",
-    "degree": 11
+    "degree": 12
    },
    {
     "id": "dlg:gondarfolas_darnis_and_bracco",
@@ -3032,7 +3081,7 @@
     ],
     "claims": 8,
     "file": "data/luminacion/blabber/dialogues/gondarfolas_darnis_and_bracco.json",
-    "degree": 15
+    "degree": 17
    },
    {
     "id": "dlg:ilaria_espiral_de_la_historia",
@@ -3048,7 +3097,7 @@
     ],
     "claims": 3,
     "file": "data/luminacion/blabber/dialogues/ilaria_espiral_de_la_historia.json",
-    "degree": 7
+    "degree": 9
    },
    {
     "id": "dlg:khaoe_banco_colectivo",
@@ -3064,7 +3113,7 @@
     ],
     "claims": 6,
     "file": "data/luminacion/blabber/dialogues/khaoe_banco_colectivo.json",
-    "degree": 7
+    "degree": 8
    },
    {
     "id": "dlg:khaoe_calendario_mecanografico",
@@ -3080,7 +3129,7 @@
     ],
     "claims": 4,
     "file": "data/luminacion/blabber/dialogues/khaoe_calendario_mecanografico.json",
-    "degree": 6
+    "degree": 7
    },
    {
     "id": "dlg:khaoe_farlis_el_castillo_que_fue",
@@ -3096,7 +3145,7 @@
     ],
     "claims": 3,
     "file": "data/luminacion/blabber/dialogues/khaoe_farlis_el_castillo_que_fue.json",
-    "degree": 8
+    "degree": 9
    },
    {
     "id": "dlg:khaoe_farlis_esperando_a_khaasan",
@@ -3128,7 +3177,39 @@
     ],
     "claims": 3,
     "file": "data/luminacion/blabber/dialogues/khaoe_farlis_lo_que_cambia_el_tiempo.json",
-    "degree": 9
+    "degree": 11
+   },
+   {
+    "id": "dlg:khaoe_khaasan_partida_a_khan_ice",
+    "label": "khaoe khaasan partida a khan ice",
+    "kind": "dialogue",
+    "states": 20,
+    "choices": 19,
+    "has_hearsay": true,
+    "summary": "Khaoe arrives ahead of the crowds as Khaasan is leaving for Khan Ice to see his uncle. They agree without saying so that only someone who was there gets to describe a place; she asks him to check whether a house her grandmother spoke of is still standing, and refuses to be told what it meant.",
+    "participants": [
+     "Khaoe",
+     "Khaasan"
+    ],
+    "claims": 8,
+    "file": "data/luminacion/blabber/dialogues/khaoe_khaasan_partida_a_khan_ice.json",
+    "degree": 2
+   },
+   {
+    "id": "dlg:khaoe_milkucha_jardin_de_los_parajes",
+    "label": "khaoe milkucha jardin de los parajes",
+    "kind": "dialogue",
+    "states": 35,
+    "choices": 34,
+    "has_hearsay": true,
+    "summary": "Khaoe encountered Milkucha at the entrance to the Jardín and walked the pavilion's five biome zones with them. Milkucha explained the geographical design and the real-world locations each represents, revealing they designed the space, built the Cinema in Grosslor, and can move mountains through mod power. Cherry trees from Dragón were planted in many cities as diplomatic gifts.",
+    "participants": [
+     "Khaoe",
+     "Milkucha"
+    ],
+    "claims": 11,
+    "file": "data/luminacion/blabber/dialogues/khaoe_milkucha_jardin_de_los_parajes.json",
+    "degree": 3
    },
    {
     "id": "dlg:nawom_morkulo_first_meeting",
@@ -3144,7 +3225,7 @@
     ],
     "claims": 6,
     "file": "data/luminacion/blabber/dialogues/nawom_morkulo_first_meeting.json",
-    "degree": 14
+    "degree": 16
    },
    {
     "id": "dlg:nerkeli_hangar_talk",
@@ -3160,7 +3241,7 @@
     ],
     "claims": 5,
     "file": "data/luminacion/blabber/dialogues/nerkeli_hangar_talk.json",
-    "degree": 12
+    "degree": 14
    },
    {
     "id": "dlg:nuvilo_nerkeli_feria_del_milenio",
@@ -3176,7 +3257,7 @@
     ],
     "claims": 4,
     "file": "data/luminacion/blabber/dialogues/nuvilo_nerkeli_feria_del_milenio.json",
-    "degree": 11
+    "degree": 13
    },
    {
     "id": "dlg:nuvilo_scholar_at_the_feria",
@@ -3208,7 +3289,7 @@
     ],
     "claims": 6,
     "file": "data/luminacion/blabber/dialogues/sonoros_lost_traveler.json",
-    "degree": 14
+    "degree": 15
    },
    {
     "id": "npc:sonoros",
@@ -3349,7 +3430,12 @@
      "Met Farlis at that same bar, that same night — told him the castle story (Khaoe's 'stones' line) had already become a song of his own, catching on. Learned in return that the line it answers, the poetic-justice one, was Farlis's own, said to Khaoe herself in front of the castle.",
      "Also spent that evening with Aureobalo, Khaasan, and Khaoe at the same table, talking about the Feria - retold what he'd heard about Iläria's Espiral de la Historia (the nine-chamber labyrinth, one room per era) as her own words.",
      "Stayed on after Aureobalo and Khaoe left, one-on-one with Khaasan - traded light jabs about travel: Khaasan by griffon, Bardaglis on foot, unwilling to spend his earnings feeding a bird.",
-     "Later that same night, Nuvilo wandered in hungry from a night of pavilion-hopping - a first meeting; Bardaglis waved him to a seat."
+     "Later that same night, Nuvilo wandered in hungry from a night of pavilion-hopping - a first meeting; Bardaglis waved him to a seat.",
+     "Sang the castle song at the Salthos Cruzados bar on the Feria's second night with Khaoe herself at the table, and told her strangers had sung it back the night before without knowing who she was.",
+     "Holds that a song is only finished once it has lost its author - and refused, to Ilaria's face, to put their name to the Isla de la Amistad song.",
+     "Insists Khaoe's line keeps Khaoe's name: theirs was made to leave, hers got away from her.",
+     "Met Ilaria for the first time and learned firsthand, from her, that she wrote the Ensayo - having previously only heard it said, with no idea from whom.",
+     "Picked up from Ilaria: that a second book covers the same centuries differently, that the two do not agree, and that she would rather keep both than pick one."
     ],
     "developed": true,
     "criterion": "counts a song well made only once strangers are singing it back without knowing whose it was",
@@ -3454,7 +3540,7 @@
     "city": "Görff",
     "skin": true,
     "uuid": false,
-    "backstory": "Teletraveller. Always travels by griffon — never on foot or by any other means.",
+    "backstory": "Teletraveller. Always travels by griffon — never on foot or by any other means. Has an uncle in Khan Ice who has never left the place and who expects him without fail; Khaasan has never missed the visit.",
     "education": 26,
     "mode": "composite",
     "known": 67,
@@ -3463,7 +3549,12 @@
      "Reached Khaoe at the same bar later that evening, griffon in tow as always, and left it outside eating something it shouldn't have; she teased him for cutting it close, and he called her out on pretending she wasn't worried.",
      "Stayed on at the bar after Aureobalo and Khaoe left, talking one-on-one with Bardaglis - teased him about not owning a griffon; Bardaglis said he'd rather keep his earnings than feed one.",
      "Met Nuvilo that same night, when he wandered in hungry after a night of pavilion-hopping - joked that a writer and a bard do the same job, just one sings his.",
-     "Left the bar last among the original group, undecided yet on where he needs to be early the next morning."
+     "Left the bar last among the original group, undecided yet on where he needs to be early the next morning.",
+     "Left the Feria del Milenio early on its second morning for Khan Ice, to see the uncle who expects him - crossing Khaoe at the entrance on her way in.",
+     "Refuses the rail even where it runs (Gorff-Khan Ice, Khan Ice-Balham): 'el tren te deja donde el tren quiere.'",
+     "Dismisses Doran's claim that Khan Ice was a wartime capital, on the ground that Doran deduced it from walls without ever having gone.",
+     "Agreed to look, with his own eyes, for a house near the water in Khan Ice that Khaoe's grandmother spoke of - and to report only whether it is still standing.",
+     "Picked up from Khaoe: her family came from Khan Ice before Khol Moshin, and she has never been."
     ],
     "developed": true,
     "criterion": "counts on being the one who turns up, however far out and however late",
@@ -3492,7 +3583,17 @@
      "Clarifies, when a traveler repeated a rumor calling Farlis a 'prince' of Terfila, that he isn't one — his family just has old money there — and that she's never gotten a straight answer from him on the exact title.",
      "At a bar in Salthos Cruzados, the Feria's opening night: noticed Farlis had been talking with Aureobalo, then talked with him about her own trip to Lundria — came back with more questions than she left with, and still hasn't decided if that makes it a good trip or a wasted one.",
      "Same evening, same bar: Khaasan reached her by griffon, as always, leaving it outside to eat something it shouldn't. Teased him that she never doubted he'd make it — a small lie, and she admitted as much.",
-     "Left the bar early that same night, planning to be back at the Calendario Mecanográfico first thing next morning, ahead of the crowds."
+     "Left the bar early that same night, planning to be back at the Calendario Mecanográfico first thing next morning, ahead of the crowds.",
+     "Crossed Khaasan at the Feria's entrance on its second morning, arriving ahead of the crowds as he was leaving for Khan Ice.",
+     "Has never set foot in Khan Ice, though her family came from there before Khol Moshin; her grandmother spoke of a house near the water, street unknown.",
+     "Asked Khaasan to report only whether that house is still standing - explicitly not what it meant.",
+     "Repeats that she will not teach the Lundria calendars she cannot answer for, now to a comrade rather than to a stranger asking.",
+     "Heard her own castle line sung back at the Salthos Cruzados bar on the Feria's second night by people who did not know it was hers, and said she wasn't sure she liked it.",
+     "Claimed the line aloud and consented to it being recorded with her name, place, and witnesses - and told Ilaria to write down Bardaglis's song too, so nobody has to guess in twenty years.",
+     "Met Ilaria; learned from her that the Ensayo is hers and that a second book disagrees with it.",
+     "Walked through the Jardín de los Parajes with Milkucha, who designed it as an ode to classical geography representing the known world's biomes.",
+     "Learned that Milkucha built the Cinema in Grosslor with others, can move mountains using mod power, and belongs to the continent of Milkaan.",
+     "Heard that cherry trees from Dragón were planted in many cities as diplomatic and ceremonial gifts."
     ],
     "developed": true,
     "criterion": "measures a life by whether the work was actually taken up - someone lifted the stones, and it still stands",
@@ -3824,7 +3925,16 @@
      "Ran into Aureobalo at a bar in Salthos Cruzados, the first evening of the Feria del Milenio — already knew him from before (their routes cross), but a first for meeting at this particular place.",
      "Confirmed to Aureobalo, when he brought back a vaguer version of it secondhand, that the castle/poetic-justice remark really was his own, and that Khaoe was the one who shot it down.",
      "Same evening, same bar: Khaoe noticed he'd been talking with Aureobalo; asked her in turn about her trip to Lundria, and got back that she came home with more questions than she left with.",
-     "Learned from Bardaglis, same evening, that the castle line has already become a song lyric — though the part that stuck was Khaoe's rebuttal, not his own poetic-justice framing."
+     "Learned from Bardaglis, same evening, that the castle line has already become a song lyric — though the part that stuck was Khaoe's rebuttal, not his own poetic-justice framing.",
+     "Names the Castillo de Gorff replica in the Plaza de las Culturas as his favourite thing in the whole Feria - you cannot see the shape of a castle from inside it.",
+     "Conceded to Aureobalo that Khaoe was right in the part that matters: poetic or not, the castle was one man's and no longer is, and his joke about it changes nothing. Keeps the joke, drops the claim.",
+     "Says he arrived at the Collective with a Terfila surname and left it in Terfila - it is useful for nothing there, which is exactly what it is for.",
+     "Picked up from Aureobalo: that his surname resembles the losing side of the Guerras de Gorff, that he is unrelated to them, and that his parents' admiration for the loyalists was never his choice.",
+     "Found Gok at the Espiral de las Eras alcove, a man keeping the Hotel Kholi's story alive at the Feria del Milenio, who understands that monuments are the keeper's work, not the stone.",
+     "Recognized in Gok's devotion to the Hotel Kholi the same principle he lives by with the Castillo de Görff — that what we leave behind, and how we hold it, is what makes it matter.",
+     "Visited the Alcoba of the Guerras de Görff in the Espiral de las Eras and met Auroboro III, an old descendant of officers from those wars.",
+     "Auroboro III clings to the Guerras as glorious heritage and ancestral honor; sees forgetting as spiritual death.",
+     "Auroboro III called Farlis a fool for rejecting the past, but Farlis holds that he builds real things rather than talking about ghosts."
     ],
     "developed": true,
     "criterion": "counts a life well spent if what he leaves behind is a place that used to be one man's and isn't anymore",
@@ -4052,7 +4162,11 @@
      "Ran into Farlis at a bar in Salthos Cruzados, the first evening of the Feria del Milenio — already knew him from before (their routes cross), but a first for meeting at this particular place.",
      "Brought up a vague, secondhand version of a story about Farlis and a castle — someone correcting him over 'the stones someone had to hold up' — and got it confirmed directly from Farlis that it was about him, and that Khaoe was the one who said it.",
      "Same evening, same bar: ran into Khaasan, just passing through Salthos Cruzados on his way from Khan Ice. Bought him a drink for the long road; Khaasan said he prefers short ones.",
-     "Also met Bardaglis and Khaoe at that same bar that night; left before the others, citing an early drive back to Khol Moshin the next morning."
+     "Also met Bardaglis and Khaoe at that same bar that night; left before the others, citing an early drive back to Khol Moshin the next morning.",
+     "Postponed his drive back to Khol Moshin by a day to stay a second day at the Feria.",
+     "Carried Khaoe's rebuttal about the castle back to Farlis himself rather than repeat it elsewhere - explicitly, so he would not be the one spreading it behind his back.",
+     "Told Farlis, for the first time aloud, that his surname resembles the losing side of the Guerras de Gorff, that he is unrelated to them, and that his parents' admiration was never his choice.",
+     "Picked up from Farlis: that he arrived at the Collective with a Terfila surname and deliberately left it behind, and that nobody there leads for a surname - confirmed firsthand rather than as something said."
     ],
     "developed": true,
     "criterion": "counts only what he has given away, since it is the one part of the money he chose",
@@ -4193,16 +4307,21 @@
     "city": "Khan Ice, Catraniz",
     "skin": true,
     "uuid": false,
-    "backstory": "Travels between Khan Ice and Catraniz.",
-    "education": null,
-    "mode": "",
-    "known": 0,
-    "experience": [],
+    "backstory": "Works at Hotel Kholi, the main and oldest hotel in Khan Ice — a staple of Khanician architecture and flagship of Milkaan's hospitality. Built during the Grandes Juegos (Era del Confinamiento) and hosted all athletes and representatives from the world corners. Now stationed at the Feria del Milenio, in charge of one alcove of the Primer Pabellón's Espiral de las Eras: the station for Era del Confinamiento. Greets visitors there and tells them about the era.",
+    "education": 40,
+    "mode": "composite",
+    "known": 136,
+    "experience": [
+     "Encountered a time traveler from the Grandes Juegos era (year_esquema 2013-2015) who witnessed Khan Ice's entire development and confirmed the city's documented history.",
+     "Confirmed through first-hand testimony that the Hotel Kholi's presence from the Grandes Juegos era onward is an accurate historical record.",
+     "Met Farlis at his alcove during the Feria del Milenio, who understood immediately that monuments are living only when kept alive through story and presence.",
+     "Farlis drew a parallel between the Hotel Kholi and the Castillo de Görff in the Collective — both transformed spaces that remain themselves, proof that things can be different from what they were."
+    ],
     "developed": true,
-    "criterion": "",
+    "criterion": "counts keeping Khan Ice facing its past",
     "lifespan": null,
     "file": "_maps/npcs/registry.json#npcs",
-    "degree": 3
+    "degree": 92
    },
    {
     "id": "npc:gurk",
@@ -4377,7 +4496,13 @@
     "education": 39.8,
     "mode": "composite",
     "known": 119,
-    "experience": [],
+    "experience": [
+     "Was at the Salthos Cruzados bar on the Feria's second night, and interrupted a table of strangers to ask whose line the song was quoting.",
+     "Wrote down the attribution for Khaoe's castle line on the spot - name, place, and who was present.",
+     "States plainly that she wrote the Ensayo, that another book covers the same centuries differently, and that she would rather have two accounts that contradict each other than one that sounds whole.",
+     "Failed to get Bardaglis to put their name to the Isla de la Amistad song, having established they were there for it firsthand.",
+     "Picked up from Khaoe: that she came back from Lundria unable to say which calendar was the true one and refuses to teach it."
+    ],
     "developed": true,
     "criterion": "keeps only what she can attribute - which source said it, and when",
     "lifespan": null,
@@ -4421,32 +4546,66 @@
     "degree": 62
    },
    {
+    "id": "npc:auroboro_iii",
+    "label": "Auroboro III",
+    "kind": "npc",
+    "city": "Espiral de las Eras, Feria del Milenio",
+    "skin": false,
+    "uuid": false,
+    "backstory": "A descendant of officers from the Guerras de Görff. Lonely, proud of his ancestors' military glory, never got over it. Keeps a replica of his old manor's living room in the alcove of that era within the Espiral de las Eras, receiving visitors to tell the story of the Guerras. Wine in hand, sweet deep down but rough around the edges, obnoxious about his topic. No script — says whatever he wants.",
+    "education": 15,
+    "mode": "skewed",
+    "known": 54,
+    "experience": [
+     "Met Farlis, a member of the Collective, at his alcoba in the Espiral de las Eras.",
+     "Farlis is from Görff and reads the Guerras not as honor but as hierarchy and oppression.",
+     "Farlis argues the Collective rejected those old military families and their worldview.",
+     "Farlis said Auroboro III sits in a room talking about ghosts while others build real things."
+    ],
+    "developed": true,
+    "criterion": "Measures life by whether the old stories still live in someone's mind — whether he's kept the era real through telling.",
+    "lifespan": null,
+    "file": "_maps/npcs/registry.json#npcs",
+    "degree": 47
+   },
+   {
+    "id": "place:espiraldelaseras",
+    "label": "Espiral de las Eras",
+    "kind": "place",
+    "note": "named as a home, but not in the locations record",
+    "degree": 1
+   },
+   {
     "id": "tale:peregrins",
     "label": "peregrins",
     "kind": "tale",
     "summary": "Peregrins are itinerant holy pilgrims, hundreds of years into a tradition of setting out yearly to encounter every temple in the world in search of 'the diverse divinity.' Bound by a vow of understanding and peace, they travel land, sea, and air, renouncing their own identity to become a canvas onto which the world's cultures express themselves and endure.",
     "told": "2026-07-30",
+    "told_by": "",
+    "responsible": "milkucha",
     "file": "_lore/tale/peregrins.md",
-    "degree": 2
+    "degree": 3
    },
    {
-    "id": "disc:creepers_and_night_monsters",
+    "id": "tale:creepers_and_night_monsters",
     "label": "creepers and night monsters",
-    "kind": "discovery",
+    "kind": "tale",
     "summary": "Creepers explode, and monsters emerge at night wherever it's dark - stated as having always been known, with no one credited for finding it out.",
-    "discovered": "2026-07-30",
-    "responsible": "known - no one responsible",
-    "file": "_lore/discoveries/creepers_and_night_monsters.md",
+    "told": "2026-07-30",
+    "told_by": "",
+    "responsible": "milkucha",
+    "file": "_lore/tale/creepers_and_night_monsters.md",
     "degree": 1
    },
    {
-    "id": "disc:redstone_and_basic_needs",
+    "id": "tale:redstone_and_basic_needs",
     "label": "redstone and basic needs",
-    "kind": "discovery",
+    "kind": "tale",
     "summary": "Redstone powers things; people need to eat, sleep, and rest - stated plainly, with no one credited for finding it out.",
-    "discovered": "2026-07-30",
-    "responsible": "known - no one responsible",
-    "file": "_lore/discoveries/redstone_and_basic_needs.md",
+    "told": "2026-07-30",
+    "told_by": "",
+    "responsible": "milkucha",
+    "file": "_lore/tale/redstone_and_basic_needs.md",
     "degree": 2
    },
    {
@@ -5014,67 +5173,81 @@
     "weight": 1
    },
    {
+    "source": "dlg:bardaglis_ilaria_khaoe_segunda_noche",
+    "target": "cfl:CONFLICT-01",
+    "rel": "claims_about",
+    "weight": 1,
+    "inconsistent": false
+   },
+   {
+    "source": "dlg:bardaglis_ilaria_khaoe_segunda_noche",
+    "target": "loc:isla_de_la_amistad",
+    "rel": "claims_about",
+    "weight": 1,
+    "inconsistent": false
+   },
+   {
     "source": "dlg:doran_eras_of_culture",
     "target": "loc:gorff",
     "rel": "claims_about",
     "weight": 1,
-    "consistent": true
+    "inconsistent": false
    },
    {
     "source": "dlg:doran_four_castles",
     "target": "loc:salthos_cruzados",
     "rel": "claims_about",
     "weight": 1,
-    "consistent": true
+    "inconsistent": false
    },
    {
     "source": "dlg:doran_four_castles",
     "target": "chr:doran",
     "rel": "claims_about",
     "weight": 1,
-    "consistent": null
+    "inconsistent": false
    },
    {
     "source": "dlg:doran_four_castles",
     "target": "loc:dragon_city",
     "rel": "claims_about",
     "weight": 1,
-    "consistent": true
+    "inconsistent": false
    },
    {
     "source": "dlg:doran_four_castles",
     "target": "con:codigos",
     "rel": "claims_about",
     "weight": 1,
-    "consistent": true
+    "inconsistent": false
    },
    {
     "source": "dlg:doran_four_castles",
     "target": "loc:gorff",
     "rel": "claims_about",
     "weight": 1,
-    "consistent": true
+    "inconsistent": false
    },
    {
     "source": "dlg:doran_four_castles",
     "target": "loc:khan_ice",
     "rel": "claims_about",
     "weight": 2,
-    "consistent": true
+    "inconsistent": false
    },
    {
     "source": "dlg:doran_plaza_orientation",
     "target": "loc:gorff",
     "rel": "claims_about",
     "weight": 1,
-    "consistent": true
+    "inconsistent": false
    },
    {
     "source": "dlg:doran_plaza_orientation",
     "target": "loc:khan_ice",
     "rel": "claims_about",
     "weight": 1,
-    "consistent": null
+    "inconsistent": false
    },
    {
     "source": "dlg:gondarfolas_darnis_and_bracco",
@@ -5087,56 +5260,56 @@
     "target": "loc:gorff",
     "rel": "claims_about",
     "weight": 1,
-    "consistent": null
+    "inconsistent": false
    },
    {
     "source": "dlg:gondarfolas_darnis_and_bracco",
     "target": "chr:darnis",
     "rel": "claims_about",
     "weight": 3,
-    "consistent": true
+    "inconsistent": false
    },
    {
     "source": "dlg:gondarfolas_darnis_and_bracco",
     "target": "loc:khol_moshin",
     "rel": "claims_about",
     "weight": 1,
-    "consistent": null
+    "inconsistent": false
    },
    {
     "source": "dlg:gondarfolas_darnis_and_bracco",
     "target": "cfl:CONFLICT-01",
     "rel": "claims_about",
     "weight": 1,
-    "consistent": true
+    "inconsistent": false
    },
    {
     "source": "dlg:ilaria_espiral_de_la_historia",
     "target": "con:feria_del_milenio",
     "rel": "claims_about",
     "weight": 2,
-    "consistent": null
+    "inconsistent": false
    },
    {
     "source": "dlg:ilaria_espiral_de_la_historia",
     "target": "chr:ilaria",
     "rel": "claims_about",
     "weight": 1,
-    "consistent": true
+    "inconsistent": false
    },
    {
     "source": "dlg:khaoe_banco_colectivo",
     "target": "loc:gorff",
     "rel": "claims_about",
     "weight": 4,
-    "consistent": true
+    "inconsistent": false
    },
    {
     "source": "dlg:khaoe_calendario_mecanografico",
     "target": "loc:lundria",
     "rel": "claims_about",
     "weight": 3,
-    "consistent": null
+    "inconsistent": false
    },
    {
     "source": "dlg:khaoe_farlis_el_castillo_que_fue",
@@ -5149,7 +5322,7 @@
     "target": "loc:gorff",
     "rel": "claims_about",
     "weight": 2,
-    "consistent": null
+    "inconsistent": false
    },
    {
     "source": "dlg:khaoe_farlis_esperando_a_khaasan",
@@ -5168,14 +5341,28 @@
     "target": "cfl:CONFLICT-12",
     "rel": "claims_about",
     "weight": 1,
-    "consistent": true
+    "inconsistent": false
    },
    {
     "source": "dlg:khaoe_farlis_lo_que_cambia_el_tiempo",
     "target": "loc:lundria",
     "rel": "claims_about",
     "weight": 1,
-    "consistent": null
+    "inconsistent": false
+   },
+   {
+    "source": "dlg:khaoe_milkucha_jardin_de_los_parajes",
+    "target": "loc:grosslor",
+    "rel": "claims_about",
+    "weight": 3,
+    "inconsistent": false
+   },
+   {
+    "source": "dlg:khaoe_milkucha_jardin_de_los_parajes",
+    "target": "loc:isla_de_la_amistad",
+    "rel": "claims_about",
+    "weight": 1,
+    "inconsistent": false
    },
    {
     "source": "dlg:nawom_morkulo_first_meeting",
@@ -5188,91 +5375,91 @@
     "target": "loc:puerto_tortuga",
     "rel": "claims_about",
     "weight": 1,
-    "consistent": true
+    "inconsistent": false
    },
    {
     "source": "dlg:nawom_morkulo_first_meeting",
     "target": "loc:terfyla",
     "rel": "claims_about",
     "weight": 2,
-    "consistent": null
+    "inconsistent": false
    },
    {
     "source": "dlg:nawom_morkulo_first_meeting",
     "target": "loc:tyrnea",
     "rel": "claims_about",
     "weight": 1,
-    "consistent": null
+    "inconsistent": false
    },
    {
     "source": "dlg:nawom_morkulo_first_meeting",
     "target": "chr:darnis",
     "rel": "claims_about",
     "weight": 1,
-    "consistent": true
+    "inconsistent": false
    },
    {
     "source": "dlg:nawom_morkulo_first_meeting",
     "target": "cfl:CONFLICT-02",
     "rel": "claims_about",
     "weight": 1,
-    "consistent": true
+    "inconsistent": false
    },
    {
     "source": "dlg:nerkeli_hangar_talk",
     "target": "loc:nvhi",
     "rel": "claims_about",
     "weight": 2,
-    "consistent": true
+    "inconsistent": false
    },
    {
     "source": "dlg:nerkeli_hangar_talk",
     "target": "cfl:CONFLICT-12",
     "rel": "claims_about",
     "weight": 1,
-    "consistent": true
+    "inconsistent": false
    },
    {
     "source": "dlg:nerkeli_hangar_talk",
     "target": "con:daax_symbol",
     "rel": "claims_about",
     "weight": 1,
-    "consistent": null
+    "inconsistent": false
    },
    {
     "source": "dlg:nuvilo_nerkeli_feria_del_milenio",
     "target": "con:codigos",
     "rel": "claims_about",
     "weight": 1,
-    "consistent": true
+    "inconsistent": false
    },
    {
     "source": "dlg:nuvilo_nerkeli_feria_del_milenio",
     "target": "con:daax_symbol",
     "rel": "claims_about",
     "weight": 1,
-    "consistent": null
+    "inconsistent": false
    },
    {
     "source": "dlg:nuvilo_nerkeli_feria_del_milenio",
     "target": "loc:nvhi",
     "rel": "claims_about",
     "weight": 2,
-    "consistent": null
+    "inconsistent": false
    },
    {
     "source": "dlg:nuvilo_scholar_at_the_feria",
     "target": "chr:darnis",
     "rel": "claims_about",
     "weight": 1,
-    "consistent": true
+    "inconsistent": false
    },
    {
     "source": "dlg:nuvilo_scholar_at_the_feria",
     "target": "cfl:CONFLICT-01",
     "rel": "claims_about",
     "weight": 1,
-    "consistent": true
+    "inconsistent": false
    },
    {
     "source": "dlg:sonoros_lost_traveler",
@@ -5285,21 +5472,21 @@
     "target": "loc:balham",
     "rel": "claims_about",
     "weight": 3,
-    "consistent": true
+    "inconsistent": false
    },
    {
     "source": "dlg:sonoros_lost_traveler",
     "target": "loc:salthos_cruzados",
     "rel": "claims_about",
     "weight": 1,
-    "consistent": null
+    "inconsistent": false
    },
    {
     "source": "dlg:sonoros_lost_traveler",
     "target": "loc:cruce_de_trobal",
     "rel": "claims_about",
     "weight": 1,
-    "consistent": true
+    "inconsistent": false
    },
    {
     "source": "npc:sonoros",
@@ -8998,6 +9185,540 @@
     "weight": 1
    },
    {
+    "source": "npc:gok",
+    "target": "rte:air/Catraniz",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "rte:air/Nalhuë",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "rte:air/Nvhi",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "chr:player_roster",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "con:academia_de_sitnalta",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "con:orikal",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "con:redstone",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "con:tiempo_divino_interno",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "cfl:CONFLICT-01",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "cfl:CONFLICT-02",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "cfl:CONFLICT-07",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "cfl:CONFLICT-09",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "cfl:CONFLICT-11",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "cfl:CONFLICT-14",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "cfl:CONFLICT-15",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "era:ensayo/Era de los Continentes",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "era:ensayo/Era del Confinamiento",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "era:ensayo/Las Guerras de Gorff",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "era:libro/Primera Venida",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "era:libro/Segunda Venida",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "dlg:aureobalo_farlis_castillo_en_miniatura",
+    "rel": "knows",
+    "weight": 3
+   },
+   {
+    "source": "npc:gok",
+    "target": "dlg:bardaglis_ilaria_khaoe_segunda_noche",
+    "rel": "knows",
+    "weight": 8
+   },
+   {
+    "source": "npc:gok",
+    "target": "dlg:doran_four_castles",
+    "rel": "knows",
+    "weight": 3
+   },
+   {
+    "source": "npc:gok",
+    "target": "dlg:doran_plaza_orientation",
+    "rel": "knows",
+    "weight": 2
+   },
+   {
+    "source": "npc:gok",
+    "target": "dlg:gondarfolas_darnis_and_bracco",
+    "rel": "knows",
+    "weight": 2
+   },
+   {
+    "source": "npc:gok",
+    "target": "dlg:ilaria_espiral_de_la_historia",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "dlg:khaoe_banco_colectivo",
+    "rel": "knows",
+    "weight": 2
+   },
+   {
+    "source": "npc:gok",
+    "target": "dlg:khaoe_farlis_lo_que_cambia_el_tiempo",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "dlg:khaoe_khaasan_partida_a_khan_ice",
+    "rel": "knows",
+    "weight": 7
+   },
+   {
+    "source": "npc:gok",
+    "target": "dlg:nawom_morkulo_first_meeting",
+    "rel": "knows",
+    "weight": 2
+   },
+   {
+    "source": "npc:gok",
+    "target": "dlg:nerkeli_hangar_talk",
+    "rel": "knows",
+    "weight": 4
+   },
+   {
+    "source": "npc:gok",
+    "target": "dlg:nuvilo_nerkeli_feria_del_milenio",
+    "rel": "knows",
+    "weight": 2
+   },
+   {
+    "source": "npc:gok",
+    "target": "dlg:sonoros_lost_traveler",
+    "rel": "knows",
+    "weight": 4
+   },
+   {
+    "source": "npc:gok",
+    "target": "rte:hw/M9",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "inh:Gorff/Bardaglis",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "inh:cross-locality travelers/routes (named, with a mode of travel)/Galandis",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "inh:cross-locality travelers/routes (named, with a mode of travel)/Garfeld",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "inh:cross-locality travelers/routes (named, with a mode of travel)/Gizen",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "inh:cross-locality travelers/routes (named, with a mode of travel)/Gok",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "inh:Terfila/Gondarfolas",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "inh:cross-locality travelers/routes (named, with a mode of travel)/Gondorlikas",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "inh:Gorff/Gorlia",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "inh:Gorff/Khaasan",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "inh:cross-locality travelers/routes (named, with a mode of travel)/Kjon",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "inh:cross-locality travelers/routes (named, with a mode of travel)/Kjon-Ukk",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "inh:cross-locality travelers/routes (named, with a mode of travel)/Malkinimies",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "inh:Gorff/NORKAN",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "inh:unlocated (skin only, no locality/role given)/Nerl",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "inh:Gorff/Nuruk",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "inh:Khol Moshin (Taterzen sheet, distinct from the NPC-sheet locality list above)/Nuruk",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "inh:Terfila/Peregrin",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "inh:Terfila/Puri",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "inh:cross-locality travelers/routes (named, with a mode of travel)/Terrolis",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "inh:Gorff/Trentor",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "inh:Khol Moshin (Taterzen sheet, distinct from the NPC-sheet locality list above)/Trentor",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "loc:aurali",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "loc:bahia_pelicanos",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "loc:balham",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "loc:casa_de_esteban",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "loc:catraniz",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "loc:cruce_de_trobal",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "loc:gas_stop",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "loc:gondola",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "loc:grosslor",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "loc:jolystick",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "loc:khan_ae_mogulac",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "loc:khan_ice",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "loc:kuritsa",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "loc:mausoleos",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "loc:nvhi",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "loc:puerto_de_las_lunas",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "loc:puerto_del_este",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "loc:puerto_tortuga",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "loc:puerto_varillas",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "loc:salthos_cruzados",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "loc:sindaara",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "loc:soti",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "loc:tax_de_rich",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "loc:templo_del_gato",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "loc:terfyla",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "loc:villa_naranja",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "loc:wasteland",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "rte:named/Ruta Lundria-Salthos Cruzados",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "rte:tr/Balhâm - Salthos Cruzados",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "rte:tr/Gorff - Khan Ice",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "rte:tr/Khan Ice - Balhâm",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "rte:tr/Khan Ice - Puerto del Norte",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "year:2013",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:gok",
+    "target": "year:2015",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
     "source": "npc:gurk",
     "target": "loc:gondola",
     "rel": "lives_in",
@@ -10438,6 +11159,288 @@
     "weight": 1
    },
    {
+    "source": "npc:auroboro_iii",
+    "target": "place:espiraldelaseras",
+    "rel": "lives_in",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "con:feria_del_milenio",
+    "rel": "lives_in",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "chr:daaxagoras",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "chr:ilaria",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "con:feria_del_milenio",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "con:peregrins",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "con:redstone",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "con:townland",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "con:waystones",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "cfl:CONFLICT-10",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "cfl:CONFLICT-12",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "cfl:CONFLICT-15",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "era:ensayo/Las Guerras de Gorff",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "era:libro/Era de los Reinos Naturales",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "era:libro/Segunda Venida",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "dlg:aureobalo_farlis_castillo_en_miniatura",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "dlg:bardaglis_ilaria_khaoe_segunda_noche",
+    "rel": "knows",
+    "weight": 3
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "dlg:gondarfolas_darnis_and_bracco",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "dlg:ilaria_espiral_de_la_historia",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "dlg:khaoe_calendario_mecanografico",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "dlg:khaoe_farlis_el_castillo_que_fue",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "dlg:khaoe_farlis_lo_que_cambia_el_tiempo",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "dlg:khaoe_khaasan_partida_a_khan_ice",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "dlg:khaoe_milkucha_jardin_de_los_parajes",
+    "rel": "knows",
+    "weight": 2
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "dlg:nawom_morkulo_first_meeting",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "dlg:nerkeli_hangar_talk",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "dlg:nuvilo_nerkeli_feria_del_milenio",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "rte:hw/M7",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "inh:Gorff/Azaor",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "inh:Gorff/Bardaglis",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "inh:unlocated (skin only, no locality/role given)/El Globero",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "inh:Gorff/Garnako",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "inh:cross-locality travelers/routes (named, with a mode of travel)/Gizen",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "inh:Gorff/Khaasan",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "inh:Gorff/Khaoe",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "inh:unlocated (skin only, no locality/role given)/Mragk",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "inh:cross-locality travelers/routes (named, with a mode of travel)/Nerkeli",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "inh:Puente Continental/Soro",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "loc:catraniz",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "loc:fuerte_fabian",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "loc:milkantida_as_place",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "loc:monte_pastizal",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "loc:nvhi",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "loc:orange_manor",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "loc:templo_del_gato",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "loc:wasteland",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:auroboro_iii",
+    "target": "year:2013",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
     "source": "npc:sonoros",
     "target": "dlg:sonoros_lost_traveler",
     "rel": "speaks",
@@ -10562,19 +11565,25 @@
     "weight": 1
    },
    {
-    "source": "disc:creepers_and_night_monsters",
+    "source": "tale:peregrins",
+    "target": "inh:generic_crowd_instances_not_individually_named/Peregrin",
+    "rel": "touches",
+    "weight": 1
+   },
+   {
+    "source": "tale:creepers_and_night_monsters",
     "target": "con:world_hazards",
     "rel": "touches",
     "weight": 1
    },
    {
-    "source": "disc:redstone_and_basic_needs",
+    "source": "tale:redstone_and_basic_needs",
     "target": "con:redstone",
     "rel": "touches",
     "weight": 1
    },
    {
-    "source": "disc:redstone_and_basic_needs",
+    "source": "tale:redstone_and_basic_needs",
     "target": "con:basic_needs",
     "rel": "touches",
     "weight": 1
@@ -10589,7 +11598,7 @@
     "label": "Luminacion",
     "kind": "root",
     "path": ".",
-    "degree": 13
+    "degree": 12
    },
    {
     "id": "file:.gitignore",
@@ -10612,7 +11621,7 @@
     "label": "README.md",
     "kind": "doc",
     "path": "README.md",
-    "size": 35844,
+    "size": 39558,
     "degree": 1
    },
    {
@@ -10620,15 +11629,7 @@
     "label": "TODO.md",
     "kind": "doc",
     "path": "TODO.md",
-    "size": 42349,
-    "degree": 1
-   },
-   {
-    "id": "file:graphify.html",
-    "label": "graphify.html",
-    "kind": "other",
-    "path": "graphify.html",
-    "size": 331280,
+    "size": 56103,
     "degree": 1
    },
    {
@@ -10659,7 +11660,7 @@
     "label": "settings.local.json",
     "kind": "other",
     "path": ".claude/settings.local.json",
-    "size": 363,
+    "size": 474,
     "degree": 1
    },
    {
@@ -10667,7 +11668,7 @@
     "label": "skills",
     "kind": "dir",
     "path": ".claude/skills",
-    "degree": 9
+    "degree": 8
    },
    {
     "id": "dir:.claude/skills/bake_dialog",
@@ -10696,22 +11697,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/character/SKILL.md",
-    "size": 19765,
-    "degree": 1
-   },
-   {
-    "id": "dir:.claude/skills/discover",
-    "label": "discover",
-    "kind": "dir",
-    "path": ".claude/skills/discover",
-    "degree": 2
-   },
-   {
-    "id": "file:.claude/skills/discover/SKILL.md",
-    "label": "SKILL.md",
-    "kind": "skill",
-    "path": ".claude/skills/discover/SKILL.md",
-    "size": 4316,
+    "size": 19847,
     "degree": 1
    },
    {
@@ -10726,7 +11712,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/enact/SKILL.md",
-    "size": 24778,
+    "size": 32322,
     "degree": 1
    },
    {
@@ -10741,7 +11727,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/integrate/SKILL.md",
-    "size": 6661,
+    "size": 7368,
     "degree": 1
    },
    {
@@ -10786,7 +11772,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/tell/SKILL.md",
-    "size": 5787,
+    "size": 7636,
     "degree": 1
    },
    {
@@ -10801,76 +11787,22 @@
     "label": "_lore",
     "kind": "dir",
     "path": "_lore",
-    "degree": 6
+    "degree": 7
    },
    {
-    "id": "dir:_lore/analysis",
-    "label": "analysis",
-    "kind": "dir",
-    "path": "_lore/analysis",
-    "degree": 5
-   },
-   {
-    "id": "file:_lore/analysis/context.md",
-    "label": "context.md",
-    "kind": "lore",
-    "path": "_lore/analysis/context.md",
-    "size": 56200,
-    "degree": 1
-   },
-   {
-    "id": "file:_lore/analysis/encodings.json",
+    "id": "file:_lore/encodings.json",
     "label": "encodings.json",
     "kind": "lore",
-    "path": "_lore/analysis/encodings.json",
-    "size": 154452,
+    "path": "_lore/encodings.json",
+    "size": 173514,
     "degree": 1
    },
    {
-    "id": "file:_lore/analysis/hearsay.md",
-    "label": "hearsay.md",
-    "kind": "lore",
-    "path": "_lore/analysis/hearsay.md",
-    "size": 32570,
-    "degree": 1
-   },
-   {
-    "id": "file:_lore/analysis/unknown.md",
+    "id": "file:_lore/unknown.md",
     "label": "unknown.md",
     "kind": "lore",
-    "path": "_lore/analysis/unknown.md",
-    "size": 21103,
-    "degree": 1
-   },
-   {
-    "id": "dir:_lore/discoveries",
-    "label": "discoveries",
-    "kind": "dir",
-    "path": "_lore/discoveries",
-    "degree": 4
-   },
-   {
-    "id": "file:_lore/discoveries/_index.md",
-    "label": "_index.md",
-    "kind": "lore",
-    "path": "_lore/discoveries/_index.md",
-    "size": 1988,
-    "degree": 1
-   },
-   {
-    "id": "file:_lore/discoveries/creepers_and_night_monsters.md",
-    "label": "creepers_and_night_monsters.md",
-    "kind": "lore",
-    "path": "_lore/discoveries/creepers_and_night_monsters.md",
-    "size": 463,
-    "degree": 1
-   },
-   {
-    "id": "file:_lore/discoveries/redstone_and_basic_needs.md",
-    "label": "redstone_and_basic_needs.md",
-    "kind": "lore",
-    "path": "_lore/discoveries/redstone_and_basic_needs.md",
-    "size": 456,
+    "path": "_lore/unknown.md",
+    "size": 21353,
     "degree": 1
    },
    {
@@ -10878,14 +11810,22 @@
     "label": "facts",
     "kind": "dir",
     "path": "_lore/facts",
-    "degree": 5
+    "degree": 6
+   },
+   {
+    "id": "file:_lore/facts/_authors.md",
+    "label": "_authors.md",
+    "kind": "lore",
+    "path": "_lore/facts/_authors.md",
+    "size": 816,
+    "degree": 1
    },
    {
     "id": "file:_lore/facts/_index.md",
     "label": "_index.md",
     "kind": "lore",
     "path": "_lore/facts/_index.md",
-    "size": 2962,
+    "size": 3442,
     "degree": 1
    },
    {
@@ -10901,7 +11841,7 @@
     "label": "facts.json",
     "kind": "lore",
     "path": "_lore/facts/facts.json",
-    "size": 3303,
+    "size": 3742,
     "degree": 1
    },
    {
@@ -10909,7 +11849,22 @@
     "label": "life_is_finite.md",
     "kind": "lore",
     "path": "_lore/facts/life_is_finite.md",
-    "size": 2207,
+    "size": 2562,
+    "degree": 1
+   },
+   {
+    "id": "dir:_lore/hearsay",
+    "label": "hearsay",
+    "kind": "dir",
+    "path": "_lore/hearsay",
+    "degree": 2
+   },
+   {
+    "id": "file:_lore/hearsay/hearsay.md",
+    "label": "hearsay.md",
+    "kind": "lore",
+    "path": "_lore/hearsay/hearsay.md",
+    "size": 45370,
     "degree": 1
    },
    {
@@ -10917,7 +11872,7 @@
     "label": "material",
     "kind": "dir",
     "path": "_lore/material",
-    "degree": 35
+    "degree": 36
    },
    {
     "id": "file:_lore/material/Atlax I-1.png",
@@ -11184,6 +12139,14 @@
     "degree": 1
    },
    {
+    "id": "file:_lore/material/_context.md",
+    "label": "_context.md",
+    "kind": "material",
+    "path": "_lore/material/_context.md",
+    "size": 56200,
+    "degree": 1
+   },
+   {
     "id": "file:_lore/material/timelines.py",
     "label": "timelines.py",
     "kind": "material",
@@ -11196,14 +12159,30 @@
     "label": "tale",
     "kind": "dir",
     "path": "_lore/tale",
-    "degree": 3
+    "degree": 6
+   },
+   {
+    "id": "file:_lore/tale/_authors.md",
+    "label": "_authors.md",
+    "kind": "lore",
+    "path": "_lore/tale/_authors.md",
+    "size": 1170,
+    "degree": 1
    },
    {
     "id": "file:_lore/tale/_index.md",
     "label": "_index.md",
     "kind": "lore",
     "path": "_lore/tale/_index.md",
-    "size": 1784,
+    "size": 3046,
+    "degree": 1
+   },
+   {
+    "id": "file:_lore/tale/creepers_and_night_monsters.md",
+    "label": "creepers_and_night_monsters.md",
+    "kind": "lore",
+    "path": "_lore/tale/creepers_and_night_monsters.md",
+    "size": 567,
     "degree": 1
    },
    {
@@ -11211,7 +12190,15 @@
     "label": "peregrins.md",
     "kind": "lore",
     "path": "_lore/tale/peregrins.md",
-    "size": 1382,
+    "size": 1440,
+    "degree": 1
+   },
+   {
+    "id": "file:_lore/tale/redstone_and_basic_needs.md",
+    "label": "redstone_and_basic_needs.md",
+    "kind": "lore",
+    "path": "_lore/tale/redstone_and_basic_needs.md",
+    "size": 560,
     "degree": 1
    },
    {
@@ -11252,18 +12239,33 @@
     "degree": 1
    },
    {
-    "id": "dir:_maps/graph",
-    "label": "graph",
+    "id": "dir:_maps/graphs",
+    "label": "graphs",
     "kind": "dir",
-    "path": "_maps/graph",
+    "path": "_maps/graphs",
     "degree": 2
    },
    {
-    "id": "file:_maps/graph/graph.json",
+    "id": "dir:_maps/graphs/graphifyish",
+    "label": "graphifyish",
+    "kind": "dir",
+    "path": "_maps/graphs/graphifyish",
+    "degree": 3
+   },
+   {
+    "id": "file:_maps/graphs/graphifyish/graph.json",
     "label": "graph.json",
     "kind": "registry",
-    "path": "_maps/graph/graph.json",
-    "size": 398474,
+    "path": "_maps/graphs/graphifyish/graph.json",
+    "size": 434231,
+    "degree": 1
+   },
+   {
+    "id": "file:_maps/graphs/graphifyish/graphifyish.html",
+    "label": "graphifyish.html",
+    "kind": "registry",
+    "path": "_maps/graphs/graphifyish/graphifyish.html",
+    "size": 370955,
     "degree": 1
    },
    {
@@ -11278,7 +12280,7 @@
     "label": "lifespans.json",
     "kind": "registry",
     "path": "_maps/npcs/lifespans.json",
-    "size": 1287,
+    "size": 1418,
     "degree": 1
    },
    {
@@ -11286,7 +12288,7 @@
     "label": "registry.json",
     "kind": "registry",
     "path": "_maps/npcs/registry.json",
-    "size": 103871,
+    "size": 129619,
     "degree": 1
    },
    {
@@ -11415,7 +12417,7 @@
     "label": "dialogues",
     "kind": "dir",
     "path": "data/luminacion/blabber/dialogues",
-    "degree": 19
+    "degree": 24
    },
    {
     "id": "file:data/luminacion/blabber/dialogues/_template_branching.json",
@@ -11439,6 +12441,30 @@
     "kind": "dialogue",
     "path": "data/luminacion/blabber/dialogues/_template_one_off.json",
     "size": 1785,
+    "degree": 1
+   },
+   {
+    "id": "file:data/luminacion/blabber/dialogues/aureobalo_farlis_castillo_en_miniatura.json",
+    "label": "aureobalo_farlis_castillo_en_miniatura.json",
+    "kind": "dialogue",
+    "path": "data/luminacion/blabber/dialogues/aureobalo_farlis_castillo_en_miniatura.json",
+    "size": 8351,
+    "degree": 1
+   },
+   {
+    "id": "file:data/luminacion/blabber/dialogues/auroboro_iii_farlis_alcoba.json",
+    "label": "auroboro_iii_farlis_alcoba.json",
+    "kind": "dialogue",
+    "path": "data/luminacion/blabber/dialogues/auroboro_iii_farlis_alcoba.json",
+    "size": 3854,
+    "degree": 1
+   },
+   {
+    "id": "file:data/luminacion/blabber/dialogues/bardaglis_ilaria_khaoe_segunda_noche.json",
+    "label": "bardaglis_ilaria_khaoe_segunda_noche.json",
+    "kind": "dialogue",
+    "path": "data/luminacion/blabber/dialogues/bardaglis_ilaria_khaoe_segunda_noche.json",
+    "size": 8917,
     "degree": 1
    },
    {
@@ -11519,6 +12545,22 @@
     "kind": "dialogue",
     "path": "data/luminacion/blabber/dialogues/khaoe_farlis_lo_que_cambia_el_tiempo.json",
     "size": 1892,
+    "degree": 1
+   },
+   {
+    "id": "file:data/luminacion/blabber/dialogues/khaoe_khaasan_partida_a_khan_ice.json",
+    "label": "khaoe_khaasan_partida_a_khan_ice.json",
+    "kind": "dialogue",
+    "path": "data/luminacion/blabber/dialogues/khaoe_khaasan_partida_a_khan_ice.json",
+    "size": 7890,
+    "degree": 1
+   },
+   {
+    "id": "file:data/luminacion/blabber/dialogues/khaoe_milkucha_jardin_de_los_parajes.json",
+    "label": "khaoe_milkucha_jardin_de_los_parajes.json",
+    "kind": "dialogue",
+    "path": "data/luminacion/blabber/dialogues/khaoe_milkucha_jardin_de_los_parajes.json",
+    "size": 14953,
     "degree": 1
    },
    {
@@ -12400,22 +13442,22 @@
     "label": "scripts",
     "kind": "dir",
     "path": "scripts",
-    "degree": 9
+    "degree": 11
    },
    {
-    "id": "file:scripts/graphify.py",
-    "label": "graphify.py",
+    "id": "file:scripts/graphifyish.py",
+    "label": "graphifyish.py",
     "kind": "script",
-    "path": "scripts/graphify.py",
-    "size": 30425,
+    "path": "scripts/graphifyish.py",
+    "size": 31551,
     "degree": 1
    },
    {
-    "id": "file:scripts/graphify_template.html",
-    "label": "graphify_template.html",
+    "id": "file:scripts/graphifyish_template.html",
+    "label": "graphifyish_template.html",
     "kind": "script",
-    "path": "scripts/graphify_template.html",
-    "size": 24785,
+    "path": "scripts/graphifyish_template.html",
+    "size": 36739,
     "degree": 1
    },
    {
@@ -12435,6 +13477,14 @@
     "degree": 1
    },
    {
+    "id": "file:scripts/notify_death.py",
+    "label": "notify_death.py",
+    "kind": "script",
+    "path": "scripts/notify_death.py",
+    "size": 5804,
+    "degree": 1
+   },
+   {
     "id": "file:scripts/package.py",
     "label": "package.py",
     "kind": "script",
@@ -12447,7 +13497,7 @@
     "label": "roll_lifespan.py",
     "kind": "script",
     "path": "scripts/roll_lifespan.py",
-    "size": 2617,
+    "size": 2919,
     "degree": 1
    },
    {
@@ -12455,7 +13505,7 @@
     "label": "sample_lore_knowledge.py",
     "kind": "script",
     "path": "scripts/sample_lore_knowledge.py",
-    "size": 7419,
+    "size": 7397,
     "degree": 1
    },
    {
@@ -12464,6 +13514,21 @@
     "kind": "script",
     "path": "scripts/update_uuids.py",
     "size": 8248,
+    "degree": 1
+   },
+   {
+    "id": "dir:scripts/hooks",
+    "label": "hooks",
+    "kind": "dir",
+    "path": "scripts/hooks",
+    "degree": 2
+   },
+   {
+    "id": "file:scripts/hooks/post-commit",
+    "label": "post-commit",
+    "kind": "script",
+    "path": "scripts/hooks/post-commit",
+    "size": 627,
     "degree": 1
    }
   ],
@@ -12489,12 +13554,6 @@
    {
     "source": "dir:.",
     "target": "file:TODO.md",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:.",
-    "target": "file:graphify.html",
     "rel": "contains",
     "weight": 1
    },
@@ -12549,18 +13608,6 @@
    {
     "source": "dir:.claude/skills/character",
     "target": "file:.claude/skills/character/SKILL.md",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:.claude/skills",
-    "target": "dir:.claude/skills/discover",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:.claude/skills/discover",
-    "target": "file:.claude/skills/discover/SKILL.md",
     "rel": "contains",
     "weight": 1
    },
@@ -12638,61 +13685,25 @@
    },
    {
     "source": "dir:_lore",
-    "target": "dir:_lore/analysis",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:_lore/analysis",
-    "target": "file:_lore/analysis/context.md",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:_lore/analysis",
-    "target": "file:_lore/analysis/encodings.json",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:_lore/analysis",
-    "target": "file:_lore/analysis/hearsay.md",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:_lore/analysis",
-    "target": "file:_lore/analysis/unknown.md",
+    "target": "file:_lore/encodings.json",
     "rel": "contains",
     "weight": 1
    },
    {
     "source": "dir:_lore",
-    "target": "dir:_lore/discoveries",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:_lore/discoveries",
-    "target": "file:_lore/discoveries/_index.md",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:_lore/discoveries",
-    "target": "file:_lore/discoveries/creepers_and_night_monsters.md",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:_lore/discoveries",
-    "target": "file:_lore/discoveries/redstone_and_basic_needs.md",
+    "target": "file:_lore/unknown.md",
     "rel": "contains",
     "weight": 1
    },
    {
     "source": "dir:_lore",
     "target": "dir:_lore/facts",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:_lore/facts",
+    "target": "file:_lore/facts/_authors.md",
     "rel": "contains",
     "weight": 1
    },
@@ -12717,6 +13728,18 @@
    {
     "source": "dir:_lore/facts",
     "target": "file:_lore/facts/life_is_finite.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:_lore",
+    "target": "dir:_lore/hearsay",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:_lore/hearsay",
+    "target": "file:_lore/hearsay/hearsay.md",
     "rel": "contains",
     "weight": 1
    },
@@ -12926,6 +13949,12 @@
    },
    {
     "source": "dir:_lore/material",
+    "target": "file:_lore/material/_context.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:_lore/material",
     "target": "file:_lore/material/timelines.py",
     "rel": "contains",
     "weight": 1
@@ -12938,13 +13967,31 @@
    },
    {
     "source": "dir:_lore/tale",
+    "target": "file:_lore/tale/_authors.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:_lore/tale",
     "target": "file:_lore/tale/_index.md",
     "rel": "contains",
     "weight": 1
    },
    {
     "source": "dir:_lore/tale",
+    "target": "file:_lore/tale/creepers_and_night_monsters.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:_lore/tale",
     "target": "file:_lore/tale/peregrins.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:_lore/tale",
+    "target": "file:_lore/tale/redstone_and_basic_needs.md",
     "rel": "contains",
     "weight": 1
    },
@@ -12980,13 +14027,25 @@
    },
    {
     "source": "dir:_maps",
-    "target": "dir:_maps/graph",
+    "target": "dir:_maps/graphs",
     "rel": "contains",
     "weight": 1
    },
    {
-    "source": "dir:_maps/graph",
-    "target": "file:_maps/graph/graph.json",
+    "source": "dir:_maps/graphs",
+    "target": "dir:_maps/graphs/graphifyish",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:_maps/graphs/graphifyish",
+    "target": "file:_maps/graphs/graphifyish/graph.json",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:_maps/graphs/graphifyish",
+    "target": "file:_maps/graphs/graphifyish/graphifyish.html",
     "rel": "contains",
     "weight": 1
    },
@@ -13130,6 +14189,24 @@
    },
    {
     "source": "dir:data/luminacion/blabber/dialogues",
+    "target": "file:data/luminacion/blabber/dialogues/aureobalo_farlis_castillo_en_miniatura.json",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:data/luminacion/blabber/dialogues",
+    "target": "file:data/luminacion/blabber/dialogues/auroboro_iii_farlis_alcoba.json",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:data/luminacion/blabber/dialogues",
+    "target": "file:data/luminacion/blabber/dialogues/bardaglis_ilaria_khaoe_segunda_noche.json",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:data/luminacion/blabber/dialogues",
     "target": "file:data/luminacion/blabber/dialogues/doran_eras_of_culture.json",
     "rel": "contains",
     "weight": 1
@@ -13185,6 +14262,18 @@
    {
     "source": "dir:data/luminacion/blabber/dialogues",
     "target": "file:data/luminacion/blabber/dialogues/khaoe_farlis_lo_que_cambia_el_tiempo.json",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:data/luminacion/blabber/dialogues",
+    "target": "file:data/luminacion/blabber/dialogues/khaoe_khaasan_partida_a_khan_ice.json",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:data/luminacion/blabber/dialogues",
+    "target": "file:data/luminacion/blabber/dialogues/khaoe_milkucha_jardin_de_los_parajes.json",
     "rel": "contains",
     "weight": 1
    },
@@ -13874,13 +14963,13 @@
    },
    {
     "source": "dir:scripts",
-    "target": "file:scripts/graphify.py",
+    "target": "file:scripts/graphifyish.py",
     "rel": "contains",
     "weight": 1
    },
    {
     "source": "dir:scripts",
-    "target": "file:scripts/graphify_template.html",
+    "target": "file:scripts/graphifyish_template.html",
     "rel": "contains",
     "weight": 1
    },
@@ -13893,6 +14982,12 @@
    {
     "source": "dir:scripts",
     "target": "file:scripts/lineage_coin.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts",
+    "target": "file:scripts/notify_death.py",
     "rel": "contains",
     "weight": 1
    },
@@ -13919,6 +15014,18 @@
     "target": "file:scripts/update_uuids.py",
     "rel": "contains",
     "weight": 1
+   },
+   {
+    "source": "dir:scripts",
+    "target": "dir:scripts/hooks",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/hooks",
+    "target": "file:scripts/hooks/post-commit",
+    "rel": "contains",
+    "weight": 1
    }
   ]
  },
@@ -13931,7 +15038,7 @@
     "kind": "layer",
     "note": "skills + lore: the sources of truth",
     "tier": 1,
-    "degree": 14
+    "degree": 12
    },
    {
     "id": "layer:2",
@@ -13939,7 +15046,7 @@
     "kind": "layer",
     "note": "templates, registries, gesture dispatch",
     "tier": 2,
-    "degree": 13
+    "degree": 14
    },
    {
     "id": "layer:3",
@@ -13971,14 +15078,6 @@
     "kind": "skill",
     "tier": 1,
     "file": ".claude/skills/character/SKILL.md",
-    "degree": 2
-   },
-   {
-    "id": "skill:discover",
-    "label": "/discover",
-    "kind": "skill",
-    "tier": 1,
-    "file": ".claude/skills/discover/SKILL.md",
     "degree": 2
    },
    {
@@ -14026,12 +15125,12 @@
     "label": "_lore/material",
     "kind": "source",
     "tier": 1,
-    "note": "34 excavated artifacts, never edited",
+    "note": "35 excavated artifacts, never edited",
     "degree": 2
    },
    {
-    "id": "src:analysis",
-    "label": "_lore/analysis",
+    "id": "src:encodings",
+    "label": "_lore/encodings.json",
     "kind": "source",
     "tier": 1,
     "note": "58 locations, 19 concepts, 17 conflicts",
@@ -14042,15 +15141,7 @@
     "label": "_lore/tale",
     "kind": "source",
     "tier": 1,
-    "note": "1 tales told by the author",
-    "degree": 2
-   },
-   {
-    "id": "src:discoveries",
-    "label": "_lore/discoveries",
-    "kind": "source",
-    "tier": 1,
-    "note": "2 discoveries",
+    "note": "3 tales told by the author",
     "degree": 2
    },
    {
@@ -14066,7 +15157,7 @@
     "label": "_maps/npcs/registry.json",
     "kind": "registry",
     "tier": 2,
-    "note": "63 NPC sheets",
+    "note": "64 NPC sheets",
     "degree": 7
    },
    {
@@ -14094,11 +15185,11 @@
     "degree": 2
    },
    {
-    "id": "script:graphify.py",
-    "label": "graphify.py",
+    "id": "script:graphifyish.py",
+    "label": "graphifyish.py",
     "kind": "script",
     "tier": 2,
-    "file": "scripts/graphify.py",
+    "file": "scripts/graphifyish.py",
     "degree": 2
    },
    {
@@ -14116,6 +15207,14 @@
     "tier": 2,
     "file": "scripts/lineage_coin.py",
     "degree": 2
+   },
+   {
+    "id": "script:notify_death.py",
+    "label": "notify_death.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/notify_death.py",
+    "degree": 1
    },
    {
     "id": "script:package.py",
@@ -14154,7 +15253,7 @@
     "label": "blabber/dialogues",
     "kind": "datapack",
     "tier": 3,
-    "note": "15 dialogues",
+    "note": "20 dialogues",
     "degree": 4
    },
    {
@@ -14215,12 +15314,6 @@
    },
    {
     "source": "layer:1",
-    "target": "skill:discover",
-    "rel": "holds",
-    "weight": 1
-   },
-   {
-    "source": "layer:1",
     "target": "skill:enact",
     "rel": "holds",
     "weight": 1
@@ -14257,19 +15350,13 @@
    },
    {
     "source": "layer:1",
-    "target": "src:analysis",
+    "target": "src:encodings",
     "rel": "holds",
     "weight": 1
    },
    {
     "source": "layer:1",
     "target": "src:tale",
-    "rel": "holds",
-    "weight": 1
-   },
-   {
-    "source": "layer:1",
-    "target": "src:discoveries",
     "rel": "holds",
     "weight": 1
    },
@@ -14305,7 +15392,7 @@
    },
    {
     "source": "layer:2",
-    "target": "script:graphify.py",
+    "target": "script:graphifyish.py",
     "rel": "holds",
     "weight": 1
    },
@@ -14318,6 +15405,12 @@
    {
     "source": "layer:2",
     "target": "script:lineage_coin.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:notify_death.py",
     "rel": "holds",
     "weight": 1
    },
@@ -14377,7 +15470,7 @@
    },
    {
     "source": "skill:enact",
-    "target": "src:analysis",
+    "target": "src:encodings",
     "rel": "records hearsay",
     "weight": 1
    },
@@ -14395,7 +15488,7 @@
    },
    {
     "source": "skill:integrate",
-    "target": "src:analysis",
+    "target": "src:encodings",
     "rel": "analyses material into",
     "weight": 1
    },
@@ -14408,12 +15501,6 @@
    {
     "source": "skill:tell",
     "target": "src:tale",
-    "rel": "writes",
-    "weight": 1
-   },
-   {
-    "source": "skill:discover",
-    "target": "src:discoveries",
     "rel": "writes",
     "weight": 1
    },
@@ -14437,7 +15524,7 @@
    },
    {
     "source": "script:sample_lore_knowledge.py",
-    "target": "src:analysis",
+    "target": "src:encodings",
     "rel": "samples",
     "weight": 1
    },
@@ -14472,8 +15559,8 @@
     "weight": 1
    },
    {
-    "source": "script:graphify.py",
-    "target": "src:analysis",
+    "source": "script:graphifyish.py",
+    "target": "src:encodings",
     "rel": "graphs",
     "weight": 1
    },
@@ -14503,5 +15590,5 @@
    }
   ]
  },
- "generated": "2026-07-31"
+ "generated": "2026-08-05"
 }

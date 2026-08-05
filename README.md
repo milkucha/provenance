@@ -65,46 +65,53 @@ The system has four layers, each authored from the one below it:
     files already establish (below); audit every dialogue under `data/luminacion/blabber/dialogues/`
     for a matching `hearsay.entries` record (§8 Step 5 — unconditional by rule, but easy to miss on a
     hand-written dialogue that skipped `/enact`); and check for drift between what's referenced
-    elsewhere (registries, sampled knowledge, and `tales`/`discoveries` `touches` refs) and what's
-    actually recorded in `encodings.json`. Run whichever pass(es) fit the situation, not necessarily
-    all three.
+    elsewhere (registries, sampled knowledge, and `tales` `touches` refs) and what's actually recorded
+    in `encodings.json`. Run whichever pass(es) fit the situation, not necessarily all three.
   - **`/tell`** (`tell/SKILL.md`) — records a tale the user tells directly, outside any excavated
-    document or character's mouth, into `_lore/tale/` and `encodings.json`'s `tales` category.
-  - **`/discover`** (`discover/SKILL.md`) — records a discovery the user states directly, with its own
-    credited (or explicitly uncredited) responsible party, into `_lore/discoveries/` and
-    `encodings.json`'s `discoveries` category.
+    document or character's mouth — narrated as a story or stated plainly as a fact now known, both
+    the same category — optionally credited to an in-world source (`told_by`), into `_lore/tale/` and
+    `encodings.json`'s `tales` category. Real-world provenance (`responsible` — who told the system) is
+    recorded separately, in `_lore/tale/_authors.md`, never in `encodings.json`.
   - **`/character`** (`character/SKILL.md`) — maintains a character's sheet in
     `_maps/npcs/registry.json` on its own, without running a conversation: backstory, city, knowledge
     sample, **criterion**, and **lifespan**. It owns the criterion model — Step 4 derives one, Step 5
     rolls a lifespan, and Step 6 is the canonical reference for how a criterion changes. `/enact`
     points back at those rather than restating them.
-- **`_lore/`** — the raw material and its analysis, plus three further sources of truth: two told
+- **`_lore/`** — the raw material and its analysis, plus two further sources of truth: one told
   directly by the user, and one (`facts/`) that is universal and never sampled:
   - `_lore/material/` — source artifacts as uploaded: screenshots of in-game books, maps,
     spreadsheets (`Luminacion Register [Code].xlsx`, `Catastro Milkaan y Platinhëa.xlsx`, ...),
     documents. Treated as excavated primary sources — never edited, only read.
-  - `_lore/analysis/context.md` — one section per material artifact, transcribing only what that
+  - `_lore/material/_context.md` — one section per material artifact, transcribing only what that
     specific source says or shows, with no cross-source reconciliation. Contradictions between
-    sources are noted here, not resolved.
-  - `_lore/analysis/encodings.json` — the structured, queryable form of the same material:
-    `time_systems`, `locations`, `routes`, `characters`, `concepts`, `conflicts` (cross-source
-    disagreements, each with a `user_resolution` once settled), and `hearsay` (claims made *in*
-    dialogues — §8 Step 5). This is what `scripts/sample_lore_knowledge.py` draws an NPC's knowledge
-    pool from.
-  - `_lore/analysis/unknown.md` — gaps and open questions the material itself doesn't answer, plus a
-    log of which have since been resolved by the user.
-  - `_lore/analysis/hearsay.md` — the human-readable counterpart to `encodings.json`'s `hearsay`
-    array: what's been said, by whom, where, and whether it checked out against the record.
-  - `_lore/tale/` — a third source of truth, populated by `/tell`: tales told directly by the user,
-    the world's author, one file per tale (`<slug>.md`). Unlike hearsay, a tale **is** folded into the
-    objective arrays above (via a `tale:<id>` source tag), never overwriting an existing entry. See
-    `_lore/tale/_index.md` and `encodings.json`'s `tales` category.
-  - `_lore/discoveries/` — a fourth source of truth, populated by `/discover`: things the user states
-    directly as now known, each crediting a responsible party or explicitly none. Processed
-    identically to a tale. See `_lore/discoveries/_index.md` and `encodings.json`'s `discoveries`
-    category. (Not to be confused with `_lore/facts/` below — a discovery is lore, and gets sampled
-    like all lore.)
-  - `_lore/facts/` — a fifth source of truth, and the only one that is **never sampled**. The handful
+    sources are noted here, not resolved. Lives inside `material/` itself, the only analysis output
+    that's source-specific rather than cross-cutting.
+  - `_lore/encodings.json` — the central, structured, queryable form of the record: `time_systems`,
+    `locations`, `routes`, `characters`, `concepts`, `conflicts` (cross-source disagreements, each with
+    a `user_resolution` once settled), `tales`, and `hearsay` (claims made *in* dialogues — §8 Step 5).
+    This is what `scripts/sample_lore_knowledge.py` draws an NPC's knowledge pool from. Sits at `_lore/`
+    root since every source type writes into it — it's the hub.
+  - `_lore/unknown.md` — gaps and open questions that material, tale, and hearsay all feed (a claim can
+    surface a genuine gap the objective record has never addressed, distinct from `inconsistent_with_record`,
+    which flags a claim that actively contradicts something already on record), plus a log of which
+    have since been resolved by the user. Sits at `_lore/` root alongside `encodings.json` since it's
+    cross-cutting, not specific to any one source folder.
+  - `_lore/hearsay/hearsay.md` — the human-readable counterpart to `encodings.json`'s `hearsay` array:
+    what's been said, by whom, where, and whether it checked out against the record.
+  - `_lore/tale/` — a third source of truth, populated by `/tell`: things told directly by the user,
+    the world's author — narrated as a story or stated plainly as a fact now known — one file per
+    entry (`<slug>.md`). Unlike hearsay, a tale **is** folded into the objective arrays above (via a
+    `tale:<id>` source tag), never overwriting an existing entry. See `_lore/tale/_index.md` and
+    `encodings.json`'s `tales` category. (Not to be confused with `_lore/facts/` below — a tale is
+    lore, and gets sampled like all lore.)
+  - `_lore/tale/_authors.md` — not itself a source of truth, and not lore at all: real-world
+    recordkeeping only, tracking which real user told the system each tale (`responsible`, mandatory)
+    and when. Distinct from a tale's `told_by` (in-world credit, optional, which *is* lore and lives in
+    `encodings.json`) — `responsible` answers who entered the record in the real world, has no
+    in-fiction meaning, and is walled off from `encodings.json` and `scripts/sample_lore_knowledge.py`'s
+    pool on purpose, the same way `_lore/facts/` is. A plain markdown table, living beside the tales it
+    tracks.
+  - `_lore/facts/` — a fourth source of truth, and the only one that is **never sampled**. The handful
     of things true of being a person in this world at all: that life ends, and that everyone wants
     theirs to have been worthwhile. Every character knows every fact in full, from creation,
     regardless of their education percentage — so facts live in their own `facts.json`, deliberately
@@ -113,6 +120,10 @@ The system has four layers, each authored from the one below it:
     cannot be dismissed: it's the floor a character's contestable criterion stands on, not part of
     the argument. Loaded unconditionally by `/enact` for every character in every scene. See
     `_lore/facts/_index.md`.
+  - `_lore/facts/_authors.md` — the same real-world recordkeeping as `_lore/tale/_authors.md`, for
+    consistency, even though facts are added rarely: which real user added each fact, and when. Facts
+    have no in-world attribution at all, so unlike the tale version there's no `told_by` this file
+    needs to stay distinct from - `responsible` is simply the only provenance a fact ever has.
 
 ### Layer 2 — Supporting functions
 
@@ -203,12 +214,17 @@ Luminacion/
 │               ├── _template_linear.json
 │               └── _template_branching.json
 ├── _lore/
+│   ├── encodings.json                 (the central record — every source type writes in here)
+│   ├── unknown.md                     (gaps — fed by material and tale, not hearsay)
 │   ├── material/                      (excavated primary sources — read-only)
-│   ├── analysis/                      (context.md, encodings.json, unknown.md, hearsay.md)
-│   ├── tale/                          (told directly by the user — /tell, see _index.md)
-│   ├── discoveries/                   (stated directly by the user — /discover, see _index.md)
+│   │   └── _context.md                (per-source transcription, only this folder's concern)
+│   ├── hearsay/hearsay.md             (human-readable mirror of encodings.json's hearsay array)
+│   ├── tale/                          (told directly by the user, story or plain stated fact — /tell,
+│   │   │                               see _index.md)
+│   │   └── _authors.md                (real-world recordkeeping only — who told the system each
+│   │                                   tale, walled off from encodings.json; not lore)
 │   └── facts/                         (universal, NEVER sampled — facts.json + one .md per fact,
-│                                       see _index.md; deliberately outside encodings.json)
+│       └── _authors.md                see _index.md; deliberately outside encodings.json)
 ├── _maps/
 │   ├── npcs/registry.json             (master NPC data: name, skin, city, UUID, spawn position,
 │   │                                   backstory, knowledge, criterion, life.lived)
@@ -268,7 +284,7 @@ string values, which parse fine either way. Anything named `_shared` is called d
 
 **Lifespan** — how many scenes a character has in them, rolled once by `scripts/roll_lifespan.py` (default range 30–60) and **structurally hidden from them**: the span lives in `_maps/npcs/lifespans.json`, *not* on the registry entry, because the registry entry is what `/enact` loads in order to play the character. An enactment asks `scripts/horizon.py` instead, which answers with a coarse band — `early`, `established`, `late`, `final` — and never the number. Only `life.lived` (their history, no secret) stays on the registry entry. A `final` band means this scene is their last; afterwards `life.deceased` is set `true` and they're never enacted again.
 
-**Death and its circle** — a character's death isn't announced to the world, it propagates in two tiers. `scripts/notify_death.py` computes their *circle* (everyone they've shared a recorded scene with, plus everyone named in their own backstory) and mechanically notifies 30% of it immediately — a forced `knowledge.experience` entry, no attribution needed. Anyone notified whose `criterion.anchor` referenced the deceased gets that resolved as a shock, same reject/reinterpret/break machinery as any other (`/enact` Step 5b point 6). Everyone outside the circle only finds out the ordinary way: the death is recorded as a `_lore/discoveries/` entry (see `/discover`), which re-enters the normal sampling pool at ordinary odds, or they hear it from someone in the circle later, subject to the same `lineage_coin.py` traceable/untraceable rule as any retelling.
+**Death and its circle** — a character's death isn't announced to the world, it propagates in two tiers. `scripts/notify_death.py` computes their *circle* (everyone they've shared a recorded scene with, plus everyone named in their own backstory) and mechanically notifies 30% of it immediately — a forced `knowledge.experience` entry, no attribution needed. Anyone notified whose `criterion.anchor` referenced the deceased gets that resolved as a shock, same reject/reinterpret/break machinery as any other (`/enact` Step 5b point 6). Everyone outside the circle only finds out the ordinary way: the death is recorded as a `_lore/tale/` entry (see `/tell`), which re-enters the normal sampling pool at ordinary odds, or they hear it from someone in the circle later, subject to the same `lineage_coin.py` traceable/untraceable rule as any retelling.
 
 **Three mutability classes.** Worth holding onto, since they're easy to conflate: `knowledge.education` is **frozen** at creation, `knowledge.experience` **appends freely** every scene, and `criterion` is **sticky-but-revisable** — it changes only when a referencing shock lands on a susceptible character, and the default outcome of any given scene is no change at all.
 
@@ -470,9 +486,9 @@ One way to write a Blabber dialog: play the NPC in a live conversation first, th
 
 ### Step 1 — Bound the character's knowledge
 
-Before playing the NPC, decide what slice of `_lore/analysis/` (`context.md`, `encodings.json`, `unknown.md`) they actually know. Don't hand-pick a flattering or convenient subset — flatten every atomic fact across the analysis (locations, concepts, characters, routes, era entries, conflicts...) into one pool and randomly sample a small percentage of it. 5% produced a character who was coherent but genuinely, unevenly gapped — knowledgeable about a handful of unrelated things, ignorant of most everything else — which is a far more natural starting point than a hand-curated backstory. Keep the sample somewhere referenceable for the length of the session, since you'll be checking answers against it constantly.
+Before playing the NPC, decide what slice of the record (`_lore/material/_context.md`, `_lore/encodings.json`, `_lore/unknown.md`) they actually know. Don't hand-pick a flattering or convenient subset — flatten every atomic fact across the analysis (locations, concepts, characters, routes, era entries, conflicts...) into one pool and randomly sample a small percentage of it. 5% produced a character who was coherent but genuinely, unevenly gapped — knowledgeable about a handful of unrelated things, ignorant of most everything else — which is a far more natural starting point than a hand-curated backstory. Keep the sample somewhere referenceable for the length of the session, since you'll be checking answers against it constantly.
 
-The pool also includes every individual claim from `encodings.json`'s `hearsay.entries` (one pool item per claim, tagged category `hearsay`), at the same odds as any objective-record fact. This is deliberate: a claim one NPC made in a past dialogue can resurface as something a new character has "heard," exactly like real gossip — including claims that were invented character texture, not lore (Gondarfolas's Bracco, Nuvilo's Navalius), and claims already flagged `consistent_with_context: false` or `null`. A sampled `hearsay` item is never upgraded to fact by being sampled — play it as something the character heard, attributed to whoever said it if pressed ("I heard Gondarfolas say once that..."), never as settled history. This is how the lore is meant to accrete emergent, subjective material on top of the fixed objective record over time.
+The pool also includes every individual claim from `encodings.json`'s `hearsay.entries` (one pool item per claim, tagged category `hearsay`), at the same odds as any objective-record fact. This is deliberate: a claim one NPC made in a past dialogue can resurface as something a new character has "heard," exactly like real gossip — including claims that were invented character texture, not lore (Gondarfolas's Bracco, Nuvilo's Navalius), and claims already flagged `inconsistent_with_record`/`inconsistent_with_facts` (a hearsay item doesn't need to check out against the record to be worth knowing secondhand). A sampled `hearsay` item is never upgraded to fact by being sampled — play it as something the character heard, attributed to whoever said it if pressed ("I heard Gondarfolas say once that..."), never as settled history. This is how the lore is meant to accrete emergent, subjective material on top of the fixed objective record over time.
 
 ### Step 2 — Enact the conversation
 

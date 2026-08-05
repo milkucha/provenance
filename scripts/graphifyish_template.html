@@ -61,6 +61,10 @@ aside h2{
   font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--dim);
   margin:0 0 8px;font-weight:650;
 }
+.sectionhead{display:flex;align-items:center;justify-content:space-between;margin:0 0 8px}
+.sectionhead h2{margin:0}
+.miniActions{display:flex;gap:4px}
+button.ghost.mini{padding:2px 7px;font-size:10.5px;border-radius:5px}
 #search{
   width:100%;padding:7px 10px;border:1px solid var(--line);border-radius:8px;
   background:var(--bg);color:var(--ink);font:inherit;font-size:13px;
@@ -78,13 +82,6 @@ aside h2{
 .chip.off{opacity:.32}
 .stat{display:flex;justify-content:space-between;font-size:12px;color:var(--dim);padding:1px 0}
 .stat b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
-.presets{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
-.presets button{
-  border:1px solid var(--line);background:var(--bg);color:var(--dim);font:inherit;font-size:11.5px;
-  padding:4px 10px;border-radius:999px;cursor:pointer;transition:.12s;
-}
-.presets button:hover{color:var(--ink);border-color:var(--dim)}
-.presets button.active{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:600}
 .sliders{display:flex;flex-direction:column;gap:11px}
 .sliderow .lbl{display:flex;justify-content:space-between;font-size:12px;color:var(--dim);margin-bottom:4px}
 .sliderow .lbl b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
@@ -169,7 +166,13 @@ canvas.grabbing{cursor:grabbing}
       <input id="search" type="search" placeholder="name, city, path…" autocomplete="off">
     </div>
     <div>
-      <h2>Node types</h2>
+      <div class="sectionhead">
+        <h2>Node types</h2>
+        <div class="miniActions">
+          <button class="ghost mini" id="kindsAll">All</button>
+          <button class="ghost mini" id="kindsNone">None</button>
+        </div>
+      </div>
       <div class="chips" id="kinds"></div>
     </div>
     <div>
@@ -178,16 +181,17 @@ canvas.grabbing{cursor:grabbing}
     </div>
     <div>
       <h2>Layout</h2>
-      <div class="presets" id="presets"></div>
       <div class="sliders">
         <div class="sliderow"><div class="lbl"><span>Repulsion</span><b id="vRepulsion"></b></div>
-          <input type="range" id="pRepulsion" min="200" max="4000" step="25"></div>
+          <input type="range" id="pRepulsion" min="0" max="4000" step="25"></div>
         <div class="sliderow"><div class="lbl"><span>Link length</span><b id="vLinkDistance"></b></div>
-          <input type="range" id="pLinkDistance" min="0.3" max="3" step="0.05"></div>
+          <input type="range" id="pLinkDistance" min="0" max="3" step="0.05"></div>
         <div class="sliderow"><div class="lbl"><span>Link strength</span><b id="vLinkStrength"></b></div>
-          <input type="range" id="pLinkStrength" min="0.1" max="3" step="0.05"></div>
+          <input type="range" id="pLinkStrength" min="0" max="3" step="0.05"></div>
         <div class="sliderow"><div class="lbl"><span>Gravity</span><b id="vGravity"></b></div>
-          <input type="range" id="pGravity" min="0.1" max="3" step="0.05"></div>
+          <input type="range" id="pGravity" min="0" max="3" step="0.05"></div>
+        <div class="sliderow"><div class="lbl"><span>Ring radius</span><b id="vRingRadius"></b></div>
+          <input type="range" id="pRingRadius" min="0.2" max="10" step="0.1"></div>
         <div class="sliderow"><div class="lbl"><span>Size by connections</span><b id="vSizeContrast"></b></div>
           <input type="range" id="pSizeContrast" min="0" max="4" step="0.1"></div>
       </div>
@@ -214,7 +218,7 @@ const DATA = /*__GRAPH_DATA__*/null;
 const COLORS = {
   npc:"#e8643c", dialogue:"#3d8bfd", location:"#2fa87a", concept:"#a463d9",
   character:"#d4a017", author:"#b0741f", inhabitant:"#7a9a4f", conflict:"#d64545",
-  era:"#d97ab0", route:"#47b0c4", tale:"#8a63d2", discovery:"#5cb85c", fact:"#9aa0a6",
+  era:"#d97ab0", route:"#47b0c4", tale:"#8a63d2", fact:"#9aa0a6",
   layer:"#6b7280", root:"#e8643c", dir:"#8892a0", skill:"#e8643c", script:"#3d8bfd",
   registry:"#d4a017", template:"#a463d9", function:"#2fa87a", datapack:"#2fa87a",
   resourcepack:"#47b0c4", material:"#b0741f", lore:"#a463d9", doc:"#7a9a4f",
@@ -232,15 +236,32 @@ const LINK = {
 };
 // user-tunable shape handles - read live by tick()/radius(), so a slider reshapes the
 // layout in place without rebuilding the graph
-const DEFAULT_PARAMS = {repulsion:1350, linkDistance:1, linkStrength:1, gravity:1, sizeContrast:1.35};
-let PARAMS = {...DEFAULT_PARAMS};
-const PRESETS = {
-  balanced: {repulsion:1350, linkDistance:1,    linkStrength:1,    gravity:1,    sizeContrast:1.35},
-  spread:   {repulsion:2800, linkDistance:1.6,  linkStrength:.55,  gravity:.55,  sizeContrast:1.35},
-  tight:    {repulsion:600,  linkDistance:.55,  linkStrength:1.9,  gravity:1.7,  sizeContrast:1},
-  hubs:     {repulsion:1700, linkDistance:1.1,  linkStrength:.75,  gravity:.85,  sizeContrast:3.4},
-  flat:     {repulsion:1350, linkDistance:1,    linkStrength:1,    gravity:1,    sizeContrast:0},
-};
+let PARAMS = {repulsion:1000, linkDistance:1, linkStrength:1, gravity:1, ringRadius:1, sizeContrast:1};
+
+// each view's ideal defaults scale with how big and how tangled it is, not one fixed
+// set for all three. Density (edges/node) is the main driver - a tree (density ~1, e.g.
+// structure) wants full-strength springs and gravity to hold its shape; a dense web
+// (density ~3.5, e.g. lore) needs those loosened or the hubs get crushed, and needs more
+// repulsion + a wider halo ring instead. Node count (sqrt-scaled, the standard
+// force-layout convention) additionally grows repulsion and ring radius, since a bigger
+// graph needs more room regardless of how tangled it is. Exponents below are fitted so
+// structure (250 nodes, 249 edges) and lore (325 nodes, 1149 edges) land on the hand-
+// tuned targets that read best for each; other views (or this data growing over time)
+// extrapolate from the same curve rather than falling back to one-size-fits-all numbers.
+function autoParams(n, e){
+  const N = Math.max(1, n);
+  const density = Math.max(0.15, e / N);           // floor avoids 0^negative = Infinity
+  const sq = Math.sqrt(N);
+  const clamp = (v,lo,hi) => Math.min(hi, Math.max(lo, v));
+  return {
+    repulsion:    clamp(63.4  * sq * Math.pow(density, 0.70), 0,   4000),
+    linkDistance: clamp(1.00       * Math.pow(density, -0.18), 0,     3),
+    linkStrength: clamp(1.00       * Math.pow(density, -1.50), 0,     3),
+    gravity:      clamp(1.00       * Math.pow(density, -0.95), 0,     3),
+    ringRadius:   clamp(0.316 * sq * Math.pow(density,  0.16), 0.2,  10),
+    sizeContrast: clamp(2.00       * Math.pow(density,  0.24), 0,     4),
+  };
+}
 
 // hubs need proportionally more room than leaves, or they crush their neighbourhood
 const linkOf = (r,a,b) => {
@@ -308,22 +329,53 @@ function setView(v){
   view=v; G=DATA[v]; hidKind=new Set(); hidRel=new Set(MUTED[v]||[]); query="";
   document.getElementById("search").value="";
   sel=null; detail.classList.remove("on");
+  // fresh per-view defaults before anything reads PARAMS (radius() included, below)
+  PARAMS = autoParams(G.nodes.length, G.edges.length);
+
+  // tick()'s halo force only pulls orphans radially, never angularly, so wherever the
+  // spiral below happens to seed them is where they stay unless something spreads them
+  // out first - and repulsion alone often doesn't finish that job before alpha decays,
+  // leaving them clumped until a fresh full-strength kick (e.g. a slider nudge) gives it
+  // a second, easier attempt from an already-closer start. Seeding them pre-spread here
+  // removes the need for that: same ring-radius estimate stats() will confirm shortly,
+  // divided evenly by angle among just the orphans.
+  const deg0 = new Map(G.nodes.map(n=>[n.id,0]));
+  G.edges.forEach(e=>{ if(!hidRel.has(e.rel)){
+    deg0.set(e.source,(deg0.get(e.source)||0)+1);
+    deg0.set(e.target,(deg0.get(e.target)||0)+1);
+  }});
+  const orphanSet = new Set(G.nodes.filter(n=>!deg0.get(n.id)).map(n=>n.id));
+  const orphanN = Math.max(1, orphanSet.size);
+  const coreN0 = Math.max(1, G.nodes.length - orphanSet.size);
+  const ringSeed = Math.max(Math.sqrt(G.nodes.length)*46 + 200, orphanSet.size*3.4) * PARAMS.ringRadius;
+
   const byId=new Map();
-  const R=Math.sqrt(G.nodes.length)*36+120;
-  nodes=G.nodes.map((n,i)=>{
-    const a=i*2.399963, r=R*Math.sqrt(i/G.nodes.length);
-    const o={...n, x:Math.cos(a)*r, y:Math.sin(a)*r, vx:0, vy:0, pin:false};
+  const R=Math.sqrt(coreN0)*36+120;
+  let ci=0, oi=0;
+  nodes=G.nodes.map((n)=>{
+    let x,y;
+    if(orphanSet.has(n.id)){
+      const a=(oi++/orphanN)*Math.PI*2;
+      x=Math.cos(a)*ringSeed; y=Math.sin(a)*ringSeed;
+    } else {
+      const a=ci*2.399963, r=R*Math.sqrt(ci++/coreN0);
+      x=Math.cos(a)*r; y=Math.sin(a)*r;
+    }
+    const o={...n, x, y, vx:0, vy:0, pin:false};
     o.r=radius(o); byId.set(o.id,o); return o;
   });
   // the architecture view reads as layers, so pin each tier to its own band
   // README §0 draws layer 4 on top and layer 1 at the bottom; canvas y grows downward
-  if(v==="concept") nodes.forEach(n=>{ if(n.tier) n.ty=(2.5-n.tier)*230; });
+  // the layer node itself sits a notch above its children's row, or the two blur together
+  if(v==="concept") nodes.forEach(n=>{
+    if(n.tier) n.ty=(2.5-n.tier)*230 + (n.kind==="layer" ? -100 : 0);
+  });
   edges=G.edges.map(e=>({...e, s:byId.get(e.source), t:byId.get(e.target)}))
                .filter(e=>e.s&&e.t);
   adj=new Map(nodes.map(n=>[n.id,[]]));
   edges.forEach(e=>{adj.get(e.s.id).push({o:e.t,rel:e.rel,out:true});
                     adj.get(e.t.id).push({o:e.s,rel:e.rel,out:false});});
-  buildChips(); alpha=1; needFit=true; fit(); kick();
+  buildChips(); syncSliderUI(); alpha=1; needFit=true; fit(); kick();
 }
 
 function visible(n){
@@ -357,6 +409,10 @@ function buildChips(){
   };
   mk(document.getElementById("kinds"),kc,hidKind,true);
   mk(document.getElementById("rels"),rc,hidRel,false);
+  document.getElementById("kindsAll").onclick=()=>{ hidKind.clear(); buildChips(); draw(); kick(.35); };
+  document.getElementById("kindsNone").onclick=()=>{
+    Object.keys(kc).forEach(k=>hidKind.add(k)); buildChips(); draw(); kick(.35);
+  };
   document.getElementById("legendbar").textContent =
     view==="lore" ? "every NPC, dialogue, place and claim, wired together"
     : view==="structure" ? "the repo on disk — node size follows file size"
@@ -376,7 +432,7 @@ function stats(){
   vn.forEach(n=>{ n.vdeg=deg.get(n.id)||0; if(!n.vdeg) orphans++; });
   coreN = Math.max(1, vn.length-orphans);
   // wide enough for the core, and for the halo to seat its orphans side by side
-  ring = Math.max(Math.sqrt(vn.length)*46 + 200, orphans*3.4);
+  ring = Math.max(Math.sqrt(vn.length)*46 + 200, orphans*3.4) * PARAMS.ringRadius;
   let best=null,bv=-1;
   deg.forEach((v,k)=>{if(v>bv){bv=v;best=k;}});
   const n=nodes.find(x=>x.id===best);
@@ -708,28 +764,20 @@ const SLIDERS = {
   linkDistance: {el:"pLinkDistance", out:"vLinkDistance", fmt:v=>"×"+v.toFixed(2)},
   linkStrength: {el:"pLinkStrength", out:"vLinkStrength", fmt:v=>"×"+v.toFixed(2)},
   gravity:      {el:"pGravity",      out:"vGravity",      fmt:v=>"×"+v.toFixed(2)},
+  ringRadius:   {el:"pRingRadius",   out:"vRingRadius",   fmt:v=>"×"+v.toFixed(2)},
   sizeContrast: {el:"pSizeContrast", out:"vSizeContrast", fmt:v=>v.toFixed(1)},
 };
-const PRESET_LABELS = {balanced:"Balanced", spread:"Spread out", tight:"Tight cluster",
-                        hubs:"Hub emphasis", flat:"Flat (uniform size)"};
-
 function syncSliderUI(){
   for(const [key,s] of Object.entries(SLIDERS)){
     document.getElementById(s.el).value = PARAMS[key];
     document.getElementById(s.out).textContent = s.fmt(PARAMS[key]);
   }
-  const active = Object.entries(PRESETS).find(([,p])=>
-    Object.keys(p).every(k=>Math.abs(p[k]-PARAMS[k])<1e-9));
-  // toggle(class, undefined) is spec'd to mean "no force given" (flips the class) rather
-  // than "force false" - `active && ...` returns undefined, not false, when active is
-  // falsy, so this must be coerced to a real boolean or stale highlights pile up.
-  document.querySelectorAll("#presets button").forEach(b=>
-    b.classList.toggle("active", !!active && b.dataset.preset===active[0]));
 }
 
 function setParam(key,val){
   PARAMS[key]=val;
   if(key==="sizeContrast") applySizes();
+  if(key==="ringRadius") stats();       // ring itself is only recomputed inside stats()
   syncSliderUI();
   kick(1);
 }
@@ -738,17 +786,6 @@ for(const [key,s] of Object.entries(SLIDERS)){
   document.getElementById(s.el).oninput=e=>setParam(key, parseFloat(e.target.value));
 }
 
-const presetsHost = document.getElementById("presets");
-for(const name of Object.keys(PRESETS)){
-  const b=document.createElement("button");
-  b.textContent=PRESET_LABELS[name]; b.dataset.preset=name;
-  b.onclick=()=>{
-    PARAMS={...PRESETS[name]};
-    applySizes(); syncSliderUI();
-    alpha=1; needFit=true; kick(1);
-  };
-  presetsHost.appendChild(b);
-}
 syncSliderUI();
 
 document.getElementById("close").onclick=()=>select(null);

@@ -4,7 +4,7 @@
 Three graphs come out of one run:
 
   lore       the knowledge graph  - NPCs, dialogues, locations, concepts, characters,
-             conflicts, routes, eras, tales, discoveries and facts, wired by who lives
+             conflicts, routes, eras, tales and facts, wired by who lives
              where, who says what, who knows what, and what disputes what.
   structure  the repo as it is on disk - directories and files, sized by bytes and
              coloured by what kind of thing they are.
@@ -13,8 +13,8 @@ Three graphs come out of one run:
 Everything is read from the repo's own sources of truth, so the page stays true as the
 world grows. Nothing is hand-maintained here except the concept graph's shape.
 
-    python scripts/graphify.py            # writes graphify.html at the repo root
-    python scripts/graphify.py --json     # also dump _maps/graph/graph.json
+    python scripts/graphifyish.py            # writes _maps/graphs/graphifyish/graphifyish.html
+    python scripts/graphifyish.py --json     # also dump _maps/graphs/graphifyish/graph.json
 """
 
 from __future__ import annotations
@@ -29,12 +29,14 @@ from collections import Counter, defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-ENCODINGS = ROOT / "_lore" / "analysis" / "encodings.json"
+ENCODINGS = ROOT / "_lore" / "encodings.json"
 NPCS = ROOT / "_maps" / "npcs" / "registry.json"
 DIALOGS = ROOT / "_maps" / "dialogs" / "registry.json"
 ACTIONS = ROOT / "_maps" / "actions" / "registry.json"
 FACTS = ROOT / "_lore" / "facts" / "facts.json"
+AUTHORS = ROOT / "_lore" / "tale" / "_authors.md"
 DIALOGUE_DIR = ROOT / "data" / "luminacion" / "blabber" / "dialogues"
+OUT_DIR = ROOT / "_maps" / "graphs" / "graphifyish"
 
 # Directories that are never part of the picture.
 SKIP_DIRS = {".git", ".venv", "__pycache__", "node_modules", ".idea", ".vscode"}
@@ -43,6 +45,19 @@ SKIP_DIRS = {".git", ".venv", "__pycache__", "node_modules", ".idea", ".vscode"}
 def load(path: Path):
     with open(path, encoding="utf-8") as fh:
         return json.load(fh)
+
+
+def load_authors_table(path: Path) -> dict:
+    """Parse _authors.md's '| Id | Responsible | Recorded |' table into {id: {responsible, recorded}}."""
+    if not path.exists():
+        return {}
+    result = {}
+    row = re.compile(r"^\|\s*`?([^`|]+?)`?\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|\s*$")
+    for line in path.read_text(encoding="utf-8").splitlines():
+        m = row.match(line)
+        if m and m.group(1) not in ("Id", "---"):
+            result[m.group(1)] = {"responsible": m.group(2), "recorded_date": m.group(3)}
+    return result
 
 
 def norm(text: str) -> str:
@@ -118,7 +133,7 @@ def build_lore() -> tuple[Graph, dict]:
             coords=(loc.get("coords") or [None])[0],
             sources=loc.get("sources", []),
             notes=loc.get("notes", ""),
-            file="_lore/analysis/encodings.json#locations",
+            file="_lore/encodings.json#locations",
         )
         for name in loc.get("names", []):
             name_to_loc.setdefault(norm(name), nid)
@@ -130,7 +145,7 @@ def build_lore() -> tuple[Graph, dict]:
         nid = g.node(
             f"con:{c['id']}", c["names"][0] if c.get("names") else c["id"], "concept",
             description=c.get("description", ""), sources=c.get("sources", []),
-            file="_lore/analysis/encodings.json#concepts",
+            file="_lore/encodings.json#concepts",
         )
         for name in c.get("names", []):
             name_to_concept.setdefault(norm(name), nid)
@@ -140,11 +155,11 @@ def build_lore() -> tuple[Graph, dict]:
     for c in enc["characters"]["in_world_or_legendary"]:
         g.node(f"chr:{c['id']}", c["names"][0], "character", role=c.get("role", ""),
                sources=c.get("sources", []), notes=c.get("notes", ""), legendary=True,
-               file="_lore/analysis/encodings.json#characters.in_world_or_legendary")
+               file="_lore/encodings.json#characters.in_world_or_legendary")
     for c in enc["characters"]["real_world_authors_and_players"]:
         g.node(f"chr:{c['id']}", c["names"][0], "author", role=c.get("role", ""),
                sources=c.get("sources", []),
-               file="_lore/analysis/encodings.json#characters.real_world_authors_and_players")
+               file="_lore/encodings.json#characters.real_world_authors_and_players")
 
     # --- census of named inhabitants ---------------------------------------------------
     inhabitant_index: dict[str, str] = {}
@@ -164,7 +179,7 @@ def build_lore() -> tuple[Graph, dict]:
             nid = g.node(f"inh:{locality}/{name}", name, "inhabitant",
                          role=person.get("role", ""), locality=locality,
                          count=person.get("count"), notes=person.get("note", ""),
-                         file="_lore/analysis/encodings.json#characters.named_inhabitants")
+                         file="_lore/encodings.json#characters.named_inhabitants")
             inhabitant_index[f"{norm(name)}|{norm(locality)}"] = nid
             inhabitant_index.setdefault(norm(name), nid)
             inhabitant_index.setdefault(norm("the " + name), nid)
@@ -178,7 +193,7 @@ def build_lore() -> tuple[Graph, dict]:
         g.node(f"cfl:{c['id']}", c["id"], "conflict", topic=c.get("topic", ""),
                detail=c.get("detail", ""), resolution=c.get("user_resolution", ""),
                resolved=bool(c.get("user_resolution")),
-               file="_lore/analysis/encodings.json#conflicts")
+               file="_lore/encodings.json#conflicts")
     # a location whose notes cite a conflict is a party to it
     for loc in enc["locations"]:
         for ref in re.findall(r"CONFLICT-\d+", loc.get("notes", "") or ""):
@@ -202,7 +217,7 @@ def build_lore() -> tuple[Graph, dict]:
             g.node(f"era:{kind}/{label}", label, "era", system=kind,
                    span=era.get("range_real") or era.get("range_vortex") or "",
                    notes=era.get("notes") or era.get("note") or era.get("matches") or "",
-                   file=f"_lore/analysis/encodings.json#time_systems.{where}")
+                   file=f"_lore/encodings.json#time_systems.{where}")
 
     # a founding year is a node too, tied to the places founded in it
     for row in (ts.get("esquema_poster_eras") or {}).get("year_by_year_foundations", []) or []:
@@ -210,7 +225,7 @@ def build_lore() -> tuple[Graph, dict]:
             continue
         nid = g.node(f"year:{row['year']}", str(row["year"]), "year",
                      span=row.get("range_as_extracted", ""),
-                     file="_lore/analysis/encodings.json"
+                     file="_lore/encodings.json"
                           "#time_systems.esquema_poster_eras.year_by_year_foundations")
         for place in row.get("places", []) or []:
             dest = name_to_loc.get(norm(place))
@@ -224,7 +239,7 @@ def build_lore() -> tuple[Graph, dict]:
     for hw in routes.get("highways", []) or []:
         nid = g.node(f"rte:hw/{hw['code']}", hw["code"], "route", mode="highway",
                      name=hw.get("name", ""), distance=hw.get("total_distance"),
-                     file="_lore/analysis/encodings.json#routes.highways")
+                     file="_lore/encodings.json#routes.highways")
         # "Ruta Puente Intercontinental - Nvhi" -> endpoints by name
         route_index[f"highway|{norm(hw['code'])}"] = nid
         # "Ruta Puente Intercontinental - Nvhi" -> endpoints by name
@@ -235,7 +250,7 @@ def build_lore() -> tuple[Graph, dict]:
     for seg in routes.get("trains", {}).get("segments", []) or []:
         nid = g.node(f"rte:tr/{seg['name']}", seg["name"], "route", mode="train",
                      distance=seg.get("total_distance"),
-                     file="_lore/analysis/encodings.json#routes.trains")
+                     file="_lore/encodings.json#routes.trains")
         route_index[f"train_segment|{norm(seg['name'])}"] = nid
         for part in re.split(r"\s+-\s+", seg["name"]):
             dest = name_to_loc.get(norm(part))
@@ -246,7 +261,7 @@ def build_lore() -> tuple[Graph, dict]:
     for air in routes.get("airports", []) or []:
         nid = g.node(f"rte:air/{air['location']}", f"{air['location']} ({air.get('code','')})",
                      "route", mode="airport", code=air.get("code", ""), coords=air.get("coords"),
-                     file="_lore/analysis/encodings.json#routes.airports")
+                     file="_lore/encodings.json#routes.airports")
         route_index[f"airport|{norm(air['location'])}"] = nid
         route_index[f"airport|{norm(air.get('code', ''))}"] = nid
         dest = name_to_loc.get(norm(air["location"]))
@@ -255,7 +270,7 @@ def build_lore() -> tuple[Graph, dict]:
     for named in routes.get("named_but_unplotted", []) or []:
         nid = g.node(f"rte:named/{named['name']}", named["name"], "route", mode="unplotted",
                      notes=named.get("note", ""),
-                     file="_lore/analysis/encodings.json#routes.named_but_unplotted")
+                     file="_lore/encodings.json#routes.named_but_unplotted")
         route_index[f"route_named|{norm(named['name'])}"] = nid
 
     # --- dialogues, and the claims they make -------------------------------------------
@@ -289,7 +304,8 @@ def build_lore() -> tuple[Graph, dict]:
             for target in (f"loc:{about}", f"con:{about}", f"chr:{about}", f"cfl:{about}"):
                 if target in g.nodes:
                     g.edge(nid, target, "claims_about",
-                           consistent=claim.get("consistent_with_context"))
+                           inconsistent=bool(claim.get("inconsistent_with_record"))
+                           or bool(claim.get("inconsistent_with_facts")))
                     break
 
     # --- NPCs ----------------------------------------------------------------------------
@@ -405,7 +421,7 @@ def build_lore() -> tuple[Graph, dict]:
             g.edge(f"npc:{key}", f"dlg:{d['id'].split(':')[-1]}", "speaks",
                    trigger=d.get("trigger", ""), description=d.get("description", ""))
 
-    # --- tales, discoveries and facts ---------------------------------------------------
+    # --- tales and facts ------------------------------------------------------------------
     def wire_touches(nid: str, touches: list[str]) -> None:
         for ref in touches or []:
             head, _, tail = ref.partition(".")
@@ -430,17 +446,15 @@ def build_lore() -> tuple[Graph, dict]:
             else:
                 unmatched[ref] += 1
 
+    provenance = load_authors_table(AUTHORS)
+
     for t in enc.get("tales", {}).get("entries", []) or []:
         nid = g.node(f"tale:{t['id']}", t["id"].replace("_", " "), "tale",
                      summary=t.get("summary", ""), told=t.get("told_date", ""),
+                     told_by=t.get("told_by") or "",
+                     responsible=provenance.get(t["id"], {}).get("responsible", ""),
                      file=t.get("source_file", ""))
         wire_touches(nid, t.get("touches", []))
-    for d in enc.get("discoveries", {}).get("entries", []) or []:
-        nid = g.node(f"disc:{d['id']}", d["id"].replace("_", " "), "discovery",
-                     summary=d.get("summary", ""), discovered=d.get("discovered_date", ""),
-                     responsible=d.get("responsible") or d.get("responsible_note", ""),
-                     file=d.get("source_file", ""))
-        wire_touches(nid, d.get("touches", []))
     if FACTS.exists():
         facts = load(FACTS)
         entries = facts.get("facts") or facts.get("entries") or []
@@ -545,13 +559,11 @@ def build_concept(lore: Graph, structure: Graph) -> Graph:
               file=f".claude/skills/{s}/SKILL.md")
     piece("src:material", "_lore/material", "source", 1, "layer:1",
           note=f"{material} excavated artifacts, never edited")
-    piece("src:analysis", "_lore/analysis", "source", 1, "layer:1",
+    piece("src:encodings", "_lore/encodings.json", "source", 1, "layer:1",
           note=f"{kinds['location']} locations, {kinds['concept']} concepts, "
                f"{kinds['conflict']} conflicts")
     piece("src:tale", "_lore/tale", "source", 1, "layer:1",
           note=f"{kinds['tale']} tales told by the author")
-    piece("src:discoveries", "_lore/discoveries", "source", 1, "layer:1",
-          note=f"{kinds['discovery']} discoveries")
     piece("src:facts", "_lore/facts", "source", 1, "layer:1",
           note=f"{kinds['fact']} facts - never sampled, known by everyone")
 
@@ -577,23 +589,22 @@ def build_concept(lore: Graph, structure: Graph) -> Graph:
     # the flows that actually matter, beyond mere containment
     flows = [
         ("skill:enact", "pack:dialogues", "writes"),
-        ("skill:enact", "src:analysis", "records hearsay"),
+        ("skill:enact", "src:encodings", "records hearsay"),
         ("skill:spawn", "pack:functions", "builds from templates"),
         ("skill:spawn", "sup:templates", "reads"),
-        ("skill:integrate", "src:analysis", "analyses material into"),
+        ("skill:integrate", "src:encodings", "analyses material into"),
         ("skill:integrate", "src:material", "reads"),
         ("skill:tell", "src:tale", "writes"),
-        ("skill:discover", "src:discoveries", "writes"),
         ("skill:character", "sup:npcs", "maintains"),
         ("skill:bake_dialog", "pack:dialogues", "compiles"),
         ("skill:package", "rp:assets", "ships"),
-        ("script:sample_lore_knowledge.py", "src:analysis", "samples"),
+        ("script:sample_lore_knowledge.py", "src:encodings", "samples"),
         ("script:sample_lore_knowledge.py", "sup:npcs", "fills knowledge of"),
         ("script:update_uuids.py", "sup:npcs", "captures UUIDs into"),
         ("script:package.py", "pack:meta", "zips"),
         ("script:roll_lifespan.py", "sup:npcs", "rolls lifespan into"),
         ("script:lineage_coin.py", "sup:npcs", "decides lineage for"),
-        ("script:graphify.py", "src:analysis", "graphs"),
+        ("script:graphifyish.py", "src:encodings", "graphs"),
         ("sup:npcs", "pack:functions", "spawns"),
         ("sup:dialogs", "pack:dialogues", "registers"),
         ("sup:actions", "rp:assets", "dispatches gestures to"),
@@ -609,7 +620,7 @@ def build_concept(lore: Graph, structure: Graph) -> Graph:
 # --------------------------------------------------------------------------------------
 
 def render(payload: dict, out: Path) -> None:
-    template = (Path(__file__).parent / "graphify_template.html").read_text(encoding="utf-8")
+    template = (Path(__file__).parent / "graphifyish_template.html").read_text(encoding="utf-8")
     blob = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
     # </script> inside the data would close the tag early
     blob = blob.replace("</", "<\\/")
@@ -618,8 +629,8 @@ def render(payload: dict, out: Path) -> None:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--json", action="store_true", help="also write _maps/graph/graph.json")
-    ap.add_argument("-o", "--out", default=str(ROOT / "graphify.html"))
+    ap.add_argument("--json", action="store_true", help="also write _maps/graphs/graphifyish/graph.json")
+    ap.add_argument("-o", "--out", default=str(OUT_DIR / "graphifyish.html"))
     args = ap.parse_args()
 
     lore, stats = build_lore()
@@ -634,11 +645,11 @@ def main() -> int:
     }
 
     out = Path(args.out)
+    out.parent.mkdir(parents=True, exist_ok=True)
     render(payload, out)
     if args.json:
-        jd = ROOT / "_maps" / "graph"
-        jd.mkdir(parents=True, exist_ok=True)
-        (jd / "graph.json").write_text(
+        OUT_DIR.mkdir(parents=True, exist_ok=True)
+        (OUT_DIR / "graph.json").write_text(
             json.dumps(payload, ensure_ascii=False, indent=1), encoding="utf-8")
 
     for g in (lore, structure, concept):

@@ -6,12 +6,12 @@ Used by /enact when a character's last scene closes them out (horizon.py returns
 tiers, and this script only ever computes the first:
 
     1. GUARANTEED - the character's "circle": everyone they've shared a scene with (co-participants
-       across every _lore/analysis/encodings.json hearsay.entries record they appear in) plus
+       across every _lore/encodings.json hearsay.entries record they appear in) plus
        everyone named in their own registered backstory. 30% of that circle (rounded, minimum 1 if
        the circle is non-empty) is notified immediately - this script picks who. The other 70%
        simply don't hear, not yet.
     2. PROBABILISTIC - everyone else. Handled outside this script entirely: the death is recorded as
-       an ordinary _lore/discoveries/ entry (responsible: null, in the normal case), which folds into
+       an ordinary _lore/tale/ entry (told_by: null, in the normal case), which folds into
        encodings.json and re-enters the same sampling pool as any other fact. Someone outside the
        circle only learns of it the normal way a person learns anything here - drawn into a future
        education sample, or told by someone who was in the circle, subject to the usual lineage_coin
@@ -36,7 +36,7 @@ from random import Random
 
 ROOT = Path(__file__).resolve().parent.parent
 REGISTRY_PATH = ROOT / "_maps" / "npcs" / "registry.json"
-ENCODINGS_PATH = ROOT / "_lore" / "analysis" / "encodings.json"
+ENCODINGS_PATH = ROOT / "_lore" / "encodings.json"
 
 
 def load():
@@ -119,7 +119,7 @@ def main() -> None:
         flag = "  <-- SHOCK CANDIDATE: anchor references the deceased, resolve per /character Step 6" if shock else ""
         print(f"  {k}{flag}")
     print()
-    print("NOT notified this round (may still hear later, via hearsay or the discovery record):")
+    print("NOT notified this round (may still hear later, via hearsay or the tale record):")
     for k in remainder:
         print(f"  {k}")
     if not circle:
