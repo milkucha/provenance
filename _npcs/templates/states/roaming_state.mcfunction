@@ -4,10 +4,10 @@
 # For NPCs that switch between multiple named "states" at runtime — see
 # _npcs/actions/registry.json → _action_templates.multi_state_npc for the full
 # convention. Skip this whole states/ pattern if this NPC only ever roams —
-# use _templates/npcs/paths/select_path.mcfunction directly instead.
+# use _npcs/templates/paths/select_path.mcfunction directly instead.
 #
 # This variant: movement PATH, with waypoints set the same way
-# _templates/npcs/paths/select_path.mcfunction does (confirmed in-game:
+# _npcs/templates/paths/select_path.mcfunction does (confirmed in-game:
 # "/data merge entity" retroactively triggers Taterzens' own NBT-load logic,
 # including its restrictTo() call, so this sets the movement restriction
 # correctly with no left-click editor involved).

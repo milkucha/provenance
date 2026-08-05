@@ -1,7 +1,7 @@
 # =============================================================================
 # Luminacion — Khaoe Skin Self-Heal
 # =============================================================================
-# Built from _templates/npcs/heal_skin.mcfunction. Called every 100 ticks (5s)
+# Built from _npcs/templates/heal_skin.mcfunction. Called every 100 ticks (5s)
 # from check_proximity.mcfunction, alongside heal_path.mcfunction — both share
 # the same cooldown counter, reset there rather than here.
 #

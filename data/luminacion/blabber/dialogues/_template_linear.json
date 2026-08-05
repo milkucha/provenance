@@ -13,7 +13,7 @@
     "action entirely on any state where a nod would look wrong.",
     "Replace <npc_key> in the 'end' action below with this NPC's key from",
     "_npcs/npcs/registry.json — it resumes the NPC's routine if it was paused",
-    "(see _templates/npcs/resume_routine.mcfunction). Only needed if this",
+    "(see _npcs/templates/resume_routine.mcfunction). Only needed if this",
     "NPC has a roaming movement mode; otherwise the whole 'action' field can be removed."
   ],
   "start_at": "state_1",

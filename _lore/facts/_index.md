@@ -3,7 +3,7 @@
 The fourth source of truth for Milkantis, and the only one that is **not sampled**.
 
 `material/` and `tale/` both feed `_lore/encodings.json`, and everything in
-`encodings.json` goes into the pool that `scripts/sample_lore_knowledge.py` draws from — which means
+`encodings.json` goes into the pool that `scripts/lore/sample_lore_knowledge.py` draws from — which means
 any given character knows it only at the odds of their education percentage. That is exactly right
 for lore. It is exactly wrong for the handful of things that are true of *being a person in this
 world at all*, which nobody learns and nobody can fail to know.
@@ -35,7 +35,7 @@ Facts are read by `/character` (when deriving a criterion) and by `/enact` (as p
 character's standing knowledge in every scene). One `.md` file per fact for the human-readable
 version, plus the machine-readable entry in `facts.json` that the skills actually load.
 
-`_authors.md`, matching `_lore/tale/_authors.md`'s shape, tracks which real user added each fact, and
+`_authors.md`, matching `_lore/tales/_authors.md`'s shape, tracks which real user added each fact, and
 when — real-world recordkeeping only, no in-fiction meaning, and facts have no `told_by` counterpart
 to stay distinct from since they're never in-world attributed at all.
 

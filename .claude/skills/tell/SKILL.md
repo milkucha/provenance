@@ -1,9 +1,9 @@
 ---
-description: Record a tale told directly by the user - a third source of truth for Milkantis, alongside the excavated objective record (_lore/material/_context.md, _lore/encodings.json) and the in-fiction subjective record (_lore/characters/hearsay.md). Covers both a narrated story and a plain statement of fact now known. Registers the tale in its own file under _lore/tale/, adds a manifest entry to encodings.json's tales category, folds its content into other encodings categories where it overlaps, records real-world provenance in _lore/tale/_authors.md, and logs any notable unresolved thread to _lore/unknown.md. Use when the user wants to tell a tale, or state something as now known, to add to the world's lore.
+description: Record a tale told directly by the user - a third source of truth for Milkantis, alongside the excavated objective record (_lore/material/_context.md, _lore/encodings.json) and the in-fiction subjective record (_lore/characters/hearsay.md). Covers both a narrated story and a plain statement of fact now known. Registers the tale in its own file under _lore/tales/, adds a manifest entry to encodings.json's tales category, folds its content into other encodings categories where it overlaps, records real-world provenance in _lore/tales/_authors.md, and logs any notable unresolved thread to _lore/unknowns.md. Use when the user wants to tell a tale, or state something as now known, to add to the world's lore.
 disable-model-invocation: true
 ---
 
-Read `_lore/tale/_index.md` first if it hasn't been read yet this session - it states the rule this
+Read `_lore/tales/_index.md` first if it hasn't been read yet this session - it states the rule this
 skill exists to enforce: a tale is told directly by the user, outside any character's mouth and
 outside any excavated document - narrated as a story or stated plainly as a fact, both the same
 category - and unlike `hearsay` it **is** folded into the objective record, the same way a
@@ -32,11 +32,11 @@ one that wasn't given.
 
 Ask for a short title if one hasn't already come up naturally in the telling. Derive a `snake_case`
 slug from it (matching the convention already used for dialogue filenames, e.g.
-`sonoros_lost_traveler`) - short, descriptive, unique against every existing file in `_lore/tale/`.
+`sonoros_lost_traveler`) - short, descriptive, unique against every existing file in `_lore/tales/`.
 
 ## Step 3 — Write the tale's own file
 
-Create `_lore/tale/<slug>.md`:
+Create `_lore/tales/<slug>.md`:
 
 ```markdown
 # <Title>
@@ -57,7 +57,7 @@ content the user didn't actually say, never softening a genuine gap into an inve
 
 - Touches: <ids added/amended elsewhere in encodings.json, or "none yet">
 - Conflicts raised: <CONFLICT-NN id(s), or "none">
-- Open questions logged: <unknown.md reference, or "none">
+- Open questions logged: <unknowns.md reference, or "none">
 ```
 
 Leave the "Where this lands" section as placeholders for now - fill it in after Steps 4-6 below, once
@@ -70,7 +70,7 @@ Add to the `tales.entries` array (currently empty - this may be the first):
 ```json
 {
   "id": "<slug>",
-  "source_file": "_lore/tale/<slug>.md",
+  "source_file": "_lore/tales/<slug>.md",
   "told_date": "<date>",
   "told_by": <in-world source as a string, or null>,
   "summary": "<one or two sentences - what the tale actually says, not editorializing>",
@@ -83,7 +83,7 @@ Add to the `tales.entries` array (currently empty - this may be the first):
 so a later `/integrate` Pass 3 drift check can confirm the manifest matches reality without re-reading
 the tale's full text.
 
-Then add a row to `_lore/tale/_authors.md`'s table:
+Then add a row to `_lore/tales/_authors.md`'s table:
 
 ```markdown
 | `<slug>` | <user's name/handle> | <date> |
@@ -92,8 +92,8 @@ Then add a row to `_lore/tale/_authors.md`'s table:
 Default `responsible` to the current git `user.name` (`git config user.name`) unless the person
 telling the tale identifies themselves as someone else - this field exists so a multi-author project
 can later tell who recorded what. **Never write `responsible` into `encodings.json`.** It has no
-in-fiction meaning and must stay structurally out of `scripts/sample_lore_knowledge.py`'s reach, the
-same way `_lore/facts/facts.json` is kept out of `encodings.json` - see `_lore/tale/_authors.md`'s own
+in-fiction meaning and must stay structurally out of `scripts/lore/sample_lore_knowledge.py`'s reach, the
+same way `_lore/facts/facts.json` is kept out of `encodings.json` - see `_lore/tales/_authors.md`'s own
 intro.
 
 ## Step 5 — Fold into the other categories
@@ -120,7 +120,7 @@ the tale file's own "Touches"/"Conflicts raised" lines from Step 3.
 ## Step 6 — Notable unknowns
 
 If the tale poses a question it doesn't itself answer, and that question resonates with the existing
-corpus - either it extends a gap already logged in `_lore/unknown.md`, or it's clearly the
+corpus - either it extends a gap already logged in `_lore/unknowns.md`, or it's clearly the
 kind of thing the rest of the record would want an answer to - log it there, matching the file's
 existing shape (cross-reference the tale's id, and a `CONFLICT-##` id if applicable). Not every tale
 produces one; skip this step rather than manufacturing a question that isn't genuinely there. Update
@@ -128,7 +128,7 @@ the tale file's "Open questions logged" line accordingly.
 
 ## Step 7 — Update the index and report back
 
-Add a row to `_lore/tale/_index.md`'s table (told date, title, told by, responsible, filename, a short
+Add a row to `_lore/tales/_index.md`'s table (told date, title, told by, responsible, filename, a short
 `touches` summary). Then report back to the user: what was recorded, who (if anyone) was credited
 in-world, what it touched or added, every new conflict raised (don't bury one in a large diff), and
 any notable unknown logged.

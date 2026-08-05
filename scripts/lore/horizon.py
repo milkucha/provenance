@@ -31,15 +31,15 @@ point 6 and _lore/facts/life_is_finite.md. `ending` must never be consulted befo
 pre-scene value must never be treated as informative (it always says the same thing: not yet).
 
 Usage:
-    python scripts/horizon.py khaoe
-    python scripts/horizon.py khaoe --verbose   # includes the raw span; NEVER use during /enact
+    python scripts/lore/horizon.py khaoe
+    python scripts/lore/horizon.py khaoe --verbose   # includes the raw span; NEVER use during /enact
 """
 
 import argparse
 import json
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 CHAR_DIR = ROOT / "_lore" / "characters"
 LIFESPANS_PATH = CHAR_DIR / "lifespans.json"
 
@@ -74,7 +74,7 @@ def main() -> None:
         lifespans = json.load(f)["lifespans"]
 
     if key not in lifespans:
-        raise SystemExit(f"No lifespan rolled for '{key}' yet - run scripts/roll_lifespan.py and record it in _lore/characters/lifespans.json.")
+        raise SystemExit(f"No lifespan rolled for '{key}' yet - run scripts/lore/roll_lifespan.py and record it in _lore/characters/lifespans.json.")
 
     lived = character.get("life", {}).get("lived", 0)
     span = lifespans[key]["span"]

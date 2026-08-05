@@ -4,7 +4,7 @@ disable-model-invocation: true
 ---
 
 Builds `functions/npcs/<npc_key>/spawn.mcfunction` and whatever else it needs (routine
-pause/resume, states, paths, random-dialog wiring) from the templates in `_templates/npcs/`, per
+pause/resume, states, paths, random-dialog wiring) from the templates in `_npcs/templates/`, per
 README §3 ("Building a new NPC, start to finish") and §4 ("Routine pause/resume"), plus the
 `_action_templates` conventions documented in `_npcs/actions/registry.json`. This is a
 file-authoring skill — it does not run Minecraft commands or touch a live server. Every run ends
@@ -72,7 +72,7 @@ which NPC "needs" the machinery:
 If the NPC needs to switch between multiple movement modes at different times (e.g. a stationary
 "scene" state and a solo roaming state, like Nuvilo/Nerkeli), that's the `multi_state_npc` pattern
 — see `_npcs/actions/registry.json` → `_action_templates.multi_state_npc` — and uses
-`_templates/npcs/states/stationary_state.mcfunction` / `roaming_state.mcfunction` instead of a
+`_npcs/templates/states/stationary_state.mcfunction` / `roaming_state.mcfunction` instead of a
 plain `spawn.mcfunction` right-click block. Ask which case this is before proceeding.
 
 ## Step 3 — Position and waypoints (only if movement isn't a trivial NONE-forever case)
@@ -83,7 +83,7 @@ coordinates now (fill `spawn_position` in the registry and uncomment the `npc tp
 
 If movement is `PATH`/`FORCED_PATH`/part of a roaming state: ask whether waypoints are known yet.
 If yes, build `functions/npcs/<npc_key>/paths/<path_name>.mcfunction` from
-`_templates/npcs/paths/select_path.mcfunction` now. If not, leave the NPC standing still in PATH
+`_npcs/templates/paths/select_path.mcfunction` now. If not, leave the NPC standing still in PATH
 mode (note this explicitly in the spawn function's comments, matching Gondarfolas) and log the gap
 in TODO.md — do not invent waypoints.
 
@@ -112,11 +112,11 @@ Ask (AskUserQuestion) what fires when a player right-clicks this NPC:
 - **Anything additional** — give an item, set a scoreboard flag, etc. Ask explicitly; don't assume
   none. If an ending needs to combine a side effect with `resume_routine`, route it through a
   per-NPC `end_with_gift.mcfunction`-style function (Blabber's `end_dialogue` action can only run
-  one command) — see `_templates/npcs/end_with_gift.mcfunction`.
+  one command) — see `_npcs/templates/end_with_gift.mcfunction`.
 
 ## Step 5 — Build the files
 
-From `_templates/npcs/`, filling every `<placeholder>` using the registry entry and the answers
+From `_npcs/templates/`, filling every `<placeholder>` using the registry entry and the answers
 above:
 
 - `spawn.mcfunction` — always. Follow the exact structure of an existing one for this NPC's shape
@@ -211,8 +211,8 @@ them to do in-game:
 3. `/function luminacion:npcs/<npc_key>/spawn` as an operator.
 4. If a path was left unrecorded: run `functions/npcs/<npc_key>/paths/<path_name>.mcfunction` once
    waypoints are decided.
-5. Capture the UUID per README §5 (`scripts/update_uuids.py generate` → `/reload` →
-   `/function luminacion:admin/export_npc_uuids` → `scripts/update_uuids.py update --log ...`) —
+5. Capture the UUID per README §5 (`scripts/minecraft/update_uuids.py generate` → `/reload` →
+   `/function luminacion:admin/export_npc_uuids` → `scripts/minecraft/update_uuids.py update --log ...`) —
    never copy it by hand.
 6. Before testing the right-click dialog/action yourself: deselect the NPC. `npc create` (step 1 of
    `spawn.mcfunction`) auto-selects the new NPC for whoever ran it, and Taterzens shows its edit GUI

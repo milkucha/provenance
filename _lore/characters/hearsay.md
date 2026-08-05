@@ -19,9 +19,9 @@ moment, said they believed. When a claim here ever contradicts `context.md`, tha
 reconcile — it's the interesting part, and it should be logged as a divergence, not silently fixed.
 
 As of 2026-07-24, individual claims here are also part of the knowledge pool a new character can
-sample from (`scripts/sample_lore_knowledge.py`), at the same odds as any objective-record fact — so
+sample from (`scripts/lore/sample_lore_knowledge.py`), at the same odds as any objective-record fact — so
 a claim can now be repeated by a character who never touched the objective record at all, only heard
-it from someone who'd heard it. Every time that happens, a coin flip (`scripts/lineage_coin.py`,
+it from someone who'd heard it. Every time that happens, a coin flip (`scripts/lore/lineage_coin.py`,
 flat 50/50) decides whether the retelling stays traceable or loses its origin: on a traceable roll,
 the claim here is noted inline ("derived from `<claim id>`") and the dialog line may name the
 source; on an untraceable roll, no origin is recorded at all, the dialog line uses vague framing

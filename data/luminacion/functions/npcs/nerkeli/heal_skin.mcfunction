@@ -1,7 +1,7 @@
 # =============================================================================
 # Luminacion — Nerkeli Skin Self-Heal
 # =============================================================================
-# Built from _templates/npcs/heal_skin.mcfunction. Called every 100 ticks (5s)
+# Built from _npcs/templates/heal_skin.mcfunction. Called every 100 ticks (5s)
 # from check_proximity.mcfunction.
 #
 # Works around a Taterzens bug: skins are fetched asynchronously from

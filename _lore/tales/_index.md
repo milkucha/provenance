@@ -21,14 +21,14 @@ that array's own `_method_note` for the exact shape and what `touches` means.
 Every tale distinguishes two different provenance questions. **`told_by`** (optional, lives in
 `encodings.json` — it's lore, and can be sampled) is who is credited *in-fiction* with this telling,
 if the tale itself is framed that way; most tales leave it unset, since a tale is normally just told
-directly with no in-world frame. **`responsible`** (mandatory, lives in `_lore/tale/_authors.md` —
+directly with no in-world frame. **`responsible`** (mandatory, lives in `_lore/tales/_authors.md` —
 never in `encodings.json`) is which *real-world user* told the system this tale. That field has no
-in-fiction meaning at all and is walled off from `scripts/sample_lore_knowledge.py`'s reach on
+in-fiction meaning at all and is walled off from `scripts/lore/sample_lore_knowledge.py`'s reach on
 purpose, the same way `_lore/facts/facts.json` is — see that file's own `_comment`.
 
 Like every source in this world, this one is partial too — a person only ever tells part of what they
 know, at whatever moment they choose to tell it. A tale left unfinished, or one that raises a question
-it doesn't answer, is not a defect; the gap is logged in `_lore/unknown.md` like any other.
+it doesn't answer, is not a defect; the gap is logged in `_lore/unknowns.md` like any other.
 
 ## Tales on record
 

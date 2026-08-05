@@ -1,7 +1,7 @@
 # =============================================================================
 # Luminacion — Gondarfolas Resume Routine
 # =============================================================================
-# Built from _templates/npcs/resume_routine.mcfunction. See that file
+# Built from _npcs/templates/resume_routine.mcfunction. See that file
 # for the two call contexts this must work under (@s = the NPC in both cases).
 # =============================================================================
 

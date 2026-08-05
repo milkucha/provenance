@@ -1,7 +1,7 @@
 # =============================================================================
 # Luminacion — Nerkeli State: hangar
 # =============================================================================
-# Built from _templates/npcs/states/stationary_state.mcfunction. Switches
+# Built from _npcs/templates/states/stationary_state.mcfunction. Switches
 # Nerkeli into the stationary hangar scene: clears right-click actions and
 # rewires them to his solo hangar-talk dialog, sets movement to NONE, and
 # records this as the active state.

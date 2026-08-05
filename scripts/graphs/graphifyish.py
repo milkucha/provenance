@@ -13,8 +13,8 @@ Three graphs come out of one run:
 Everything is read from the repo's own sources of truth, so the page stays true as the
 world grows. Nothing is hand-maintained here except the concept graph's shape.
 
-    python scripts/graphifyish.py            # writes graphs/graphifyish/graphifyish.html
-    python scripts/graphifyish.py --json     # also dump graphs/graphifyish/graph.json
+    python scripts/graphs/graphifyish.py            # writes graphs/graphifyish/graphifyish.html
+    python scripts/graphs/graphifyish.py --json     # also dump graphs/graphifyish/graph.json
 """
 
 from __future__ import annotations
@@ -28,14 +28,14 @@ import unicodedata
 from collections import Counter, defaultdict
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 ENCODINGS = ROOT / "_lore" / "encodings.json"
 NPCS = ROOT / "_npcs" / "npcs" / "registry.json"
 CHAR_DIR = ROOT / "_lore" / "characters"
 DIALOGS = ROOT / "_npcs" / "dialogs" / "registry.json"
 ACTIONS = ROOT / "_npcs" / "actions" / "registry.json"
 FACTS = ROOT / "_lore" / "facts" / "facts.json"
-AUTHORS = ROOT / "_lore" / "tale" / "_authors.md"
+AUTHORS = ROOT / "_lore" / "tales" / "_authors.md"
 DIALOGUE_DIR = ROOT / "data" / "luminacion" / "blabber" / "dialogues"
 OUT_DIR = ROOT / "graphs" / "graphifyish"
 
@@ -489,8 +489,8 @@ FILE_KINDS = [
     (r"^scripts/", "script"),
     (r"^_lore/material/", "material"),
     (r"^_lore/", "lore"),
+    (r"^_npcs/templates/", "template"),
     (r"^_npcs/", "registry"),
-    (r"^_templates/", "template"),
     (r"^graphs/", "graph"),
     (r"blabber/dialogues/", "dialogue"),
     (r"^data/.*\.mcfunction$", "function"),
@@ -536,7 +536,10 @@ def build_structure() -> Graph:
 def build_concept(lore: Graph, structure: Graph) -> Graph:
     kinds = Counter(n["kind"] for n in lore.nodes.values())
     skills = sorted(p.parent.name for p in (ROOT / ".claude" / "skills").glob("*/SKILL.md"))
-    scripts = sorted(p.name for p in (ROOT / "scripts").glob("*.py"))
+    scripts = sorted(
+        p.relative_to(ROOT / "scripts").as_posix()
+        for p in (ROOT / "scripts").glob("*/*.py")
+    )
     functions = sum(1 for n in structure.nodes.values() if n["kind"] == "function")
     templates = sum(1 for n in structure.nodes.values() if n["kind"] == "template")
     material = sum(1 for n in structure.nodes.values() if n["kind"] == "material")
@@ -567,7 +570,7 @@ def build_concept(lore: Graph, structure: Graph) -> Graph:
     piece("src:encodings", "_lore/encodings.json", "source", 1, "layer:1",
           note=f"{kinds['location']} locations, {kinds['concept']} concepts, "
                f"{kinds['conflict']} conflicts")
-    piece("src:tale", "_lore/tale", "source", 1, "layer:1",
+    piece("src:tale", "_lore/tales", "source", 1, "layer:1",
           note=f"{kinds['tale']} tales told by the author")
     piece("src:facts", "_lore/facts", "source", 1, "layer:1",
           note=f"{kinds['fact']} facts - never sampled, known by everyone")
@@ -578,10 +581,10 @@ def build_concept(lore: Graph, structure: Graph) -> Graph:
           note="which NPC speaks which dialog")
     piece("sup:actions", "_npcs/actions/registry.json", "registry", 2, "layer:2",
           note="action templates + gesture dispatch")
-    piece("sup:templates", "_templates/npcs", "template", 2, "layer:2",
+    piece("sup:templates", "_npcs/templates", "template", 2, "layer:2",
           note=f"{templates} template files")
     for s in scripts:
-        piece(f"script:{s}", s, "script", 2, "layer:2", file=f"scripts/{s}")
+        piece(f"script:{s}", Path(s).name, "script", 2, "layer:2", file=f"scripts/{s}")
 
     piece("pack:dialogues", "blabber/dialogues", "datapack", 3, "layer:3",
           note=f"{kinds['dialogue']} dialogues")
@@ -603,13 +606,13 @@ def build_concept(lore: Graph, structure: Graph) -> Graph:
         ("skill:character", "sup:npcs", "maintains"),
         ("skill:bake_dialog", "pack:dialogues", "compiles"),
         ("skill:package", "rp:assets", "ships"),
-        ("script:sample_lore_knowledge.py", "src:encodings", "samples"),
-        ("script:sample_lore_knowledge.py", "sup:npcs", "fills knowledge of"),
-        ("script:update_uuids.py", "sup:npcs", "captures UUIDs into"),
-        ("script:package.py", "pack:meta", "zips"),
-        ("script:roll_lifespan.py", "sup:npcs", "rolls lifespan into"),
-        ("script:lineage_coin.py", "sup:npcs", "decides lineage for"),
-        ("script:graphifyish.py", "src:encodings", "graphs"),
+        ("script:lore/sample_lore_knowledge.py", "src:encodings", "samples"),
+        ("script:lore/sample_lore_knowledge.py", "sup:npcs", "fills knowledge of"),
+        ("script:minecraft/update_uuids.py", "sup:npcs", "captures UUIDs into"),
+        ("script:minecraft/package.py", "pack:meta", "zips"),
+        ("script:lore/roll_lifespan.py", "sup:npcs", "rolls lifespan into"),
+        ("script:lore/lineage_coin.py", "sup:npcs", "decides lineage for"),
+        ("script:graphs/graphifyish.py", "src:encodings", "graphs"),
         ("sup:npcs", "pack:functions", "spawns"),
         ("sup:dialogs", "pack:dialogues", "registers"),
         ("sup:actions", "rp:assets", "dispatches gestures to"),

@@ -12,6 +12,6 @@ else
   PYTHON="python3"
 fi
 
-"$PYTHON" scripts/graphifyish.py --json >/dev/null 2>&1 \
+"$PYTHON" scripts/graphs/graphifyish.py --json >/dev/null 2>&1 \
   && echo "[post-commit] graphifyish graph refreshed" \
-  || echo "[post-commit] graphifyish graph refresh failed (see scripts/graphifyish.py)"
+  || echo "[post-commit] graphifyish graph refresh failed (see scripts/graphs/graphifyish.py)"

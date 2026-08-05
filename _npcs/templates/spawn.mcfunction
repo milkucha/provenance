@@ -37,9 +37,9 @@ npc edit skin <https://www.mineskin.org/ID>
 npc edit movement NONE
 
 # Regardless of movement mode (including NONE):
-#   1. Duplicate _templates/npcs/resume_routine.mcfunction,
-#      _templates/npcs/check_proximity.mcfunction, _templates/npcs/heal_skin.mcfunction
-#      (skip only if skin is still blank) and _templates/npcs/heal_path.mcfunction
+#   1. Duplicate _npcs/templates/resume_routine.mcfunction,
+#      _npcs/templates/check_proximity.mcfunction, _npcs/templates/heal_skin.mcfunction
+#      (skip only if skin is still blank) and _npcs/templates/heal_path.mcfunction
 #      (leave as a header-only stub if this NPC has no path) into this folder,
 #      filling in the placeholders.
 #   2. Add this NPC's check_proximity.mcfunction path to
@@ -64,7 +64,7 @@ npc edit movement NONE
 # a stray click silently adds/removes nodes, and clearing them afterward leaves
 # a stale internal movement restriction behind, so the NPC keeps walking toward
 # an old point even with an empty path. Instead, after running this spawn
-# function, duplicate _templates/npcs/paths/select_path.mcfunction as
+# function, duplicate _npcs/templates/paths/select_path.mcfunction as
 # functions/npcs/<npc_key>/paths/<path_name>.mcfunction and run it as an
 # operator. Until you do, the NPC just stands still in PATH mode.
 
@@ -86,7 +86,7 @@ npc edit commands setPermissionLevel 2
 # routine and marks it as mid-conversation (functions/npcs/_shared/enter_dialog.mcfunction),
 # so a roaming NPC stops and stays put for the length of the conversation. The
 # matching resume happens from the dialog's end_dialogue action(s) — see
-# _templates/npcs/resume_routine.mcfunction.
+# _npcs/templates/resume_routine.mcfunction.
 #
 # EXAMPLE — an innkeeper NPC named "Maren" who:
 #   - pauses her routine and opens a greeting dialog
@@ -109,10 +109,10 @@ npc edit commands add minecraft scoreboard players set <variable> luminacion.boo
 # --- REGISTRATION REMINDER ----------------------------------------------------
 # UUID capture is automated — do not copy it by hand. Once this NPC (and any
 # others) are created and registered in _npcs/npcs/registry.json, run:
-#   1. python scripts/update_uuids.py generate
+#   1. python scripts/minecraft/update_uuids.py generate
 #   2. /reload
 #   3. /function luminacion:admin/export_npc_uuids
-#   4. python scripts/update_uuids.py update --log "<path/to/logs/latest.log>"
+#   4. python scripts/minecraft/update_uuids.py update --log "<path/to/logs/latest.log>"
 # This message appears in your chat when the function finishes.
 
-tellraw @s [{"text":"[Luminacion] ","color":"gold","bold":true},{"text":"<display_name> created. Run the UUID export pipeline (scripts/update_uuids.py) to register its UUID — see workflow docs."}]
+tellraw @s [{"text":"[Luminacion] ","color":"gold","bold":true},{"text":"<display_name> created. Run the UUID export pipeline (scripts/minecraft/update_uuids.py) to register its UUID — see workflow docs."}]

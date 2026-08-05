@@ -16,7 +16,7 @@
 #      spawn.mcfunction.
 #   3. Called automatically from check_proximity.mcfunction every 100 ticks.
 #      No separate registration needed — just make sure check_proximity.mcfunction
-#      has the matching call block (see _templates/npcs/check_proximity.mcfunction).
+#      has the matching call block (see _npcs/templates/check_proximity.mcfunction).
 #      Both share the same <npc_key>_heal_cd cooldown counter, reset in
 #      check_proximity.mcfunction — don't reset it again here.
 #

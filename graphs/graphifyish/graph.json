@@ -101,7 +101,7 @@
      "catastro (start 2012, aeropuerto Si)",
      "libro (Ciudades D.V., 2013)",
      "2 screenshots dated 17.07.2020 ('Gorff 1/2'), confirmed identical to Libro's uncaptioned image3.png (castle) and image5.png (garden/farm plaza)",
-     "Luminacion Register NPC roster: home locality for ~19 of the ~40 listed NPCs (Bardaglis the musician, Dägna the barkeeper, Farlika/Gorlia/Morlia the market keepers, Kristok Jakur the blacksmith, etc.) - production data, not lore, see unknown.md"
+     "Luminacion Register NPC roster: home locality for ~19 of the ~40 listed NPCs (Bardaglis the musician, Dägna the barkeeper, Farlika/Gorlia/Morlia the market keepers, Kristok Jakur the blacksmith, etc.) - production data, not lore, see unknowns.md"
     ],
     "notes": "atlas/grid coordinates agree exactly (1000,1000); the airport coordinate (1239,1017) is close but not identical, consistent with an airport built near but not at the city's marked center",
     "file": "_lore/encodings.json#locations",
@@ -2408,7 +2408,7 @@
     "kind": "era",
     "system": "ensayo",
     "span": "octubre 2011 - diciembre 2012",
-    "notes": "ensayo_i_final adds an extra breakpoint mid-era: '-96 - 30 a.V. - 0 a.V.' (real: octubre 2011-julio 2012 - diciembre 2012), splitting what ensayo_i renders as one continuous span. Not explained in either edition. See unknown.md.",
+    "notes": "ensayo_i_final adds an extra breakpoint mid-era: '-96 - 30 a.V. - 0 a.V.' (real: octubre 2011-julio 2012 - diciembre 2012), splitting what ensayo_i renders as one continuous span. Not explained in either edition. See unknowns.md.",
     "file": "_lore/encodings.json#time_systems.ensayo_i_eras",
     "degree": 2
    },
@@ -4647,7 +4647,7 @@
     "told": "2026-07-30",
     "told_by": "",
     "responsible": "milkucha",
-    "file": "_lore/tale/peregrins.md",
+    "file": "_lore/tales/peregrins.md",
     "degree": 3
    },
    {
@@ -4658,7 +4658,7 @@
     "told": "2026-07-30",
     "told_by": "",
     "responsible": "milkucha",
-    "file": "_lore/tale/creepers_and_night_monsters.md",
+    "file": "_lore/tales/creepers_and_night_monsters.md",
     "degree": 1
    },
    {
@@ -4669,7 +4669,7 @@
     "told": "2026-07-30",
     "told_by": "",
     "responsible": "milkucha",
-    "file": "_lore/tale/redstone_and_basic_needs.md",
+    "file": "_lore/tales/redstone_and_basic_needs.md",
     "degree": 2
    },
    {
@@ -11662,7 +11662,7 @@
     "label": "Luminacion",
     "kind": "root",
     "path": ".",
-    "degree": 13
+    "degree": 12
    },
    {
     "id": "file:.gitignore",
@@ -11685,7 +11685,7 @@
     "label": "README.md",
     "kind": "doc",
     "path": "README.md",
-    "size": 39856,
+    "size": 45147,
     "degree": 1
    },
    {
@@ -11693,7 +11693,7 @@
     "label": "TODO.md",
     "kind": "doc",
     "path": "TODO.md",
-    "size": 58248,
+    "size": 58263,
     "degree": 1
    },
    {
@@ -11761,7 +11761,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/character/SKILL.md",
-    "size": 21364,
+    "size": 21414,
     "degree": 1
    },
    {
@@ -11791,7 +11791,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/enact/SKILL.md",
-    "size": 28650,
+    "size": 28693,
     "degree": 1
    },
    {
@@ -11821,7 +11821,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/integrate/SKILL.md",
-    "size": 7392,
+    "size": 7397,
     "degree": 1
    },
    {
@@ -11836,7 +11836,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/package/SKILL.md",
-    "size": 3526,
+    "size": 3493,
     "degree": 1
    },
    {
@@ -11851,7 +11851,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/spawn/SKILL.md",
-    "size": 15549,
+    "size": 15569,
     "degree": 1
    },
    {
@@ -11866,7 +11866,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/tell/SKILL.md",
-    "size": 7639,
+    "size": 7656,
     "degree": 1
    },
    {
@@ -11888,15 +11888,15 @@
     "label": "encodings.json",
     "kind": "lore",
     "path": "_lore/encodings.json",
-    "size": 169793,
+    "size": 169817,
     "degree": 1
    },
    {
-    "id": "file:_lore/unknown.md",
-    "label": "unknown.md",
+    "id": "file:_lore/unknowns.md",
+    "label": "unknowns.md",
     "kind": "lore",
-    "path": "_lore/unknown.md",
-    "size": 21353,
+    "path": "_lore/unknowns.md",
+    "size": 21354,
     "degree": 1
    },
    {
@@ -11911,7 +11911,7 @@
     "label": "_index.md",
     "kind": "lore",
     "path": "_lore/characters/_index.md",
-    "size": 1530,
+    "size": 1540,
     "degree": 1
    },
    {
@@ -12095,7 +12095,7 @@
     "label": "hearsay.md",
     "kind": "lore",
     "path": "_lore/characters/hearsay.md",
-    "size": 45374,
+    "size": 44768,
     "degree": 1
    },
    {
@@ -12183,7 +12183,7 @@
     "label": "lifespans.json",
     "kind": "lore",
     "path": "_lore/characters/lifespans.json",
-    "size": 1474,
+    "size": 1484,
     "degree": 1
    },
    {
@@ -12462,7 +12462,7 @@
     "label": "_authors.md",
     "kind": "lore",
     "path": "_lore/facts/_authors.md",
-    "size": 816,
+    "size": 822,
     "degree": 1
    },
    {
@@ -12470,7 +12470,7 @@
     "label": "_index.md",
     "kind": "lore",
     "path": "_lore/facts/_index.md",
-    "size": 3442,
+    "size": 3448,
     "degree": 1
    },
    {
@@ -12486,7 +12486,7 @@
     "label": "facts.json",
     "kind": "lore",
     "path": "_lore/facts/facts.json",
-    "size": 3839,
+    "size": 3854,
     "degree": 1
    },
    {
@@ -12494,7 +12494,7 @@
     "label": "life_is_finite.md",
     "kind": "lore",
     "path": "_lore/facts/life_is_finite.md",
-    "size": 3257,
+    "size": 3267,
     "degree": 1
    },
    {
@@ -12773,7 +12773,7 @@
     "label": "_context.md",
     "kind": "material",
     "path": "_lore/material/_context.md",
-    "size": 56200,
+    "size": 56211,
     "degree": 1
    },
    {
@@ -12781,54 +12781,54 @@
     "label": "timelines.py",
     "kind": "material",
     "path": "_lore/material/timelines.py",
-    "size": 3051,
+    "size": 2970,
     "degree": 1
    },
    {
-    "id": "dir:_lore/tale",
-    "label": "tale",
+    "id": "dir:_lore/tales",
+    "label": "tales",
     "kind": "dir",
-    "path": "_lore/tale",
+    "path": "_lore/tales",
     "degree": 6
    },
    {
-    "id": "file:_lore/tale/_authors.md",
+    "id": "file:_lore/tales/_authors.md",
     "label": "_authors.md",
     "kind": "lore",
-    "path": "_lore/tale/_authors.md",
-    "size": 1170,
+    "path": "_lore/tales/_authors.md",
+    "size": 1175,
     "degree": 1
    },
    {
-    "id": "file:_lore/tale/_index.md",
+    "id": "file:_lore/tales/_index.md",
     "label": "_index.md",
     "kind": "lore",
-    "path": "_lore/tale/_index.md",
-    "size": 3049,
+    "path": "_lore/tales/_index.md",
+    "size": 3056,
     "degree": 1
    },
    {
-    "id": "file:_lore/tale/creepers_and_night_monsters.md",
+    "id": "file:_lore/tales/creepers_and_night_monsters.md",
     "label": "creepers_and_night_monsters.md",
     "kind": "lore",
-    "path": "_lore/tale/creepers_and_night_monsters.md",
-    "size": 567,
+    "path": "_lore/tales/creepers_and_night_monsters.md",
+    "size": 568,
     "degree": 1
    },
    {
-    "id": "file:_lore/tale/peregrins.md",
+    "id": "file:_lore/tales/peregrins.md",
     "label": "peregrins.md",
     "kind": "lore",
-    "path": "_lore/tale/peregrins.md",
-    "size": 1440,
+    "path": "_lore/tales/peregrins.md",
+    "size": 1441,
     "degree": 1
    },
    {
-    "id": "file:_lore/tale/redstone_and_basic_needs.md",
+    "id": "file:_lore/tales/redstone_and_basic_needs.md",
     "label": "redstone_and_basic_needs.md",
     "kind": "lore",
-    "path": "_lore/tale/redstone_and_basic_needs.md",
-    "size": 560,
+    "path": "_lore/tales/redstone_and_basic_needs.md",
+    "size": 561,
     "degree": 1
    },
    {
@@ -12836,7 +12836,7 @@
     "label": "_npcs",
     "kind": "dir",
     "path": "_npcs",
-    "degree": 4
+    "degree": 5
    },
    {
     "id": "dir:_npcs/actions",
@@ -12880,106 +12880,99 @@
     "label": "registry.json",
     "kind": "registry",
     "path": "_npcs/npcs/registry.json",
-    "size": 14438,
+    "size": 14448,
     "degree": 1
    },
    {
-    "id": "dir:_templates",
-    "label": "_templates",
+    "id": "dir:_npcs/templates",
+    "label": "templates",
     "kind": "dir",
-    "path": "_templates",
-    "degree": 2
-   },
-   {
-    "id": "dir:_templates/npcs",
-    "label": "npcs",
-    "kind": "dir",
-    "path": "_templates/npcs",
+    "path": "_npcs/templates",
     "degree": 9
    },
    {
-    "id": "file:_templates/npcs/check_proximity.mcfunction",
+    "id": "file:_npcs/templates/check_proximity.mcfunction",
     "label": "check_proximity.mcfunction",
     "kind": "template",
-    "path": "_templates/npcs/check_proximity.mcfunction",
-    "size": 3430,
+    "path": "_npcs/templates/check_proximity.mcfunction",
+    "size": 3383,
     "degree": 1
    },
    {
-    "id": "file:_templates/npcs/end_with_gift.mcfunction",
+    "id": "file:_npcs/templates/end_with_gift.mcfunction",
     "label": "end_with_gift.mcfunction",
     "kind": "template",
-    "path": "_templates/npcs/end_with_gift.mcfunction",
-    "size": 1292,
+    "path": "_npcs/templates/end_with_gift.mcfunction",
+    "size": 1270,
     "degree": 1
    },
    {
-    "id": "file:_templates/npcs/heal_path.mcfunction",
+    "id": "file:_npcs/templates/heal_path.mcfunction",
     "label": "heal_path.mcfunction",
     "kind": "template",
-    "path": "_templates/npcs/heal_path.mcfunction",
+    "path": "_npcs/templates/heal_path.mcfunction",
     "size": 1161,
     "degree": 1
    },
    {
-    "id": "file:_templates/npcs/heal_skin.mcfunction",
+    "id": "file:_npcs/templates/heal_skin.mcfunction",
     "label": "heal_skin.mcfunction",
     "kind": "template",
-    "path": "_templates/npcs/heal_skin.mcfunction",
+    "path": "_npcs/templates/heal_skin.mcfunction",
     "size": 1677,
     "degree": 1
    },
    {
-    "id": "file:_templates/npcs/resume_routine.mcfunction",
+    "id": "file:_npcs/templates/resume_routine.mcfunction",
     "label": "resume_routine.mcfunction",
     "kind": "template",
-    "path": "_templates/npcs/resume_routine.mcfunction",
+    "path": "_npcs/templates/resume_routine.mcfunction",
     "size": 1552,
     "degree": 1
    },
    {
-    "id": "file:_templates/npcs/spawn.mcfunction",
+    "id": "file:_npcs/templates/spawn.mcfunction",
     "label": "spawn.mcfunction",
     "kind": "template",
-    "path": "_templates/npcs/spawn.mcfunction",
-    "size": 6572,
+    "path": "_npcs/templates/spawn.mcfunction",
+    "size": 6602,
     "degree": 1
    },
    {
-    "id": "dir:_templates/npcs/paths",
+    "id": "dir:_npcs/templates/paths",
     "label": "paths",
     "kind": "dir",
-    "path": "_templates/npcs/paths",
+    "path": "_npcs/templates/paths",
     "degree": 2
    },
    {
-    "id": "file:_templates/npcs/paths/select_path.mcfunction",
+    "id": "file:_npcs/templates/paths/select_path.mcfunction",
     "label": "select_path.mcfunction",
     "kind": "template",
-    "path": "_templates/npcs/paths/select_path.mcfunction",
+    "path": "_npcs/templates/paths/select_path.mcfunction",
     "size": 2215,
     "degree": 1
    },
    {
-    "id": "dir:_templates/npcs/states",
+    "id": "dir:_npcs/templates/states",
     "label": "states",
     "kind": "dir",
-    "path": "_templates/npcs/states",
+    "path": "_npcs/templates/states",
     "degree": 3
    },
    {
-    "id": "file:_templates/npcs/states/roaming_state.mcfunction",
+    "id": "file:_npcs/templates/states/roaming_state.mcfunction",
     "label": "roaming_state.mcfunction",
     "kind": "template",
-    "path": "_templates/npcs/states/roaming_state.mcfunction",
+    "path": "_npcs/templates/states/roaming_state.mcfunction",
     "size": 2845,
     "degree": 1
    },
    {
-    "id": "file:_templates/npcs/states/stationary_state.mcfunction",
+    "id": "file:_npcs/templates/states/stationary_state.mcfunction",
     "label": "stationary_state.mcfunction",
     "kind": "template",
-    "path": "_templates/npcs/states/stationary_state.mcfunction",
+    "path": "_npcs/templates/states/stationary_state.mcfunction",
     "size": 2060,
     "degree": 1
    },
@@ -13215,7 +13208,7 @@
     "label": "tick.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/tick.mcfunction",
-    "size": 521,
+    "size": 509,
     "degree": 1
    },
    {
@@ -13515,7 +13508,7 @@
     "label": "spawn.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/doran/spawn.mcfunction",
-    "size": 4761,
+    "size": 4791,
     "degree": 1
    },
    {
@@ -13554,7 +13547,7 @@
     "label": "resume_routine.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/gondarfolas/resume_routine.mcfunction",
-    "size": 534,
+    "size": 524,
     "degree": 1
    },
    {
@@ -13562,7 +13555,7 @@
     "label": "spawn.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/gondarfolas/spawn.mcfunction",
-    "size": 2597,
+    "size": 2627,
     "degree": 1
    },
    {
@@ -13609,7 +13602,7 @@
     "label": "spawn.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/ilaria/spawn.mcfunction",
-    "size": 2750,
+    "size": 2780,
     "degree": 1
    },
    {
@@ -13664,7 +13657,7 @@
     "label": "spawn.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/khaoe/spawn.mcfunction",
-    "size": 6805,
+    "size": 6835,
     "degree": 1
    },
    {
@@ -13711,7 +13704,7 @@
     "label": "spawn.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/nerkeli/spawn.mcfunction",
-    "size": 2099,
+    "size": 2129,
     "degree": 1
    },
    {
@@ -13797,7 +13790,7 @@
     "label": "spawn.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/nuvilo/spawn.mcfunction",
-    "size": 2217,
+    "size": 2247,
     "degree": 1
    },
    {
@@ -13857,7 +13850,7 @@
     "label": "npc_routine_tick.json",
     "kind": "datapack",
     "path": "data/luminacion/tags/functions/npc_routine_tick.json",
-    "size": 665,
+    "size": 652,
     "degree": 1
    },
    {
@@ -13916,7 +13909,7 @@
     "label": "graph.json",
     "kind": "graph",
     "path": "graphs/graphifyish/graph.json",
-    "size": 434231,
+    "size": 459835,
     "degree": 1
    },
    {
@@ -13924,7 +13917,7 @@
     "label": "graphifyish.html",
     "kind": "graph",
     "path": "graphs/graphifyish/graphifyish.html",
-    "size": 389565,
+    "size": 389465,
     "degree": 1
    },
    {
@@ -14064,86 +14057,29 @@
     "label": "scripts",
     "kind": "dir",
     "path": "scripts",
-    "degree": 12
+    "degree": 5
    },
    {
-    "id": "file:scripts/check_character_name.py",
-    "label": "check_character_name.py",
-    "kind": "script",
-    "path": "scripts/check_character_name.py",
-    "size": 2383,
-    "degree": 1
+    "id": "dir:scripts/graphs",
+    "label": "graphs",
+    "kind": "dir",
+    "path": "scripts/graphs",
+    "degree": 3
    },
    {
-    "id": "file:scripts/graphifyish.py",
+    "id": "file:scripts/graphs/graphifyish.py",
     "label": "graphifyish.py",
     "kind": "script",
-    "path": "scripts/graphifyish.py",
-    "size": 32083,
+    "path": "scripts/graphs/graphifyish.py",
+    "size": 31553,
     "degree": 1
    },
    {
-    "id": "file:scripts/graphifyish_template.html",
+    "id": "file:scripts/graphs/graphifyish_template.html",
     "label": "graphifyish_template.html",
     "kind": "script",
-    "path": "scripts/graphifyish_template.html",
+    "path": "scripts/graphs/graphifyish_template.html",
     "size": 36739,
-    "degree": 1
-   },
-   {
-    "id": "file:scripts/horizon.py",
-    "label": "horizon.py",
-    "kind": "script",
-    "path": "scripts/horizon.py",
-    "size": 4253,
-    "degree": 1
-   },
-   {
-    "id": "file:scripts/lineage_coin.py",
-    "label": "lineage_coin.py",
-    "kind": "script",
-    "path": "scripts/lineage_coin.py",
-    "size": 1414,
-    "degree": 1
-   },
-   {
-    "id": "file:scripts/notify_death.py",
-    "label": "notify_death.py",
-    "kind": "script",
-    "path": "scripts/notify_death.py",
-    "size": 6335,
-    "degree": 1
-   },
-   {
-    "id": "file:scripts/package.py",
-    "label": "package.py",
-    "kind": "script",
-    "path": "scripts/package.py",
-    "size": 3102,
-    "degree": 1
-   },
-   {
-    "id": "file:scripts/roll_lifespan.py",
-    "label": "roll_lifespan.py",
-    "kind": "script",
-    "path": "scripts/roll_lifespan.py",
-    "size": 2999,
-    "degree": 1
-   },
-   {
-    "id": "file:scripts/sample_lore_knowledge.py",
-    "label": "sample_lore_knowledge.py",
-    "kind": "script",
-    "path": "scripts/sample_lore_knowledge.py",
-    "size": 7397,
-    "degree": 1
-   },
-   {
-    "id": "file:scripts/update_uuids.py",
-    "label": "update_uuids.py",
-    "kind": "script",
-    "path": "scripts/update_uuids.py",
-    "size": 8248,
     "degree": 1
    },
    {
@@ -14158,7 +14094,85 @@
     "label": "post-commit",
     "kind": "script",
     "path": "scripts/hooks/post-commit",
-    "size": 627,
+    "size": 641,
+    "degree": 1
+   },
+   {
+    "id": "dir:scripts/lore",
+    "label": "lore",
+    "kind": "dir",
+    "path": "scripts/lore",
+    "degree": 7
+   },
+   {
+    "id": "file:scripts/lore/check_character_name.py",
+    "label": "check_character_name.py",
+    "kind": "script",
+    "path": "scripts/lore/check_character_name.py",
+    "size": 2400,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/horizon.py",
+    "label": "horizon.py",
+    "kind": "script",
+    "path": "scripts/lore/horizon.py",
+    "size": 4275,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/lineage_coin.py",
+    "label": "lineage_coin.py",
+    "kind": "script",
+    "path": "scripts/lore/lineage_coin.py",
+    "size": 1395,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/notify_death.py",
+    "label": "notify_death.py",
+    "kind": "script",
+    "path": "scripts/lore/notify_death.py",
+    "size": 6353,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/roll_lifespan.py",
+    "label": "roll_lifespan.py",
+    "kind": "script",
+    "path": "scripts/lore/roll_lifespan.py",
+    "size": 3029,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/sample_lore_knowledge.py",
+    "label": "sample_lore_knowledge.py",
+    "kind": "script",
+    "path": "scripts/lore/sample_lore_knowledge.py",
+    "size": 7272,
+    "degree": 1
+   },
+   {
+    "id": "dir:scripts/minecraft",
+    "label": "minecraft",
+    "kind": "dir",
+    "path": "scripts/minecraft",
+    "degree": 3
+   },
+   {
+    "id": "file:scripts/minecraft/package.py",
+    "label": "package.py",
+    "kind": "script",
+    "path": "scripts/minecraft/package.py",
+    "size": 3117,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/minecraft/update_uuids.py",
+    "label": "update_uuids.py",
+    "kind": "script",
+    "path": "scripts/minecraft/update_uuids.py",
+    "size": 8336,
     "degree": 1
    }
   ],
@@ -14345,7 +14359,7 @@
    },
    {
     "source": "dir:_lore",
-    "target": "file:_lore/unknown.md",
+    "target": "file:_lore/unknowns.md",
     "rel": "contains",
     "weight": 1
    },
@@ -15017,37 +15031,37 @@
    },
    {
     "source": "dir:_lore",
-    "target": "dir:_lore/tale",
+    "target": "dir:_lore/tales",
     "rel": "contains",
     "weight": 1
    },
    {
-    "source": "dir:_lore/tale",
-    "target": "file:_lore/tale/_authors.md",
+    "source": "dir:_lore/tales",
+    "target": "file:_lore/tales/_authors.md",
     "rel": "contains",
     "weight": 1
    },
    {
-    "source": "dir:_lore/tale",
-    "target": "file:_lore/tale/_index.md",
+    "source": "dir:_lore/tales",
+    "target": "file:_lore/tales/_index.md",
     "rel": "contains",
     "weight": 1
    },
    {
-    "source": "dir:_lore/tale",
-    "target": "file:_lore/tale/creepers_and_night_monsters.md",
+    "source": "dir:_lore/tales",
+    "target": "file:_lore/tales/creepers_and_night_monsters.md",
     "rel": "contains",
     "weight": 1
    },
    {
-    "source": "dir:_lore/tale",
-    "target": "file:_lore/tale/peregrins.md",
+    "source": "dir:_lore/tales",
+    "target": "file:_lore/tales/peregrins.md",
     "rel": "contains",
     "weight": 1
    },
    {
-    "source": "dir:_lore/tale",
-    "target": "file:_lore/tale/redstone_and_basic_needs.md",
+    "source": "dir:_lore/tales",
+    "target": "file:_lore/tales/redstone_and_basic_needs.md",
     "rel": "contains",
     "weight": 1
    },
@@ -15094,80 +15108,74 @@
     "weight": 1
    },
    {
-    "source": "dir:.",
-    "target": "dir:_templates",
+    "source": "dir:_npcs",
+    "target": "dir:_npcs/templates",
     "rel": "contains",
     "weight": 1
    },
    {
-    "source": "dir:_templates",
-    "target": "dir:_templates/npcs",
+    "source": "dir:_npcs/templates",
+    "target": "file:_npcs/templates/check_proximity.mcfunction",
     "rel": "contains",
     "weight": 1
    },
    {
-    "source": "dir:_templates/npcs",
-    "target": "file:_templates/npcs/check_proximity.mcfunction",
+    "source": "dir:_npcs/templates",
+    "target": "file:_npcs/templates/end_with_gift.mcfunction",
     "rel": "contains",
     "weight": 1
    },
    {
-    "source": "dir:_templates/npcs",
-    "target": "file:_templates/npcs/end_with_gift.mcfunction",
+    "source": "dir:_npcs/templates",
+    "target": "file:_npcs/templates/heal_path.mcfunction",
     "rel": "contains",
     "weight": 1
    },
    {
-    "source": "dir:_templates/npcs",
-    "target": "file:_templates/npcs/heal_path.mcfunction",
+    "source": "dir:_npcs/templates",
+    "target": "file:_npcs/templates/heal_skin.mcfunction",
     "rel": "contains",
     "weight": 1
    },
    {
-    "source": "dir:_templates/npcs",
-    "target": "file:_templates/npcs/heal_skin.mcfunction",
+    "source": "dir:_npcs/templates",
+    "target": "file:_npcs/templates/resume_routine.mcfunction",
     "rel": "contains",
     "weight": 1
    },
    {
-    "source": "dir:_templates/npcs",
-    "target": "file:_templates/npcs/resume_routine.mcfunction",
+    "source": "dir:_npcs/templates",
+    "target": "file:_npcs/templates/spawn.mcfunction",
     "rel": "contains",
     "weight": 1
    },
    {
-    "source": "dir:_templates/npcs",
-    "target": "file:_templates/npcs/spawn.mcfunction",
+    "source": "dir:_npcs/templates",
+    "target": "dir:_npcs/templates/paths",
     "rel": "contains",
     "weight": 1
    },
    {
-    "source": "dir:_templates/npcs",
-    "target": "dir:_templates/npcs/paths",
+    "source": "dir:_npcs/templates/paths",
+    "target": "file:_npcs/templates/paths/select_path.mcfunction",
     "rel": "contains",
     "weight": 1
    },
    {
-    "source": "dir:_templates/npcs/paths",
-    "target": "file:_templates/npcs/paths/select_path.mcfunction",
+    "source": "dir:_npcs/templates",
+    "target": "dir:_npcs/templates/states",
     "rel": "contains",
     "weight": 1
    },
    {
-    "source": "dir:_templates/npcs",
-    "target": "dir:_templates/npcs/states",
+    "source": "dir:_npcs/templates/states",
+    "target": "file:_npcs/templates/states/roaming_state.mcfunction",
     "rel": "contains",
     "weight": 1
    },
    {
-    "source": "dir:_templates/npcs/states",
-    "target": "file:_templates/npcs/states/roaming_state.mcfunction",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:_templates/npcs/states",
-    "target": "file:_templates/npcs/states/stationary_state.mcfunction",
+    "source": "dir:_npcs/templates/states",
+    "target": "file:_npcs/templates/states/stationary_state.mcfunction",
     "rel": "contains",
     "weight": 1
    },
@@ -16013,61 +16021,19 @@
    },
    {
     "source": "dir:scripts",
-    "target": "file:scripts/check_character_name.py",
+    "target": "dir:scripts/graphs",
     "rel": "contains",
     "weight": 1
    },
    {
-    "source": "dir:scripts",
-    "target": "file:scripts/graphifyish.py",
+    "source": "dir:scripts/graphs",
+    "target": "file:scripts/graphs/graphifyish.py",
     "rel": "contains",
     "weight": 1
    },
    {
-    "source": "dir:scripts",
-    "target": "file:scripts/graphifyish_template.html",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:scripts",
-    "target": "file:scripts/horizon.py",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:scripts",
-    "target": "file:scripts/lineage_coin.py",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:scripts",
-    "target": "file:scripts/notify_death.py",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:scripts",
-    "target": "file:scripts/package.py",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:scripts",
-    "target": "file:scripts/roll_lifespan.py",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:scripts",
-    "target": "file:scripts/sample_lore_knowledge.py",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:scripts",
-    "target": "file:scripts/update_uuids.py",
+    "source": "dir:scripts/graphs",
+    "target": "file:scripts/graphs/graphifyish_template.html",
     "rel": "contains",
     "weight": 1
    },
@@ -16080,6 +16046,66 @@
    {
     "source": "dir:scripts/hooks",
     "target": "file:scripts/hooks/post-commit",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts",
+    "target": "dir:scripts/lore",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/check_character_name.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/horizon.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/lineage_coin.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/notify_death.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/roll_lifespan.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/sample_lore_knowledge.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts",
+    "target": "dir:scripts/minecraft",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/minecraft",
+    "target": "file:scripts/minecraft/package.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/minecraft",
+    "target": "file:scripts/minecraft/update_uuids.py",
     "rel": "contains",
     "weight": 1
    }
@@ -16210,7 +16236,7 @@
    },
    {
     "id": "src:tale",
-    "label": "_lore/tale",
+    "label": "_lore/tales",
     "kind": "source",
     "tier": 1,
     "note": "3 tales told by the author",
@@ -16250,82 +16276,82 @@
    },
    {
     "id": "sup:templates",
-    "label": "_templates/npcs",
+    "label": "_npcs/templates",
     "kind": "template",
     "tier": 2,
     "note": "9 template files",
     "degree": 2
    },
    {
-    "id": "script:check_character_name.py",
-    "label": "check_character_name.py",
-    "kind": "script",
-    "tier": 2,
-    "file": "scripts/check_character_name.py",
-    "degree": 1
-   },
-   {
-    "id": "script:graphifyish.py",
+    "id": "script:graphs/graphifyish.py",
     "label": "graphifyish.py",
     "kind": "script",
     "tier": 2,
-    "file": "scripts/graphifyish.py",
+    "file": "scripts/graphs/graphifyish.py",
     "degree": 2
    },
    {
-    "id": "script:horizon.py",
+    "id": "script:lore/check_character_name.py",
+    "label": "check_character_name.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/check_character_name.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/horizon.py",
     "label": "horizon.py",
     "kind": "script",
     "tier": 2,
-    "file": "scripts/horizon.py",
+    "file": "scripts/lore/horizon.py",
     "degree": 1
    },
    {
-    "id": "script:lineage_coin.py",
+    "id": "script:lore/lineage_coin.py",
     "label": "lineage_coin.py",
     "kind": "script",
     "tier": 2,
-    "file": "scripts/lineage_coin.py",
+    "file": "scripts/lore/lineage_coin.py",
     "degree": 2
    },
    {
-    "id": "script:notify_death.py",
+    "id": "script:lore/notify_death.py",
     "label": "notify_death.py",
     "kind": "script",
     "tier": 2,
-    "file": "scripts/notify_death.py",
+    "file": "scripts/lore/notify_death.py",
     "degree": 1
    },
    {
-    "id": "script:package.py",
-    "label": "package.py",
-    "kind": "script",
-    "tier": 2,
-    "file": "scripts/package.py",
-    "degree": 2
-   },
-   {
-    "id": "script:roll_lifespan.py",
+    "id": "script:lore/roll_lifespan.py",
     "label": "roll_lifespan.py",
     "kind": "script",
     "tier": 2,
-    "file": "scripts/roll_lifespan.py",
+    "file": "scripts/lore/roll_lifespan.py",
     "degree": 2
    },
    {
-    "id": "script:sample_lore_knowledge.py",
+    "id": "script:lore/sample_lore_knowledge.py",
     "label": "sample_lore_knowledge.py",
     "kind": "script",
     "tier": 2,
-    "file": "scripts/sample_lore_knowledge.py",
+    "file": "scripts/lore/sample_lore_knowledge.py",
     "degree": 3
    },
    {
-    "id": "script:update_uuids.py",
+    "id": "script:minecraft/package.py",
+    "label": "package.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/minecraft/package.py",
+    "degree": 2
+   },
+   {
+    "id": "script:minecraft/update_uuids.py",
     "label": "update_uuids.py",
     "kind": "script",
     "tier": 2,
-    "file": "scripts/update_uuids.py",
+    "file": "scripts/minecraft/update_uuids.py",
     "degree": 2
    },
    {
@@ -16484,55 +16510,55 @@
    },
    {
     "source": "layer:2",
-    "target": "script:check_character_name.py",
+    "target": "script:graphs/graphifyish.py",
     "rel": "holds",
     "weight": 1
    },
    {
     "source": "layer:2",
-    "target": "script:graphifyish.py",
+    "target": "script:lore/check_character_name.py",
     "rel": "holds",
     "weight": 1
    },
    {
     "source": "layer:2",
-    "target": "script:horizon.py",
+    "target": "script:lore/horizon.py",
     "rel": "holds",
     "weight": 1
    },
    {
     "source": "layer:2",
-    "target": "script:lineage_coin.py",
+    "target": "script:lore/lineage_coin.py",
     "rel": "holds",
     "weight": 1
    },
    {
     "source": "layer:2",
-    "target": "script:notify_death.py",
+    "target": "script:lore/notify_death.py",
     "rel": "holds",
     "weight": 1
    },
    {
     "source": "layer:2",
-    "target": "script:package.py",
+    "target": "script:lore/roll_lifespan.py",
     "rel": "holds",
     "weight": 1
    },
    {
     "source": "layer:2",
-    "target": "script:roll_lifespan.py",
+    "target": "script:lore/sample_lore_knowledge.py",
     "rel": "holds",
     "weight": 1
    },
    {
     "source": "layer:2",
-    "target": "script:sample_lore_knowledge.py",
+    "target": "script:minecraft/package.py",
     "rel": "holds",
     "weight": 1
    },
    {
     "source": "layer:2",
-    "target": "script:update_uuids.py",
+    "target": "script:minecraft/update_uuids.py",
     "rel": "holds",
     "weight": 1
    },
@@ -16621,43 +16647,43 @@
     "weight": 1
    },
    {
-    "source": "script:sample_lore_knowledge.py",
+    "source": "script:lore/sample_lore_knowledge.py",
     "target": "src:encodings",
     "rel": "samples",
     "weight": 1
    },
    {
-    "source": "script:sample_lore_knowledge.py",
+    "source": "script:lore/sample_lore_knowledge.py",
     "target": "sup:npcs",
     "rel": "fills knowledge of",
     "weight": 1
    },
    {
-    "source": "script:update_uuids.py",
+    "source": "script:minecraft/update_uuids.py",
     "target": "sup:npcs",
     "rel": "captures UUIDs into",
     "weight": 1
    },
    {
-    "source": "script:package.py",
+    "source": "script:minecraft/package.py",
     "target": "pack:meta",
     "rel": "zips",
     "weight": 1
    },
    {
-    "source": "script:roll_lifespan.py",
+    "source": "script:lore/roll_lifespan.py",
     "target": "sup:npcs",
     "rel": "rolls lifespan into",
     "weight": 1
    },
    {
-    "source": "script:lineage_coin.py",
+    "source": "script:lore/lineage_coin.py",
     "target": "sup:npcs",
     "rel": "decides lineage for",
     "weight": 1
    },
    {
-    "source": "script:graphifyish.py",
+    "source": "script:graphs/graphifyish.py",
     "target": "src:encodings",
     "rel": "graphs",
     "weight": 1

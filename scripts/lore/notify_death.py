@@ -11,7 +11,7 @@ itself is handled in two tiers, and this script only ever computes the first:
        the circle is non-empty) is notified immediately - this script picks who. The other 70%
        simply don't hear, not yet.
     2. PROBABILISTIC - everyone else. Handled outside this script entirely: the death is recorded as
-       an ordinary _lore/tale/ entry (told_by: null, in the normal case), which folds into
+       an ordinary _lore/tales/ entry (told_by: null, in the normal case), which folds into
        encodings.json and re-enters the same sampling pool as any other fact. Someone outside the
        circle only learns of it the normal way a person learns anything here - drawn into a future
        education sample, or told by someone who was in the circle, subject to the usual lineage_coin
@@ -25,8 +25,8 @@ criterion.anchor is an `experience: <scene_id>` or `hearsay: <entry>#n` that the
 participant in. That's a pointer check, not a judgement call, so it belongs here.
 
 Usage:
-    python scripts/notify_death.py <npc_key>
-    python scripts/notify_death.py <npc_key> --seed 42   # reproducible sample
+    python scripts/lore/notify_death.py <npc_key>
+    python scripts/lore/notify_death.py <npc_key> --seed 42   # reproducible sample
 """
 
 import argparse
@@ -34,7 +34,7 @@ import json
 from pathlib import Path
 from random import Random
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 CHAR_DIR = ROOT / "_lore" / "characters"
 ENCODINGS_PATH = ROOT / "_lore" / "encodings.json"
 

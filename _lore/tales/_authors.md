@@ -7,7 +7,7 @@ with a tale's `told_by` in `../encodings.json` (in-world credit, which *is* lore
 the record.
 
 **Must never be folded into `_lore/encodings.json` and must never reach
-`scripts/sample_lore_knowledge.py`'s pool** — same isolation guarantee as `_lore/facts/facts.json`,
+`scripts/lore/sample_lore_knowledge.py`'s pool** — same isolation guarantee as `_lore/facts/facts.json`,
 for the same reason: this is the floor the record stands on, not part of it. Every tale entry is
 required to have one (unlike `told_by`, which is optional). Exists so contributions can be attributed
 and audited if this ever becomes a multi-author project — for now, with a single author, every entry

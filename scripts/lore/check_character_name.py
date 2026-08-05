@@ -15,8 +15,8 @@ how existing registry/character keys were already derived (e.g. "Döran" -> "dor
 doubles as "does _lore/characters/<slug>.json already exist" - no separate index needed.
 
 Usage:
-    python scripts/check_character_name.py "Doran"
-    python scripts/check_character_name.py "Farlis Gorfalis"
+    python scripts/lore/check_character_name.py "Doran"
+    python scripts/lore/check_character_name.py "Farlis Gorfalis"
 """
 
 import argparse
@@ -24,7 +24,7 @@ import re
 import unicodedata
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 CHAR_DIR = ROOT / "_lore" / "characters"
 
 

@@ -54,7 +54,7 @@ don't fork the procedure.
   whatever entered the discovery/sampling record; a new scene with them is not one of the ways that
   knowledge is allowed to grow.
 - **If it doesn't exist, this is a brand-new character — run**
-  `python scripts/check_character_name.py "<name>"` **and confirm `AVAILABLE`** before treating it as
+  `python scripts/lore/check_character_name.py "<name>"` **and confirm `AVAILABLE`** before treating it as
   one. This is the same shared uniqueness check `/character` Step 1 uses (every character ever
   created, living or deceased, must have a name that slugifies uniquely). On `TAKEN`, tell the user
   and ask for a distinguishing variant.
@@ -81,9 +81,9 @@ Ask, as plain conversation (not multiple-choice):
 Then run the sample (skip this entirely if reusing an existing sample per the guard above):
 
 ```bash
-python scripts/sample_lore_knowledge.py --percent <N> --mode random
+python scripts/lore/sample_lore_knowledge.py --percent <N> --mode random
 # or
-python scripts/sample_lore_knowledge.py --percent <N> --mode skewed --topic "<keyword>" --topic "<keyword2>"
+python scripts/lore/sample_lore_knowledge.py --percent <N> --mode skewed --topic "<keyword>" --topic "<keyword2>"
 ```
 
 Keep the printed list (or the reused list, for a returning character) — it's this character's
@@ -95,7 +95,7 @@ general shape.
 Some drawn items will be `category: "hearsay"` (a claim from an earlier dialog's hearsay entry, not
 the objective record — see README §8 Step 1). Play those as things the character heard, not settled
 fact. The moment one of these actually gets voiced in the scene (Step 3), roll
-`scripts/lineage_coin.py` right then — the result decides how the line is phrased: a `traceable`
+`scripts/lore/lineage_coin.py` right then — the result decides how the line is phrased: a `traceable`
 roll lets the character cite the source by name ("I heard Morkulo say..."); an `untraceable` roll
 means vague framing only ("they say...," "it's told that...") — no named source, on purpose. Keep
 the roll result; it determines `derived_from`/`oral_lore` in Step 5.
@@ -114,7 +114,7 @@ same first-time-only discipline as `education`:
   city default (`/character` Step 4e).
 - **Lifespan.** If the character has no entry in `_lore/characters/lifespans.json`, roll it now per
   `/character` **Step 5**. If they do, never reroll.
-- **Horizon.** Run `python scripts/horizon.py <npc_key>` for each character before the scene starts
+- **Horizon.** Run `python scripts/lore/horizon.py <npc_key>` for each character before the scene starts
   and keep the band (`early` / `established` / `late`) for Step 3. Ignore the `ending` line this
   script also prints — before a scene it always reads `false` (see the script's docstring for why),
   and it isn't the concern of the scene at all. It only matters afterward, at Step 5b point 6.
@@ -151,7 +151,7 @@ the sample; personality and texture are free; write short).
   to say the thing now rather than later — not as talk about mortality. An `early` character can
   defer; a `late` one ranks harder and drops what doesn't matter.
 - **Never write toward an ending.** Whether this happens to be a character's last scene is not
-  knowable until after it's played (see `scripts/horizon.py`'s docstring and Step 5b point 6) — so it
+  knowable until after it's played (see `scripts/lore/horizon.py`'s docstring and Step 5b point 6) — so it
   is written exactly like any other scene, with no foreboding, no valediction, no character sensing
   anything is different. If the author independently wants a scene to carry a reflective or wistful
   tone, that's a legitimate craft choice, but it must be made on its own terms, never because the
@@ -235,7 +235,7 @@ the contradiction) only if it contradicts one of the two entries in `_lore/facts
 both unset in the ordinary case — that's most claims, and recording "no contradiction found" on every
 one of them would just be noise; absence already means that. If a claim raises a genuine question the
 objective record has never addressed at all (a gap, not a contradiction) and it resonates with the
-existing corpus, log it in `_lore/unknown.md`, cross-referencing the claim's id, matching the file's
+existing corpus, log it in `_lore/unknowns.md`, cross-referencing the claim's id, matching the file's
 existing shape — not every claim produces one, skip rather than manufacturing a question that isn't
 genuinely there. Claims don't need to cover every sentence
 spoken — capture the kernels: the ideas someone could plausibly repeat later, not the connective
@@ -302,7 +302,7 @@ later shocks. Skip it when nothing was actually paid.
 
 **5. Increment `life.lived` by 1** for every character who was in the scene.
 
-**6. Now, and only now, run `python scripts/horizon.py <npc_key>` again and check `ending`.** Before
+**6. Now, and only now, run `python scripts/lore/horizon.py <npc_key>` again and check `ending`.** Before
 Step 5 it could only ever read `false`; now that `life.lived` reflects the scene just played, it can
 truthfully say the character's life is complete. If it does, that scene — already written, already
 closed, with nothing in it played any differently — turns out to have been their last. Nothing about
@@ -321,13 +321,13 @@ to the world at large. Do all of the following:
   accidentally reusing them (see the Step 1 guard below).
 - **Record it as an objective fact of the world**, in the same shape `/tell` produces (see
   `.claude/skills/tell/SKILL.md`) but written directly rather than asked for interactively, since every
-  fact needed is already known at this point: a new `_lore/tale/<slug>.md` file (title, `**Told by:**
+  fact needed is already known at this point: a new `_lore/tales/<slug>.md` file (title, `**Told by:**
   no one; simply now known` in the ordinary case — a named cause only if the scene actually
   established one — the fact of the death itself as the tale's content), a matching `tales.entries`
-  manifest row in `encodings.json`, a `_lore/tale/_authors.md` row, and a `characters` entry update if
+  manifest row in `encodings.json`, a `_lore/tales/_authors.md` row, and a `characters` entry update if
   one exists for them. This is what makes death re-enter the ordinary sampling pool for characters
   created later, at ordinary odds — the *only* channel anyone outside the circle below has.
-- **Run `python scripts/notify_death.py <npc_key>`.** It computes the character's *circle* — everyone
+- **Run `python scripts/lore/notify_death.py <npc_key>`.** It computes the character's *circle* — everyone
   they've shared a recorded scene with, plus everyone named in their own backstory — and mechanically
   samples 30% of it (minimum 1 if the circle isn't empty) as who learns immediately. It also flags
   which of those notified have a `criterion.anchor` that references the deceased directly (same

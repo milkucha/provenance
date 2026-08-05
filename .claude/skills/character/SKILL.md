@@ -17,10 +17,10 @@ this file and don't fork it.
 ## Step 1 — Name
 
 Ask for the character's name. Slugify it (lowercase, diacritics folded, non-alphanumerics →
-underscore — see `scripts/check_character_name.py`) and look for `_lore/characters/<slug>.json`.
+underscore — see `scripts/lore/check_character_name.py`) and look for `_lore/characters/<slug>.json`.
 
 If no such file exists, this is a brand-new character — **before proceeding, run**
-`python scripts/check_character_name.py "<name>"` **and confirm it reports `AVAILABLE`.** This is the
+`python scripts/lore/check_character_name.py "<name>"` **and confirm it reports `AVAILABLE`.** This is the
 single shared enforcement point for name uniqueness (`/enact` Step 1 calls the same script the same
 way) — every character ever created, living or deceased, must have a name that slugifies uniquely. If
 it reports `TAKEN`, tell the user and ask for a distinguishing variant (a surname or epithet — e.g.
@@ -31,7 +31,7 @@ this check entirely when the file already exists — that's Step 2a, not a new n
 
 If the file exists, show the user its current non-blank fields (`name`, `city`, `backstory`,
 `knowledge.education` summary if populated, `knowledge.experience` count, `criterion.standard`,
-`life.lived`, and `scripts/horizon.py`'s band) as context, then ask, as plain conversation, what
+`life.lived`, and `scripts/lore/horizon.py`'s band) as context, then ask, as plain conversation, what
 needs to be updated.
 Don't presuppose which fields — the user might want to amend the backstory, add/change the city, draw
 or redo their knowledge, or just fix a typo.
@@ -72,9 +72,9 @@ whose `knowledge.education` is still blank):
 - If skewed, ask for the topic/keyword(s).
 - Run:
   ```bash
-  python scripts/sample_lore_knowledge.py --percent <N> --mode random
+  python scripts/lore/sample_lore_knowledge.py --percent <N> --mode random
   # or
-  python scripts/sample_lore_knowledge.py --percent <N> --mode skewed --topic "<keyword>" --topic "<keyword2>"
+  python scripts/lore/sample_lore_knowledge.py --percent <N> --mode skewed --topic "<keyword>" --topic "<keyword2>"
   ```
 - Keep the printed list — it goes into `knowledge.education.items` in Step 6. Don't reveal the full
   list to the user unprompted; you may describe its general shape.
@@ -197,9 +197,9 @@ Only when the character has no entry in `_lore/characters/lifespans.json`. Once 
 rerolled — same discipline as `knowledge.education`.
 
 ```bash
-python scripts/roll_lifespan.py
+python scripts/lore/roll_lifespan.py
 # or, to reach a character's last scene quickly while testing:
-python scripts/roll_lifespan.py --min 2 --max 4
+python scripts/lore/roll_lifespan.py --min 2 --max 4
 ```
 
 **The span goes in `_lore/characters/lifespans.json`, never in the character's own file.** This is
@@ -211,11 +211,11 @@ inaccessible; a written rule alone did not.
 The character file's `life` object therefore holds only `lived` — how many scenes they've had, which
 is just their history and no secret at all.
 
-Anything that needs to know how far through a life a character is asks `scripts/horizon.py`, which
+Anything that needs to know how far through a life a character is asks `scripts/lore/horizon.py`, which
 answers with a coarse band and never the number:
 
 ```bash
-python scripts/horizon.py <npc_key>     # -> band: early | established | late, plus ending: true|false
+python scripts/lore/horizon.py <npc_key>     # -> band: early | established | late, plus ending: true|false
 ```
 
 `--verbose` will print the raw span, and exists only for author-side bookkeeping like this step.
@@ -288,7 +288,7 @@ touch these fields when the outcome was "no change."
 
 - `criterion.cost_ledger` — one short line per scene where honoring the standard cost the character
   something. A long ledger means they've been bleeding for this for a long time.
-- The horizon: `scripts/horizon.py <key>`'s band, read against the scale of what the criterion
+- The horizon: `scripts/lore/horizon.py <key>`'s band, read against the scale of what the criterion
   demands. A character whose standard needs a lifetime and comes back `late` is ripe; one at `early`
   is armored. Use the band, never a remaining count — the count is not available to an enactment by
   design.

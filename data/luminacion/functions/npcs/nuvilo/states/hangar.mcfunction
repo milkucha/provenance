@@ -1,7 +1,7 @@
 # =============================================================================
 # Luminacion — Nuvilo State: hangar
 # =============================================================================
-# Built from _templates/npcs/states/stationary_state.mcfunction. Switches
+# Built from _npcs/templates/states/stationary_state.mcfunction. Switches
 # Nuvilo into the stationary hangar scene alongside Nerkeli: clears
 # right-click actions (this scene has none — see below), sets movement to
 # NONE, and records this as the active state.

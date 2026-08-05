@@ -13,9 +13,9 @@
 #      data/luminacion/tags/functions/npc_routine_tick.json
 #   4. Make sure functions/npcs/<npc_key>/resume_routine.mcfunction exists too.
 #   5. Make sure functions/npcs/<npc_key>/heal_skin.mcfunction exists too
-#      (see _templates/npcs/heal_skin.mcfunction).
+#      (see _npcs/templates/heal_skin.mcfunction).
 #   6. Make sure functions/npcs/<npc_key>/heal_path.mcfunction exists too
-#      (see _templates/npcs/heal_path.mcfunction and _templates/npcs/paths/select_path.mcfunction).
+#      (see _npcs/templates/heal_path.mcfunction and _npcs/templates/paths/select_path.mcfunction).
 #
 # Runs once per tick via #luminacion:npc_routine_tick (see tick.mcfunction).
 # =============================================================================

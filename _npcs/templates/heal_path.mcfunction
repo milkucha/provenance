@@ -9,7 +9,7 @@
 # WORKFLOW:
 #   1. Duplicate as: functions/npcs/<npc_key>/heal_path.mcfunction
 #   2. Leave it as just this header until this NPC has at least one path —
-#      see _templates/npcs/paths/select_path.mcfunction.
+#      see _npcs/templates/paths/select_path.mcfunction.
 #   3. Add one line below per path defined for this NPC — copy this pattern
 #      for every functions/npcs/<npc_key>/paths/<path_name>.mcfunction:
 #

@@ -1,5 +1,5 @@
 ---
-description: Integrate newly-added _lore/material/ into the analysis (_lore/material/_context.md, _lore/encodings.json, _lore/unknown.md), audit that every dialogue has a matching hearsay entry, and check for drift between what's referenced elsewhere in the pack and what's actually recorded in encodings.json. Use when new material has been uploaded to _lore/material/, or for a periodic consistency pass over the lore analysis.
+description: Integrate newly-added _lore/material/ into the analysis (_lore/material/_context.md, _lore/encodings.json, _lore/unknowns.md), audit that every dialogue has a matching hearsay entry, and check for drift between what's referenced elsewhere in the pack and what's actually recorded in encodings.json. Use when new material has been uploaded to _lore/material/, or for a periodic consistency pass over the lore analysis.
 disable-model-invocation: true
 ---
 
@@ -10,7 +10,7 @@ Pass 3. Default to running all three when unsure — a pass with nothing to do i
 quickly.
 
 Nothing here silently resolves a judgment call. Every place the existing analysis files (`_context.md`,
-`encodings.json`, `unknown.md`) already draw a line between "recorded fact" and "open question" (see
+`encodings.json`, `unknowns.md`) already draw a line between "recorded fact" and "open question" (see
 README §0 Layer 1), this skill holds that same line — new material can add entries and flag conflicts,
 never overwrite an existing entry or invent a resolution.
 
@@ -30,7 +30,7 @@ never overwrite an existing entry or invent a resolution.
    `detail` — and leave `user_resolution` unset. That field is set by the user only; every current
    entry that has one records it as "(per user, <date>)" — never fill it in on this skill's own
    judgment.
-3. Log anything the new material poses as a question but doesn't answer in `unknown.md`, matching the
+3. Log anything the new material poses as a question but doesn't answer in `unknowns.md`, matching the
    shape of its existing entries (cross-reference a `CONFLICT-##` id when it's a disagreement between
    sources; otherwise it's a standalone gap).
 4. Report a short summary back to the user: what was added, how many new entries per array, how many
@@ -58,7 +58,7 @@ dialogue (not produced via `/enact`) can skip README §8 Step 5 entirely without
    content makes the lineage clear (a line citing a named source, or vague "they say..." framing); when
    it's genuinely ambiguous, leave both unset rather than guess. If a claim raises a genuine question
    the objective record has never addressed at all (not a contradiction — a gap) and it resonates with
-   the existing corpus, log it in `_lore/unknown.md`, cross-referencing the claim's id, matching the
+   the existing corpus, log it in `_lore/unknowns.md`, cross-referencing the claim's id, matching the
    file's existing shape. Not every claim produces one; skip rather than manufacturing a question that
    isn't genuinely there.
 4. If the two copies of an existing entry (the JSON array vs. `hearsay.md`) have drifted apart,
@@ -93,5 +93,5 @@ dialogue (not produced via `/enact`) can skip README §8 Step 5 entirely without
 
 - Never sets a `conflicts` entry's `user_resolution` — that's the user's call alone, every time.
 - Never edits `_lore/material/` — source files are read-only, excavated artifacts.
-- Never invents lore to close a gap in `unknown.md` — a gap stays a gap until the user resolves it.
+- Never invents lore to close a gap in `unknowns.md` — a gap stays a gap until the user resolves it.
 - Never fabricates a hearsay claim that wasn't actually said in the dialogue it's covering.

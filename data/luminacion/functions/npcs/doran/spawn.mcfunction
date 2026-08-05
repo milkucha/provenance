@@ -1,7 +1,7 @@
 # =============================================================================
 # Luminacion — Döran Spawn
 # =============================================================================
-# Built from _templates/npcs/spawn.mcfunction — see that file for the full
+# Built from _npcs/templates/spawn.mcfunction — see that file for the full
 # workflow notes. spawn_position is null in the registry (manual placement),
 # so stand at the Plaza de las Culturas (Salthos Cruzados, Feria del Milenio)
 # before running this.
@@ -35,7 +35,7 @@ npc edit skin https://minesk.in/c336e48215fb4759908960d4a2748b2a
 # data/luminacion/tags/functions/npc_routine_tick.json.
 # Waypoints are NOT recorded via Taterzens' in-game "/npc edit path" left-click editor —
 # that's what causes the stale-restriction bug (see
-# _templates/npcs/paths/select_path.mcfunction). Instead, after running this spawn
+# _npcs/templates/paths/select_path.mcfunction). Instead, after running this spawn
 # function, run functions/npcs/doran/paths/<path_name>.mcfunction (not yet written)
 # to give him a route around the Plaza. Until you do, he just stands still in PATH mode.
 npc edit movement PATH
@@ -72,9 +72,9 @@ npc edit commands add minecraft execute if score doran_dialog_roll luminacion.in
 # --- REGISTRATION REMINDER ----------------------------------------------------
 # UUID capture is automated — do not copy it by hand. Once this NPC (and any
 # others) are created and registered in _npcs/npcs/registry.json, run:
-#   1. python scripts/update_uuids.py generate
+#   1. python scripts/minecraft/update_uuids.py generate
 #   2. /reload
 #   3. /function luminacion:admin/export_npc_uuids
-#   4. python scripts/update_uuids.py update --log "<path/to/logs/latest.log>"
+#   4. python scripts/minecraft/update_uuids.py update --log "<path/to/logs/latest.log>"
 
-tellraw @s [{"text":"[Luminacion] ","color":"gold","bold":true},{"text":"Döran created. Run the UUID export pipeline (scripts/update_uuids.py) to register its UUID — see workflow docs."}]
+tellraw @s [{"text":"[Luminacion] ","color":"gold","bold":true},{"text":"Döran created. Run the UUID export pipeline (scripts/minecraft/update_uuids.py) to register its UUID — see workflow docs."}]

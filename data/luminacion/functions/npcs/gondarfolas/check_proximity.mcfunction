@@ -1,7 +1,7 @@
 # =============================================================================
 # Luminacion — Gondarfolas Proximity Check
 # =============================================================================
-# Built from _templates/npcs/check_proximity.mcfunction. Runs once per
+# Built from _npcs/templates/check_proximity.mcfunction. Runs once per
 # tick via #luminacion:npc_routine_tick (see functions/tick.mcfunction).
 # =============================================================================
 

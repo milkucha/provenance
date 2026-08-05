@@ -1,7 +1,7 @@
 # =============================================================================
 # Luminacion — Gondarfolas Path Self-Heal
 # =============================================================================
-# Built from _templates/npcs/heal_path.mcfunction. Called every 100 ticks (5s)
+# Built from _npcs/templates/heal_path.mcfunction. Called every 100 ticks (5s)
 # from check_proximity.mcfunction, alongside heal_skin.mcfunction.
 #
 # Works around the same class of problem as heal_skin.mcfunction, but for
@@ -9,7 +9,7 @@
 # left-click silently add or clear waypoints, and clearing them leaves a
 # stale internal movement restriction behind. functions/npcs/gondarfolas/
 # paths/<path_name>.mcfunction avoids that editor entirely (see
-# _templates/npcs/paths/select_path.mcfunction). This only re-applies the
+# _npcs/templates/paths/select_path.mcfunction). This only re-applies the
 # active path if PathTargets has actually gone empty — it doesn't try to
 # detect a merely-modified path, to avoid rubber-banding the NPC mid-route
 # on a false positive.

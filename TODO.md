@@ -1,7 +1,7 @@
 # TODO
 
 Open implementation decisions and work, deferred for later. This is a build/production backlog —
-open questions about the lore itself live in `_lore/unknown.md`, not here.
+open questions about the lore itself live in `_lore/unknowns.md`, not here.
 
 ## Knowledge mutation system (2026-08-01)
 
@@ -153,7 +153,7 @@ Khaoe lived: 9 → 10. No shocks (anchor not referenced).
       `heal_path.mcfunction`, and registered `check_proximity` in
       `data/luminacion/tags/functions/npc_routine_tick.json`. Actual path waypoints still need to be
       decided and recorded via `functions/npcs/doran/paths/<path_name>.mcfunction` (see
-      `_templates/npcs/paths/select_path.mcfunction`) — until then he'll stand still even in `PATH`
+      `_npcs/templates/paths/select_path.mcfunction`) — until then he'll stand still even in `PATH`
       mode, same as Gondarfolas.
 - [x] **Random dialog selection mechanism resolved — took two rounds of real in-game debugging.**
       Round 1: the roll added directly as `npc edit commands add minecraft execute store result
@@ -197,7 +197,7 @@ Khaoe lived: 9 → 10. No shocks (anchor not referenced).
       the very next tick, undoing the pause (reverting to PATH) while the dialog was still open — the
       wandering, and its movement/rotation writes fighting and swallowing the nod animation, are both
       symptoms of the same bug. Fixed pack-wide (not just Döran): resume radius widened from 2 to 6
-      blocks in `_templates/npcs/check_proximity.mcfunction` and all four existing per-NPC copies
+      blocks in `_npcs/templates/check_proximity.mcfunction` and all four existing per-NPC copies
       (`gondarfolas`, `nerkeli`, `nuvilo`, `doran`), plus README §4 and
       `_action_templates.routine_pause_resume` corrected to explain why the two radii must differ.
       **Not yet independently ruled out**: repeated `/function .../spawn` re-runs during rounds 1-4
@@ -462,7 +462,7 @@ construction — every other line keeps its ordinary nod untouched.
       `saves/Miniatures/resources.zip` for local per-world testing (Minecraft's per-world resource
       pack mechanism), and separately emits `dist/Luminacion/` (datapack: `data/` + its `pack.mcmeta`)
       and `dist/Luminacion-resourcepack.zip` (resource pack) for release — built only from `data/` and
-      `assets/`, leaving `_lore/`, `_npcs/`, `_templates/`, `scripts/`, and the docs out of both.
+      `assets/`, leaving `_lore/`, `_npcs/`, `scripts/`, and the docs out of both.
 - [ ] Need a second `pack.mcmeta` for the resource pack (own `pack_format`) — the datapack's existing
       root `pack.mcmeta` can't serve both.
 - [ ] Convert existing dialogue files to translation keys via the extractor once it exists (currently
@@ -471,7 +471,7 @@ construction — every other line keeps its ordinary nod untouched.
 ## Lore integration skill (`/integrate`)
 
 - [x] Built 2026-07-25: `.claude/skills/integrate/SKILL.md`, documented in README §0 (Layer 1).
-      Three passes — analyse new `_lore/material/` into `context.md`/`encodings.json`/`unknown.md`;
+      Three passes — analyse new `_lore/material/` into `context.md`/`encodings.json`/`unknowns.md`;
       audit `data/luminacion/blabber/dialogues/` for missing `hearsay.entries` coverage; check for
       drift between what's referenced elsewhere (registries, sampled knowledge) and what's actually
       recorded in `encodings.json`.
@@ -495,7 +495,7 @@ This matters because:
    schema.
 
 2. **Criterion epistemology:** Categories in `encodings.json` drive the sampling categories
-   (`era_libro`, `era_ensayo`, `hearsay`, etc.) used by `scripts/sample_lore_knowledge.py`, which in
+   (`era_libro`, `era_ensayo`, `hearsay`, etc.) used by `scripts/lore/sample_lore_knowledge.py`, which in
    turn determine the epistemology anchors (`criterion.trusts`/`distrusts`) that characters derive at
    creation. If the schema evolves, the sampling categories would need to evolve alongside it,
    automatically giving new criteria new epistemologies as new source types emerge.
@@ -517,7 +517,7 @@ This matters because:
       for future material analysis.
 
 - [ ] **Sampling script must discover categories dynamically.** Instead of hardcoding paths,
-      `scripts/sample_lore_knowledge.py` should introspect the actual structure of `encodings.json`
+      `scripts/lore/sample_lore_knowledge.py` should introspect the actual structure of `encodings.json`
       and extract whatever categories exist, allowing the pool to automatically include new categories
       as they emerge. The sampling categories available to derive criteria would then expand naturally.
 
@@ -540,9 +540,9 @@ Right now the only way to resolve one is to notice it while reading the file dir
       from majority-source-agreement or recency, and never resolve more than the one conflict the user
       is actively looking at. Skipping a conflict (not ready to decide) must be a first-class,
       no-op-safe choice, not just leaving the skill mid-run.
-- [ ] Worth deciding whether it should also handle the analogous case in `_lore/unknown.md`
+- [ ] Worth deciding whether it should also handle the analogous case in `_lore/unknowns.md`
       (a gap the user is now ready to close) — same "only the user decides, never inferred" rule, but
-      currently no skill touches `unknown.md` at all except to add to it.
+      currently no skill touches `unknowns.md` at all except to add to it.
 
 ## Random character location selection in `/enact` (pinned 2026-08-01)
 
@@ -636,7 +636,7 @@ underspecified, not bugs in the data.
 ## Criterion / will-to-live system (landed 2026-07-31)
 
 Shipped this round: `_lore/facts/` (the fifth, never-sampled source of truth),
-`scripts/roll_lifespan.py`, `criterion`/`life` on the registry `_template`, `/character` Steps 4–7
+`scripts/lore/roll_lifespan.py`, `criterion`/`life` on the registry `_template`, `/character` Steps 4–7
 (derivation, lifespan, and the reference model for how a criterion changes), and `/enact`'s facts
 loading, in-scene modulation, and Step 5b shock/drift resolution. Still open:
 
@@ -666,17 +666,17 @@ loading, in-scene modulation, and Step 5b shock/drift resolution. Still open:
       Let it happen lazily as each next comes up in an `/enact` run, or batch them like the seven
       above.
 - [ ] **Lifespan range set to 30–60** (author decision, 2026-07-31, replacing the initial 4–14) and
-      written into `scripts/roll_lifespan.py`'s defaults. Nobody is anywhere near their span yet —
+      written into `scripts/lore/roll_lifespan.py`'s defaults. Nobody is anywhere near their span yet —
       the most-lived character, Khaoe, is 7 scenes into 51 — so the endgame path in `/enact` Step 5b
       is written but has never actually fired. Worth testing deliberately with a throwaway character
       on `--min 2 --max 4` rather than waiting for it.
-- [x] **Death notification, landed 2026-08-01.** `scripts/notify_death.py` computes a dying
+- [x] **Death notification, landed 2026-08-01.** `scripts/lore/notify_death.py` computes a dying
       character's "circle" (scene co-participants + everyone named in their own backstory) and
       mechanically samples 30% of it (min 1) to notify immediately via a forced
       `knowledge.experience` entry; it also flags which notified characters have a `criterion.anchor`
       referencing the deceased, so `/enact` Step 5b point 6 can resolve that as a shock through the
       existing reject/reinterpret/break machinery. Everyone else only learns later, the ordinary way
-      — the death is recorded as a `_lore/tale/` entry (same shape `/tell` produces,
+      — the death is recorded as a `_lore/tales/` entry (same shape `/tell` produces,
       `told_by: null` unless a cause was established in the closing scene) and re-enters the
       normal sampling pool. `life.deceased` (plain, non-secret bool) added to the registry `life`
       object and to every already-touched character (`false`); Step 1 now refuses to re-enact anyone

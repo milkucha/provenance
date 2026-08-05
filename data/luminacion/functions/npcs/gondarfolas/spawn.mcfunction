@@ -1,7 +1,7 @@
 # =============================================================================
 # Luminacion — Gondarfolas Spawn
 # =============================================================================
-# Built from _templates/npcs/spawn.mcfunction — see that file for the
+# Built from _npcs/templates/spawn.mcfunction — see that file for the
 # full workflow notes. spawn_position is null in the registry, so stand at the
 # desired spot (his boat, Görff) before running this.
 #
@@ -25,7 +25,7 @@ npc edit skin https://minesk.in/8e4356a7612f4b97ac864836457b274e
 # data/luminacion/tags/functions/npc_routine_tick.json.
 # Waypoints are NOT recorded via Taterzens' in-game "/npc path" left-click editor —
 # that's what causes the stale-restriction bug (see
-# _templates/npcs/paths/select_path.mcfunction). Instead, after running this spawn
+# _npcs/templates/paths/select_path.mcfunction). Instead, after running this spawn
 # function, run one of functions/npcs/gondarfolas/paths/<path_name>.mcfunction to
 # give him a route. Until you do, he just stands still in PATH mode.
 npc edit movement PATH
@@ -45,9 +45,9 @@ npc edit commands add minecraft blabber dialogue start luminacion:gondarfolas_da
 # --- REGISTRATION REMINDER ----------------------------------------------------
 # UUID capture is automated — do not copy it by hand. Once this NPC (and any
 # others) are created and registered in _npcs/npcs/registry.json, run:
-#   1. python scripts/update_uuids.py generate
+#   1. python scripts/minecraft/update_uuids.py generate
 #   2. /reload
 #   3. /function luminacion:admin/export_npc_uuids
-#   4. python scripts/update_uuids.py update --log "<path/to/logs/latest.log>"
+#   4. python scripts/minecraft/update_uuids.py update --log "<path/to/logs/latest.log>"
 
-tellraw @s [{"text":"[Luminacion] ","color":"gold","bold":true},{"text":"Gondarfolas created. Run the UUID export pipeline (scripts/update_uuids.py) to register its UUID — see workflow docs."}]
+tellraw @s [{"text":"[Luminacion] ","color":"gold","bold":true},{"text":"Gondarfolas created. Run the UUID export pipeline (scripts/minecraft/update_uuids.py) to register its UUID — see workflow docs."}]

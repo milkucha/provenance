@@ -1,6 +1,6 @@
 # The Peregrins
 
-**Responsible:** milkucha - real-world provenance only, never an in-fiction detail (also recorded in `_lore/tale/_authors.md`)
+**Responsible:** milkucha - real-world provenance only, never an in-fiction detail (also recorded in `_lore/tales/_authors.md`)
 **Told on:** 2026-07-30
 **Encodings id:** `tales.entries[].id = "peregrins"`
 

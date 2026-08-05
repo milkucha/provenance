@@ -16,7 +16,7 @@
 #   2. Fill <display_name>, <path_name> and the waypoint list below (add or
 #      remove {x,y,z} entries as needed — two shown here is just an example).
 #   3. Add a matching line to functions/npcs/<npc_key>/heal_path.mcfunction
-#      (see _templates/npcs/heal_path.mcfunction) so this path self-heals if
+#      (see _npcs/templates/heal_path.mcfunction) so this path self-heals if
 #      its waypoints ever get cleared.
 #   4. Run as an operator: /function luminacion:npcs/<npc_key>/paths/<path_name>
 #      — teleports the NPC to the first waypoint and starts the route.

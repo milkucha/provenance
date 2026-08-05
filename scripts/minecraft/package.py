@@ -7,12 +7,12 @@ Uses only the Python standard library.
 Zips the shippable parts of this repo — the datapack (pack.mcmeta + data/) and the
 resource pack (resourcepack/pack.mcmeta + resourcepack/assets/) — into two standalone
 zips for dropping into a different world/server's datapacks/ and resourcepacks/
-folders. Everything dev-only (_lore/, _npcs/, _templates/, scripts/, .claude/, the
+folders. Everything dev-only (_lore/, _npcs/, scripts/, .claude/, the
 docs, and the three placeholder _template_*.json dialogues) is left out.
 
 WORKFLOW
 --------
-    python scripts/package.py "<destination folder>"
+    python scripts/minecraft/package.py "<destination folder>"
 
 Writes/overwrites <destination>/Luminacion.zip and
 <destination>/Luminacion-resourcepack.zip. Both zips are flat at the root
@@ -25,9 +25,9 @@ import zipfile
 from pathlib import Path
 
 # ---------------------------------------------------------------------------
-# Paths (relative to project root, one level above /scripts)
+# Paths (relative to project root, two levels above /scripts/minecraft)
 # ---------------------------------------------------------------------------
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 DATAPACK_MCMETA = ROOT / "pack.mcmeta"
 DATAPACK_DATA = ROOT / "data"
 RESOURCEPACK_DIR = ROOT / "resourcepack"

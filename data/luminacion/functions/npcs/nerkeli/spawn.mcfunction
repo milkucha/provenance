@@ -1,7 +1,7 @@
 # =============================================================================
 # Luminacion — Nerkeli Spawn
 # =============================================================================
-# Built from _templates/npcs/spawn.mcfunction — see that file for the full
+# Built from _npcs/templates/spawn.mcfunction — see that file for the full
 # workflow notes. spawn_position is null in the registry, and his default
 # state (hangar) doesn't teleport him anywhere, so stand him at the hangar
 # (next to Nuvilo) manually before or after running this.
@@ -36,9 +36,9 @@ function luminacion:npcs/nerkeli/states/hangar
 # --- REGISTRATION REMINDER ----------------------------------------------------
 # UUID capture is automated — do not copy it by hand. Once this NPC (and any
 # others) are created and registered in _npcs/npcs/registry.json, run:
-#   1. python scripts/update_uuids.py generate
+#   1. python scripts/minecraft/update_uuids.py generate
 #   2. /reload
 #   3. /function luminacion:admin/export_npc_uuids
-#   4. python scripts/update_uuids.py update --log "<path/to/logs/latest.log>"
+#   4. python scripts/minecraft/update_uuids.py update --log "<path/to/logs/latest.log>"
 
-tellraw @s [{"text":"[Luminacion] ","color":"gold","bold":true},{"text":"Nerkeli created. Run the UUID export pipeline (scripts/update_uuids.py) to register its UUID — see workflow docs."}]
+tellraw @s [{"text":"[Luminacion] ","color":"gold","bold":true},{"text":"Nerkeli created. Run the UUID export pipeline (scripts/minecraft/update_uuids.py) to register its UUID — see workflow docs."}]

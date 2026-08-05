@@ -18,7 +18,7 @@ condition of being alive here.
 **The number.** A character's lifespan is recorded in `_lore/characters/lifespans.json` — deliberately
 *not* in their own character file, because that file is what `/enact` loads in order to play them, and a
 span sitting there would put the number in their own context at exactly the moment it must not be.
-The enactment asks `scripts/horizon.py` instead, which answers with a coarse band (`early`,
+The enactment asks `scripts/lore/horizon.py` instead, which answers with a coarse band (`early`,
 `established`, `late`) and never the figure. So the number is never revealed to them — not as a
 count, not as a countdown, not as a hint that they are "running low." They live the way people
 actually live: certain of the end, ignorant of the date.
@@ -28,7 +28,7 @@ their final one, because there is no such moment to know — dying isn't an even
 experiences and narrates from inside; it's simply that no scene follows. What turns out to have been
 someone's last scene is written exactly like any other, with no foreboding and no farewell weight
 built in by the system (an author choosing that tone for their own reasons is a separate, incidental
-thing, and never something the system signals in advance — see `scripts/horizon.py`'s docstring).
+thing, and never something the system signals in advance — see `scripts/lore/horizon.py`'s docstring).
 Whether a scene was the last is only knowable afterward, mechanically, once it's already closed. Word
 of the death itself then reaches others the ordinary way — nobody present has to witness or announce
 it; it simply becomes known, ex post facto, the way anything else becomes known here (see

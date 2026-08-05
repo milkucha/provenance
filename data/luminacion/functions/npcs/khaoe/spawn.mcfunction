@@ -1,7 +1,7 @@
 # =============================================================================
 # Luminacion — Khaoe Spawn
 # =============================================================================
-# Built from _templates/npcs/spawn.mcfunction — see that file for the full
+# Built from _npcs/templates/spawn.mcfunction — see that file for the full
 # workflow notes. spawn_position is null in the registry (manual placement),
 # so stand at the desired spot (Plaza de las Culturas / Feria del Milenio,
 # near the Castillo de Görff replica) before running this.
@@ -99,9 +99,9 @@ npc edit commands add minecraft execute unless entity @e[name=Farlis,distance=..
 # --- REGISTRATION REMINDER ----------------------------------------------------
 # UUID capture is automated — do not copy it by hand. Once this NPC (and any
 # others) are created and registered in _npcs/npcs/registry.json, run:
-#   1. python scripts/update_uuids.py generate
+#   1. python scripts/minecraft/update_uuids.py generate
 #   2. /reload
 #   3. /function luminacion:admin/export_npc_uuids
-#   4. python scripts/update_uuids.py update --log "<path/to/logs/latest.log>"
+#   4. python scripts/minecraft/update_uuids.py update --log "<path/to/logs/latest.log>"
 
-tellraw @s [{"text":"[Luminacion] ","color":"gold","bold":true},{"text":"Khaoe created. Run the UUID export pipeline (scripts/update_uuids.py) to register its UUID — see workflow docs."}]
+tellraw @s [{"text":"[Luminacion] ","color":"gold","bold":true},{"text":"Khaoe created. Run the UUID export pipeline (scripts/minecraft/update_uuids.py) to register its UUID — see workflow docs."}]

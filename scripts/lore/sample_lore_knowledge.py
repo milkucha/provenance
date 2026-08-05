@@ -23,9 +23,9 @@ live outside encodings.json on purpose and must never be folded into it; /enact 
 separately. See _lore/facts/_index.md.
 
 Usage:
-    python scripts/sample_lore_knowledge.py --percent 11 --mode random
-    python scripts/sample_lore_knowledge.py --percent 21 --mode skewed --topic geography --topic geology
-    python scripts/sample_lore_knowledge.py --percent 5 --mode random --seed 42   # reproducible draw
+    python scripts/lore/sample_lore_knowledge.py --percent 11 --mode random
+    python scripts/lore/sample_lore_knowledge.py --percent 21 --mode skewed --topic geography --topic geology
+    python scripts/lore/sample_lore_knowledge.py --percent 5 --mode random --seed 42   # reproducible draw
 """
 
 import argparse
@@ -33,7 +33,7 @@ import json
 from pathlib import Path
 from random import Random
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parent.parent.parent
 ENCODINGS_PATH = ROOT / "_lore" / "encodings.json"
 
 
