@@ -11662,6 +11662,7 @@
     "label": "Luminacion",
     "kind": "root",
     "path": ".",
+    "size": 56856699,
     "degree": 12
    },
    {
@@ -11709,6 +11710,7 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
+    "size": 103350,
     "degree": 5
    },
    {
@@ -11732,6 +11734,7 @@
     "label": "skills",
     "kind": "dir",
     "path": ".claude/skills",
+    "size": 102613,
     "degree": 10
    },
    {
@@ -11739,6 +11742,7 @@
     "label": "bake_dialog",
     "kind": "dir",
     "path": ".claude/skills/bake_dialog",
+    "size": 10006,
     "degree": 2
    },
    {
@@ -11754,6 +11758,7 @@
     "label": "character",
     "kind": "dir",
     "path": ".claude/skills/character",
+    "size": 21414,
     "degree": 2
    },
    {
@@ -11769,6 +11774,7 @@
     "label": "embody",
     "kind": "dir",
     "path": ".claude/skills/embody",
+    "size": 7008,
     "degree": 2
    },
    {
@@ -11784,6 +11790,7 @@
     "label": "enact",
     "kind": "dir",
     "path": ".claude/skills/enact",
+    "size": 28693,
     "degree": 2
    },
    {
@@ -11799,6 +11806,7 @@
     "label": "enact-embody",
     "kind": "dir",
     "path": ".claude/skills/enact-embody",
+    "size": 1377,
     "degree": 2
    },
    {
@@ -11814,6 +11822,7 @@
     "label": "integrate",
     "kind": "dir",
     "path": ".claude/skills/integrate",
+    "size": 7397,
     "degree": 2
    },
    {
@@ -11829,6 +11838,7 @@
     "label": "package",
     "kind": "dir",
     "path": ".claude/skills/package",
+    "size": 3493,
     "degree": 2
    },
    {
@@ -11844,6 +11854,7 @@
     "label": "spawn",
     "kind": "dir",
     "path": ".claude/skills/spawn",
+    "size": 15569,
     "degree": 2
    },
    {
@@ -11859,6 +11870,7 @@
     "label": "tell",
     "kind": "dir",
     "path": ".claude/skills/tell",
+    "size": 7656,
     "degree": 2
    },
    {
@@ -11881,6 +11893,7 @@
     "label": "_lore",
     "kind": "dir",
     "path": "_lore",
+    "size": 55331081,
     "degree": 7
    },
    {
@@ -11904,6 +11917,7 @@
     "label": "characters",
     "kind": "dir",
     "path": "_lore/characters",
+    "size": 157177,
     "degree": 69
    },
    {
@@ -12455,6 +12469,7 @@
     "label": "facts",
     "kind": "dir",
     "path": "_lore/facts",
+    "size": 13966,
     "degree": 6
    },
    {
@@ -12502,6 +12517,7 @@
     "label": "material",
     "kind": "dir",
     "path": "_lore/material",
+    "size": 54961966,
     "degree": 36
    },
    {
@@ -12789,6 +12805,7 @@
     "label": "tales",
     "kind": "dir",
     "path": "_lore/tales",
+    "size": 6801,
     "degree": 6
    },
    {
@@ -12836,6 +12853,7 @@
     "label": "_npcs",
     "kind": "dir",
     "path": "_npcs",
+    "size": 73249,
     "degree": 5
    },
    {
@@ -12843,6 +12861,7 @@
     "label": "actions",
     "kind": "dir",
     "path": "_npcs/actions",
+    "size": 26435,
     "degree": 2
    },
    {
@@ -12858,6 +12877,7 @@
     "label": "dialogs",
     "kind": "dir",
     "path": "_npcs/dialogs",
+    "size": 9601,
     "degree": 2
    },
    {
@@ -12873,6 +12893,7 @@
     "label": "npcs",
     "kind": "dir",
     "path": "_npcs/npcs",
+    "size": 14448,
     "degree": 2
    },
    {
@@ -12888,6 +12909,7 @@
     "label": "templates",
     "kind": "dir",
     "path": "_npcs/templates",
+    "size": 22765,
     "degree": 9
    },
    {
@@ -12943,6 +12965,7 @@
     "label": "paths",
     "kind": "dir",
     "path": "_npcs/templates/paths",
+    "size": 2215,
     "degree": 2
    },
    {
@@ -12958,6 +12981,7 @@
     "label": "states",
     "kind": "dir",
     "path": "_npcs/templates/states",
+    "size": 4905,
     "degree": 3
    },
    {
@@ -12981,6 +13005,7 @@
     "label": "data",
     "kind": "dir",
     "path": "data",
+    "size": 235652,
     "degree": 3
    },
    {
@@ -12988,6 +13013,7 @@
     "label": "luminacion",
     "kind": "dir",
     "path": "data/luminacion",
+    "size": 235580,
     "degree": 5
    },
    {
@@ -12995,6 +13021,7 @@
     "label": "blabber",
     "kind": "dir",
     "path": "data/luminacion/blabber",
+    "size": 118895,
     "degree": 2
    },
    {
@@ -13002,6 +13029,7 @@
     "label": "dialogues",
     "kind": "dir",
     "path": "data/luminacion/blabber/dialogues",
+    "size": 118895,
     "degree": 24
    },
    {
@@ -13193,6 +13221,7 @@
     "label": "functions",
     "kind": "dir",
     "path": "data/luminacion/functions",
+    "size": 116033,
     "degree": 5
    },
    {
@@ -13216,6 +13245,7 @@
     "label": "admin",
     "kind": "dir",
     "path": "data/luminacion/functions/admin",
+    "size": 5199,
     "degree": 3
    },
    {
@@ -13239,6 +13269,7 @@
     "label": "npcs",
     "kind": "dir",
     "path": "data/luminacion/functions/npcs",
+    "size": 109874,
     "degree": 8
    },
    {
@@ -13246,6 +13277,7 @@
     "label": "_shared",
     "kind": "dir",
     "path": "data/luminacion/functions/npcs/_shared",
+    "size": 38182,
     "degree": 27
    },
    {
@@ -13461,6 +13493,7 @@
     "label": "doran",
     "kind": "dir",
     "path": "data/luminacion/functions/npcs/doran",
+    "size": 12209,
     "degree": 7
    },
    {
@@ -13516,6 +13549,7 @@
     "label": "gondarfolas",
     "kind": "dir",
     "path": "data/luminacion/functions/npcs/gondarfolas",
+    "size": 7738,
     "degree": 6
    },
    {
@@ -13563,6 +13597,7 @@
     "label": "ilaria",
     "kind": "dir",
     "path": "data/luminacion/functions/npcs/ilaria",
+    "size": 8340,
     "degree": 6
    },
    {
@@ -13610,6 +13645,7 @@
     "label": "khaoe",
     "kind": "dir",
     "path": "data/luminacion/functions/npcs/khaoe",
+    "size": 13947,
     "degree": 7
    },
    {
@@ -13665,6 +13701,7 @@
     "label": "nerkeli",
     "kind": "dir",
     "path": "data/luminacion/functions/npcs/nerkeli",
+    "size": 10965,
     "degree": 7
    },
    {
@@ -13712,6 +13749,7 @@
     "label": "states",
     "kind": "dir",
     "path": "data/luminacion/functions/npcs/nerkeli/states",
+    "size": 3799,
     "degree": 3
    },
    {
@@ -13735,6 +13773,7 @@
     "label": "nuvilo",
     "kind": "dir",
     "path": "data/luminacion/functions/npcs/nuvilo",
+    "size": 18493,
     "degree": 10
    },
    {
@@ -13806,6 +13845,7 @@
     "label": "states",
     "kind": "dir",
     "path": "data/luminacion/functions/npcs/nuvilo/states",
+    "size": 3492,
     "degree": 3
    },
    {
@@ -13836,6 +13876,7 @@
     "label": "tags",
     "kind": "dir",
     "path": "data/luminacion/tags",
+    "size": 652,
     "degree": 2
    },
    {
@@ -13843,6 +13884,7 @@
     "label": "functions",
     "kind": "dir",
     "path": "data/luminacion/tags/functions",
+    "size": 652,
     "degree": 2
    },
    {
@@ -13858,6 +13900,7 @@
     "label": "minecraft",
     "kind": "dir",
     "path": "data/minecraft",
+    "size": 72,
     "degree": 2
    },
    {
@@ -13865,6 +13908,7 @@
     "label": "tags",
     "kind": "dir",
     "path": "data/minecraft/tags",
+    "size": 72,
     "degree": 2
    },
    {
@@ -13872,6 +13916,7 @@
     "label": "functions",
     "kind": "dir",
     "path": "data/minecraft/tags/functions",
+    "size": 72,
     "degree": 3
    },
    {
@@ -13895,6 +13940,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": "graphs",
+    "size": 851220,
     "degree": 2
    },
    {
@@ -13902,6 +13948,7 @@
     "label": "graphifyish",
     "kind": "dir",
     "path": "graphs/graphifyish",
+    "size": 851220,
     "degree": 3
    },
    {
@@ -13909,7 +13956,7 @@
     "label": "graph.json",
     "kind": "graph",
     "path": "graphs/graphifyish/graph.json",
-    "size": 459835,
+    "size": 460878,
     "degree": 1
    },
    {
@@ -13917,7 +13964,7 @@
     "label": "graphifyish.html",
     "kind": "graph",
     "path": "graphs/graphifyish/graphifyish.html",
-    "size": 389465,
+    "size": 390342,
     "degree": 1
    },
    {
@@ -13925,6 +13972,7 @@
     "label": "resourcepack",
     "kind": "dir",
     "path": "resourcepack",
+    "size": 38909,
     "degree": 3
    },
    {
@@ -13940,6 +13988,7 @@
     "label": "assets",
     "kind": "dir",
     "path": "resourcepack/assets",
+    "size": 38776,
     "degree": 3
    },
    {
@@ -13947,6 +13996,7 @@
     "label": "luminacion",
     "kind": "dir",
     "path": "resourcepack/assets/luminacion",
+    "size": 227,
     "degree": 3
    },
    {
@@ -13954,6 +14004,7 @@
     "label": "models",
     "kind": "dir",
     "path": "resourcepack/assets/luminacion/models",
+    "size": 102,
     "degree": 2
    },
    {
@@ -13961,6 +14012,7 @@
     "label": "item",
     "kind": "dir",
     "path": "resourcepack/assets/luminacion/models/item",
+    "size": 102,
     "degree": 2
    },
    {
@@ -13976,6 +14028,7 @@
     "label": "textures",
     "kind": "dir",
     "path": "resourcepack/assets/luminacion/textures",
+    "size": 125,
     "degree": 2
    },
    {
@@ -13983,6 +14036,7 @@
     "label": "item",
     "kind": "dir",
     "path": "resourcepack/assets/luminacion/textures/item",
+    "size": 125,
     "degree": 2
    },
    {
@@ -13998,6 +14052,7 @@
     "label": "minecraft",
     "kind": "dir",
     "path": "resourcepack/assets/minecraft",
+    "size": 38549,
     "degree": 3
    },
    {
@@ -14005,6 +14060,7 @@
     "label": "emf",
     "kind": "dir",
     "path": "resourcepack/assets/minecraft/emf",
+    "size": 37616,
     "degree": 2
    },
    {
@@ -14012,6 +14068,7 @@
     "label": "cem",
     "kind": "dir",
     "path": "resourcepack/assets/minecraft/emf/cem",
+    "size": 37616,
     "degree": 3
    },
    {
@@ -14035,6 +14092,7 @@
     "label": "models",
     "kind": "dir",
     "path": "resourcepack/assets/minecraft/models",
+    "size": 933,
     "degree": 2
    },
    {
@@ -14042,6 +14100,7 @@
     "label": "item",
     "kind": "dir",
     "path": "resourcepack/assets/minecraft/models/item",
+    "size": 933,
     "degree": 2
    },
    {
@@ -14057,6 +14116,7 @@
     "label": "scripts",
     "kind": "dir",
     "path": "scripts",
+    "size": 105740,
     "degree": 5
    },
    {
@@ -14064,6 +14124,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": "scripts/graphs",
+    "size": 68922,
     "degree": 3
    },
    {
@@ -14071,7 +14132,7 @@
     "label": "graphifyish.py",
     "kind": "script",
     "path": "scripts/graphs/graphifyish.py",
-    "size": 31553,
+    "size": 32183,
     "degree": 1
    },
    {
@@ -14087,6 +14148,7 @@
     "label": "hooks",
     "kind": "dir",
     "path": "scripts/hooks",
+    "size": 641,
     "degree": 2
    },
    {
@@ -14102,6 +14164,7 @@
     "label": "lore",
     "kind": "dir",
     "path": "scripts/lore",
+    "size": 24724,
     "degree": 7
    },
    {
@@ -14157,6 +14220,7 @@
     "label": "minecraft",
     "kind": "dir",
     "path": "scripts/minecraft",
+    "size": 11453,
     "degree": 3
    },
    {

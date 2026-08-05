@@ -50,7 +50,7 @@ The system has four layers, each authored from the one below it:
         ↑
 2. Supporting layer   _npcs/templates/, _npcs/actions/registry.json (_action_templates), gesture dispatch
         ↑
-1. Foundation         skills (/character, /enact, /embody, /spawn, /integrate) + _lore/ (material → analysis)
+1. Foundation         skills (/character, /enact, /embody, /spawn, /integrate, /simulate) + _lore/ (material → analysis)
 ```
 
 ### Layer 1 — Foundation: skills + lore
@@ -70,9 +70,13 @@ The system has four layers, each authored from the one below it:
     slice of the lore, then records what the scene did to that lore (hearsay, criterion, `life`).
     Lore-only, same as `/character` — it never writes a dialog file or touches `_npcs/`. See §8.
   - **`/embody`** (`embody/SKILL.md`) — takes a scene `/enact` just played (in the same conversation)
-    and puts it in the game: converts the transcript into a registered Blabber dialog, registers the
-    NPC(s) in `_npcs/npcs/registry.json` and the dialog in `_npcs/dialogs/registry.json`, and hands
-    off gesture-baking to `/bake_dialog`.
+    and puts it in the game: converts the transcript into a registered Blabber dialog, bakes its
+    gestures itself (Step 3 — replaces a minority of the dialog's default `nod_up_down` states with an
+    emotionally-matched gesture from the vocabulary in `GESTURES.md`), and registers the NPC(s) in
+    `_npcs/npcs/registry.json` and the dialog in `_npcs/dialogs/registry.json`. This is the only place
+    gestures get baked now — the earlier standalone `/bake_dialog` skill was retired once every dialog
+    in the pack turned out to be produced by tooling rather than by hand, leaving no case for it to
+    serve outside `/embody`.
   - **`/enact-embody`** (`enact-embody/SKILL.md`) — a thin orchestrator: runs `/enact` in full, then
     `/embody` in full, for the common case of wanting a scene played, recorded, and put in the game in
     one pass.
@@ -90,6 +94,12 @@ The system has four layers, each authored from the one below it:
     the same category — optionally credited to an in-world source (`told_by`), into `_lore/tales/` and
     `encodings.json`'s `tales` category. Real-world provenance (`responsible` — who told the system) is
     recorded separately, in `_lore/tales/_authors.md`, never in `encodings.json`.
+  - **`/simulate`** (`simulate/SKILL.md`) — batch-runs many `/enact` character-vs-character scenes
+    across an existing population, unattended, inside a dedicated git worktree (requires
+    `worktree.baseRef: "head"` in settings, so it branches from the current lore state rather than a
+    stale `origin/<default-branch>`). For testing the enactment mechanism at scale, or producing a
+    showcase trail of scenes, without risking the real files — the worktree stays on disk afterward
+    for inspection and is never merged back automatically. Lore-only, same as `/enact`.
 - **`_lore/`** — the raw material and its analysis, plus two further sources of truth: one told
   directly by the user, and one (`facts/`) that is universal and never sampled:
   - `_lore/material/` — source artifacts as uploaded: screenshots of in-game books, maps,
@@ -495,7 +505,7 @@ This updates `taterzen_uuid` for every NPC in the registry that was exported. Sa
 Moved to `GESTURES.md` — the full table (each gesture's `CustomModelData` value, its `.mcfunction`,
 pose description, and pairing caveats) lives there, next to the mechanics it depends on. For
 matching a gesture to a dialogue line's emotional content, use the keyword table in
-`.claude/skills/bake_dialog/SKILL.md`.
+`.claude/skills/embody/SKILL.md` Step 3 (where every dialog in the pack now gets baked).
 
 ### Blabber special selectors
 
@@ -529,7 +539,7 @@ This README documents *how the pack works*. Story content, NPC personalities, ro
 
 ## 8. Writing a dialog through enactment
 
-One way to build a scene: play the character in a live conversation first, then convert the transcript into pack content. This is how `sonoros_lost_traveler.json` was written. Steps below are the manual version — two skills automate this now, split along the same lore/Minecraft line as the rest of the system. `/enact` (`.claude/skills/enact/SKILL.md`) runs Steps 1–2 below, plus recording what the scene did to the character's lore (`_lore/characters/<key>.json` — hearsay, criterion, `life`). `/embody` (`.claude/skills/embody/SKILL.md`) then runs Steps 3–4 against that same scene, and hands gesture-baking off to `/bake_dialog` (`.claude/skills/bake_dialog/SKILL.md`), which replaces a minority of the dialog's default `nod_up_down` states with an emotionally-matched gesture from the vocabulary in `GESTURES.md`. `/bake_dialog` also runs standalone on any existing dialog file, not only right after an embodiment — useful for older dialogs still waiting on this pass (see `TODO.md`). `/enact-embody` (`.claude/skills/enact-embody/SKILL.md`) chains `/enact` and `/embody` back to back, for the common case of wanting the whole pipeline in one pass. The steps below are still worth knowing, since the skills just automate them.
+One way to build a scene: play the character in a live conversation first, then convert the transcript into pack content. This is how `sonoros_lost_traveler.json` was written, following the steps below by hand before the skills existed. `/enact` (`.claude/skills/enact/SKILL.md`) now runs Steps 1–2 below, plus recording what the scene did to the character's lore (`_lore/characters/<key>.json` — hearsay, criterion, `life`). `/embody` (`.claude/skills/embody/SKILL.md`) then runs Steps 3–4 against that same scene, and — as part of the same run, not a separate follow-up — bakes the dialog's gestures itself, replacing a minority of its default `nod_up_down` states with an emotionally-matched gesture from the vocabulary in `GESTURES.md`. There is no longer a standalone baking skill — every dialog in the pack is produced through `/enact`/`/embody` (or their pre-split ancestor), so `/embody` baking inline covers every case; a handful of pre-existing dialogs left uniform before this step existed got a one-time manual pass instead (see `TODO.md`). `/enact-embody` (`.claude/skills/enact-embody/SKILL.md`) chains `/enact` and `/embody` back to back, for the common case of wanting the whole pipeline — gestures included — in one pass. The steps below are still worth knowing, since the skills just automate them.
 
 ### Step 1 — Bound the character's knowledge
 

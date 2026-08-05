@@ -36,7 +36,7 @@
       "text": "Khaoe: Khan Icé. De ahí venía mi familia, antes de Khol Moshin. Nunca he puesto un pie.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/gesture_scratch_head"
       },
       "choices": [
         {
@@ -75,7 +75,7 @@
       "text": "Khaasan: Dicen. Yo llego como llego siempre. El tren te deja donde el tren quiere.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Khaasan,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Khaasan,limit=1] run function luminacion:npcs/_shared/gesture_shrug"
       },
       "choices": [
         {
@@ -127,7 +127,7 @@
       "text": "Khaasan: Ver a mi tío. Y de paso mirar el palacio con mis propios ojos. Döran anda diciendo que Khan Icé fue capital en tiempos de guerra — lo dedujo de unos muros, sin haber ido nunca.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Khaasan,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Khaasan,limit=1] run function luminacion:npcs/_shared/gesture_cross_arms"
       },
       "choices": [
         {
@@ -153,7 +153,7 @@
       "text": "Khaasan: Que quien no ha estado no tiene por qué hablar del lugar. Lo miro yo, y después te cuento.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Khaasan,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Khaasan,limit=1] run function luminacion:npcs/_shared/gesture_point"
       },
       "choices": [
         {
@@ -166,7 +166,7 @@
       "text": "Khaoe: Eso te lo acepto. Yo volví de Lündria sin poder decir qué calendario era el verdadero. No pienso enseñar lo que no puedo responder.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/gesture_no"
       },
       "choices": [
         {
@@ -218,7 +218,7 @@
       "text": "Khaoe: Entonces me lo dices igual. No me traigas lo que significaba. Tráeme si está parada o no.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/gesture_point_left"
       },
       "choices": [
         {

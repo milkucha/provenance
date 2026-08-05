@@ -510,6 +510,10 @@ def classify(rel: str) -> str:
 def build_structure() -> Graph:
     g = Graph("structure")
     g.node("dir:.", "Luminacion", "root", path=".")
+    # bytes owned by each directory, counting everything nested underneath it -
+    # not just its immediate children - so a folder like _lore that fans out
+    # through several subdirectories still reads as heavy, not just its own degree.
+    subtree_bytes: Counter = Counter()
     for dirpath, dirnames, filenames in os.walk(ROOT):
         dirnames[:] = sorted(d for d in dirnames if d not in SKIP_DIRS)
         rel_dir = Path(dirpath).relative_to(ROOT).as_posix()
@@ -526,6 +530,14 @@ def build_structure() -> Graph:
                 size = 0
             g.node(f"file:{rel}", fn, classify(rel), path=rel, size=size)
             g.edge(parent, f"file:{rel}", "contains")
+            parts = () if rel_dir == "." else Path(rel_dir).parts
+            subtree_bytes["dir:."] += size
+            acc = ""
+            for part in parts:
+                acc = f"{acc}/{part}" if acc else part
+                subtree_bytes[f"dir:{acc}"] += size
+    for did, total in subtree_bytes.items():
+        g.nodes[did]["size"] = total
     return g
 
 

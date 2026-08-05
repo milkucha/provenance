@@ -22,7 +22,10 @@ Farlis: lived 8→9. No shock (anchor not referenced).
 
 - [ ] **Dialog registration ambiguous.** Auroboro III is a new NPC with no existing dialog registry entry. Farlis already has one (`khaoe_farlis_*`). Should Auroboro III's key point to this new dialog, or should both be listed somehow? Same multi-NPC registration question as Nawom & Morkulo.
 - [ ] **Auroboro III spawn work** — skin, movement mode, `spawn_position`, UUID. Placeholder logged here pending those decisions.
-- [ ] **Gestures not baked** — passed `-nobake`, uniform `nod_up_down` on all states. Pending `/bake_dialog` pass when wanted in-game.
+- [x] **Gestures baked** (2026-08-05) — 3 of 9 states now carry a gesture (`gesture_wave`,
+      `gesture_no`, `gesture_face_palm`) instead of uniform `nod_up_down`. Run as a one-time backlog
+      cleanup when `/bake_dialog` was retired in favor of `/embody` baking inline (see `/embody`
+      Step 3) — this file predates that change and was never touched by it directly.
 
 ## Khaoe & Milkucha, Jardín de los Parajes (2026-08-01)
 
@@ -38,8 +41,10 @@ Khaoe lived: 9 → 10. No shocks (anchor not referenced).
       not being added to the NPC roster (same as Sonoros), but if you want to track them for
       reference, note it in TODO or create a light entry tagged "player-character" and leave it
       untracked.
-- [ ] **Gestures not baked** — passed `-nobake`, so every non-`end` state carries uniform
-      `nod_up_down`. Pending `/bake_dialog` pass when/if the dialog is wanted in-game.
+- [x] **Gestures baked** (2026-08-05) — 10 of 34 states now carry a gesture (`gesture_wave` bookending
+      the scene's open/close, `gesture_flex_arm` on Milkucha's mod-powered brag, `gesture_point_left`
+      on the literal "a tu izquierda" line, and others) instead of uniform `nod_up_down`. Run as a
+      one-time backlog cleanup when `/bake_dialog` was retired in favor of `/embody` baking inline.
 
 ---
 
@@ -587,20 +592,32 @@ resolution, `life.lived`): `khaoe_khaasan_partida_a_khan_ice.json`,
       use the bare `{"type": "end_dialogue"}` terminal state with **no `resume_routine` call**,
       matching the `nawom_morkulo_first_meeting` / `nuvilo_nerkeli_feria_del_milenio` precedent. Add
       the resume action to each when the modes are settled.
-- [ ] **Gestures deliberately not baked on any of the three** — the author called these three
-      lore-only runs (2026-07-31) and asked for Minecraft-facing work to be skipped, so every
-      non-`end` state still carries the uniform `nod_up_down` it was written with. Run
-      `/bake_dialog <path>` on each of the three if and when they're wanted in-game.
+- [x] **Gestures baked on all three** (2026-08-05) — `khaoe_khaasan_partida_a_khan_ice.json` (6/19
+      states), `aureobalo_farlis_castillo_en_miniatura.json` (7/20), and
+      `bardaglis_ilaria_khaoe_segunda_noche.json` (7/22). Run as a one-time backlog cleanup when
+      `/bake_dialog` was retired in favor of `/embody` baking inline — these three predate that change
+      and were originally left uniform on purpose (see the entry below), so nothing skipped them
+      silently; they were just never revisited until now.
 - [x] **`-nobake` flag added to `/enact`** (2026-07-31, author's request): skips Step 8 only.
       Everything through Step 7 still runs in full — the hearsay record, criterion resolution, and
       `life.lived` are the point of an enactment and aren't Minecraft-facing. Documented in a new
       Flags section at the top of `enact/SKILL.md`, which also states explicitly that it does *not*
       skip Step 4 or Step 5/5b.
-- [ ] **`bake_dialog` still can't be invoked from `/enact`.** `bake_dialog/SKILL.md` sets
-      `disable-model-invocation: true`, so Step 8's Skill-tool call is refused outright — the
-      instruction was never executable. Step 8 now documents the blocker and routes to the user
-      instead, but the underlying contradiction stands: either drop that flag from `bake_dialog`, or
-      accept that baking is permanently user-initiated and simplify Step 8 to say so.
+- [x] **`bake_dialog` couldn't be invoked from `/enact`'s old Step 8 — resolved, but differently than
+      either option this item originally proposed, and then superseded again the same day** (2026-08-05).
+      By the time this was revisited, the lore/Minecraft split (`/enact` vs `/embody`) had already moved
+      dialog-writing and gesture-baking out of `/enact` entirely — the blocker actually lived in
+      `/embody`'s Step 4 (its own handoff to `/bake_dialog`, same `disable-model-invocation: true`
+      refusal). First fix: `/embody` Step 3 (formerly Step 4) started inlining the full
+      gesture-selection procedure instead of invoking `bake_dialog` via the Skill tool. Then, the same
+      day, `.claude/skills/bake_dialog/SKILL.md` was deleted outright — every real dialog in the pack was
+      produced by tooling (`/enact`/`/embody` or their pre-split ancestor), none hand-written, so there
+      was no longer any dialog-creation path outside `/embody`/`/enact-embody` for a standalone baking
+      skill to serve. The 5 pre-existing dialogs still uniform at that point (Auroboro III, Milkucha's
+      Jardín de los Parajes, and the three Feria del Milenio second-day scenes — see entries above and
+      below) were baked by hand as a one-time backlog cleanup before the skill was removed, so nothing
+      was left stranded. Every dialog `/embody`/`/enact-embody` produces now gets baked automatically as
+      part of that same run — there is no separate baking step or skill left to invoke.
 - [ ] **Khaasan is off-map until further notice** — he left the Feria for Khan Ice to see his uncle,
       carrying an errand for Khaoe (check whether a house near the water still stands). Two threads
       to pay off whenever he next appears: what he found, and Döran's Khan Ice claim, which he went

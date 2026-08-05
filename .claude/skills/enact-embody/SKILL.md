@@ -1,5 +1,5 @@
 ---
-description: Play an enacted character scene and put it straight in the game — runs the full /enact procedure (lore: sampling, the scene, hearsay/criterion/life record-keeping), then the full /embody procedure (Minecraft: Blabber dialog, NPC registration, gesture-baking handoff), back to back in one pass. Equivalent to the old, undivided /enact. Use when the user wants both the lore and the pack content done in the same run, with no separate follow-up step.
+description: Play an enacted character scene and put it straight in the game — runs the full /enact procedure (lore: sampling, the scene, hearsay/criterion/life record-keeping), then the full /embody procedure (Minecraft: Blabber dialog with gestures already baked, NPC registration), back to back in one pass. Equivalent to the old, undivided /enact. Use when the user wants both the lore and the pack content done in the same run, with no separate follow-up step.
 disable-model-invocation: true
 ---
 

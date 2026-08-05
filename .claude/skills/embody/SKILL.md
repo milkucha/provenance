@@ -1,5 +1,5 @@
 ---
-description: Convert an already-enacted scene (from /enact, run earlier in this same conversation) into pack content — a registered Blabber dialog, an NPC registration in _npcs/npcs/registry.json, and a gesture-baking handoff. Purely Minecraft/NPC-facing: never touches _lore/characters/. Use right after /enact when the user wants the scene actually put in the game, for a conversation that only ran bare /enact so far. Use /enact-embody instead to run both skills back to back in one pass.
+description: Convert an already-enacted scene (from /enact, run earlier in this same conversation) into pack content — a registered Blabber dialog with its gestures already baked, and an NPC registration in _npcs/npcs/registry.json. Purely Minecraft/NPC-facing: never touches _lore/characters/. Use right after /enact when the user wants the scene actually put in the game, for a conversation that only ran bare /enact so far. Use /enact-embody instead to run both skills back to back in one pass.
 disable-model-invocation: true
 ---
 
@@ -75,25 +75,94 @@ Then, for the dialog itself:
   under that NPC's key, per README §3 Step 3.
 - **If the scene was between two enacted characters:** do **not** guess how to register a dialog that
   belongs to two NPCs — the registry format assumes one dialog per NPC key. Ask the user how they want
-  it handled, or leave it open in TODO.md (see Step 3) exactly like the Nawom & Morkulo precedent.
+  it handled, or leave it open in TODO.md (see Step 4) exactly like the Nawom & Morkulo precedent.
 
-## Step 3 — Log what's still open
+## Step 3 — Bake gestures
+
+Every dialog Step 1 just wrote starts uniform — `nod_up_down` on every non-`end` state, straight from
+the templates. This step replaces a minority of those with an emotionally-matched gesture wherever a
+line's own text supports it, so the conversation reads as staged rather than uniformly nodding through
+every line — the same judgment call Döran's dialogues and `nuvilo_nerkeli_feria_del_milenio.json` got
+by hand. It runs on **every** dialog this skill produces — there is no path through `/embody` (or,
+transitively, `/enact-embody`) that leaves a fresh dialog on the uniform default.
+
+(This step used to just hand off to a standalone `bake_dialog` skill and stop there, blocked on that
+skill's `disable-model-invocation: true` flag refusing an internal Skill-tool call — see `TODO.md` for
+the history. That blocker is now moot: the procedure is inlined below instead of invoked. `bake_dialog`
+itself has since been deleted — every dialog in this pack is produced by `/enact`/`/embody` (or their
+pre-split ancestor), none hand-written, so there was no remaining case for a standalone baking skill to
+serve once this step started running automatically. A handful of pre-existing dialogs that predated
+this change and were still uniform got a one-time manual baking pass instead (2026-08-05, see
+`TODO.md`) rather than being left stranded.)
+
+Since the dialog just came out of Step 1, it's always freshly uniform — skip straight to selection
+below, no need to check for pre-existing gestures the way a from-scratch bake pass would.
+
+**`look_up`/`look_down` are a separate, deliberate mechanism — never touch them.** No template Step 1
+converts from ever emits one of these (they're a hand-authored choice made later, on a state where an
+NPC is looking at something large right in front of them — confirmed by reading the mechanism itself:
+`look_up`/`look_down` is a single one-shot `tp` that sets an absolute head pitch and holds it
+indefinitely, while a `gesture_*` auto-clears after 2.5s and can't be paired with a nod on the same
+state, so converting one to the other would cut short a pose meant to hold and block the nod from
+playing during it — a regression, not a consistency win, tried and reverted 2026-07-25), so this should
+never come up on a freshly-converted dialog. Noted here only so a future edit to Step 1's templates
+doesn't accidentally make this step overwrite one.
+
+Read every non-`end`/`end_dialogue` state's `text` (strip a two-NPC dialog's `"Name: "` prefix only
+for reading — never edit it). For each, judge whether the line's content reads as something more
+specific than a neutral "I am currently talking" nod:
+
+| Reads as... | Keywords | Gesture |
+|---|---|---|
+| Greeting, farewell, beckoning someone in | greeting, farewell, hello, beckoning, goodbye | `gesture_wave` (`gesture_wave_left` for variety when a scene already used the right-handed wave) |
+| Making a point, an enthusiastic reveal, "here's the thing" | emphasis, insistence, revelation, "here's the thing", calling-out | `gesture_point` (`gesture_point_left` for variety when a scene already used the right-handed point) |
+| Formal, solemn, showing respect | respect, formality, solemnity, deference, ceremony | `gesture_bow` |
+| Not sure / doesn't know / indifferent / conceding a point | uncertainty, indifference, "who knows", concession, nonchalance | `gesture_shrug` |
+| Open explanation, presenting or inviting, "who's to say" | openness, explanation, invitation, reassurance, "who's to say" | `gesture_palms_up` |
+| Musing, admitting a gap, a surprised realization | musing, puzzlement, realization, forgetfulness, "huh" | `gesture_scratch_head` (`gesture_scratch_head_left` for variety when a scene already used the right-handed scratch-head) |
+| Humor, teasing, a self-deprecating aside, "Ha" | humor, teasing, amusement, self-deprecation, mirth | `gesture_laugh` |
+| Mild disagreement or correction | mild-disagreement, correction, "not quite", second-guessing, gentle-pushback | `nod_left_right` |
+| Firm refusal or rejection | refusal, rejection, denial, disapproval, "absolutely not" | `gesture_no` |
+| Deadpan disbelief, exasperation, secondhand embarrassment | disbelief, exasperation, embarrassment, frustration, "unbelievable" | `gesture_face_palm` |
+| Skeptical, defensive, or prideful stance | skepticism, defensiveness, pride, stubbornness, wariness | `gesture_cross_arms` |
+| Triumph, excitement | triumph, excitement, celebration, victory, elation | `gesture_jump` |
+| Playful bragging, showing off, a boastful tease | bragging, showing-off, playful-pride, confidence, teasing-boast | `gesture_flex_arm` |
+
+Everything else stays the default `nod_up_down` — most lines are informational connective tissue and
+should. Calibrate against dialogs that already have this treatment (`doran_four_castles.json`: 3 of
+7 states; `doran_eras_of_culture.json`: 2 of 8; `nuvilo_nerkeli_feria_del_milenio.json`: 6 of 15) —
+roughly a quarter to two-fifths of eligible states, never a blanket rewrite. A state whose only
+choice is `"..."` (a pure continuation, no real player decision) is still eligible.
+
+For a **two-NPC dialog**, each state already has an explicit per-NPC selector
+(`execute as @e[type=taterzens:npc,name=<Name>,limit=1] run function ...`) instead of
+`@interlocutor` — keep that selector exactly as-is and only swap the function path. Never let one
+speaker's line end up pointed at the other NPC's selector.
+
+Never assign a gesture to an `end`/`end_dialogue` state — its `action` (if any) is
+`resume_routine`/`end_with_gift`, not performance, and stays untouched.
+
+**Sounds** — no-op today. `resourcepack/`'s custom-sound layer is listed "planned" in README Layer 4
+and nothing in this pack calls `playsound` or ships a `sounds.json` yet. Don't build one here to fill
+the gap.
+
+**Confirm before writing.** Present the chosen upgrades as a short list (state id → gesture → the
+clause that justified it) and confirm (AskUserQuestion: proceed / let me adjust) before editing the
+file — the same lightweight checkpoint `nuvilo_nerkeli_feria_del_milenio.json` got. Content changes
+inside a dialog file are easy to miss in a raw JSON diff, so this is worth the one extra round trip
+even though it's now part of the same skill run rather than a separate invocation.
+
+Apply the confirmed changes and validate the file is still well-formed JSON before moving on to Step
+4. Never invent a gesture a line's text doesn't actually support just to hit a ratio, and never touch
+any NPC's `spawn.mcfunction` for this — confirmed by reading `load.mcfunction`, `tick.mcfunction`, and
+every `gesture_*.mcfunction`: the whole gesture system is wired once, globally (scoreboard objectives
+in `load.mcfunction`; `gesture_tick`/`nod_tick` called every tick for every entity, not per-NPC) and
+activates dynamically the instant a dialogue action fires — no per-NPC registration needed.
+
+## Step 4 — Log what's still open
 
 Add or update a section in `TODO.md` for each newly-embodied character (and the dialog, if its
 registration was left unresolved in Step 2): skin, movement mode, `spawn_position`,
 `spawn.mcfunction`, UUID capture — the same shape as the existing Sonoros and Nawom & Morkulo
-sections. Don't silently resolve anything there either.
-
-## Step 4 — Bake gestures
-
-Every dialog this skill produces starts uniform — `nod_up_down` on every non-`end` state, straight
-from the templates. The `bake_dialog` skill (`.claude/skills/bake_dialog/SKILL.md`) replaces a
-minority of those with an emotionally-matched gesture where the line's own text supports it — the
-same manual pass Döran's dialogues and `nuvilo_nerkeli_feria_del_milenio.json` got.
-
-**Known blocker, confirmed 2026-07-31:** this step cannot currently be run from inside `/embody`.
-`bake_dialog/SKILL.md` sets `disable-model-invocation: true`, so calling it with the Skill tool is
-refused outright. Until that flag is dropped or this step is rewritten (see `TODO.md`), the only way
-to bake is for the user to run `/bake_dialog <path>` themselves. So: tell them the file is ready for
-it, log it in `TODO.md`, and don't attempt the invocation. This isn't conditional on a flag — it
-always ends this way, since the blocker applies regardless of intent.
+sections. Gesture-baking is no longer one of these open items — Step 3 already did it — so don't log
+it as pending. Don't silently resolve anything else here either.

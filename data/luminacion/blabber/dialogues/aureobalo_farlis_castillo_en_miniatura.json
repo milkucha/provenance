@@ -23,7 +23,7 @@
       "text": "Aureobalo: Lo dejé para mañana. El camino no se mueve.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Aureobalo,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Aureobalo,limit=1] run function luminacion:npcs/_shared/gesture_shrug"
       },
       "choices": [
         {
@@ -36,7 +36,7 @@
       "text": "Farlis: Este. De todo lo que hay en cinco pabellones, este es el que vine a ver. El castillo de Görff, del tamaño de un perro.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Farlis,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Farlis,limit=1] run function luminacion:npcs/_shared/gesture_point"
       },
       "choices": [
         {
@@ -49,7 +49,7 @@
       "text": "Aureobalo: Vives dentro del original y vienes a mirarlo chiquito.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Aureobalo,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Aureobalo,limit=1] run function luminacion:npcs/_shared/gesture_laugh"
       },
       "choices": [
         {
@@ -88,7 +88,7 @@
       "text": "Farlis: Eso es lo mejor de la historia. El hombre puso las piedras y se le perdió el nombre. Las piedras siguen.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Farlis,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Farlis,limit=1] run function luminacion:npcs/_shared/gesture_point_left"
       },
       "choices": [
         {
@@ -127,7 +127,7 @@
       "text": "Aureobalo: No te lo traigo para picarte. Lo oí de ella, y prefiero decírtelo yo antes de andar repitiéndolo por ahí.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Aureobalo,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Aureobalo,limit=1] run function luminacion:npcs/_shared/gesture_palms_up"
       },
       "choices": [
         {
@@ -140,7 +140,7 @@
       "text": "Farlis: Te lo agradezco. Y tiene razón, en la parte que importa. Da igual si es poético. Era de uno y ahora no lo es. Eso no lo cambia el chiste que yo le ponga encima.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Farlis,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Farlis,limit=1] run function luminacion:npcs/_shared/gesture_bow"
       },
       "choices": [
         {
@@ -205,7 +205,7 @@
       "text": "Aureobalo: Y tú llegaste con apellido.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Aureobalo,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Aureobalo,limit=1] run function luminacion:npcs/_shared/gesture_point"
       },
       "choices": [
         {

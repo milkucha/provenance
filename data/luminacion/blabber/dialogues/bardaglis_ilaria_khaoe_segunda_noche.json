@@ -10,7 +10,7 @@
       "text": "Khaoe: Esa frase la dije yo, sentada, sin pensarla, hace dos noches.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/gesture_scratch_head"
       },
       "choices": [
         {
@@ -36,7 +36,7 @@
       "text": "Khaoe: No sé si eso me gusta.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/gesture_shrug"
       },
       "choices": [
         {
@@ -49,7 +49,7 @@
       "text": "Bardaglis: Es lo único bueno que le puede pasar a una canción.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Bardaglis,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Bardaglis,limit=1] run function luminacion:npcs/_shared/gesture_palms_up"
       },
       "choices": [
         {
@@ -88,7 +88,7 @@
       "text": "Iläria: No. De alguien es, y si no se anota, en veinte años va a ser de todos y de nadie, y yo voy a tener que escribir \"se dice que\".",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Iläria,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Iläria,limit=1] run function luminacion:npcs/_shared/gesture_point"
       },
       "choices": [
         {
@@ -101,7 +101,7 @@
       "text": "Khaoe: Es mía. La dije delante del castillo, y sigo viviendo ahí. Anótalo si quieres.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/gesture_point_left"
       },
       "choices": [
         {
@@ -166,7 +166,7 @@
       "text": "Iläria: Ninguno, mientras no se sepa cuál dijo qué. Prefiero dos que se contradicen que uno solo que suena redondo.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Iläria,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Iläria,limit=1] run function luminacion:npcs/_shared/gesture_point"
       },
       "choices": [
         {
@@ -179,7 +179,7 @@
       "text": "Khaoe: En eso estamos de acuerdo. Volví de Lündria sin saber qué calendario era el bueno, y no pienso enseñarlo.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Khaoe,limit=1] run function luminacion:npcs/_shared/gesture_no"
       },
       "choices": [
         {

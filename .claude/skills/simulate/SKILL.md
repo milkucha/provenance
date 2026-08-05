@@ -1,0 +1,106 @@
+---
+description: Batch-run many /enact character-vs-character scenes across an existing population, in an isolated git worktree, to see how the lore state (hearsay pool, criteria, lifespans, deaths) evolves over a number of passes without touching the real files. Use for testing the enactment mechanism at scale or for producing a showcase trail of scenes — never for a single one-off scene, that's /enact directly.
+disable-model-invocation: true
+---
+
+Orchestrator over `/enact`'s existing-character path, run unattended and repeatedly inside a
+dedicated worktree. Lore-only, same as `/enact` and `/character` — never touches `data/` or
+`_npcs/`. Read `.claude/skills/enact/SKILL.md` and README.md §8 before running this if they haven't
+been read yet this session; this skill points back at their rules rather than restating them, and
+only spells out where it deviates (no interactive questions inside a pass, existing participants
+only, absolute paths into the worktree).
+
+## Step 0 — Preconditions
+
+- **Already in a worktree?** If this conversation is currently sitting inside a worktree from an
+  earlier `/simulate` run (or any other reason), don't call `EnterWorktree` again — it errors if
+  called from inside an existing worktree session. Ask the user (AskUserQuestion) whether to exit
+  and keep that one first. Never call `ExitWorktree` without asking; it's a no-op if there's nothing
+  to exit, so it's always safe to ask.
+- **Uncommitted lore changes?** Run `git status --short -- _lore/` in the current directory. If it
+  reports anything, the simulation is about to branch from the last *commit*, not these edits — tell
+  the user plainly and ask (AskUserQuestion: commit first / proceed anyway understanding the gap).
+  A worktree's working directory is independent of this one; uncommitted changes here do not carry
+  over regardless of how the worktree is created.
+
+## Step 1 — Setup questions
+
+Ask as plain conversation, or AskUserQuestion where multiple-choice fits:
+
+1. **Participants** — which characters take part, by name. For each: slugify the same way `/enact`
+   Step 1 does and check `_lore/characters/<slug>.json` exists. **This skill never creates a
+   participant** — if a file is missing, say so and stop (point at `/character` to build it first),
+   rather than seeding a bare one on the spot. Also check `life.deceased` on each existing file — a
+   deceased character can't be enacted, same rule as `/enact` Step 1; drop them or ask for a
+   replacement. Need at least 2 living participants to proceed at all.
+2. **Passes** — how many scenes to run in total, e.g. 50.
+3. **Context** — optional free text: a scenario/situation to feed into every scene (e.g. "these all
+   happen during the Feria"). Leave blank for random — each pass then invents its own plausible
+   situation, bounded by what both participants in it could actually know.
+4. **Model** — which model plays each pass (Haiku / Sonnet / Opus), default Sonnet if not asked.
+   Quality matters more here than in a one-off `/enact`, because a pass's Step 5b judgment calls
+   (criterion shock resolution, hearsay mutation) become the input the *next* pass reads — errors
+   compound across a run in a way they don't in a single scene. This only affects the per-pass
+   subagent below; the orchestration in this skill itself (pairing, logging) runs at whatever model
+   this conversation is already on.
+
+## Step 2 — Create the worktree
+
+`EnterWorktree` with a name like `simulate-<YYYYMMDD-HHMMSS>` — one fresh worktree per `/simulate`
+invocation, branched from current local HEAD (requires `worktree.baseRef: "head"` in settings; if
+that hasn't been set, stop and say so rather than silently branching from a stale
+`origin/<default-branch>`). A fresh worktree per run is what makes repeated runs independently
+comparable against the same starting lore state — report the path and branch to the user once
+created. Everything from here happens inside that worktree's copy of the repo; the original working
+directory is untouched.
+
+## Step 3 — Run passes
+
+Keep, in this conversation only (nothing written to disk until Step 4):
+
+- The **living pool** — participant slugs, minus anyone whose `life.deceased` turns `true` mid-run.
+- A **running log** of one-line-per-pass summaries returned by each pass's subagent.
+
+For pass 1 through N:
+
+1. If fewer than 2 living participants remain, stop early and say so, noting how many passes
+   actually ran before the pool ran out.
+2. Pick 2 participants from the living pool uniformly at random. Every pass is an independent draw —
+   pairs can repeat, and should be expected to over a long run.
+3. Dispatch one subagent (Agent tool, `subagent_type: general-purpose`, the model chosen in Step 1,
+   `run_in_background: false` — the next pass needs this one's file writes to have landed first).
+   Brief it self-contained, since it starts with no memory of this conversation:
+   - The worktree's absolute path — every file read/write and every `python scripts/lore/...` call
+     must use it explicitly, never an assumed working directory.
+   - Pointers to `.claude/skills/enact/SKILL.md` and README.md §8 for the rules it must follow.
+   - Both participants' names, and that **both already have character files** — Step 1/2's
+     interactive questions and the name-uniqueness check are for new characters only and don't apply
+     here. It should still: check `life.deceased` before starting, run `horizon.py` for each per
+     Step 1's "Criterion and lifespan" rules, and run Step 3b in full (character vs. character, one
+     message, alternating turns, natural stopping point — no player is present).
+   - The scenario context from Step 1, if one was given; otherwise instruct it to invent a situation
+     grounded in what both characters could plausibly know.
+   - **Never call `AskUserQuestion` or wait on a live user** — there isn't one. Make the same calls
+     `/enact` would normally ask about (whether the scene has reached a natural stopping point, how a
+     shock resolves) autonomously, and note any non-obvious judgment call in its final report.
+   - Run Steps 5, 5b, and 6 **in full** — hearsay mutation, shock resolution, drift, the record
+     update. This is the actual mechanism being exercised; nothing here gets shortened for speed.
+   - Report back *only* a short summary, not the transcript: both participants, a one-line gist of
+     the scene, whether either's criterion changed (and how), whether either died this pass.
+4. Append that one-line summary to the running log — this is what keeps a long run affordable: the
+   main thread accumulates summaries, never the 50 full transcripts and record-keeping writeups.
+5. If either participant died this pass, drop them from the living pool before the next draw.
+
+## Step 4 — Summarize
+
+Once all passes are done (or the pool ran out early):
+
+- Write `SIMULATION_LOG.md` at the worktree root: the Step 1 setup (participants, pass count,
+  context, model), the pass-by-pass one-liners in order, and a closing tally — deaths, criterion
+  breaks/reinterpretations, final `life.lived` per participant.
+- Tell the user: how many passes ran, headline events, the worktree's path and branch name, and that
+  it stays on disk untouched by anything here — nothing in the original working directory changed.
+  They can `/enact` a character from inside this worktree, read any file directly, ask questions
+  about what changed, or run `/simulate` again (after exiting this worktree, or from a different
+  session) for an independent second trial off the same starting state, to compare against this one.
+- Don't call `ExitWorktree` — only on explicit request, same as Step 0.

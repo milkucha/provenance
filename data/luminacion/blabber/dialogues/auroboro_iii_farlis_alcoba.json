@@ -9,7 +9,7 @@
       "text": "Auroboro III: Ah, un visitante. Entra, entra. No muchos se detienen estos días.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Auroboro_III,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Auroboro_III,limit=1] run function luminacion:npcs/_shared/gesture_wave"
       },
       "choices": [{ "text": "...", "next": "a2" }]
     },
@@ -36,7 +36,7 @@
       "text": "Farlis: Y sé lo que esas guerras fueron — oficiales y nobles peleando por fronteras. No es algo que celebre.",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Farlis,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Farlis,limit=1] run function luminacion:npcs/_shared/gesture_no"
       },
       "choices": [{ "text": "...", "next": "a3" }]
     },
@@ -45,7 +45,7 @@
       "text": "Auroboro III: ¿No celebrar? Sangraron por su tierra. Por honor. Por —",
       "action": {
         "type": "blabber:command",
-        "value": "execute as @e[type=taterzens:npc,name=Auroboro_III,limit=1] run function luminacion:npcs/_shared/nod_up_down"
+        "value": "execute as @e[type=taterzens:npc,name=Auroboro_III,limit=1] run function luminacion:npcs/_shared/gesture_face_palm"
       },
       "choices": [{ "text": "...", "next": "f3" }]
     },

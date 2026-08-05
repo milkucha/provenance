@@ -1,13 +1,13 @@
 ---
-description: Integrate newly-added _lore/material/ into the analysis (_lore/material/_context.md, _lore/encodings.json, _lore/unknowns.md), audit that every dialogue has a matching hearsay entry, and check for drift between what's referenced elsewhere in the pack and what's actually recorded in encodings.json. Use when new material has been uploaded to _lore/material/, or for a periodic consistency pass over the lore analysis.
+description: Integrate newly-added _lore/material/ into the analysis (_lore/material/_context.md, _lore/encodings.json, _lore/unknowns.md), audit that every dialogue has a matching hearsay entry, check for drift between what's referenced elsewhere in the pack and what's actually recorded in encodings.json — including that every _lore/tales/ file has a matching manifest entry — and audit _lore/unknowns.md for entries the rest of the project has since answered. Use when new material has been uploaded to _lore/material/, or for a periodic consistency pass over the lore analysis.
 disable-model-invocation: true
 ---
 
-Three independent passes — run whichever the situation calls for, not necessarily all three. If it's
+Four independent passes — run whichever the situation calls for, not necessarily all four. If it's
 not obvious from how the skill was invoked, ask (AskUserQuestion): new material just added → Pass 1;
 "did we miss a hearsay entry" / periodic audit → Pass 2; "check the encodings are still accurate" →
-Pass 3. Default to running all three when unsure — a pass with nothing to do is cheap to finish
-quickly.
+Pass 3; "check unknowns.md is still current" → Pass 4. Default to running all four when unsure — a
+pass with nothing to do is cheap to finish quickly.
 
 Nothing here silently resolves a judgment call. Every place the existing analysis files (`_context.md`,
 `encodings.json`, `unknowns.md`) already draw a line between "recorded fact" and "open question" (see
@@ -70,24 +70,60 @@ dialogue (not produced via `/enact`) can skip README §8 Step 5 entirely without
 
 **Trigger:** on request, or periodically alongside Pass 2.
 
-1. Walk every `_lore/characters/*.json` file's `knowledge.education.items` and
+1. **Tale coverage.** List every file in `_lore/tales/` (excluding `_index.md` and `_authors.md`).
+   Cross-check it against `encodings.json`'s `tales.entries` array (`source_file` field), against
+   `_lore/tales/_authors.md`'s table, and against `_lore/tales/_index.md`'s table — all three are
+   meant to carry a row for every tale, the same "both copies must mirror" discipline Pass 2 already
+   applies to hearsay, just three-wide instead of two. For any tale file missing a manifest entry,
+   build one per `/tell` Step 4: `id`/`source_file` from the filename, `told_by`/`told_date` from the
+   tale file's own `**Told by:**`/`**Told on:**` header lines, and `touches` transcribed from that
+   file's own "Where this lands in the record" section — never re-derive `touches` by re-reading the
+   tale's prose from scratch, since that was already a judgment call made once when the tale was
+   written (`/tell` Step 5). If that section is still placeholder text, leave `touches: []` and flag
+   the tale as never having been folded into the other categories at all — that means Step 5 was
+   skipped, not just Step 4. Build any missing `_authors.md`/`_index.md` row the same transcribing way.
+   Never invent a `told_by`/`Responsible` value that isn't already written in the tale file.
+2. Walk every `_lore/characters/*.json` file's `knowledge.education.items` and
    `knowledge.experience` (skip `_template.json`), plus every `hearsay.entries[].claims[].about`
    reference in `encodings.json`. Confirm every `about` id that isn't `null` or a bare era/
    `CONFLICT-##` name resolves to a real entry somewhere in `locations`/`characters`/`concepts`/etc.
-2. Walk every `tales.entries[].touches` array. Confirm each id listed actually exists where it claims
+3. Walk every `tales.entries[].touches` array. Confirm each id listed actually exists where it claims
    to (an added/amended entry in `locations`/`characters`/`concepts`/`routes`/`time_systems`, or a
    `CONFLICT-##` id in `conflicts`), and that the referenced entry actually carries the matching
    `tale:<id>` source tag. Flag either direction of drift: a `touches` id that doesn't resolve, or a
    `tale:` source tag in the objective arrays with no corresponding id in that tale's own `touches`
    list.
-3. Cross-check `_npcs/dialogs/registry.json` against `data/luminacion/blabber/dialogues/`: flag any
+4. Cross-check `_npcs/dialogs/registry.json` against `data/luminacion/blabber/dialogues/`: flag any
    registered dialog id with no matching file, and any dialogue file with no registry entry (the
    latter is expected for a few in-flight two-NPC scenes still open in `TODO.md` — check there before
    flagging one as a bug).
-4. Report every dangling reference found, with enough detail (file, field, the id in question) that
-   the user can decide the fix. Never auto-repair a dangling `about` reference by guessing the
-   intended target — a wrong guess corrupts the provenance the hearsay/encodings system depends on;
-   surface it instead.
+5. Report every dangling reference found, with enough detail (file, field, the id in question) that
+   the user can decide the fix. Never auto-repair a dangling `about`/`touches` reference by guessing
+   the intended target — a wrong guess corrupts the provenance the hearsay/encodings system depends
+   on; surface it instead. (Step 1's tale-coverage builds are the one exception — those transcribe
+   data the tale file already states outright, the same way Pass 2 builds a missing hearsay entry
+   straight from a dialogue's own text; nothing there is guessed.)
+
+## Pass 4 — Unknowns staleness audit
+
+**Trigger:** on request, or periodically alongside Passes 2–3.
+
+1. Read every entry in `_lore/unknowns.md`. Note what each one is actually asking, and any id it
+   already cross-references (a `CONFLICT-##`, a hearsay claim id, a tale id, a material section).
+2. Check whether the rest of the project has since answered it:
+   - A cross-referenced `CONFLICT-##` now carrying `user_resolution` in `encodings.json` — but confirm
+     the resolution text actually settles the *question the unknown asks*, not just that the conflict
+     entry got touched at all; a conflict can be resolved on one axis while the unknown it spawned
+     stays open on another.
+   - A newer entry in `encodings.json`'s objective arrays, a `_lore/tales/` file, or
+     `_lore/characters/hearsay.md` that names the same subject and states something that reads as a
+     direct answer, even when nothing formally links it back to the unknowns entry.
+3. For every entry that looks answered, flag it to the user with the answering source (file/id) —
+   never remove or edit an `_lore/unknowns.md` entry on this skill's own judgment. Whether an apparent
+   answer is conclusive enough to actually close the question is the user's call, the same discipline
+   `conflicts.user_resolution` already gets.
+4. Report: which entries look answered (with source), and how many remain genuinely open — a count is
+   enough for the still-open ones, don't enumerate every one of them.
 
 ## What this skill never does
 
@@ -95,3 +131,7 @@ dialogue (not produced via `/enact`) can skip README §8 Step 5 entirely without
 - Never edits `_lore/material/` — source files are read-only, excavated artifacts.
 - Never invents lore to close a gap in `unknowns.md` — a gap stays a gap until the user resolves it.
 - Never fabricates a hearsay claim that wasn't actually said in the dialogue it's covering.
+- Never closes or edits an `_lore/unknowns.md` entry on its own judgment — Pass 4 only flags
+  candidates for the user to confirm.
+- Never rebuilds a tale's `touches` list by re-reading its prose from scratch — only transcribes what
+  the tale file's own "Where this lands in the record" section already states.

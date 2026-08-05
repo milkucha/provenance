@@ -45,16 +45,18 @@ house style, not optional per-dialog flavor. The baseline is `nod_up_down`:
 
 but a minority of states in a fully-baked dialog carry a more specific gesture instead
 (`gesture_wave`, `gesture_shrug`, `nod_left_right` for a negation, ...) where the line's own text
-supports it — see the `bake_dialog` skill for the full gesture vocabulary and how that selection is
-made. Never call `nod_up_down_clear`, `nod_left_right_clear`, or `nod_tick` directly from a dialog —
-those are internal, fired only from `nod_tick.mcfunction`'s own per-entity countdown, not standalone
+supports it — see `embody/SKILL.md` Step 3 for the full gesture vocabulary and how that selection is
+made (that's also where every dialog in this pack gets baked now — this skill never bakes one itself).
+Never call `nod_up_down_clear`, `nod_left_right_clear`, or `nod_tick` directly from a dialog — those
+are internal, fired only from `nod_tick.mcfunction`'s own per-entity countdown, not standalone
 gestures; see `_shared/nod_up_down.mcfunction`'s header.
 
 If any non-end state is missing an `action` entirely, that's a gap, not a stylistic choice — add
-`nod_up_down` as the safe default, then run `bake_dialog` on the file if it hasn't been through that
-pass yet (check by the same signal `bake_dialog` uses: uniform `nod_up_down` everywhere means
-unbaked). Don't second-guess an existing non-default gesture already on a state — leave it, same as
-you'd leave a deliberate `give` or scoreboard-set action untouched.
+`nod_up_down` as the safe default. If the dialog is otherwise still uniform `nod_up_down` throughout
+(unbaked), that's outside this skill's scope to fix — flag it in `TODO.md` rather than gesturing it
+yourself, since gesture selection is `/embody` Step 3's judgment call to make, not `/spawn`'s. Don't
+second-guess an existing non-default gesture already on a state — leave it, same as you'd leave a
+deliberate `give` or scoreboard-set action untouched.
 
 ## Step 2 — Movement mode
 
