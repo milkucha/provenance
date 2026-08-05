@@ -4,7 +4,7 @@
 # Built from _templates/npcs/heal_skin.mcfunction. Called every 100 ticks (5s)
 # from check_proximity.mcfunction.
 #
-# No skin decided yet (blank in _maps/npcs/registry.json), so this file has
+# No skin decided yet (blank in _npcs/npcs/registry.json), so this file has
 # nothing to do. Once one is chosen, fill in spawn.mcfunction's "npc edit
 # skin" line AND uncomment/fill in the line below:
 #

@@ -1,9 +1,9 @@
 """
 Compute who learns of a character's death directly, and who among them is due a shock.
 
-Used by /enact when a character's last scene closes them out (horizon.py returns "final" - see
-.claude/skills/character/SKILL.md Step 6 and /enact Step 5b point 6). Death itself is handled in two
-tiers, and this script only ever computes the first:
+Used by /enact when a character's last scene closes them out (horizon.py's post-scene "ending" check
+comes back true - see .claude/skills/character/SKILL.md Step 6 and /enact Step 5b point 6). Death
+itself is handled in two tiers, and this script only ever computes the first:
 
     1. GUARANTEED - the character's "circle": everyone they've shared a scene with (co-participants
        across every _lore/encodings.json hearsay.entries record they appear in) plus
@@ -35,20 +35,30 @@ from pathlib import Path
 from random import Random
 
 ROOT = Path(__file__).resolve().parent.parent
-REGISTRY_PATH = ROOT / "_maps" / "npcs" / "registry.json"
+CHAR_DIR = ROOT / "_lore" / "characters"
 ENCODINGS_PATH = ROOT / "_lore" / "encodings.json"
+
+# Character data files only - excludes lifespans.json (not a character shape) and _template.json
+# (not a real character). Deliberately reads _lore/characters/, not _npcs/npcs/registry.json: a
+# character can die having only ever been enacted, never embodied in-game, so there may be no
+# registry.json entry for them at all. name/backstory/criterion/life all live lore-side now.
+_SKIP = {"_template", "lifespans"}
 
 
 def load():
-    with open(REGISTRY_PATH, encoding="utf-8") as f:
-        npcs = json.load(f)["npcs"]
+    characters = {}
+    for path in CHAR_DIR.glob("*.json"):
+        if path.stem in _SKIP:
+            continue
+        with open(path, encoding="utf-8") as f:
+            characters[path.stem] = json.load(f)
     with open(ENCODINGS_PATH, encoding="utf-8") as f:
         enc = json.load(f)
-    return npcs, enc
+    return characters, enc
 
 
-def name_to_key_map(npcs: dict) -> dict:
-    return {v["display_name"].lower(): k for k, v in npcs.items() if k != "_template" and v.get("display_name")}
+def name_to_key_map(characters: dict) -> dict:
+    return {v["name"].lower(): k for k, v in characters.items() if v.get("name")}
 
 
 def scene_participants_of(display_name: str, entries: list) -> list:
@@ -73,21 +83,21 @@ def anchor_references(anchor: str, deceased_name: str, entries_by_id: dict) -> b
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("npc_key", help="Registry key of the character who died")
+    parser.add_argument("npc_key", help="Character key of the character who died")
     parser.add_argument("--seed", type=int, default=None, help="Optional seed, for a reproducible sample")
     args = parser.parse_args()
 
     key = args.npc_key.lower()
-    npcs, enc = load()
+    characters, enc = load()
 
-    if key not in npcs:
-        raise SystemExit(f"No registry entry for '{key}'.")
+    if key not in characters:
+        raise SystemExit(f"No character file for '{key}'.")
 
-    deceased = npcs[key]
-    deceased_name = deceased["display_name"]
+    deceased = characters[key]
+    deceased_name = deceased["name"]
     entries = enc["hearsay"]["entries"]
     entries_by_id = {e["id"]: e for e in entries}
-    name_to_key = name_to_key_map(npcs)
+    name_to_key = name_to_key_map(characters)
 
     circle_keys = set()
 
@@ -98,7 +108,7 @@ def main() -> None:
                 circle_keys.add(k)
 
     backstory = (deceased.get("backstory") or "").lower()
-    for other_key, other_name in ((k, v["display_name"]) for k, v in npcs.items() if k not in ("_template", key)):
+    for other_key, other_name in ((k, v["name"]) for k, v in characters.items() if k != key):
         if other_name.lower() in backstory:
             circle_keys.add(other_key)
 
@@ -114,7 +124,7 @@ def main() -> None:
     print()
     print("NOTIFIED (write a knowledge.experience entry now):")
     for k in notified:
-        anchor = npcs[k].get("criterion", {}).get("anchor", "") or ""
+        anchor = characters[k].get("criterion", {}).get("anchor", "") or ""
         shock = anchor_references(anchor, deceased_name, entries_by_id) if anchor else False
         flag = "  <-- SHOCK CANDIDATE: anchor references the deceased, resolve per /character Step 6" if shock else ""
         print(f"  {k}{flag}")

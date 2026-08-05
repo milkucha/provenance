@@ -1,0 +1,18 @@
+{
+  "name": "Trifolis",
+  "city": "Puente Continental",
+  "backstory": "Archiecht.",
+  "knowledge": {
+    "education": {
+      "percent": null,
+      "mode": "",
+      "topic": null,
+      "items": []
+    },
+    "experience": []
+  },
+  "life": {
+    "lived": 0,
+    "deceased": false
+  }
+}

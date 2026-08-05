@@ -29,7 +29,7 @@ Farlis: lived 8→9. No shock (anchor not referenced).
 Dialog written: `khaoe_milkucha_jardin_de_los_parajes.json`. Hearsay entry recorded (24 total).
 Khaoe lived: 9 → 10. No shocks (anchor not referenced).
 
-- [ ] **Dialog registration ambiguous.** Khaoe already has an entry in `_maps/dialogs/registry.json`
+- [ ] **Dialog registration ambiguous.** Khaoe already has an entry in `_npcs/dialogs/registry.json`
       pointing to `khaoe_banco_colectivo.json`. This new dialog is a second conversation she has,
       this time with Milkucha (the player). Should it overwrite that entry, or should Khaoe's key
       point to a list, or should it stay separate in TODO until the registry format decision is made?
@@ -45,7 +45,7 @@ Khaoe lived: 9 → 10. No shocks (anchor not referenced).
 
 ## Sonoros (Balehm)
 
-- [ ] Decide skin (mineskin URL) — `_maps/npcs/registry.json` entry has it blank.
+- [ ] Decide skin (mineskin URL) — `_npcs/npcs/registry.json` entry has it blank.
 - [ ] Decide movement mode (`NONE` vs. roaming) — determines whether `resume_routine.mcfunction` /
       `check_proximity.mcfunction` are needed at all (README §4).
 - [ ] Set `spawn_position` in the registry, or stand at the spot manually before spawning.
@@ -58,12 +58,12 @@ Khaoe lived: 9 → 10. No shocks (anchor not referenced).
 - [x] Trigger/hosting decided (2026-07-30): proximity-based, same mechanism as the khaoe_farlis_*
       fragments — hosted under Nawom's key (his spawn.mcfunction will own the proximity check),
       rather than a plain right-click on either NPC.
-- [ ] Neither is registered in `_maps/npcs/registry.json` yet at all — no skin, city, backstory, or
+- [ ] Neither is registered in `_npcs/npcs/registry.json` yet at all — no skin, city, backstory, or
       spawn position decided for either. Run `/character` for both before building spawn functions.
 - [ ] Decide the dialog's `end` state action: resume routines for both NPCs, just the triggering
       one, or none at all (relying on the §4 proximity safety net)? Currently left with no `action`
       on purpose, pending this.
-- [ ] Register the dialog in `_maps/dialogs/registry.json` under Nawom's key once he's registered and
+- [ ] Register the dialog in `_npcs/dialogs/registry.json` under Nawom's key once he's registered and
       the proximity check exists — same shape as Nerkeli's `_comment` for
       `nuvilo_nerkeli_feria_del_milenio`.
 - [ ] Decide movement modes for both and build their spawn functions — Nawom's also needs the
@@ -91,8 +91,8 @@ Khaoe lived: 9 → 10. No shocks (anchor not referenced).
 
 - [x] Trigger/hosting decided (2026-07-30): proximity-based, same mechanism as the khaoe_farlis_*
       fragments — hosted under Nerkeli's key (his hangar, his spawn.mcfunction will own the proximity
-      check against Nuvilo). Registered in `_maps/dialogs/registry.json`.
-- [ ] Neither is registered in `_maps/npcs/registry.json` with a `spawn_position` or skin yet —
+      check against Nuvilo). Registered in `_npcs/dialogs/registry.json`.
+- [ ] Neither is registered in `_npcs/npcs/registry.json` with a `spawn_position` or skin yet —
       decide these for both.
 - [ ] Movement modes for both — likely `NONE` for at least the duration of the conversation (they're
       standing together by the hangar), but confirm.
@@ -171,7 +171,7 @@ Khaoe lived: 9 → 10. No shocks (anchor not referenced).
       false. Fixed by rewriting `roll_dialog.mcfunction` to use `time query gametime` reduced mod 3
       via a scoreboard operation instead — no special command needed. The three
       `execute if score ... run blabber dialogue start ...` dispatch commands stay directly-added
-      (per `_maps/actions/registry.json` → `_action_templates.random_dialog`, so `--clicker--`
+      (per `_npcs/actions/registry.json` → `_action_templates.random_dialog`, so `--clicker--`
       substitution keeps working); these are still the one piece of this mechanism not yet confirmed
       working end-to-end in-game.
       Also fixed in round 1, still holds: `@e[name=Döran,...]` (unquoted) failed to parse because `ö`
@@ -209,7 +209,7 @@ Khaoe lived: 9 → 10. No shocks (anchor not referenced).
       for a full conversation — check `logs/latest.log` for `doran` before assuming it's clean, same
       as every previous round.
 - [x] Skin decided: `https://minesk.in/c336e48215fb4759908960d4a2748b2a`, filled into
-      `_maps/npcs/registry.json` and `spawn.mcfunction`/`heal_skin.mcfunction`. `spawn_position` stays
+      `_npcs/npcs/registry.json` and `spawn.mcfunction`/`heal_skin.mcfunction`. `spawn_position` stays
       `null` — positioning him at the Plaza in-game will be manual, per user preference (same as
       Gondarfolas).
 - [x] Built `functions/npcs/doran/spawn.mcfunction` from the template, right-click action wired (see
@@ -238,7 +238,7 @@ Khaoe lived: 9 → 10. No shocks (anchor not referenced).
       `execute as @interlocutor run function luminacion:npcs/khaoe/resume_routine` action to the `end`
       state of all five of her dialogs (previously plain `end_dialogue` with no action). Updated the
       scoping language pack-wide to match: README §4 (now "every NPC", not "roaming NPCs only"),
-      `.claude/skills/spawn/SKILL.md` (Steps 2/5/6), and `_maps/actions/registry.json` →
+      `.claude/skills/spawn/SKILL.md` (Steps 2/5/6), and `_npcs/actions/registry.json` →
       `_action_templates.routine_pause_resume`. Also fixed, while touching `heal_skin.mcfunction`'s
       template: a stale `scoreboard players set <npc_key>_skin_cd luminacion.int 0` line that was
       never actually part of the real pattern (Gondarfolas's built file already omitted it — the two
@@ -271,7 +271,7 @@ Khaoe lived: 9 → 10. No shocks (anchor not referenced).
       - Wired only on Khaoe's own `spawn.mcfunction` for now — whether right-clicking **Farlis**
         himself should also trigger this same roll (mirroring it with a second `farlis_dialog_roll`
         score) is still open, deferred to whenever `functions/npcs/farlis/spawn.mcfunction` gets built.
-- [x] **`_maps/dialogs/registry.json` registration resolved** — all five dialogs now registered under
+- [x] **`_npcs/dialogs/registry.json` registration resolved** — all five dialogs now registered under
       Khaoe's key (she's the one whose `spawn.mcfunction` actually wires the trigger), each with a
       `condition` field describing its actual gate (pose / Farlis-proximity) instead of `null`. See the
       registry's own `_comment` on the `khaoe` entry for the full mechanism summary.
@@ -289,7 +289,7 @@ Khaoe lived: 9 → 10. No shocks (anchor not referenced).
       enacted this run and his registry entry was left untouched — his one-word backstory tag is
       "Teletraveller," which the hearsay record for `khaoe_farlis_esperando_a_khaasan.json` already
       flags as a divergence from the "arrives by griffon" expectation voiced in-scene (see
-      `_lore/hearsay/hearsay.md`). Left unresolved on purpose — see that entry's note before deciding
+      `_lore/characters/hearsay.md`). Left unresolved on purpose — see that entry's note before deciding
       whether Khaasan's own eventual `/enact` pass should reconcile it or lean into the contradiction.
 
 ## Farlis, Aureobalo, Khaoe, Khaasan & Bardaglis (bar in Salthos Cruzados — Feria del Milenio, opening night)
@@ -305,7 +305,7 @@ covering everything each character's sample would allow.
       `aureobalo_khaasan_bar_salthos_cruzados`, `farlis_khaoe_bar_salthos_cruzados`,
       `khaoe_khaasan_bar_salthos_cruzados`, `farlis_bardaglis_bar_salthos_cruzados`.
 - [ ] Two-NPC dialog registration is an open question for all five scenes in this section, same as the
-      Nawom & Morkulo precedent: `_maps/dialogs/registry.json` assumes one dialog per NPC key. Ask the
+      Nawom & Morkulo precedent: `_npcs/dialogs/registry.json` assumes one dialog per NPC key. Ask the
       user how these should be registered once converted.
 - [ ] Khaasan resolved this run (2026-07-30): drew his first `knowledge.education` sample (26%,
       composite — see registry) and the user confirmed he always travels by griffon ("Teletraveller"
@@ -462,7 +462,7 @@ construction — every other line keeps its ordinary nod untouched.
       `saves/Miniatures/resources.zip` for local per-world testing (Minecraft's per-world resource
       pack mechanism), and separately emits `dist/Luminacion/` (datapack: `data/` + its `pack.mcmeta`)
       and `dist/Luminacion-resourcepack.zip` (resource pack) for release — built only from `data/` and
-      `assets/`, leaving `_lore/`, `_maps/`, `_templates/`, `scripts/`, and the docs out of both.
+      `assets/`, leaving `_lore/`, `_npcs/`, `_templates/`, `scripts/`, and the docs out of both.
 - [ ] Need a second `pack.mcmeta` for the resource pack (own `pack_format`) — the datapack's existing
       root `pack.mcmeta` can't serve both.
 - [ ] Convert existing dialogue files to translation keys via the extractor once it exists (currently
@@ -478,6 +478,51 @@ construction — every other line keeps its ordinary nod untouched.
 - [ ] Not yet run end-to-end against real material or a real drift case — worth a first live pass
       next time material is added or a periodic audit is due, to confirm the three passes hold up in
       practice rather than just on paper.
+
+## Schema evolution in `encodings.json` and criterion epistemology (CRITICAL, 2026-08-05)
+
+**IMPORTANT ARCHITECTURAL ISSUE:** The current `/integrate` skill and sampling system assume a fixed
+schema (`time_systems`, `locations`, `routes`, `characters`, `concepts`, `conflicts`, `hearsay`,
+`tales`) that was established on first material analysis. However, the original design intent was for
+the lore structure itself to *emerge organically* from material analysis — categories should not be
+frozen in place.
+
+This matters because:
+
+1. **Lore extensibility:** If new material introduces genuinely novel organizational structure (e.g.,
+   "alien cultures" that don't fit cleanly into existing categories), the current `/integrate` skill
+   has no mechanism to recognize this and propose new categories — it just force-fits into the old
+   schema.
+
+2. **Criterion epistemology:** Categories in `encodings.json` drive the sampling categories
+   (`era_libro`, `era_ensayo`, `hearsay`, etc.) used by `scripts/sample_lore_knowledge.py`, which in
+   turn determine the epistemology anchors (`criterion.trusts`/`distrusts`) that characters derive at
+   creation. If the schema evolves, the sampling categories would need to evolve alongside it,
+   automatically giving new criteria new epistemologies as new source types emerge.
+
+3. **Current limitation:** The sampling script hardcodes paths into `encodings.json` to extract
+   categories (e.g., line 83: `for e in data["time_systems"]["ensayo_i_eras"]`). This is rigid —
+   it can't discover categories dynamically.
+
+**What needs to change:**
+
+- [ ] **`/integrate` Pass 1 must detect novel structure.** When analyzing new material, if an entry
+      doesn't fit the current top-level categories cleanly, the skill should flag it: "This material
+      introduces [novel structure]. Should we create a new category for it, or does it belong under
+      [existing category]?" — and only continue if the user decides. Never silently squeeze novel
+      structure into existing boxes.
+
+- [ ] **`encodings.json` schema must be able to evolve.** When a user approves a new category, that
+      category gets added to `encodings.json` alongside the existing ones, and is immediately available
+      for future material analysis.
+
+- [ ] **Sampling script must discover categories dynamically.** Instead of hardcoding paths,
+      `scripts/sample_lore_knowledge.py` should introspect the actual structure of `encodings.json`
+      and extract whatever categories exist, allowing the pool to automatically include new categories
+      as they emerge. The sampling categories available to derive criteria would then expand naturally.
+
+This is a prerequisite for the lore system to grow without architectural friction as new materials
+accumulate over time.
 
 ## Conflict-resolution skill (proposed, pinned 2026-08-05)
 
@@ -528,7 +573,7 @@ Dialogs written and fully recorded (hearsay entry, `hearsay.md`, registry experi
 resolution, `life.lived`): `khaoe_khaasan_partida_a_khan_ice.json`,
 `aureobalo_farlis_castillo_en_miniatura.json`, `bardaglis_ilaria_khaoe_segunda_noche.json`.
 
-- [ ] **None of the three is registered in `_maps/dialogs/registry.json`** — all are multi-NPC, and
+- [ ] **None of the three is registered in `_npcs/dialogs/registry.json`** — all are multi-NPC, and
       the registry format assumes one dialog per NPC key. Same unresolved question as the Nawom &
       Morkulo precedent; not guessed. Decide the shape (host under one participant's key? a new
       multi-NPC section?) and apply it to all four at once.

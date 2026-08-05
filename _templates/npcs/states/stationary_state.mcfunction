@@ -3,7 +3,7 @@
 # =============================================================================
 # For NPCs that switch between multiple named "states" at runtime (e.g.
 # standing still for one scene, roaming for another) — see
-# _maps/actions/registry.json → _action_templates.multi_state_npc for the full
+# _npcs/actions/registry.json → _action_templates.multi_state_npc for the full
 # convention. Skip this whole states/ pattern if this NPC only ever has one
 # movement mode for its entire lifetime — use plain spawn.mcfunction instead.
 #

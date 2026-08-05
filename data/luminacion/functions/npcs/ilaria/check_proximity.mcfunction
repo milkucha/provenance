@@ -6,7 +6,7 @@
 #
 # Built even though Iläria's movement mode is NONE — this machinery (pause/
 # resume tagging + periodic self-heal) is no longer gated on movement mode,
-# see _maps/actions/registry.json -> _action_templates.routine_pause_resume.
+# see _npcs/actions/registry.json -> _action_templates.routine_pause_resume.
 # =============================================================================
 
 # A player got within 2 blocks: stop the routine and become interactable.
@@ -16,7 +16,7 @@ execute as @e[type=taterzens:npc,name="Iläria",limit=1,tag=!luminacion.paused] 
 # click from beyond 2 blocks (trivial in creative, 6-block reach) would otherwise
 # undo the pause on the very next tick while the dialog is still open, since
 # Taterzens has no interact-range override on top of plain vanilla reach. Confirmed
-# in-game via Döran, 2026-07-25 — see _maps/actions/registry.json →
+# in-game via Döran, 2026-07-25 — see _npcs/actions/registry.json →
 # _action_templates.routine_pause_resume for the full writeup. Keep this wider than
 # the 2-block pause trigger above.
 execute as @e[type=taterzens:npc,name="Iläria",limit=1,tag=luminacion.paused] at @s unless entity @a[distance=..6] run function luminacion:npcs/ilaria/resume_routine

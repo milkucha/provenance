@@ -1,0 +1,18 @@
+{
+  "name": "Kjon-Ukk",
+  "city": "Khan Ice, Görff",
+  "backstory": "Travels locally between Khan Ice and Görff by griffon.",
+  "knowledge": {
+    "education": {
+      "percent": null,
+      "mode": "",
+      "topic": null,
+      "items": []
+    },
+    "experience": []
+  },
+  "life": {
+    "lived": 0,
+    "deceased": false
+  }
+}

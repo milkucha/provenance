@@ -1,12 +1,14 @@
 ---
-description: Create or update a character's entry in _maps/npcs/registry.json — backstory, location, knowledge, criterion, and lifespan — without running a full /enact conversation. Use when the user wants to flesh out a character's sheet on its own, ahead of (or instead of) enacting a dialog.
+description: Create or update a character's entry in _lore/characters/<key>.json — backstory, location, knowledge, criterion, and lifespan — without running a full /enact conversation. Use when the user wants to flesh out a character's sheet on its own, ahead of (or instead of) enacting a dialog.
 disable-model-invocation: true
 ---
 
-Lighter-weight sibling of `/enact` Step 1/Step 6: this skill only maintains a character's entry in
-`_maps/npcs/registry.json`. It never touches `_maps/dialogs/registry.json` or writes a dialog file —
-if the user wants an actual conversation, point them at `/enact` instead once the sheet is in good
-shape.
+Lighter-weight sibling of `/enact` Step 1/Step 6: this skill only maintains a character's file in
+`_lore/characters/<key>.json` — purely lore, no Minecraft-facing field anywhere in it. It never
+touches `_npcs/npcs/registry.json`, `_npcs/dialogs/registry.json`, or writes a dialog file — a
+character can exist here fully fleshed out with no in-game representation at all. If the user wants an
+actual conversation, point them at `/enact` instead once the sheet is in good shape; if they want this
+character embodied in-game, that's `/embody` or `/spawn`, never this skill.
 
 This skill also **owns the criterion model** (Steps 4 and 6 below). `/enact` derives and revises
 criteria by pointing back here rather than restating the procedure — keep the canonical version in
@@ -14,12 +16,20 @@ this file and don't fork it.
 
 ## Step 1 — Name
 
-Ask for the character's name. Look it up (case-insensitively, lowercased key) in
-`_maps/npcs/registry.json`.
+Ask for the character's name. Slugify it (lowercase, diacritics folded, non-alphanumerics →
+underscore — see `scripts/check_character_name.py`) and look for `_lore/characters/<slug>.json`.
+
+If no such file exists, this is a brand-new character — **before proceeding, run**
+`python scripts/check_character_name.py "<name>"` **and confirm it reports `AVAILABLE`.** This is the
+single shared enforcement point for name uniqueness (`/enact` Step 1 calls the same script the same
+way) — every character ever created, living or deceased, must have a name that slugifies uniquely. If
+it reports `TAKEN`, tell the user and ask for a distinguishing variant (a surname or epithet — e.g.
+`"Farlis Gorfalis"` alongside an existing `"Farlis"` is fine, since they slugify differently). Skip
+this check entirely when the file already exists — that's Step 2a, not a new name.
 
 ## Step 2a — Existing entry
 
-If the key exists, show the user its current non-blank fields (`display_name`, `city`, `backstory`,
+If the file exists, show the user its current non-blank fields (`name`, `city`, `backstory`,
 `knowledge.education` summary if populated, `knowledge.experience` count, `criterion.standard`,
 `life.lived`, and `scripts/horizon.py`'s band) as context, then ask, as plain conversation, what
 needs to be updated.
@@ -38,13 +48,13 @@ or redo their knowledge, or just fix a typo.
   criterion changes only through a shock in a lived scene (Step 6), never by being recomputed on a
   sheet edit. The one exception is a corrective: if the user says the derivation was simply wrong,
   fix it in place and note the correction in `criterion.history` with `"cause": "author correction"`.
-- **Lifespan** — if the character has no entry in `_maps/npcs/lifespans.json`, roll it (Step 5). If
-  they do, never reroll.
+- **Lifespan** — if the character has no entry in `_lore/characters/lifespans.json`, roll it (Step 5).
+  If they do, never reroll.
 
 ## Step 2b — New entry
 
-If the key doesn't exist, this is a brand-new character. Ask, as plain conversation (not
-multiple-choice):
+If no file exists for this slug, this is a brand-new character — confirm the Step 1 uniqueness check
+came back `AVAILABLE` before going any further. Ask, as plain conversation (not multiple-choice):
 
 1. **Backstory** — optional.
 2. **Location** — optional, fills `city`.
@@ -183,8 +193,8 @@ else in this pack: nothing gets decided silently.
 
 ## Step 5 — Roll the lifespan
 
-Only when the character has no entry in `_maps/npcs/lifespans.json`. Once rolled, never rerolled —
-same discipline as `knowledge.education`.
+Only when the character has no entry in `_lore/characters/lifespans.json`. Once rolled, never
+rerolled — same discipline as `knowledge.education`.
 
 ```bash
 python scripts/roll_lifespan.py
@@ -192,20 +202,20 @@ python scripts/roll_lifespan.py
 python scripts/roll_lifespan.py --min 2 --max 4
 ```
 
-**The span goes in `_maps/npcs/lifespans.json`, never in the registry entry.** This is structural,
-not stylistic: the registry entry is what `/enact` loads in order to *play* a character, so a span
-sitting there would put the number in that character's own context at exactly the moment it must not
-be. Keeping it in a separate file that the enactment never opens is what actually makes it
+**The span goes in `_lore/characters/lifespans.json`, never in the character's own file.** This is
+structural, not stylistic: the character's own file is what `/enact` loads in order to *play* them, so
+a span sitting there would put the number in that character's own context at exactly the moment it
+must not be. Keeping it in a separate file that the enactment never opens is what actually makes it
 inaccessible; a written rule alone did not.
 
-The registry's `life` object therefore holds only `lived` — how many scenes they've had, which is
-just their history and no secret at all.
+The character file's `life` object therefore holds only `lived` — how many scenes they've had, which
+is just their history and no secret at all.
 
 Anything that needs to know how far through a life a character is asks `scripts/horizon.py`, which
 answers with a coarse band and never the number:
 
 ```bash
-python scripts/horizon.py <npc_key>     # -> band: early | established | late | final
+python scripts/horizon.py <npc_key>     # -> band: early | established | late, plus ending: true|false
 ```
 
 `--verbose` will print the raw span, and exists only for author-side bookkeeping like this step.
@@ -300,11 +310,14 @@ accepted — whether a cornered character rebuilds the meaning or lets it go —
 on provenance, proximity, and susceptibility alone, and bias toward **reinterpretation**: breaking a
 criterion should stay rare enough that when it happens it's the event of that character's life.
 
-## Step 7 — Write the registry entry
+## Step 7 — Write the character file
 
-Update (or create) the character's entry in `_maps/npcs/registry.json`, key = lowercased name:
+Update (or create) `_lore/characters/<slug>.json`:
 
-- `display_name`, `taterzen_name` — the name, if not already set.
+- `name` — the character's name, if not already set. This is the canonical name — if the character is
+  later embodied in-game (`/embody` or `/spawn`), it gets copied into
+  `_npcs/npcs/registry.json`'s `display_name`/`taterzen_name` at that point, not authored there
+  independently.
 - `city` — from Step 2, if given.
 - `backstory` — from Step 2, appended/amended per the rule above.
 - `knowledge.education` — `{percent, mode, topic, items}` exactly as drawn in Step 3, only if this was
@@ -313,9 +326,12 @@ Update (or create) the character's entry in `_maps/npcs/registry.json`, key = lo
   history}` from Step 4, only if this was a fresh derivation. `origin` is `"derived"` (from a
   collision) or `"uncollided"` (Step 4e). `trusts`/`distrusts` may legitimately be blank even on a
   derived criterion (Step 4d's ambiguous case). Otherwise leave untouched.
-- `life` — `{lived}` only. Starts at 0 for a new character, is backfilled from the hearsay record for
-  an existing one (Step 5), and is otherwise only ever incremented by `/enact`. **The span does not
-  go here** — it goes in `_maps/npcs/lifespans.json` (Step 5).
-- `skin`, `taterzen_uuid`, `spawn_position` — leave blank/null. Not this skill's job.
+- `life` — `{lived, deceased}`. `lived` starts at 0 for a new character, is backfilled from the
+  hearsay record for an existing one (Step 5), and is otherwise only ever incremented by `/enact`.
+  `deceased` starts `false` and is only ever set by `/enact`. **The span does not go here** — it goes
+  in `_lore/characters/lifespans.json` (Step 5).
+
+This skill never touches `_npcs/npcs/registry.json` — `skin`, `taterzen_uuid`, `spawn_position`,
+`display_name`, `taterzen_name` are entirely `/embody`'s and `/spawn`'s concern.
 
 Validate the file still parses as JSON before finishing.

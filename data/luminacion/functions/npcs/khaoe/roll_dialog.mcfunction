@@ -5,7 +5,7 @@
 # afterward by the three Farlis-proximity-gated "blabber dialogue start"
 # commands added in spawn.mcfunction (the khaoe_farlis_* ambient scene
 # fragments). Same mechanism as functions/npcs/doran/roll_dialog.mcfunction —
-# see that file and _maps/actions/registry.json -> _action_templates.random_dialog
+# see that file and _npcs/actions/registry.json -> _action_templates.random_dialog
 # for the full rationale on why this doesn't use the vanilla /random command
 # (confirmed unavailable in this pack's server environment).
 #

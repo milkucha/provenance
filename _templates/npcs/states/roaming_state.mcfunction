@@ -2,7 +2,7 @@
 # Luminacion — NPC Roaming State Template
 # =============================================================================
 # For NPCs that switch between multiple named "states" at runtime — see
-# _maps/actions/registry.json → _action_templates.multi_state_npc for the full
+# _npcs/actions/registry.json → _action_templates.multi_state_npc for the full
 # convention. Skip this whole states/ pattern if this NPC only ever roams —
 # use _templates/npcs/paths/select_path.mcfunction directly instead.
 #

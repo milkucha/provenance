@@ -4,7 +4,7 @@
 # WORKFLOW:
 #   1. Duplicate as: functions/npcs/<npc_key>/resume_routine.mcfunction
 #   2. Fill <MODE> below to match this NPC's routine movement mode
-#      (see _maps/actions/registry.json -> movement action for this NPC).
+#      (see _npcs/actions/registry.json -> movement action for this NPC).
 #      For FOLLOW mode, replace the line with:
 #        npc edit movement FOLLOW <name>
 #        npc edit movement FOLLOW UUID <uuid>

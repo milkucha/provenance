@@ -2,16 +2,16 @@
 Roll a character's lifespan - how many scenes they have left in them, total.
 
 Used by the /character skill when a character's sheet is first created (and by /enact when it creates
-one), writing the result to _maps/npcs/lifespans.json - NOT to the registry entry, which is what
-/enact loads in order to play the character. Rolled once, never rerolled - same discipline as
+one), writing the result to _lore/characters/lifespans.json - NOT to the character's own file, which is
+what /enact loads in order to play them. Rolled once, never rerolled - same discipline as
 knowledge.education. Anything needing to know how far through a life a character is asks
 scripts/horizon.py, which answers with a coarse band and never the number.
 
 The character is never told the number. They know life is finite (that's the `life_is_finite` fact in
 _lore/facts/, which every character knows in full), but not how much of it is left - exactly the way
-people actually live. The one exception is the scene that turns out to be the last: a character
-enters their final encounter knowing it is the final one, and never learns it one scene early. See
-_lore/facts/life_is_finite.md.
+people actually live. There is no exception, not even for the scene that turns out to be the last:
+that scene is played exactly like any other, and whether it was the last is only knowable afterward,
+mechanically, once it has already closed. See _lore/facts/life_is_finite.md and scripts/horizon.py.
 
 The range is a tuning knob, not a world fact. Narrow it for testing when you want to actually reach a
 character's last scene without playing a dozen of them first:
@@ -50,8 +50,8 @@ def main() -> None:
     print(f"span: {span}")
     print(f"range: {args.minimum}-{args.maximum}")
     print()
-    print("Write to _maps/npcs/lifespans.json - never to the registry entry, which /enact loads to play")
-    print("the character. Do not reveal this number to them and never let it into a dialog line.")
+    print("Write to _lore/characters/lifespans.json - never to the character's own file, which /enact")
+    print("loads to play them. Do not reveal this number to them and never let it into a dialog line.")
     print("See _lore/facts/life_is_finite.md and scripts/horizon.py.")
 
 

@@ -44,8 +44,8 @@ dialogue (not produced via `/enact`) can skip README §8 Step 5 entirely without
 
 1. List every non-template file in `data/luminacion/blabber/dialogues/` (exclude `_template_*.json`).
 2. Cross-check each against `encodings.json`'s `hearsay.entries` array (`source_file` field) and
-   `_lore/hearsay/hearsay.md`. Both are meant to mirror each other exactly (see `hearsay._method_note`
-   in `encodings.json`) — a dialogue needs a matching entry in *both*.
+   `_lore/characters/hearsay.md`. Both are meant to mirror each other exactly (see
+   `hearsay._method_note` in `encodings.json`) — a dialogue needs a matching entry in *both*.
 3. For any dialogue missing coverage, build the entry per README §8 Step 5: `participants`,
    `location`, `summary`, and a `claims` list phrased as reported assertions (not restated as fact),
    each with an `about` reference into the objective arrays (or a bare era/`CONFLICT-##` name). Check
@@ -70,17 +70,17 @@ dialogue (not produced via `/enact`) can skip README §8 Step 5 entirely without
 
 **Trigger:** on request, or periodically alongside Pass 2.
 
-1. Walk `_maps/npcs/registry.json`'s `knowledge.education.items` and `knowledge.experience` for every
-   NPC, plus every `hearsay.entries[].claims[].about` reference in `encodings.json`. Confirm every
-   `about` id that isn't `null` or a bare era/`CONFLICT-##` name resolves to a real entry somewhere in
-   `locations`/`characters`/`concepts`/etc.
+1. Walk every `_lore/characters/*.json` file's `knowledge.education.items` and
+   `knowledge.experience` (skip `_template.json`), plus every `hearsay.entries[].claims[].about`
+   reference in `encodings.json`. Confirm every `about` id that isn't `null` or a bare era/
+   `CONFLICT-##` name resolves to a real entry somewhere in `locations`/`characters`/`concepts`/etc.
 2. Walk every `tales.entries[].touches` array. Confirm each id listed actually exists where it claims
    to (an added/amended entry in `locations`/`characters`/`concepts`/`routes`/`time_systems`, or a
    `CONFLICT-##` id in `conflicts`), and that the referenced entry actually carries the matching
    `tale:<id>` source tag. Flag either direction of drift: a `touches` id that doesn't resolve, or a
    `tale:` source tag in the objective arrays with no corresponding id in that tale's own `touches`
    list.
-3. Cross-check `_maps/dialogs/registry.json` against `data/luminacion/blabber/dialogues/`: flag any
+3. Cross-check `_npcs/dialogs/registry.json` against `data/luminacion/blabber/dialogues/`: flag any
    registered dialog id with no matching file, and any dialogue file with no registry entry (the
    latter is expected for a few in-flight two-NPC scenes still open in `TODO.md` — check there before
    flagging one as a bug).

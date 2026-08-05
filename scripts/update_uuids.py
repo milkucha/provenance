@@ -6,7 +6,7 @@ Uses only the Python standard library.
 
 WORKFLOW
 --------
-1. Add NPCs to _maps/npcs/registry.json (all fields except taterzen_uuid).
+1. Add NPCs to _npcs/npcs/registry.json (all fields except taterzen_uuid).
 
 2. Generate the in-game export function:
        python scripts/update_uuids.py generate
@@ -36,7 +36,7 @@ from pathlib import Path
 # Paths (relative to project root, one level above /scripts)
 # ---------------------------------------------------------------------------
 ROOT          = Path(__file__).resolve().parent.parent
-REGISTRY_PATH = ROOT / "_maps" / "npcs" / "registry.json"
+REGISTRY_PATH = ROOT / "_npcs" / "npcs" / "registry.json"
 FUNCTION_PATH = ROOT / "data" / "luminacion" / "functions" / "admin" / "export_npc_uuids.mcfunction"
 
 
@@ -82,7 +82,7 @@ def cmd_generate(registry: dict) -> None:
     npcs = active_npcs(registry)
 
     if not npcs:
-        print("No NPCs in registry yet. Add entries to _maps/npcs/registry.json first.")
+        print("No NPCs in registry yet. Add entries to _npcs/npcs/registry.json first.")
         sys.exit(1)
 
     lines = [

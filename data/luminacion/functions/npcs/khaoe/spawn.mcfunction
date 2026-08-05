@@ -66,7 +66,7 @@ npc edit commands setPermissionLevel 2
 #   1. Farlis-proximity (highest priority): if the NPC named Farlis is within
 #      5 blocks of Khaoe, right-clicking her picks one of the three ambient
 #      khaoe_farlis_* scene fragments at random (equal odds, via roll_dialog
-#      — see _maps/actions/registry.json -> _action_templates.random_dialog).
+#      — see _npcs/actions/registry.json -> _action_templates.random_dialog).
 #      This assumes the two of them are standing together for the scene;
 #      Farlis's own spawn.mcfunction (not yet built) still needs to decide
 #      separately whether right-clicking HIM also triggers this same roll —
@@ -84,7 +84,7 @@ npc edit commands setPermissionLevel 2
 # @e[name=Khaoe,...] / @e[name=Farlis,...] are left unquoted: both names are
 # plain ASCII, no characters outside Brigadier's unquoted-string charset
 # (unlike Döran/Dägna elsewhere in this pack — see
-# _maps/actions/registry.json -> _action_templates.random_dialog for why
+# _npcs/actions/registry.json -> _action_templates.random_dialog for why
 # that distinction matters when it DOES apply).
 
 npc edit commands add minecraft function luminacion:npcs/_shared/enter_dialog
@@ -98,7 +98,7 @@ npc edit commands add minecraft execute unless entity @e[name=Farlis,distance=..
 
 # --- REGISTRATION REMINDER ----------------------------------------------------
 # UUID capture is automated — do not copy it by hand. Once this NPC (and any
-# others) are created and registered in _maps/npcs/registry.json, run:
+# others) are created and registered in _npcs/npcs/registry.json, run:
 #   1. python scripts/update_uuids.py generate
 #   2. /reload
 #   3. /function luminacion:admin/export_npc_uuids

@@ -13,8 +13,8 @@ Three graphs come out of one run:
 Everything is read from the repo's own sources of truth, so the page stays true as the
 world grows. Nothing is hand-maintained here except the concept graph's shape.
 
-    python scripts/graphifyish.py            # writes _maps/graphs/graphifyish/graphifyish.html
-    python scripts/graphifyish.py --json     # also dump _maps/graphs/graphifyish/graph.json
+    python scripts/graphifyish.py            # writes graphs/graphifyish/graphifyish.html
+    python scripts/graphifyish.py --json     # also dump graphs/graphifyish/graph.json
 """
 
 from __future__ import annotations
@@ -30,13 +30,14 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 ENCODINGS = ROOT / "_lore" / "encodings.json"
-NPCS = ROOT / "_maps" / "npcs" / "registry.json"
-DIALOGS = ROOT / "_maps" / "dialogs" / "registry.json"
-ACTIONS = ROOT / "_maps" / "actions" / "registry.json"
+NPCS = ROOT / "_npcs" / "npcs" / "registry.json"
+CHAR_DIR = ROOT / "_lore" / "characters"
+DIALOGS = ROOT / "_npcs" / "dialogs" / "registry.json"
+ACTIONS = ROOT / "_npcs" / "actions" / "registry.json"
 FACTS = ROOT / "_lore" / "facts" / "facts.json"
 AUTHORS = ROOT / "_lore" / "tale" / "_authors.md"
 DIALOGUE_DIR = ROOT / "data" / "luminacion" / "blabber" / "dialogues"
-OUT_DIR = ROOT / "_maps" / "graphs" / "graphifyish"
+OUT_DIR = ROOT / "graphs" / "graphifyish"
 
 # Directories that are never part of the picture.
 SKIP_DIRS = {".git", ".venv", "__pycache__", "node_modules", ".idea", ".vscode"}
@@ -116,7 +117,11 @@ class Graph:
 
 def build_lore() -> tuple[Graph, dict]:
     enc = load(ENCODINGS)
-    npcs = load(NPCS)["npcs"]
+    npcs = load(NPCS)["npcs"]  # Minecraft-side only now: skin, taterzen_uuid, taterzen_name, spawn_position
+    characters = {
+        p.stem: load(p) for p in CHAR_DIR.glob("*.json") if p.stem not in ("_template", "lifespans")
+    }  # lore-side: name, city, backstory, knowledge, criterion, life - the full character universe,
+       # since a character can exist here with no Minecraft entry at all (never embodied)
     dialog_reg = load(DIALOGS)["npcs"]
     g = Graph("lore")
 
@@ -352,27 +357,26 @@ def build_lore() -> tuple[Graph, dict]:
                 return next(iter(fold))
         return None
 
-    for key, npc in npcs.items():
-        if key.startswith("_"):
-            continue
-        edu = (npc.get("knowledge", {}) or {}).get("education", {}) or {}
+    for key, character in characters.items():
+        npc = npcs.get(key, {})  # Minecraft entry - may not exist if never embodied
+        edu = (character.get("knowledge", {}) or {}).get("education", {}) or {}
         items = edu.get("items") or []
-        experience = (npc.get("knowledge", {}) or {}).get("experience") or []
-        criterion = npc.get("criterion") or {}
-        life = npc.get("life") or {}
-        developed = bool(npc.get("backstory")) or edu.get("percent") is not None
+        experience = (character.get("knowledge", {}) or {}).get("experience") or []
+        criterion = character.get("criterion") or {}
+        life = character.get("life") or {}
+        developed = bool(character.get("backstory")) or edu.get("percent") is not None
         nid = g.node(
-            f"npc:{key}", npc.get("display_name") or key, "npc",
-            city=npc.get("city", ""), skin=bool(npc.get("skin")),
-            uuid=bool(npc.get("taterzen_uuid")), backstory=npc.get("backstory", ""),
+            f"npc:{key}", character.get("name") or key, "npc",
+            city=character.get("city", ""), skin=bool(npc.get("skin")),
+            uuid=bool(npc.get("taterzen_uuid")), backstory=character.get("backstory", ""),
             education=edu.get("percent"), mode=edu.get("mode", ""),
             known=len(items), experience=experience, developed=developed,
             criterion=criterion.get("standard", ""), lifespan=life.get("span"),
-            file="_maps/npcs/registry.json#npcs",
+            embodied=bool(npc), file="_lore/characters/",
         )
 
         # where they live - the city field is a comma-separated list of place names
-        for place in [p.strip() for p in (npc.get("city") or "").split(",") if p.strip()]:
+        for place in [p.strip() for p in (character.get("city") or "").split(",") if p.strip()]:
             target = resolve_place(place)
             if target:
                 g.edge(nid, target, "lives_in")
@@ -384,7 +388,7 @@ def build_lore() -> tuple[Graph, dict]:
                        "lives_in")
 
         # the census entry this NPC was drawn from
-        twin = inhabitant_index.get(norm(npc.get("display_name") or key))
+        twin = inhabitant_index.get(norm(character.get("name") or key))
         if twin:
             g.edge(nid, twin, "is")
 
@@ -485,8 +489,9 @@ FILE_KINDS = [
     (r"^scripts/", "script"),
     (r"^_lore/material/", "material"),
     (r"^_lore/", "lore"),
-    (r"^_maps/", "registry"),
+    (r"^_npcs/", "registry"),
     (r"^_templates/", "template"),
+    (r"^graphs/", "graph"),
     (r"blabber/dialogues/", "dialogue"),
     (r"^data/.*\.mcfunction$", "function"),
     (r"^data/", "datapack"),
@@ -567,11 +572,11 @@ def build_concept(lore: Graph, structure: Graph) -> Graph:
     piece("src:facts", "_lore/facts", "source", 1, "layer:1",
           note=f"{kinds['fact']} facts - never sampled, known by everyone")
 
-    piece("sup:npcs", "_maps/npcs/registry.json", "registry", 2, "layer:2",
+    piece("sup:npcs", "_npcs/npcs/registry.json", "registry", 2, "layer:2",
           note=f"{kinds['npc']} NPC sheets")
-    piece("sup:dialogs", "_maps/dialogs/registry.json", "registry", 2, "layer:2",
+    piece("sup:dialogs", "_npcs/dialogs/registry.json", "registry", 2, "layer:2",
           note="which NPC speaks which dialog")
-    piece("sup:actions", "_maps/actions/registry.json", "registry", 2, "layer:2",
+    piece("sup:actions", "_npcs/actions/registry.json", "registry", 2, "layer:2",
           note="action templates + gesture dispatch")
     piece("sup:templates", "_templates/npcs", "template", 2, "layer:2",
           note=f"{templates} template files")
@@ -629,7 +634,7 @@ def render(payload: dict, out: Path) -> None:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--json", action="store_true", help="also write _maps/graphs/graphifyish/graph.json")
+    ap.add_argument("--json", action="store_true", help="also write graphs/graphifyish/graph.json")
     ap.add_argument("-o", "--out", default=str(OUT_DIR / "graphifyish.html"))
     args = ap.parse_args()
 

@@ -10,7 +10,7 @@
 # Sets the guard on the "nuvilo" branch of the luminacion:npcs storage
 # regardless of which NPC triggered it — one shared guard is enough, read
 # from both entities' contexts in hangar_dialog_tick.mcfunction (see
-# _maps/actions/registry.json → _action_templates.proximity_dialog for why a
+# _npcs/actions/registry.json → _action_templates.proximity_dialog for why a
 # storage flag is used here instead of an entity tag).
 # =============================================================================
 

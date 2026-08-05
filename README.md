@@ -18,7 +18,7 @@ orientation.** Everything past that, read only the section(s) the task at hand a
   - [Layer 2 — Supporting functions](#layer-2--supporting-functions)
   - [Layer 3 — Datapack](#layer-3--datapack)
   - [Layer 4 — Resource pack](#layer-4--resource-pack)
-- [§1 Folder structure](#1-folder-structure) — compulsory: the literal `data/`/`_maps/`/`_templates/` tree
+- [§1 Folder structure](#1-folder-structure) — compulsory: the literal `data/`/`_npcs/`/`_templates/` tree
 - [§2 Core concepts](#2-core-concepts) — compulsory: NPC / Dialog / Action / routine pause-resume, defined
 - [§3 Building a new NPC, start to finish](#3-building-a-new-npc-start-to-finish) — the manual walkthrough (`/spawn` automates this)
   - [Step 1 — Register it](#step-1--register-it)
@@ -48,7 +48,7 @@ The system has four layers, each authored from the one below it:
         ↑
 3. Datapack           data/luminacion/ — functions, predicates, tags, dialogues Minecraft loads
         ↑
-2. Supporting layer   _templates/, _maps/actions/registry.json (_action_templates), gesture dispatch
+2. Supporting layer   _templates/, _npcs/actions/registry.json (_action_templates), gesture dispatch
         ↑
 1. Foundation         skills (/enact, /spawn, /integrate) + _lore/ (material → analysis)
 ```
@@ -73,7 +73,7 @@ The system has four layers, each authored from the one below it:
     `encodings.json`'s `tales` category. Real-world provenance (`responsible` — who told the system) is
     recorded separately, in `_lore/tale/_authors.md`, never in `encodings.json`.
   - **`/character`** (`character/SKILL.md`) — maintains a character's sheet in
-    `_maps/npcs/registry.json` on its own, without running a conversation: backstory, city, knowledge
+    `_npcs/npcs/registry.json` on its own, without running a conversation: backstory, city, knowledge
     sample, **criterion**, and **lifespan**. It owns the criterion model — Step 4 derives one, Step 5
     rolls a lifespan, and Step 6 is the canonical reference for how a criterion changes. `/enact`
     points back at those rather than restating them.
@@ -135,7 +135,7 @@ Reusable patterns every NPC/dialog is built from, so each new one doesn't reinve
   directly. See §1.
 - `data/luminacion/blabber/dialogues/_template_*.json` — the three dialog shapes (one-off, linear,
   branching). See §1/§3.
-- `_maps/actions/registry.json`'s `_action_templates` — documents every right-click action pattern
+- `_npcs/actions/registry.json`'s `_action_templates` — documents every right-click action pattern
   (`movement`, `give_item`, `blabber_dialog`, `routine_pause_resume`, `scripted_path`,
   `multi_state_npc`, `random_dialog`, `scoreboard_set`) with copy-paste command patterns and, for
   several, hard-won in-game debugging notes (why `/random` never resolves in this environment, why
@@ -225,7 +225,7 @@ Luminacion/
 │   │                                   tale, walled off from encodings.json; not lore)
 │   └── facts/                         (universal, NEVER sampled — facts.json + one .md per fact,
 │       └── _authors.md                see _index.md; deliberately outside encodings.json)
-├── _maps/
+├── _npcs/
 │   ├── npcs/registry.json             (master NPC data: name, skin, city, UUID, spawn position,
 │   │                                   backstory, knowledge, criterion, life.lived)
 │   ├── npcs/lifespans.json            (SECRET — each character's total span, kept out of the
@@ -251,7 +251,8 @@ Luminacion/
     ├── roll_lifespan.py               (rolls how many scenes a character has in them, 30–60 —
     │                                   written to lifespans.json, never to the registry)
     ├── horizon.py                     (the only thing /enact may ask about a life's horizon —
-    │                                   answers early/established/late/final, never the number)
+    │                                   answers early/established/late, plus a post-scene-only
+    │                                   ending: true/false, never the number)
     └── notify_death.py                (on a character's death, computes their "circle" and
                                         mechanically samples 30% of it to notify immediately)
 ```
@@ -270,7 +271,7 @@ string values, which parse fine either way. Anything named `_shared` is called d
 
 **Dialog** — a Blabber conversation, defined as JSON in `blabber/dialogues/`. Started from an NPC's right-click actions.
 
-**Action** — anything a right-click triggers: opening a dialog, giving an item, setting a scoreboard flag, etc. `_maps/actions/registry.json` documents every action type with copy-paste command patterns.
+**Action** — anything a right-click triggers: opening a dialog, giving an item, setting a scoreboard flag, etc. `_npcs/actions/registry.json` documents every action type with copy-paste command patterns.
 
 **Routine pause/resume** — every NPC, regardless of movement mode (including `NONE`), stops within 2 blocks of a player or when clicked, self-heals its skin (and path, if it has one) periodically, and resumes afterwards. Covered in full in §4.
 
@@ -282,7 +283,7 @@ string values, which parse fine either way. Anything named `_shared` is called d
 
 **Shock and drift** — the only two ways a criterion moves. A *shock* is a claim or lived experience that **references the criterion's anchor** (a pointer check, never a judgment about how upsetting something was), resolving to one of three moves: reject the claim, accept and reinterpret, or accept and break. *Drift* — accrued cost plus a shortening horizon — never changes a criterion by itself; it changes how susceptible the character is when a shock does arrive. Applied by `/enact` Step 5b.
 
-**Lifespan** — how many scenes a character has in them, rolled once by `scripts/roll_lifespan.py` (default range 30–60) and **structurally hidden from them**: the span lives in `_maps/npcs/lifespans.json`, *not* on the registry entry, because the registry entry is what `/enact` loads in order to play the character. An enactment asks `scripts/horizon.py` instead, which answers with a coarse band — `early`, `established`, `late`, `final` — and never the number. Only `life.lived` (their history, no secret) stays on the registry entry. A `final` band means this scene is their last; afterwards `life.deceased` is set `true` and they're never enacted again.
+**Lifespan** — how many scenes a character has in them, rolled once by `scripts/roll_lifespan.py` (default range 30–60) and **structurally hidden from them**: the span lives in `_lore/characters/lifespans.json`, *not* on the registry entry, because the registry entry is what `/enact` loads in order to play the character. An enactment asks `scripts/horizon.py` instead, which answers with a coarse band — `early`, `established`, `late` — and never the number. Only `life.lived` (their history, no secret) stays on the registry entry. The same script also reports `ending: true/false`, but that can only ever read `true` *after* a scene closes and `life.lived` is incremented for it — there is no moment, even for the character's own last scene, where it's knowable in advance. Once `ending` does come back true, `life.deceased` is set `true` and they're never enacted again.
 
 **Death and its circle** — a character's death isn't announced to the world, it propagates in two tiers. `scripts/notify_death.py` computes their *circle* (everyone they've shared a recorded scene with, plus everyone named in their own backstory) and mechanically notifies 30% of it immediately — a forced `knowledge.experience` entry, no attribution needed. Anyone notified whose `criterion.anchor` referenced the deceased gets that resolved as a shock, same reject/reinterpret/break machinery as any other (`/enact` Step 5b point 6). Everyone outside the circle only finds out the ordinary way: the death is recorded as a `_lore/tale/` entry (see `/tell`), which re-enters the normal sampling pool at ordinary odds, or they hear it from someone in the circle later, subject to the same `lineage_coin.py` traceable/untraceable rule as any retelling.
 
@@ -294,7 +295,7 @@ string values, which parse fine either way. Anything named `_shared` is called d
 
 ### Step 1 — Register it
 
-Add an entry to `_maps/npcs/registry.json` under `"npcs"`:
+Add an entry to `_npcs/npcs/registry.json` under `"npcs"`:
 
 ```json
 "maren": {
@@ -341,7 +342,7 @@ Fill in the text, rename states to something meaningful, and — important — r
 
 If an ending needs to give an item *and* resume the routine, route it through `end_with_gift.mcfunction` (see the branching template — it already does this for you).
 
-Then register the dialog in `_maps/dialogs/registry.json` under this NPC's key.
+Then register the dialog in `_npcs/dialogs/registry.json` under this NPC's key.
 
 ### Step 4 — Spawn it in-game
 
@@ -381,9 +382,9 @@ That's it. From then on, the tick loop stops the NPC the moment a player gets wi
 
 **Why the tick check also handles resuming, not just the dialog ending?** Blabber does not run its end-of-dialog action if a player exits early (Escape key, disconnect, etc.) — so a "resume when the dialog action fires" rule alone can leave an NPC stuck paused forever. The tick check is the safety net: it resumes any paused NPC the moment no player is within range, regardless of how the conversation ended.
 
-**Why the resume radius (6 blocks) is wider than the pause trigger (2 blocks) — don't make these match.** Blabber freezes the player's movement while its screen is open, so distance from the NPC can't grow *during* a conversation — but that only guarantees the resume check stays quiet if the player was already inside its radius the moment they clicked. Taterzens has no interact-range override (`config/Taterzens/config.json` doesn't set one), so a click can land from plain vanilla reach — 3 blocks survival, 6 creative. A resume radius of 2 would read a click from 3+ blocks away as "nobody nearby" on the very next tick and undo the pause while the dialog is still open — confirmed in-game (Döran, 2026-07-25): he visibly wandered off mid-conversation, and the resulting movement swallowed his nod animations too (walking overwrites head rotation every tick, fighting the nod's own writes). 6 blocks covers creative reach with no margin to spare — see `_maps/actions/registry.json` → `_action_templates.routine_pause_resume` for the full writeup.
+**Why the resume radius (6 blocks) is wider than the pause trigger (2 blocks) — don't make these match.** Blabber freezes the player's movement while its screen is open, so distance from the NPC can't grow *during* a conversation — but that only guarantees the resume check stays quiet if the player was already inside its radius the moment they clicked. Taterzens has no interact-range override (`config/Taterzens/config.json` doesn't set one), so a click can land from plain vanilla reach — 3 blocks survival, 6 creative. A resume radius of 2 would read a click from 3+ blocks away as "nobody nearby" on the very next tick and undo the pause while the dialog is still open — confirmed in-game (Döran, 2026-07-25): he visibly wandered off mid-conversation, and the resulting movement swallowed his nod animations too (walking overwrites head rotation every tick, fighting the nod's own writes). 6 blocks covers creative reach with no margin to spare — see `_npcs/actions/registry.json` → `_action_templates.routine_pause_resume` for the full writeup.
 
-Full technical rationale (with source references) lives in `_maps/actions/registry.json` under `_action_templates.routine_pause_resume`.
+Full technical rationale (with source references) lives in `_npcs/actions/registry.json` under `_action_templates.routine_pause_resume`.
 
 ---
 
@@ -476,7 +477,7 @@ matching a gesture to a dialogue line's emotional content, use the keyword table
 
 ## 7. Where design decisions live
 
-This README documents *how the pack works*. Story content, NPC personalities, routes, and dialog writing are design decisions — they live in `_lore/` and the maps under `_maps/`, not in this file.
+This README documents *how the pack works*. Story content, NPC personalities, routes, and dialog writing are design decisions — they live in `_lore/` and the maps under `_npcs/`, not in this file.
 
 ---
 
@@ -510,4 +511,4 @@ Once the conversation feels complete, restructure it — don't add to it:
 
 ### Step 4 — Register it
 
-Same as §3 Step 1 and Step 3 above: add the NPC to `_maps/npcs/registry.json` (a blank `skin`/`taterzen_uuid`/`spawn_position` is fine — the dialog can exist before the NPC is spawned) and register the dialog itself under that NPC's key in `_maps/dialogs/registry.json`.
+Same as §3 Step 1 and Step 3 above: add the NPC to `_npcs/npcs/registry.json` (a blank `skin`/`taterzen_uuid`/`spawn_position` is fine — the dialog can exist before the NPC is spawned) and register the dialog itself under that NPC's key in `_npcs/dialogs/registry.json`.

@@ -24,7 +24,7 @@ npc edit commands setPermissionLevel 2
 
 
 # --- MOVEMENT & RIGHT-CLICK ACTIONS --------------------------------------------
-# Nerkeli has two states (see _maps/actions/registry.json → _action_templates.
+# Nerkeli has two states (see _npcs/actions/registry.json → _action_templates.
 # multi_state_npc, and functions/npcs/nerkeli/states/): "hangar" (stationary,
 # standing with Nuvilo, triggers his solo hangar-talk dialog — his default
 # below) and "roaming" (PATH, no dialog wired yet). Switch at any time with
@@ -35,7 +35,7 @@ function luminacion:npcs/nerkeli/states/hangar
 
 # --- REGISTRATION REMINDER ----------------------------------------------------
 # UUID capture is automated — do not copy it by hand. Once this NPC (and any
-# others) are created and registered in _maps/npcs/registry.json, run:
+# others) are created and registered in _npcs/npcs/registry.json, run:
 #   1. python scripts/update_uuids.py generate
 #   2. /reload
 #   3. /function luminacion:admin/export_npc_uuids

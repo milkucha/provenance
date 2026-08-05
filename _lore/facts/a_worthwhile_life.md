@@ -21,7 +21,7 @@ differently because they carry different answers to this question, and those ans
 somewhere: a story about a specific person, a place, an event, a practice, read as an example of how
 to live or how not to.
 
-So this fact establishes only the *pull*. See `criterion` in `_maps/npcs/registry.json` and the
+So this fact establishes only the *pull*. See `criterion` in `_lore/characters/<key>.json` and the
 derivation procedure in `.claude/skills/character/SKILL.md` for where a character's particular answer
 comes from, how it is derived from the collision of their knowledge with their backstory, and what
 can change it.

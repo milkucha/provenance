@@ -1,0 +1,18 @@
+{
+  "name": "Malkinimies",
+  "city": "Görff, Khan Ice",
+  "backstory": "Travels between Görff and Khan Ice by horseback.",
+  "knowledge": {
+    "education": {
+      "percent": null,
+      "mode": "",
+      "topic": null,
+      "items": []
+    },
+    "experience": []
+  },
+  "life": {
+    "lived": 0,
+    "deceased": false
+  }
+}

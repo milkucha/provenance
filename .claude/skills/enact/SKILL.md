@@ -1,44 +1,25 @@
 ---
-description: Set up and run an enacted character conversation for Luminacion — against the player or against another enacted character — sampling each character's lore knowledge from _lore/encodings.json, then convert the result into a registered Blabber dialog. Use when the user wants to enact/roleplay an NPC and turn it into pack content.
+description: Play a lore-only enacted character scene for Luminacion — against the player or against another enacted character — sampling each character's lore knowledge from _lore/encodings.json, then recording what the scene did to that lore (hearsay, criterion, life). Purely lore-side: touches nothing under data/luminacion/ or _npcs/npcs/registry.json. Use when the user wants to enact/roleplay a character at the lore level. To also put the scene in the game (Blabber dialog, NPC registration, gestures), follow with /embody, or use /enact-embody to run both in one pass.
 disable-model-invocation: true
 ---
 
-Runs the enactment-to-dialog procedure documented in `README.md` §8, plus the setup questions and
-registration steps below. Read §8 first if it hasn't been read yet this session — this skill assumes
-its rules (never invent as fact anything outside a character's sample; personality and small texture
-are free to invent; keep every line short, dialog-box length), plus three hard formatting rules that
-apply to every dialog this skill produces:
+Runs the lore half of the enactment procedure documented in `README.md` §8, plus the setup questions
+and record-keeping steps below. Read §8 first if it hasn't been read yet this session — this skill
+assumes its rules (never invent as fact anything outside a character's sample; personality and small
+texture are free to invent; keep every line short, dialog-box length).
 
-- **Dialog only, no action cues.** A character's line is only what they say — no asterisk-delimited
-  stage directions (`*looks up from coiling a rope*`, `*grins*`, `*taps his temple*`) anywhere in it,
-  in-scene or in the converted `text`/`choices[].text` fields. Personality comes through word choice
-  and rhythm, not narrated gesture. If the enactment transcript slips into third-person action text,
-  strip it when converting — don't carry it into the Blabber dialog.
-- **300-character hard cap per line.** No single `text` value or `choices[].text` value in the
-  converted dialog may exceed 300 characters. See Step 4 for how to split a line that runs long.
-- **RPG layout, always.** Every converted dialog file gets a top-level `"layout": { "type":
-  "blabber:rpg" }` right after `"$schema"` — never leave it unset (Blabber falls back to its classic
-  box style without it). All four templates already carry this field; when starting a new dialog from
-  scratch instead of a template, add it by hand.
+**Write dialogue only, no action cues.** A character's line is only what they say — no
+asterisk-delimited stage directions (`*looks up from coiling a rope*`, `*grins*`, `*taps his temple*`)
+anywhere in it. Personality comes through word choice and rhythm, not narrated gesture. This matters
+here too, not just for the eventual Blabber file: `/embody`'s conversion step strips any stage
+direction that slips in, so writing clean from the start avoids losing anything worth keeping.
 
 Two things stay true throughout: a character never knows what another enacted character knows, even
 when both are being played in the same scene — each is bounded strictly by their own sample. And
-nothing here is decided silently; every genuine open question (skin, UUID, movement mode, how a
-two-NPC dialog gets registered) gets asked or logged in `TODO.md`, never guessed.
-
-## Flags
-
-Passed in this skill's arguments, anywhere in the string.
-
-- **`-nobake`** — skip Step 8 (gesture baking). The dialog ships with the uniform `nod_up_down` it
-  was written with, and the pending pass is logged in `TODO.md` instead. Use it when the run is about
-  the lore rather than the pack: everything through Step 7 still happens in full, since the hearsay
-  record, criterion resolution, and `life.lived` are the point of an enactment and are not
-  Minecraft-facing at all.
-
-Nothing else in this skill is optional. In particular `-nobake` does **not** skip Step 4 (writing the
-dialog file) or Step 5/5b (the record) — if a run should skip those too, say so explicitly rather
-than assuming a flag covers it.
+nothing here is decided silently; every genuine open question this skill can actually raise (education
+sample topic, criterion collision, how the scene resolves) gets asked, never guessed. Minecraft-side
+open questions — skin, UUID, movement mode, how a two-NPC dialog gets registered — are `/embody`'s
+concern, not this skill's; it doesn't ask about them because it never touches that layer.
 
 A character's knowledge comes in three kinds:
 
@@ -49,7 +30,7 @@ A character's knowledge comes in three kinds:
   and treat its contents as standing knowledge for every character in the scene. See
   `_lore/facts/_index.md`.
 - **`education`** — the sample drawn once at creation (Step 1/2), mirrored in
-  `_maps/npcs/registry.json`'s `knowledge` object. Fixed for life: never redrawn, never hand-edited,
+  `_lore/characters/<key>.json`'s `knowledge` object. Fixed for life: never redrawn, never hand-edited,
   on this run or any later one.
 - **`experience`** — everything picked up by living through scenes: the `backstory` field (also
   experience-knowledge, conceptually, even though it stays its own top-level field since it predates
@@ -65,26 +46,33 @@ don't fork the procedure.
 
 ## Step 1 — First interlocutor
 
-**Before anything else, if this name matches an existing registry entry, check `life.deceased`.** If
-it's `true`, this character has already had their last scene (Step 5b point 6) and cannot be enacted
-again, full stop — say so plainly and stop, rather than proceeding. They still exist in the world as
-whatever the notified circle now knows and whatever entered the discovery/sampling record; a new
-scene with them is not one of the ways that knowledge is allowed to grow.
+**Before anything else, slugify the name and look for `_lore/characters/<slug>.json`.**
+
+- **If it exists:** check `life.deceased`. If it's `true`, this character has already had their last
+  scene (Step 5b point 6) and cannot be enacted again, full stop — say so plainly and stop, rather
+  than proceeding. They still exist in the world as whatever the notified circle now knows and
+  whatever entered the discovery/sampling record; a new scene with them is not one of the ways that
+  knowledge is allowed to grow.
+- **If it doesn't exist, this is a brand-new character — run**
+  `python scripts/check_character_name.py "<name>"` **and confirm `AVAILABLE`** before treating it as
+  one. This is the same shared uniqueness check `/character` Step 1 uses (every character ever
+  created, living or deceased, must have a name that slugifies uniquely). On `TAKEN`, tell the user
+  and ask for a distinguishing variant.
 
 Ask, as plain conversation (not multiple-choice):
 
 1. **Name.**
 2. **Backstory** — optional. A user-given personal fact (like "family comes from somewhere else"),
    not a lore fact. Hold it as true for this character regardless of what their sample contains.
-3. **Location** — optional. Where this character is based/found — fills the `city` field in the
-   registry later. Not necessarily their backstory's place of origin (Sonoros's backstory has him
-   "out of Görff way," but his registered `city` is Balehm, where the scene actually put him).
+3. **Location** — optional. Where this character is based/found — fills the `city` field in their
+   character file later. Not necessarily their backstory's place of origin (Sonoros's backstory has
+   him "out of Görff way," but his registered `city` is Balehm, where the scene actually put him).
 4. **Knowledge corpus** — how much of the lore they know, and how it's chosen. **First, check
-   `_maps/npcs/registry.json` for an existing entry under this character's key.** If one exists with
+   `_lore/characters/<slug>.json` for an existing file under this character's key.** If one exists with
    a `knowledge.education` already populated (`percent` not `null`), reuse it as-is — skip the
    percentage/mode/topic questions and the sampling script below entirely, and do not redraw.
    `education` is fixed at creation and never changes after; only `knowledge.experience` and the
-   hearsay record (Step 5) are allowed to keep growing across later runs. If no entry exists yet, or
+   hearsay record (Step 5) are allowed to keep growing across later runs. If no file exists yet, or
    its `knowledge.education` is still the blank `_template` shape, proceed with the questions below:
    - Ask for a **percentage** (open number, e.g. "5", "11", "21").
    - Ask (AskUserQuestion, two options) whether the draw is **random** or **skewed toward a topic**.
@@ -99,8 +87,8 @@ python scripts/sample_lore_knowledge.py --percent <N> --mode skewed --topic "<ke
 ```
 
 Keep the printed list (or the reused list, for a returning character) — it's this character's
-entire knowledge of the world for the rest of this run, and it goes into the registry in Step 6 (or
-stays untouched there, if reused). Do not reveal the full list to the user unprompted (same
+entire knowledge of the world for the rest of this run, and it goes into their character file in
+Step 6 (or stays untouched there, if reused). Do not reveal the full list to the user unprompted (same
 reasoning as §8: better discovered through play than read off a list), but you may describe its
 general shape.
 
@@ -114,7 +102,7 @@ the roll result; it determines `derived_from`/`oral_lore` in Step 5.
 
 ### Criterion and lifespan
 
-Still Step 1, once the sample is in hand — both fields live on the same registry entry and follow the
+Still Step 1, once the sample is in hand — both fields live on the same character file and follow the
 same first-time-only discipline as `education`:
 
 - **Criterion.** If `criterion.standard` is blank and the character has both a backstory and a drawn
@@ -124,13 +112,14 @@ same first-time-only discipline as `education`:
   already set, **use it as-is** — never re-derive on a later run. If nothing collides, leave it blank
   with `"origin": "uncollided"` and log it in `TODO.md`; do not invent one and do not fall back to a
   city default (`/character` Step 4e).
-- **Lifespan.** If the character has no entry in `_maps/npcs/lifespans.json`, roll it now per
+- **Lifespan.** If the character has no entry in `_lore/characters/lifespans.json`, roll it now per
   `/character` **Step 5**. If they do, never reroll.
 - **Horizon.** Run `python scripts/horizon.py <npc_key>` for each character before the scene starts
-  and keep the band (`early` / `established` / `late` / `final`) for Step 3 and Step 5b. A `final`
-  band means this scene is their last.
+  and keep the band (`early` / `established` / `late`) for Step 3. Ignore the `ending` line this
+  script also prints — before a scene it always reads `false` (see the script's docstring for why),
+  and it isn't the concern of the scene at all. It only matters afterward, at Step 5b point 6.
 
-**Never open `_maps/npcs/lifespans.json` during an enactment, and never pass `--verbose` to
+**Never open `_lore/characters/lifespans.json` during an enactment, and never pass `--verbose` to
 `horizon.py`.** The span is kept in a separate file precisely so the number cannot end up in the
 context of the character it belongs to; reading it here would defeat the whole arrangement. The band
 is all you need and all you may have. Likewise never state a character's `lived`, band, or any
@@ -161,9 +150,12 @@ the sample; personality and texture are free; write short).
   fact). That shows up as impatience with what they consider a waste of an encounter, or willingness
   to say the thing now rather than later — not as talk about mortality. An `early` character can
   defer; a `late` one ranks harder and drops what doesn't matter.
-- **If the band came back `final`, this is their last scene and they know it.** Play them knowing:
-  not announcing it, not counting down, not explaining. It should read as weight, and it's the only
-  time a character's own horizon is knowable to them.
+- **Never write toward an ending.** Whether this happens to be a character's last scene is not
+  knowable until after it's played (see `scripts/horizon.py`'s docstring and Step 5b point 6) — so it
+  is written exactly like any other scene, with no foreboding, no valediction, no character sensing
+  anything is different. If the author independently wants a scene to carry a reflective or wistful
+  tone, that's a legitimate craft choice, but it must be made on its own terms, never because the
+  system signaled an ending is coming — structurally, it never can.
 - **What they treat as authority follows from `trusts`/`distrusts`.** A character built on the
   chronicles cites what's written and asks where a story came from; one built on testimony names the
   person who told them and finds books bloodless; one built on a `conflict` distrusts anyone who
@@ -189,36 +181,6 @@ Write the full scene as one message, alternating clearly labeled turns, same sha
 Nawom/Morkulo conversation — you write one side, then respond to yourself as the other, honoring
 each character's own sample independently. Bring it to a natural stopping point rather than
 running indefinitely, then check with the user before moving on: satisfied, or continue/adjust?
-
-## Step 4 — Convert to a Blabber dialog
-
-Per README §8 Step 3: compress the transcript, don't add to it; rename states to short meaningful
-ids; wire the final `end_dialogue` state per the existing templates.
-
-- **Strip action cues.** Drop any `*...*` stage direction that made it into the transcript during
-  Step 3 — only the spoken words become the state's `text` (or, for two-NPC dialogs, the `"Name: "`
-  prefix plus the spoken words).
-- **Enforce the 300-character cap.** If a line's `text` (after stripping cues) is over 300 characters,
-  split it at a natural sentence or clause boundary into two or more states, chained together with a
-  single `"..."` choice that just advances to the next part — the same connector pattern already used
-  between full turns (see `nawom_morkulo_first_meeting.json`). The reader/player never sees a visible
-  choice for these — it's a pure continuation, not a fork. Keep splitting until every piece is under
-  the cap; don't try to cram a long line under the limit by trimming content, since Step 3 already
-  says not to add to (or subtract from) what was actually said.
-
-- **If Step 3a (vs. player):** each state's `text` is the NPC's line; each `choices[].text` is the
-  player's actual line. (`sonoros_lost_traveler.json` is the reference shape.)
-- **If Step 3b (vs. another character):** Blabber has **no per-state speaker field** — confirmed
-  from the mod's own source (`DialogueState.java`: fields are `text`, `illustrations`, `choices`,
-  `action`, `type`; the display name is fixed once for the whole file via `DialogueTemplate.name`).
-  So: prefix each state's `text` with `"Name: "`, and give every state a single `"..."` choice that
-  just advances to the next state — no real options. Set the file's top-level `"name"` to something
-  like `"<Char1> & <Char2>"` rather than let it default to `"Dialogue with <interlocutor>"`, which
-  would be misleading with two speakers. (`nawom_morkulo_first_meeting.json` is the reference shape.)
-
-Validate before moving on — every `choices[].next` must resolve to a real state, `start_at` must be
-valid, and the top-level `"layout": { "type": "blabber:rpg" }` is present. Save to
-`data/luminacion/blabber/dialogues/<descriptive_name>.json`.
 
 ## Step 5 — Update the hearsay record
 
@@ -261,7 +223,7 @@ as often as embellishment, and an unverified claim is not the same as a false on
 step on "did anyone say 'I heard X say...'" — that test only decides the two optional fields below,
 not whether the step happens at all.
 
-Add an entry to `_lore/hearsay/hearsay.md` and to `encodings.json`'s `hearsay.entries` array for
+Add an entry to `_lore/characters/hearsay.md` and to `encodings.json`'s `hearsay.entries` array for
 this dialog, in the same shape as the existing entries: participants, location, summary, and a
 `claims` list phrased as reported assertions (not restated as fact), each with an `about` reference
 into the objective arrays where it topically overlaps (a bare era name from `time_systems` is a valid
@@ -340,7 +302,11 @@ later shocks. Skip it when nothing was actually paid.
 
 **5. Increment `life.lived` by 1** for every character who was in the scene.
 
-**6. If Step 1's band came back `final`, that was their last scene.** The character must not be
+**6. Now, and only now, run `python scripts/horizon.py <npc_key>` again and check `ending`.** Before
+Step 5 it could only ever read `false`; now that `life.lived` reflects the scene just played, it can
+truthfully say the character's life is complete. If it does, that scene — already written, already
+closed, with nothing in it played any differently — turns out to have been their last. Nothing about
+the scene itself changes retroactively; only what happens next does. The character must not be
 enacted again: `knowledge.experience` is closed, no further `/enact` run may include them, and they
 survive from here only as other people's hearsay — which the record already supports, since every
 claim they ever made is still in the pool for future characters to draw. Note the ending in `TODO.md`
@@ -350,7 +316,7 @@ spawned). Tell the user plainly that this character has had their last scene; do
 Death propagates in two tiers — a guaranteed circle and everyone else — rather than being announced
 to the world at large. Do all of the following:
 
-- **Set `life.deceased: true`** on their registry entry. This is a plain, non-secret fact — unlike
+- **Set `life.deceased: true`** on their character file. This is a plain, non-secret fact — unlike
   `life.span`, nothing about death itself is hidden — and it's what stops a future `/enact` run from
   accidentally reusing them (see the Step 1 guard below).
 - **Record it as an objective fact of the world**, in the same shape `/tell` produces (see
@@ -381,12 +347,12 @@ to the world at large. Do all of the following:
   from the circle in a future scene (subject to the usual `lineage_coin.py` traceable/untraceable
   rule on that retelling, same as any other claim).
 
-## Step 6 — Register the NPC(s)
+## Step 6 — Update the character record
 
-For every character enacted this run, add/update their entry in `_maps/npcs/registry.json`
-(key = lowercased name):
+For every character enacted this run, add/update their file at `_lore/characters/<key>.json`
+(key = lowercased, slugified name):
 
-- `display_name`, `taterzen_name` — the name.
+- `name` — set once, for a first-time character. Never rewritten on a returning character.
 - `city` — the location from Step 1/2, or `""` if none was given.
 - `backstory` — the backstory from Step 1/2, or `""` if none was given. Experience-knowledge,
   conceptually (see the intro), but its own top-level field. For a returning character, only append
@@ -406,38 +372,12 @@ For every character enacted this run, add/update their entry in `_maps/npcs/regi
   `tempered` on a reinterpretation, `trusts`/`distrusts` if the outcome moved them, plus the
   `history` and `cost_ledger` appends). **Never re-derive a criterion from the sample on a later
   run** — it changes only through a shock that referenced its anchor.
-- `life` — `{lived}` only, incremented per Step 5b. If this run rolled a first lifespan (Step 1), the
-  span went into `_maps/npcs/lifespans.json`, never here.
-- `skin`, `taterzen_uuid`, `spawn_position` — leave blank/null. Not this skill's job.
+- `life` — `{lived, deceased}`. `lived` incremented per Step 5b; `deceased` set per Step 5b point 6.
+  If this run rolled a first lifespan (Step 1), the span went into
+  `_lore/characters/lifespans.json`, never here.
 
-Then, for the dialog itself:
-
-- **If Step 3a (vs. player):** register it normally in `_maps/dialogs/registry.json` under that
-  NPC's key, per README §3 Step 3.
-- **If Step 3b (vs. another character):** do **not** guess how to register a dialog that belongs to
-  two NPCs — the registry format assumes one dialog per NPC key. Ask the user how they want it
-  handled, or leave it open in TODO.md (see Step 7) exactly like the Nawom & Morkulo precedent.
-
-## Step 7 — Log what's still open
-
-Add or update a section in `TODO.md` for each newly-enacted character (and the dialog, if its
-registration was left unresolved in Step 6): skin, movement mode, `spawn_position`,
-`spawn.mcfunction`, UUID capture — the same shape as the existing Sonoros and Nawom & Morkulo
-sections. Don't silently resolve anything there either.
-
-## Step 8 — Bake gestures
-
-**Skipped entirely when `-nobake` was passed** (see Flags above). Note it in `TODO.md` as a pending
-pass on that dialog and stop — don't half-do it by hand.
-
-Every dialog this skill produces starts uniform — `nod_up_down` on every non-`end` state, straight
-from the templates. The `bake_dialog` skill (`.claude/skills/bake_dialog/SKILL.md`) replaces a
-minority of those with an emotionally-matched gesture where the line's own text supports it — the
-same manual pass Döran's dialogues and `nuvilo_nerkeli_feria_del_milenio.json` got.
-
-**Known blocker, confirmed 2026-07-31:** this step cannot currently be run from inside `/enact`.
-`bake_dialog/SKILL.md` sets `disable-model-invocation: true`, so calling it with the Skill tool is
-refused outright — the earlier instruction here to do exactly that was never executable. Until that
-flag is dropped or this step is rewritten (see `TODO.md`), the only way to bake is for the user to
-run `/bake_dialog <path>` themselves. So: tell them the file is ready for it, log it in `TODO.md`,
-and don't attempt the invocation.
+This is the last step `/enact` performs — nothing here touches `_npcs/npcs/registry.json`,
+`_npcs/dialogs/registry.json`, or any file under `data/luminacion/`. To convert this scene into a
+registered Blabber dialog, register the NPC(s) in the Minecraft layer, and bake gestures, run
+`/embody` now (it picks up the scene from this same conversation), or use `/enact-embody` next time
+to run both skills back to back in one pass.

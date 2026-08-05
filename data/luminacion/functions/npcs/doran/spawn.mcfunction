@@ -47,7 +47,7 @@ npc edit commands setPermissionLevel 2
 
 
 # --- RIGHT-CLICK ACTIONS ------------------------------------------------------
-# Random dialog pick on every click — see _maps/actions/registry.json →
+# Random dialog pick on every click — see _npcs/actions/registry.json →
 # _action_templates.random_dialog for the full rationale. Equal odds (1..3) across
 # his three independent Plaza dialogs.
 #
@@ -71,7 +71,7 @@ npc edit commands add minecraft execute if score doran_dialog_roll luminacion.in
 
 # --- REGISTRATION REMINDER ----------------------------------------------------
 # UUID capture is automated — do not copy it by hand. Once this NPC (and any
-# others) are created and registered in _maps/npcs/registry.json, run:
+# others) are created and registered in _npcs/npcs/registry.json, run:
 #   1. python scripts/update_uuids.py generate
 #   2. /reload
 #   3. /function luminacion:admin/export_npc_uuids

@@ -1,0 +1,18 @@
+{
+  "name": "Terrolis",
+  "city": "Terfila, Dragon City",
+  "backstory": "Pilot. Flies the Terfila-Dragon route.",
+  "knowledge": {
+    "education": {
+      "percent": null,
+      "mode": "",
+      "topic": null,
+      "items": []
+    },
+    "experience": []
+  },
+  "life": {
+    "lived": 0,
+    "deceased": false
+  }
+}

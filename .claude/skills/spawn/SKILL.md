@@ -1,12 +1,12 @@
 ---
-description: Build a Taterzens spawn function (and every supporting function) for an NPC that's already registered in _maps/npcs/registry.json with at least one written Blabber dialog. Follows README §3/§4 and the _action_templates conventions in _maps/actions/registry.json. Use when the user wants to spawn/wire up an NPC that doesn't have a spawn.mcfunction yet, or add a new dialog/state to one that does.
+description: Build a Taterzens spawn function (and every supporting function) for a character that has a name in _lore/characters/<key>.json and at least one written Blabber dialog, creating its _npcs/npcs/registry.json entry if one doesn't exist yet. Follows README §3/§4 and the _action_templates conventions in _npcs/actions/registry.json. Use when the user wants to spawn/wire up an NPC that doesn't have a spawn.mcfunction yet, or add a new dialog/state to one that does.
 disable-model-invocation: true
 ---
 
 Builds `functions/npcs/<npc_key>/spawn.mcfunction` and whatever else it needs (routine
 pause/resume, states, paths, random-dialog wiring) from the templates in `_templates/npcs/`, per
 README §3 ("Building a new NPC, start to finish") and §4 ("Routine pause/resume"), plus the
-`_action_templates` conventions documented in `_maps/actions/registry.json`. This is a
+`_action_templates` conventions documented in `_npcs/actions/registry.json`. This is a
 file-authoring skill — it does not run Minecraft commands or touch a live server. Every run ends
 with the user manually running `/function luminacion:npcs/<npc_key>/spawn` in-game.
 
@@ -19,10 +19,12 @@ never guessed.
 
 Confirm before starting, and stop to resolve any gap rather than guessing past it:
 
-1. **NPC is registered.** `_maps/npcs/registry.json` has an entry for this NPC (`display_name` at
-   minimum). If `skin` is blank, ask for a mineskin URL now or confirm the user wants to leave it
-   for later (matching the Nuvilo precedent — spawn.mcfunction can note the skin line as a TODO
-   and skip `heal_skin.mcfunction` until it's filled in).
+1. **NPC is registered.** `_lore/characters/<key>.json` has a `name` set for this character — that's
+   the canonical source now. If `_npcs/npcs/registry.json` has no entry yet for this key (the
+   character has never been embodied before), create one here, copying `name` into both
+   `display_name` and `taterzen_name`. If `skin` is blank, ask for a mineskin URL now or confirm the
+   user wants to leave it for later (matching the Nuvilo precedent — spawn.mcfunction can note the
+   skin line as a TODO and skip `heal_skin.mcfunction` until it's filled in).
 2. **At least one dialog exists** in `data/luminacion/blabber/dialogues/` for this NPC, or the
    user is fine with a spawn function that has no dialog wired yet (rare — most NPCs exist to
    talk). If this NPC needs a dialog written first, point to the three templates in that folder
@@ -69,7 +71,7 @@ which NPC "needs" the machinery:
 
 If the NPC needs to switch between multiple movement modes at different times (e.g. a stationary
 "scene" state and a solo roaming state, like Nuvilo/Nerkeli), that's the `multi_state_npc` pattern
-— see `_maps/actions/registry.json` → `_action_templates.multi_state_npc` — and uses
+— see `_npcs/actions/registry.json` → `_action_templates.multi_state_npc` — and uses
 `_templates/npcs/states/stationary_state.mcfunction` / `roaming_state.mcfunction` instead of a
 plain `spawn.mcfunction` right-click block. Ask which case this is before proceeding.
 
@@ -95,7 +97,7 @@ Ask (AskUserQuestion) what fires when a player right-clicks this NPC:
   `npc edit commands add minecraft blabber dialogue start luminacion:<dialog_id> --clicker--
   @e[name=<display_name>,limit=1,sort=nearest]`.
 - **One of several independent dialogs, picked at random** — use the `random_dialog` pattern (see
-  `_maps/actions/registry.json` → `_action_templates.random_dialog`): the roll lives in its own
+  `_npcs/actions/registry.json` → `_action_templates.random_dialog`): the roll lives in its own
   `roll_dialog.mcfunction`, called via a single directly-added `function` command. Do NOT use the
   vanilla `/random` command anywhere in it — confirmed in-game (twice: once nested inside `npc edit
   commands add`, once as a plain top-level `.mcfunction` line) that `/random` doesn't resolve at all
@@ -179,7 +181,7 @@ than assuming.
 1. Add `luminacion:npcs/<npc_key>/check_proximity` to the `"values"` array in
    `data/luminacion/tags/functions/npc_routine_tick.json` — every NPC, regardless of movement mode
    (see Step 5's note on why `NONE` is not exempt).
-2. Confirm every dialog used is registered under this NPC's key in `_maps/dialogs/registry.json`
+2. Confirm every dialog used is registered under this NPC's key in `_npcs/dialogs/registry.json`
    (add entries if missing — `id`, `trigger: "right_click"`, `condition: null`, a short
    `description`). For a random-dialog NPC, list all N dialogs under the one key with a `_comment`
    noting they're randomly picked (see the `doran` entry for the exact shape).

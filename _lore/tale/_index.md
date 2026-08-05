@@ -2,7 +2,7 @@
 
 This is a third source of truth for Milkantis, alongside the **objective record**
 (`_lore/material/_context.md` → `_lore/encodings.json`) and the **in-fiction subjective
-record** (`_lore/hearsay/hearsay.md` — what a *character* said inside a played dialogue, never
+record** (`_lore/characters/hearsay.md` — what a *character* said inside a played dialogue, never
 merged into the objective arrays). A tale is told directly by the user, the world's author, outside
 of any character's mouth and outside of any excavated document — whether narrated as a story or
 stated plainly as a fact now known. Deliberately not distinguishing those with a fact/fiction label on

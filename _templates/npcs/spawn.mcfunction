@@ -2,7 +2,7 @@
 # Luminacion — NPC Spawn Template
 # =============================================================================
 # WORKFLOW:
-#   1. Fill in _maps/npcs/registry.json for this NPC (all fields except UUID)
+#   1. Fill in _npcs/npcs/registry.json for this NPC (all fields except UUID)
 #   2. Duplicate this folder as:  functions/npcs/<npc_key>/spawn.mcfunction
 #   3. Fill in all <placeholders> below using that registry entry
 #   4. If spawn_position is set in the registry, uncomment the npc tp line below
@@ -21,19 +21,19 @@
 # All /npc edit commands below apply to this newly created NPC.
 npc create <display_name>
 
-# OPTIONAL — Teleport to fixed spawn position from _maps/npcs/registry.json → spawn_position.
+# OPTIONAL — Teleport to fixed spawn position from _npcs/npcs/registry.json → spawn_position.
 # If spawn_position is null, remove this line and stand at the location before running.
 # If spawn_position is set, uncomment and fill: npc tp <x> <y> <z>
 # npc tp <x> <y> <z>
 
-# Set skin from mineskin URL (stored in _maps/npcs/registry.json → "skin")
+# Set skin from mineskin URL (stored in _npcs/npcs/registry.json → "skin")
 npc edit skin <https://www.mineskin.org/ID>
 
 
 # --- MOVEMENT -----------------------------------------------------------------
 
 # Options: NONE | FORCED_LOOK | PATH | FORCED_PATH | FOLLOW | FREE
-# See _maps/actions/registry.json → _action_templates.movement for details
+# See _npcs/actions/registry.json → _action_templates.movement for details
 npc edit movement NONE
 
 # Regardless of movement mode (including NONE):
@@ -47,7 +47,7 @@ npc edit movement NONE
 # This makes the NPC stop within 2 blocks of a player (and become interactable),
 # then resume its routine once the player leaves or the dialog ends, and
 # self-heals its skin/path periodically. See _action_templates.routine_pause_resume
-# in _maps/actions/registry.json — this used to be skipped for NONE-movement NPCs,
+# in _npcs/actions/registry.json — this used to be skipped for NONE-movement NPCs,
 # which was wrong: the skin self-heal race (Taterzens' async mineskin fetch) and
 # the pause/resume tagging apply to every NPC, not just roaming ones. For a NONE
 # npc, resume_routine.mcfunction's "npc edit movement NONE" doesn't change any
@@ -108,7 +108,7 @@ npc edit commands add minecraft scoreboard players set <variable> luminacion.boo
 
 # --- REGISTRATION REMINDER ----------------------------------------------------
 # UUID capture is automated — do not copy it by hand. Once this NPC (and any
-# others) are created and registered in _maps/npcs/registry.json, run:
+# others) are created and registered in _npcs/npcs/registry.json, run:
 #   1. python scripts/update_uuids.py generate
 #   2. /reload
 #   3. /function luminacion:admin/export_npc_uuids

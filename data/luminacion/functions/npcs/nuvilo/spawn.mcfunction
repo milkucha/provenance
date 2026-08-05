@@ -15,7 +15,7 @@
 
 npc create Nuvilo
 
-# TODO: skin not decided yet (blank in _maps/npcs/registry.json). Uncomment
+# TODO: skin not decided yet (blank in _npcs/npcs/registry.json). Uncomment
 # and fill in once chosen, then also fill in heal_skin.mcfunction to match:
 # npc edit skin <https://www.mineskin.org/ID>
 
@@ -26,7 +26,7 @@ npc edit commands setPermissionLevel 2
 
 
 # --- MOVEMENT & RIGHT-CLICK ACTIONS --------------------------------------------
-# Nuvilo has two states (see _maps/actions/registry.json → _action_templates.
+# Nuvilo has two states (see _npcs/actions/registry.json → _action_templates.
 # multi_state_npc, and functions/npcs/nuvilo/states/): "hangar" (stationary,
 # standing with Nerkeli, triggers the eavesdrop dialog — his default below)
 # and "roaming" (PATH, triggers his solo scholar dialog). Switch at any time
@@ -37,7 +37,7 @@ function luminacion:npcs/nuvilo/states/hangar
 
 # --- REGISTRATION REMINDER ----------------------------------------------------
 # UUID capture is automated — do not copy it by hand. Once this NPC (and any
-# others) are created and registered in _maps/npcs/registry.json, run:
+# others) are created and registered in _npcs/npcs/registry.json, run:
 #   1. python scripts/update_uuids.py generate
 #   2. /reload
 #   3. /function luminacion:admin/export_npc_uuids

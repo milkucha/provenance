@@ -7,7 +7,7 @@
 # Iläria's resting movement mode is NONE, so this doesn't restore any actual
 # movement behavior — it exists for the tag cleanup (below) and because this
 # machinery is now built for every NPC regardless of movement mode (see
-# _maps/actions/registry.json -> _action_templates.routine_pause_resume).
+# _npcs/actions/registry.json -> _action_templates.routine_pause_resume).
 # "npc edit movement NONE" here just re-asserts her resting mode after
 # pause_routine's temporary FORCED_LOOK.
 # =============================================================================

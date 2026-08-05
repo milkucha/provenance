@@ -7,7 +7,7 @@ Uses only the Python standard library.
 Zips the shippable parts of this repo — the datapack (pack.mcmeta + data/) and the
 resource pack (resourcepack/pack.mcmeta + resourcepack/assets/) — into two standalone
 zips for dropping into a different world/server's datapacks/ and resourcepacks/
-folders. Everything dev-only (_lore/, _maps/, _templates/, scripts/, .claude/, the
+folders. Everything dev-only (_lore/, _npcs/, _templates/, scripts/, .claude/, the
 docs, and the three placeholder _template_*.json dialogues) is left out.
 
 WORKFLOW

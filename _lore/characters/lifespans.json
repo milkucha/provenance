@@ -1,0 +1,41 @@
+{
+  "_comment": "SECRET. A character's lifespan - how many scenes they have in them in total. Kept out of _lore/characters/<key>.json on purpose: that file is what /enact loads in order to PLAY a character, so a span sitting there would put the number in context at exactly the moment it must not be. /enact must never open this file. Ask scripts/horizon.py instead, which answers with a coarse band (early/established/late) plus a separate post-scene-only 'ending: true/false' check, never the number. Rolled once by scripts/roll_lifespan.py and never rerolled - the sole exception is backfilling a character whose recorded history already exceeds the roll (see /character Step 5). The matching 'lived' counter stays in the character's own file, because how many scenes someone has had is just their history and no secret at all. See _lore/facts/life_is_finite.md.",
+  "lifespans": {
+    "doran": {
+      "span": 45,
+      "range": "30-60"
+    },
+    "bardaglis": {
+      "span": 57,
+      "range": "30-60"
+    },
+    "khaasan": {
+      "span": 35,
+      "range": "30-60"
+    },
+    "khaoe": {
+      "span": 51,
+      "range": "30-60"
+    },
+    "farlis": {
+      "span": 42,
+      "range": "30-60"
+    },
+    "aureobalo": {
+      "span": 59,
+      "range": "30-60"
+    },
+    "ilaria": {
+      "span": 34,
+      "range": "30-60"
+    },
+    "gok": {
+      "span": 45,
+      "range": "30-60"
+    },
+    "auroboro_iii": {
+      "span": 31,
+      "range": "30-60"
+    }
+  }
+}

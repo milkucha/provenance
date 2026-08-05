@@ -1,0 +1,18 @@
+{
+  "name": "Juori",
+  "city": "Görff (Volcano)",
+  "backstory": "Worker from Volcano.",
+  "knowledge": {
+    "education": {
+      "percent": null,
+      "mode": "",
+      "topic": null,
+      "items": []
+    },
+    "experience": []
+  },
+  "life": {
+    "lived": 0,
+    "deceased": false
+  }
+}

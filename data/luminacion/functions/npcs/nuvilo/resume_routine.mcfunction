@@ -3,7 +3,7 @@
 # =============================================================================
 # Built from _templates/npcs/resume_routine.mcfunction. Hardcodes PATH since
 # check_proximity.mcfunction only ever calls this while Nuvilo's active_state
-# is "roaming" — see _maps/actions/registry.json → _action_templates.multi_state_npc.
+# is "roaming" — see _npcs/actions/registry.json → _action_templates.multi_state_npc.
 # =============================================================================
 
 npc edit movement PATH

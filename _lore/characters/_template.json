@@ -1,0 +1,29 @@
+{
+  "name": "",
+  "city": "",
+  "backstory": "",
+  "knowledge": {
+    "education": {
+      "percent": null,
+      "mode": "",
+      "topic": null,
+      "items": []
+    },
+    "experience": []
+  },
+  "criterion": {
+    "standard": "",
+    "wasted_life": "",
+    "anchor": "",
+    "origin": "",
+    "trusts": "",
+    "distrusts": "",
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": []
+  },
+  "life": {
+    "lived": 0,
+    "deceased": false
+  }
+}

@@ -1,5 +1,5 @@
 ---
-description: Package the current datapack (data/ + pack.mcmeta) and resource pack (resourcepack/) into two standalone zips for dropping into a different world/server, stripped of every dev-only folder (_lore/, _maps/, _templates/, scripts/, docs) and the placeholder dialogue templates. Use when shipping the pack somewhere other than this repo's own junctioned dev environment (e.g. a server, or a different Minecraft world).
+description: Package the current datapack (data/ + pack.mcmeta) and resource pack (resourcepack/) into two standalone zips for dropping into a different world/server, stripped of every dev-only folder (_lore/, _npcs/, _templates/, scripts/, docs) and the placeholder dialogue templates. Use when shipping the pack somewhere other than this repo's own junctioned dev environment (e.g. a server, or a different Minecraft world).
 disable-model-invocation: true
 ---
 
@@ -36,7 +36,7 @@ Both zips are flat at the root — `pack.mcmeta` sits at the top level of the zi
 inside a subfolder — which is what lets Minecraft recognize them as a datapack/resource
 pack whether they're dropped in zipped or unzipped into a folder first.
 
-`_lore/`, `_maps/`, `_templates/`, `scripts/`, `.claude/`, `.venv/`, `.git/`,
+`_lore/`, `_npcs/`, `_templates/`, `scripts/`, `.claude/`, `.venv/`, `.git/`,
 `README.md`, and `TODO.md` are never part of either zip — the script only ever reads
 from `data/`, `pack.mcmeta`, and `resourcepack/`.
 
@@ -59,7 +59,7 @@ Report the two output paths and sizes (the script prints both). Remind the user:
 
 - Never edits anything in this repo — it only reads `data/`/`pack.mcmeta`/
   `resourcepack/` and writes to the chosen destination.
-- Never includes `_lore/`, `_maps/`, `_templates/`, `scripts/`, `.claude/`, or the docs
+- Never includes `_lore/`, `_npcs/`, `_templates/`, `scripts/`, `.claude/`, or the docs
   in either zip.
 - Never includes the three `_template_*.json` dialogue placeholders in the datapack
   zip.

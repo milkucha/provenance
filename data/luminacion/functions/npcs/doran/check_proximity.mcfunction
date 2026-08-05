@@ -14,7 +14,7 @@ execute as @e[type=taterzens:npc,name="Döran",limit=1,tag=!luminacion.paused] a
 # the dialog was still open, since Taterzens has no interact-range override on top
 # of plain vanilla reach. That's what made him visibly wander off mid-conversation
 # and swallowed his nod animations (movement fighting the nod's rotation writes).
-# See _maps/actions/registry.json → _action_templates.routine_pause_resume for the
+# See _npcs/actions/registry.json → _action_templates.routine_pause_resume for the
 # full writeup. Keep this wider than the 2-block pause trigger above.
 execute as @e[type=taterzens:npc,name="Döran",limit=1,tag=luminacion.paused] at @s unless entity @a[distance=..6] run function luminacion:npcs/doran/resume_routine
 

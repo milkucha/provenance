@@ -11,8 +11,8 @@
         "That other people's lives end too, which is why what someone leaves in others outlasts them."
       ],
       "withheld": [
-        "The number itself. It lives in _maps/npcs/lifespans.json, deliberately NOT in the registry entry /enact loads to play them; the enactment asks scripts/horizon.py, which answers with a coarse band (early/established/late/final) and never the figure. Never revealed as a count, a countdown, or a hint that they are running low.",
-        "The single exception: when a character enters what turns out to be their final encounter, they know it is the final one and play it knowing. That knowledge arrives with the scene and never one scene early."
+        "The number itself. It lives in _lore/characters/lifespans.json, deliberately NOT in the character file /enact loads to play them; the enactment asks scripts/horizon.py, which answers with a coarse band (early/established/late) and never the figure. Never revealed as a count, a countdown, or a hint that they are running low.",
+        "Which scene, if any, is their last. There is no exception for it: a character never experiences or senses their own death, so their final scene is written exactly like any other and is only knowable as such afterward, mechanically, once it has already closed (see scripts/horizon.py's ending check)."
       ],
       "effects": [
         "Forces ranking: a character with a closing horizon must decide what matters most, which is where personality becomes visible behavior.",
@@ -29,7 +29,7 @@
         "That this is true of everyone else too - including people whose idea of a worthwhile life is nothing like their own."
       ],
       "withheld": [
-        "What 'worthwhile' actually means. The impulse is universal; the criterion is not. A character's particular answer is derived from the collision of their knowledge with their backstory (see criterion in _maps/npcs/registry.json and the derivation procedure in .claude/skills/character/SKILL.md), is inherited from somewhere specific, and can be argued with or lost."
+        "What 'worthwhile' actually means. The impulse is universal; the criterion is not. A character's particular answer is derived from the collision of their knowledge with their backstory (see criterion in _lore/characters/<key>.json and the derivation procedure in .claude/skills/character/SKILL.md), is inherited from somewhere specific, and can be argued with or lost."
       ],
       "effects": [
         "It is the engine: paired with life_is_finite, it is the will to live - time is short and it matters what the time was spent on.",
