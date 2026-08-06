@@ -54,7 +54,7 @@ don't fork the procedure.
   whatever entered the discovery/sampling record; a new scene with them is not one of the ways that
   knowledge is allowed to grow.
 - **If it doesn't exist, this is a brand-new character — run**
-  `python scripts/lore/check_character_name.py "<name>"` **and confirm `AVAILABLE`** before treating it as
+  `py scripts/lore/check_character_name.py "<name>"` **and confirm `AVAILABLE`** before treating it as
   one. This is the same shared uniqueness check `/character` Step 1 uses (every character ever
   created, living or deceased, must have a name that slugifies uniquely). On `TAKEN`, tell the user
   and ask for a distinguishing variant.
@@ -81,9 +81,9 @@ Ask, as plain conversation (not multiple-choice):
 Then run the sample (skip this entirely if reusing an existing sample per the guard above):
 
 ```bash
-python scripts/lore/sample_lore_knowledge.py --percent <N> --mode random
+py scripts/lore/sample_lore_knowledge.py --percent <N> --mode random
 # or
-python scripts/lore/sample_lore_knowledge.py --percent <N> --mode skewed --topic "<keyword>" --topic "<keyword2>"
+py scripts/lore/sample_lore_knowledge.py --percent <N> --mode skewed --topic "<keyword>" --topic "<keyword2>"
 ```
 
 Keep the printed list (or the reused list, for a returning character) — it's this character's
@@ -114,7 +114,7 @@ same first-time-only discipline as `education`:
   city default (`/character` Step 4e).
 - **Lifespan.** If the character has no entry in `_lore/characters/lifespans.json`, roll it now per
   `/character` **Step 5**. If they do, never reroll.
-- **Horizon.** Run `python scripts/lore/horizon.py <npc_key>` for each character before the scene starts
+- **Horizon.** Run `py scripts/lore/horizon.py <npc_key>` for each character before the scene starts
   and keep the band (`early` / `established` / `late`) for Step 3. Ignore the `ending` line this
   script also prints — before a scene it always reads `false` (see the script's docstring for why),
   and it isn't the concern of the scene at all. It only matters afterward, at Step 5b point 6.
@@ -223,9 +223,8 @@ as often as embellishment, and an unverified claim is not the same as a false on
 step on "did anyone say 'I heard X say...'" — that test only decides the two optional fields below,
 not whether the step happens at all.
 
-Add an entry to `_lore/characters/hearsay.md` and to `encodings.json`'s `hearsay.entries` array for
-this dialog, in the same shape as the existing entries: participants, location, summary, and a
-`claims` list phrased as reported assertions (not restated as fact), each with an `about` reference
+Build an entry for this dialog — participants, location, summary, and a `claims` list phrased as
+reported assertions (not restated as fact), each with an `about` reference
 into the objective arrays where it topically overlaps (a bare era name from `time_systems` is a valid
 `about` target too, e.g. `"Era del Daax"`). Check each claim against the record and set
 `inconsistent_with_record` (an array of `{about, source_kind, note}` — `source_kind` is
@@ -259,6 +258,14 @@ a *sampled hearsay item* rather than a fresh read of the objective record (Step 
   entirely for the common case — a claim freshly drawn from the objective record, or a faithful,
   traceable retelling with nothing added.
 
+Once the entry is built, write it to a JSON file (see `record_hearsay.py`'s own docstring for the
+exact shape) and run `py scripts/lore/record_hearsay.py --json-file <path>` to record it — it appends
+the entry to both `_lore/characters/hearsay.md` and `encodings.json`'s `hearsay.entries` in the same
+shape as the existing entries, generates a consistent `id`, and validates both files still parse as
+JSON afterward. Everything above this point (what a claim says, how it mutated, which flags apply) is
+still entirely yours to decide — the script only owns getting the decided content into the two files
+correctly, the mechanical half that used to be a hand-edited JSON diff every single run.
+
 ## Step 5b — Resolve shocks, drift, and the scene count
 
 Runs after Step 5 because Step 5's `claims` list is the input. For every character enacted this run:
@@ -267,8 +274,10 @@ Runs after Step 5 because Step 5's `claims` list is the input. For every charact
 through in the scene), check whether it **references that character's `criterion.anchor`** — same
 case, same person, same event, using the claim's `about` refs. This is a pointer comparison, not a
 judgment about how upsetting something was. **Never score intensity; there is no magnitude scale
-here on purpose.** A claim that doesn't reference the anchor is news, however dramatic, and stops
-here.
+here on purpose.** Run `py scripts/lore/check_anchor_reference.py <npc_key> --hearsay-id <entry_id>`
+to do this check mechanically instead of eyeballing every claim's `about` field against the anchor
+string — it reports exactly which claims (if any) matched. A claim that doesn't reference the anchor
+is news, however dramatic, and stops here.
 
 **2. The default is no change, and it will be the answer almost every time.** Most scenes move
 nobody's criterion. Only continue past this point when the gate in (1) actually matched.
@@ -291,18 +300,32 @@ Then update trust per `/character` Step 6: surviving a refutation hardens `distr
 kind of source it came from; a break usually swings the character the other way. Leave both fields
 untouched when the outcome was "no change."
 
-Append an entry to `criterion.history` for anything other than "no change":
-`{ "dialog": "<dialog file or scene id>", "was": "<previous standard, if it changed>", "move":
-"rejected|reinterpreted|broke", "cause": "<claim id that referenced the anchor>" }`.
+Once the move is decided, record it (and the life.lived increment from point 5 below) in one call:
+
+```bash
+py scripts/lore/update_character.py <npc_key> --lived-delta 1 \
+    --criterion-move reject|reinterpret|break --dialog <scene id> --cause "<claim id + what it claimed>" \
+    --note "<why this move>" [--trusts "..."] [--distrusts "..."]
+```
+
+This appends the `criterion.history` entry, increments `tempered` on a reinterpret, clears
+`standard`/`wasted_life` (keeping the old values in `history`) on a break, and updates
+`trusts`/`distrusts` if given — the outcome you already decided, written correctly, once. Skip
+`--criterion-move` entirely on "no change" — nothing here runs then, per point 2 above.
 
 **4. Drift bookkeeping.** If honoring the criterion cost the character something in this scene — time,
-a relationship, a chance they passed up, a thing they couldn't say — append one short line to
-`criterion.cost_ledger`. This never changes the criterion by itself; it raises susceptibility for
-later shocks. Skip it when nothing was actually paid.
+a relationship, a chance they passed up, a thing they couldn't say — append one short line via
+`py scripts/lore/update_character.py <npc_key> --cost-ledger "<what it cost>"` (combine with
+`--lived-delta`/`--criterion-move` in the same call above if this is the same character). This never
+changes the criterion by itself; it raises susceptibility for later shocks. Skip it when nothing was
+actually paid.
 
-**5. Increment `life.lived` by 1** for every character who was in the scene.
+**5. Increment `life.lived` by 1** for every character who was in the scene — `--lived-delta 1` on
+`update_character.py`, folded into whichever call above already touches that character, or on its own
+(`py scripts/lore/update_character.py <npc_key> --lived-delta 1`) when nothing else changed for them
+this scene.
 
-**6. Now, and only now, run `python scripts/lore/horizon.py <npc_key>` again and check `ending`.** Before
+**6. Now, and only now, run `py scripts/lore/horizon.py <npc_key>` again and check `ending`.** Before
 Step 5 it could only ever read `false`; now that `life.lived` reflects the scene just played, it can
 truthfully say the character's life is complete. If it does, that scene — already written, already
 closed, with nothing in it played any differently — turns out to have been their last. Nothing about
@@ -314,43 +337,46 @@ along with anything it leaves open (a dialog that assumed they'd be available, a
 spawned). Tell the user plainly that this character has had their last scene; don't bury it.
 
 Death propagates in two tiers — a guaranteed circle and everyone else — rather than being announced
-to the world at large. Do all of the following:
+to the world at large. Run:
 
-- **Set `life.deceased: true`** on their character file. This is a plain, non-secret fact — unlike
-  `life.span`, nothing about death itself is hidden — and it's what stops a future `/enact` run from
-  accidentally reusing them (see the Step 1 guard below).
-- **Record it as an objective fact of the world**, in the same shape `/tell` produces (see
-  `.claude/skills/tell/SKILL.md`) but written directly rather than asked for interactively, since every
-  fact needed is already known at this point: a new `_lore/tales/<slug>.md` file (title, `**Told by:**
-  no one; simply now known` in the ordinary case — a named cause only if the scene actually
-  established one — the fact of the death itself as the tale's content), a matching `tales.entries`
-  manifest row in `encodings.json`, a `_lore/tales/_authors.md` row, and a `characters` entry update if
-  one exists for them. This is what makes death re-enter the ordinary sampling pool for characters
-  created later, at ordinary odds — the *only* channel anyone outside the circle below has.
-- **Run `python scripts/lore/notify_death.py <npc_key>`.** It computes the character's *circle* — everyone
-  they've shared a recorded scene with, plus everyone named in their own backstory — and mechanically
-  samples 30% of it (minimum 1 if the circle isn't empty) as who learns immediately. It also flags
-  which of those notified have a `criterion.anchor` that references the deceased directly (same
-  scene, same hearsay entry) — a pointer check, not a judgement call.
-- **For every notified character, append one line to `knowledge.experience`** recording that they
-  learned of the death — plain reported fact, no attribution needed (it wasn't told to them by
-  anyone in particular; word simply reached them). This is written immediately regardless of whether
-  that character is ever enacted again soon; it's part of their standing knowledge from now on.
-- **For every notified character flagged as a shock candidate, resolve it now, per `/character`
-  Step 6** — the same reject / accept-and-reinterpret / accept-and-break judgement as point 3 above,
-  using the news itself as the shock ("lived falsification... the character's own experience
-  referencing their own anchor" already covers this). Update `tempered`/`cost_ledger`/`history`/
-  `trusts`/`distrusts` exactly as point 3 does. This is real judgement, not mechanical — the script
-  only tells you *who* qualifies, never how they take it.
-- **Everyone the script did not notify simply doesn't know yet.** Don't write anything for them. They
-  find out later only the ordinary way: sampled into a new character's education, or told by someone
-  from the circle in a future scene (subject to the usual `lineage_coin.py` traceable/untraceable
-  rule on that retelling, same as any other claim).
+```bash
+py scripts/lore/record_death.py <npc_key> [--cause "<only if the scene actually established one>"]
+```
+
+This does the entire mechanical procedure in one call: sets `life.deceased: true` on the character's
+file (a plain, non-secret fact — unlike `life.span`, nothing about death itself is hidden, and it's
+what stops a future `/enact` run from accidentally reusing them, see the Step 1 guard below); records
+it as an objective fact of the world in the same shape `/tell` produces (a new
+`_lore/tales/<slug>.md` file, a matching `tales.entries` manifest row in `encodings.json`, and rows
+in `_lore/tales/_authors.md`/`_index.md`) — this is what makes death re-enter the ordinary sampling
+pool for characters created later, at ordinary odds, the *only* channel anyone outside the circle
+below has; computes the character's *circle* (everyone they've shared a recorded scene with, plus
+everyone named in their own backstory) and mechanically samples 30% of it (minimum 1 if the circle
+isn't empty) as who learns immediately; and appends a plain "learned of the death" line to every
+notified character's `knowledge.experience` — reported fact, no attribution needed, written
+immediately regardless of whether that character is ever enacted again soon.
+
+The one thing the script does **not** do, and prints back to you explicitly, is flag which notified
+characters are shock candidates (their `criterion.anchor` references the deceased directly, same
+scene, same hearsay entry — a pointer check the script makes for you). **For every one of those,
+resolve it now, per `/character` Step 6** — the same reject / accept-and-reinterpret / accept-and-break
+judgement as point 3 above, using the news itself as the shock ("lived falsification... the
+character's own experience referencing their own anchor" already covers this) — via
+`py scripts/lore/update_character.py <npc_key> --criterion-move ... --dialog ... --cause ...` exactly
+as point 3. This is real judgement, not mechanical — the script only tells you *who* qualifies, never
+how they take it.
+
+**Everyone the script did not notify simply doesn't know yet.** Don't write anything for them. They
+find out later only the ordinary way: sampled into a new character's education, or told by someone
+from the circle in a future scene (subject to the usual `lineage_coin.py` traceable/untraceable
+rule on that retelling, same as any other claim).
 
 ## Step 6 — Update the character record
 
 For every character enacted this run, add/update their file at `_lore/characters/<key>.json`
-(key = lowercased, slugified name):
+(key = lowercased, slugified name). **`criterion` and `life` are typically already written** by the
+`update_character.py`/`record_death.py` calls made during Step 5b — don't hand-edit those fields again
+here, since a fresh JSON write could clobber what those calls just did. What's left for this step:
 
 - `name` — set once, for a first-time character. Never rewritten on a returning character.
 - `city` — the location from Step 1/2, or `""` if none was given.
@@ -365,14 +391,16 @@ For every character enacted this run, add/update their file at `_lore/characters
   personal texture that's now established for this character (Sonoros's "out of Görff way," his
   crossing-walker job), or — for the *other* character in a two-NPC scene — anything they said that
   this character would now plausibly have picked up just from being present. Cross-check against the
-  hearsay entry's `claims` from Step 5. For a returning character, **append** new entries to the
-  existing list rather than replacing it.
-- `criterion` — for a first-time character, the whole object as derived in Step 1. For a returning
-  character, write only what Step 5b actually changed (`standard`/`wasted_life` on a break,
-  `tempered` on a reinterpretation, `trusts`/`distrusts` if the outcome moved them, plus the
-  `history` and `cost_ledger` appends). **Never re-derive a criterion from the sample on a later
-  run** — it changes only through a shock that referenced its anchor.
-- `life` — `{lived, deceased}`. `lived` incremented per Step 5b; `deceased` set per Step 5b point 6.
+  hearsay entry's `claims` from Step 5. Write these with
+  `py scripts/lore/update_character.py <npc_key> --add-experience "<entry>" [--add-experience "<entry 2>"...]`
+  (repeatable per entry) — fold this into the same Step 5b call for this character when there is one,
+  rather than a separate write. It appends to the existing list; a returning character's prior entries
+  are never touched.
+- `criterion`/`life` — already handled by Step 5b's `update_character.py`/`record_death.py` calls for
+  every character whose criterion changed, cost something, or advanced `life.lived`/`life.deceased`
+  this scene. Only touch these fields by hand for a first-time character's *initial* criterion (the
+  whole object as derived in Step 1) — never re-derive on a later run, and never re-write what a
+  script call already recorded.
   If this run rolled a first lifespan (Step 1), the span went into
   `_lore/characters/lifespans.json`, never here.
 

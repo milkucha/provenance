@@ -52,9 +52,18 @@ ids; wire the final `end_dialogue` state per the existing templates.
   `"Dialogue with <interlocutor>"`, which would be misleading with two speakers.
   (`nawom_morkulo_first_meeting.json` is the reference shape.)
 
-Validate before moving on — every `choices[].next` must resolve to a real state, `start_at` must be
-valid, and the top-level `"layout": { "type": "blabber:rpg" }` is present. Save to
-`data/luminacion/blabber/dialogues/<descriptive_name>.json`.
+Save to `data/luminacion/blabber/dialogues/<descriptive_name>.json`, then validate it:
+
+```bash
+py scripts/minecraft/validate_dialog.py data/luminacion/blabber/dialogues/<descriptive_name>.json
+```
+
+It checks exactly the structural rules above by construction rather than by eye — every
+`choices[].next` resolves to a real state, `start_at` is valid, the top-level
+`"layout": { "type": "blabber:rpg" }` is present, no line exceeds the 300-character cap, no stage
+cue leaked through, and flags any state nothing ever links to. A clean pass means the file won't break
+when Blabber loads it — it has no opinion on writing quality or gesture choice, both still Step 3's
+job.
 
 ## Step 2 — Register the NPC(s) and the dialog
 

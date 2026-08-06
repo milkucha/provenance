@@ -20,7 +20,7 @@ Ask for the character's name. Slugify it (lowercase, diacritics folded, non-alph
 underscore — see `scripts/lore/check_character_name.py`) and look for `_lore/characters/<slug>.json`.
 
 If no such file exists, this is a brand-new character — **before proceeding, run**
-`python scripts/lore/check_character_name.py "<name>"` **and confirm it reports `AVAILABLE`.** This is the
+`py scripts/lore/check_character_name.py "<name>"` **and confirm it reports `AVAILABLE`.** This is the
 single shared enforcement point for name uniqueness (`/enact` Step 1 calls the same script the same
 way) — every character ever created, living or deceased, must have a name that slugifies uniquely. If
 it reports `TAKEN`, tell the user and ask for a distinguishing variant (a surname or epithet — e.g.
@@ -72,9 +72,9 @@ whose `knowledge.education` is still blank):
 - If skewed, ask for the topic/keyword(s).
 - Run:
   ```bash
-  python scripts/lore/sample_lore_knowledge.py --percent <N> --mode random
+  py scripts/lore/sample_lore_knowledge.py --percent <N> --mode random
   # or
-  python scripts/lore/sample_lore_knowledge.py --percent <N> --mode skewed --topic "<keyword>" --topic "<keyword2>"
+  py scripts/lore/sample_lore_knowledge.py --percent <N> --mode skewed --topic "<keyword>" --topic "<keyword2>"
   ```
 - Keep the printed list — it goes into `knowledge.education.items` in Step 6. Don't reveal the full
   list to the user unprompted; you may describe its general shape.
@@ -166,7 +166,13 @@ hearsay-only" slice), not who the character is.
 What *is* usable, and only as a tiebreaker when the anchor lands in the ambiguous row:
 **over-representation against the other characters' baseline.** Döran holding 12% chronicle items
 where everyone else holds 2–7%, or Iläria holding 15 conflicts where others hold 0–6, is a real
-signal. "Has more hearsay than anything else" is not — everyone does.
+signal. "Has more hearsay than anything else" is not — everyone does. Run
+`py scripts/lore/baseline_stats.py <npc_key>` to compute this instead of eyeballing item lists across
+every character file — it reports each category's count/percentage for this character against the
+corpus-wide average and range, flagged where this character sits well above the average (Iläria's
+`conflict` category is the worked example the flag actually catches). The script only computes the
+signal; whether it's a strong enough tiebreaker for *this* character, and how `trusts`/`distrusts`
+end up phrased, stays entirely a judgement call.
 
 Write `trusts` and `distrusts` as one line each, in the character's own terms, the same way
 `standard`/`wasted_life` are written. Good: `trusts: "a name attached to a story - someone who was
@@ -197,9 +203,9 @@ Only when the character has no entry in `_lore/characters/lifespans.json`. Once 
 rerolled — same discipline as `knowledge.education`.
 
 ```bash
-python scripts/lore/roll_lifespan.py
+py scripts/lore/roll_lifespan.py
 # or, to reach a character's last scene quickly while testing:
-python scripts/lore/roll_lifespan.py --min 2 --max 4
+py scripts/lore/roll_lifespan.py --min 2 --max 4
 ```
 
 **The span goes in `_lore/characters/lifespans.json`, never in the character's own file.** This is
@@ -215,7 +221,7 @@ Anything that needs to know how far through a life a character is asks `scripts/
 answers with a coarse band and never the number:
 
 ```bash
-python scripts/lore/horizon.py <npc_key>     # -> band: early | established | late, plus ending: true|false
+py scripts/lore/horizon.py <npc_key>     # -> band: early | established | late, plus ending: true|false
 ```
 
 `--verbose` will print the raw span, and exists only for author-side bookkeeping like this step.
@@ -230,7 +236,9 @@ a genuinely new character. For one who predates these fields, count the scenes t
 been in: **one `encodings.json` `hearsay.entries[]` record is one scene**, so `lived` is the number
 of entries listing them in `participants`. (Match on the display name including diacritics — `Döran`
 and `Iläria` won't match an ASCII search.) Don't count `knowledge.experience` lines; several of those
-can come out of a single scene. If a backfilled `lived` would meet or exceed the rolled `span`, roll
+can come out of a single scene. Run `py scripts/lore/backfill_lived.py <npc_key>` to do this count
+instead of searching the array by hand — it also checks the count against the rolled `span` and tells
+you directly if a reroll is needed. If a backfilled `lived` would meet or exceed the rolled `span`, roll
 again with `--min <lived+1>` — the character is demonstrably still alive after that many scenes, so a
 span at or below their history is simply wrong, and this is the one case where rerolling is correct.
 
