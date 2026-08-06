@@ -19,7 +19,7 @@ gives instead.
 ## Step 1 — Run the packaging script
 
 ```
-python scripts/minecraft/package.py "<destination>"
+py scripts/minecraft/package.py "<destination>"
 ```
 
 This writes/overwrites (never timestamps — re-running always replaces the previous

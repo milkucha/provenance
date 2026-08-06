@@ -104,9 +104,15 @@ For pass 1 through N:
 3. Dispatch one subagent (Agent tool, `subagent_type: general-purpose`, the model chosen in Step 1,
    `run_in_background: false` — the next pass needs this one's file writes to have landed first).
    Brief it self-contained, since it starts with no memory of this conversation:
-   - The worktree's absolute path — every file read/write and every `python scripts/lore/...` call
-     must use it explicitly, never an assumed working directory.
-   - Pointers to `.claude/skills/enact/SKILL.md` and README.md §8 for the rules it must follow.
+   - The worktree's absolute path — every file read/write and every `py scripts/lore/...` call must
+     use it explicitly, never an assumed working directory. This includes the two rule-pointer files
+     below: give their full absolute path inside the worktree
+     (`<worktree>/.claude/skills/enact/SKILL.md`, `<worktree>/README.md` §8), never a bare relative
+     one, and read them with the `Read` tool, never a shell `cat`/`Get-Content` fallback. A subagent's
+     actual working directory is not guaranteed to match the parent conversation's; a relative path can
+     silently resolve outside wherever its real cwd turns out to be, and the `Read` tool is never
+     gated for paths *inside* the working directory — only for paths it resolves as outside it, which
+     is what a permission prompt on a plain file read means when it happens.
    - Both participants' names, and that **both already have character files** — Step 1/2's
      interactive questions and the name-uniqueness check are for new characters only and don't apply
      here. It should still: check `life.deceased` before starting, run `horizon.py` for each per
@@ -117,6 +123,14 @@ For pass 1 through N:
    - **Never call `AskUserQuestion` or wait on a live user** — there isn't one. Make the same calls
      `/enact` would normally ask about (whether the scene has reached a natural stopping point, how a
      shock resolves) autonomously, and note any non-obvious judgment call in its final report.
+   - **If any tool call fails for any reason — a `py scripts/lore/...` call, a file read, anything —
+     report the exact error and stop that pass. Never retry it via a different shell, tool, or method
+     (PowerShell instead of Bash, `cat`/`Get-Content` instead of `Read`, bare `python` instead of
+     `py`, etc.).** Confirmed the hard way: a `py` script failure that fell back to the PowerShell tool
+     is what surfaced a live permission prompt mid-run, even with `bypassPermissions` set — the exact
+     mechanism isn't fully pinned down, but switching tools/methods after a failure is the one thing
+     observed to break the "no prompts, ever" guarantee, so it's banned outright rather than trusted a
+     second time. Bare `python` is confirmed not on PATH in this environment — always use `py`.
    - Run Steps 5, 5b, and 6 **in full** — hearsay mutation, shock resolution, drift, the record
      update. This is the actual mechanism being exercised; nothing here gets shortened for speed.
    - Report back *only* a short summary, not the transcript: both participants, a one-line gist of
