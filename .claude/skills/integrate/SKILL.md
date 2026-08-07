@@ -24,12 +24,16 @@ never overwrite an existing entry or invent a resolution.
    what it actually says or shows; preserve the source's own blanks/open questions as gaps rather
    than filling them in; note (don't resolve) any disagreement with other sources.
 2. Fold the transcribed material into `encodings.json`'s objective arrays (`time_systems`,
-   `locations`, `routes`, `characters`, `concepts`) in the same shape as their existing entries.
-   Never edit or remove an existing entry to make room for a new one. If the new material disagrees
-   with something already encoded, add a `conflicts` entry instead — next `CONFLICT-NN` id, `topic`,
-   `detail` — and leave `user_resolution` unset. That field is set by the user only; every current
-   entry that has one records it as "(per user, <date>)" — never fill it in on this skill's own
-   judgment.
+   `locations`, `routes`, `characters`, `concepts`) in the same shape as their existing entries. For the
+   four categories that carry a `sources` list (`locations`, `concepts`,
+   `characters.in_world_or_legendary`, `characters.real_world_authors_and_players`), each entry is
+   `{"category": "material", "origin": "<doc (detail)>"}` — the two-layer shape (what kind of source,
+   then which specific one) that also carries `tale`/`hearsay` provenance once Pass 3's script runs (see
+   Pass 3 step 2). Never edit or remove an existing entry to make room for a new one. If the new
+   material disagrees with something already encoded, add a `conflicts` entry instead — next
+   `CONFLICT-NN` id, `topic`, `detail` — and leave `user_resolution` unset. That field is set by the
+   user only; every current entry that has one records it as "(per user, <date>)" — never fill it in on
+   this skill's own judgment.
 3. Log anything the new material poses as a question but doesn't answer in `unknowns.md`, matching the
    shape of its existing entries (cross-reference a `CONFLICT-##` id when it's a disagreement between
    sources; otherwise it's a standalone gap).
@@ -83,26 +87,34 @@ dialogue (not produced via `/enact`) can skip README §8 Step 5 entirely without
    the tale as never having been folded into the other categories at all — that means Step 5 was
    skipped, not just Step 4. Build any missing `_authors.md`/`_index.md` row the same transcribing way.
    Never invent a `told_by`/`Responsible` value that isn't already written in the tale file.
-2. Walk every `_lore/characters/*.json` file's `knowledge.education.items` and
-   `knowledge.experience` (skip `_template.json`), plus every `hearsay.entries[].claims[].about`
-   reference in `encodings.json`. Confirm every `about` id that isn't `null` or a bare era/
-   `CONFLICT-##` name resolves to a real entry somewhere in `locations`/`characters`/`concepts`/etc.
-3. Walk every `tales.entries[].touches` array. Confirm each id listed actually exists where it claims
-   to (an added/amended entry in `locations`/`characters`/`concepts`/`routes`/`time_systems`, or a
-   `CONFLICT-##` id in `conflicts`), and that the referenced entry actually carries the matching
-   `tale:<id>` source tag. Flag either direction of drift: a `touches` id that doesn't resolve, or a
-   `tale:` source tag in the objective arrays with no corresponding id in that tale's own `touches`
-   list.
+2. **Run `py scripts/lore/build_source_index.py`** — mechanical, no judgment involved, so it costs no
+   model reasoning to run. It (a) migrates any leftover flat-string `sources` entries into the
+   two-layer `{category, origin}` shape, (b) links every `hearsay.entries[].claims[].about` and
+   `tales.entries[].touches` reference that resolves — exactly, or within `difflib` similarity 0.77
+   compared only within one category at a time (never a location against a character, for instance) —
+   into the target node's `sources` list, and (c) prints what it could not resolve. A fuzzy link is
+   never treated as settled fact: it also appends a new `CONFLICT-NN` entry ("possible same-entity
+   spelling, auto-grouped (unconfirmed)") with `user_resolution` left unset, same as every other
+   conflict — flag every one of these in this pass's report, same as a brand-new conflict from Pass 1.
+3. **Everything the script reports as unresolved needs a human read, not a guess.** For each one,
+   figure out which case it is: a genuinely new entity that was never folded into the objective arrays
+   (needs a Pass-1-style entry), a spelling too different from anything existing to fuzzy-match (needs
+   a manual `names[]`/`about` fix), or a reference into a category the script doesn't index yet
+   (`routes`, `time_systems` eras, `characters.named_inhabitants` — `about`/`touches` values there are
+   still checked by eye: confirm each resolves to a real entry, the same way this pass always has).
+   Also confirm, for the `tale:<id>` provenance the script attaches, that the referenced entry actually
+   carries it and the tale's own `touches` list agrees — flag either direction of drift.
 4. Cross-check `_npcs/dialogs/registry.json` against `data/luminacion/blabber/dialogues/`: flag any
    registered dialog id with no matching file, and any dialogue file with no registry entry (the
    latter is expected for a few in-flight two-NPC scenes still open in `TODO.md` — check there before
    flagging one as a bug).
-5. Report every dangling reference found, with enough detail (file, field, the id in question) that
-   the user can decide the fix. Never auto-repair a dangling `about`/`touches` reference by guessing
-   the intended target — a wrong guess corrupts the provenance the hearsay/encodings system depends
-   on; surface it instead. (Step 1's tale-coverage builds are the one exception — those transcribe
-   data the tale file already states outright, the same way Pass 2 builds a missing hearsay entry
-   straight from a dialogue's own text; nothing there is guessed.)
+5. Report every dangling reference found (with enough detail — file, field, the id in question — that
+   the user can decide the fix), plus every auto-grouped conflict from step 2. Never auto-repair a
+   dangling `about`/`touches` reference by guessing beyond what the script's fuzzy step already does at
+   its fixed, disclosed threshold — below 0.77 similarity, a guess is more likely to corrupt provenance
+   than fix it, so it stays a human call. (Step 1's tale-coverage builds are the other exception — those
+   transcribe data the tale file already states outright, the same way Pass 2 builds a missing hearsay
+   entry straight from a dialogue's own text; nothing there is guessed.)
 
 ## Pass 4 — Unknowns staleness audit
 

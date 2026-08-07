@@ -336,8 +336,22 @@
       "condition_catastro": "Completo",
       "coords": [],
       "sources": [
-        "catastro (start 2011, aeropuerto No)",
-        "libro (Ciudades A.V., 2012)"
+        {
+          "category": "material",
+          "origin": "catastro (start 2011, aeropuerto No)"
+        },
+        {
+          "category": "material",
+          "origin": "libro (Ciudades A.V., 2012)"
+        },
+        {
+          "category": "hearsay",
+          "origin": "bardaglis_ilaria_khaoe_segunda_noche#7"
+        },
+        {
+          "category": "hearsay",
+          "origin": "khaoe_milkucha_jardin_de_los_parajes#8"
+        }
       ],
       "notes": "start-year mismatch between catastro (2011) and libro (2012); see CONFLICT-06"
     },
@@ -358,9 +372,18 @@
         }
       ],
       "sources": [
-        "ensayo_i (first players' base, era 1)",
-        "catastro (start 2012, aeropuerto Si)",
-        "libro (Ciudades A.V., 2012)"
+        {
+          "category": "material",
+          "origin": "ensayo_i (first players' base, era 1)"
+        },
+        {
+          "category": "material",
+          "origin": "catastro (start 2012, aeropuerto Si)"
+        },
+        {
+          "category": "material",
+          "origin": "libro (Ciudades A.V., 2012)"
+        }
       ],
       "notes": null
     },
@@ -394,11 +417,82 @@
         }
       ],
       "sources": [
-        "ensayo_i (refuge built end of era 1; world capital in Era del Confinamiento)",
-        "catastro (start 2012, aeropuerto En Construccion)",
-        "libro (Ciudades A.V., 2012)",
-        "3 screenshots dated 26.08.2020 ('Khan Ice 1/2/3'), confirmed identical to Libro's uncaptioned image1/2/4.png",
-        "'Khan Ice (WP 17.11.2020).png' - a web-map (Dynmap/BlueMap-style) render showing a dense gridded city and the same colosseum-like structure seen in the 26.08.2020 screenshots"
+        {
+          "category": "material",
+          "origin": "ensayo_i (refuge built end of era 1; world capital in Era del Confinamiento)"
+        },
+        {
+          "category": "material",
+          "origin": "catastro (start 2012, aeropuerto En Construccion)"
+        },
+        {
+          "category": "material",
+          "origin": "libro (Ciudades A.V., 2012)"
+        },
+        {
+          "category": "material",
+          "origin": "3 screenshots dated 26.08.2020 ('Khan Ice 1/2/3'), confirmed identical to Libro's uncaptioned image1/2/4.png"
+        },
+        {
+          "category": "material",
+          "origin": "'Khan Ice (WP 17.11.2020).png' - a web-map (Dynmap/BlueMap-style) render showing a dense gridded city and the same colosseum-like structure seen in the 26.08.2020 screenshots"
+        },
+        {
+          "category": "hearsay",
+          "origin": "doran_plaza_orientation#5"
+        },
+        {
+          "category": "hearsay",
+          "origin": "doran_four_castles#8"
+        },
+        {
+          "category": "hearsay",
+          "origin": "doran_four_castles#9"
+        },
+        {
+          "category": "hearsay",
+          "origin": "aureobalo_khaasan_bar_salthos_cruzados#1"
+        },
+        {
+          "category": "hearsay",
+          "origin": "khaoe_khaasan_partida_a_khan_ice#1"
+        },
+        {
+          "category": "hearsay",
+          "origin": "khaoe_khaasan_partida_a_khan_ice#2"
+        },
+        {
+          "category": "hearsay",
+          "origin": "khaoe_khaasan_partida_a_khan_ice#3"
+        },
+        {
+          "category": "hearsay",
+          "origin": "khaoe_khaasan_partida_a_khan_ice#8"
+        },
+        {
+          "category": "hearsay",
+          "origin": "khaoe_milkucha_jardin_de_los_parajes#5"
+        },
+        {
+          "category": "hearsay",
+          "origin": "khaoe_milkucha_jardin_de_los_parajes#7"
+        },
+        {
+          "category": "hearsay",
+          "origin": "gok_milkucha_alcove#1#2"
+        },
+        {
+          "category": "hearsay",
+          "origin": "gok_milkucha_alcove#1#6"
+        },
+        {
+          "category": "hearsay",
+          "origin": "farlis_gok_alcove#1#1"
+        },
+        {
+          "category": "hearsay",
+          "origin": "farlis_gok_alcove#1#2"
+        }
       ],
       "notes": "three mutually inconsistent coordinate values across three sources; see CONFLICT-02. No airport code recorded for Khan Ice in the Cartography Airports sheet despite catastro listing it as 'En Construccion' for aeropuerto."
     },
@@ -426,9 +520,22 @@
         }
       ],
       "sources": [
-        "ensayo_i (founded 114 d.V. with 2nd mausoleum; refurbished ~900 d.V.; 'monumento al Vito' nearby)",
-        "catastro (start 2012, aeropuerto En Evaluacion)",
-        "libro (Ciudades D.V., 2013)"
+        {
+          "category": "material",
+          "origin": "ensayo_i (founded 114 d.V. with 2nd mausoleum; refurbished ~900 d.V.; 'monumento al Vito' nearby)"
+        },
+        {
+          "category": "material",
+          "origin": "catastro (start 2012, aeropuerto En Evaluacion)"
+        },
+        {
+          "category": "material",
+          "origin": "libro (Ciudades D.V., 2013)"
+        },
+        {
+          "category": "hearsay",
+          "origin": "gondarfolas_darnis_and_bracco#5"
+        }
       ],
       "notes": "X-coordinates roughly agree (1275 vs 1300); Y-coordinates disagree in sign (225 vs -200); see CONFLICT-02"
     },
@@ -463,11 +570,66 @@
         }
       ],
       "sources": [
-        "ensayo_i (castle built era 2; industrial restoration; failed 'luminacion' project 882 d.V.)",
-        "catastro (start 2012, aeropuerto Si)",
-        "libro (Ciudades D.V., 2013)",
-        "2 screenshots dated 17.07.2020 ('Gorff 1/2'), confirmed identical to Libro's uncaptioned image3.png (castle) and image5.png (garden/farm plaza)",
-        "Luminacion Register NPC roster: home locality for ~19 of the ~40 listed NPCs (Bardaglis the musician, Dägna the barkeeper, Farlika/Gorlia/Morlia the market keepers, Kristok Jakur the blacksmith, etc.) - production data, not lore, see unknowns.md"
+        {
+          "category": "material",
+          "origin": "ensayo_i (castle built era 2; industrial restoration; failed 'luminacion' project 882 d.V.)"
+        },
+        {
+          "category": "material",
+          "origin": "catastro (start 2012, aeropuerto Si)"
+        },
+        {
+          "category": "material",
+          "origin": "libro (Ciudades D.V., 2013)"
+        },
+        {
+          "category": "material",
+          "origin": "2 screenshots dated 17.07.2020 ('Gorff 1/2'), confirmed identical to Libro's uncaptioned image3.png (castle) and image5.png (garden/farm plaza)"
+        },
+        {
+          "category": "material",
+          "origin": "Luminacion Register NPC roster: home locality for ~19 of the ~40 listed NPCs (Bardaglis the musician, Dägna the barkeeper, Farlika/Gorlia/Morlia the market keepers, Kristok Jakur the blacksmith, etc.) - production data, not lore, see unknowns.md"
+        },
+        {
+          "category": "hearsay",
+          "origin": "gondarfolas_darnis_and_bracco#1"
+        },
+        {
+          "category": "hearsay",
+          "origin": "doran_plaza_orientation#4"
+        },
+        {
+          "category": "hearsay",
+          "origin": "doran_four_castles#6"
+        },
+        {
+          "category": "hearsay",
+          "origin": "doran_eras_of_culture#1"
+        },
+        {
+          "category": "hearsay",
+          "origin": "khaoe_farlis_el_castillo_que_fue#1"
+        },
+        {
+          "category": "hearsay",
+          "origin": "khaoe_farlis_el_castillo_que_fue#2"
+        },
+        {
+          "category": "hearsay",
+          "origin": "khaoe_banco_colectivo#1"
+        },
+        {
+          "category": "hearsay",
+          "origin": "khaoe_banco_colectivo#4"
+        },
+        {
+          "category": "hearsay",
+          "origin": "khaoe_banco_colectivo#5"
+        },
+        {
+          "category": "hearsay",
+          "origin": "khaoe_banco_colectivo#6"
+        }
       ],
       "notes": "atlas/grid coordinates agree exactly (1000,1000); the airport coordinate (1239,1017) is close but not identical, consistent with an airport built near but not at the city's marked center"
     },
@@ -503,12 +665,30 @@
         }
       ],
       "sources": [
-        "ensayo_i (fortress built era 2; mythic island of Vläar's expedition, 144 d.V.; coliseum destroyed/rebuilt 564 d.V.; Salon Divino built in its ruins, era 7)",
-        "catastro (start 2012, aeropuerto Si)",
-        "libro (Ciudades D.V., 2013)",
-        "esquema (2013, as 'Sit:Nälta')",
-        "Luminacion Register (locality 'Sid Nalta-Terfila' for NPC Nerkeli, a pilot)",
-        "'Sid Nalta (WP 17.11.2020).png' - first visual documentation: three connected built areas (a walled village zone, a desert zone with an octagonal stadium, and a rocky/snow-capped zone with a dish/observatory structure), linked by a bridge or rail line"
+        {
+          "category": "material",
+          "origin": "ensayo_i (fortress built era 2; mythic island of Vläar's expedition, 144 d.V.; coliseum destroyed/rebuilt 564 d.V.; Salon Divino built in its ruins, era 7)"
+        },
+        {
+          "category": "material",
+          "origin": "catastro (start 2012, aeropuerto Si)"
+        },
+        {
+          "category": "material",
+          "origin": "libro (Ciudades D.V., 2013)"
+        },
+        {
+          "category": "material",
+          "origin": "esquema (2013, as 'Sit:Nälta')"
+        },
+        {
+          "category": "material",
+          "origin": "Luminacion Register (locality 'Sid Nalta-Terfila' for NPC Nerkeli, a pilot)"
+        },
+        {
+          "category": "material",
+          "origin": "'Sid Nalta (WP 17.11.2020).png' - first visual documentation: three connected built areas (a walled village zone, a desert zone with an octagonal stadium, and a rocky/snow-capped zone with a dish/observatory structure), linked by a bridge or rail line"
+        }
       ],
       "notes": "atlax_i's raw coords (-130,1250, far west) do not match image7's grid cell 2,-1; the airport coordinate (-1004,1123) is further west still, in the same general direction as atlax_i's value but not matching it either - three-way mismatch, see CONFLICT-02. Also unclear whether 'Sid Nalta' (atlax_i/image7/Luminacion Register/screenshot spelling) and 'Sit:Nalta' (ensayo_i/catastro/libro/airports spelling) are definitely the same place - treated as same pending confirmation, see CONFLICT-07"
     },
@@ -545,12 +725,38 @@
         }
       ],
       "sources": [
-        "ensayo_i (citadel built era 2; home of prince Doran's father and princes Forlan/Forlias; bank founded era 5; cursed during 882 d.V. luminacion project)",
-        "catastro (start 2012, aeropuerto Si)",
-        "libro (as 'Puerto de Terfyla', Ciudades D.V., 2013)",
-        "esquema (founded 2013, alongside Sit:Nälta/Görff/Tyrnea/Salthos Cruzados)",
-        "'Terfila Old 1/2/3.png' - 3 undated screenshots, first visual material for this location: a formal white/grey stone plaza, spired towers, a domed building, ceremonial arches; visually distinct in style from Gorff/Khan Ice's snowy-village aesthetic",
-        "cartography_highways/trains: banco de Terfila referenced (2019); Terfila is an endpoint/waypoint for multiple named routes (Terfila-Khol Moshin, Terfila-Varilla, Terfila-Dragon in the Luminacion Register's NPC data)"
+        {
+          "category": "material",
+          "origin": "ensayo_i (citadel built era 2; home of prince Doran's father and princes Forlan/Forlias; bank founded era 5; cursed during 882 d.V. luminacion project)"
+        },
+        {
+          "category": "material",
+          "origin": "catastro (start 2012, aeropuerto Si)"
+        },
+        {
+          "category": "material",
+          "origin": "libro (as 'Puerto de Terfyla', Ciudades D.V., 2013)"
+        },
+        {
+          "category": "material",
+          "origin": "esquema (founded 2013, alongside Sit:Nälta/Görff/Tyrnea/Salthos Cruzados)"
+        },
+        {
+          "category": "material",
+          "origin": "'Terfila Old 1/2/3.png' - 3 undated screenshots, first visual material for this location: a formal white/grey stone plaza, spired towers, a domed building, ceremonial arches; visually distinct in style from Gorff/Khan Ice's snowy-village aesthetic"
+        },
+        {
+          "category": "material",
+          "origin": "cartography_highways/trains: banco de Terfila referenced (2019); Terfila is an endpoint/waypoint for multiple named routes (Terfila-Khol Moshin, Terfila-Varilla, Terfila-Dragon in the Luminacion Register's NPC data)"
+        },
+        {
+          "category": "hearsay",
+          "origin": "nawom_morkulo_first_meeting#2"
+        },
+        {
+          "category": "hearsay",
+          "origin": "nawom_morkulo_first_meeting#3"
+        }
       ],
       "notes": "atlas/grid coordinates closely agree; the airport coordinate is in the same neighborhood but not identical. 'Terfila Old' images are unexplained - not clear if 'old' means a earlier build superseded by a newer Terfila, or simply an old screenshot"
     },
@@ -578,9 +784,22 @@
         }
       ],
       "sources": [
-        "ensayo_i (citadel built era 2; destroyed by Gorff forces 90 d.V.; Daax symbol carved into its ruins, era 5; abandoned since)",
-        "catastro (start 2012, aeropuerto En Evaluacion)",
-        "libro (as 'Universidad de Tyrnea', Ciudades D.V., 2013)"
+        {
+          "category": "material",
+          "origin": "ensayo_i (citadel built era 2; destroyed by Gorff forces 90 d.V.; Daax symbol carved into its ruins, era 5; abandoned since)"
+        },
+        {
+          "category": "material",
+          "origin": "catastro (start 2012, aeropuerto En Evaluacion)"
+        },
+        {
+          "category": "material",
+          "origin": "libro (as 'Universidad de Tyrnea', Ciudades D.V., 2013)"
+        },
+        {
+          "category": "hearsay",
+          "origin": "nawom_morkulo_first_meeting#4"
+        }
       ],
       "notes": "coordinates roughly agree"
     },
@@ -608,7 +827,10 @@
         }
       ],
       "sources": [
-        "catastro (start 2012, aeropuerto No)"
+        {
+          "category": "material",
+          "origin": "catastro (start 2012, aeropuerto No)"
+        }
       ],
       "notes": "coordinates closely agree; not mentioned in ensayo_i or libro's Ciudades lists"
     },
@@ -645,10 +867,22 @@
         }
       ],
       "sources": [
-        "ensayo_i (founded Era del Mosaico by Gorff exiles led by Auroboro; mosaic-art center)",
-        "catastro (start 2013, aeropuerto En Evaluacion)",
-        "libro (2015?)",
-        "esquema (2015)"
+        {
+          "category": "material",
+          "origin": "ensayo_i (founded Era del Mosaico by Gorff exiles led by Auroboro; mosaic-art center)"
+        },
+        {
+          "category": "material",
+          "origin": "catastro (start 2013, aeropuerto En Evaluacion)"
+        },
+        {
+          "category": "material",
+          "origin": "libro (2015?)"
+        },
+        {
+          "category": "material",
+          "origin": "esquema (2015)"
+        }
       ],
       "notes": "coordinates match exactly across three independent sources (atlax_i, libro text, image7) - the highest-confidence coordinate in the whole set. The airport coordinate is close but distinct, as expected for airport-vs-city-center. libro/esquema both flag 2015 with some uncertainty; ensayo_i implies Era del Mosaico (150-360 d.V. / 2015-2017 real) which is compatible"
     },
@@ -658,7 +892,8 @@
         "Balhëm",
         "Balhâm",
         "Balhem",
-        "Balem"
+        "Balem",
+        "balahm"
       ],
       "region": "Milkäan",
       "type_catastro": "Templo",
@@ -672,9 +907,34 @@
         }
       ],
       "sources": [
-        "ensayo_i (sacred city, founded 354 d.V.)",
-        "catastro (start 2017, aeropuerto Pendiente)",
-        "libro (as 'Balham', 2017; 'Dragon de Balham' listed as a monument)"
+        {
+          "category": "material",
+          "origin": "ensayo_i (sacred city, founded 354 d.V.)"
+        },
+        {
+          "category": "material",
+          "origin": "catastro (start 2017, aeropuerto Pendiente)"
+        },
+        {
+          "category": "material",
+          "origin": "libro (as 'Balham', 2017; 'Dragon de Balham' listed as a monument)"
+        },
+        {
+          "category": "hearsay",
+          "origin": "sonoros_lost_traveler#1"
+        },
+        {
+          "category": "hearsay",
+          "origin": "sonoros_lost_traveler#2"
+        },
+        {
+          "category": "hearsay",
+          "origin": "sonoros_lost_traveler#3"
+        },
+        {
+          "category": "hearsay",
+          "origin": "khaoe_milkucha_jardin_de_los_parajes#10"
+        }
       ],
       "notes": "four spellings for one place across four sources"
     },
@@ -706,10 +966,38 @@
         }
       ],
       "sources": [
-        "ensayo_i (library construction begins 372 d.V.; renovation begins 880 d.V.; source of Darnis's travel inspiration, era 9)",
-        "catastro (start 2018, aeropuerto Si)",
-        "libro (Ciudades D.V., no year given)",
-        "esquema (2018)"
+        {
+          "category": "material",
+          "origin": "ensayo_i (library construction begins 372 d.V.; renovation begins 880 d.V.; source of Darnis's travel inspiration, era 9)"
+        },
+        {
+          "category": "material",
+          "origin": "catastro (start 2018, aeropuerto Si)"
+        },
+        {
+          "category": "material",
+          "origin": "libro (Ciudades D.V., no year given)"
+        },
+        {
+          "category": "material",
+          "origin": "esquema (2018)"
+        },
+        {
+          "category": "hearsay",
+          "origin": "nuvilo_nerkeli_feria_del_milenio#3"
+        },
+        {
+          "category": "hearsay",
+          "origin": "nuvilo_nerkeli_feria_del_milenio#4"
+        },
+        {
+          "category": "hearsay",
+          "origin": "nerkeli_hangar_talk#1"
+        },
+        {
+          "category": "hearsay",
+          "origin": "nerkeli_hangar_talk#2"
+        }
       ],
       "notes": "airport coord and highway-route coord are both far northeast (x~2000-2200, y~5700-6200), in the same rough neighborhood as each other but not identical - internally consistent-ish, distinct from grid7's implied position"
     },
@@ -730,8 +1018,14 @@
         }
       ],
       "sources": [
-        "catastro only (start '?2015?', aeropuerto Si)",
-        "cartography_airports"
+        {
+          "category": "material",
+          "origin": "catastro only (start '?2015?', aeropuerto Si)"
+        },
+        {
+          "category": "material",
+          "origin": "cartography_airports"
+        }
       ],
       "notes": "not mentioned in ensayo_i or libro; airport coordinate is new data"
     },
@@ -753,9 +1047,18 @@
         }
       ],
       "sources": [
-        "ensayo_i (first blocks of the Ministerio del Tiempo built on the mountain, May 2023)",
-        "catastro (as 'Nalhuë (ministerio Del Tiempo)', start 2024, aeropuerto Si)",
-        "cartography_airports"
+        {
+          "category": "material",
+          "origin": "ensayo_i (first blocks of the Ministerio del Tiempo built on the mountain, May 2023)"
+        },
+        {
+          "category": "material",
+          "origin": "catastro (as 'Nalhuë (ministerio Del Tiempo)', start 2024, aeropuerto Si)"
+        },
+        {
+          "category": "material",
+          "origin": "cartography_airports"
+        }
       ],
       "notes": "start-year mismatch (ensayo_i implies 2023, catastro says 2024); see CONFLICT-06. The airport coordinate (x=-11374) is dramatically farther west than any other located place in the entire dataset, consistent with ensayo_i describing it as a remote mountain site"
     },
@@ -776,7 +1079,10 @@
         }
       ],
       "sources": [
-        "Book of Inventions only: site of a deactivated collection of three 'Explosive Artefacts' command-block machines, deactivated on '94 SBW'"
+        {
+          "category": "material",
+          "origin": "Book of Inventions only: site of a deactivated collection of three 'Explosive Artefacts' command-block machines, deactivated on '94 SBW'"
+        }
       ],
       "notes": "not mentioned in any other source; not in the catastro or any atlas"
     },
@@ -796,7 +1102,14 @@
         }
       ],
       "sources": [
-        "cartography_trains only"
+        {
+          "category": "material",
+          "origin": "cartography_trains only"
+        },
+        {
+          "category": "hearsay",
+          "origin": "sonoros_lost_traveler#6"
+        }
       ],
       "notes": "a named train-route waypoint/junction ('cruce' = crossing), not confirmed to be a settlement in its own right"
     },
@@ -816,7 +1129,10 @@
         }
       ],
       "sources": [
-        "cartography_trains only"
+        {
+          "category": "material",
+          "origin": "cartography_trains only"
+        }
       ],
       "notes": "name suggests proximity/relation to Puerto Pastizal ('Mount Pastizal'); not documented as a separate place anywhere else"
     },
@@ -839,8 +1155,14 @@
         }
       ],
       "sources": [
-        "ensayo_i (ship arrival point, founding of Lundria, era 6)",
-        "catastro (start 2020, aeropuerto No)"
+        {
+          "category": "material",
+          "origin": "ensayo_i (ship arrival point, founding of Lundria, era 6)"
+        },
+        {
+          "category": "material",
+          "origin": "catastro (start 2020, aeropuerto No)"
+        }
       ],
       "notes": null
     },
@@ -861,7 +1183,10 @@
         }
       ],
       "sources": [
-        "libro/image7 only"
+        {
+          "category": "material",
+          "origin": "libro/image7 only"
+        }
       ],
       "notes": "not mentioned in any other source"
     },
@@ -882,7 +1207,10 @@
         }
       ],
       "sources": [
-        "libro/image7 only"
+        {
+          "category": "material",
+          "origin": "libro/image7 only"
+        }
       ],
       "notes": "not mentioned in any other source"
     },
@@ -903,7 +1231,10 @@
         }
       ],
       "sources": [
-        "libro/image7 only"
+        {
+          "category": "material",
+          "origin": "libro/image7 only"
+        }
       ],
       "notes": "listed on the grid map as a discrete place alongside cities, distinct from its separate use as a candidate name for the world/continent as a whole (see concept 'world_name_variants' and CONFLICT-03)"
     },
@@ -944,10 +1275,30 @@
         }
       ],
       "sources": [
-        "ensayo_i (castle built by prince Doran after Plathinea's discovery, ~72 d.V.; cartography begins here; largest city and mosaic-art pioneer, era 4; coliseum rebuilt 564 d.V.; Universidad built 684 d.V.; port/airport/Gran Prix/Gran Museo del Desierto, era 8; 10th anniversary 808 d.V.; great map destroyed 850 d.V.)",
-        "catastro (start 2013, aeropuerto Si)",
-        "libro (Ciudades D.V., 2013)",
-        "esquema (2013)"
+        {
+          "category": "material",
+          "origin": "ensayo_i (castle built by prince Doran after Plathinea's discovery, ~72 d.V.; cartography begins here; largest city and mosaic-art pioneer, era 4; coliseum rebuilt 564 d.V.; Universidad built 684 d.V.; port/airport/Gran Prix/Gran Museo del Desierto, era 8; 10th anniversary 808 d.V.; great map destroyed 850 d.V.)"
+        },
+        {
+          "category": "material",
+          "origin": "catastro (start 2013, aeropuerto Si)"
+        },
+        {
+          "category": "material",
+          "origin": "libro (Ciudades D.V., 2013)"
+        },
+        {
+          "category": "material",
+          "origin": "esquema (2013)"
+        },
+        {
+          "category": "hearsay",
+          "origin": "sonoros_lost_traveler#5"
+        },
+        {
+          "category": "hearsay",
+          "origin": "doran_four_castles#1"
+        }
       ],
       "notes": "atlax_ii's raw coordinates do not correspond to image7's grid cell 4,-1; the airport coord and train-endpoint coord are both in the same general area (roughly x=-25 to -516, z=3100-3249) and reasonably close to each other, but neither matches atlax_ii's numbers; see CONFLICT-02"
     },
@@ -963,9 +1314,18 @@
       "condition_catastro": "Completo",
       "coords": [],
       "sources": [
-        "ensayo_i (founded with world's first museum, era 6, ~540 d.V.; later linked to Salthos Cruzados by first train line)",
-        "catastro (start 2020, aeropuerto Pendiente)",
-        "esquema (2020, as 'Kurista')"
+        {
+          "category": "material",
+          "origin": "ensayo_i (founded with world's first museum, era 6, ~540 d.V.; later linked to Salthos Cruzados by first train line)"
+        },
+        {
+          "category": "material",
+          "origin": "catastro (start 2020, aeropuerto Pendiente)"
+        },
+        {
+          "category": "material",
+          "origin": "esquema (2020, as 'Kurista')"
+        }
       ],
       "notes": null
     },
@@ -997,10 +1357,26 @@
         }
       ],
       "sources": [
-        "ensayo_i (Peninsula Dragon founded 552 d.V.; absorbs Aldea Fina Oct 2023/796 d.V. becoming Dragon City; largest city in Milkantis by era 8; site of the mages who destroy Salthos Cruzados's map, 850 d.V.)",
-        "catastro (as 'Dragon City', start 2020, aeropuerto Si)",
-        "libro (Peninsula del Dragon and Aldea Fina listed as separate pre-merger entries, both 2020)",
-        "esquema (2020, as 'Peninsula Dragon')"
+        {
+          "category": "material",
+          "origin": "ensayo_i (Peninsula Dragon founded 552 d.V.; absorbs Aldea Fina Oct 2023/796 d.V. becoming Dragon City; largest city in Milkantis by era 8; site of the mages who destroy Salthos Cruzados's map, 850 d.V.)"
+        },
+        {
+          "category": "material",
+          "origin": "catastro (as 'Dragon City', start 2020, aeropuerto Si)"
+        },
+        {
+          "category": "material",
+          "origin": "libro (Peninsula del Dragon and Aldea Fina listed as separate pre-merger entries, both 2020)"
+        },
+        {
+          "category": "material",
+          "origin": "esquema (2020, as 'Peninsula Dragon')"
+        },
+        {
+          "category": "hearsay",
+          "origin": "doran_four_castles#4"
+        }
       ],
       "notes": "three names for stages of the same place's history, per ensayo_i's explicit merger narrative. The airport coordinate (-3078,4161) is far from image7's implied grid position (grid 4,-3 implies roughly +4000,-3000) - another coordinate-sign/scale mismatch, see CONFLICT-02"
     },
@@ -1023,10 +1399,42 @@
         }
       ],
       "sources": [
-        "ensayo_i (founded on ship's arrival, era 6; 'culto del cubo flotante de Lundria' and temple-building, era 7; home town of ensayo_i's credited author 'Ilaria desde Lundria')",
-        "catastro (start 2020, aeropuerto Si, note: 'Mejorar entradas, terminar plaza, terminar puerto')",
-        "esquema (2020)",
-        "Luminacion Register (locality for NPC Gondorlikas, listed as both 'Lundria' and, in the Code sheet, en-route 'Lundria-Catraniz')"
+        {
+          "category": "material",
+          "origin": "ensayo_i (founded on ship's arrival, era 6; 'culto del cubo flotante de Lundria' and temple-building, era 7; home town of ensayo_i's credited author 'Ilaria desde Lundria')"
+        },
+        {
+          "category": "material",
+          "origin": "catastro (start 2020, aeropuerto Si, note: 'Mejorar entradas, terminar plaza, terminar puerto')"
+        },
+        {
+          "category": "material",
+          "origin": "esquema (2020)"
+        },
+        {
+          "category": "material",
+          "origin": "Luminacion Register (locality for NPC Gondorlikas, listed as both 'Lundria' and, in the Code sheet, en-route 'Lundria-Catraniz')"
+        },
+        {
+          "category": "hearsay",
+          "origin": "khaoe_farlis_lo_que_cambia_el_tiempo#2"
+        },
+        {
+          "category": "hearsay",
+          "origin": "khaoe_calendario_mecanografico#2"
+        },
+        {
+          "category": "hearsay",
+          "origin": "khaoe_calendario_mecanografico#3"
+        },
+        {
+          "category": "hearsay",
+          "origin": "khaoe_calendario_mecanografico#4"
+        },
+        {
+          "category": "hearsay",
+          "origin": "farlis_khaoe_bar_salthos_cruzados#2"
+        }
       ],
       "notes": null
     },
@@ -1042,8 +1450,14 @@
       "condition_catastro": "Incompleto",
       "coords": [],
       "sources": [
-        "ensayo_i ('ciudad perdida de Gondola' founded beyond the Vortex, era 1; 'Nueva Gondola' founded as 5th subsistence village, era 8)",
-        "catastro (as 'Nueva Gondola', start 2024, aeropuerto Si)"
+        {
+          "category": "material",
+          "origin": "ensayo_i ('ciudad perdida de Gondola' founded beyond the Vortex, era 1; 'Nueva Gondola' founded as 5th subsistence village, era 8)"
+        },
+        {
+          "category": "material",
+          "origin": "catastro (as 'Nueva Gondola', start 2024, aeropuerto Si)"
+        }
       ],
       "notes": "ensayo_i treats these as two distinct foundings (original lost city, then a 'New' one); catastro only records the newer one"
     },
@@ -1057,8 +1471,14 @@
       "condition_catastro": "Completo",
       "coords": [],
       "sources": [
-        "ensayo_i (built era 8)",
-        "catastro (start 2024, aeropuerto Si)"
+        {
+          "category": "material",
+          "origin": "ensayo_i (built era 8)"
+        },
+        {
+          "category": "material",
+          "origin": "catastro (start 2024, aeropuerto Si)"
+        }
       ],
       "notes": "possibly related to 'Villa Naranja' (see CONFLICT-08), not confirmed"
     },
@@ -1074,8 +1494,14 @@
       "condition_catastro": "Incompleta / Completo",
       "coords": [],
       "sources": [
-        "ensayo_i (Rivolta Stage built in the forests, July 2023, future festival site; highway P-33 built to it, era 8; Darnis's departure point, era 9)",
-        "catastro (two entries: 'Sindäara' and 'Bosques De Sindäara', both start 2024)"
+        {
+          "category": "material",
+          "origin": "ensayo_i (Rivolta Stage built in the forests, July 2023, future festival site; highway P-33 built to it, era 8; Darnis's departure point, era 9)"
+        },
+        {
+          "category": "material",
+          "origin": "catastro (two entries: 'Sindäara' and 'Bosques De Sindäara', both start 2024)"
+        }
       ],
       "notes": null
     },
@@ -1089,8 +1515,26 @@
       "condition_catastro": "Incompleto",
       "coords": [],
       "sources": [
-        "ensayo_i (discovered along highway P-33, era 8)",
-        "catastro (start 2024, aeropuerto Pendiente)"
+        {
+          "category": "material",
+          "origin": "ensayo_i (discovered along highway P-33, era 8)"
+        },
+        {
+          "category": "material",
+          "origin": "catastro (start 2024, aeropuerto Pendiente)"
+        },
+        {
+          "category": "hearsay",
+          "origin": "khaoe_milkucha_jardin_de_los_parajes#3"
+        },
+        {
+          "category": "hearsay",
+          "origin": "khaoe_milkucha_jardin_de_los_parajes#4"
+        },
+        {
+          "category": "hearsay",
+          "origin": "khaoe_milkucha_jardin_de_los_parajes#11"
+        }
       ],
       "notes": null
     },
@@ -1104,8 +1548,14 @@
       "condition_catastro": "Completo",
       "coords": [],
       "sources": [
-        "ensayo_i (founded 814 d.V. as mineral-research center)",
-        "catastro (start 2023, aeropuerto Pendiente)"
+        {
+          "category": "material",
+          "origin": "ensayo_i (founded 814 d.V. as mineral-research center)"
+        },
+        {
+          "category": "material",
+          "origin": "catastro (start 2023, aeropuerto Pendiente)"
+        }
       ],
       "notes": null
     },
@@ -1119,8 +1569,14 @@
       "condition_catastro": "Primera Piedra",
       "coords": [],
       "sources": [
-        "ensayo_i (discovered north of Milkäan, 814 d.V.)",
-        "catastro (start 2023, aeropuerto No)"
+        {
+          "category": "material",
+          "origin": "ensayo_i (discovered north of Milkäan, 814 d.V.)"
+        },
+        {
+          "category": "material",
+          "origin": "catastro (start 2023, aeropuerto No)"
+        }
       ],
       "notes": null
     },
@@ -1135,8 +1591,14 @@
       "condition_catastro": "Primera Piedra",
       "coords": [],
       "sources": [
-        "ensayo_i (built alongside Wasteland's discovery, 814 d.V.)",
-        "catastro (start 2023, aeropuerto No, size left blank)"
+        {
+          "category": "material",
+          "origin": "ensayo_i (built alongside Wasteland's discovery, 814 d.V.)"
+        },
+        {
+          "category": "material",
+          "origin": "catastro (start 2023, aeropuerto No, size left blank)"
+        }
       ],
       "notes": "treated as the same wall by name and date match, not stated as identical in either source"
     },
@@ -1150,8 +1612,18 @@
       "condition_catastro": "Primera Piedra",
       "coords": [],
       "sources": [
-        "ensayo_i (settlement marking the end of Era del Daax)",
-        "catastro (start 2019, aeropuerto No)"
+        {
+          "category": "material",
+          "origin": "ensayo_i (settlement marking the end of Era del Daax)"
+        },
+        {
+          "category": "material",
+          "origin": "catastro (start 2019, aeropuerto No)"
+        },
+        {
+          "category": "hearsay",
+          "origin": "nawom_morkulo_first_meeting#1"
+        }
       ],
       "notes": "possibly, but not confirmed, the same place as 'Isla Tortuga' on image7 (grid 7,3); see CONFLICT-09"
     },
@@ -1172,7 +1644,10 @@
         }
       ],
       "sources": [
-        "libro/image7 only"
+        {
+          "category": "material",
+          "origin": "libro/image7 only"
+        }
       ],
       "notes": "see CONFLICT-09"
     },
@@ -1187,8 +1662,14 @@
       "condition_catastro": "Primera Piedra",
       "coords": [],
       "sources": [
-        "ensayo_i (built during Era del Confinamiento)",
-        "catastro (as 'Puerto Varilla', start 2020, aeropuerto Si)"
+        {
+          "category": "material",
+          "origin": "ensayo_i (built during Era del Confinamiento)"
+        },
+        {
+          "category": "material",
+          "origin": "catastro (as 'Puerto Varilla', start 2020, aeropuerto Si)"
+        }
       ],
       "notes": null
     },
@@ -1202,7 +1683,10 @@
       "condition_catastro": "Completo",
       "coords": [],
       "sources": [
-        "catastro only (start year uncertain, written '?2012?', aeropuerto No)"
+        {
+          "category": "material",
+          "origin": "catastro only (start year uncertain, written '?2012?', aeropuerto No)"
+        }
       ],
       "notes": "possibly, but not confirmed, connected to the legendary figure 'Esteban' referenced in ensayo_i (see character 'esteban'); see CONFLICT-10"
     },
@@ -1216,8 +1700,14 @@
       "condition_catastro": "Incompleto",
       "coords": [],
       "sources": [
-        "ensayo_i (built during Era de la Imaginacion)",
-        "catastro (start 2024, aeropuerto No)"
+        {
+          "category": "material",
+          "origin": "ensayo_i (built during Era de la Imaginacion)"
+        },
+        {
+          "category": "material",
+          "origin": "catastro (start 2024, aeropuerto No)"
+        }
       ],
       "notes": null
     },
@@ -1231,8 +1721,14 @@
       "condition_catastro": "Completo",
       "coords": [],
       "sources": [
-        "ensayo_i (built 856 d.V., east end of Milkäan)",
-        "catastro (start 2024, aeropuerto No, size left blank)"
+        {
+          "category": "material",
+          "origin": "ensayo_i (built 856 d.V., east end of Milkäan)"
+        },
+        {
+          "category": "material",
+          "origin": "catastro (start 2024, aeropuerto No, size left blank)"
+        }
       ],
       "notes": null
     },
@@ -1246,7 +1742,10 @@
       "condition_catastro": null,
       "coords": [],
       "sources": [
-        "catastro only, nearly all fields blank (aeropuerto No)"
+        {
+          "category": "material",
+          "origin": "catastro only, nearly all fields blank (aeropuerto No)"
+        }
       ],
       "notes": null
     },
@@ -1262,8 +1761,14 @@
       "condition_catastro": "Incompleto",
       "coords": [],
       "sources": [
-        "ensayo_i (its people discover the subsistence-forcing spell beyond the north wall, Era de la Magia)",
-        "catastro (start 2025, aeropuerto No)"
+        {
+          "category": "material",
+          "origin": "ensayo_i (its people discover the subsistence-forcing spell beyond the north wall, Era de la Magia)"
+        },
+        {
+          "category": "material",
+          "origin": "catastro (start 2025, aeropuerto No)"
+        }
       ],
       "notes": "ensayo_i_final (era 9) names this village Humucherry instead of the earlier edition's parenthetical 'aldea Camilo Ricarda' - which matches the Catastro's own 'Pueblo Camilo Ricarda' (start 2025). Both names kept on record, not merged. See CONFLICT-15."
     },
@@ -1277,7 +1782,10 @@
       "condition_catastro": "Primera Piedra",
       "coords": [],
       "sources": [
-        "catastro only (start 2013, aeropuerto No)"
+        {
+          "category": "material",
+          "origin": "catastro only (start 2013, aeropuerto No)"
+        }
       ],
       "notes": "not mentioned in any other source"
     },
@@ -1291,8 +1799,18 @@
       "condition_catastro": "Primera Piedra",
       "coords": [],
       "sources": [
-        "ensayo_i (site of the 'Gran Mapa' construction, Dec 2023/808 d.V.)",
-        "catastro (start 2023, aeropuerto No)"
+        {
+          "category": "material",
+          "origin": "ensayo_i (site of the 'Gran Mapa' construction, Dec 2023/808 d.V.)"
+        },
+        {
+          "category": "material",
+          "origin": "catastro (start 2023, aeropuerto No)"
+        },
+        {
+          "category": "hearsay",
+          "origin": "farlis_gok_alcove#1#3"
+        }
       ],
       "notes": null
     },
@@ -1306,7 +1824,10 @@
       "condition_catastro": "Primera Piedra",
       "coords": [],
       "sources": [
-        "catastro only (start 2024, aeropuerto No)"
+        {
+          "category": "material",
+          "origin": "catastro only (start 2024, aeropuerto No)"
+        }
       ],
       "notes": "not confirmed to be the same as 'Bahia de las Estatuas' (spawn point / monument); kept as a separate entry, see CONFLICT-11"
     },
@@ -1320,8 +1841,14 @@
       "condition_catastro": null,
       "coords": [],
       "sources": [
-        "ensayo_i (world spawn point changed here for the 3rd time, Era de los Continentes)",
-        "libro (listed under 'Monumentos')"
+        {
+          "category": "material",
+          "origin": "ensayo_i (world spawn point changed here for the 3rd time, Era de los Continentes)"
+        },
+        {
+          "category": "material",
+          "origin": "libro (listed under 'Monumentos')"
+        }
       ],
       "notes": "see CONFLICT-11"
     },
@@ -1335,7 +1862,10 @@
       "condition_catastro": "Incompleta",
       "coords": [],
       "sources": [
-        "catastro only (start 2024, aeropuerto No)"
+        {
+          "category": "material",
+          "origin": "catastro only (start 2024, aeropuerto No)"
+        }
       ],
       "notes": "not mentioned in any other source"
     },
@@ -1349,7 +1879,10 @@
       "condition_catastro": null,
       "coords": [],
       "sources": [
-        "ensayo_i only ('se re habita Zotti', Nov 2023/802 d.V.)"
+        {
+          "category": "material",
+          "origin": "ensayo_i only ('se re habita Zotti', Nov 2023/802 d.V.)"
+        }
       ],
       "notes": "not in catastro or elsewhere; implies Zotti pre-existed and was repopulated, but its founding is not recorded anywhere in the material set"
     },
@@ -1363,7 +1896,10 @@
       "condition_catastro": null,
       "coords": [],
       "sources": [
-        "ensayo_i only (built Nov 2023/802 d.V.)"
+        {
+          "category": "material",
+          "origin": "ensayo_i only (built Nov 2023/802 d.V.)"
+        }
       ],
       "notes": "not mentioned elsewhere"
     },
@@ -1377,7 +1913,10 @@
       "condition_catastro": null,
       "coords": [],
       "sources": [
-        "ensayo_i only (founded 714 d.V., '85.000 al este', start of the Camino del Dragon)"
+        {
+          "category": "material",
+          "origin": "ensayo_i only (founded 714 d.V., '85.000 al este', start of the Camino del Dragon)"
+        }
       ],
       "notes": "possibly, but not confirmed, related to 'Orange Manor' by name meaning ('naranja' = orange); dates do not obviously match; see CONFLICT-08"
     },
@@ -1391,7 +1930,10 @@
       "condition_catastro": null,
       "coords": [],
       "sources": [
-        "ensayo_i only (built July 2022/702 d.V.), survival village, dragon armor forged here"
+        {
+          "category": "material",
+          "origin": "ensayo_i only (built July 2022/702 d.V.), survival village, dragon armor forged here"
+        }
       ],
       "notes": "not mentioned elsewhere"
     },
@@ -1412,7 +1954,10 @@
         }
       ],
       "sources": [
-        "libro/image7 only"
+        {
+          "category": "material",
+          "origin": "libro/image7 only"
+        }
       ],
       "notes": "not mentioned in any other source"
     },
@@ -1432,7 +1977,10 @@
         }
       ],
       "sources": [
-        "atlax_i only"
+        {
+          "category": "material",
+          "origin": "atlax_i only"
+        }
       ],
       "notes": "not mentioned in any other source"
     },
@@ -1471,8 +2019,14 @@
         }
       ],
       "sources": [
-        "ensayo_i (mentions a 'first mausoleum' built in era 1, corner-monuments; a 'second mausoleo' built 114 d.V.)",
-        "libro (lists three mausoleos with raw coordinates, under a 'Mausoleos' header)"
+        {
+          "category": "material",
+          "origin": "ensayo_i (mentions a 'first mausoleum' built in era 1, corner-monuments; a 'second mausoleo' built 114 d.V.)"
+        },
+        {
+          "category": "material",
+          "origin": "libro (lists three mausoleos with raw coordinates, under a 'Mausoleos' header)"
+        }
       ],
       "notes": "ensayo_i's 'first'/'second' mausoleo are not explicitly matched by name to libro's 'Mausoleo 1'/'Mausoleo 1.1'/'Mausoleo 2' - plausible correspondence, not confirmed"
     },
@@ -1486,7 +2040,10 @@
       "condition_catastro": null,
       "coords": [],
       "sources": [
-        "ensayo_i_final, era 9"
+        {
+          "category": "material",
+          "origin": "ensayo_i_final, era 9"
+        }
       ],
       "notes": "founded by Därnis immediately after discovering the world's first floating lands; absent from ensayo_i's original telling of the same passage. See character 'darnis'."
     },
@@ -1500,7 +2057,10 @@
       "condition_catastro": null,
       "coords": [],
       "sources": [
-        "ensayo_i_final, era 9"
+        {
+          "category": "material",
+          "origin": "ensayo_i_final, era 9"
+        }
       ],
       "notes": "founded at the opening of the 964 d.V. 'época del World Edit'; region not stated."
     },
@@ -1514,7 +2074,10 @@
       "condition_catastro": null,
       "coords": [],
       "sources": [
-        "ensayo_i_final, era 9"
+        {
+          "category": "material",
+          "origin": "ensayo_i_final, era 9"
+        }
       ],
       "notes": "cargo terminal built first (964 d.V. era-opening), passenger terminal and 'el gran Faro' (lighthouse) added 968 d.V.; region not stated."
     },
@@ -1528,7 +2091,10 @@
       "condition_catastro": null,
       "coords": [],
       "sources": [
-        "ensayo_i_final, era 9"
+        {
+          "category": "material",
+          "origin": "ensayo_i_final, era 9"
+        }
       ],
       "notes": "founded 966 d.V. by an unnamed new player who began their journey near the Sit:Nalta ruins."
     },
@@ -1542,7 +2108,10 @@
       "condition_catastro": null,
       "coords": [],
       "sources": [
-        "ensayo_i_final, era 9"
+        {
+          "category": "material",
+          "origin": "ensayo_i_final, era 9"
+        }
       ],
       "notes": "built 966 d.V.; described as the world's first prison; no proper name given."
     },
@@ -1556,7 +2125,10 @@
       "condition_catastro": null,
       "coords": [],
       "sources": [
-        "ensayo_i_final, era 9"
+        {
+          "category": "material",
+          "origin": "ensayo_i_final, era 9"
+        }
       ],
       "notes": "founded 968 d.V.; name transcribed as-extracted, unexplained."
     }
@@ -1805,8 +2377,14 @@
         ],
         "role": "inventor and explorer; credited as original author of the first Atlax (atlas)",
         "sources": [
-          "atlax_i (dedication, spelled 'Pitaglorias')",
-          "atlax_ii (referenced as prior atlas author, spelled 'Fitaglorias')"
+          {
+            "category": "material",
+            "origin": "atlax_i (dedication, spelled 'Pitaglorias')"
+          },
+          {
+            "category": "material",
+            "origin": "atlax_ii (referenced as prior atlas author, spelled 'Fitaglorias')"
+          }
         ],
         "notes": "spelling conflict between the two atlas books; see CONFLICT-04"
       },
@@ -1817,7 +2395,10 @@
         ],
         "role": "credited author/compiler of Atlax I",
         "sources": [
-          "atlax_i"
+          {
+            "category": "material",
+            "origin": "atlax_i"
+          }
         ],
         "notes": "possible name relation to the concept 'Dääx' (unconfirmed - see concept entry)"
       },
@@ -1828,7 +2409,10 @@
         ],
         "role": "credited author of Atlax II",
         "sources": [
-          "atlax_ii"
+          {
+            "category": "material",
+            "origin": "atlax_ii"
+          }
         ],
         "notes": null
       },
@@ -1839,7 +2423,14 @@
         ],
         "role": "prince; son of a 'terfilës' (person of Têrfyla); member of the Academia de Sït:Nâlta; built the castle Sâlthos Cruzados; began world cartography there",
         "sources": [
-          "ensayo_i, era 2 (~72 d.V.)"
+          {
+            "category": "material",
+            "origin": "ensayo_i, era 2 (~72 d.V.)"
+          },
+          {
+            "category": "hearsay",
+            "origin": "doran_four_castles#2"
+          }
         ],
         "notes": null
       },
@@ -1850,7 +2441,10 @@
         ],
         "role": "prince of Têrfyla, Academia student; defeated Görff's champion; led the journey and the Battle of Joglöria that gave Khân-Icê its victory; later honored by the reestablished Juegos de Milkäan",
         "sources": [
-          "ensayo_i, era 2"
+          {
+            "category": "material",
+            "origin": "ensayo_i, era 2"
+          }
         ],
         "notes": "honored again by the c. 900 d.V. reconstruction of Görff, era 8"
       },
@@ -1861,7 +2455,10 @@
         ],
         "role": "prince of Têrfyla, Academia student, sibling/counterpart to Forlän; sacrificed himself so Têrfyla's people could flee when Tÿrnea was destroyed",
         "sources": [
-          "ensayo_i, era 2"
+          {
+            "category": "material",
+            "origin": "ensayo_i, era 2"
+          }
         ],
         "notes": null
       },
@@ -1872,7 +2469,10 @@
         ],
         "role": "charismatic leader of a group of Görff exiles who founded Catraniz",
         "sources": [
-          "ensayo_i, era 4"
+          {
+            "category": "material",
+            "origin": "ensayo_i, era 4"
+          }
         ],
         "notes": null
       },
@@ -1883,7 +2483,10 @@
         ],
         "role": "explorer from Okâsia; traveled to Sit:Nâlta seeking riches; succeeded in 144 d.V.; discovered the bosque del Dääx; died in lava after looting the fortress out of greed",
         "sources": [
-          "ensayo_i, era 3"
+          {
+            "category": "material",
+            "origin": "ensayo_i, era 3"
+          }
         ],
         "notes": null
       },
@@ -1894,7 +2497,10 @@
         ],
         "role": "legendary figure ('la leyenda de Esteban y el Reloj de Sol') whose legend inspired the maritime exploration era that led to Plathinëa's discovery",
         "sources": [
-          "ensayo_i, era 2 (~72 d.V.)"
+          {
+            "category": "material",
+            "origin": "ensayo_i, era 2 (~72 d.V.)"
+          }
         ],
         "notes": "possibly, but not confirmed, connected to the Catastro site 'Casa De Esteban'; see CONFLICT-10"
       },
@@ -1905,7 +2511,30 @@
         ],
         "role": "modern-era traveler; sailed south from Sindäara, discovered a new ocean, a volcanic island, and the world's first floating lands (taken as a sign of a new continent); founded Auräli there (ensayo_i_final only - absent from ensayo_i's telling of the same passage)",
         "sources": [
-          "ensayo_i, era 9"
+          {
+            "category": "material",
+            "origin": "ensayo_i, era 9"
+          },
+          {
+            "category": "hearsay",
+            "origin": "nawom_morkulo_first_meeting#5"
+          },
+          {
+            "category": "hearsay",
+            "origin": "gondarfolas_darnis_and_bracco#2"
+          },
+          {
+            "category": "hearsay",
+            "origin": "gondarfolas_darnis_and_bracco#3"
+          },
+          {
+            "category": "hearsay",
+            "origin": "gondarfolas_darnis_and_bracco#4"
+          },
+          {
+            "category": "hearsay",
+            "origin": "nuvilo_scholar_at_the_feria#3"
+          }
         ],
         "notes": null
       },
@@ -1918,8 +2547,18 @@
         ],
         "role": "credited author of ENSAYO I; 'Iläria desde Lündria' in the November 2025 edition, expanded to 'Iläria Astraëa desde la lejana ciudad de Lündria' in the July 2026 Final Version - first appearance of a surname (Astraëa) and of the 'lejana' (distant) qualifier on Lündria",
         "sources": [
-          "ensayo_i",
-          "ensayo_i_final"
+          {
+            "category": "material",
+            "origin": "ensayo_i"
+          },
+          {
+            "category": "material",
+            "origin": "ensayo_i_final"
+          },
+          {
+            "category": "hearsay",
+            "origin": "ilaria_espiral_de_la_historia#3"
+          }
         ],
         "notes": "not listed among the real-world player roster in libro; status (in-world chronicler persona vs. real player) is unclear, see CONFLICT-05"
       }
@@ -1934,8 +2573,14 @@
         ],
         "role": "co-author of 'Libro de los Tiempos...' and sole credited author of 'Book of Inventions', wrote both prefacios, Berlin, February 2022 (both dated '94 SBW, 2022 AD' - evidently written in the same sitting); also appears in the player roster",
         "sources": [
-          "libro",
-          "book_of_inventions"
+          {
+            "category": "material",
+            "origin": "libro"
+          },
+          {
+            "category": "material",
+            "origin": "book_of_inventions"
+          }
         ],
         "notes": "explicitly 'a.k.a. Camilo' in both source texts; Book of Inventions spells the name 'Milkcha' (missing the 'u'), transcribed as written"
       },
@@ -1946,7 +2591,10 @@
         ],
         "role": "co-initiator of 'Libro de los Tiempos...' alongside Milkucha; also appears in the player roster",
         "sources": [
-          "libro"
+          {
+            "category": "material",
+            "origin": "libro"
+          }
         ],
         "notes": null
       },
@@ -1967,7 +2615,10 @@
         ],
         "role": "listed under 'Qué jugadores existen y han existido' with no further detail given for any of them",
         "sources": [
-          "libro"
+          {
+            "category": "material",
+            "origin": "libro"
+          }
         ],
         "notes": "no roles, join dates, or in-world personas are attached to any of these names in the material"
       }
@@ -2294,7 +2945,10 @@
       ],
       "description": "a device/event: interacting with quartz-device ruins at the end of era 1 opens the Vórtex, transporting players to another world where the lost city of Góndola is founded; a later 'regreso definitivo' from it opens era 2. Used as the epoch marker for the a.V./d.V. dating system.",
       "sources": [
-        "ensayo_i"
+        {
+          "category": "material",
+          "origin": "ensayo_i"
+        }
       ]
     },
     {
@@ -2306,8 +2960,22 @@
       ],
       "description": "a symbol carved into the ruins of Tÿrnea and other cities c. 372+ d.V. as a sign of peace and technology, coinciding with Görff's first use of 'códigos'; also names 'Era del Daax'/'Atlax II - La Era del Dax'; also names a forest ('bosque del Dääx') discovered by Vläar in era 3, which predates the symbol's carving chronologically.",
       "sources": [
-        "ensayo_i",
-        "atlax_ii"
+        {
+          "category": "material",
+          "origin": "ensayo_i"
+        },
+        {
+          "category": "material",
+          "origin": "atlax_ii"
+        },
+        {
+          "category": "hearsay",
+          "origin": "nuvilo_nerkeli_feria_del_milenio#2"
+        },
+        {
+          "category": "hearsay",
+          "origin": "nerkeli_hangar_talk#5"
+        }
       ],
       "notes": "relationship between the forest name and the later symbol/era name is not explained in any source"
     },
@@ -2319,7 +2987,18 @@
       ],
       "description": "in-world term for command-based automation. Two eras explicitly tied to it: Era del Daax ('primera época de los códigos', begins under Görff's new government) and Era del Confinamiento ('segunda gran era de los códigos mediante los command block'). Misuse of códigos by Dragon City's mages destroys the great map of Sälthos Cruzados in 850 d.V.",
       "sources": [
-        "ensayo_i"
+        {
+          "category": "material",
+          "origin": "ensayo_i"
+        },
+        {
+          "category": "hearsay",
+          "origin": "nuvilo_nerkeli_feria_del_milenio#1"
+        },
+        {
+          "category": "hearsay",
+          "origin": "doran_four_castles#5"
+        }
       ]
     },
     {
@@ -2329,8 +3008,14 @@
       ],
       "description": "a mineral tied to an 'antiguo poder de manifestación' (ancient power of manifestation). ensayo_i (era 8, ~900 d.V.) frames it as speculative, discovered alongside 'la magia', hedged as something the recovered documents 'podría traer'. ensayo_i_final (era 8, 882 d.V.) instead states plainly that the documents 'revelan el proceso de manifestación de un nuevo mineral, el örikal' - no hedge, no pairing with 'la magia', and dated roughly 18 years earlier.",
       "sources": [
-        "ensayo_i, era 8",
-        "ensayo_i_final, era 8"
+        {
+          "category": "material",
+          "origin": "ensayo_i, era 8"
+        },
+        {
+          "category": "material",
+          "origin": "ensayo_i_final, era 8"
+        }
       ],
       "notes": "not defined further in either edition; era 9 is named 'Era de la Magia' but neither edition explicitly reconnects it to örikal. ensayo_i_final's era 10 predictions for 1000 d.V. include 'El auge del Orikäl' as still-future, consistent with a mineral that's newly discovered rather than already risen. See CONFLICT-17."
     },
@@ -2342,7 +3027,14 @@
       ],
       "description": "itinerant holy pilgrims, on this pilgrimage for hundreds of years. Each year they set out to encounter every temple in the world, in search of 'the diverse divinity.' Having once committed to their own religion, they took a vow of understanding and peace, promising to travel the land, the sea, and the air in search of the other truths of the world. In doing this they renounce their identity and embrace the secret of their origin, becoming a canvas onto which the cultures of the world's peoples find expression and permanence.",
       "sources": [
-        "tale:peregrins"
+        {
+          "category": "material",
+          "origin": "tale:peregrins"
+        },
+        {
+          "category": "tale",
+          "origin": "peregrins"
+        }
       ],
       "notes": "resolves what was previously just a bare census role tag - see characters.named_inhabitants.by_locality.Terfila ('Peregrin'/'Zarkapulos') and .generic_crowd_instances_not_individually_named (Gorff, count 3), both from luminacion_register, neither previously explained by any source"
     },
@@ -2354,7 +3046,14 @@
       ],
       "description": "creepers explode; monsters come out at night wherever it's dark. Stated as having always been known, not newly figured out by anyone in particular.",
       "sources": [
-        "tale:creepers_and_night_monsters"
+        {
+          "category": "material",
+          "origin": "tale:creepers_and_night_monsters"
+        },
+        {
+          "category": "tale",
+          "origin": "creepers_and_night_monsters"
+        }
       ],
       "notes": null
     },
@@ -2365,7 +3064,14 @@
       ],
       "description": "redstone powers things. Stated plainly, with no further mechanism given.",
       "sources": [
-        "tale:redstone_and_basic_needs"
+        {
+          "category": "material",
+          "origin": "tale:redstone_and_basic_needs"
+        },
+        {
+          "category": "tale",
+          "origin": "redstone_and_basic_needs"
+        }
       ],
       "notes": "thematically adjacent to the 'codigos' concept (command-block automation) but kept as its own entry - redstone is never named alongside codigos in any source except a hearsay claim (ilaria_espiral_de_la_historia#1, 'codigos y redstone work' among the Feria del Milenio's honored artifacts), which does not equate the two"
     },
@@ -2378,7 +3084,14 @@
       ],
       "description": "people need to eat, need to sleep, need to rest. Stated plainly, as a basic fact of how the world works.",
       "sources": [
-        "tale:redstone_and_basic_needs"
+        {
+          "category": "material",
+          "origin": "tale:redstone_and_basic_needs"
+        },
+        {
+          "category": "tale",
+          "origin": "redstone_and_basic_needs"
+        }
       ],
       "notes": null
     },
@@ -2390,7 +3103,10 @@
       ],
       "description": "introduced during Era de la Imaginación.",
       "sources": [
-        "ensayo_i, era 8"
+        {
+          "category": "material",
+          "origin": "ensayo_i, era 8"
+        }
       ]
     },
     {
@@ -2406,11 +3122,26 @@
       ],
       "description": "several related but distinct-looking names appear for 'the world' and/or its main landmass(es): 'Milkantis' (ensayo_i, 'herederos de las tierras de Milkantis'), 'Milkäntis' (esquema, 'MILKÄNTIS - EL RIO DEL TIEMPO'), 'Milkäan' (a specific region/zone, per catastro and ensayo_i, paired against Plathinëa/Platinhëa), 'Milkan' (the newest variant, from 'El Antiguo Continente de Milkan - Mapa del Milenio.png'), 'Milkantida' (libro/image7, listed both as a candidate world-name and as a specific gridded place), 'Mundo de Milka' (libro's own title phrase), and 'Aerörea' (esquema, named as one of Milkäntis's 'dos continentes más importantes' - paired against Platinhëa in exactly the slot every other source gives to Milkäan).",
       "sources": [
-        "ensayo_i",
-        "catastro",
-        "libro",
-        "esquema",
-        "mapa_del_milenio"
+        {
+          "category": "material",
+          "origin": "ensayo_i"
+        },
+        {
+          "category": "material",
+          "origin": "catastro"
+        },
+        {
+          "category": "material",
+          "origin": "libro"
+        },
+        {
+          "category": "material",
+          "origin": "esquema"
+        },
+        {
+          "category": "material",
+          "origin": "mapa_del_milenio"
+        }
       ],
       "notes": "see CONFLICT-03 (user has resolved Milkantis/Milkantida/'Mundo de Milka' as the same name with spelling drift, explicitly NOT yet extended to Milkäan) and CONFLICT-13 (Aerörea vs Milkäan as Platinhëa's paired continent - found after that resolution, not yet addressed)"
     },
@@ -2422,7 +3153,10 @@
       ],
       "description": "a large terrain render titled 'The Old Continent of Milkan - Map of the Millennium', the most recently added file in the material set. Its landmass shape matches the continent traced by the yellow outline in 'Milka Oceans Plan and Continent Outline (18.11.2020).png'. 'Milenio' (Millennium) is otherwise only used in ensayo_i's era 10, 'Predicciones para el año 1000 d.V. (agosto 2026)' - a plausible but unconfirmed connection, since this map carries no text of its own.",
       "sources": [
-        "mapa_del_milenio (El Antiguo Continente de Milkan - Mapa del Milenio.png)"
+        {
+          "category": "material",
+          "origin": "mapa_del_milenio (El Antiguo Continente de Milkan - Mapa del Milenio.png)"
+        }
       ],
       "notes": "possible resolution to the open Catastro question ('Continente: Antiguo' on all 38 rows) - this is the first source to use 'Antiguo' as part of a named continent, suggesting it may specifically name the one continent catalogued in the Catastro, as opposed to an unmapped 'new' continent (see concept 'darnis' era 9 discovery). Inference from a title, not a stated fact - the user's own answer when asked was 'not sure yet'. See unknowns.md."
     },
@@ -2434,7 +3168,10 @@
       ],
       "description": "the two parallel scales esquema's poster puts on its vertical axis ('El Vertice del Tiempo'): Tiempo Divino ('Divine Time') measured in years, and Tiempo Interno ('Internal Time') measured in ticks.",
       "sources": [
-        "esquema"
+        {
+          "category": "material",
+          "origin": "esquema"
+        }
       ],
       "notes": "not explained further; not obviously identical to timelines.py's 'Synchronized'(tick-based)/'Parallelized'(calendar-based) pair, though conceptually parallel - not confirmed to be the same distinction under different names"
     },
@@ -2447,8 +3184,18 @@
       ],
       "description": "a before/after threshold used by timelines.py's Parallelized Timeline model: 'Ox' (2025-12-31) marks the start of 'the Eras After the Seasons', after which in-world days run at 1 real hour each instead of 20 real minutes (a 3x slowdown).",
       "sources": [
-        "timelines_py",
-        "ensayo_i_final, era 9"
+        {
+          "category": "material",
+          "origin": "timelines_py"
+        },
+        {
+          "category": "material",
+          "origin": "ensayo_i_final, era 9"
+        },
+        {
+          "category": "hearsay",
+          "origin": "gok_milkucha_alcove#1#4"
+        }
       ],
       "notes": "not named 'the Seasons'/EAS in any other source, but ensayo_i_final (era 9) now describes what is very likely the same event without using either term: at 964 d.V. (enero de 2026) time slows 3x, days going from 20 to 60 real minutes - matching timelines.py's Ox=2025-12-31 threshold and its 3x slowdown almost exactly, dated about a month apart. This corroborates the slowdown itself; it does not corroborate timelines.py's separate O=2012-07-01 origin point, which remains unmatched elsewhere. See CONFLICT-12."
     },
@@ -2460,7 +3207,10 @@
       ],
       "description": "explicit sequence of 'subsistence' starting settlements named in ensayo_i: 1st Puerto Pastizal (era 1), 2nd Okâsia (era 3), 3rd unnamed but enabled by the Vías de Hielo (era 6, 'permitiendo la fundacion de el tercer emplazamiento de subsistencia'), and 5th Nueva Góndola (era 8, explicitly labeled 'quinta aldea de subsistencia').",
       "sources": [
-        "ensayo_i"
+        {
+          "category": "material",
+          "origin": "ensayo_i"
+        }
       ],
       "notes": "the 4th subsistence settlement is never named or described in any source. esquema's year-by-year list names a 'Tercera Aldea Survival' at 2021/576-648 d.V., which lines up date-wise with ensayo_i's unnamed 3rd settlement (era 6, ~582 d.V.) - a plausible name for it, not confirmed since 'Tercera Aldea Survival' reads as a descriptive label rather than a proper name"
     },
@@ -2471,7 +3221,10 @@
       ],
       "description": "an institution at Sït:Nâlta; Döran, Forlän, and Forlîas are all described as members/students.",
       "sources": [
-        "ensayo_i, era 2"
+        {
+          "category": "material",
+          "origin": "ensayo_i, era 2"
+        }
       ]
     },
     {
@@ -2481,7 +3234,10 @@
       ],
       "description": "a recurring games/tournament event; first held ~84 d.V. (era 2), where the Görff/Khân-Ice enmity begins; reestablished in Khân-Ice during era 6, in honor of Forlän and Forlîas.",
       "sources": [
-        "ensayo_i"
+        {
+          "category": "material",
+          "origin": "ensayo_i"
+        }
       ]
     },
     {
@@ -2491,7 +3247,10 @@
       ],
       "description": "a spell discovered by the people of aldea Camilo Ricarda (era 9), said to force subsistence-mode living from the north frontier into the unknown lands beyond the wall.",
       "sources": [
-        "ensayo_i, era 9"
+        {
+          "category": "material",
+          "origin": "ensayo_i, era 9"
+        }
       ],
       "notes": "not otherwise explained; relationship to Muro Norte / Wasteland (era 7) not stated explicitly, though geographically adjacent (both 'north frontier')"
     },
@@ -2502,7 +3261,10 @@
       ],
       "description": "a scoreboard objective demonstrated in Book of Inventions: detects players within 200 blocks of a point over time and displays a 'TOWN' title when the score reaches 1. A working command-mechanic example, not a lore concept.",
       "sources": [
-        "book_of_inventions"
+        {
+          "category": "material",
+          "origin": "book_of_inventions"
+        }
       ],
       "notes": "presented as a technique/reference snippet, not tied to any specific in-world location or story"
     },
@@ -2513,7 +3275,18 @@
       ],
       "description": "a fair/exposition with 5 pabellones (pavilions); construction begins ~980 d.V., inaugurated 26 julio 2026, celebrating '1000 años SBW' (Since the Beginning of the World).",
       "sources": [
-        "ensayo_i_final, era 9"
+        {
+          "category": "material",
+          "origin": "ensayo_i_final, era 9"
+        },
+        {
+          "category": "hearsay",
+          "origin": "ilaria_espiral_de_la_historia#1"
+        },
+        {
+          "category": "hearsay",
+          "origin": "ilaria_espiral_de_la_historia#2"
+        }
       ],
       "notes": "previously known only through hearsay.md entries from played dialogues (e.g. nuvilo_nerkeli_feria_del_milenio, nuvilo_scholar_at_the_feria); this is its first appearance in the objective record. Individual pavilions are not named here; see hearsay.md and _npcs/npcs/registry.json for in-play detail (e.g. Iläria's 'Espiral de la Historia', established through the /enact skill as her personal backstory, not a primary-source fact)."
     }
@@ -2606,6 +3379,11 @@
       "id": "CONFLICT-17",
       "topic": "örikal discovery: date and framing differ between ensayo_i editions",
       "detail": "ensayo_i (era 8, ~900 d.V.) frames the örikal-related documents as speculative - 'podría traer nuevos minerales teóricos, como el örikal y la magia' - and pairs the discovery sentence with an otherwise-unique detail (artists/architects rebuilding the war-torn zones around creativity) that ensayo_i_final drops entirely from the same paragraph. ensayo_i_final (era 8, 882 d.V.) states plainly that the documents 'revelan el proceso de manifestación de un nuevo mineral, el örikal' - no hedge, no 'la magia' pairing, and dated roughly 18 years earlier than ensayo_i's 'para 900 d.V.' framing. See concept 'orikal'."
+    },
+    {
+      "id": "CONFLICT-18",
+      "topic": "possible same-entity spelling, auto-grouped (unconfirmed)",
+      "detail": "'balahm' (from hearsay:khaoe_milkucha_jardin_de_los_parajes#10) auto-grouped with existing location 'balham' at similarity 0.83 (threshold 0.77) via build_source_index.py. Unconfirmed - needs user review."
     }
   ],
   "hearsay": {
