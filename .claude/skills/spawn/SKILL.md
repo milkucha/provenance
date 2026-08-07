@@ -1,19 +1,17 @@
 ---
-description: Build a Taterzens spawn function (and every supporting function) for a character that has a name in _lore/characters/<key>.json and at least one written Blabber dialog, creating its _npcs/npcs/registry.json entry if one doesn't exist yet. Follows README §3/§4 and the _action_templates conventions in _npcs/actions/registry.json. Use when the user wants to spawn/wire up an NPC that doesn't have a spawn.mcfunction yet, or add a new dialog/state to one that does.
+description: Build a Taterzens spawn function (and every supporting function) for a character that has a name in _lore/characters/<key>.json and at least one written Blabber dialog, creating its _npcs/npcs/registry.json entry if one doesn't exist yet. Follows the _action_templates conventions in _npcs/actions/registry.json. Use when the user wants to spawn/wire up an NPC that doesn't have a spawn.mcfunction yet, or add a new dialog/state to one that does.
 disable-model-invocation: true
 ---
 
 Builds `functions/npcs/<npc_key>/spawn.mcfunction` and whatever else it needs (routine
-pause/resume, states, paths, random-dialog wiring) from the templates in `_npcs/templates/`, per
-README §3 ("Building a new NPC, start to finish") and §4 ("Routine pause/resume"), plus the
+pause/resume, states, paths, random-dialog wiring) from the templates in `_npcs/templates/`, plus the
 `_action_templates` conventions documented in `_npcs/actions/registry.json`. This is a
 file-authoring skill — it does not run Minecraft commands or touch a live server. Every run ends
 with the user manually running `/function luminacion:npcs/<npc_key>/spawn` in-game.
 
-Nothing here gets decided silently. Ask (AskUserQuestion where the choice has clean discrete
-options, plain conversation otherwise) for anything not already pinned down in the registry, the
-dialog file(s), or TODO.md — movement mode, position/waypoints, and what fires on right-click are
-never guessed.
+Per `.claude/PRINCIPLES.md`: ask (AskUserQuestion where the choice has clean discrete options, plain
+conversation otherwise) for anything not already pinned down in the registry, the dialog file(s), or
+TODO.md — movement mode, position/waypoints, and what fires on right-click are never guessed.
 
 ## Step 0 — Preconditions
 
@@ -95,7 +93,7 @@ Ask (AskUserQuestion) what fires when a player right-clicks this NPC:
 
 - **A single dialog** — the common case. First command is
   `npc edit commands add minecraft function luminacion:npcs/_shared/enter_dialog` (always, even
-  for `NONE` movement — costs nothing, keeps every NPC consistent per README §3), then
+  for `NONE` movement — costs nothing, keeps every NPC consistent), then
   `npc edit commands add minecraft blabber dialogue start luminacion:<dialog_id> --clicker--
   @e[name=<display_name>,limit=1,sort=nearest]`.
 - **One of several independent dialogs, picked at random** — use the `random_dialog` pattern (see
@@ -213,7 +211,7 @@ them to do in-game:
 3. `/function luminacion:npcs/<npc_key>/spawn` as an operator.
 4. If a path was left unrecorded: run `functions/npcs/<npc_key>/paths/<path_name>.mcfunction` once
    waypoints are decided.
-5. Capture the UUID per README §5 (`scripts/minecraft/update_uuids.py generate` → `/reload` →
+5. Capture the UUID (`scripts/minecraft/update_uuids.py generate` → `/reload` →
    `/function luminacion:admin/export_npc_uuids` → `scripts/minecraft/update_uuids.py update --log ...`) —
    never copy it by hand.
 6. Before testing the right-click dialog/action yourself: deselect the NPC. `npc create` (step 1 of

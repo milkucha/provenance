@@ -5,10 +5,10 @@ disable-model-invocation: true
 
 Orchestrator over `/enact`'s existing-character path, run unattended and repeatedly inside a
 dedicated worktree. Lore-only, same as `/enact` and `/character` — never touches `data/` or
-`_npcs/`. Read `.claude/skills/enact/SKILL.md` and README.md §8 before running this if they haven't
-been read yet this session; this skill points back at their rules rather than restating them, and
-only spells out where it deviates (no interactive questions inside a pass, existing participants
-only, absolute paths into the worktree).
+`_npcs/`. Read `.claude/skills/enact/SKILL.md` before running this if it hasn't been read yet this
+session; this skill points back at its rules rather than restating them, and only spells out where
+it deviates (no interactive questions inside a pass, existing participants only, absolute paths into
+the worktree).
 
 ## Step 0 — Preconditions
 
@@ -49,40 +49,43 @@ Ask as plain conversation, or AskUserQuestion where multiple-choice fits:
 Every pass in Step 3 dispatches a subagent that runs several `py scripts/lore/...` calls, `cd`, and
 `git`-adjacent commands — dozens of routine tool calls per pass, times N passes. Without a permission
 bypass in place *before* any of that runs, each one prompts the user, which defeats the entire point
-of an unattended batch run. Getting the bypass to actually take effect requires doing these in this
-exact order — reversing steps 3 and 4 below does not work (confirmed the hard way: editing the
-worktree's settings file after switching into it left every subagent still prompting for the rest of
-that session, because the session's config for a directory is fixed at the point it starts treating
-that directory as a project root, and does not live-reload from later edits to it):
+of an unattended batch run.
 
-1. Pick a name like `simulate-<YYYYMMDD-HHMMSS>`.
-2. Create the worktree directly with git, rather than `EnterWorktree`'s own `name` flow, so the
-   directory and its files exist on disk before the session ever switches into it:
-   `git worktree add .claude/worktrees/<name> -b worktree-<name> HEAD` (requires
-   `worktree.baseRef: "head"` in settings, same precondition as before — if that hasn't been set, stop
-   and say so rather than silently branching from a stale `origin/<default-branch>`).
-3. Immediately write `.claude/worktrees/<name>/.claude/settings.json` — merge with whatever the
-   branch's committed version already contains, don't clobber it — to add:
-   ```json
-   { "permissions": { "defaultMode": "bypassPermissions" }, "skipDangerousModePermissionPrompt": true }
+1. Run the setup script — it creates the worktree with `git worktree add ... HEAD` and writes the
+   scoped permission bypass into *that worktree's own* `.claude/settings.json`, both in one call, in
+   the only order confirmed to work (see below for why):
+   ```bash
+   py scripts/lore/simulate_setup_worktree.py
    ```
-   **Only ever write this into the new worktree's own `settings.json` — never into the main repo's
-   `settings.json` or `settings.local.json`, and never into `settings.local.json` even inside the
-   worktree.** (`settings.local.json` gets rewritten by the harness itself whenever a prompt is
-   individually approved, which will silently clobber this — `settings.json` doesn't.) This keeps the
-   bypass scoped to this one disposable, isolated copy for exactly the duration of this run; it must
-   never leak into the directory the user actually works in day to day, and every future `/simulate`
-   run gets its own fresh worktree and this same fresh grant, not a standing one.
-4. Only now call `EnterWorktree` with `path` set to `.claude/worktrees/<name>` (not `name` — the
-   worktree already exists, this just switches the session into it). Because the settings file was
-   already on disk before this call, this is the point where the bypass actually takes effect for the
-   rest of the run.
+   Keep the printed `path` and `branch` — point 2 below and Step 4 both need the path. The script
+   always branches from `HEAD` directly, regardless of the `worktree.baseRef` setting — that setting
+   only governs `EnterWorktree`'s own `name`-based creation flow, which point 2 deliberately avoids by
+   passing `path` instead.
+2. Only now call `EnterWorktree` with `path` set to the printed path (not `name` — the worktree
+   already exists, this just switches the session into it). Because the settings file was already on
+   disk before this call, this is the point where the bypass actually takes effect for the rest of the
+   run.
 
-If prompts still fire during Step 3 despite following this order, the fix is to end the session and
-start a new one that calls `EnterWorktree` with `path` pointed at the already-existing worktree — a
-fresh session's config load will pick up the settings file that's already sitting there even if the
-one that created it couldn't. Passes already completed are safe either way; they're written straight
-to disk in the worktree as each one finishes, per Step 3.
+**Why the order matters:** editing the worktree's settings file *after* switching into it leaves
+every subagent still prompting for the rest of that session — confirmed the hard way — because the
+session's config for a directory is fixed at the point it starts treating that directory as a project
+root, and does not live-reload from later edits to it. The script exists specifically so this can't
+happen: the worktree and its settings file are both already on disk before this skill ever calls
+`EnterWorktree`.
+
+**The bypass only ever lands in the new worktree's own `settings.json`** — never the main repo's
+`settings.json`/`settings.local.json`, and never `settings.local.json` even inside the worktree
+(`settings.local.json` gets rewritten by the harness itself whenever a prompt is individually
+approved, which would silently clobber this — `settings.json` doesn't). This keeps the bypass scoped
+to this one disposable, isolated copy for exactly the duration of this run; it must never leak into
+the directory the user actually works in day to day, and every future `/simulate` run gets its own
+fresh worktree and this same fresh grant via the same script, not a standing one.
+
+If prompts still fire during Step 3 despite this order, the fix is to end the session and start a new
+one that calls `EnterWorktree` with `path` pointed at the already-existing worktree — a fresh
+session's config load will pick up the settings file that's already sitting there even if the one
+that created it couldn't. Passes already completed are safe either way; they're written straight to
+disk in the worktree as each one finishes, per Step 3.
 
 A fresh worktree per run is what makes repeated runs independently comparable against the same
 starting lore state — report the path and branch to the user once created. Everything from here
@@ -95,24 +98,36 @@ Keep, in this conversation only (nothing written to disk until Step 4):
 - The **living pool** — participant slugs, minus anyone whose `life.deceased` turns `true` mid-run.
 - A **running log** of one-line-per-pass summaries returned by each pass's subagent.
 
+Before pass 1, snapshot every participant's starting state from inside the worktree — this is what
+lets Step 4 report only what changed *this run*, not each character's whole history:
+
+```bash
+py scripts/lore/simulate_tally.py snapshot <slug1> <slug2> ... --out .simulate_snapshot.json
+```
+
+It writes `.simulate_snapshot.json` at the worktree root; Step 4 reads that same path back.
+
 For pass 1 through N:
 
 1. If fewer than 2 living participants remain, stop early and say so, noting how many passes
    actually ran before the pool ran out.
-2. Pick 2 participants from the living pool uniformly at random. Every pass is an independent draw —
-   pairs can repeat, and should be expected to over a long run.
+2. Pick 2 participants from the living pool with
+   `py scripts/lore/pick_pair.py <every slug still in the living pool>` — a genuine uniform draw,
+   not the model's own guess at "random" (which skews toward whichever names are most salient in
+   context rather than drawing evenly). Every pass is an independent draw — pairs can repeat, and
+   should be expected to over a long run.
 3. Dispatch one subagent (Agent tool, `subagent_type: general-purpose`, the model chosen in Step 1,
    `run_in_background: false` — the next pass needs this one's file writes to have landed first).
    Brief it self-contained, since it starts with no memory of this conversation:
    - The worktree's absolute path — every file read/write and every `py scripts/lore/...` call must
-     use it explicitly, never an assumed working directory. This includes the two rule-pointer files
-     below: give their full absolute path inside the worktree
-     (`<worktree>/.claude/skills/enact/SKILL.md`, `<worktree>/README.md` §8), never a bare relative
-     one, and read them with the `Read` tool, never a shell `cat`/`Get-Content` fallback. A subagent's
-     actual working directory is not guaranteed to match the parent conversation's; a relative path can
-     silently resolve outside wherever its real cwd turns out to be, and the `Read` tool is never
-     gated for paths *inside* the working directory — only for paths it resolves as outside it, which
-     is what a permission prompt on a plain file read means when it happens.
+     use it explicitly, never an assumed working directory. This includes the rule-pointer file below:
+     give its full absolute path inside the worktree (`<worktree>/.claude/skills/enact/SKILL.md`),
+     never a bare relative one, and read it with the `Read` tool, never a shell `cat`/`Get-Content`
+     fallback. A subagent's actual working directory is not guaranteed to match the parent
+     conversation's; a relative path can silently resolve outside wherever its real cwd turns out to
+     be, and the `Read` tool is never gated for paths *inside* the working directory — only for paths
+     it resolves as outside it, which is what a permission prompt on a plain file read means when it
+     happens.
    - Both participants' names, and that **both already have character files** — Step 1/2's
      interactive questions and the name-uniqueness check are for new characters only and don't apply
      here. It should still: check `life.deceased` before starting, run `horizon.py` for each per
@@ -143,9 +158,17 @@ For pass 1 through N:
 
 Once all passes are done (or the pool ran out early):
 
+- Run the tally script against the snapshot Step 3 wrote, rather than hand-counting deaths and
+  criterion moves from the running log's one-liners:
+  ```bash
+  py scripts/lore/simulate_tally.py report .simulate_snapshot.json
+  ```
+  It diffs every participant's current `_lore/characters/<key>.json` against where they stood before
+  pass 1, so the deaths, criterion-move counts, and final `life.lived` come straight from the record
+  rather than being reconstructed from memory of up to N pass summaries.
 - Write `SIMULATION_LOG.md` at the worktree root: the Step 1 setup (participants, pass count,
-  context, model), the pass-by-pass one-liners in order, and a closing tally — deaths, criterion
-  breaks/reinterpretations, final `life.lived` per participant.
+  context, model), the pass-by-pass one-liners in order, and the tally script's output as the closing
+  section.
 - Tell the user: how many passes ran, headline events, the worktree's path and branch name, and that
   it stays on disk untouched by anything here — nothing in the original working directory changed.
   They can `/enact` a character from inside this worktree, read any file directly, ask questions

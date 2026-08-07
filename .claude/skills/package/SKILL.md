@@ -5,10 +5,10 @@ disable-model-invocation: true
 
 Produces two release zips from the current state of this repo — nothing here is a dev
 convenience the destination world needs, only what Minecraft actually loads. This is
-the "ship it" counterpart to the dev setup described in README §0 Layer 4 (the
-`resourcepack/` ↔ `resourcepacks/luminacion/` junction): that junction is for editing
-gestures live in *this* world; this skill is for handing the finished pack to a
-*different* world or server that has no such junction.
+the "ship it" counterpart to the dev setup that keeps `resourcepack/` junctioned into
+`resourcepacks/luminacion/` for local editing: that junction is for editing gestures live in *this*
+world; this skill is for handing the finished pack to a *different* world or server that has no such
+junction.
 
 ## Step 0 — Resolve the destination
 
@@ -51,7 +51,7 @@ Report the two output paths and sizes (the script prints both). Remind the user:
   Options → Resource Packs.
 - The destination world/server needs [Taterzens](https://modrinth.com/mod/taterzens)
   1.11.7 and [Blabber](https://modrinth.com/mod/blabber) 1.6.2 installed — the datapack
-  won't function without both (per README's opening requirements line).
+  won't function without both.
 - Both packs are `pack_format` 15 (Minecraft 1.20.1) — a different game version on the
   destination server needs that checked before it'll load without a format warning.
 
