@@ -57,8 +57,12 @@ The system has four layers, each authored from the one below it:
 
 - **Skills** (`.claude/skills/`) — repeatable procedures, invoked as slash commands. They split
   cleanly along the lore/Minecraft line that runs through the whole system: `/character` and `/enact`
-  only ever touch `_lore/` and know nothing of Minecraft; `/embody` and `/spawn` only ever touch
-  `_npcs/`/`data/` and know nothing of lore.
+  are lore-only and know nothing of Minecraft, with one narrow exception — `/enact` stages a scene's
+  raw transcript at `_npcs/scenes/<id>.md`, purely so `/embody` has something to read later. That's
+  staging content for the Minecraft layer, not lore itself, and `/enact` still never touches either
+  registry or `data/`. `/embody` and `/spawn` only ever touch `_npcs/`/`data/` and know nothing of
+  lore. Every skill answers to one shared rule, stated once in `.claude/PRINCIPLES.md` rather than
+  repeated per skill: nothing gets decided silently.
   - **`/character`** (`character/SKILL.md`) — creates or maintains a character's file in
     `_lore/characters/<key>.json` on its own, without running a conversation: `name`, `city`,
     `backstory`, knowledge sample, **criterion**, and **lifespan**. It owns the criterion model —
@@ -67,12 +71,15 @@ The system has four layers, each authored from the one below it:
     character can be fully fleshed out here with no in-game representation at all, and this skill
     never touches `_npcs/`.
   - **`/enact`** (`enact/SKILL.md`) — plays a character in a live conversation, sampled from a bounded
-    slice of the lore, then records what the scene did to that lore (hearsay, criterion, `life`).
-    Lore-only, same as `/character` — it never writes a dialog file or touches `_npcs/`. See §8.
-  - **`/embody`** (`embody/SKILL.md`) — takes a scene `/enact` just played (in the same conversation)
-    and puts it in the game: converts the transcript into a registered Blabber dialog, bakes its
-    gestures itself (Step 3 — replaces a minority of the dialog's default `nod_up_down` states with an
-    emotionally-matched gesture from the vocabulary in `GESTURES.md`), and registers the NPC(s) in
+    slice of the lore, then records what the scene did to that lore (hearsay, criterion, `life`) and
+    saves the scene's raw transcript to `_npcs/scenes/<id>.md` so `/embody` can convert it later, even
+    cold in a later session. That transcript is the only thing this skill writes under `_npcs/` — it
+    never writes a dialog file or touches either registry. See §8.
+  - **`/embody`** (`embody/SKILL.md`) — takes a scene `/enact` played and puts it in the game: reads the
+    transcript from `_npcs/scenes/<id>.md` (so this works cold, in a later session, exactly as well as
+    right after `/enact` in the same conversation), converts it into a registered Blabber dialog, bakes
+    its gestures itself (Step 3 — replaces a minority of the dialog's default `nod_up_down` states with
+    an emotionally-matched gesture from the vocabulary in `GESTURES.md`), and registers the NPC(s) in
     `_npcs/npcs/registry.json` and the dialog in `_npcs/dialogs/registry.json`. This is the only place
     gestures get baked now — the earlier standalone `/bake_dialog` skill was retired once every dialog
     in the pack turned out to be produced by tooling rather than by hand, leaving no case for it to
@@ -89,6 +96,11 @@ The system has four layers, each authored from the one below it:
     hand-written dialogue that skipped `/enact`); and check for drift between what's referenced
     elsewhere (registries, sampled knowledge, and `tales` `touches` refs) and what's actually recorded
     in `encodings.json`. Run whichever pass(es) fit the situation, not necessarily all three.
+  - **`/resolve`** (`resolve/SKILL.md`) — surfaces one open item at a time, either an unresolved entry
+    in `encodings.json`'s `conflicts` array or an open question in `_lore/unknowns.md`, with the full
+    detail plus every other place in the record that mentions it, and writes a decision only on the
+    user's own explicit call. Never suggests a resolution or infers one from source agreement. The only
+    skill that ever sets a conflict's `user_resolution` field.
   - **`/tell`** (`tell/SKILL.md`) — records a tale the user tells directly, outside any excavated
     document or character's mouth — narrated as a story or stated plainly as a fact now known, both
     the same category — optionally credited to an in-world source (`told_by`), into `_lore/tales/` and
@@ -270,6 +282,10 @@ Luminacion/
 │   │                                   taterzen_uuid, spawn_position)
 │   ├── dialogs/registry.json          (NPC key → dialog IDs)
 │   ├── actions/registry.json          (NPC key → actions, plus reference templates for every action type)
+│   ├── scenes/                        (raw scene transcripts — /enact Step 4 writes <scene_id>.md
+│   │   │                               here, /embody Step 1 reads it; kept permanently even after
+│   │   │                               conversion)
+│   │   └── _template.md               (blank shape for a new scene file)
 │   └── templates/                     (copy these into data/luminacion/functions/npcs/<npc_key>/ per NPC)
 │       ├── spawn.mcfunction
 │       ├── resume_routine.mcfunction

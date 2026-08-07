@@ -1,12 +1,13 @@
 ---
-description: Convert an already-enacted scene (from /enact, run earlier in this same conversation) into pack content — a registered Blabber dialog with its gestures already baked, and an NPC registration in _npcs/npcs/registry.json. Purely Minecraft/NPC-facing: never touches _lore/characters/. Use right after /enact when the user wants the scene actually put in the game, for a conversation that only ran bare /enact so far. Use /enact-embody instead to run both skills back to back in one pass.
+description: Convert an already-enacted scene into pack content — a registered Blabber dialog with its gestures already baked, and an NPC registration in _npcs/npcs/registry.json. Reads the scene's transcript from _npcs/scenes/<id>.md, so it runs the same way whether invoked right after /enact in the same conversation or cold, in a later session, against any scene still in the backlog. Purely Minecraft/NPC-facing: never touches _lore/characters/. Use /enact-embody instead to run both skills back to back in one pass.
 disable-model-invocation: true
 ---
 
-Runs the Minecraft-facing half of the enactment-to-dialog procedure documented in `README.md` §8,
-completing a scene that `/enact` already played and recorded in this same conversation — this skill
-reads the transcript still sitting in context, not a file, so it only makes sense run as the next step
-after `/enact`, not cold in an unrelated session.
+Runs the Minecraft-facing half of the enactment-to-dialog procedure, completing a scene that `/enact`
+already played and recorded. This skill reads the scene from `_npcs/scenes/<scene_id>.md` — the
+transcript `/enact` Step 4 saved — rather than relying on conversation context, so it works the same
+way whether invoked right after `/enact` in the same conversation or cold, in an unrelated session,
+weeks later.
 
 Three hard formatting rules apply to every dialog this skill produces:
 
@@ -22,13 +23,19 @@ Three hard formatting rules apply to every dialog this skill produces:
   box style without it). All four templates already carry this field; when starting a new dialog from
   scratch instead of a template, add it by hand.
 
-Nothing here is decided silently; every genuine open question (skin, UUID, movement mode, how a
+Per `.claude/PRINCIPLES.md`, every genuine open question here (skin, UUID, movement mode, how a
 two-NPC dialog gets registered) gets asked or logged in `TODO.md`, never guessed.
 
 ## Step 1 — Convert to a Blabber dialog
 
-Per README §8 Step 3: compress the transcript, don't add to it; rename states to short meaningful
-ids; wire the final `end_dialogue` state per the existing templates.
+**Locate the scene.** If this is running right after `/enact` in the same conversation, the scene id
+is already known — it's the one chosen in that skill's Step 4. If running cold, ask the user which
+scene (a character name or an explicit scene id) unless one was already given, then read
+`_npcs/scenes/<scene_id>.md` in full: participants, location, format, and the verbatim transcript are
+all there — nothing about the scene needs to have survived in context beyond this file.
+
+Compress the transcript, don't add to it; rename states to short meaningful ids; wire the final
+`end_dialogue` state per the existing templates.
 
 - **Strip action cues.** Drop any `*...*` stage direction that made it into the transcript — only the
   spoken words become the state's `text` (or, for two-NPC dialogs, the `"Name: "` prefix plus the
@@ -65,6 +72,10 @@ cue leaked through, and flags any state nothing ever links to. A clean pass mean
 when Blabber loads it — it has no opinion on writing quality or gesture choice, both still Step 3's
 job.
 
+The `_npcs/scenes/<scene_id>.md` file itself is left untouched by this conversion — it stays under
+`_npcs/scenes/` permanently as the source record, per the user's call on this (2026-08-07): cheap to
+keep, and it's what a dialogue would need re-converting from after an editing mistake.
+
 ## Step 2 — Register the NPC(s) and the dialog
 
 For every character in the scene, add/update their entry in `_npcs/npcs/registry.json`
@@ -81,7 +92,7 @@ For every character in the scene, add/update their entry in `_npcs/npcs/registry
 Then, for the dialog itself:
 
 - **If the scene was against the player:** register it normally in `_npcs/dialogs/registry.json`
-  under that NPC's key, per README §3 Step 3.
+  under that NPC's key.
 - **If the scene was between two enacted characters:** do **not** guess how to register a dialog that
   belongs to two NPCs — the registry format assumes one dialog per NPC key. Ask the user how they want
   it handled, or leave it open in TODO.md (see Step 4) exactly like the Nawom & Morkulo precedent.
@@ -151,9 +162,8 @@ speaker's line end up pointed at the other NPC's selector.
 Never assign a gesture to an `end`/`end_dialogue` state — its `action` (if any) is
 `resume_routine`/`end_with_gift`, not performance, and stays untouched.
 
-**Sounds** — no-op today. `resourcepack/`'s custom-sound layer is listed "planned" in README Layer 4
-and nothing in this pack calls `playsound` or ships a `sounds.json` yet. Don't build one here to fill
-the gap.
+**Sounds** — no-op today. `resourcepack/`'s custom-sound layer doesn't exist yet — nothing in this
+pack calls `playsound` or ships a `sounds.json`. Don't build one here to fill the gap.
 
 **Confirm before writing.** Present the chosen upgrades as a short list (state id → gesture → the
 clause that justified it) and confirm (AskUserQuestion: proceed / let me adjust) before editing the
