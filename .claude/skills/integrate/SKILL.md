@@ -9,21 +9,63 @@ not obvious from how the skill was invoked, ask (AskUserQuestion): new material 
 Pass 3; "check unknowns.md is still current" → Pass 4. Default to running all four when unsure — a
 pass with nothing to do is cheap to finish quickly.
 
-Nothing here silently resolves a judgment call. Every place the existing analysis files (`_context.md`,
-`encodings.json`, `unknowns.md`) already draw a line between "recorded fact" and "open question" (see
-README §0 Layer 1), this skill holds that same line — new material can add entries and flag conflicts,
-never overwrite an existing entry or invent a resolution.
+Per `.claude/PRINCIPLES.md`: every place the existing analysis files (`_context.md`, `encodings.json`,
+`unknowns.md`) already draw a line between "recorded fact" and "open question," this skill holds that
+same line — new material can add entries and flag conflicts, never overwrite an existing entry or
+invent a resolution.
 
 ## Pass 1 — Analyse new material
 
 **Trigger:** one or more files in `_lore/material/` aren't reflected yet in `_lore/material/_context.md`
 (diff the material folder's contents against that file's section headers to find them).
 
+**Cold start:** if `_lore/encodings.json`, `_lore/material/_context.md`, or `_lore/unknowns.md` doesn't
+exist yet at all (a fresh project, not just fresh material), run `py scripts/lore/bootstrap_lore.py`
+first — it creates whichever of the three is missing with empty, generic structure (an empty
+`_categories` block, `conflicts: []`, `hearsay`/`tales` skeletons) and deliberately does NOT pre-create
+any content category. This mirrors how the schema was actually built the first time: nothing was
+seeded in advance, every category got proposed once real material called for it. Then continue into
+step 1 below as normal — with `_categories` empty, essentially everything the first files introduce
+will hit step 2's "doesn't fit any existing category" branch, which is expected, not a bug.
+
 1. For each new/unanalysed file, add a section to `_context.md`, following the method note at the top
    of that file exactly: treat the source as an independently recovered artifact; transcribe only
    what it actually says or shows; preserve the source's own blanks/open questions as gaps rather
    than filling them in; note (don't resolve) any disagreement with other sources.
-2. Fold the transcribed material into `encodings.json`'s objective arrays (`time_systems`,
+2. **Check whether the material's own structure fits an existing category before folding anything
+   in.** The schema (`time_systems`, `locations`, `routes`, `characters`, `concepts`, `conflicts`,
+   `hearsay`, `tales`, and whatever else `encodings.json`'s `_categories` block already lists — which
+   may be nothing at all, on a freshly bootstrapped project) is not frozen — the original intent was
+   for it to emerge from what the material actually contains, not force every source into fixed boxes
+   forever. If an entry genuinely doesn't belong under any existing category (not "it's a slightly
+   awkward fit," a real structural mismatch — e.g. material describing something like "alien cultures"
+   with no analog in anything encoded so far, or literally any entry at all when `_categories` is
+   still empty), ask (AskUserQuestion): *"This material introduces [novel structure]. Create a new
+   category for it[, or does it belong under [closest existing category]]?"* — drop the second half of
+   the question entirely when there's no existing category close enough to offer, rather than forcing
+   a comparison that doesn't make sense yet. Only continue past this point once the user decides —
+   never silently squeeze novel structure into an existing box, and never silently create a category
+   either.
+   - **If the user approves a new category:** add its data under a new top-level key in
+     `encodings.json`, in whatever shape the material actually supports (most naturally a flat list of
+     `{"id": ..., "names": [...], ...}` dicts — the same shape `locations`/`concepts` already use).
+     Then register it in `_categories` (see that key's own `_categories_method_note` for the exact
+     spec fields): `"shape": "list"` if it followed the flat-list convention above — nothing else
+     needs to change, `scripts/lore/sample_lore_knowledge.py` picks it up automatically next run. If
+     the material's own shape doesn't fit `"list"` (a nested grouping, something claim-like), say so
+     explicitly to the user — that shape needs a new handler written into that script's
+     `SHAPE_HANDLERS` by hand before the category can be sampled, and sampling will refuse to run
+     until one exists rather than silently skip the category.
+   - **Also propose an `epistemology_group` for the new category**, for `/character` Step 4d's
+     trusts/distrusts table (`.claude/skills/character/SKILL.md`): does holding this kind of knowledge
+     imply a lean (join an existing group — `"chronicles"`, `"conflict"`, `"hearsay"` — or genuinely
+     new territory, needing a new Step 4d table row drafted and confirmed), or is it `"ambiguous"` like
+     most categories (the lean gets read from a character's backstory instead, per Step 4d)? This is
+     real interpretive judgment, not a lookup — draft a proposal and let the user confirm or redirect
+     it, the same discipline every other judgment call in this skill already follows. Never derive it
+     from category size or how much of the corpus it takes up — Step 4d documents exactly why that
+     approach already failed once.
+3. Fold the transcribed material into `encodings.json`'s objective arrays (`time_systems`,
    `locations`, `routes`, `characters`, `concepts`) in the same shape as their existing entries. For the
    four categories that carry a `sources` list (`locations`, `concepts`,
    `characters.in_world_or_legendary`, `characters.real_world_authors_and_players`), each entry is
@@ -34,23 +76,25 @@ never overwrite an existing entry or invent a resolution.
    `CONFLICT-NN` id, `topic`, `detail` — and leave `user_resolution` unset. That field is set by the
    user only; every current entry that has one records it as "(per user, <date>)" — never fill it in on
    this skill's own judgment.
-3. Log anything the new material poses as a question but doesn't answer in `unknowns.md`, matching the
+4. Log anything the new material poses as a question but doesn't answer in `unknowns.md`, matching the
    shape of its existing entries (cross-reference a `CONFLICT-##` id when it's a disagreement between
    sources; otherwise it's a standalone gap).
-4. Report a short summary back to the user: what was added, how many new entries per array, how many
-   new conflicts (if any) and what they're about, how many new open questions. Flag every new
-   conflict explicitly — don't bury one in a large diff.
+5. Report a short summary back to the user: what was added, how many new entries per array, how many
+   new conflicts (if any) and what they're about, how many new open questions, and whether a new
+   category was created (with its `_categories` spec and proposed `epistemology_group`). Flag every
+   new conflict and every new category explicitly — don't bury either in a large diff.
 
 ## Pass 2 — Hearsay coverage audit
 
 **Trigger:** on request, or as a periodic check even when Pass 1 found nothing — a hand-written
-dialogue (not produced via `/enact`) can skip README §8 Step 5 entirely without anyone noticing.
+dialogue (not produced via `/enact`) can skip `/enact`'s Step 5 hearsay recording entirely without
+anyone noticing.
 
 1. List every non-template file in `data/luminacion/blabber/dialogues/` (exclude `_template_*.json`).
 2. Cross-check each against `encodings.json`'s `hearsay.entries` array (`source_file` field) and
    `_lore/characters/hearsay.md`. Both are meant to mirror each other exactly (see
    `hearsay._method_note` in `encodings.json`) — a dialogue needs a matching entry in *both*.
-3. For any dialogue missing coverage, build the entry per README §8 Step 5: `participants`,
+3. For any dialogue missing coverage, build the entry in the same shape `/enact` Step 5 writes: `participants`,
    `location`, `summary`, and a `claims` list phrased as reported assertions (not restated as fact),
    each with an `about` reference into the objective arrays (or a bare era/`CONFLICT-##` name). Check
    each claim against the record and add `inconsistent_with_record` (array of `{about, source_kind,

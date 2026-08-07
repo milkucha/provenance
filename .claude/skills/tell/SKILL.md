@@ -3,12 +3,17 @@ description: Record a tale told directly by the user - a third source of truth f
 disable-model-invocation: true
 ---
 
+**Cold start:** if `_lore/tales/_index.md` or `_lore/tales/_authors.md` doesn't exist yet at all (a
+fresh project), run `py scripts/lore/bootstrap_lore.py` first - it writes both files with their
+explanatory header and an empty table, ready for Step 4/7 below to append a row into. Without it,
+there'd be no table header to append a row under on the very first tale.
+
 Read `_lore/tales/_index.md` first if it hasn't been read yet this session - it states the rule this
 skill exists to enforce: a tale is told directly by the user, outside any character's mouth and
 outside any excavated document - narrated as a story or stated plainly as a fact, both the same
 category - and unlike `hearsay` it **is** folded into the objective record, the same way a
-newly-analysed `_lore/material/` file is per `.claude/skills/integrate/SKILL.md` Pass 1. Nothing here
-gets decided silently - a genuine disagreement with something already on record becomes a new
+newly-analysed `_lore/material/` file is per `.claude/skills/integrate/SKILL.md` Pass 1. Per
+`.claude/PRINCIPLES.md`: a genuine disagreement with something already on record becomes a new
 `conflicts` entry, never a silent overwrite, and `user_resolution` is never set by this skill.
 
 ## Step 1 — Ask what they want to tell

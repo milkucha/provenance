@@ -1,5 +1,159 @@
 {
   "_method_note": "Structured cross-references between locations, time periods, characters, and concepts found across the material set. Every entry lists its source file(s). Nothing here is asserted beyond what a source states; where sources disagree, both values are kept and a matching entry is added to 'conflicts'. Full prose per source lives in material/_context.md; this file is the associative index. Sources are abbreviated: atlax_i, atlax_ii, catastro, ensayo_i, libro, timelines_py (timelines.py), esquema (ESQUEMA.pdf), book_of_inventions, cartography_highways/cartography_trains/cartography_airports (Cartography (Map Markers) [Code].xlsx), luminacion_register (Luminacion Register [Code].xlsx), mapa_del_milenio (El Antiguo Continente de Milkan - Mapa del Milenio.png), plus 5 dated/named screenshots (Khan Ice WP, Sid Nalta WP, Milka General Map, Milka Oceans Plan and Continent Outline, Ruta Lundria-Salthos Cruzados) referenced inline by filename. Per the user (2026-07-24), 'Luminacion Register' and 'Terraforming Regions Purge Register.xlsx' ARE lore sources, split into a narrative layer (named characters/locations/actions - captured under characters.named_inhabitants) and a technical/'mysterious formula' layer (Clock-worldTime triggers, Taterzen movement logic, region-purge flags - left undeciphered, see unknowns.md) - not excluded, just not yet interpreted. Some conflict entries also carry a 'user_resolution' field: a design decision the user gave directly (not derived from any document), dated. These sit alongside the documentary facts rather than replacing them. IMPORTANT: everything above this line, and everything in 'locations'/'time_systems'/'routes'/'characters'/'concepts'/'conflicts' below, is the OBJECTIVE record - reconstructed from primary materials, per the archaeologist method. A second, SUBJECTIVE record sits alongside it: the top-level 'hearsay' array near the end of this file, mirroring _lore/hearsay/hearsay.md, logging what characters have actually said in played Blabber dialogues - never merged into the objective arrays above and never treated as corroborating them, even when they happen to agree; see 'hearsay._method_note' for the exact shape, including how a claim's consistency with the record and with facts is tracked. A third, OBJECTIVE-track array (not subjective like 'hearsay') is 'tales', fed by the /tell skill and mirrored in _lore/tales/: told/stated directly by the user, the world's author, folded into locations/characters/concepts/routes/time_systems via a 'tale:<id>' source tag, and into 'conflicts' on disagreement, by the same rules as any material source; see that array's own _method_note for the exact shape, including 'told_by' vs 'responsible'. Update (2026-07-26): 'ensayo_i_final' is a later, July 2026 edition of ensayo_i ('ENSAYO I (Final Version).pdf'), by the same credited author under an expanded byline ('Iläria Astraëa desde la lejana ciudad de Lündria'). Where the two editions disagree, both are kept, per the same disagreement rule as every other source pair - see CONFLICT-15, CONFLICT-16, CONFLICT-17.",
+  "_categories_method_note": "Describes how scripts/lore/sample_lore_knowledge.py flattens each category below into sample-able pool items, so the set of categories is read from this data rather than hardcoded per-path loops in the script. 'shape' selects a handler: 'list' (a flat list of dicts at 'path', identified by 'id_field', pool text built by joining 'text_fields') covers most categories and is the default shape for any new category with that structure; 'grouped_list' and 'claims' are special-cased for characters.named_inhabitants.by_locality and hearsay.entries respectively, since neither is a flat list. 'epistemology_group' ties the category to a row in /character Step 4d's trusts/distrusts table (.claude/skills/character/SKILL.md) - 'ambiguous' for categories in that table's bottom row (read the lean from backstory instead), or a named group matching one of its other rows. When /integrate approves a genuinely new category, it adds an entry here (and, if the shape isn't 'list', a new handler in SHAPE_HANDLERS) plus either an existing epistemology_group or a newly-drafted, user-confirmed Step 4d table row. 'has_sources' (bool) marks whether entries in this category carry a 'sources' list (provenance, see .claude/skills/integrate/SKILL.md Pass 1 step 3) - scripts/lore/build_source_index.py reads this to know which categories it should link hearsay/tale references into, instead of a hardcoded category list.",
+  "_categories": {
+    "location": {
+      "path": "locations",
+      "shape": "list",
+      "id_field": "id",
+      "text_fields": [
+        "names",
+        "region",
+        "type_catastro",
+        "notes"
+      ],
+      "epistemology_group": "ambiguous",
+      "has_sources": true
+    },
+    "concept": {
+      "path": "concepts",
+      "shape": "list",
+      "id_field": "id",
+      "text_fields": [
+        "names",
+        "description",
+        "notes"
+      ],
+      "epistemology_group": "ambiguous",
+      "has_sources": true
+    },
+    "conflict": {
+      "path": "conflicts",
+      "shape": "list",
+      "id_field": "id",
+      "text_fields": [
+        "topic",
+        "detail"
+      ],
+      "epistemology_group": "conflict",
+      "has_sources": false
+    },
+    "character_legendary": {
+      "path": "characters.in_world_or_legendary",
+      "shape": "list",
+      "id_field": "id",
+      "text_fields": [
+        "names",
+        "role",
+        "notes"
+      ],
+      "epistemology_group": "ambiguous",
+      "has_sources": true
+    },
+    "character_real": {
+      "path": "characters.real_world_authors_and_players",
+      "shape": "list",
+      "id_field": "id",
+      "text_fields": [
+        "names",
+        "role"
+      ],
+      "epistemology_group": "ambiguous",
+      "has_sources": true
+    },
+    "inhabitant": {
+      "path": "characters.named_inhabitants.by_locality",
+      "shape": "grouped_list",
+      "epistemology_group": "ambiguous",
+      "has_sources": false
+    },
+    "highway": {
+      "path": "routes.highways",
+      "shape": "list",
+      "id_field": "code",
+      "text_fields": [
+        "name"
+      ],
+      "epistemology_group": "ambiguous",
+      "has_sources": false
+    },
+    "train_segment": {
+      "path": "routes.trains.segments",
+      "shape": "list",
+      "id_field": "name",
+      "text_fields": [
+        "name"
+      ],
+      "epistemology_group": "ambiguous",
+      "has_sources": false
+    },
+    "airport": {
+      "path": "routes.airports",
+      "shape": "list",
+      "id_field": "location",
+      "text_fields": [
+        "location"
+      ],
+      "epistemology_group": "ambiguous",
+      "has_sources": false
+    },
+    "route_named": {
+      "path": "routes.named_but_unplotted",
+      "shape": "list",
+      "id_field": "name",
+      "text_fields": [
+        "name"
+      ],
+      "epistemology_group": "ambiguous",
+      "has_sources": false
+    },
+    "era_ensayo": {
+      "path": "time_systems.ensayo_i_eras",
+      "shape": "list",
+      "id_field": "name",
+      "text_fields": [
+        "name"
+      ],
+      "epistemology_group": "chronicles",
+      "has_sources": false
+    },
+    "era_esquema": {
+      "path": "time_systems.esquema_poster_eras.era_row",
+      "shape": "list",
+      "id_field": "name",
+      "text_fields": [
+        "name"
+      ],
+      "epistemology_group": "chronicles",
+      "has_sources": false
+    },
+    "year_esquema": {
+      "path": "time_systems.esquema_poster_eras.year_by_year_foundations",
+      "shape": "list",
+      "id_field": "year",
+      "text_fields": [
+        "places"
+      ],
+      "epistemology_group": "chronicles",
+      "has_sources": false
+    },
+    "era_libro": {
+      "path": "time_systems.libro_venidas_eras.list",
+      "shape": "list",
+      "id_field": "name",
+      "text_fields": [
+        "name"
+      ],
+      "epistemology_group": "chronicles",
+      "has_sources": false
+    },
+    "hearsay": {
+      "path": "hearsay.entries",
+      "shape": "claims",
+      "epistemology_group": "hearsay",
+      "has_sources": false
+    }
+  },
   "time_systems": {
     "real_time_to_game_time": {
       "source": "ensayo_i",

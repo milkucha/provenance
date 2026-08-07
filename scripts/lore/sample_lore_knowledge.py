@@ -22,6 +22,13 @@ in full, regardless of their education percentage, so drawing them at 5% odds wo
 live outside encodings.json on purpose and must never be folded into it; /enact loads them
 separately. See _lore/facts/_index.md.
 
+The set of categories is read from encodings.json's own `_categories` block, not hardcoded here (see
+that key's `_categories_method_note` for the shape convention) - this is what lets /integrate register
+a genuinely new category (new material that doesn't fit the existing schema) without a code change,
+as long as it follows the common "list" shape. A structurally novel shape still needs a new function
+added to SHAPE_HANDLERS below by hand; this script raises rather than silently skipping one it doesn't
+recognize.
+
 Usage:
     python scripts/lore/sample_lore_knowledge.py --percent 11 --mode random
     python scripts/lore/sample_lore_knowledge.py --percent 21 --mode skewed --topic geography --topic geology
@@ -37,6 +44,66 @@ ROOT = Path(__file__).resolve().parent.parent.parent
 ENCODINGS_PATH = ROOT / "_lore" / "encodings.json"
 
 
+def _get_path(data: dict, path: str):
+    obj = data
+    for part in path.split("."):
+        obj = obj[part]
+    return obj
+
+
+def _normalize_field(value):
+    """A list-valued field (e.g. 'names', 'places') is joined into one string rather than passed
+    through raw - `add()`'s own join would otherwise stringify the whole list as a Python repr
+    ("['Vortex', ...]"), which still keyword-matches but is noisier than it needs to be. 'text' is
+    never shown to a user, only substring-matched for --mode skewed, so this is a pure cleanup."""
+    if isinstance(value, list):
+        return " ".join(str(v) for v in value)
+    return value
+
+
+def _flatten_list(data: dict, cat_key: str, spec: dict, add) -> None:
+    """Default shape: a flat list of dicts at `spec['path']`, identified by `spec['id_field']`,
+    pool text built by joining `spec['text_fields']`. Covers every category added so far except the
+    two special-cased below."""
+    id_field = spec["id_field"]
+    for entry in _get_path(data, spec["path"]):
+        item_id = entry[id_field]
+        if not isinstance(item_id, str):
+            item_id = str(item_id)
+        add(cat_key, item_id, *(_normalize_field(entry.get(f)) for f in spec["text_fields"]))
+
+
+def _flatten_grouped_list(data: dict, cat_key: str, spec: dict, add) -> None:
+    """Special-cased: characters.named_inhabitants.by_locality - a dict keyed by locality, values are
+    lists of bare strings or small {name, role/route} dicts. Not a flat list, so it can't use the
+    default handler."""
+    for locality, people in _get_path(data, spec["path"]).items():
+        for p in people:
+            if isinstance(p, str):
+                name, role = p, ""
+            else:
+                name = p.get("name") or f"the {p.get('role', 'unnamed')}"
+                role = str(p.get("role") or p.get("route") or "")
+            add(cat_key, f"{name} ({locality})", name, locality, role)
+
+
+def _flatten_claims(data: dict, cat_key: str, spec: dict, add) -> None:
+    """Special-cased: hearsay.entries[].claims - one pool item per claim, not per entry, so it can't
+    use the default handler either."""
+    for entry in _get_path(data, spec["path"]):
+        participants = " ".join(entry.get("participants", []))
+        location = (entry.get("location") or {}).get("as_named_in_dialog")
+        for i, claim in enumerate(entry["claims"], start=1):
+            add(cat_key, f"{entry['id']}#{i}", claim.get("text"), participants, location)
+
+
+SHAPE_HANDLERS = {
+    "list": _flatten_list,
+    "grouped_list": _flatten_grouped_list,
+    "claims": _flatten_claims,
+}
+
+
 def flatten_pool(data: dict) -> list[dict]:
     """Every atomic fact in encodings.json, as {category, id, text} dicts. 'text' is a loose
     bag of words used only for --mode skewed keyword matching, not shown to the user."""
@@ -48,50 +115,24 @@ def flatten_pool(data: dict) -> list[dict]:
             "sampled - every character knows all of them in full. Move them back to\n"
             "_lore/facts/facts.json and out of encodings.json. See _lore/facts/_index.md."
         )
+    if "_categories" not in data:
+        raise SystemExit(
+            "encodings.json has no '_categories' schema block - run\n"
+            "scripts/lore/add_categories_schema.py before sampling."
+        )
 
     def add(category: str, item_id: str, *text_parts) -> None:
         text = " ".join(str(p) for p in text_parts if p)
         pool.append({"category": category, "id": item_id, "text": text})
 
-    for loc in data["locations"]:
-        add("location", loc["id"], loc.get("names"), loc.get("region"), loc.get("type_catastro"), loc.get("notes"))
-    for c in data["concepts"]:
-        add("concept", c["id"], c.get("names"), c.get("description"), c.get("notes"))
-    for c in data["conflicts"]:
-        add("conflict", c["id"], c.get("topic"), c.get("detail"))
-    for c in data["characters"]["in_world_or_legendary"]:
-        add("character_legendary", c["id"], c.get("names"), c.get("role"), c.get("notes"))
-    for c in data["characters"]["real_world_authors_and_players"]:
-        add("character_real", c["id"], c.get("names"), c.get("role"))
-    for locality, people in data["characters"]["named_inhabitants"]["by_locality"].items():
-        for p in people:
-            if isinstance(p, str):
-                name, role = p, ""
-            else:
-                name = p.get("name") or f"the {p.get('role', 'unnamed')}"
-                role = str(p.get("role") or p.get("route") or "")
-            add("inhabitant", f"{name} ({locality})", name, locality, role)
-    for h in data["routes"]["highways"]:
-        add("highway", h["code"], h["name"])
-    for t in data["routes"]["trains"]["segments"]:
-        add("train_segment", t["name"], t["name"])
-    for a in data["routes"]["airports"]:
-        add("airport", a["location"], a["location"])
-    for n in data["routes"]["named_but_unplotted"]:
-        add("route_named", n["name"], n["name"])
-    for e in data["time_systems"]["ensayo_i_eras"]:
-        add("era_ensayo", e["name"], e["name"])
-    for e in data["time_systems"]["esquema_poster_eras"]["era_row"]:
-        add("era_esquema", e["name"], e["name"])
-    for e in data["time_systems"]["esquema_poster_eras"]["year_by_year_foundations"]:
-        add("year_esquema", str(e["year"]), " ".join(e.get("places", [])))
-    for e in data["time_systems"]["libro_venidas_eras"]["list"]:
-        add("era_libro", e["name"], e["name"])
-    for entry in data["hearsay"]["entries"]:
-        participants = " ".join(entry.get("participants", []))
-        location = (entry.get("location") or {}).get("as_named_in_dialog")
-        for i, claim in enumerate(entry["claims"], start=1):
-            add("hearsay", f"{entry['id']}#{i}", claim.get("text"), participants, location)
+    for cat_key, spec in data["_categories"].items():
+        handler = SHAPE_HANDLERS.get(spec["shape"])
+        if handler is None:
+            raise SystemExit(
+                f"Category '{cat_key}' declares shape '{spec['shape']}', which has no handler in "
+                f"SHAPE_HANDLERS. Add one before sampling - never silently skip a registered category."
+            )
+        handler(data, cat_key, spec, add)
 
     return pool
 

@@ -1,12 +1,12 @@
 ---
-description: Play a lore-only enacted character scene for Luminacion — against the player or against another enacted character — sampling each character's lore knowledge from _lore/encodings.json, then recording what the scene did to that lore (hearsay, criterion, life). Purely lore-side: touches nothing under data/luminacion/ or _npcs/npcs/registry.json. Use when the user wants to enact/roleplay a character at the lore level. To also put the scene in the game (Blabber dialog, NPC registration, gestures), follow with /embody, or use /enact-embody to run both in one pass.
+description: Play a lore-only enacted character scene for Luminacion — against the player or against another enacted character — sampling each character's lore knowledge from _lore/encodings.json, then recording what the scene did to that lore (hearsay, criterion, life) and saving the scene's raw transcript to _npcs/scenes/<id>.md so /embody can convert it later, even cold. Purely lore-side otherwise: touches nothing under data/luminacion/ or the _npcs/ registries. Use when the user wants to enact/roleplay a character at the lore level. To also put the scene in the game (Blabber dialog, NPC registration, gestures), follow with /embody, or use /enact-embody to run both in one pass.
 disable-model-invocation: true
 ---
 
-Runs the lore half of the enactment procedure documented in `README.md` §8, plus the setup questions
-and record-keeping steps below. Read §8 first if it hasn't been read yet this session — this skill
-assumes its rules (never invent as fact anything outside a character's sample; personality and small
-texture are free to invent; keep every line short, dialog-box length).
+Runs the lore half of the enactment procedure, plus the setup questions and record-keeping steps
+below. Three rules govern every scene this skill plays: never invent as fact anything outside a
+character's sample; personality and small texture are free to invent; keep every line short,
+dialog-box length.
 
 **Write dialogue only, no action cues.** A character's line is only what they say — no
 asterisk-delimited stage directions (`*looks up from coiling a rope*`, `*grins*`, `*taps his temple*`)
@@ -15,11 +15,11 @@ here too, not just for the eventual Blabber file: `/embody`'s conversion step st
 direction that slips in, so writing clean from the start avoids losing anything worth keeping.
 
 Two things stay true throughout: a character never knows what another enacted character knows, even
-when both are being played in the same scene — each is bounded strictly by their own sample. And
-nothing here is decided silently; every genuine open question this skill can actually raise (education
-sample topic, criterion collision, how the scene resolves) gets asked, never guessed. Minecraft-side
-open questions — skin, UUID, movement mode, how a two-NPC dialog gets registered — are `/embody`'s
-concern, not this skill's; it doesn't ask about them because it never touches that layer.
+when both are being played in the same scene — each is bounded strictly by their own sample. And per
+`.claude/PRINCIPLES.md`, every genuine open question this skill can actually raise (education sample
+topic, criterion collision, how the scene resolves) gets asked, never guessed. Minecraft-side open
+questions — skin, UUID, movement mode, how a two-NPC dialog gets registered — are `/embody`'s concern,
+not this skill's; it doesn't ask about them because it never touches that layer.
 
 A character's knowledge comes in three kinds:
 
@@ -93,7 +93,7 @@ reasoning as §8: better discovered through play than read off a list), but you 
 general shape.
 
 Some drawn items will be `category: "hearsay"` (a claim from an earlier dialog's hearsay entry, not
-the objective record — see README §8 Step 1). Play those as things the character heard, not settled
+the objective record). Play those as things the character heard, not settled
 fact. The moment one of these actually gets voiced in the scene (Step 3), roll
 `scripts/lore/lineage_coin.py` right then — the result decides how the line is phrased: a `traceable`
 roll lets the character cite the source by name ("I heard Morkulo say..."); an `untraceable` roll
@@ -137,8 +137,8 @@ Ask (AskUserQuestion): is the second interlocutor **the player**, or **another c
 
 ## Step 3 — How criterion and finitude modulate play
 
-Applies to both 3a and 3b, on top of README §8 Step 2's existing rules (never invent as fact outside
-the sample; personality and texture are free; write short).
+Applies to both 3a and 3b, on top of the ground rules already given above (never invent as fact
+outside the sample; personality and texture are free; write short).
 
 - **The criterion shows, it never gets recited.** It shapes what the character steers the
   conversation toward, what they can't let pass uncorrected, what they'd count as having wasted this
@@ -182,7 +182,34 @@ Nawom/Morkulo conversation — you write one side, then respond to yourself as t
 each character's own sample independently. Bring it to a natural stopping point rather than
 running indefinitely, then check with the user before moving on: satisfied, or continue/adjust?
 
+## Step 4 — Save the scene transcript
+
+Immediately after the scene ends (3a or 3b), before Step 5 ever mutates or discards the original —
+the same "record immediately, don't batch" discipline already in force for the hearsay entry, just
+started one step earlier. Once Step 5 runs, only the mutated version survives; this is the only point
+where the verbatim scene still exists to be saved at all.
+
+**Choose the scene's id now** — the same slug this scene's eventual Blabber dialog file and hearsay
+entry will use (e.g. `khaoe_milkucha_jardin_de_los_parajes`): participant keys plus a short location
+slug, joined with underscores. Picking it here, once, means the transcript file, the hearsay entry
+(Step 5 below — pass this id explicitly rather than letting the script auto-generate one), and the
+dialog file `/embody` eventually writes all end up sharing one id by construction, not by coincidence.
+
+Write `_npcs/scenes/<scene_id>.md` (`_npcs/scenes/_template.md` has the exact shape): participants,
+location, format (`player-vs-npc` or `two-npc`), and the verbatim turn-by-turn transcript — dialogue
+only, no action cues, per the ground rules already in force above (nothing to strip; it was never
+written with any). This is the only file under `_npcs/` this skill ever writes — it still never
+touches either registry or anything under `data/luminacion/`. The file stays under `_npcs/scenes/`
+permanently, even after `/embody` converts it later — cheap to keep, and it's the only recoverable
+source if a dialogue ever needs re-converting after an editing mistake.
+
 ## Step 5 — Update the hearsay record
+
+**Cold start:** if `_lore/characters/hearsay.md` doesn't exist yet at all (a fresh project), run
+`py scripts/lore/bootstrap_lore.py` before the first `record_hearsay.py` call — it writes the file's
+explanatory header first, so the file doesn't start headerless with only a bare `## <dialog_id>`
+entry and no framing prose above it. Safe to run even if some of the other four files this script
+covers already exist; it only creates what's actually missing.
 
 ### Mutation at record time
 
@@ -257,6 +284,10 @@ a *sampled hearsay item* rather than a fresh read of the objective record (Step 
   which case applies and, for the growth case, what specifically grew. Leave both fields off
   entirely for the common case — a claim freshly drawn from the objective record, or a faithful,
   traceable retelling with nothing added.
+
+Use the same `id` chosen in Step 4 for this entry — pass it explicitly in the JSON (`record_hearsay.py`
+only auto-generates one when `id` is omitted, and an auto-generated id could drift from the transcript
+filename already on disk).
 
 Once the entry is built, write it to a JSON file (see `record_hearsay.py`'s own docstring for the
 exact shape) and run `py scripts/lore/record_hearsay.py --json-file <path>` to record it — it appends
@@ -404,8 +435,9 @@ here, since a fresh JSON write could clobber what those calls just did. What's l
   If this run rolled a first lifespan (Step 1), the span went into
   `_lore/characters/lifespans.json`, never here.
 
-This is the last step `/enact` performs — nothing here touches `_npcs/npcs/registry.json`,
-`_npcs/dialogs/registry.json`, or any file under `data/luminacion/`. To convert this scene into a
-registered Blabber dialog, register the NPC(s) in the Minecraft layer, and bake gestures, run
-`/embody` now (it picks up the scene from this same conversation), or use `/enact-embody` next time
-to run both skills back to back in one pass.
+This is the last step `/enact` performs — nothing here (or anywhere in this skill, past Step 4's
+transcript) touches `_npcs/npcs/registry.json`, `_npcs/dialogs/registry.json`, or any file under
+`data/luminacion/`. To convert this scene into a registered Blabber dialog, register the NPC(s) in the
+Minecraft layer, and bake gestures, run `/embody` now (it reads the transcript Step 4 saved to
+`_npcs/scenes/<scene_id>.md`, so this works whether run right away or picked back up cold, in a later
+session), or use `/enact-embody` next time to run both skills back to back in one pass.

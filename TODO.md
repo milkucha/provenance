@@ -483,6 +483,31 @@ construction — every other line keeps its ordinary nod untouched.
 - [ ] Not yet run end-to-end against real material or a real drift case — worth a first live pass
       next time material is added or a periodic audit is due, to confirm the three passes hold up in
       practice rather than just on paper.
+- [x] **Stale reference fixed, 2026-08-07.** Pass 2 cited "README §8 Step 5" as the shape a hearsay
+      entry should match — that step never existed in README; §8 only ever documented Steps 1–4, and
+      the hearsay-recording step lives solely in `/enact`'s own Step 5 (added after the `/enact`/
+      `/embody` split, never backported into README's numbering). Fixed to point at `/enact` Step 5
+      directly. Same pass, every README.md reference was removed from `integrate/SKILL.md` (and every
+      other skill — see the dedicated section near the end of this file) — skills are agent-facing and
+      now self-contained; README stays the human-facing doc. Doesn't touch the still-open item above,
+      or the schema-evolution issue in the next section — neither was in scope.
+- [x] **Two-layer `sources` provenance, built 2026-08-07.** New `scripts/lore/build_source_index.py`
+      (mechanical, no model judgment): migrates every `locations`/`concepts`/
+      `characters.in_world_or_legendary`/`characters.real_world_authors_and_players` entry's `sources`
+      from flat strings to `{"category": "material"/"hearsay"/"tale", "origin": "..."}`, and links every
+      `hearsay.entries[].claims[].about`/`tales.entries[].touches` reference that resolves — exactly, or
+      via `difflib` fuzzy match (ratio ≥ 0.77, same-category comparisons only) — into the target node's
+      `sources` list. A fuzzy link auto-groups (adds the new spelling to `names[]` so it resolves
+      directly next time) but is never treated as settled: it also appends an unconfirmed `CONFLICT-NN`
+      ("possible same-entity spelling, auto-grouped"), same as every other conflict — `user_resolution`
+      stays the user's call. Wired into Pass 3 step 2 above. Applied once to the live `encodings.json`:
+      164 sources migrated, 70 new hearsay/tale links, one real spelling-drift bug caught
+      (`balahm`→`balham`, `CONFLICT-18`), 7 references honestly left unresolved rather than guessed
+      (one missing `locations` entry — `jardin_de_los_parajes` — and four `concept:` references to
+      concepts that don't exist yet: `hotel_kholi`, `preservation`, `memory`, `transformation`). Script
+      is idempotent (verified via a second dry run). **Does not touch or resolve any part of the
+      "Schema evolution" CRITICAL section below** — that's about the top-level category schema itself
+      being able to grow; this works entirely inside the four categories that already exist.
 
 ## Schema evolution in `encodings.json` and criterion epistemology (CRITICAL, 2026-08-05)
 
@@ -511,43 +536,150 @@ This matters because:
 
 **What needs to change:**
 
-- [ ] **`/integrate` Pass 1 must detect novel structure.** When analyzing new material, if an entry
-      doesn't fit the current top-level categories cleanly, the skill should flag it: "This material
-      introduces [novel structure]. Should we create a new category for it, or does it belong under
-      [existing category]?" — and only continue if the user decides. Never silently squeeze novel
-      structure into existing boxes.
-
-- [ ] **`encodings.json` schema must be able to evolve.** When a user approves a new category, that
-      category gets added to `encodings.json` alongside the existing ones, and is immediately available
-      for future material analysis.
-
-- [ ] **Sampling script must discover categories dynamically.** Instead of hardcoding paths,
-      `scripts/lore/sample_lore_knowledge.py` should introspect the actual structure of `encodings.json`
-      and extract whatever categories exist, allowing the pool to automatically include new categories
-      as they emerge. The sampling categories available to derive criteria would then expand naturally.
+- [x] **`/integrate` Pass 1 detects novel structure, built 2026-08-07.** New Pass 1 step 2: before
+      folding anything in, check whether the material's own structure fits an existing category; if
+      not, ask (AskUserQuestion) whether to create a new one, and never continue past that point on the
+      skill's own judgment. On approval, also propose an `epistemology_group` for `/character` Step
+      4d's trusts/distrusts table (join an existing group, or draft a new row) — confirmed by the user,
+      never inferred from category size (Step 4d already documents why that approach failed once).
+- [x] **`encodings.json` schema can evolve, built 2026-08-07.** New self-describing `_categories` block
+      (added by `scripts/lore/add_categories_schema.py`, a one-time migration) lists every category's
+      sampling shape: `path` into the JSON, `shape` (`"list"` for the common flat-list-of-entities case,
+      plus two special-cased existing shapes — `"grouped_list"` for `characters.named_inhabitants`,
+      `"claims"` for `hearsay.entries`), and `epistemology_group`. A new category registers here
+      alongside its own top-level data key — no code change needed if it follows the `"list"` shape.
+- [x] **Sampling script discovers categories dynamically, built 2026-08-07.** `sample_lore_knowledge.py`'s
+      `flatten_pool()` now iterates `encodings.json`'s own `_categories` block and dispatches by
+      `shape` via a small `SHAPE_HANDLERS` registry, instead of 15 hardcoded per-path `for` loops.
+      Verified byte-for-byte against a pre-migration baseline: identical 367-item pool, same
+      `(category, id)` pairs; the only diffs were internal `text` field formatting for list-valued
+      fields (`names`, `places`) — from a stringified Python list to a clean joined string, a disclosed
+      cleanup, not a behavior change (`text` is never shown to a user, only substring-matched for
+      `--mode skewed`).
+      **Honest residual limit, not solved and not claimed to be:** this covers the common case (a flat
+      list of `{id, ...}` dicts), which is what every category added via material analysis has looked
+      like so far. A genuinely novel structural shape (another nested grouping, another claims-like
+      pattern) still needs one new function added to `SHAPE_HANDLERS` by hand — the script refuses to
+      sample a category whose shape it doesn't recognize rather than silently skipping it, but "zero
+      code for any conceivable shape" was never actually achievable without forcing every future
+      category into one canonical shape, which would cut against "let structure emerge organically."
 
 This is a prerequisite for the lore system to grow without architectural friction as new materials
 accumulate over time.
 
-## Conflict-resolution skill (proposed, pinned 2026-08-05)
+- [x] **Cold-start bootstrap, built 2026-08-07.** `scripts/lore/bootstrap_lore.py` creates whichever
+      of five structural files don't exist yet (`_lore/encodings.json`, `_lore/material/_context.md`,
+      `_lore/unknowns.md`, `_lore/characters/hearsay.md`, `_lore/tales/_index.md` +
+      `_lore/tales/_authors.md`), each with an empty/generic header and no content pre-filled in —
+      `/integrate` Pass 1 proposes every content category the first time real material calls for it,
+      the same way the original schema was built by hand before any of this tooling existed.
+      `/integrate`, `/enact`, and `/tell` each got a one-line cold-start pointer at this script.
+      Surfaced and fixed a real bug while testing it: `build_source_index.py` hardcoded its own
+      4-category list via direct dict access and crashed (`KeyError`) on a fresh/partial project
+      instead of no-op'ing — fixed by deriving the list from a new `has_sources` flag on each
+      `_categories` entry instead. Verified: bootstrap in an isolated scratch dir (creates correctly,
+      idempotent), `sample_lore_knowledge.py` and `build_source_index.py` both run cleanly against the
+      fresh file with zero crashes, and both re-verified byte-identical against the live repo
+      (zero behavior change there).
 
-No skill exists yet to help work through `encodings.json`'s `conflicts` array. As of 2026-08-05, 14 of
-17 entries (all but `CONFLICT-01`/`03`/`05`) have no `user_resolution` — every disagreement `/tell`
+## `/embody` can't run cold — no scene transcript is ever persisted (landed 2026-08-07)
+
+**Problem:** `/embody`'s own SKILL.md says it "reads the transcript still sitting in context, not a
+file" — confirmed by reading it directly, not assumed. Once an `/enact`-only conversation ends, the
+actual turn-by-turn dialogue is gone. What survives on disk (`hearsay.entries[].claims`,
+`knowledge.experience`) is not a substitute: both are independently-authored, already-mutated
+*summaries* of the same scene from two different angles (the world's sampling pool vs. a character's
+own bounded memory) — genuinely different consumers, not redundant with each other, but neither one
+is, or was ever meant to be, a verbatim record. Step 5 says so outright: "the original unmutated
+version is not recorded." This gap is already visible in this file — see the Feria del Milenio bar
+scenes entry above ("Transcripts live in this conversation's history until converted").
+
+**Correction from the first pass at this proposal:** scenes must NOT live under `_lore/` — that
+directory is for lore (analysis, sampleable knowledge, the character record), and a raw transcript is
+none of those; it only exists to feed `/embody`, which is purely Minecraft-facing. It belongs under
+`_npcs/`, alongside `templates/`, `npcs/`, `dialogs/`, `actions/`.
+
+**Boundary check (verified, not assumed):** `/enact`'s own frontmatter says it "touches nothing under
+`data/luminacion/` or `_npcs/npcs/registry.json`" — specific to those two, not a blanket ban on
+anything under `_npcs/`. A new `_npcs/scenes/` staging directory doesn't violate that. README §0's
+higher-level architecture blurb is worded more broadly, though ("`/character` and `/enact` only ever
+touch `_lore/` and know nothing of Minecraft") — that line will need a one-line carve-out once this is
+built, or the boundary language should be tightened to match what the frontmatters actually say.
+Bonus effect of moving it out of `_lore/`: the "must wall this off from `sample_lore_knowledge.py`'s
+pool" problem (same isolation `_lore/facts/` and `_authors.md` files need) disappears for free — that
+script only ever reads `encodings.json`, so a file under `_npcs/` was never at risk of being sampled
+to begin with.
+
+**Shipped shape** (built 2026-08-07):
+
+- [x] New `_npcs/scenes/<scene_id>.md` — one file per enacted scene (same id the hearsay entry gets, so
+      the two cross-reference trivially — `/enact` Step 4 now passes this id explicitly into
+      `record_hearsay.py` rather than letting it auto-generate one, closing that loop by construction),
+      holding the raw turn-by-turn transcript verbatim (dialogue only, no action cues — same rule
+      `/enact` already followed), plus participants/format/location metadata. Shape documented in
+      `_npcs/scenes/_template.md`.
+- [x] New `/enact` Step 4, immediately after the scene is played and *before* Step 5's mutation ever
+      throws the original away — saves the transcript first. Same "record immediately, don't batch"
+      discipline already in place for hearsay/experience, just started one step earlier. Slots into the
+      numbering gap left at "Step 4" when dialog-writing moved out to `/embody`.
+- [x] `/embody` Step 1 now reads `_npcs/scenes/<scene_id>.md` instead of "the transcript still sitting
+      in context" — the actual unlock. `/embody` is now uniformly file-driven, cold or hot, same
+      conversation or months later; if invoked cold without a scene already identified, it asks the user
+      which one (character name or scene id).
+- [x] README §0 got the carve-out this section flagged as needed: the `/character`/`/enact`
+      lore-vs-Minecraft boundary line, plus the `/enact`/`/embody` bullets and the §1 folder tree, now
+      all describe `_npcs/scenes/` accurately instead of the old "never touches `_npcs/`" claim.
+- [ ] **Limitation, can't be fixed retroactively:** any `/enact`-only scene that predates this change
+      still has no recoverable transcript — those would need to be re-enacted from scratch to ever be
+      embodied. Applies to every dialog-linked hearsay entry already on record as of 2026-08-07 (see the
+      `hearsay.entries` list) and to the two not-yet-embodied `#1`-suffixed entries
+      (`gok_milkucha_alcove#1`, `farlis_gok_alcove#1`).
+- [x] **Open question resolved (user's call, 2026-08-07): keep permanently.** `/embody` never
+      deletes/archives a scene file after conversion — cheap to keep, and it's the only recoverable
+      source if a dialogue ever needs re-converting after an editing mistake.
+
+## Conflict-resolution skill (landed 2026-08-07)
+
+No skill existed to help work through `encodings.json`'s `conflicts` array. As of 2026-08-05, 14 of
+17 entries (all but `CONFLICT-01`/`03`/`05`) had no `user_resolution` — every disagreement `/tell`
 and `/integrate` have ever logged is append-only by design: neither is allowed to set
 `user_resolution` themselves, that's the one thing only the user can do (see each skill's own docs).
-Right now the only way to resolve one is to notice it while reading the file directly.
+Previously the only way to resolve one was to notice it while reading the file directly.
 
-- [ ] A proposed `/resolve` (name not fixed) skill would surface open conflicts one at a time — topic,
-      full `detail`, and every entry elsewhere in `encodings.json` that carries a matching
-      `conflict_ref`/`"see CONFLICT-NN"` note, so the user has the full picture without hunting for
-      it — and, only on the user's own explicit call, write `user_resolution` (dated, "per user,
-      <date>", matching the existing convention). It must never suggest a resolution, never infer one
-      from majority-source-agreement or recency, and never resolve more than the one conflict the user
-      is actively looking at. Skipping a conflict (not ready to decide) must be a first-class,
-      no-op-safe choice, not just leaving the skill mid-run.
-- [ ] Worth deciding whether it should also handle the analogous case in `_lore/unknowns.md`
-      (a gap the user is now ready to close) — same "only the user decides, never inferred" rule, but
-      currently no skill touches `unknowns.md` at all except to add to it.
+- [x] **`/resolve`** (`.claude/skills/resolve/SKILL.md`) surfaces one open item at a time — topic, full
+      `detail`, and every place elsewhere in the record that mentions it (a plain substring scan of
+      every string field in `encodings.json` plus every matching line in `_lore/unknowns.md`, since no
+      structured `conflict_ref` field actually exists — the real convention already in use is a
+      free-text `"see CONFLICT-NN"` note, e.g. `isla_de_la_amistad`'s `notes` field) — and, only on the
+      user's own explicit call, writes `user_resolution` (dated, "per user, <date>", matching the
+      existing convention exactly). Never suggests a resolution, never infers one from
+      majority-source-agreement or recency, never resolves more than the one item the user is actively
+      looking at. Skipping is a first-class, no-op-safe choice — Step 3 stops cleanly and changes
+      nothing if the user isn't ready.
+- [x] **Two mechanical scripts, same "mechanize the lookup, keep judgement in prose" pattern as
+      `check_anchor_reference.py`.** `scripts/lore/resolve_conflict.py` (`--list` / `<id>` /
+      `<id> --set-resolution "..."` [`--force`]) — refuses to silently overwrite an existing
+      `user_resolution`. `scripts/lore/list_open_unknowns.py` — lists every `_lore/unknowns.md` heading
+      whose own title doesn't say "Resolved"/"Correction" (judged per-heading, not inherited from a
+      parent section, so the "Follow-up flag" sub-question nested under the resolved 2026-07-24 section
+      correctly still shows as open). Both tested against real data (read-only) and, for the write path,
+      a scratch copy — refusal-without-`--force`, success-with-`--force`, and unknown-id refusal all
+      confirmed before touching the real file.
+- [x] **Real bug found and fixed while testing, not part of the original ask:** this machine's Python
+      defaults stdout to `cp1252`, which silently mangled every diacritic this pack's lore is full of
+      (Milkäan, Iläria, Aerörea...) once piped through a shell expecting UTF-8 — confirmed by round-
+      tripping a redirected script's output back through a UTF-8 decode, which raised
+      `UnicodeDecodeError` on byte `0xf6`. Both new scripts now call `sys.stdout.reconfigure(encoding=
+      "utf-8")` up front. Pre-existing scripts that print accented text (e.g. `check_anchor_reference.py`
+      printing a claim's `about` field) likely have the same latent bug — not fixed here, out of scope
+      for this pass, but worth the same one-line fix next time one of them is touched.
+- [x] **`_lore/unknowns.md` handled too**, per the open question this section originally raised — same
+      "only the user decides, never inferred" rule, via `list_open_unknowns.py` plus `/resolve` Step 4's
+      prose procedure (append to a dated `## Resolved by the user (<date>)` section matching the file's
+      own established convention, plus a one-line pointer left in the original section — never deleted,
+      the underlying documentary content stays on record). Unlike conflicts, there's no script that
+      writes the resolution here: the file is free-form markdown, and matching its existing prose style
+      is a judgement call each time, not a mechanical transform.
 
 ## Random character location selection in `/enact` (pinned 2026-08-01)
 
@@ -714,3 +846,38 @@ loading, in-scene modulation, and Step 5b shock/drift resolution. Still open:
       dead Codespace artifact (`.venv/bin/python` points at `/home/codespace/...`). `py -3` works.
       Either fix the venv, or update the `python scripts/...` invocations in README §5 and the
       skills to `py -3`.
+
+## Skills decoupled from README + shared house philosophy + `/simulate` scripting (2026-08-07)
+
+Skills are agent-facing; README is human-facing. Every skill previously cited README.md for rules or
+procedure it either already restated (redundant) or, in one case, misquoted (see the `/integrate`
+entry above). Cleaned up in one pass:
+
+- [x] **Every README.md reference removed from every skill** (`enact`, `embody`, `spawn`, `package`,
+      `integrate`, `tell`; `character`/`simulate`/`enact-embody` had none to begin with). Skills no
+      longer read or cite README at all. The one line left (`package/SKILL.md` listing `README.md` as
+      a filename excluded from the release zip) isn't a documentation dependency, so it stayed.
+- [x] **`.claude/PRINCIPLES.md` created** — the "nothing gets decided silently" rule, previously
+      restated in slightly different words in six places (`enact`, `embody`, `spawn`, `integrate`,
+      `tell`, `character`), now stated once. Each of those six skills points at it with one line and
+      keeps only its own domain-specific application (what counts as an open question there, and
+      where it gets logged). README §0 Layer 1 now points at it too, for a human reader.
+- [x] **Three new scripts wired into `/simulate`**, replacing prose-only steps with the same
+      "mechanize the mechanical part, keep the judgment calls in prose" pattern already used for
+      `update_character.py`/`record_hearsay.py`/etc.:
+      - `scripts/lore/simulate_setup_worktree.py` — collapses Step 2's worktree-create +
+        settings-bypass-write into one call, in the exact order previously spelled out (and easy to
+        get wrong) across three separate prose steps.
+      - `scripts/lore/pick_pair.py` — a genuine `random.sample()` draw for Step 3's pass pairing,
+        replacing the model's own "pick randomly" (LLMs are demonstrably non-uniform at this).
+      - `scripts/lore/simulate_tally.py` (`snapshot` + `report`) — Step 4's closing tally (deaths,
+        criterion moves, final `life.lived`) computed from a before/after diff of the character
+        files, instead of hand-counted from up to N pass summaries.
+      Tested: `pick_pair.py`'s draw and its too-small-pool error path; `simulate_tally.py`'s
+      snapshot→report round trip against real (unmodified) character files, confirmed zero false
+      positives. `simulate_setup_worktree.py` is compile-checked only, not run live, since it creates
+      a real git worktree + branch — first actual `/simulate` run will exercise it for real.
+
+**Not in scope, still open:** the `/integrate` end-to-end test and the schema-evolution architectural
+issue, both under "Lore integration skill (`/integrate`)" above, are unrelated to this pass — neither
+was touched.

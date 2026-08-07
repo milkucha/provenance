@@ -1,6 +1,10 @@
 """
-Build the two-layer `sources` index across encodings.json's entity-bearing categories
-(locations, concepts, characters.in_world_or_legendary, characters.real_world_authors_and_players).
+Build the two-layer `sources` index across every category encodings.json's own `_categories` block
+marks `"has_sources": true` (as of this writing: locations, concepts,
+characters.in_world_or_legendary, characters.real_world_authors_and_players - but read from the data,
+not hardcoded here, so a category /integrate registers later with `has_sources: true` picks this up
+automatically, and a freshly-bootstrapped project with an empty `_categories` block no-ops cleanly
+instead of crashing).
 
 Two things happen, both purely mechanical - this script never decides what a claim or tale means,
 only where an already-written `about`/`touches` reference resolves to:
@@ -46,12 +50,6 @@ ENCODINGS_PATH = ROOT / "_lore" / "encodings.json"
 
 FUZZY_THRESHOLD = 0.77
 
-# The four categories that already carry a `sources` field - the only ones this script attaches
-# hearsay/tale provenance to. Everything else (conflicts, routes, time_systems eras, named
-# inhabitants) is recognized for dangling-reference purposes but out of scope for attachment, since
-# it has no `sources` shape to attach into yet.
-SOURCED_CATEGORIES = ["location", "concept", "character_legendary", "character_real"]
-
 CONFLICT_ID_RE = re.compile(r"^CONFLICT-\d+$")
 CHAIN_REF_RE = re.compile(r"^([a-z0-9_]+)#(\d+)$")
 
@@ -63,12 +61,26 @@ def normalize(s: str) -> str:
     return re.sub(r"\s+", " ", s).strip()
 
 
+def _get_path(data: dict, path: str):
+    obj = data
+    for part in path.split("."):
+        obj = obj[part]
+    return obj
+
+
 def load_categories(data: dict) -> dict:
+    """Every category encodings.json's own `_categories` block marks `has_sources: true` - not a
+    hardcoded list, so this stays correct as new categories get registered (or, on a freshly
+    bootstrapped project with no categories yet, simply returns nothing to attach into)."""
+    if "_categories" not in data:
+        raise SystemExit(
+            "encodings.json has no '_categories' schema block - run\n"
+            "scripts/lore/bootstrap_lore.py or scripts/lore/add_categories_schema.py first."
+        )
     return {
-        "location": data["locations"],
-        "concept": data["concepts"],
-        "character_legendary": data["characters"]["in_world_or_legendary"],
-        "character_real": data["characters"]["real_world_authors_and_players"],
+        cat_key: _get_path(data, spec["path"])
+        for cat_key, spec in data["_categories"].items()
+        if spec.get("has_sources")
     }
 
 
@@ -88,30 +100,43 @@ def migrate_sources(categories: dict, report: dict) -> None:
             entry["sources"] = migrated
 
 
+def _safe_get_path(data: dict, path: str, default):
+    """Like `_get_path`, but returns `default` instead of raising on a missing key - these
+    categories may genuinely not exist yet on a project where /integrate hasn't registered them
+    (including a freshly bootstrapped one with none registered at all)."""
+    obj = data
+    for part in path.split("."):
+        if not isinstance(obj, dict) or part not in obj:
+            return default
+        obj = obj[part]
+    return obj
+
+
 def build_other_known_ids(data: dict) -> set:
-    """Normalized ids/names for everything NOT in SOURCED_CATEGORIES, used only to tell a
-    recognized-but-out-of-scope reference apart from a genuinely dangling one."""
+    """Normalized ids/names for every category NOT marked `has_sources: true`, used only to tell a
+    recognized-but-out-of-scope reference apart from a genuinely dangling one. Tolerant of any of
+    these categories not existing yet - they're optional content, not guaranteed scaffolding."""
     known = set()
-    for c in data["conflicts"]:
+    for c in data.get("conflicts", []):
         known.add(normalize(c["id"]))
-    for e in data["time_systems"]["ensayo_i_eras"]:
+    for e in _safe_get_path(data, "time_systems.ensayo_i_eras", []):
         known.add(normalize(e["name"]))
-    for e in data["time_systems"]["esquema_poster_eras"]["era_row"]:
+    for e in _safe_get_path(data, "time_systems.esquema_poster_eras.era_row", []):
         known.add(normalize(e["name"]))
-    for e in data["time_systems"]["esquema_poster_eras"]["year_by_year_foundations"]:
+    for e in _safe_get_path(data, "time_systems.esquema_poster_eras.year_by_year_foundations", []):
         known.add(normalize(str(e["year"])))
-    for e in data["time_systems"]["libro_venidas_eras"]["list"]:
+    for e in _safe_get_path(data, "time_systems.libro_venidas_eras.list", []):
         known.add(normalize(e["name"]))
-    for h in data["routes"]["highways"]:
+    for h in _safe_get_path(data, "routes.highways", []):
         known.add(normalize(h["code"]))
         known.add(normalize(h["name"]))
-    for t in data["routes"]["trains"]["segments"]:
+    for t in _safe_get_path(data, "routes.trains.segments", []):
         known.add(normalize(t["name"]))
-    for a in data["routes"]["airports"]:
+    for a in _safe_get_path(data, "routes.airports", []):
         known.add(normalize(a["location"]))
-    for n in data["routes"]["named_but_unplotted"]:
+    for n in _safe_get_path(data, "routes.named_but_unplotted", []):
         known.add(normalize(n["name"]))
-    for locality, people in data["characters"]["named_inhabitants"]["by_locality"].items():
+    for locality, people in _safe_get_path(data, "characters.named_inhabitants.by_locality", {}).items():
         known.add(normalize(locality))
         for p in people:
             name = p if isinstance(p, str) else (p.get("name") or "")

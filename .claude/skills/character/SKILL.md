@@ -152,6 +152,13 @@ The signal is already in the anchor, because every anchor carries its pool categ
 | an `experience` entry | what they saw themselves | firsthand presence | anything nobody present can vouch for |
 | `location`, `inhabitant`, `concept`, route/airport categories | ambiguous on its own | — | — |
 
+This table's rows are the four `epistemology_group` values `_lore/encodings.json`'s own `_categories`
+block tags each pool category with (`hearsay`, `chronicles`, `conflict`, plus `ambiguous` for the
+bottom row — an `experience` entry isn't a pool category at all, it's `knowledge.experience`, but gets
+the same firsthand-presence lean regardless). When `/integrate` approves a genuinely new category, it
+either joins one of these groups or proposes a new row here — never invent one without that proposal
+being confirmed first, same as every other judgment call in this pack.
+
 For the ambiguous bottom row, don't force it — read the lean off the **backstory** instead (a
 seafarer who reads history trusts differently from a bard who collects what people say), or leave
 both fields blank. A character with no particular epistemology is perfectly normal.
@@ -194,8 +201,8 @@ Three hard limits:
 If no item in the sample touches the backstory or city, **do not invent a criterion and do not fall
 back to a city-level or trade-level default** — inherited criteria are a real part of the model but
 are deliberately not built yet (see `TODO.md`). Leave `criterion` blank with
-`"origin": "uncollided"`, and log the character in `TODO.md` as awaiting one. Same rule as everywhere
-else in this pack: nothing gets decided silently.
+`"origin": "uncollided"`, and log the character in `TODO.md` as awaiting one. Same rule as
+`.claude/PRINCIPLES.md`: nothing gets decided silently.
 
 ## Step 5 — Roll the lifespan
 
