@@ -881,3 +881,166 @@ entry above). Cleaned up in one pass:
 **Not in scope, still open:** the `/integrate` end-to-end test and the schema-evolution architectural
 issue, both under "Lore integration skill (`/integrate`)" above, are unrelated to this pass — neither
 was touched.
+
+## Model-agnosticism plan (drafted 2026-08-07, paused — resume when the user is back)
+
+Goal: use this pack with Claude, but also other model providers — commercial and open-source/local.
+Researched rather than assumed (web search, not memory) before drafting. Two separate axes, easy to
+conflate:
+
+- **Axis A — same harness (Claude Code), different model underneath.** Free: Claude Code always
+  offers the same tools (Bash, Read, AskUserQuestion, EnterWorktree, Agent, ...) to whatever model
+  answers the API calls; swapping the model doesn't change what tools exist, only whether that model
+  calls them well. Ollama v0.14+ ships a *native* Anthropic Messages API endpoint — point Claude Code
+  at it via `ANTHROPIC_BASE_URL`, no proxy, no skill changes. Other commercial providers (OpenAI,
+  Gemini, ...) aren't Anthropic-API-native, but a LiteLLM proxy translates, same env-var trick pointed
+  at the proxy instead.
+- **Axis B — leave Claude Code for a different harness** (Cursor, Gemini CLI, Codex CLI, OpenHands,
+  Aider, ...). Real work, but less than expected: the `SKILL.md` format itself (folder + frontmatter +
+  markdown body) is now an **open standard** (agentskills.io, donated to the Linux Foundation's
+  Agentic AI Foundation, Dec 2025), natively supported by 30+ tools including Cursor, Gemini CLI,
+  Codex, VS Code, GitHub Copilot, OpenHands, Goose, Roo Code. Our `.claude/skills/*/SKILL.md` files
+  already sit in the right shape — no structural migration needed. What's *not* standardized: the
+  Claude Code-specific tool names our skill prose calls out directly (`AskUserQuestion`,
+  `EnterWorktree`, the `Agent` subagent dispatcher, `TaskCreate`) and the `.claude/settings.json`
+  permission-bypass mechanism `/simulate` depends on — no equivalent on most other harnesses.
+
+**User decision (2026-08-07): pursue Axis A first**, see how far it gets before committing to Axis B.
+
+- [x] **Environment prepped for Axis A, 2026-08-07.** Ollama server confirmed running (v0.17.1, past
+      the 0.14 threshold). `qwen2.5-coder:14b` pulled (~9 GB) — the top-rated local coding model for a
+      12 GB VRAM card (RTX 4070 Super), chosen for tool-calling/agentic reliability over the two
+      models already present (`mistral:latest`, `llama3.2:1b` — neither well-suited to this use case).
+- [ ] **Next, when resumed:** open a *fresh* terminal (not a Claude Code session already running) and
+      set, before launching `claude`:
+      ```powershell
+      $env:ANTHROPIC_BASE_URL = "http://localhost:11434"
+      $env:ANTHROPIC_AUTH_TOKEN = "ollama"
+      $env:ANTHROPIC_MODEL = "qwen2.5-coder:14b"
+      claude
+      ```
+      Smoke-test low-stakes first, not a full `/enact`/`/simulate` run: ask it to read
+      `.claude/PRINCIPLES.md` (plain `Read` tool use), then try `/tell` (shortest skill — one file
+      write, no scripts, no subagents).
+- [ ] **Two known risks to expect, not necessarily bugs:** (1) Ollama's Anthropic-compat layer ignores
+      `tool_choice`, which can make Claude Code pick the wrong tool or loop — a compat-layer
+      limitation, not the model failing outright. (2) Context is tight at 12 GB VRAM — Qwen-14B Q4 is
+      ~9 GB, leaving limited room for context, and our skill files run long (`enact/SKILL.md` is
+      ~400 lines). If responses degrade partway through a skill, that's context pressure; consider
+      `OLLAMA_CONTEXT_LENGTH` tuning (set before `ollama serve` starts) or falling back to
+      `qwen2.5-coder:7b` for a lighter first pass.
+- [ ] **If Axis A goes well and Axis B still wants doing:** create `AGENTS.md` at repo root (the real
+      cross-tool standard for repo-level agent orientation — natively read by Codex/Cursor/Gemini
+      CLI/Windsurf/Aider/15+ others, 60,000+ repos on it already) carrying what's currently split
+      between README §0–2 and `.claude/PRINCIPLES.md`, plus a thin `CLAUDE.md` that imports it (Claude
+      Code doesn't read `AGENTS.md` natively as of mid-2026). Then a per-skill compatibility audit —
+      tag `/simulate` with the spec's `compatibility` frontmatter field (`compatibility: Requires
+      Claude Code (git worktree isolation, subagent dispatch, no portable equivalent yet)`) rather than
+      letting it silently half-work elsewhere; the `AskUserQuestion`-leaning skills (`/enact`,
+      `/embody`, `/character`) likely degrade gracefully since most agents can infer "ask a
+      two-option question" from context even without that exact tool. Finish with one real empirical
+      test on an alternate harness (Gemini CLI is free and on the Agent Skills client list) running one
+      simple skill end-to-end (`/tell`, not `/simulate`) before trusting the plan.
+- [ ] **Cosmetic, low priority:** every skill's `disable-model-invocation: true` frontmatter field is
+      a Claude Code extension, not part of the core Agent Skills spec (confirmed against
+      agentskills.io/specification — core fields are `name`, `description`, `license`, `compatibility`,
+      `metadata`, `allowed-tools`). Likely harmless (unrecognized YAML keys are typically just ignored)
+      but a strict validator on another client could flag it. Not worth fixing unless it actually
+      breaks something on a real Axis B test.
+
+## Synthesis mechanism — characters forming their own theories (proposed, pinned 2026-08-07)
+
+**Not built yet — design-only, discussed at length in conversation, needs a decision pass before any
+code.** Answers a real gap identified while discussing the "Knowledge mutation system" section near the
+top of this file and the "Schema evolution in `encodings.json`" work done this session: everything
+currently in `/enact` — mutation at record time, the criterion shock/reject/reinterpret/break
+machinery — reinterprets or resolves *one* input at a time. Nothing currently lets a character combine two things they know into a third belief that isn't
+reducible to either parent. The goal: a character can form their own theory about the world (or about
+themselves, or about someone else) from what they already knew plus what they just heard, gated so that
+this stays rare and meaningful rather than firing on every scene.
+
+**Where it runs:** a new `/enact` step, proposed as Step 5c, immediately after Step 5b's shock
+resolution (same "reflect on what this scene did" position, same "default is no change and that will be
+the answer almost every time" discipline the shock gate already uses).
+
+**Core shape, agreed so far:** synthesis only considers pairs where one side is something the character
+heard/lived *this scene* and the other is already in their standing knowledge (education sample or
+prior experience) — never a full sweep of a character's whole life, never two things both freshly heard
+in the same breath. A cheap mechanical pre-filter narrows candidates (varies by subtype, see below);
+the model then judges, per candidate, whether the pairing actually raises something neither claim states
+alone (a gap or tension, not agreement/restatement) — most candidates should produce nothing. Whatever
+does synthesize gets written to `knowledge.experience` as `{"kind": "synthesis", "about": [A, B],
+"derived_from": [A, B], "text": "..."}` (extending the existing "about can be a list" convention, not a
+new field shape) — private knowledge unless the character actually voices it in a later scene, at which
+point it becomes an ordinary hearsay claim through the existing recording path, no new sampling-pool
+machinery needed. **Credibility inheritance rule:** the synthesized claim inherits the *weaker* of its
+two parents' credibility — a synthesis built on a shaky/uncorroborated parent comes out hedged ("maybe,"
+"it makes me think"), not asserted, reusing the existing `oral_lore`/traceable ledger rather than
+inventing a new certainty scale.
+
+**Subtypes identified so far, each with a different resonance signal — not an exhaustive taxonomy, more
+should surface once this is actually tried:**
+
+1. **Causal/narrative.** Two things that already share an `about`/entity reference combine into a new
+   claim about meaning, motive, or cause. Worked example discussed: Nerkeli has flown M7 (→ Nvhi) for
+   years without ever really seeing the place (his own established backstory); Nuvilo's family claims
+   descent from Navalius, Nvhi's founder (freshly heard, uncorroborated). Synthesis: "If M7 always ends
+   where Nuvilo's family says they're from, then all these years turning around at the airstrip, I've
+   been skipping past the one place that might matter most to him." Mechanical pre-filter: shared
+   `about` id (reuse `check_anchor_reference.py`'s matching logic).
+
+2. **Identity/coreference.** Two *differently-named* things share a distinctive (not generic) detail,
+   suggesting they might be the same referent. Worked example discussed: a character knows "Sit Nalta"
+   has a hot-air-balloon port; a traveler mentions "Sit:Nalta" and its hot-air balloons. Synthesis:
+   these may be the same place. Notably, this exact ambiguity is *already* logged as `CONFLICT-07` in
+   the objective record — a character reaching this independently, from inside their own bounded
+   sample, would be rediscovering a real structural ambiguity without ever having read `conflicts`.
+   Proposed check: when an identity-type synthesis fires, look it up against `conflicts` — a match is a
+   good, coherent "the character caught something real" outcome worth noting as such; no match is a
+   riskier, unbacked guess, held more tentatively (possibly worth its own `unknowns.md` entry if it
+   resonates with the corpus, per the same "not every claim produces one" discipline `/enact` Step 5
+   already uses). Mechanical pre-filter: name-string similarity (the same `difflib` fuzzy-match already
+   built for `build_source_index.py`) plus shared distinctive descriptive content — the distinctiveness
+   call (hot-air balloons vs. "has a market") stays a model judgment, not scriptable.
+
+3. **Conflict-explanation** (brainstormed, not yet discussed with the user in depth). A character
+   encounters two items that are *already* flagged as disagreeing in the objective record (share a
+   `CONFLICT-NN` tag) and invents a personal reconciling story for *why* the disagreement exists —
+   without ever officially resolving it; `user_resolution` stays the user's call alone, same as every
+   other conflict. Sketch: a character who's sampled both chronicles' conflicting start-years for Era
+   del Daax might theorize "maybe one book counts from when the códigos were invented, the other from
+   when the government fell — two starting lines for the same age" (Döran's own claim #8 already
+   brushes right up against this without taking the last step). Mechanical pre-filter: shared
+   `CONFLICT-NN` tag between two known items.
+
+4. **Pattern/generalization** (brainstormed). Not a pairwise collision at all — noticing the *same*
+   thing recurring three or more times across a character's own sample and abstracting it into a
+   general belief or proverb, not a claim about one specific referent. Sketch: a character who's
+   sampled several highway/train segments that all terminate at Nvhi might conclude "seems like every
+   road in this world eventually leads to Nvhi." Mechanical pre-filter: frequency (an entity/theme
+   appearing 3+ times across the sample), not a pairwise `about` match — structurally different from
+   the other three, would need its own detection pass.
+
+5. **Relational/motive** (brainstormed). Same causal mechanic as (1), but pointed at a *person's*
+   motive or history — including the character's own backstory — rather than a place's meaning. Sketch:
+   Khaoe's registered backstory already says her family came from Khan Ice before Khol Moshin; if she
+   later samples Döran's claim that Khan Icé served as a wartime refuge, she could theorize "maybe
+   that's why my family left — the war, not just wanting somewhere new." Mechanical pre-filter: both
+   items concern the same person (self or a named third party), not a place.
+
+**Open questions, not yet decided:**
+
+- Should the criterion (`trusts`/`distrusts`) color the *flavor* of a synthesis when one exists (skeptic
+  vs. connective framing), as discussed, or only gate whether it fires at all? A character with no
+  derived criterion yet (several still don't, see the "Criterion / will-to-live system" section above)
+  can presumably still synthesize plainly, same as the trust table's ambiguous bottom row.
+- Is one synthesis per scene the right cap, or should it scale with how many genuine candidates survive
+  the resonance gate? Leaning toward capping at one, to keep it rare and narratively focused rather than
+  producing a burst of invented beliefs from a single conversation.
+- Subtypes 3–5 are brainstormed, not yet worked through with a concrete example the way 1–2 were — worth
+  a same-depth pass before building, especially (4), which needs a genuinely different detection
+  mechanism (frequency across the whole sample) rather than the scene-bounded pairwise check the other
+  four share.
+- Whether this needs its own mechanical script (a `check_resonance.py` mirroring
+  `check_anchor_reference.py`'s shape) per subtype, or one script with a subtype parameter — not decided,
+  should follow from how different the five detection passes actually turn out to be once specified.
