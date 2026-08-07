@@ -17,6 +17,7 @@ Usage:
 
 import argparse
 import json
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent.parent
@@ -24,17 +25,35 @@ CHAR_DIR = ROOT / "_lore" / "characters"
 ENCODINGS_PATH = ROOT / "_lore" / "encodings.json"
 
 
+def normalize(ref: str) -> str:
+    """Collapse whitespace variance around a 'category: value' ref (e.g. 'highway:M7' vs
+    'highway: M7') so a claim written by a weaker model doesn't silently miss a real match
+    over formatting alone. This is still a literal-reference comparison, not fuzzy matching -
+    it only tolerates spacing, never a genuinely different id."""
+    ref = ref.strip().lower()
+    return re.sub(r"\s*:\s*", ": ", ref)
+
+
 def anchor_id_part(anchor: str) -> str:
-    return anchor.split(": ", 1)[1].strip() if ": " in anchor else anchor.strip()
+    normalized = normalize(anchor)
+    return normalized.split(": ", 1)[1].strip() if ": " in normalized else normalized
 
 
 def references(anchor: str, about) -> bool:
     if not anchor or not about:
         return False
-    about = str(about).strip()
-    anchor = anchor.strip()
+    anchor_norm = normalize(anchor)
     anchor_id = anchor_id_part(anchor)
-    return about.lower() == anchor.lower() or about.lower() == anchor_id.lower()
+    # 'about' is usually a single string, but a claim may legitimately touch more than one
+    # objective-record entry at once and record 'about' as a list - check every element.
+    candidates = about if isinstance(about, list) else [about]
+    for candidate in candidates:
+        if not candidate:
+            continue
+        candidate_norm = normalize(str(candidate))
+        if candidate_norm == anchor_norm or candidate_norm == anchor_id:
+            return True
+    return False
 
 
 def main() -> None:
