@@ -12445,7 +12445,7 @@
     "label": "Luminacion",
     "kind": "root",
     "path": ".",
-    "size": 286709947,
+    "size": 286715891,
     "degree": 12
    },
    {
@@ -12477,7 +12477,7 @@
     "label": "TODO.md",
     "kind": "doc",
     "path": "TODO.md",
-    "size": 89719,
+    "size": 94444,
     "degree": 1
    },
    {
@@ -12493,7 +12493,7 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
-    "size": 228363665,
+    "size": 228363710,
     "degree": 6
    },
    {
@@ -12517,7 +12517,7 @@
     "label": "settings.local.json",
     "kind": "other",
     "path": ".claude/settings.local.json",
-    "size": 474,
+    "size": 519,
     "degree": 1
    },
    {
@@ -25540,7 +25540,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": "graphs",
-    "size": 2265412,
+    "size": 2266586,
     "degree": 2
    },
    {
@@ -25548,7 +25548,7 @@
     "label": "graphifyish",
     "kind": "dir",
     "path": "graphs/graphifyish",
-    "size": 2265412,
+    "size": 2266586,
     "degree": 3
    },
    {
@@ -25556,7 +25556,7 @@
     "label": "graph.json",
     "kind": "graph",
     "path": "graphs/graphifyish/graph.json",
-    "size": 1233624,
+    "size": 1234301,
     "degree": 1
    },
    {
@@ -25564,7 +25564,7 @@
     "label": "graphifyish.html",
     "kind": "graph",
     "path": "graphs/graphifyish/graphifyish.html",
-    "size": 1031788,
+    "size": 1032285,
     "degree": 1
    },
    {
