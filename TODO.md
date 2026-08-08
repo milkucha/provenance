@@ -950,8 +950,13 @@ conflate:
 
 ## Synthesis mechanism — characters forming their own theories (proposed, pinned 2026-08-07)
 
-**Not built yet — design-only, discussed at length in conversation, needs a decision pass before any
-code.** Answers a real gap identified while discussing the "Knowledge mutation system" section near the
+**Built 2026-08-08.** Design pass, decision pass, spec (`.claude/skills/enact/SKILL.md` Step 5c),
+`scripts/lore/check_resonance.py`, and `update_character.py --add-synthesis` are all done — see Step 5c
+in `SKILL.md` for the calling convention. Not yet exercised on a real `/enact` run; the mechanical
+pre-filter only matches against `knowledge.education.items` (structured `about`-style refs), not
+`knowledge.experience`/`backstory` prose, so its candidate recall on a character-heavy scene is
+untested until it's actually used. Answers a real gap identified while discussing the "Knowledge
+mutation system" section near the
 top of this file and the "Schema evolution in `encodings.json`" work done this session: everything
 currently in `/enact` — mutation at record time, the criterion shock/reject/reinterpret/break
 machinery — reinterprets or resolves *one* input at a time. Nothing currently lets a character combine two things they know into a third belief that isn't
@@ -1013,34 +1018,44 @@ should surface once this is actually tried:**
    brushes right up against this without taking the last step). Mechanical pre-filter: shared
    `CONFLICT-NN` tag between two known items.
 
-4. **Pattern/generalization** (brainstormed). Not a pairwise collision at all — noticing the *same*
-   thing recurring three or more times across a character's own sample and abstracting it into a
-   general belief or proverb, not a claim about one specific referent. Sketch: a character who's
-   sampled several highway/train segments that all terminate at Nvhi might conclude "seems like every
-   road in this world eventually leads to Nvhi." Mechanical pre-filter: frequency (an entity/theme
-   appearing 3+ times across the sample), not a pairwise `about` match — structurally different from
-   the other three, would need its own detection pass.
+4. **Pattern/generalization.** Not a pairwise collision at all — noticing the *same* thing recurring
+   three or more times across a character's own sample and abstracting it into a general belief or
+   proverb, not a claim about one specific referent. Sketch: a character who's sampled several
+   highway/train segments that all terminate at Nvhi might conclude "seems like every road in this
+   world eventually leads to Nvhi." Mechanical pre-filter: frequency (an entity/theme appearing 3+
+   times across the sample), not a pairwise `about` match — structurally different from the other four.
+   **Decided 2026-08-08: the occurrence that crosses the 3+ threshold must be fresh from the scene that
+   just concluded** — the prior N-1 occurrences are already standing knowledge, and generalization only
+   fires because *this* scene supplied the tipping instance. Keeps it consistent with every other
+   subtype's "something new happened" gating rather than letting a character generalize from pure
+   reflection with nothing new. (Like all of Step 5c, this check runs once, post-scene, at record time —
+   not live during the scene itself.)
 
-5. **Relational/motive** (brainstormed). Same causal mechanic as (1), but pointed at a *person's*
+5. **Relational/motive.** Same causal mechanic as (1), but pointed at a *person's*
    motive or history — including the character's own backstory — rather than a place's meaning. Sketch:
    Khaoe's registered backstory already says her family came from Khan Ice before Khol Moshin; if she
    later samples Döran's claim that Khan Icé served as a wartime refuge, she could theorize "maybe
    that's why my family left — the war, not just wanting somewhere new." Mechanical pre-filter: both
    items concern the same person (self or a named third party), not a place.
 
-**Open questions, not yet decided:**
+**Open questions:**
 
-- Should the criterion (`trusts`/`distrusts`) color the *flavor* of a synthesis when one exists (skeptic
-  vs. connective framing), as discussed, or only gate whether it fires at all? A character with no
-  derived criterion yet (several still don't, see the "Criterion / will-to-live system" section above)
-  can presumably still synthesize plainly, same as the trust table's ambiguous bottom row.
-- Is one synthesis per scene the right cap, or should it scale with how many genuine candidates survive
-  the resonance gate? Leaning toward capping at one, to keep it rare and narratively focused rather than
-  producing a burst of invented beliefs from a single conversation.
-- Subtypes 3–5 are brainstormed, not yet worked through with a concrete example the way 1–2 were — worth
-  a same-depth pass before building, especially (4), which needs a genuinely different detection
-  mechanism (frequency across the whole sample) rather than the scene-bounded pairwise check the other
-  four share.
-- Whether this needs its own mechanical script (a `check_resonance.py` mirroring
-  `check_anchor_reference.py`'s shape) per subtype, or one script with a subtype parameter — not decided,
-  should follow from how different the five detection passes actually turn out to be once specified.
+- ~~Should the criterion (`trusts`/`distrusts`) color the *flavor* of a synthesis when one exists (skeptic
+  vs. connective framing), or only gate whether it fires at all?~~ **Decided 2026-08-08: both.** Criterion
+  affects whether synthesis fires at all (e.g. skeptics synthesize less readily) *and* colors the
+  tone/framing of the resulting claim when it does fire. A character with no derived criterion yet
+  (several still don't, see the "Criterion / will-to-live system" section above) can presumably still
+  synthesize plainly, same as the trust table's ambiguous bottom row.
+- ~~Is one synthesis per scene the right cap, or should it scale with how many genuine candidates survive
+  the resonance gate?~~ **Decided 2026-08-08: no cap.** Every candidate that survives the mechanical
+  pre-filter *and* the model's gap/tension judgment gets written, however many that is in a given scene.
+  No tie-break needed since nothing competes for a single slot.
+- ~~Subtypes 3–5 are brainstormed, not yet worked through with a concrete example the way 1–2 were.~~
+  **Resolved 2026-08-08:** subtypes 3 and 5 already had worked examples and mechanical pre-filters at the
+  same depth as 1–2 on inspection — no further pass needed. Subtype 4 was the actual gap (see its own
+  entry above for the resolution: this-scene trigger required, evaluated post-scene at record time).
+- ~~Whether this needs its own mechanical script (a `check_resonance.py` mirroring
+  `check_anchor_reference.py`'s shape) per subtype, or one script with a subtype parameter.~~ **Decided
+  2026-08-08: one script, subtype parameter.** The five detection mechanisms differ enough to need
+  separate internal logic branches, but share one entry point rather than duplicating I/O/CLI scaffolding
+  across five files.

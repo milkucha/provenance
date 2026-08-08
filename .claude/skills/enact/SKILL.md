@@ -402,6 +402,63 @@ find out later only the ordinary way: sampled into a new character's education, 
 from the circle in a future scene (subject to the usual `lineage_coin.py` traceable/untraceable
 rule on that retelling, same as any other claim).
 
+## Step 5c — Synthesis: characters forming their own theories
+
+Runs immediately after Step 5b's shock resolution, same "reflect on what this scene did" position. For
+every character enacted this run:
+
+**1. Candidate gathering (mechanical).** Run `py scripts/lore/check_resonance.py <npc_key> --hearsay-id
+<entry_id>` — it checks all five subtypes at once and reports candidate pairs (one fresh-this-scene
+item, one standing-knowledge item) per subtype, using each subtype's own mechanical filter (shared
+`about` id, name-string similarity, shared `CONFLICT-NN` tag, 3+ frequency with a fresh tipping
+instance, shared person). It reports pairs only — it never judges whether a pairing actually means
+anything.
+
+**2. The default is nothing, and it will be the answer almost every time** — same discipline as Step 5b
+point 2. Most reported candidates should produce no synthesis. Only continue past this point for
+candidates the script actually surfaced.
+
+**3. Judge each surviving candidate.** Does pairing it raise a gap or tension neither item states alone
+— not agreement, not restatement? This is real judgment, same division of labor as everywhere else in
+`/enact`: the script narrows, the model decides.
+
+**4. Criterion gates and flavors.** A character's `criterion.trusts`/`distrusts` biases whether a
+candidate fires at all (a character who distrusts the kind of connection being drawn synthesizes less
+readily) and colors the tone of the text when it does fire (skeptical hedge vs. confident, connective
+framing). A character with no derived criterion yet synthesizes plainly.
+
+**5. Credibility inheritance.** The synthesized claim inherits the *weaker* of its two parents'
+credibility — built on a shaky/uncorroborated parent, it comes out hedged ("maybe," "it makes me
+think"), not asserted. Reuses the existing `oral_lore`/traceable ledger; no new certainty scale.
+
+**6. No cap.** Every candidate that survives points 3–5 gets written, however many that is this scene.
+
+**7. Identity-subtype special case.** When an identity-type synthesis fires, check it against
+`conflicts`: a match means the character independently caught a real structural ambiguity — worth
+noting as such. No match is a riskier, unbacked guess, held more tentatively (possibly its own
+`unknowns.md` entry if it resonates with the corpus, same "not every claim produces one" discipline as
+Step 5).
+
+**8. Write each surviving synthesis** to `knowledge.experience`:
+
+```bash
+py scripts/lore/update_character.py <npc_key> --add-synthesis \
+    --about "<A>" --about "<B>" --text "<synthesized claim text>"
+```
+
+(repeatable per synthesis this scene) — stored as `{"kind": "synthesis", "about": [A, B],
+"derived_from": [A, B], "text": "..."}`, appended alongside the plain-string entries
+`knowledge.experience` already holds. Stays private unless the character actually voices it in a later
+scene, at which point it becomes an ordinary hearsay claim through the existing Step 5 recording path —
+no new sampling-pool machinery.
+
+`knowledge.experience` held plain strings only before this; synthesis entries (`kind: synthesis`) and
+grounded entries (Step 6's `--add-grounded-experience`, no `kind` key) are both object-shaped, so
+anything iterating the list (Step 6's cross-check, future exports) needs an `isinstance(entry, dict)`
+check, and a dict check needs `entry.get("kind") == "synthesis"` to tell the two apart. See `TODO.md`'s
+"Synthesis mechanism" entry for the full subtype breakdown (worked examples, each mechanical
+pre-filter) and design history.
+
 ## Step 6 — Update the character record
 
 For every character enacted this run, add/update their file at `_lore/characters/<key>.json`
@@ -418,15 +475,39 @@ here, since a fresh JSON write could clobber what those calls just did. What's l
 - `knowledge.education` — `{percent, mode, topic, items}` exactly as drawn by the script in Step 1/2,
   for a first-time character. For a returning character reusing an existing sample (per the guard in
   Step 1), **leave this field untouched** — never redraw or overwrite it on a later run.
-- `knowledge.experience` — anything that came up in the scene beyond the original sample: invented
-  personal texture that's now established for this character (Sonoros's "out of Görff way," his
-  crossing-walker job), or — for the *other* character in a two-NPC scene — anything they said that
-  this character would now plausibly have picked up just from being present. Cross-check against the
-  hearsay entry's `claims` from Step 5. Write these with
-  `py scripts/lore/update_character.py <npc_key> --add-experience "<entry>" [--add-experience "<entry 2>"...]`
-  (repeatable per entry) — fold this into the same Step 5b call for this character when there is one,
-  rather than a separate write. It appends to the existing list; a returning character's prior entries
-  are never touched.
+- `knowledge.experience` — anything that came up in the scene beyond the original sample: personal
+  texture established for this character (something they revealed about themselves, an action they
+  took), or — for the *other* character in a two-NPC scene — anything they said or did that this
+  character would now plausibly have picked up just from being present. Both directions and both
+  speech and witnessed action are in scope — per Step 5's "Mutation at record time," a claim captures
+  *what got done* as much as *what was said*, so this isn't limited to things the character was told.
+
+  **Cross-check against the hearsay entry's `claims` from Step 5, and when the experience entry
+  describes the same fact as a claim, reuse that claim's `about` ref** rather than writing a plain
+  string — this is what lets `check_resonance.py` (Step 5c) find it later. Real example: Aureobalo
+  voicing his own backstory ("Told Farlis, for the first time aloud, that his surname resembles the
+  losing side of the Guerras de Gorff...") is both his own experience entry *and* claim #6 of
+  `aureobalo_farlis_castillo_en_miniatura`, `about: "Las Guerras de Gorff"` — the experience entry
+  should carry that same ref:
+
+  ```bash
+  py scripts/lore/update_character.py <npc_key> --add-grounded-experience \
+      --about "<ref, repeatable if the entry draws on more than one claim>" --text "<entry>"
+  ```
+
+  Some experience entries genuinely have no claim to point to — a narrated action nobody voiced (e.g.
+  Aureobalo "postponed his drive back to Khol Moshin by a day to stay a second day at the Feria," which
+  no hearsay claim anywhere records). That's a legitimate outcome, not a recording failure — write
+  those with plain `--add-experience` instead, unchanged:
+
+  ```bash
+  py scripts/lore/update_character.py <npc_key> --add-experience "<entry>" [--add-experience "<entry 2>"...]
+  ```
+
+  Either call is repeatable per entry (one `--add-grounded-experience` call per grounded entry;
+  `--add-experience` takes several at once) — fold whichever apply into the same Step 5b call for this
+  character when there is one, rather than a separate write. Both append to the existing list; a
+  returning character's prior entries are never touched or retroactively grounded.
 - `criterion`/`life` — already handled by Step 5b's `update_character.py`/`record_death.py` calls for
   every character whose criterion changed, cost something, or advanced `life.lived`/`life.deceased`
   this scene. Only touch these fields by hand for a first-time character's *initial* criterion (the
