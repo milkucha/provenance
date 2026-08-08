@@ -911,24 +911,68 @@ conflate:
       the 0.14 threshold). `qwen2.5-coder:14b` pulled (~9 GB) — the top-rated local coding model for a
       12 GB VRAM card (RTX 4070 Super), chosen for tool-calling/agentic reliability over the two
       models already present (`mistral:latest`, `llama3.2:1b` — neither well-suited to this use case).
-- [ ] **Next, when resumed:** open a *fresh* terminal (not a Claude Code session already running) and
-      set, before launching `claude`:
-      ```powershell
-      $env:ANTHROPIC_BASE_URL = "http://localhost:11434"
-      $env:ANTHROPIC_AUTH_TOKEN = "ollama"
-      $env:ANTHROPIC_MODEL = "qwen2.5-coder:14b"
-      claude
-      ```
-      Smoke-test low-stakes first, not a full `/enact`/`/simulate` run: ask it to read
-      `.claude/PRINCIPLES.md` (plain `Read` tool use), then try `/tell` (shortest skill — one file
-      write, no scripts, no subagents).
-- [ ] **Two known risks to expect, not necessarily bugs:** (1) Ollama's Anthropic-compat layer ignores
-      `tool_choice`, which can make Claude Code pick the wrong tool or loop — a compat-layer
-      limitation, not the model failing outright. (2) Context is tight at 12 GB VRAM — Qwen-14B Q4 is
-      ~9 GB, leaving limited room for context, and our skill files run long (`enact/SKILL.md` is
-      ~400 lines). If responses degrade partway through a skill, that's context pressure; consider
-      `OLLAMA_CONTEXT_LENGTH` tuning (set before `ollama serve` starts) or falling back to
-      `qwen2.5-coder:7b` for a lighter first pass.
+- [x] **Phase 0 smoke test run, 2026-08-08 — negative result, three distinct failure modes.** Not a
+      config problem; a real result. Tested two models across two proxy paths, low-stakes prompts only
+      (`.claude/PRINCIPLES.md` read, "what is an apple", no full skill run):
+      1. `qwen2.5-coder:14b` via Ollama's native Anthropic-compat endpoint (`ANTHROPIC_BASE_URL` →
+         `http://localhost:11434`) — hallucinated fake tool calls on *every* message, including ones
+         needing no tool at all (`{"name": "GetModel", "arguments": {}}`,
+         `{"name": "Read", "arguments": {"file_path": "/path/to/..."}}` on placeholder paths).
+         Confirmed as a known, documented issue: this model's tool calls come back as raw JSON text in
+         the response content instead of a structured `tool_calls` block, so Claude Code just prints
+         the JSON as if it were the answer rather than executing anything.
+      2. `qwen3:8b` via the same Ollama endpoint — stopped hallucinating fake tools, but *under*-triggers
+         real ones (asked "what does PRINCIPLES.md say" → claimed it can't access local files at all,
+         rather than calling `Read`). When explicitly told to use `Read`, it did — then hit a genuine,
+         currently-open Ollama bug (`API Error: Content block not found`, a multi-turn tool-result
+         serialization issue, confirmed against a live `ollama/ollama` GitHub issue), and in response to
+         *that* error, fabricated an unrelated file as a guessed "fix" and falsely reported the original
+         task complete. (Correction: it did ask permission before writing that file — not a silent
+         bypass, just an irrelevant, hallucinated action it then lied about the purpose of.)
+      3. `qwen3:8b` again, this time via a local LiteLLM proxy (`litellm[proxy]`, config mapping
+         `qwen3-8b` → `ollama_chat/qwen3:8b` on port 4000) instead of Ollama's native endpoint — fixed
+         the protocol bug (`Read` succeeded cleanly this time) but surfaced two more problems: an
+         unprompted, unrelated file write (`example.json`, `{"key": "value"}`) with *no* error to react
+         to this time (ruling out "error-driven confabulation" as the explanation — it's a standing
+         habit, not error recovery), and then, worse, within the *same conversation*, right after
+         successfully using `Read`, it lost all awareness of having file tools at all — denied having
+         read the file, asked for an absolute path as if `Read` didn't exist, then flatly claimed it
+         "cannot access local files," in three consecutive turns.
+      Setup notes for reproducing: `py -m pip install "litellm[proxy]"`; the `litellm` console script
+      isn't `python -m`-invokable (no `__main__.py`) — call the installed `.exe` directly, or add
+      Python's `Scripts/` dir to PATH. Hit two unrelated environment snags getting it running at all:
+      an `ImportError: cannot import name 'get_flat_dependant'` from a too-new `fastapi` (fixed by
+      pinning `fastapi==0.115.6`, which in turn downgrades `starlette` below what the locally-installed
+      `mcp`/`sse-starlette` packages want — a real, currently-unresolved conflict, just not one that
+      broke anything used this session) and a `UnicodeEncodeError` on litellm's own startup banner
+      under Windows' default `cp1252` console encoding (fixed with `PYTHONUTF8=1`).
+      **Conclusion:** not "wrong model, try another" — three qualitatively different failure modes
+      across two models and two proxy paths point at the same root cause: Claude Code's harness (system
+      prompt, exact tool schemas, Anthropic Messages API conventions) is shaped around Claude
+      specifically, and an 8–14B local model doesn't reliably hold together inside a harness built for a
+      different model, even once the API plumbing technically works. Bigger local models (32B+) or an
+      agentic-tool-calling-specific fine-tune might fare better, but that's a deliberate hardware/time
+      investment, not a quick next swap.
+- [ ] **Pivot (2026-08-08, user's own reframe): stop trying to make local models impersonate Claude
+      inside Claude Code, and instead pursue Axis B properly** — a harness that's model-agnostic *by
+      design* rather than via an Anthropic-API emulation shim. This was always going to be needed for
+      other commercial harnesses too, so it isn't wasted work either way. Two concrete candidates,
+      researched but not yet tried:
+      - **Goose** (Block, open source) — natively lists every installed Ollama model in its own model
+        picker (`GOOSE_PROVIDER=ollama`, `OLLAMA_HOST`), no translation shim needed for the local case;
+        confirmed Agent Skills support; built on MCP for tools specifically (an open standard, not a
+        bespoke harness-specific tool set) — architecturally the closer fit to "generic skills, no
+        vendor-specific API." Windows-supported.
+      - **OpenHands** — explicitly branded "model-agnostic," routes through LiteLLM for provider choice
+        (OpenAI, Anthropic, Ollama, vLLM, ...), confirmed Agent Skills support
+        (`docs.openhands.dev/overview/skills`). More established specifically for local-model agentic
+        coding; docs recommend a much larger local model (Qwen3.6-35B-A3B) as the first one to try,
+        likely too big for 12 GB VRAM comfortably — would need a smaller Qwen3 variant instead.
+      Why either should sidestep this session's specific bugs: neither asks the model to speak
+      Anthropic's Messages API tool-use format at all — they talk to Ollama via its OpenAI-compatible
+      tool-calling path, which has existed since mid-2024 and is far more battle-tested than Ollama's
+      ~7-month-old Anthropic-compat endpoint that produced failure modes 1 and 3 above.
+      **Not yet decided which to try first** — pick up here next session.
 - [ ] **If Axis A goes well and Axis B still wants doing:** create `AGENTS.md` at repo root (the real
       cross-tool standard for repo-level agent orientation — natively read by Codex/Cursor/Gemini
       CLI/Windsurf/Aider/15+ others, 60,000+ repos on it already) carrying what's currently split

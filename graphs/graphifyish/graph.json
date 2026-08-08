@@ -12445,7 +12445,7 @@
     "label": "Luminacion",
     "kind": "root",
     "path": ".",
-    "size": 286687195,
+    "size": 286709947,
     "degree": 12
    },
    {
@@ -12477,7 +12477,7 @@
     "label": "TODO.md",
     "kind": "doc",
     "path": "TODO.md",
-    "size": 88333,
+    "size": 89719,
     "degree": 1
    },
    {
@@ -12493,7 +12493,7 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
-    "size": 228358620,
+    "size": 228363665,
     "degree": 6
    },
    {
@@ -12525,7 +12525,7 @@
     "label": "skills",
     "kind": "dir",
     "path": ".claude/skills",
-    "size": 132253,
+    "size": 137298,
     "degree": 11
    },
    {
@@ -12565,7 +12565,7 @@
     "label": "enact",
     "kind": "dir",
     "path": ".claude/skills/enact",
-    "size": 32759,
+    "size": 37804,
     "degree": 2
    },
    {
@@ -12573,7 +12573,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/enact/SKILL.md",
-    "size": 32759,
+    "size": 37804,
     "degree": 1
    },
    {
@@ -25716,7 +25716,7 @@
     "label": "scripts",
     "kind": "dir",
     "path": "scripts",
-    "size": 204387,
+    "size": 220708,
     "degree": 5
    },
    {
@@ -25764,8 +25764,8 @@
     "label": "lore",
     "kind": "dir",
     "path": "scripts/lore",
-    "size": 119002,
-    "degree": 21
+    "size": 135323,
+    "degree": 22
    },
    {
     "id": "file:scripts/lore/add_categories_schema.py",
@@ -25821,6 +25821,14 @@
     "kind": "script",
     "path": "scripts/lore/check_character_name.py",
     "size": 2400,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/check_resonance.py",
+    "label": "check_resonance.py",
+    "kind": "script",
+    "path": "scripts/lore/check_resonance.py",
+    "size": 12713,
     "degree": 1
    },
    {
@@ -25924,7 +25932,7 @@
     "label": "update_character.py",
     "kind": "script",
     "path": "scripts/lore/update_character.py",
-    "size": 7556,
+    "size": 11164,
     "degree": 1
    },
    {
@@ -35995,6 +36003,12 @@
    },
    {
     "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/check_resonance.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/horizon.py",
     "rel": "contains",
     "weight": 1
@@ -36114,7 +36128,7 @@
     "kind": "layer",
     "note": "templates, registries, gesture dispatch",
     "tier": 2,
-    "degree": 30
+    "degree": 31
    },
    {
     "id": "layer:3",
@@ -36338,6 +36352,14 @@
     "kind": "script",
     "tier": 2,
     "file": "scripts/lore/check_character_name.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/check_resonance.py",
+    "label": "check_resonance.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/check_resonance.py",
     "degree": 1
    },
    {
@@ -36678,6 +36700,12 @@
    },
    {
     "source": "layer:2",
+    "target": "script:lore/check_resonance.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
     "target": "script:lore/horizon.py",
     "rel": "holds",
     "weight": 1
@@ -36918,5 +36946,5 @@
    }
   ]
  },
- "generated": "2026-08-07"
+ "generated": "2026-08-08"
 }
