@@ -98,15 +98,28 @@ script, are worth knowing about if a run still stalls:**
 4. A subagent can reach for the **PowerShell tool instead of Bash** on this Windows environment as its
    *first* choice, not merely as a fallback after a Bash failure — a wholly separate tool with its own
    permission gate that a `"Bash"` allow entry does not cover.
+5. **`.claude/` gets its own extra protection that a bare `"Write"`/`"Edit"` allow does not cover**,
+   even under `bypassPermissions`. Observed: a subagent wrote a scratch JSON file into the worktree's
+   own `.claude/` directory (see Step 3's "never write scratch files there" rule — that choice was the
+   subagent's own mistake), and that single write triggered a prompt despite a dozen prior passes'
+   worth of ordinary `Write` calls elsewhere in the same worktree working cleanly. This is by design —
+   `.claude/` is the harness's own config/skills/permissions directory — and matches what the harness's
+   own `update-config` skill documents as the correct pattern (`"Edit(.claude)"` as a distinct rule from
+   a general `Edit` allow), not a bug to route around some other way.
 
-The script closes all four the same way: blanket-allow **every tool this skill's subagents could
-plausibly reach for** — `Read`/`Write`/`Edit`/`Bash`/`PowerShell`/`Glob`/`Grep`/`Agent`/`Skill`/`Task*`
-— rather than adding one entry at a time as each gap surfaces. A typo'd path or an unexpected tool
-choice now fails cleanly with an ordinary tool error instead of blocking on a prompt — safe here
-specifically because this is a disposable, isolated worktree, never the directory the user actually
-works in. Deliberately NOT included: anything with no role in this lore-only, no-network procedure
-(`WebFetch`, `WebSearch`, browser/MCP tools, scheduling, `EnterWorktree`/`ExitWorktree`) — broadening
-those would be an unrelated expansion of trust, not a fix for anything this skill actually does.
+The script closes all five the same way: blanket-allow **every tool this skill's subagents could
+plausibly reach for**, plus explicit `.claude`-scoped entries per point 5 —
+`Read`/`Write`/`Write(.claude)`/`Write(.claude/**)`/`Edit`/`Edit(.claude)`/`Edit(.claude/**)`/`Bash`/
+`PowerShell`/`Glob`/`Grep`/`Agent`/`Skill`/`Task*` — rather than adding one entry at a time as each gap
+surfaces. `bypassPermissions` is already the harness's most permissive mode; there is no single broader
+toggle that also covers the handful of actions (subagent spawn, `.claude/` writes) it deliberately still
+gates by design — enumerating every tool comprehensively, as done here, **is** the correct "no prompts,
+ever" fix for those. A typo'd path or an unexpected tool choice now fails cleanly with an ordinary tool
+error instead of blocking on a prompt — safe here specifically because this is a disposable, isolated
+worktree, never the directory the user actually works in. Deliberately NOT included: anything with no
+role in this lore-only, no-network procedure (`WebFetch`, `WebSearch`, browser/MCP tools, scheduling,
+`EnterWorktree`/`ExitWorktree`) — broadening those would be an unrelated expansion of trust, not a fix
+for anything this skill actually does.
 
 If prompts still fire during Step 3 despite all of the above, the fix is to end the session and start a
 new one that calls `EnterWorktree` with `path` pointed at the already-existing worktree — a fresh
@@ -170,6 +183,12 @@ For pass 1 through N:
      context is full of in-world names; Step 2's broadened `Read`/`Write`/`Edit`/`Bash` allow entries
      mean a typo like that now fails cleanly instead of blocking on a prompt, but it still wastes the
      pass, so ask for care regardless.
+   - **Any scratch/temp file it needs (e.g. the JSON payload for `record_hearsay.py --json-file`)
+     goes at the worktree root, never inside `<worktree>/.claude/`.** `.claude/` is the harness's own
+     config/skills/permissions directory, not a data workspace — a stray write there can trigger its
+     own permission prompt even when ordinary `Write` calls elsewhere are working cleanly (observed
+     once). The worktree root already holds `.simulate_snapshot.json` for the same reason; scratch
+     files belong alongside it.
    - **Use the Bash tool for every shell command — never the PowerShell tool, not even as a first
      choice on this Windows environment.** Both tools are available, but this skill's whole discipline
      (`py`, never `python`; absolute paths, never `cd`) is written and tested against Bash only, and

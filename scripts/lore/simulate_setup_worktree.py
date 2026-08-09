@@ -29,11 +29,20 @@ separate gaps beyond what those two cover:
    a documented fallback-after-failure - as its first choice for a shell command), which is a wholly
    separate tool with its own permission gate that a `"Bash"` allow entry does not cover. Blanket-allow
    it too rather than assuming Bash is the only shell tool a subagent will ever pick.
+5. **`.claude/` gets its own extra protection that a bare `"Write"`/`"Edit"` allow does not cover.**
+   Observed: a subagent wrote a scratch JSON file into the worktree's own `.claude/` directory (an odd
+   location choice in itself - Step 3 now tells it not to), and that write alone triggered a prompt even
+   though ordinary `Write` calls elsewhere in the worktree had been working cleanly for a dozen prior
+   passes. `.claude/` is the harness's own config/skills/permissions directory, so it's reasonable this
+   gets guarded specially; the fix is the same pattern the harness's own `update-config` skill documents
+   (`"Edit(.claude)"` as a distinct rule from a general `Edit` allow) - add explicit path-scoped entries
+   for both the directory itself and everything under it.
 
 **Every tool a `/simulate` subagent's actual procedure could plausibly reach for is blanket-allowed
-below** - both shells (`Bash`, `PowerShell`), all file I/O (`Read`, `Write`, `Edit`, `Glob`, `Grep`),
-subagent dispatch (`Agent`), skill invocation (`Skill`, in case it invokes one directly rather than
-reading the SKILL.md file), and its own task tracking (`Task*`). Deliberately NOT included: anything
+below** - both shells (`Bash`, `PowerShell`), all file I/O (`Read`, `Write`, `Edit`, `Glob`, `Grep`,
+plus explicit `.claude/` path entries per point 5), subagent dispatch (`Agent`), skill invocation
+(`Skill`, in case it invokes one directly rather than reading the SKILL.md file), and its own task
+tracking (`Task*`). Deliberately NOT included: anything
 with no role in this skill's lore-only, no-network procedure (`WebFetch`, `WebSearch`, browser/MCP
 tools, scheduling, `EnterWorktree`/`ExitWorktree` - a subagent should never be managing worktrees
 itself) - broadening those would be an unrelated expansion of trust, not a fix for anything this skill
@@ -93,7 +102,8 @@ def main() -> None:
     permissions["defaultMode"] = "bypassPermissions"
     allow = permissions.setdefault("allow", [])
     for entry in (
-        "Agent", "Read", "Write", "Edit", "Bash", "PowerShell", "Glob", "Grep", "Skill",
+        "Agent", "Read", "Write", "Write(.claude)", "Write(.claude/**)",
+        "Edit", "Edit(.claude)", "Edit(.claude/**)", "Bash", "PowerShell", "Glob", "Grep", "Skill",
         "TaskCreate", "TaskUpdate", "TaskGet", "TaskList", "TaskOutput", "TaskStop",
     ):
         if entry not in allow:
