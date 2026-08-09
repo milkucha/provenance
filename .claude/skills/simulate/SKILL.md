@@ -153,11 +153,22 @@ For pass 1 through N:
      pass, so ask for care regardless.
    - **Never use `cd`, under any circumstances — not even as its own standalone command.** A Bash
      command combining `cd <path> && <command>` is hard-blocked by a security guardrail no permission
-     setting can override; it is never worth the risk of the model reaching for it. It's also never
-     needed: every `scripts/lore/*.py` file resolves its own root via
-     `Path(__file__).resolve().parent.parent.parent`, not the shell's cwd, so calling a script by its
-     full absolute path (e.g. `py "<worktree>\scripts\lore\horizon.py" <slug>`) works correctly on its
-     own, in one non-compound command, from any working directory.
+     setting can override; it is never worth the risk of the model reaching for it.
+   - **`py scripts/lore/<name>.py` — call it ONLY by the full absolute worktree path, never a bare
+     relative one, not even once.** This is not just a style preference: a subagent's Bash cwd is not
+     guaranteed to be inside the worktree at all (it may default to the main repo checkout instead), and
+     `Path(__file__).resolve().parent.parent.parent` — the trick every `scripts/lore/*.py` file uses to
+     find its own project root — is exactly what makes a relative call dangerous rather than safe: if
+     the relative path resolves against the *main checkout's own copy* of the script (because that's
+     where cwd happened to be), that copy's `__file__` correctly-but-wrongly points at the *main
+     checkout's* `_lore/`, and the write lands there instead — silently, with no error, since the script
+     ran successfully by every measure it can see. **Confirmed the hard way:** one pass's
+     `record_hearsay.py`/`update_character.py` calls did exactly this, writing real scene content into
+     the user's actual `_lore/characters/*.json`, `hearsay.md`, and `encodings.json` — discovered only
+     because the pass's own after-the-fact verification checked the *worktree's* copy, found the entry
+     missing there, and reported a false "silent script failure" instead of the true cause. Always give
+     the full absolute path: `py "<worktree>\scripts\lore\record_hearsay.py" --json-file "<worktree>\...\file.json"`
+     — never `py scripts/lore/record_hearsay.py ...`.
    - Both participants' names, and that **both already have character files** — Step 1/2's
      interactive questions and the name-uniqueness check are for new characters only and don't apply
      here. It should still: check `life.deceased` before starting, run `horizon.py` for each per
@@ -180,16 +191,25 @@ For pass 1 through N:
      update. This is the actual mechanism being exercised; nothing here gets shortened for speed.
    - **After `record_hearsay.py` reports success, verify it actually landed** — read the tail of
      `<worktree>/_lore/characters/hearsay.md` (or check the entry count) and confirm the new entry is
-     really there before trusting the script's own stdout. Observed once: the script printed a normal
-     success message and an entry count, but the entry was silently absent from both `hearsay.md` and
-     `encodings.json` afterward — a real, unexplained bug, not a permissions issue. If this happens,
-     treat it exactly like any other tool failure per the rule below (report it, don't retry, stop the
-     pass) rather than assuming success from stdout alone.
+     really there before trusting the script's own stdout. **If it's missing from the worktree's copy,
+     do not assume the write silently failed** — check whether it landed in the *main repo's* copy
+     instead (the relative-path leak explained above is exactly this symptom: the script succeeds, the
+     entry exists, just in the wrong repository). Either way, report the exact finding and stop the
+     pass per the rule below rather than retrying or guessing.
    - Report back *only* a short summary, not the transcript: both participants, a one-line gist of
      the scene, whether either's criterion changed (and how), whether either died this pass.
-4. Append that one-line summary to the running log — this is what keeps a long run affordable: the
+4. **Safety net — before trusting the pass's report, check it didn't leak into the real repo:** run
+   `git -C "<main repo root, NOT the worktree>" status --short -- _lore/ _npcs/` (no `cd` — `git -C`
+   targets a foreign path directly in one command and is not subject to the compound-cd block, and this
+   works from inside the worktree). Any output at all means this pass wrote into the user's real files
+   — confirmed possible via the relative-path leak explained in point 3 above. Stop immediately, show
+   the user the leaked diff, and follow their explicit direction on whether to revert it (typically
+   `git checkout -- <the specific leaked paths>` in the main repo, never a bare `git checkout .`) —
+   never revert real files without asking first, and never touch files in that diff unrelated to this
+   pass (another session may be concurrently editing the same shared checkout).
+5. Append that one-line summary to the running log — this is what keeps a long run affordable: the
    main thread accumulates summaries, never the 50 full transcripts and record-keeping writeups.
-5. If either participant died this pass, drop them from the living pool before the next draw.
+6. If either participant died this pass, drop them from the living pool before the next draw.
 
 ## Step 4 — Summarize
 
