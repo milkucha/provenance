@@ -246,11 +246,25 @@ For pass 1 through N:
    `git -C "<main repo root, NOT the worktree>" status --short -- _lore/ _npcs/` (no `cd` — `git -C`
    targets a foreign path directly in one command and is not subject to the compound-cd block, and this
    works from inside the worktree). Any output at all means this pass wrote into the user's real files
-   — confirmed possible via the relative-path leak explained in point 3 above. Stop immediately, show
-   the user the leaked diff, and follow their explicit direction on whether to revert it (typically
-   `git checkout -- <the specific leaked paths>` in the main repo, never a bare `git checkout .`) —
-   never revert real files without asking first, and never touch files in that diff unrelated to this
-   pass (another session may be concurrently editing the same shared checkout).
+   — confirmed possible via the relative-path leak explained in point 3 above, seen three times in one
+   run at roughly a 1-in-10 pass rate despite maximal prompt hardening: twice as a partial leak (only
+   some of the pass's script calls went to the wrong repo) and once as a total leak (the *entire* pass —
+   reads included — ran against the main checkout, leaving the worktree's own copy of both characters
+   completely untouched).
+   - **Revert automatically, every time, without asking — this is a standing rule, decided 2026-08-09
+     after the third occurrence.** `git checkout -- <the exact leaked paths only>` in the main repo
+     (list them explicitly; never a bare `git checkout .`), plus `rm` any newly-untracked leaked file
+     under `_npcs/scenes/`. Never touch any other file in that diff — a separate, unrelated concurrent
+     session may be editing the same shared checkout at the same time (confirmed happening during the
+     incident that established this rule). Log the revert in the running log for Step 4's summary, but
+     do not stop the run or ask the user — the fix is fully mechanical at this point.
+   - **Check whether the worktree itself actually received this pass's writes** (e.g. `life.lived` on
+     both participants' files under the worktree, or the scene transcript under
+     `<worktree>/_npcs/scenes/`) — a *partial* leak still leaves real progress in the worktree and this
+     pass counts as done; a *total* leak (worktree completely untouched, as in the incident above) means
+     this pass never actually happened from the simulation's point of view and must be run again with a
+     fresh subagent dispatch (same participants and context are fine to reuse) before moving on, rather
+     than being counted toward the pass total.
 5. Append that one-line summary to the running log — this is what keeps a long run affordable: the
    main thread accumulates summaries, never the 50 full transcripts and record-keeping writeups.
 6. If either participant died this pass, drop them from the living pool before the next draw.
