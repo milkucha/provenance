@@ -81,7 +81,7 @@ to this one disposable, isolated copy for exactly the duration of this run; it m
 the directory the user actually works in day to day, and every future `/simulate` run gets its own
 fresh worktree and this same fresh grant via the same script, not a standing one.
 
-**`defaultMode: bypassPermissions` alone is not sufficient — three more gaps, all now closed by the
+**`defaultMode: bypassPermissions` alone is not sufficient — four more gaps, all now closed by the
 script, are worth knowing about if a run still stalls:**
 1. Dispatching a subagent (the `Agent` tool) can still prompt on its own even with the bypass active
    for ordinary Bash/Read/Write in the same directory — the script adds an explicit `"Agent"` allow
@@ -94,16 +94,35 @@ script, are worth knowing about if a run still stalls:**
    correctly, regardless of the shell's cwd.
 3. A subagent can mistype the long absolute worktree path when re-deriving it from memory across many
    tool calls (observed: a lore-salient word silently substituted for the real folder name in a Read
-   call), which then prompts for a new, unrecognized path. The script blanket-allows
-   `Read`/`Write`/`Edit`/`Bash`/`Glob`/`Grep` (not just `Agent`) so a typo'd path fails cleanly with an
-   ordinary tool error instead of blocking on a prompt — safe here specifically because this is a
-   disposable, isolated worktree, never the directory the user actually works in.
+   call), which then prompts for a new, unrecognized path.
+4. A subagent can reach for the **PowerShell tool instead of Bash** on this Windows environment as its
+   *first* choice, not merely as a fallback after a Bash failure — a wholly separate tool with its own
+   permission gate that a `"Bash"` allow entry does not cover.
+
+The script closes all four the same way: blanket-allow **every tool this skill's subagents could
+plausibly reach for** — `Read`/`Write`/`Edit`/`Bash`/`PowerShell`/`Glob`/`Grep`/`Agent`/`Skill`/`Task*`
+— rather than adding one entry at a time as each gap surfaces. A typo'd path or an unexpected tool
+choice now fails cleanly with an ordinary tool error instead of blocking on a prompt — safe here
+specifically because this is a disposable, isolated worktree, never the directory the user actually
+works in. Deliberately NOT included: anything with no role in this lore-only, no-network procedure
+(`WebFetch`, `WebSearch`, browser/MCP tools, scheduling, `EnterWorktree`/`ExitWorktree`) — broadening
+those would be an unrelated expansion of trust, not a fix for anything this skill actually does.
 
 If prompts still fire during Step 3 despite all of the above, the fix is to end the session and start a
 new one that calls `EnterWorktree` with `path` pointed at the already-existing worktree — a fresh
 session's config load will pick up the settings file that's already sitting there even if the one
 that created it couldn't. Passes already completed are safe either way; they're written straight to
 disk in the worktree as each one finishes, per Step 3.
+
+**Worktree naming and Windows' 260-char path limit:** this repo has hit this before (see
+`f3e4fbd`'s `.venv` untracking) and the setup script's own worktree path can push some of the repo's
+already-deeply-nested files over the limit purely from the *name* being a few characters longer — 
+confirmed the hard way: `--name simulate-permtest2` (one character longer than a name that had just
+worked) made `git worktree add` fail outright with dozens of "Filename too long" errors, while the
+shorter name succeeded cleanly. Prefer the script's own default name (`simulate-<YYYYMMDD-HHMMSS>`,
+already about as short as a collision-safe name can be) over a custom `--name` unless there's a real
+reason to pick one, and if `git worktree add` fails this way, that's the first thing to suspect — not
+a settings or permissions problem.
 
 A fresh worktree per run is what makes repeated runs independently comparable against the same
 starting lore state — report the path and branch to the user once created. Everything from here
@@ -151,6 +170,12 @@ For pass 1 through N:
      context is full of in-world names; Step 2's broadened `Read`/`Write`/`Edit`/`Bash` allow entries
      mean a typo like that now fails cleanly instead of blocking on a prompt, but it still wastes the
      pass, so ask for care regardless.
+   - **Use the Bash tool for every shell command — never the PowerShell tool, not even as a first
+     choice on this Windows environment.** Both tools are available, but this skill's whole discipline
+     (`py`, never `python`; absolute paths, never `cd`) is written and tested against Bash only, and
+     switching tools mid-run is separately banned below for good reason. Say this explicitly, since a
+     model can otherwise reach for PowerShell by default on Windows without ever having failed at
+     anything first.
    - **Never use `cd`, under any circumstances — not even as its own standalone command.** A Bash
      command combining `cd <path> && <command>` is hard-blocked by a security guardrail no permission
      setting can override; it is never worth the risk of the model reaching for it.

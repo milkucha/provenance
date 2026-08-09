@@ -23,12 +23,24 @@ separate gaps beyond what those two cover:
    re-deriving it from memory across many tool calls - observed once as a lore-salient word ("Lundria")
    silently substituted for the real folder name ("Luminacion") in a Read call, which then prompted for
    a new, unrecognized path outside the worktree. Read is non-destructive (a bad path just errors
-   cleanly), so it's safe to blanket-allow; broadening `Write`/`Edit`/`Bash` too closes the same class
-   of gap for every other tool a subagent might invoke mid-pass, and `Glob`/`Grep` cost nothing to add.
-   This is a one-way trust expansion scoped ONLY to this one disposable worktree's own settings.json -
-   it is never written to the main repo's settings.json/settings.local.json, and never to
-   settings.local.json even inside the worktree (which the harness silently rewrites on individual
-   prompt approvals, clobbering any bypass written there).
+   cleanly), so it's safe to blanket-allow; broadening every other tool a subagent could plausibly reach
+   for closes the same class of gap regardless of which one it picks.
+4. A subagent can reach for the **PowerShell** tool instead of Bash on this Windows environment (not as
+   a documented fallback-after-failure - as its first choice for a shell command), which is a wholly
+   separate tool with its own permission gate that a `"Bash"` allow entry does not cover. Blanket-allow
+   it too rather than assuming Bash is the only shell tool a subagent will ever pick.
+
+**Every tool a `/simulate` subagent's actual procedure could plausibly reach for is blanket-allowed
+below** - both shells (`Bash`, `PowerShell`), all file I/O (`Read`, `Write`, `Edit`, `Glob`, `Grep`),
+subagent dispatch (`Agent`), skill invocation (`Skill`, in case it invokes one directly rather than
+reading the SKILL.md file), and its own task tracking (`Task*`). Deliberately NOT included: anything
+with no role in this skill's lore-only, no-network procedure (`WebFetch`, `WebSearch`, browser/MCP
+tools, scheduling, `EnterWorktree`/`ExitWorktree` - a subagent should never be managing worktrees
+itself) - broadening those would be an unrelated expansion of trust, not a fix for anything this skill
+actually does. This is a one-way trust expansion scoped ONLY to this one disposable worktree's own
+settings.json - it is never written to the main repo's settings.json/settings.local.json, and never to
+settings.local.json even inside the worktree (which the harness silently rewrites on individual prompt
+approvals, clobbering any bypass written there).
 
 What this script does NOT do: call EnterWorktree. That's a tool call only the calling skill can make;
 this script only needs the worktree and its settings file to already exist on disk first, per the
@@ -80,7 +92,10 @@ def main() -> None:
     permissions = settings.setdefault("permissions", {})
     permissions["defaultMode"] = "bypassPermissions"
     allow = permissions.setdefault("allow", [])
-    for entry in ("Agent", "Read", "Write", "Edit", "Bash", "Glob", "Grep"):
+    for entry in (
+        "Agent", "Read", "Write", "Edit", "Bash", "PowerShell", "Glob", "Grep", "Skill",
+        "TaskCreate", "TaskUpdate", "TaskGet", "TaskList", "TaskOutput", "TaskStop",
+    ):
         if entry not in allow:
             allow.append(entry)
     settings["skipDangerousModePermissionPrompt"] = True
