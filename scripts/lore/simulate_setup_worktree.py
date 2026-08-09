@@ -6,6 +6,30 @@ was confirmed to go wrong: editing the settings file after switching into the wo
 subagent still prompting for the rest of that session, because a session's config for a directory is
 fixed at the point it starts treating that directory as a project root.
 
+`defaultMode: bypassPermissions` + `skipDangerousModePermissionPrompt` alone are NOT sufficient to
+guarantee zero prompts for an unattended run - confirmed the hard way on 2026-08-08 mid-run, three
+separate gaps beyond what those two cover:
+1. Dispatching a subagent (the Agent tool) still prompted despite bypassPermissions being active for
+   ordinary Bash/Read/Write calls in the same directory - needs its own explicit `"Agent"` allow entry
+   (and `skipWorkflowUsageWarning: true`, in case the harness classifies subagent dispatch as a
+   "workflow" internally).
+2. A Bash command combining `cd <path> && <command>` is hard-blocked by a security guardrail
+   ("Compound command contains cd with path operation") that no permission setting can override, ever
+   - this is not fixable via settings.json at all. The only fix is behavioral: never emit that pattern
+   in the first place (see SKILL.md Step 3's "never use cd" rule) - every `scripts/lore/*.py` file
+   resolves its own root via `Path(__file__).resolve().parent.parent.parent`, so `cd` is never actually
+   needed to invoke them correctly regardless of shell cwd.
+3. A subagent (especially on a smaller/cheaper model) can mistype the long absolute worktree path when
+   re-deriving it from memory across many tool calls - observed once as a lore-salient word ("Lundria")
+   silently substituted for the real folder name ("Luminacion") in a Read call, which then prompted for
+   a new, unrecognized path outside the worktree. Read is non-destructive (a bad path just errors
+   cleanly), so it's safe to blanket-allow; broadening `Write`/`Edit`/`Bash` too closes the same class
+   of gap for every other tool a subagent might invoke mid-pass, and `Glob`/`Grep` cost nothing to add.
+   This is a one-way trust expansion scoped ONLY to this one disposable worktree's own settings.json -
+   it is never written to the main repo's settings.json/settings.local.json, and never to
+   settings.local.json even inside the worktree (which the harness silently rewrites on individual
+   prompt approvals, clobbering any bypass written there).
+
 What this script does NOT do: call EnterWorktree. That's a tool call only the calling skill can make;
 this script only needs the worktree and its settings file to already exist on disk first, per the
 ordering /simulate Step 2 depends on.
@@ -53,8 +77,14 @@ def main() -> None:
     else:
         settings = {}
 
-    settings.setdefault("permissions", {})["defaultMode"] = "bypassPermissions"
+    permissions = settings.setdefault("permissions", {})
+    permissions["defaultMode"] = "bypassPermissions"
+    allow = permissions.setdefault("allow", [])
+    for entry in ("Agent", "Read", "Write", "Edit", "Bash", "Glob", "Grep"):
+        if entry not in allow:
+            allow.append(entry)
     settings["skipDangerousModePermissionPrompt"] = True
+    settings["skipWorkflowUsageWarning"] = True
 
     with open(settings_path, "w", encoding="utf-8") as f:
         json.dump(settings, f, indent=2, ensure_ascii=False)

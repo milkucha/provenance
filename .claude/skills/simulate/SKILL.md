@@ -46,10 +46,10 @@ Ask as plain conversation, or AskUserQuestion where multiple-choice fits:
 
 ## Step 2 — Create the worktree
 
-Every pass in Step 3 dispatches a subagent that runs several `py scripts/lore/...` calls, `cd`, and
-`git`-adjacent commands — dozens of routine tool calls per pass, times N passes. Without a permission
-bypass in place *before* any of that runs, each one prompts the user, which defeats the entire point
-of an unattended batch run.
+Every pass in Step 3 dispatches a subagent that runs several `py scripts/lore/...` calls (each by full
+absolute path — see Step 3's "never use `cd`" rule) plus file reads/writes — dozens of routine tool
+calls per pass, times N passes. Without a permission bypass in place *before* any of that runs, each
+one prompts the user, which defeats the entire point of an unattended batch run.
 
 1. Run the setup script — it creates the worktree with `git worktree add ... HEAD` and writes the
    scoped permission bypass into *that worktree's own* `.claude/settings.json`, both in one call, in
@@ -81,8 +81,26 @@ to this one disposable, isolated copy for exactly the duration of this run; it m
 the directory the user actually works in day to day, and every future `/simulate` run gets its own
 fresh worktree and this same fresh grant via the same script, not a standing one.
 
-If prompts still fire during Step 3 despite this order, the fix is to end the session and start a new
-one that calls `EnterWorktree` with `path` pointed at the already-existing worktree — a fresh
+**`defaultMode: bypassPermissions` alone is not sufficient — three more gaps, all now closed by the
+script, are worth knowing about if a run still stalls:**
+1. Dispatching a subagent (the `Agent` tool) can still prompt on its own even with the bypass active
+   for ordinary Bash/Read/Write in the same directory — the script adds an explicit `"Agent"` allow
+   entry (and `skipWorkflowUsageWarning: true`) to close this.
+2. A Bash command combining `cd <path> && <command>` is hard-blocked by a security guardrail
+   ("Compound command contains cd with path operation") that **no permission setting can ever
+   override**. This is not a settings problem — it's a behavioral one. See Step 3's "never use `cd`"
+   rule below; every `scripts/lore/*.py` file resolves its own root via
+   `Path(__file__).resolve().parent.parent.parent`, so `cd` is never actually needed to invoke them
+   correctly, regardless of the shell's cwd.
+3. A subagent can mistype the long absolute worktree path when re-deriving it from memory across many
+   tool calls (observed: a lore-salient word silently substituted for the real folder name in a Read
+   call), which then prompts for a new, unrecognized path. The script blanket-allows
+   `Read`/`Write`/`Edit`/`Bash`/`Glob`/`Grep` (not just `Agent`) so a typo'd path fails cleanly with an
+   ordinary tool error instead of blocking on a prompt — safe here specifically because this is a
+   disposable, isolated worktree, never the directory the user actually works in.
+
+If prompts still fire during Step 3 despite all of the above, the fix is to end the session and start a
+new one that calls `EnterWorktree` with `path` pointed at the already-existing worktree — a fresh
 session's config load will pick up the settings file that's already sitting there even if the one
 that created it couldn't. Passes already completed are safe either way; they're written straight to
 disk in the worktree as each one finishes, per Step 3.
@@ -127,7 +145,19 @@ For pass 1 through N:
      conversation's; a relative path can silently resolve outside wherever its real cwd turns out to
      be, and the `Read` tool is never gated for paths *inside* the working directory — only for paths
      it resolves as outside it, which is what a permission prompt on a plain file read means when it
-     happens.
+     happens. Tell it explicitly to copy the worktree path string literally rather than re-deriving it
+     from memory on each call — a smaller model can silently substitute a lore-salient word for part of
+     the real path (observed once: "Lundria" for "Luminacion") when the path is long and the model's
+     context is full of in-world names; Step 2's broadened `Read`/`Write`/`Edit`/`Bash` allow entries
+     mean a typo like that now fails cleanly instead of blocking on a prompt, but it still wastes the
+     pass, so ask for care regardless.
+   - **Never use `cd`, under any circumstances — not even as its own standalone command.** A Bash
+     command combining `cd <path> && <command>` is hard-blocked by a security guardrail no permission
+     setting can override; it is never worth the risk of the model reaching for it. It's also never
+     needed: every `scripts/lore/*.py` file resolves its own root via
+     `Path(__file__).resolve().parent.parent.parent`, not the shell's cwd, so calling a script by its
+     full absolute path (e.g. `py "<worktree>\scripts\lore\horizon.py" <slug>`) works correctly on its
+     own, in one non-compound command, from any working directory.
    - Both participants' names, and that **both already have character files** — Step 1/2's
      interactive questions and the name-uniqueness check are for new characters only and don't apply
      here. It should still: check `life.deceased` before starting, run `horizon.py` for each per
@@ -148,6 +178,13 @@ For pass 1 through N:
      second time. Bare `python` is confirmed not on PATH in this environment — always use `py`.
    - Run Steps 5, 5b, and 6 **in full** — hearsay mutation, shock resolution, drift, the record
      update. This is the actual mechanism being exercised; nothing here gets shortened for speed.
+   - **After `record_hearsay.py` reports success, verify it actually landed** — read the tail of
+     `<worktree>/_lore/characters/hearsay.md` (or check the entry count) and confirm the new entry is
+     really there before trusting the script's own stdout. Observed once: the script printed a normal
+     success message and an entry count, but the entry was silently absent from both `hearsay.md` and
+     `encodings.json` afterward — a real, unexplained bug, not a permissions issue. If this happens,
+     treat it exactly like any other tool failure per the rule below (report it, don't retry, stop the
+     pass) rather than assuming success from stdout alone.
    - Report back *only* a short summary, not the transcript: both participants, a one-line gist of
      the scene, whether either's criterion changed (and how), whether either died this pass.
 4. Append that one-line summary to the running log — this is what keeps a long run affordable: the
