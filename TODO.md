@@ -972,19 +972,83 @@ conflate:
       Anthropic's Messages API tool-use format at all — they talk to Ollama via its OpenAI-compatible
       tool-calling path, which has existed since mid-2024 and is far more battle-tested than Ollama's
       ~7-month-old Anthropic-compat endpoint that produced failure modes 1 and 3 above.
-      **Not yet decided which to try first** — pick up here next session.
-- [ ] **If Axis A goes well and Axis B still wants doing:** create `AGENTS.md` at repo root (the real
-      cross-tool standard for repo-level agent orientation — natively read by Codex/Cursor/Gemini
-      CLI/Windsurf/Aider/15+ others, 60,000+ repos on it already) carrying what's currently split
-      between README §0–2 and `.claude/PRINCIPLES.md`, plus a thin `CLAUDE.md` that imports it (Claude
-      Code doesn't read `AGENTS.md` natively as of mid-2026). Then a per-skill compatibility audit —
-      tag `/simulate` with the spec's `compatibility` frontmatter field (`compatibility: Requires
-      Claude Code (git worktree isolation, subagent dispatch, no portable equivalent yet)`) rather than
-      letting it silently half-work elsewhere; the `AskUserQuestion`-leaning skills (`/enact`,
-      `/embody`, `/character`) likely degrade gracefully since most agents can infer "ask a
-      two-option question" from context even without that exact tool. Finish with one real empirical
-      test on an alternate harness (Gemini CLI is free and on the Agent Skills client list) running one
-      simple skill end-to-end (`/tell`, not `/simulate`) before trusting the plan.
+      **Decided (2026-08-09): OpenHands.** Chosen over Goose specifically on scalability — Goose
+      hard-caps concurrent subagents at 10 with no recursive spawning and a 5-minute/25-turn default
+      ceiling per subagent, while OpenHands isolates each task in its own Docker/Kubernetes container
+      with no equivalent hard cap, has a headless REST-API mode built for CI/batch use, and an optional
+      managed-cloud path if local scale ever isn't enough — the better long-term fit for something
+      shaped like `/simulate` (many isolated, potentially parallel passes) even though Goose would have
+      been the faster thing to stand up tonight.
+
+### Repo restructuring plan (2026-08-09, planned — NOT YET IMPLEMENTED, do next session)
+
+**The problem with the first draft of this plan:** it pointed OpenHands at `.claude/skills/` (via a
+junction) and left `.claude/PRINCIPLES.md` as the canonical philosophy file — which still made the
+*project* depend on a `.claude/`-shaped structure, just with another harness bolted on. Correctly
+called out by the user: model-agnosticism means the reverse — `.claude/` should hold only what Claude
+Code itself hard-pins to that exact path, nothing else, and the project's real content should live
+somewhere no single vendor's product name is attached to.
+
+**Corrected target structure:**
+
+```
+AGENTS.md              canonical, harness-neutral orientation doc — replaces .claude/PRINCIPLES.md's
+                        role (the "nothing decided silently" rule) plus README §0's architecture
+                        overview, rewritten for an agent audience. The real cross-tool standard for
+                        this role (natively read by Codex/Cursor/Gemini CLI/Windsurf/Aider/15+ others,
+                        60,000+ repos on it already).
+CLAUDE.md               thin — just imports AGENTS.md (Claude Code doesn't read AGENTS.md natively as
+                        of mid-2026, per its own docs).
+.agents/
+  skills/                canonical home for all 10 skill folders (moved from .claude/skills/ via
+                          `git mv`, preserving history) — the actual Agent Skills open-standard
+                          location, and OpenHands' own default lookup path, so it needs zero
+                          skills-related config on OpenHands' side once files live here for real.
+  harness/
+    openhands/
+      launch.ps1          sets LLM_MODEL/LLM_BASE_URL/LLM_API_KEY env vars + `--override-with-envs`
+                          (required — OpenHands silently ignores those env vars without this flag and
+                          falls back to the user's global `~/.openhands/settings.json`, which isn't
+                          repo-portable), then runs `openhands serve --mount-cwd`. Action-approval
+                          stays interactive by default (matching how the main repo's own
+                          `.claude/settings.json` behaves today — no bypass); a bypass
+                          (`--always-approve`, or `--headless --exit-without-confirmation` for full
+                          unattended automation) is an opt-in flag on the script, not the default —
+                          same split `/simulate`'s worktree already draws between normal sessions and
+                          batch runs, deliberately kept consistent rather than inventing a new rule.
+.claude/
+  settings.json           stays — genuinely Claude-only, no cross-tool equivalent exists, and it's
+                          already repo-committable so Claude Code needs nothing else.
+  settings.local.json     stays, same reason.
+  skills/                  → directory junction to ../.agents/skills (same proven pattern as this
+                          repo's existing `resourcepack/` ↔ `resourcepacks/luminacion/` junction, see
+                          README Layer 4) — exists only because Claude Code hardcodes this exact path
+                          and can't be told to look elsewhere. Zero real content stored under `.claude/`
+                          once this is done.
+README.md                unchanged — still the human tutorial, untouched by any of this.
+```
+
+**Steps, in order:**
+1. `git mv` all 10 skill folders from `.claude/skills/` → `.agents/skills/`.
+2. Write `AGENTS.md` at repo root (content sourced from `.claude/PRINCIPLES.md` + README §0).
+3. Delete `.claude/PRINCIPLES.md`; update the 6 skills that currently point at it (`enact`, `embody`,
+   `spawn`, `integrate`, `tell`, `character`) to point at `AGENTS.md` instead.
+4. Write thin `CLAUDE.md` that imports `AGENTS.md`.
+5. Create the `.claude\skills` → `..\.agents\skills` junction (`mklink /J`, no admin/Developer Mode
+   needed for a directory junction on Windows, unlike a symlink).
+6. Fix any other live references to `.claude/skills/` across the repo (README, scripts) —
+   `TODO.md`'s own historical entries stay untouched; they're a changelog of what was true when
+   written, not living documentation.
+7. Write `.agents/harness/openhands/launch.ps1` per the spec above.
+8. Install OpenHands (`py -3.12 -m pip install openhands-ai`, sidestepping the machine's default
+   Python 3.14 that caused the fastapi/litellm conflict earlier this session) and run the launch
+   script from inside the repo.
+9. Smoke test: start a fresh OpenHands conversation (required so it rebuilds its skills catalog),
+   confirm it lists the skills correctly, then repeat the same low-stakes checks from the Ollama/Claude
+   Code round — read `.claude/PRINCIPLES.md` → `AGENTS.md` once moved, then `/tell` — watching
+   specifically for whether OpenHands' harness avoids the three failure modes logged above (fake tool
+   calls, unprompted irrelevant writes, mid-conversation tool amnesia), since the whole premise of
+   switching harnesses is that those were Claude-shaped-harness problems, not Qwen problems.
 - [ ] **Cosmetic, low priority:** every skill's `disable-model-invocation: true` frontmatter field is
       a Claude Code extension, not part of the core Agent Skills spec (confirmed against
       agentskills.io/specification — core fields are `name`, `description`, `license`, `compatibility`,
@@ -1103,3 +1167,122 @@ should surface once this is actually tried:**
   2026-08-08: one script, subtype parameter.** The five detection mechanisms differ enough to need
   separate internal logic branches, but share one entry point rather than duplicating I/O/CLI scaffolding
   across five files.
+- [ ] **Does a synthesis ever reach `encodings.json`, and by what mechanism?** The spec above says a
+  synthesis is "private knowledge unless the character actually voices it in a later scene, at which
+  point it becomes an ordinary hearsay claim through the existing recording path, no new sampling-pool
+  machinery needed" — but that claim hasn't been checked against how a hearsay claim actually gets folded
+  into `encodings.json` (vs. just `hearsay.md`/the character's own `knowledge.experience`). Worth
+  confirming, once Step 5c has actually fired at least once and been voiced in a follow-up scene: does
+  `record_hearsay.py`/`/enact` Step 5's existing path really carry a `"kind": "synthesis"` claim all the
+  way into the world's sampleable pool the same way any other hearsay claim does, or does something
+  synthesis-specific (the `derived_from`/`about`-list shape, the inherited-credibility hedging) get lost
+  or need special-casing along the way? Unverified either direction — flagged here so it isn't assumed
+  either way before a real run tests it.
+
+### /simulate debrief and next-phase design: materiality, arcs, and emergence (2026-08-10, planned — design only, NOT YET IMPLEMENTED)
+
+**Debrief context.** The 50-pass `/simulate` run (2026-08-08/09/10, worktree `simulate-20260808-181023`,
+full record in that worktree's `SIMULATION_LOG.md`) worked exactly as designed mechanically — 25
+criterion moves, 20 syntheses, hearsay mutation and record-keeping all correct, several real machinery
+bugs found and permanently fixed in the skill itself — but the *content* converged heavily on
+epistemological discussion (whose account to trust, contradiction-preservation) instead of producing
+dramatic emergence. Diagnosed three independent, compounding, structural sources — none a bug in what
+was built, all properties of what the tool currently *is*:
+
+1. 3 of the 5 participants (Auroboro III, Ilária, Khaoe) walked in with epistemically-anchored criteria
+   from *before* this run — traceable to backstory (Ilária's backstory literally is "wrote one of the
+   two contradictory chronicles"), not to anything this run did.
+2. `/enact` Step 3's `trusts`/`distrusts` field is explicitly named as the skill's privileged dramatic
+   payoff ("nearly invisible until two sources actually disagree in the scene — that's the moment it
+   shows"), which structurally channels *every* scene toward epistemic conflict regardless of what a
+   character's `standard` is actually about (even Nerkeli's action-flavored standard — "reach places,
+   don't just study maps" — got phrased as a *verification*, i.e. epistemic, distrust once run through
+   this mechanism).
+3. Any future "shared knowledge between two characters" topic-selector would *also* skew epistemic, for
+   a third, unrelated reason: checked directly against `encodings.json`, `concepts` (19 entries) and
+   `conflicts` (18) are roughly a third the size of `locations` (58) and `named_inhabitants` (69) — so
+   two independently-sampled characters are mechanically far more likely to coincidentally share a
+   concept or conflict than a specific person or place, purely from smaller-pool collision odds.
+
+**Conclusion:** the tool renders its designed objective correctly — lore evolves, criteria shift, hearsay
+mutates, exactly as specified. The underwhelming *drama* isn't a flaw in that design; it's that
+everything so far runs on one substrate only (language), with no material consequence, no scarcity, no
+clock outside `life.span` (which never fired once in 50 passes), and a content-generation step
+(`trusts`/`distrusts`) that was only ever meant to modulate a reaction, not generate a topic.
+
+**Proposed next phase**, worked out collaboratively in the debrief conversation following the run:
+
+1. **Routines as authored archetypes.** Each character gets a small, handcrafted set of home routines —
+   a location tied to a role ("works the market," "keeps the workshop in Khan Icé"). The routine *is*
+   the archetype: "market" already implies buying, selling, price disputes, scarcity, trust in a trading
+   partner — texture for free, without authoring a project per character. Author-placed, not generated,
+   same discipline as everything else in this system that's a premise rather than painted detail.
+2. **Cycling.** Each pass, a simple mechanical rule (fixed rotation, or an authored skew toward one
+   routine) decides which of a character's routines they're currently in. Deliberately not meaningful on
+   its own — just needs to run.
+3. **Pairing stays exactly as-is** — `pick_pair.py`, unchanged, still a uniform random draw across the
+   living pool. No new selection layer; letting a model choose who to visit would just reintroduce the
+   same salience bias `pick_pair.py` already exists to prevent.
+4. **Location resolves mechanically after the draw:** compare both participants' current routine. Same →
+   coincidence (scene happens there, whichever one's "home" it narratively is decided by a coin flip —
+   unplanned, ordinary, no criterion or motive required). Different → visit (scene happens at
+   participant_2's home; participant_1 traveled). Verified `pick_pair.py`'s `random.sample()` carries no
+   positional bias, so the traveler/host role averages out fairly over a long run — no extra fairness
+   logic needed.
+5. **Group scenes fall out of coincidence for free.** When 2+ participants share a location, check every
+   *other* living character's current routine against that spot; each match gets an independent
+   dice-roll chance to join. Keeps group scenes rare by construction; the roll probability should get
+   tuned down as population grows (see reproduction below), or group scenes stop being rare as the cast
+   grows.
+6. **Arcs, derived from the routine's archetype, not a separate collision-derivation step.** Authored
+   once per place-type (the market archetype, the workshop archetype), not per character. An arc carries
+   real progressive state — a "last thing done" that every scene touching that routine advances. This is
+   genuinely material: an evolving fact, not a corpus-drawn category (so it doesn't inherit the
+   small-pool bias in point 3) and not free model invention (so it doesn't inherit the salience bias
+   `pick_pair.py` was built to avoid).
+7. **Scene content candidate — proposed, not decided:** anchor each scene on the host's (or shared, in a
+   coincidence) "last thing done." The visitor walks into a concrete, already-determined material fact,
+   and brings their own last-thing-done into it. `trusts`/`distrusts` still applies, but only to *how*
+   each character reacts to what's actually there — it stops being asked to generate the topic too.
+   **Unresolved:** how a reaction is supposed to fold back into becoming the arc's *next* "last thing
+   done" — flagged in the debrief, not solved.
+8. **Reproduction (autopoiesis — self-*re*production).** Rare, selected event, not automatic once a
+   threshold (e.g. a minimum shared-conversation count, cheap to check since hearsay entries already
+   record participants) is crossed — mirrors how death is gated by `horizon.py`'s own logic, not
+   automatic either. **Open: what triggers the birth *check* itself** (every pass? probability-gated?).
+   Once selected: mirror `record_death.py`'s existing circle-notification pattern — the parents' circles
+   get told immediately ("others know them before they know them"), while the child doesn't enter
+   `pick_pair.py`'s eligible pool until a cooldown clears (decided at creation, hand-authored, like
+   routine counts). The child's traits should be a genuine mutation/blend of both parents — knowledge
+   crossed and mutated, not a fresh `sample_lore_knowledge.py` draw; criterion inherited-then-mutated
+   rather than freshly derived; possibly `life.span` itself as a heritable trait — not just "a new NPC,"
+   an actual drift of the population's own composition across generations.
+9. **Emergent routine acquisition (later idea, not decided):** a location a character keeps ending up at
+   via repeated visits could become a de facto additional routine over time, without being authored at
+   creation — emergent geography layered on top of the handcrafted starting set.
+
+**Explicitly still open — per this project's own "nothing decided silently" rule, do not resolve these
+silently when implementing:**
+- Birth-check trigger condition (point 8).
+- How a scene's outcome becomes the arc's next "last thing done" (point 7).
+- Group scenes need `/enact` Step 3b extended beyond its current strictly-two-participant design —
+  multiple `trusts`/`distrusts` pairs interacting at once, and whether an anchor-touching shock is
+  visible to everyone present or just whoever it's aimed at.
+- Whether `/enact` Step 3 should be rewritten to give material/action friction an equally-weighted
+  "moment it shows" alongside epistemic disagreement now that arcs are meant to carry most of that
+  weight — or left as-is, since it may end up doing less work once arcs exist regardless.
+
+**Suggested implementation order** — this is a substantial redesign; build and test the smaller piece
+before the larger one, not all at once:
+1. Add authored `routines` + per-archetype texture to character files (or a shared lookup keyed by
+   archetype name), plus the cycling rule.
+2. Extend `/simulate` Step 3 to compute each participant's current routine post-pairing and resolve
+   coincidence vs. visit into a scene location.
+3. Add arc state (a `last_done`-shaped field) and seed scene content from it instead of free invention,
+   per point 7.
+4. Run a smaller `/simulate` batch on the existing 5-character population against just steps 1–3,
+   specifically to test whether this actually breaks the epistemology-convergence pattern, before
+   building anything further on top of it.
+5. Only after that: reproduction (point 8) and group scenes (point 5), which both depend on the above
+   already working and both need `/enact` itself extended — dyadic → variable participant count for
+   group scenes; a new record-keeping script mirroring `record_death.py` for births.
