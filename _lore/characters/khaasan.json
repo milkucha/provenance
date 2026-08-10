@@ -122,5 +122,38 @@
   "life": {
     "lived": 3,
     "deceased": false
+  },
+  "routines": [
+    {
+      "location": "Görff",
+      "archetype": "waystation",
+      "weight": 55,
+      "specialization": "the departure post where he keeps track of who's arrived and who hasn't"
+    },
+    {
+      "location": "Khan Ice",
+      "archetype": "waystation",
+      "weight": 30,
+      "specialization": "his uncle's house, the one fixed point he circles back to"
+    },
+    {
+      "location": "Salthos Cruzados",
+      "archetype": "waystation",
+      "weight": 15,
+      "specialization": "a stop on the long route where Khaoe once waited for him"
+    }
+  ],
+  "arc": {
+    "about": [
+      "concept: khaasan_waypost_chain",
+      "location: khan_ice"
+    ],
+    "needs": [
+      "contacts",
+      "news"
+    ],
+    "archetype": "waystation",
+    "resolution": "ongoing",
+    "history": []
   }
 }

@@ -148,5 +148,32 @@
   "life": {
     "lived": 2,
     "deceased": false
+  },
+  "routines": [
+    {
+      "location": "Khol Moshin",
+      "archetype": "market",
+      "weight": 50,
+      "specialization": "busks in the market of a hundred tongues, trading songs for news"
+    },
+    {
+      "location": "Görff",
+      "archetype": "workshop",
+      "weight": 50,
+      "specialization": "works new songs into shape between towns, testing them on strangers before he lets them travel"
+    }
+  ],
+  "arc": {
+    "about": [
+      "concept: bardaglis_untraceable_ballad",
+      "location: khol_moshin"
+    ],
+    "needs": [
+      "news",
+      "contacts"
+    ],
+    "archetype": "workshop",
+    "resolution": "ongoing",
+    "history": []
   }
 }

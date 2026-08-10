@@ -116,5 +116,31 @@
   "life": {
     "lived": 3,
     "deceased": false
+  },
+  "routines": [
+    {
+      "location": "Feria del Milenio",
+      "archetype": "archive",
+      "weight": 70,
+      "specialization": "tends the Plaza de las Culturas' map table, filling gaps as travelers report them"
+    },
+    {
+      "location": "Salthos Cruzados",
+      "archetype": "market",
+      "weight": 30,
+      "specialization": "checks the harbor market for traders who've been somewhere his map hasn't"
+    }
+  ],
+  "arc": {
+    "about": [
+      "concept: doran_western_border_survey"
+    ],
+    "needs": [
+      "news",
+      "records"
+    ],
+    "archetype": "archive",
+    "resolution": "ongoing",
+    "history": []
   }
 }

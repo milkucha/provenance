@@ -119,5 +119,31 @@
   "life": {
     "lived": 10,
     "deceased": false
+  },
+  "routines": [
+    {
+      "location": "Görff",
+      "archetype": "workshop",
+      "weight": 70,
+      "specialization": "oversees Collective building work, keeps crews to the standard that it has to stand"
+    },
+    {
+      "location": "Feria del Milenio",
+      "archetype": "waystation",
+      "weight": 30,
+      "specialization": "checks in on cousins and old friends passing through the Feria"
+    }
+  ],
+  "arc": {
+    "about": [
+      "concept: khaoe_collective_hall"
+    ],
+    "needs": [
+      "materials",
+      "expertise"
+    ],
+    "archetype": "workshop",
+    "resolution": "ongoing",
+    "history": []
   }
 }

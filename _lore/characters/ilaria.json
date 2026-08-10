@@ -158,5 +158,32 @@
   "life": {
     "lived": 2,
     "deceased": false
+  },
+  "routines": [
+    {
+      "location": "Feria del Milenio",
+      "archetype": "archive",
+      "weight": 65,
+      "specialization": "copies and cross-checks accounts of the Ensayo for contradictions"
+    },
+    {
+      "location": "Lúndria",
+      "archetype": "archive",
+      "weight": 35,
+      "specialization": "returns to where the magic first manifested, hunting the earliest sources"
+    }
+  ],
+  "arc": {
+    "about": [
+      "concept: ilaria_attributed_edition",
+      "location: lundria"
+    ],
+    "needs": [
+      "records",
+      "expertise"
+    ],
+    "archetype": "archive",
+    "resolution": "ongoing",
+    "history": []
   }
 }

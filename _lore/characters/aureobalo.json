@@ -124,5 +124,32 @@
   "life": {
     "lived": 3,
     "deceased": false
+  },
+  "routines": [
+    {
+      "location": "Terfila",
+      "archetype": "market",
+      "weight": 60,
+      "specialization": "runs the ledger at the collective bank, deciding who gets what's given away"
+    },
+    {
+      "location": "Khol Moshin",
+      "archetype": "market",
+      "weight": 40,
+      "specialization": "meets suppliers and debtors along the route, keeping the fortune moving instead of sitting"
+    }
+  ],
+  "arc": {
+    "about": [
+      "concept: aureobalo_terfila_stall_rebuild",
+      "location: terfila"
+    ],
+    "needs": [
+      "contacts",
+      "news"
+    ],
+    "archetype": "market",
+    "resolution": "ongoing",
+    "history": []
   }
 }
