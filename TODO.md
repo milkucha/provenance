@@ -1181,6 +1181,10 @@ should surface once this is actually tried:**
 
 ### /simulate debrief and next-phase design: materiality, arcs, and emergence (2026-08-10, planned — design only, NOT YET IMPLEMENTED)
 
+**See `LAB_REPORT.md` (repo root) for the persistent, cross-run assessment log this debrief seeded** —
+run-by-run findings against the standing objective, plus open design questions carried forward across
+sessions. This section is the original design writeup; that file is where it gets tested and revised.
+
 **Debrief context.** The 50-pass `/simulate` run (2026-08-08/09/10, worktree `simulate-20260808-181023`,
 full record in that worktree's `SIMULATION_LOG.md`) worked exactly as designed mechanically — 25
 criterion moves, 20 syntheses, hearsay mutation and record-keeping all correct, several real machinery

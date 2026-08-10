@@ -1,0 +1,19 @@
+{
+  "_comment": "Hand-authored place-type templates for /simulate's routine/arc mechanism (design debrief 2026-08-10). An archetype is authored once here, not per character - texture and 'provides' are shared by every routine tagged with this archetype. A character's routine references one of these by name plus a one-line personal specialization (see character SKILL.md). Starter set below covers the place-types already implied by the existing cast (Terfila as a port/market town, Görff as workshop/archive territory, the Feria as a waystation of sorts) - expand by hand as new routines need a place-type that isn't here yet, same discipline as everything else authored rather than generated in this system.",
+  "market": {
+    "texture": "Buying and selling, price disputes, scarcity, trust in a trading partner or supplier, goods that come and go with the season or the ships.",
+    "provides": ["goods", "materials", "trade", "news"]
+  },
+  "workshop": {
+    "texture": "Making things by hand, materials ordered or scavenged, apprentices, pride or shame in the work's quality, tools that need tending as much as the product does.",
+    "provides": ["crafted goods", "materials", "expertise"]
+  },
+  "archive": {
+    "texture": "Records, attribution, gaps in the record, the physical work of maintaining what's stored, contradictions between sources.",
+    "provides": ["records", "expertise"]
+  },
+  "waystation": {
+    "texture": "Travelers passing through, news carried in and out, brief contact that isn't expected to repeat, schedules and delays.",
+    "provides": ["news", "contacts"]
+  }
+}

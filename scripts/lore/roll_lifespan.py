@@ -22,14 +22,25 @@ Usage:
     python scripts/lore/roll_lifespan.py --seed 42            # reproducible roll
 
 The 30-60 default was set by the author on 2026-07-31, replacing an initial 4-14: a character should
-have room for a real life's worth of encounters, not run out inside a session's worth of scenes.
+have room for a real life's worth of encounters, not run out inside a session's worth of scenes. As
+of 2026-08-10 this default lives in _lore/tuning.json (lifespan_range) rather than here directly -
+change it there to retune the world-normal range everywhere it's used (this script, horizon.py's
+band math via lifespans.json, generate_offspring.py's fresh rolls for a newborn); --min/--max here
+are still for a genuine one-off override (e.g. deliberately short lives for testing the endgame),
+not the place to retune the default.
 """
 
 import argparse
+import sys
+from pathlib import Path
 from random import Random
 
-DEFAULT_MIN = 30
-DEFAULT_MAX = 60
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import tuning  # noqa: E402
+
+_range = tuning.load()["lifespan_range"]
+DEFAULT_MIN = _range["min"]
+DEFAULT_MAX = _range["max"]
 
 
 def main() -> None:

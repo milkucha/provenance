@@ -549,7 +549,7 @@ matching a gesture to a dialogue line's emotional content, use the keyword table
 
 ## 7. Where design decisions live
 
-This README documents *how the pack works*. Story content, NPC personalities, routes, and dialog writing are design decisions — they live in `_lore/` and the registries under `_npcs/`, not in this file.
+This README documents *how the pack works*. Story content, NPC personalities, routes, and dialog writing are design decisions — they live in `_lore/` and the registries under `_npcs/`, not in this file. Whether the `/simulate` mechanism's design is actually working — as opposed to just running correctly — is tracked separately in `LAB_REPORT.md` at the repo root, a persistent cross-run assessment log, not this file either.
 
 ---
 

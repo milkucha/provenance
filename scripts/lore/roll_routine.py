@@ -1,0 +1,33 @@
+"""
+Roll which of a character's home routines they're in for this pass - a genuine weighted random
+draw, not a model's guess at "which feels right this time" (same reasoning pick_pair.py already
+gives for participant selection: a model asked to pick isn't a uniform/weighted random source).
+
+Usage:
+    py scripts/lore/roll_routine.py "Terfila:75" "Feria del Milenio:12.5" "Espiral de las Eras:12.5"
+"""
+
+import argparse
+import random
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("routine", nargs="+", help='One or more "Name:Weight" pairs')
+    args = parser.parse_args()
+
+    names = []
+    weights = []
+    for entry in args.routine:
+        name, _, weight = entry.rpartition(":")
+        if not name:
+            raise SystemExit(f"Malformed routine entry (expected Name:Weight): {entry!r}")
+        names.append(name)
+        weights.append(float(weight))
+
+    choice = random.choices(names, weights=weights, k=1)[0]
+    print(f"routine: {choice}")
+
+
+if __name__ == "__main__":
+    main()

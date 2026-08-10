@@ -1,0 +1,15 @@
+{
+  "_comment": "Single source of truth for every tunable knob /simulate's extended mode uses (odds, thresholds, cooldowns, the lifespan range) - scripts read this via scripts/lore/tuning.py instead of hardcoding their own defaults, and .claude/skills/simulate/SKILL.md's orchestration prose points here rather than restating numbers. Change a value here; no script needs editing to retune. Every value below is a first guess, untuned by any actual run yet - see LAB_REPORT.md's own note on this.",
+  "lifespan_range": {"min": 30, "max": 60},
+  "partner_threshold": 5,
+  "parent_cooldown_passes": 10,
+  "child_cooldown_passes": 5,
+  "lead_expiry_passes": 8,
+  "arc_resolution_threshold": 3,
+  "odds_percent": {
+    "contested": 15,
+    "reproduction": 40,
+    "lead_followup": 30,
+    "death_legacy": 40
+  }
+}

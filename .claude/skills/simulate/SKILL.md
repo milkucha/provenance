@@ -141,7 +141,144 @@ A fresh worktree per run is what makes repeated runs independently comparable ag
 starting lore state — report the path and branch to the user once created. Everything from here
 happens inside that worktree's copy of the repo; the original working directory is untouched.
 
+## Step 3 (extended mode) — Routines, arcs, and material consequence
+
+**Applies automatically whenever any participant's character file has a non-empty `routines`
+array** — no separate setup question needed, since the mechanic can't run without that data
+existing. If none of this pass's participants have `routines` populated, skip straight to the base
+"Step 3 — Run passes" below instead.
+
+**Governing principle (design debrief, 2026-08-10): keep the subagent's judgment to a minimum.**
+Every decision in the sequence below that can be made mechanically already is - by a script, a
+dice roll, or plain arithmetic over numbers already on record. The subagent's job is narrower than
+in a base-mode pass: it writes the words that dramatize a sequence of facts that are **already all
+decided before it starts writing**, the same way it already can't decide whether a criterion breaks
+mid-scene. There are exactly two places a model's judgment is the right tool instead of a script,
+called out explicitly where they occur below - composing a plausible name-blend for a newborn
+character, and picking the actual words of the scene itself. Nothing else in this sequence should
+be left to the subagent to decide.
+
+Run this sequence in full, in order, for every pass in extended mode - it replaces the base Step
+3's pairing-through-dispatch logic; Step 3's "Never call `AskUserQuestion`", "never use `cd`",
+absolute-path, and safety-net rules below all still apply unchanged.
+
+**Every number below (odds, thresholds, cooldowns) lives in `_lore/tuning.json`, read via
+`scripts/lore/tuning.py` - the numbers stated here are what's in that file as of this writing, not
+a second copy to keep in sync by hand. If the file has been retuned, its values win; re-read it
+rather than trusting this prose.**
+
+1. **Pairing** (unchanged): `pick_pair.py` draws participant_1/participant_2 from the living pool,
+   exactly as base mode does.
+2. **Lead override check** (mechanical - only relevant if participant_1 has a `leads` array with
+   any entry younger than `lead_expiry_passes` (8) passes; prune anything older first, plain
+   arithmetic, no roll needed).
+   If any unexpired leads remain: `roll_lead_followup.py --leads <target1> [<target2> ...]`. If
+   `followed: true`, override participant_2 to the rolled lead's target, remove that lead from
+   participant_1's `leads`, and force `mode: visit` (skip step 4's location resolution - it's
+   already decided: participant_1 is seeking participant_2 out). Otherwise proceed with
+   participant_2 exactly as `pick_pair.py` drew it.
+3. **Routine rolls** (mechanical): `roll_routine.py` for participant_2 always. `roll_routine.py`
+   for participant_1 too, unless step 2 already forced a visit (then skip - participant_1's
+   routine is irrelevant this pass, they deliberately left it).
+4. **Location resolution** (mechanical, skip if step 2 already forced a visit): `resolve_location.py`
+   with both rolled routines -> `mode`/`location`/`home_frame`/`traveler`.
+5. **Archetype lookup** (mechanical, plain read - no script): read `_lore/archetypes.json` for the
+   archetype tagged on whichever participant's routine entry matches the resolved `location`, for
+   its `texture` (context to hand the subagent) and `provides` tags.
+6. **Needs/provides check** (mechanical, only for `mode: visit`, and only if the traveler currently
+   has an arc): `check_needs_provides.py --needs <traveler's arc.needs...> --provides <step 5's
+   provides tags...>`. A match means this visit gets framed as motivated - tell the subagent why,
+   using the matched tags directly, not an invented reason. No match: ordinary, unmotivated visit.
+7. **Arc primacy roll** (mechanical): `roll_arc_primacy.py --p1 <participant_1> --p2
+   <participant_2>` decides whose arc, if either, is even in play this scene. Replaces the old
+   host-only rule outright.
+8. **Knowledge/criteria gate** (mechanical, only if the primacy winner has an active arc):
+   `check_arc_alignment.py --arc-about <primary's arc.about...> --arc-needs <primary's
+   arc.needs...> --peer-standard "<other participant's criterion.standard>" --peer-wasted-life
+   "<other participant's criterion.wasted_life>" --peer-knowledge-item "<text>::<about tags>" ...`
+   (one `--peer-knowledge-item` per entry in the other participant's `knowledge.experience` that
+   carries an `about`/tag reference; cap at the ~15 most recent if that list is long, to keep the
+   call reasonable). Output: `gate: hit/miss`, `inclined: help/hinder/mixed/neutral`, and (if hit)
+   `matched_about` - the specific tags a transform would need later.
+9. **Contested check** (mechanical, only if step 6 matched): `roll_contested.py` (odds from
+   `_lore/tuning.json`'s `odds_percent.contested`, 15 as of this writing). If
+   `contested: true`, the resolution is a **fixed lookup over step 8's `inclined` value, not a new
+   judgment call**: `help` -> the visitor's claim wins despite the contest; `hinder` -> the prior
+   claim holds, the visitor doesn't get it this pass; `mixed`/`neutral` -> split or deferred (a
+   partial or delayed version). A rival only gets **named** in the scene if
+   `_lore/characters/<slug>.json` already exists for them (plain file-existence check) - otherwise
+   keep it ambient/unnamed, same as the default case. If named and the lookup resolved `hinder`:
+   append a `leads` entry (`{target: <rival slug>, created_pass: <N>}`) to the traveler's own file,
+   and write one attributed note to the *rival's own* `knowledge.experience` (never invented prose -
+   use exactly: `"According to <supplier>, <rival> already claimed <matched_provide> before
+   <traveler> arrived."`), so whoever plays the rival later has this on record instead of
+   improvising it fresh.
+10. **Arc outcome roll - MUST run and be known before the scene is written** (mechanical, only if
+    step 8's gate hit): `roll_arc_outcome.py --inclined <step 8's value, or step 9's lookup result
+    if contested overrode it>` -> `advance`/`stall`/`reverse`. Hand this to the subagent as an
+    already-decided fact to dramatize. Writing the scene first and rolling after is not an
+    acceptable substitute ordering - see the script's own docstring for why.
+11. **Tally and threshold** (mechanical arithmetic, no script - sum `arc.history` outcomes,
+    advance=+1/stall=0/reverse=−1, from the most recent `"transform"` entry onward, or from the
+    start if none, including this pass's new outcome; threshold is `_lore/tuning.json`'s
+    `arc_resolution_threshold`, 3 as of this writing):
+    - Sum >= +threshold -> `resolution: "complete"`.
+    - Sum <= −threshold **and** step 8 gate-hit on this exact pass -> **transform**: set
+      `arc.about` to step 8's `matched_about` tags, append a `{"outcome": "transform", ...}`
+      history entry, `resolution` stays `"ongoing"`. The new topic is copied mechanically from what
+      already matched - nothing here is composed freely.
+    - Sum <= −threshold and no gate hit this pass -> `resolution: "failed"`. A fresh arc gets
+      authored (archetype + personal specialization + criterion, scoped against `horizon.py`'s
+      band - see `.claude/skills/character/SKILL.md`) the next time this character wins a primacy
+      roll as home_frame.
+12. **Partner tracking** (mechanical, always, both directions): `record_partner.py <p1> --with
+    <p2>` and `record_partner.py <p2> --with <p1>`.
+13. **Reproduction eligibility + roll** (arithmetic, then one roll - only if step 12 just crossed
+    either direction's count to `>= partner_threshold` (5) **and** neither participant's
+    `last_reproduced_pass` is within the last `parent_cooldown_passes` (10) passes -- both from
+    `_lore/tuning.json`): `roll_reproduction.py --p1 <p1> --p2 <p2>` (odds from
+    `odds_percent.reproduction`, 40 as of this writing). If `reproduces: true`, this is the **first
+    of the two places a model's judgment belongs**: the roll's own `name_lead` output already
+    decided mechanically which parent's name leads the blend - the subagent's only job is composing
+    a name that reads as a plausible blend starting from that parent's name (not a script's job -
+    see `generate_offspring.py`'s own docstring for why), then run `generate_offspring.py
+    --parent-a <p1> --parent-b <p2> --name "<composed name>" --pass-number <N>` (the slug is
+    derived from the name automatically, not a second thing to decide). This also writes a direct
+    `knowledge.experience` line to both parents and notifies 30% of their combined circle, the same
+    shape as `record_death.py`'s own notification - the child only enters `pick_pair.py`'s eligible
+    pool once the current pass number reaches `birth_pass + child_cooldown_passes` (5, **distinct
+    from** the parent cooldown above - the script prints the exact threshold, so this never needs
+    computing by hand) - track this the same way the living pool itself is tracked in Step 3 base
+    mode.
+14. **Write the scene - the subagent's other legitimate judgment call.** Every fact above is
+    already fixed: who, where, whether motivated and why, whether contested and how it resolves,
+    whether the arc advances/stalls/reverses/transforms, whether a birth is happening and what name
+    it needs. The subagent's job is picking the actual words that dramatize all of it - nothing
+    more. `/enact` Steps 5, 5b, and 6 still run underneath this in full (hearsay mutation, criterion
+    shock, drift) exactly as base mode requires - this sequence sits on top of that, not instead of
+    it.
+15. **Death check** (existing mechanism, unchanged): `horizon.py` per participant after `life.lived`
+    increments; `ending: true` -> `record_death.py` (already computes the circle, notifies 30%,
+    flags shock candidates whose `criterion.anchor` references the deceased for the existing
+    `/character` Step 6 judgment call - this already covers "criterion checked against close ones").
+    Note the `band` `horizon.py` reported at this exact call - needed by step 16.
+16. **Death-legacy check** (mechanical, only if step 15 fired): "died early" = step 15's noted band
+    read `"established"` rather than `"late"` (a rolled span can never sit below the world-normal
+    range's floor, so `"early"` is structurally impossible at the exact pass death fires - this
+    comparison is the correct proxy, not a new threshold). If early: `roll_death_legacy.py
+    --candidates <record_death.py's notified list>` (odds from `odds_percent.death_legacy`, 40 as
+    of this writing). If `passes: true`, apply the same
+    mechanical copy a transform uses to the recipient's own arc (about/needs copied from the
+    deceased's arc, `resolution` reset to `"ongoing"`, tally reset) - archetype/routine stays the
+    recipient's own.
+17. Append the pass's one-line summary to the running log, same as base mode. If either participant
+    died this pass, drop them from the living pool before the next draw (base mode's existing rule,
+    unchanged).
+
 ## Step 3 — Run passes
+
+**If extended mode (above) applies to this pass's participants, use that sequence instead of the
+one below.**
 
 Keep, in this conversation only (nothing written to disk until Step 4):
 
@@ -289,4 +426,13 @@ Once all passes are done (or the pool ran out early):
   They can `/enact` a character from inside this worktree, read any file directly, ask questions
   about what changed, or run `/simulate` again (after exiting this worktree, or from a different
   session) for an independent second trial off the same starting state, to compare against this one.
+- **If this run was testing or extending the system's design** (not a casual one-off), append a dated
+  entry to `LAB_REPORT.md` at the **main repo root** — read that file's own header for the expected
+  entry shape first. **Do this only from the orchestrating session, using the file's absolute main-repo
+  path** (the same pattern as the Step 3 safety net's `git -C "<main repo root>"`), **never by writing
+  it from inside the active worktree.** This is a deliberate, single, explicit write to a known
+  meta-file at the very end of a run — unlike the accidental relative-path leaks Step 3's safety net
+  exists to catch and revert, this one is intentional, so it's fine for it to land in the main repo. If
+  the run surfaced a design gap or an open question rather than a settled answer, log it under that
+  file's "Open design questions" section rather than only leaving it in chat history.
 - Don't call `ExitWorktree` — only on explicit request, same as Step 0.
