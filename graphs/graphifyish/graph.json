@@ -12445,8 +12445,8 @@
     "label": "Luminacion",
     "kind": "root",
     "path": ".",
-    "size": 346161341,
-    "degree": 12
+    "size": 346700962,
+    "degree": 13
    },
    {
     "id": "file:.gitignore",
@@ -12465,11 +12465,19 @@
     "degree": 1
    },
    {
+    "id": "file:LAB_REPORT.md",
+    "label": "LAB_REPORT.md",
+    "kind": "doc",
+    "path": "LAB_REPORT.md",
+    "size": 16304,
+    "degree": 1
+   },
+   {
     "id": "file:README.md",
     "label": "README.md",
     "kind": "doc",
     "path": "README.md",
-    "size": 47810,
+    "size": 48038,
     "degree": 1
    },
    {
@@ -12477,7 +12485,7 @@
     "label": "TODO.md",
     "kind": "doc",
     "path": "TODO.md",
-    "size": 109239,
+    "size": 109549,
     "degree": 1
    },
    {
@@ -12493,7 +12501,7 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
-    "size": 287365519,
+    "size": 287848362,
     "degree": 6
    },
    {
@@ -12525,7 +12533,7 @@
     "label": "skills",
     "kind": "dir",
     "path": ".claude/skills",
-    "size": 147968,
+    "size": 162239,
     "degree": 11
    },
    {
@@ -12533,7 +12541,7 @@
     "label": "character",
     "kind": "dir",
     "path": ".claude/skills/character",
-    "size": 22726,
+    "size": 25012,
     "degree": 2
    },
    {
@@ -12541,7 +12549,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/character/SKILL.md",
-    "size": 22726,
+    "size": 25012,
     "degree": 1
    },
    {
@@ -12645,7 +12653,7 @@
     "label": "simulate",
     "kind": "dir",
     "path": ".claude/skills/simulate",
-    "size": 23446,
+    "size": 35431,
     "degree": 2
    },
    {
@@ -12653,7 +12661,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/simulate/SKILL.md",
-    "size": 23446,
+    "size": 35431,
     "degree": 1
    },
    {
@@ -12693,7 +12701,7 @@
     "label": "worktrees",
     "kind": "dir",
     "path": ".claude/worktrees",
-    "size": 287215818,
+    "size": 287684390,
     "degree": 6
    },
    {
@@ -23477,8 +23485,8 @@
     "label": "simulate-20260808-181023",
     "kind": "dir",
     "path": ".claude/worktrees/simulate-20260808-181023",
-    "size": 58991139,
-    "degree": 36
+    "size": 59459711,
+    "degree": 40
    },
    {
     "id": "file:.claude/worktrees/simulate-20260808-181023/.git",
@@ -23513,6 +23521,14 @@
     "degree": 1
    },
    {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/=",
+    "label": "=",
+    "kind": "other",
+    "path": ".claude/worktrees/simulate-20260808-181023/=",
+    "size": 0,
+    "degree": 1
+   },
+   {
     "id": "file:.claude/worktrees/simulate-20260808-181023/GESTURES.md",
     "label": "GESTURES.md",
     "kind": "doc",
@@ -23533,7 +23549,7 @@
     "label": "SIMULATION_LOG.md",
     "kind": "doc",
     "path": ".claude/worktrees/simulate-20260808-181023/SIMULATION_LOG.md",
-    "size": 8506,
+    "size": 16639,
     "degree": 1
    },
    {
@@ -23585,11 +23601,27 @@
     "degree": 1
    },
    {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_hearsay_khaoe_nerkeli_terfila.json",
+    "label": "_hearsay_khaoe_nerkeli_terfila.json",
+    "kind": "other",
+    "path": ".claude/worktrees/simulate-20260808-181023/_hearsay_khaoe_nerkeli_terfila.json",
+    "size": 2546,
+    "degree": 1
+   },
+   {
     "id": "file:.claude/worktrees/simulate-20260808-181023/_hearsay_temp.json",
     "label": "_hearsay_temp.json",
     "kind": "other",
     "path": ".claude/worktrees/simulate-20260808-181023/_hearsay_temp.json",
     "size": 2820,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/auroboro_hearsay.json",
+    "label": "auroboro_hearsay.json",
+    "kind": "other",
+    "path": ".claude/worktrees/simulate-20260808-181023/auroboro_hearsay.json",
+    "size": 1645,
     "degree": 1
    },
    {
@@ -23605,7 +23637,15 @@
     "label": "gondarfolas_hearsay.json",
     "kind": "other",
     "path": ".claude/worktrees/simulate-20260808-181023/gondarfolas_hearsay.json",
-    "size": 1608,
+    "size": 1342,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/hearsay_entry.json",
+    "label": "hearsay_entry.json",
+    "kind": "other",
+    "path": ".claude/worktrees/simulate-20260808-181023/hearsay_entry.json",
+    "size": 3053,
     "degree": 1
    },
    {
@@ -23665,14 +23705,6 @@
     "degree": 1
    },
    {
-    "id": "file:.claude/worktrees/simulate-20260808-181023/hearsay_temp.json",
-    "label": "hearsay_temp.json",
-    "kind": "other",
-    "path": ".claude/worktrees/simulate-20260808-181023/hearsay_temp.json",
-    "size": 2914,
-    "degree": 1
-   },
-   {
     "id": "file:.claude/worktrees/simulate-20260808-181023/nerkeli_hearsay.json",
     "label": "nerkeli_hearsay.json",
     "kind": "other",
@@ -23694,6 +23726,14 @@
     "kind": "other",
     "path": ".claude/worktrees/simulate-20260808-181023/pack.mcmeta",
     "size": 131,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/scene_hearsay.json",
+    "label": "scene_hearsay.json",
+    "kind": "other",
+    "path": ".claude/worktrees/simulate-20260808-181023/scene_hearsay.json",
+    "size": 2150,
     "degree": 1
    },
    {
@@ -23924,7 +23964,7 @@
     "label": "_lore",
     "kind": "dir",
     "path": ".claude/worktrees/simulate-20260808-181023/_lore",
-    "size": 55649076,
+    "size": 55939129,
     "degree": 10
    },
    {
@@ -23940,7 +23980,7 @@
     "label": "encodings.json",
     "kind": "other",
     "path": ".claude/worktrees/simulate-20260808-181023/_lore/encodings.json",
-    "size": 330164,
+    "size": 466278,
     "degree": 1
    },
    {
@@ -23972,7 +24012,7 @@
     "label": "characters",
     "kind": "dir",
     "path": ".claude/worktrees/simulate-20260808-181023/_lore/characters",
-    "size": 308272,
+    "size": 459509,
     "degree": 69
    },
    {
@@ -24004,7 +24044,7 @@
     "label": "auroboro_iii.json",
     "kind": "other",
     "path": ".claude/worktrees/simulate-20260808-181023/_lore/characters/auroboro_iii.json",
-    "size": 22795,
+    "size": 33365,
     "degree": 1
    },
    {
@@ -24020,7 +24060,7 @@
     "label": "bardaglis.json",
     "kind": "other",
     "path": ".claude/worktrees/simulate-20260808-181023/_lore/characters/bardaglis.json",
-    "size": 9796,
+    "size": 9876,
     "degree": 1
    },
    {
@@ -24068,7 +24108,7 @@
     "label": "farlis.json",
     "kind": "other",
     "path": ".claude/worktrees/simulate-20260808-181023/_lore/characters/farlis.json",
-    "size": 9794,
+    "size": 9840,
     "degree": 1
    },
    {
@@ -24116,7 +24156,7 @@
     "label": "gondarfolas.json",
     "kind": "other",
     "path": ".claude/worktrees/simulate-20260808-181023/_lore/characters/gondarfolas.json",
-    "size": 18515,
+    "size": 35659,
     "degree": 1
    },
    {
@@ -24164,7 +24204,7 @@
     "label": "hearsay.md",
     "kind": "doc",
     "path": ".claude/worktrees/simulate-20260808-181023/_lore/characters/hearsay.md",
-    "size": 128823,
+    "size": 207862,
     "degree": 1
    },
    {
@@ -24172,7 +24212,7 @@
     "label": "ilaria.json",
     "kind": "other",
     "path": ".claude/worktrees/simulate-20260808-181023/_lore/characters/ilaria.json",
-    "size": 18810,
+    "size": 28270,
     "degree": 1
    },
    {
@@ -24212,7 +24252,7 @@
     "label": "khaoe.json",
     "kind": "other",
     "path": ".claude/worktrees/simulate-20260808-181023/_lore/characters/khaoe.json",
-    "size": 19022,
+    "size": 30331,
     "degree": 1
    },
    {
@@ -24324,7 +24364,7 @@
     "label": "nerkeli.json",
     "kind": "other",
     "path": ".claude/worktrees/simulate-20260808-181023/_lore/characters/nerkeli.json",
-    "size": 17210,
+    "size": 40758,
     "degree": 1
    },
    {
@@ -24364,7 +24404,7 @@
     "label": "nuvilo.json",
     "kind": "other",
     "path": ".claude/worktrees/simulate-20260808-181023/_lore/characters/nuvilo.json",
-    "size": 4877,
+    "size": 4918,
     "degree": 1
    },
    {
@@ -24860,15 +24900,15 @@
     "label": "tales",
     "kind": "dir",
     "path": ".claude/worktrees/simulate-20260808-181023/_lore/tales",
-    "size": 6920,
-    "degree": 6
+    "size": 9622,
+    "degree": 10
    },
    {
     "id": "file:.claude/worktrees/simulate-20260808-181023/_lore/tales/_authors.md",
     "label": "_authors.md",
     "kind": "doc",
     "path": ".claude/worktrees/simulate-20260808-181023/_lore/tales/_authors.md",
-    "size": 1197,
+    "size": 1391,
     "degree": 1
    },
    {
@@ -24876,7 +24916,7 @@
     "label": "_index.md",
     "kind": "doc",
     "path": ".claude/worktrees/simulate-20260808-181023/_lore/tales/_index.md",
-    "size": 3095,
+    "size": 3532,
     "degree": 1
    },
    {
@@ -24885,6 +24925,38 @@
     "kind": "doc",
     "path": ".claude/worktrees/simulate-20260808-181023/_lore/tales/creepers_and_night_monsters.md",
     "size": 584,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_lore/tales/death_of_auroboro_iii.md",
+    "label": "death_of_auroboro_iii.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_lore/tales/death_of_auroboro_iii.md",
+    "size": 609,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_lore/tales/death_of_ilaria.md",
+    "label": "death_of_ilaria.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_lore/tales/death_of_ilaria.md",
+    "size": 469,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_lore/tales/death_of_khaoe.md",
+    "label": "death_of_khaoe.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_lore/tales/death_of_khaoe.md",
+    "size": 423,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_lore/tales/death_of_nerkeli.md",
+    "label": "death_of_nerkeli.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_lore/tales/death_of_nerkeli.md",
+    "size": 570,
     "degree": 1
    },
    {
@@ -24908,7 +24980,7 @@
     "label": "_npcs",
     "kind": "dir",
     "path": ".claude/worktrees/simulate-20260808-181023/_npcs",
-    "size": 221090,
+    "size": 378122,
     "degree": 6
    },
    {
@@ -24964,8 +25036,8 @@
     "label": "scenes",
     "kind": "dir",
     "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes",
-    "size": 146489,
-    "degree": 50
+    "size": 303521,
+    "degree": 98
    },
    {
     "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/_template.md",
@@ -24997,6 +25069,30 @@
     "kind": "doc",
     "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_gondarfolas_salthos_cruzados.md",
     "size": 2518,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_gondarfolas_terfila_archive_network.md",
+    "label": "auroboro_iii_gondarfolas_terfila_archive_network.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_gondarfolas_terfila_archive_network.md",
+    "size": 2435,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_gondarfolas_terfila_ledger_archive.md",
+    "label": "auroboro_iii_gondarfolas_terfila_ledger_archive.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_gondarfolas_terfila_ledger_archive.md",
+    "size": 3204,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_gondarfolas_terfila_market_affirmation.md",
+    "label": "auroboro_iii_gondarfolas_terfila_market_affirmation.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_gondarfolas_terfila_market_affirmation.md",
+    "size": 5138,
     "degree": 1
    },
    {
@@ -25040,6 +25136,14 @@
     "degree": 1
    },
    {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_ilaria_terfila_genealogy_exchange.md",
+    "label": "auroboro_iii_ilaria_terfila_genealogy_exchange.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_ilaria_terfila_genealogy_exchange.md",
+    "size": 2608,
+    "degree": 1
+   },
+   {
     "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_khaoe_bahia_pelicanos_02.md",
     "label": "auroboro_iii_khaoe_bahia_pelicanos_02.md",
     "kind": "doc",
@@ -25056,11 +25160,35 @@
     "degree": 1
    },
    {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_khaoe_terfila_archive_blockage.md",
+    "label": "auroboro_iii_khaoe_terfila_archive_blockage.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_khaoe_terfila_archive_blockage.md",
+    "size": 2472,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_khaoe_terfila_archive_collaboration.md",
+    "label": "auroboro_iii_khaoe_terfila_archive_collaboration.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_khaoe_terfila_archive_collaboration.md",
+    "size": 3454,
+    "degree": 1
+   },
+   {
     "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_khaoe_terfila_market.md",
     "label": "auroboro_iii_khaoe_terfila_market.md",
     "kind": "doc",
     "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_khaoe_terfila_market.md",
     "size": 3418,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_khaoe_terfila_network_contribution.md",
+    "label": "auroboro_iii_khaoe_terfila_network_contribution.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_khaoe_terfila_network_contribution.md",
+    "size": 2149,
     "degree": 1
    },
    {
@@ -25077,6 +25205,14 @@
     "kind": "doc",
     "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_nerkeli_feria_hangar.md",
     "size": 3881,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_nerkeli_feria_transcript_setback.md",
+    "label": "auroboro_iii_nerkeli_feria_transcript_setback.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_nerkeli_feria_transcript_setback.md",
+    "size": 2884,
     "degree": 1
    },
    {
@@ -25112,6 +25248,38 @@
     "degree": 1
    },
    {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_auroboro_iii_terfila_network_rumor.md",
+    "label": "gondarfolas_auroboro_iii_terfila_network_rumor.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_auroboro_iii_terfila_network_rumor.md",
+    "size": 3398,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_auroboro_iii_terfila_network_scope.md",
+    "label": "gondarfolas_auroboro_iii_terfila_network_scope.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_auroboro_iii_terfila_network_scope.md",
+    "size": 2702,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_ilaria_feria_ledger_accounts.md",
+    "label": "gondarfolas_ilaria_feria_ledger_accounts.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_ilaria_feria_ledger_accounts.md",
+    "size": 2280,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_ilaria_terfila_ledger_network.md",
+    "label": "gondarfolas_ilaria_terfila_ledger_network.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_ilaria_terfila_ledger_network.md",
+    "size": 2696,
+    "degree": 1
+   },
+   {
     "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_khaoe_terfila.md",
     "label": "gondarfolas_khaoe_terfila.md",
     "kind": "doc",
@@ -25128,11 +25296,67 @@
     "degree": 1
    },
    {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_nerkeli_khol_moshin_coordination_scope.md",
+    "label": "gondarfolas_nerkeli_khol_moshin_coordination_scope.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_nerkeli_khol_moshin_coordination_scope.md",
+    "size": 3541,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_nerkeli_terfila_archive_check.md",
+    "label": "gondarfolas_nerkeli_terfila_archive_check.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_nerkeli_terfila_archive_check.md",
+    "size": 2544,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_nerkeli_terfila_coordination_break.md",
+    "label": "gondarfolas_nerkeli_terfila_coordination_break.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_nerkeli_terfila_coordination_break.md",
+    "size": 2880,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_nerkeli_terfila_coordination_unsustainable.md",
+    "label": "gondarfolas_nerkeli_terfila_coordination_unsustainable.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_nerkeli_terfila_coordination_unsustainable.md",
+    "size": 4123,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_nerkeli_terfila_cross_reference_deferred.md",
+    "label": "gondarfolas_nerkeli_terfila_cross_reference_deferred.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_nerkeli_terfila_cross_reference_deferred.md",
+    "size": 4114,
+    "degree": 1
+   },
+   {
     "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_nerkeli_terfila_harbor.md",
     "label": "gondarfolas_nerkeli_terfila_harbor.md",
     "kind": "doc",
     "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_nerkeli_terfila_harbor.md",
     "size": 2609,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_nerkeli_terfila_message_system.md",
+    "label": "gondarfolas_nerkeli_terfila_message_system.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_nerkeli_terfila_message_system.md",
+    "size": 4332,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_nerkeli_terfila_waiting.md",
+    "label": "gondarfolas_nerkeli_terfila_waiting.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_nerkeli_terfila_waiting.md",
+    "size": 4781,
     "degree": 1
    },
    {
@@ -25192,11 +25416,51 @@
     "degree": 1
    },
    {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/ilaria_khaoe_gorff_archive_counsel.md",
+    "label": "ilaria_khaoe_gorff_archive_counsel.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/ilaria_khaoe_gorff_archive_counsel.md",
+    "size": 3486,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/ilaria_khaoe_terfila_archive_coordination.md",
+    "label": "ilaria_khaoe_terfila_archive_coordination.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/ilaria_khaoe_terfila_archive_coordination.md",
+    "size": 3893,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/ilaria_khaoe_terfila_archive_photos.md",
+    "label": "ilaria_khaoe_terfila_archive_photos.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/ilaria_khaoe_terfila_archive_photos.md",
+    "size": 2947,
+    "degree": 1
+   },
+   {
     "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/ilaria_khaoe_terfila_archive_repairs.md",
     "label": "ilaria_khaoe_terfila_archive_repairs.md",
     "kind": "doc",
     "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/ilaria_khaoe_terfila_archive_repairs.md",
     "size": 4379,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/ilaria_khaoe_terfila_record_collapse.md",
+    "label": "ilaria_khaoe_terfila_record_collapse.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/ilaria_khaoe_terfila_record_collapse.md",
+    "size": 3692,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/ilaria_khaoe_terfila_supplies_from_gorff.md",
+    "label": "ilaria_khaoe_terfila_supplies_from_gorff.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/ilaria_khaoe_terfila_supplies_from_gorff.md",
+    "size": 3184,
     "degree": 1
    },
    {
@@ -25221,6 +25485,22 @@
     "kind": "doc",
     "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/ilaria_nerkeli_khol_moshin.md",
     "size": 2741,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/ilaria_nerkeli_sidnalta_staying.md",
+    "label": "ilaria_nerkeli_sidnalta_staying.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/ilaria_nerkeli_sidnalta_staying.md",
+    "size": 3915,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/ilaria_nerkeli_terfila_notebook_archive.md",
+    "label": "ilaria_nerkeli_terfila_notebook_archive.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/ilaria_nerkeli_terfila_notebook_archive.md",
+    "size": 3349,
     "degree": 1
    },
    {
@@ -25256,11 +25536,43 @@
     "degree": 1
    },
    {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_gondarfolas_gorff_archive_materials.md",
+    "label": "khaoe_gondarfolas_gorff_archive_materials.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_gondarfolas_gorff_archive_materials.md",
+    "size": 2827,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_gondarfolas_gorff_market_stall.md",
+    "label": "khaoe_gondarfolas_gorff_market_stall.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_gondarfolas_gorff_market_stall.md",
+    "size": 2745,
+    "degree": 1
+   },
+   {
     "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_gondarfolas_puerto_tortuga.md",
     "label": "khaoe_gondarfolas_puerto_tortuga.md",
     "kind": "doc",
     "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_gondarfolas_puerto_tortuga.md",
     "size": 2351,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_gondarfolas_terfila_absence_and_learning.md",
+    "label": "khaoe_gondarfolas_terfila_absence_and_learning.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_gondarfolas_terfila_absence_and_learning.md",
+    "size": 3767,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_gondarfolas_terfila_ensayo_libro.md",
+    "label": "khaoe_gondarfolas_terfila_ensayo_libro.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_gondarfolas_terfila_ensayo_libro.md",
+    "size": 2605,
     "degree": 1
    },
    {
@@ -25285,6 +25597,22 @@
     "kind": "doc",
     "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_ilaria_espiral_pavilion.md",
     "size": 1568,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_ilaria_terfila_archive_plateau.md",
+    "label": "khaoe_ilaria_terfila_archive_plateau.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_ilaria_terfila_archive_plateau.md",
+    "size": 3086,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_ilaria_terfila_attribution_holding.md",
+    "label": "khaoe_ilaria_terfila_attribution_holding.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_ilaria_terfila_attribution_holding.md",
+    "size": 3492,
     "degree": 1
    },
    {
@@ -25320,6 +25648,54 @@
     "degree": 1
    },
    {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_nerkeli_terfila_archive_inquiry.md",
+    "label": "khaoe_nerkeli_terfila_archive_inquiry.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_nerkeli_terfila_archive_inquiry.md",
+    "size": 1581,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_nerkeli_terfila_archive_materials.md",
+    "label": "khaoe_nerkeli_terfila_archive_materials.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_nerkeli_terfila_archive_materials.md",
+    "size": 4221,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_nerkeli_terfila_archive_news.md",
+    "label": "khaoe_nerkeli_terfila_archive_news.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_nerkeli_terfila_archive_news.md",
+    "size": 4199,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_nerkeli_terfila_archive_tension.md",
+    "label": "khaoe_nerkeli_terfila_archive_tension.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_nerkeli_terfila_archive_tension.md",
+    "size": 2633,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_nerkeli_terfila_engagement.md",
+    "label": "khaoe_nerkeli_terfila_engagement.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_nerkeli_terfila_engagement.md",
+    "size": 3305,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_auroboro_iii_terfila_archive_offer.md",
+    "label": "nerkeli_auroboro_iii_terfila_archive_offer.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_auroboro_iii_terfila_archive_offer.md",
+    "size": 2659,
+    "degree": 1
+   },
+   {
     "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_bahia_pelicanos_encounter.md",
     "label": "nerkeli_gondarfolas_bahia_pelicanos_encounter.md",
     "kind": "doc",
@@ -25333,6 +25709,78 @@
     "kind": "doc",
     "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_catraniz_trader.md",
     "size": 4771,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_gorff_archive_integration.md",
+    "label": "nerkeli_gondarfolas_gorff_archive_integration.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_gorff_archive_integration.md",
+    "size": 3403,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_gorff_archive_ledger.md",
+    "label": "nerkeli_gondarfolas_gorff_archive_ledger.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_gorff_archive_ledger.md",
+    "size": 3017,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_gorff_manuscript_delay.md",
+    "label": "nerkeli_gondarfolas_gorff_manuscript_delay.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_gorff_manuscript_delay.md",
+    "size": 3148,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_terfila_archive_preservation.md",
+    "label": "nerkeli_gondarfolas_terfila_archive_preservation.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_terfila_archive_preservation.md",
+    "size": 4212,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_terfila_archive_reach.md",
+    "label": "nerkeli_gondarfolas_terfila_archive_reach.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_terfila_archive_reach.md",
+    "size": 3790,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_terfila_coordination_third_failure.md",
+    "label": "nerkeli_gondarfolas_terfila_coordination_third_failure.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_terfila_coordination_third_failure.md",
+    "size": 4553,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_terfila_harbor_return.md",
+    "label": "nerkeli_gondarfolas_terfila_harbor_return.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_terfila_harbor_return.md",
+    "size": 2394,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_terfila_scope.md",
+    "label": "nerkeli_gondarfolas_terfila_scope.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_terfila_scope.md",
+    "size": 4038,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_terfila_storage_check.md",
+    "label": "nerkeli_gondarfolas_terfila_storage_check.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_terfila_storage_check.md",
+    "size": 2659,
     "degree": 1
    },
    {
@@ -25357,6 +25805,14 @@
     "kind": "doc",
     "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_khaoe_jardin.md",
     "size": 2738,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_khaoe_terfila_archive_coordination.md",
+    "label": "nerkeli_khaoe_terfila_archive_coordination.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_khaoe_terfila_archive_coordination.md",
+    "size": 2497,
     "degree": 1
    },
    {
@@ -26564,7 +27020,7 @@
     "label": "scripts",
     "kind": "dir",
     "path": ".claude/worktrees/simulate-20260808-181023/scripts",
-    "size": 225594,
+    "size": 232734,
     "degree": 5
    },
    {
@@ -26612,8 +27068,8 @@
     "label": "lore",
     "kind": "dir",
     "path": ".claude/worktrees/simulate-20260808-181023/scripts/lore",
-    "size": 138242,
-    "degree": 22
+    "size": 145382,
+    "degree": 26
    },
    {
     "id": "file:.claude/worktrees/simulate-20260808-181023/scripts/lore/add_categories_schema.py",
@@ -26661,6 +27117,14 @@
     "kind": "other",
     "path": ".claude/worktrees/simulate-20260808-181023/scripts/lore/check_anchor_reference.py",
     "size": 4889,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/scripts/lore/check_arc_alignment.py",
+    "label": "check_arc_alignment.py",
+    "kind": "other",
+    "path": ".claude/worktrees/simulate-20260808-181023/scripts/lore/check_arc_alignment.py",
+    "size": 2540,
     "degree": 1
    },
    {
@@ -26744,11 +27208,35 @@
     "degree": 1
    },
    {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/scripts/lore/resolve_location.py",
+    "label": "resolve_location.py",
+    "kind": "other",
+    "path": ".claude/worktrees/simulate-20260808-181023/scripts/lore/resolve_location.py",
+    "size": 1950,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/scripts/lore/roll_arc_outcome.py",
+    "label": "roll_arc_outcome.py",
+    "kind": "other",
+    "path": ".claude/worktrees/simulate-20260808-181023/scripts/lore/roll_arc_outcome.py",
+    "size": 1542,
+    "degree": 1
+   },
+   {
     "id": "file:.claude/worktrees/simulate-20260808-181023/scripts/lore/roll_lifespan.py",
     "label": "roll_lifespan.py",
     "kind": "other",
     "path": ".claude/worktrees/simulate-20260808-181023/scripts/lore/roll_lifespan.py",
     "size": 3088,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/simulate-20260808-181023/scripts/lore/roll_routine.py",
+    "label": "roll_routine.py",
+    "kind": "other",
+    "path": ".claude/worktrees/simulate-20260808-181023/scripts/lore/roll_routine.py",
+    "size": 1108,
     "degree": 1
    },
    {
@@ -26820,8 +27308,16 @@
     "label": "_lore",
     "kind": "dir",
     "path": "_lore",
-    "size": 55360726,
-    "degree": 7
+    "size": 55363139,
+    "degree": 9
+   },
+   {
+    "id": "file:_lore/archetypes.json",
+    "label": "archetypes.json",
+    "kind": "lore",
+    "path": "_lore/archetypes.json",
+    "size": 1603,
+    "degree": 1
    },
    {
     "id": "file:_lore/encodings.json",
@@ -26829,6 +27325,14 @@
     "kind": "lore",
     "path": "_lore/encodings.json",
     "size": 198188,
+    "degree": 1
+   },
+   {
+    "id": "file:_lore/tuning.json",
+    "label": "tuning.json",
+    "kind": "lore",
+    "path": "_lore/tuning.json",
+    "size": 810,
     "degree": 1
    },
    {
@@ -29059,7 +29563,7 @@
     "label": "scripts",
     "kind": "dir",
     "path": "scripts",
-    "size": 225182,
+    "size": 262705,
     "degree": 5
    },
    {
@@ -29107,8 +29611,8 @@
     "label": "lore",
     "kind": "dir",
     "path": "scripts/lore",
-    "size": 139797,
-    "degree": 22
+    "size": 177320,
+    "degree": 35
    },
    {
     "id": "file:scripts/lore/add_categories_schema.py",
@@ -29159,6 +29663,14 @@
     "degree": 1
    },
    {
+    "id": "file:scripts/lore/check_arc_alignment.py",
+    "label": "check_arc_alignment.py",
+    "kind": "script",
+    "path": "scripts/lore/check_arc_alignment.py",
+    "size": 4629,
+    "degree": 1
+   },
+   {
     "id": "file:scripts/lore/check_character_name.py",
     "label": "check_character_name.py",
     "kind": "script",
@@ -29167,11 +29679,27 @@
     "degree": 1
    },
    {
+    "id": "file:scripts/lore/check_needs_provides.py",
+    "label": "check_needs_provides.py",
+    "kind": "script",
+    "path": "scripts/lore/check_needs_provides.py",
+    "size": 1973,
+    "degree": 1
+   },
+   {
     "id": "file:scripts/lore/check_resonance.py",
     "label": "check_resonance.py",
     "kind": "script",
     "path": "scripts/lore/check_resonance.py",
     "size": 12713,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/generate_offspring.py",
+    "label": "generate_offspring.py",
+    "kind": "script",
+    "path": "scripts/lore/generate_offspring.py",
+    "size": 12478,
     "degree": 1
    },
    {
@@ -29231,6 +29759,14 @@
     "degree": 1
    },
    {
+    "id": "file:scripts/lore/record_partner.py",
+    "label": "record_partner.py",
+    "kind": "script",
+    "path": "scripts/lore/record_partner.py",
+    "size": 1744,
+    "degree": 1
+   },
+   {
     "id": "file:scripts/lore/resolve_conflict.py",
     "label": "resolve_conflict.py",
     "kind": "script",
@@ -29239,11 +29775,75 @@
     "degree": 1
    },
    {
+    "id": "file:scripts/lore/resolve_location.py",
+    "label": "resolve_location.py",
+    "kind": "script",
+    "path": "scripts/lore/resolve_location.py",
+    "size": 1894,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/roll_arc_outcome.py",
+    "label": "roll_arc_outcome.py",
+    "kind": "script",
+    "path": "scripts/lore/roll_arc_outcome.py",
+    "size": 2103,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/roll_arc_primacy.py",
+    "label": "roll_arc_primacy.py",
+    "kind": "script",
+    "path": "scripts/lore/roll_arc_primacy.py",
+    "size": 940,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/roll_contested.py",
+    "label": "roll_contested.py",
+    "kind": "script",
+    "path": "scripts/lore/roll_contested.py",
+    "size": 1998,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/roll_death_legacy.py",
+    "label": "roll_death_legacy.py",
+    "kind": "script",
+    "path": "scripts/lore/roll_death_legacy.py",
+    "size": 2484,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/roll_lead_followup.py",
+    "label": "roll_lead_followup.py",
+    "kind": "script",
+    "path": "scripts/lore/roll_lead_followup.py",
+    "size": 2243,
+    "degree": 1
+   },
+   {
     "id": "file:scripts/lore/roll_lifespan.py",
     "label": "roll_lifespan.py",
     "kind": "script",
     "path": "scripts/lore/roll_lifespan.py",
-    "size": 3029,
+    "size": 3647,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/roll_reproduction.py",
+    "label": "roll_reproduction.py",
+    "kind": "script",
+    "path": "scripts/lore/roll_reproduction.py",
+    "size": 2426,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/roll_routine.py",
+    "label": "roll_routine.py",
+    "kind": "script",
+    "path": "scripts/lore/roll_routine.py",
+    "size": 1108,
     "degree": 1
    },
    {
@@ -29268,6 +29868,14 @@
     "kind": "script",
     "path": "scripts/lore/simulate_tally.py",
     "size": 4619,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/tuning.py",
+    "label": "tuning.py",
+    "kind": "script",
+    "path": "scripts/lore/tuning.py",
+    "size": 885,
     "degree": 1
    },
    {
@@ -29321,6 +29929,12 @@
    {
     "source": "dir:.",
     "target": "file:GESTURES.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.",
+    "target": "file:LAB_REPORT.md",
     "rel": "contains",
     "weight": 1
    },
@@ -37612,6 +38226,12 @@
    },
    {
     "source": "dir:.claude/worktrees/simulate-20260808-181023",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/=",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023",
     "target": "file:.claude/worktrees/simulate-20260808-181023/GESTURES.md",
     "rel": "contains",
     "weight": 1
@@ -37666,7 +38286,19 @@
    },
    {
     "source": "dir:.claude/worktrees/simulate-20260808-181023",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_hearsay_khaoe_nerkeli_terfila.json",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023",
     "target": "file:.claude/worktrees/simulate-20260808-181023/_hearsay_temp.json",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/auroboro_hearsay.json",
     "rel": "contains",
     "weight": 1
    },
@@ -37679,6 +38311,12 @@
    {
     "source": "dir:.claude/worktrees/simulate-20260808-181023",
     "target": "file:.claude/worktrees/simulate-20260808-181023/gondarfolas_hearsay.json",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/hearsay_entry.json",
     "rel": "contains",
     "weight": 1
    },
@@ -37726,12 +38364,6 @@
    },
    {
     "source": "dir:.claude/worktrees/simulate-20260808-181023",
-    "target": "file:.claude/worktrees/simulate-20260808-181023/hearsay_temp.json",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:.claude/worktrees/simulate-20260808-181023",
     "target": "file:.claude/worktrees/simulate-20260808-181023/nerkeli_hearsay.json",
     "rel": "contains",
     "weight": 1
@@ -37745,6 +38377,12 @@
    {
     "source": "dir:.claude/worktrees/simulate-20260808-181023",
     "target": "file:.claude/worktrees/simulate-20260808-181023/pack.mcmeta",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/scene_hearsay.json",
     "rel": "contains",
     "weight": 1
    },
@@ -38644,6 +39282,30 @@
    },
    {
     "source": "dir:.claude/worktrees/simulate-20260808-181023/_lore/tales",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_lore/tales/death_of_auroboro_iii.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_lore/tales",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_lore/tales/death_of_ilaria.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_lore/tales",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_lore/tales/death_of_khaoe.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_lore/tales",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_lore/tales/death_of_nerkeli.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_lore/tales",
     "target": "file:.claude/worktrees/simulate-20260808-181023/_lore/tales/peregrins.md",
     "rel": "contains",
     "weight": 1
@@ -38728,6 +39390,24 @@
    },
    {
     "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_gondarfolas_terfila_archive_network.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_gondarfolas_terfila_ledger_archive.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_gondarfolas_terfila_market_affirmation.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
     "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_gondarfolas_terfila_wharves.md",
     "rel": "contains",
     "weight": 1
@@ -38758,6 +39438,12 @@
    },
    {
     "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_ilaria_terfila_genealogy_exchange.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
     "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_khaoe_bahia_pelicanos_02.md",
     "rel": "contains",
     "weight": 1
@@ -38770,7 +39456,25 @@
    },
    {
     "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_khaoe_terfila_archive_blockage.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_khaoe_terfila_archive_collaboration.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
     "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_khaoe_terfila_market.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_khaoe_terfila_network_contribution.md",
     "rel": "contains",
     "weight": 1
    },
@@ -38783,6 +39487,12 @@
    {
     "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
     "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_nerkeli_feria_hangar.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/auroboro_iii_nerkeli_feria_transcript_setback.md",
     "rel": "contains",
     "weight": 1
    },
@@ -38812,6 +39522,30 @@
    },
    {
     "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_auroboro_iii_terfila_network_rumor.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_auroboro_iii_terfila_network_scope.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_ilaria_feria_ledger_accounts.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_ilaria_terfila_ledger_network.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
     "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_khaoe_terfila.md",
     "rel": "contains",
     "weight": 1
@@ -38824,7 +39558,49 @@
    },
    {
     "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_nerkeli_khol_moshin_coordination_scope.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_nerkeli_terfila_archive_check.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_nerkeli_terfila_coordination_break.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_nerkeli_terfila_coordination_unsustainable.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_nerkeli_terfila_cross_reference_deferred.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
     "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_nerkeli_terfila_harbor.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_nerkeli_terfila_message_system.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/gondarfolas_nerkeli_terfila_waiting.md",
     "rel": "contains",
     "weight": 1
    },
@@ -38872,7 +39648,37 @@
    },
    {
     "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/ilaria_khaoe_gorff_archive_counsel.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/ilaria_khaoe_terfila_archive_coordination.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/ilaria_khaoe_terfila_archive_photos.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
     "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/ilaria_khaoe_terfila_archive_repairs.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/ilaria_khaoe_terfila_record_collapse.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/ilaria_khaoe_terfila_supplies_from_gorff.md",
     "rel": "contains",
     "weight": 1
    },
@@ -38891,6 +39697,18 @@
    {
     "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
     "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/ilaria_nerkeli_khol_moshin.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/ilaria_nerkeli_sidnalta_staying.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/ilaria_nerkeli_terfila_notebook_archive.md",
     "rel": "contains",
     "weight": 1
    },
@@ -38920,7 +39738,31 @@
    },
    {
     "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_gondarfolas_gorff_archive_materials.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_gondarfolas_gorff_market_stall.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
     "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_gondarfolas_puerto_tortuga.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_gondarfolas_terfila_absence_and_learning.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_gondarfolas_terfila_ensayo_libro.md",
     "rel": "contains",
     "weight": 1
    },
@@ -38939,6 +39781,18 @@
    {
     "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
     "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_ilaria_espiral_pavilion.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_ilaria_terfila_archive_plateau.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_ilaria_terfila_attribution_holding.md",
     "rel": "contains",
     "weight": 1
    },
@@ -38968,6 +39822,42 @@
    },
    {
     "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_nerkeli_terfila_archive_inquiry.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_nerkeli_terfila_archive_materials.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_nerkeli_terfila_archive_news.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_nerkeli_terfila_archive_tension.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/khaoe_nerkeli_terfila_engagement.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_auroboro_iii_terfila_archive_offer.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
     "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_bahia_pelicanos_encounter.md",
     "rel": "contains",
     "weight": 1
@@ -38975,6 +39865,60 @@
    {
     "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
     "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_catraniz_trader.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_gorff_archive_integration.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_gorff_archive_ledger.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_gorff_manuscript_delay.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_terfila_archive_preservation.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_terfila_archive_reach.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_terfila_coordination_third_failure.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_terfila_harbor_return.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_terfila_scope.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_gondarfolas_terfila_storage_check.md",
     "rel": "contains",
     "weight": 1
    },
@@ -38993,6 +39937,12 @@
    {
     "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
     "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_khaoe_jardin.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/_npcs/scenes",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/_npcs/scenes/nerkeli_khaoe_terfila_archive_coordination.md",
     "rel": "contains",
     "weight": 1
    },
@@ -39976,6 +40926,12 @@
    },
    {
     "source": "dir:.claude/worktrees/simulate-20260808-181023/scripts/lore",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/scripts/lore/check_arc_alignment.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/scripts/lore",
     "target": "file:.claude/worktrees/simulate-20260808-181023/scripts/lore/check_character_name.py",
     "rel": "contains",
     "weight": 1
@@ -40036,7 +40992,25 @@
    },
    {
     "source": "dir:.claude/worktrees/simulate-20260808-181023/scripts/lore",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/scripts/lore/resolve_location.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/scripts/lore",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/scripts/lore/roll_arc_outcome.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/scripts/lore",
     "target": "file:.claude/worktrees/simulate-20260808-181023/scripts/lore/roll_lifespan.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/simulate-20260808-181023/scripts/lore",
+    "target": "file:.claude/worktrees/simulate-20260808-181023/scripts/lore/roll_routine.py",
     "rel": "contains",
     "weight": 1
    },
@@ -40096,7 +41070,19 @@
    },
    {
     "source": "dir:_lore",
+    "target": "file:_lore/archetypes.json",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:_lore",
     "target": "file:_lore/encodings.json",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:_lore",
+    "target": "file:_lore/tuning.json",
     "rel": "contains",
     "weight": 1
    },
@@ -41848,13 +42834,31 @@
    },
    {
     "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/check_arc_alignment.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/check_character_name.py",
     "rel": "contains",
     "weight": 1
    },
    {
     "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/check_needs_provides.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/check_resonance.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/generate_offspring.py",
     "rel": "contains",
     "weight": 1
    },
@@ -41902,13 +42906,67 @@
    },
    {
     "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/record_partner.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/resolve_conflict.py",
     "rel": "contains",
     "weight": 1
    },
    {
     "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/resolve_location.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/roll_arc_outcome.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/roll_arc_primacy.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/roll_contested.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/roll_death_legacy.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/roll_lead_followup.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/roll_lifespan.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/roll_reproduction.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/roll_routine.py",
     "rel": "contains",
     "weight": 1
    },
@@ -41927,6 +42985,12 @@
    {
     "source": "dir:scripts/lore",
     "target": "file:scripts/lore/simulate_tally.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/tuning.py",
     "rel": "contains",
     "weight": 1
    },
@@ -41979,7 +43043,7 @@
     "kind": "layer",
     "note": "templates, registries, gesture dispatch",
     "tier": 2,
-    "degree": 31
+    "degree": 44
    },
    {
     "id": "layer:3",
@@ -42198,6 +43262,14 @@
     "degree": 1
    },
    {
+    "id": "script:lore/check_arc_alignment.py",
+    "label": "check_arc_alignment.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/check_arc_alignment.py",
+    "degree": 1
+   },
+   {
     "id": "script:lore/check_character_name.py",
     "label": "check_character_name.py",
     "kind": "script",
@@ -42206,11 +43278,27 @@
     "degree": 1
    },
    {
+    "id": "script:lore/check_needs_provides.py",
+    "label": "check_needs_provides.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/check_needs_provides.py",
+    "degree": 1
+   },
+   {
     "id": "script:lore/check_resonance.py",
     "label": "check_resonance.py",
     "kind": "script",
     "tier": 2,
     "file": "scripts/lore/check_resonance.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/generate_offspring.py",
+    "label": "generate_offspring.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/generate_offspring.py",
     "degree": 1
    },
    {
@@ -42270,11 +43358,67 @@
     "degree": 1
    },
    {
+    "id": "script:lore/record_partner.py",
+    "label": "record_partner.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/record_partner.py",
+    "degree": 1
+   },
+   {
     "id": "script:lore/resolve_conflict.py",
     "label": "resolve_conflict.py",
     "kind": "script",
     "tier": 2,
     "file": "scripts/lore/resolve_conflict.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/resolve_location.py",
+    "label": "resolve_location.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/resolve_location.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/roll_arc_outcome.py",
+    "label": "roll_arc_outcome.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/roll_arc_outcome.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/roll_arc_primacy.py",
+    "label": "roll_arc_primacy.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/roll_arc_primacy.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/roll_contested.py",
+    "label": "roll_contested.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/roll_contested.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/roll_death_legacy.py",
+    "label": "roll_death_legacy.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/roll_death_legacy.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/roll_lead_followup.py",
+    "label": "roll_lead_followup.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/roll_lead_followup.py",
     "degree": 1
    },
    {
@@ -42284,6 +43428,22 @@
     "tier": 2,
     "file": "scripts/lore/roll_lifespan.py",
     "degree": 2
+   },
+   {
+    "id": "script:lore/roll_reproduction.py",
+    "label": "roll_reproduction.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/roll_reproduction.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/roll_routine.py",
+    "label": "roll_routine.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/roll_routine.py",
+    "degree": 1
    },
    {
     "id": "script:lore/sample_lore_knowledge.py",
@@ -42307,6 +43467,14 @@
     "kind": "script",
     "tier": 2,
     "file": "scripts/lore/simulate_tally.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/tuning.py",
+    "label": "tuning.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/tuning.py",
     "degree": 1
    },
    {
@@ -42545,13 +43713,31 @@
    },
    {
     "source": "layer:2",
+    "target": "script:lore/check_arc_alignment.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
     "target": "script:lore/check_character_name.py",
     "rel": "holds",
     "weight": 1
    },
    {
     "source": "layer:2",
+    "target": "script:lore/check_needs_provides.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
     "target": "script:lore/check_resonance.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/generate_offspring.py",
     "rel": "holds",
     "weight": 1
    },
@@ -42599,13 +43785,67 @@
    },
    {
     "source": "layer:2",
+    "target": "script:lore/record_partner.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
     "target": "script:lore/resolve_conflict.py",
     "rel": "holds",
     "weight": 1
    },
    {
     "source": "layer:2",
+    "target": "script:lore/resolve_location.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/roll_arc_outcome.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/roll_arc_primacy.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/roll_contested.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/roll_death_legacy.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/roll_lead_followup.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
     "target": "script:lore/roll_lifespan.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/roll_reproduction.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/roll_routine.py",
     "rel": "holds",
     "weight": 1
    },
@@ -42624,6 +43864,12 @@
    {
     "source": "layer:2",
     "target": "script:lore/simulate_tally.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/tuning.py",
     "rel": "holds",
     "weight": 1
    },
