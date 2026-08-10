@@ -160,7 +160,21 @@ be left to the subagent to decide.
 
 Run this sequence in full, in order, for every pass in extended mode - it replaces the base Step
 3's pairing-through-dispatch logic; Step 3's "Never call `AskUserQuestion`", "never use `cd`",
-absolute-path, and safety-net rules below all still apply unchanged.
+absolute-path, and safety-net rules below all still apply unchanged, restated inline right here
+rather than only as a backward pointer, because they matter *more* here, not less: a single
+extended-mode pass can call on the order of 15+ scripts (versus base mode's 2-4), so the known
+relative-path-leak failure mode has proportionally many more chances to occur per pass, even though
+the underlying mechanism (auto-revert, per Step 3's point 4 below) is unchanged and already handles
+it. **Before running any of the numbered steps below, hold all of base Step 3's dispatch rules as
+active for this whole sequence:** every `py scripts/lore/<name>.py` call by the full absolute
+worktree path, never relative, not even once; never `cd`, not even standalone; Bash only, never
+PowerShell, not even as a first choice; never retry a failed call via a different shell/tool/method;
+verify a script's write actually landed in the worktree's own copy of a file before trusting its
+stdout. **And after every single pass in this sequence completes (successfully or not), run Step
+3's point 4 safety net** (`git -C "<main repo root>" status --short -- _lore/ _npcs/`, auto-revert
+any leak found, no asking) **before moving on to the next pass** - extended mode's own step 17
+below assumes this already happened; it is not optional just because it isn't re-numbered into the
+17 steps themselves.
 
 **Every number below (odds, thresholds, cooldowns) lives in `_lore/tuning.json`, read via
 `scripts/lore/tuning.py` - the numbers stated here are what's in that file as of this writing, not
@@ -271,9 +285,12 @@ rather than trusting this prose.**
     mechanical copy a transform uses to the recipient's own arc (about/needs copied from the
     deceased's arc, `resolution` reset to `"ongoing"`, tally reset) - archetype/routine stays the
     recipient's own.
-17. Append the pass's one-line summary to the running log, same as base mode. If either participant
-    died this pass, drop them from the living pool before the next draw (base mode's existing rule,
-    unchanged).
+17. Run Step 3's point 4 safety net now, if it hasn't already run for this pass (see the note above
+    the numbered sequence - given how many script calls just happened, do not skip this). Append the
+    pass's one-line summary to the running log, same as base mode. If either participant died this
+    pass, drop them from the living pool before the next draw (base mode's existing rule, unchanged).
+    If a birth happened this pass, add the child to the living pool once the current pass number
+    reaches the threshold `generate_offspring.py` printed - not before.
 
 ## Step 3 — Run passes
 

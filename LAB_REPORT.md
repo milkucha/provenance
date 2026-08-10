@@ -182,6 +182,17 @@ here has been run once. Per the original suggested order (`TODO.md`'s "Proposed 
 genuinely small pilot (10-15 passes) before trusting any of this at scale, and before layering
 anything further (the reflection mechanism, still entirely undesigned) on top.
 
+**Permission review (2026-08-10, on request):** `scripts/lore/simulate_setup_worktree.py`'s blanket
+tool-allow list is untouched by this build and already covers every new script — they all follow
+the identical `Bash -> py script -> internal file I/O` pattern as the originals, correctly anchor
+root via `Path(__file__).resolve().parent.parent.parent`, and introduce no new Claude-tool-level
+interaction. What the review actually found and fixed: extended mode can call on the order of 15+
+scripts in a single pass (versus base mode's 2-4), so the known relative-path-leak failure mode
+(still safely auto-reverted, but wastes a pass) has proportionally more chances to occur per pass -
+the extended-mode section only pointed backward at base mode's absolute-path/never-cd/verify-writes
+rules rather than restating them where they're actually needed first, and never explicitly required
+the safety-net check to run at all. Both fixed directly in `SKILL.md`'s extended-mode section.
+
 ## Open design questions (carried forward)
 
 - **Odds and thresholds are all first-guess numbers, untuned by any actual run** — all now
