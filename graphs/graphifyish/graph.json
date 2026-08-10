@@ -12445,8 +12445,8 @@
     "label": "Luminacion",
     "kind": "root",
     "path": ".",
-    "size": 346138801,
-    "degree": 13
+    "size": 346162147,
+    "degree": 12
    },
    {
     "id": "file:.gitignore",
@@ -12478,14 +12478,6 @@
     "kind": "doc",
     "path": "TODO.md",
     "size": 109239,
-    "degree": 1
-   },
-   {
-    "id": "file:gondarfolas_auroboro_iii_feria_del_milenio_hearsay.json",
-    "label": "gondarfolas_auroboro_iii_feria_del_milenio_hearsay.json",
-    "kind": "other",
-    "path": "gondarfolas_auroboro_iii_feria_del_milenio_hearsay.json",
-    "size": 1702,
     "degree": 1
    },
    {
@@ -28891,7 +28883,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": "graphs",
-    "size": 2666423,
+    "size": 2691471,
     "degree": 2
    },
    {
@@ -28899,7 +28891,7 @@
     "label": "graphifyish",
     "kind": "dir",
     "path": "graphs/graphifyish",
-    "size": 2666423,
+    "size": 2691471,
     "degree": 3
    },
    {
@@ -28907,7 +28899,7 @@
     "label": "graph.json",
     "kind": "graph",
     "path": "graphs/graphifyish/graph.json",
-    "size": 1451991,
+    "size": 1465595,
     "degree": 1
    },
    {
@@ -28915,7 +28907,7 @@
     "label": "graphifyish.html",
     "kind": "graph",
     "path": "graphs/graphifyish/graphifyish.html",
-    "size": 1214432,
+    "size": 1225876,
     "degree": 1
    },
    {
@@ -29341,12 +29333,6 @@
    {
     "source": "dir:.",
     "target": "file:TODO.md",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:.",
-    "target": "file:gondarfolas_auroboro_iii_feria_del_milenio_hearsay.json",
     "rel": "contains",
     "weight": 1
    },
