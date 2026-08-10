@@ -12445,7 +12445,7 @@
     "label": "Luminacion",
     "kind": "root",
     "path": ".",
-    "size": 346700962,
+    "size": 346787428,
     "degree": 13
    },
    {
@@ -12469,7 +12469,7 @@
     "label": "LAB_REPORT.md",
     "kind": "doc",
     "path": "LAB_REPORT.md",
-    "size": 16304,
+    "size": 17288,
     "degree": 1
    },
    {
@@ -12501,7 +12501,7 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
-    "size": 287848362,
+    "size": 287850028,
     "degree": 6
    },
    {
@@ -12533,7 +12533,7 @@
     "label": "skills",
     "kind": "dir",
     "path": ".claude/skills",
-    "size": 162239,
+    "size": 163905,
     "degree": 11
    },
    {
@@ -12653,7 +12653,7 @@
     "label": "simulate",
     "kind": "dir",
     "path": ".claude/skills/simulate",
-    "size": 35431,
+    "size": 37097,
     "degree": 2
    },
    {
@@ -12661,7 +12661,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/simulate/SKILL.md",
-    "size": 35431,
+    "size": 37097,
     "degree": 1
    },
    {
@@ -29387,7 +29387,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": "graphs",
-    "size": 2690665,
+    "size": 2774481,
     "degree": 2
    },
    {
@@ -29395,7 +29395,7 @@
     "label": "graphifyish",
     "kind": "dir",
     "path": "graphs/graphifyish",
-    "size": 2690665,
+    "size": 2774481,
     "degree": 3
    },
    {
@@ -29403,7 +29403,7 @@
     "label": "graph.json",
     "kind": "graph",
     "path": "graphs/graphifyish/graph.json",
-    "size": 1465147,
+    "size": 1511060,
     "degree": 1
    },
    {
@@ -29411,7 +29411,7 @@
     "label": "graphifyish.html",
     "kind": "graph",
     "path": "graphs/graphifyish/graphifyish.html",
-    "size": 1225518,
+    "size": 1263421,
     "degree": 1
    },
    {
