@@ -12445,7 +12445,7 @@
     "label": "Luminacion",
     "kind": "root",
     "path": ".",
-    "size": 346162147,
+    "size": 346161341,
     "degree": 12
    },
    {
@@ -28883,7 +28883,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": "graphs",
-    "size": 2691471,
+    "size": 2690665,
     "degree": 2
    },
    {
@@ -28891,7 +28891,7 @@
     "label": "graphifyish",
     "kind": "dir",
     "path": "graphs/graphifyish",
-    "size": 2691471,
+    "size": 2690665,
     "degree": 3
    },
    {
@@ -28899,7 +28899,7 @@
     "label": "graph.json",
     "kind": "graph",
     "path": "graphs/graphifyish/graph.json",
-    "size": 1465595,
+    "size": 1465147,
     "degree": 1
    },
    {
@@ -28907,7 +28907,7 @@
     "label": "graphifyish.html",
     "kind": "graph",
     "path": "graphs/graphifyish/graphifyish.html",
-    "size": 1225876,
+    "size": 1225518,
     "degree": 1
    },
    {
