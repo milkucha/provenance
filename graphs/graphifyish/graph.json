@@ -12445,7 +12445,7 @@
     "label": "Luminacion",
     "kind": "root",
     "path": ".",
-    "size": 407397854,
+    "size": 407398693,
     "degree": 13
    },
    {
@@ -12453,7 +12453,7 @@
     "label": ".gitignore",
     "kind": "other",
     "path": ".gitignore",
-    "size": 26,
+    "size": 45,
     "degree": 1
    },
    {
@@ -12477,7 +12477,7 @@
     "label": "README.md",
     "kind": "doc",
     "path": "README.md",
-    "size": 48038,
+    "size": 48858,
     "degree": 1
    },
    {
@@ -58141,5 +58141,5 @@
    }
   ]
  },
- "generated": "2026-08-11"
+ "generated": "2026-08-12"
 }
