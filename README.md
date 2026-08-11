@@ -111,7 +111,16 @@ The system has four layers, each authored from the one below it:
     `worktree.baseRef: "head"` in settings, so it branches from the current lore state rather than a
     stale `origin/<default-branch>`). For testing the enactment mechanism at scale, or producing a
     showcase trail of scenes, without risking the real files — the worktree stays on disk afterward
-    for inspection and is never merged back automatically. Lore-only, same as `/enact`.
+    for inspection and is never merged back automatically. Lore-only, same as `/enact`. **Extended
+    mode** (Step 3) kicks in automatically once a participant's character file has a non-empty
+    `routines` array: rolls a routine/location for each pass, tracks each character's own `arc`
+    (mechanical primacy/gate/outcome rolls against `_lore/archetypes.json`, tallied toward
+    advance/stall/reverse/transform/resolve), and — beyond `/enact`'s own hearsay/criterion/death
+    machinery — adds reproduction (`roll_reproduction.py`/`generate_offspring.py`, a new character
+    file with inherited knowledge and a birth tale) and death legacy (an ongoing arc transferring to
+    someone in the deceased's notified circle). Currently piloted on 6 seeded characters; whether the
+    mechanism is actually producing good results, as opposed to just running, is tracked in
+    `LAB_REPORT.md`, not here.
 - **`_lore/`** — the raw material and its analysis, plus two further sources of truth: one told
   directly by the user, and one (`facts/`) that is universal and never sampled:
   - `_lore/material/` — source artifacts as uploaded: screenshots of in-game books, maps,
