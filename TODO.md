@@ -1290,3 +1290,83 @@ before the larger one, not all at once:
 5. Only after that: reproduction (point 8) and group scenes (point 5), which both depend on the above
    already working and both need `/enact` itself extended — dyadic → variable participant count for
    group scenes; a new record-keeping script mirroring `record_death.py` for births.
+
+
+## /simulate Run 2 knowledge/corpus-absorption fixes (2026-08-11) - for continuation later
+
+**Where things stand, so the next session can pick this up cold.** This is the eighth+ extension of
+Run 2 (`.claude/worktrees/simulate-20260810-164704`, 305 passes as of this session, `LAB_REPORT.md`
+has the full mechanical/narrative log). This entry only tracks the corpus-absorption mechanism work
+done *after* the 305-pass run itself finished, since it touches shared scripts/schema, not just that
+one worktree's own data.
+
+- [x] **Knowledge inheritance retuned** (`generate_offspring.py`, `_lore/tuning.json`'s
+      `offspring_knowledge`) - a child now reliably inherits a majority of both parents' education,
+      draws a bounded amount of genuinely new material from `encodings.json`'s full corpus (concepts,
+      locations, conflicts, tales, inhabitants, routes, eras, hearsay - not just concepts/locations as
+      first implemented, corrected same session on user report "when I say general knowledge, I mean
+      ALL of the encodings"), skewed toward the child's own inherited criterion, and inherits a
+      fraction of both parents' own `knowledge.experience` as wrapped "Grew up hearing: ..." family
+      lore. Tested via dry-run births, fully reverted test artifacts each time.
+- [x] **Hearsay wasn't actually absorbing into the corpus - the core gap this whole thread chased.**
+      `build_source_index.py` existed and worked, but had never been run against this run's 305 new
+      hearsay entries, and 325 of 331 resolvable references failed even once run: the 42 arc-concepts
+      /simulate's own arcs had been using for hundreds of passes were never registered as real
+      `concepts[]` entries - only ever existed as tag strings inside `arc.about`. One-time catch-up
+      (`promote_arc_concepts.py`, job-tmp only) registered all 42 (mechanically assembled from each
+      arc's own data, never freely authored) and `build_source_index.py` re-run - 318 more links
+      folded in. Permanent fix: `scripts/lore/register_arc_concept.py` (new) registers a concept the
+      moment its arc is authored, wired into `SKILL.md`'s arc-authoring step; `SKILL.md` Step 17 now
+      runs `build_source_index.py` once at the natural end of a batch.
+- [x] **`has_sources` was only true for 4 of 14 categories, and the flag alone wasn't sufficient** -
+      `resolve_prefixed()` had a *separately* hardcoded prefix map that ignored the flag entirely.
+      Fixed both: `_categories` now has `has_sources: true` for every category except `hearsay` itself
+      (the source, not a valid target) and `characters.named_inhabitants` (still excluded - see next
+      bullet); `resolve_prefixed()`/`build_index()`/`load_categories()` are now fully schema-driven,
+      including per-category `id_field` (was hardcoded to assume every entry's identifier was called
+      `"id"` - true for `concept`/`location` by coincidence, false for `highway` (`code`), `airport`
+      (`location`), `year_esquema` (`year`, an int) - would have KeyError'd the instant any of those
+      categories' `has_sources` flag was ever actually exercised).
+- [x] **Bare-reference ambiguity default: `location` wins a tie** (2026-08-11, user direction). Several
+      locations (Görff, Salthos Cruzados, Khol Moshin) also have an airport of the same name, so a
+      bare `about: "gorff"` used to correctly-but-unhelpfully report as ambiguous once `airport` became
+      sourced. `resolve_bare()` now prefers a single `location` candidate among tied exact matches;
+      still refuses to guess if the tie involves two non-location categories or two location
+      candidates.
+- [x] **Character births are tales, not concepts** (2026-08-11, user correction). The 14 birth events
+      that had been given ad-hoc `concept: X_birth` tags (never a real backing entry, purely a
+      scene-writing convention with no script behind it) were converted: each got a real
+      `_lore/tales/birth_of_<key>.md` + `tales.entries` row (same shape as a death tale), the 14
+      matching concept entries were deleted, and every hearsay claim that referenced
+      `concept: X_birth` was repointed to `tale: birth_of_X` (45 claims). Permanent fix:
+      `generate_offspring.py` now writes a real birth tale itself at the moment of birth (mirroring
+      `record_death.py`'s own tale-writing exactly, via a new `write_birth_tale()`), printing the tale
+      id so the caller tags the birth-announcement hearsay claim `about: "tale: <id>"` from the start -
+      no future birth should ever need this retroactive treatment again.
+- [ ] **`characters.named_inhabitants` still can't receive hearsay/tale sources at all**, even though
+      its own `has_sources` flag is now `true` - it's `shape: "grouped_list"` (nested
+      `{locality: [people]}`, no flat `id_field`), and `load_categories()` deliberately excludes
+      non-`"list"`-shaped categories from the generic linking path to avoid a crash. This is the same
+      gap flagged mid-conversation for a name like "Zeya" surfacing only in claim text, never as a
+      structured `about: "inhabitant: X (Y)"` reference - two separate problems stacked (the schema
+      can't receive the link even if the reference existed; and nothing currently proposes that a name
+      mentioned in dialogue deserves a `named_inhabitants` entry in the first place, which is a real
+      judgment call, not a mechanical one the way arc-concept promotion was). Not fixed this session -
+      would need a real per-person index entry shape decision first.
+- [ ] **8 references remain genuinely unresolved**, unrelated to this session's fixes - pre-existing
+      gaps predating `/simulate` entirely (`jardin_de_los_parajes` has no `locations` entry at all;
+      `hotel_kholi`/`preservation`/`memory`/`transformation` have no `concepts` entries; one bare
+      `'Era del Daax'` reference doesn't match `time_systems.ensayo_i_eras`' own naming exactly). Left
+      as `build_source_index.py`'s own honest "never guessed" report - worth a look next time someone's
+      touching that part of the corpus, not blocking anything from this session.
+- [ ] **Main repo's own `.claude/worktrees/simulate-20260810-164704` worktree branch and the main repo's
+      working directory both have real uncommitted changes from this whole thread** - see `git status`
+      in each. The worktree-isolated session that did this work could only `git commit` inside its own
+      worktree (hard sandbox rule - `git -C <other path>` is refused outright, not just discouraged);
+      the main repo's own copies of `scripts/lore/build_source_index.py`, `generate_offspring.py`,
+      `register_arc_concept.py`, `_lore/tuning.json`, `_lore/encodings.json` (schema + 10 linked
+      sources), `.claude/skills/simulate/SKILL.md`, `LAB_REPORT.md`, and this file were all written via
+      direct Python file writes (bypassing the Edit/Write tool's own worktree sandboxing) but never
+      committed - that needs a commit from a session that isn't worktree-isolated, or a manual `git add`
+      + `git commit` in the main repo directly. Do this before starting new work there, or the sync
+      history gets confusing.

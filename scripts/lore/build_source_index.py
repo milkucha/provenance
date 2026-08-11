@@ -71,7 +71,16 @@ def _get_path(data: dict, path: str):
 def load_categories(data: dict) -> dict:
     """Every category encodings.json's own `_categories` block marks `has_sources: true` - not a
     hardcoded list, so this stays correct as new categories get registered (or, on a freshly
-    bootstrapped project with no categories yet, simply returns nothing to attach into)."""
+    bootstrapped project with no categories yet, simply returns nothing to attach into).
+
+    Only `shape: "list"` categories are handled here - a flat list of dicts, each carrying its own
+    `id_field` (see build_index, which reads that instead of assuming a hardcoded "id" key; not
+    every category calls its identifier "id" - highways use "code", airports "location", years
+    "year"). `"inhabitant"` is `shape: "grouped_list"` (nested `{locality: [people]}`, no flat
+    id_field) and is deliberately excluded even though its own `has_sources` is true (corrected
+    2026-08-11, on user report - see resolve_touches_path's own named_inhabitants branch for that
+    category's real, still-partial handling) - a real generic-list entry per person would be
+    needed before this function could safely include it the same way as everything else."""
     if "_categories" not in data:
         raise SystemExit(
             "encodings.json has no '_categories' schema block - run\n"
@@ -80,7 +89,7 @@ def load_categories(data: dict) -> dict:
     return {
         cat_key: _get_path(data, spec["path"])
         for cat_key, spec in data["_categories"].items()
-        if spec.get("has_sources")
+        if spec.get("has_sources") and spec.get("shape") == "list"
     }
 
 
@@ -146,12 +155,20 @@ def build_other_known_ids(data: dict) -> set:
     return known
 
 
-def build_index(categories: dict) -> list:
-    """One record per entry: (category, entry, {normalized keys: display form})."""
+def build_index(categories: dict, specs: dict) -> list:
+    """One record per entry: (category, entry, {normalized keys: display form}).
+
+    Reads each category's own `id_field` from `_categories` (`specs`) instead of assuming every
+    entry calls its identifier "id" - corrected 2026-08-11, on user report: `concept`/`location`
+    both happen to use "id", but `highway` uses "code", `airport` "location", `year_esquema`
+    "year" (an int - stringified before normalizing), etc. Assuming "id" universally would have
+    KeyError'd the instant a non-concept/location category's `has_sources` flag actually got used."""
     index = []
     for cat_key, entries in categories.items():
+        id_field = specs.get(cat_key, {}).get("id_field") or "id"
         for entry in entries:
-            keys = {normalize(entry["id"]): entry["id"]}
+            entry_id = str(entry[id_field])
+            keys = {normalize(entry_id): entry_id}
             for n in entry.get("names", []):
                 keys[normalize(n)] = n
             index.append((cat_key, entry, keys))
@@ -212,33 +229,31 @@ def add_name_if_new(entry: dict, raw_name: str) -> bool:
     return True
 
 
-def resolve_prefixed(prefix: str, value: str, index: list):
+def resolve_prefixed(prefix: str, value: str, index: list, sourced_keys: set):
     """Returns ('scope', ...) tuple: 'attach' (category, entry, exact_or_fuzzy, score, display),
-    'out_of_scope', or 'unresolved'."""
-    prefix_map = {
-        "concept": "concept",
-        "location": "location",
-    }
-    if prefix in prefix_map:
-        cat_hint = prefix_map[prefix]
-        exact = find_exact(value, index, cat_hint)
+    'out_of_scope', or 'unresolved'. Driven entirely by `sourced_keys` (every category key with
+    `has_sources: true` in encodings.json's own `_categories` block) rather than a hardcoded prefix
+    list - corrected 2026-08-11, on user report ("if something was said by someone, it means there
+    is a source, and that source is hearsay"): this function used to only ever attempt `concept`/
+    `location`/`character` prefixes, silently routing every other prefix (`era_ensayo`,
+    `conflict`, `inhabitant`, `highway`, ...) to `out_of_scope` regardless of what `has_sources`
+    said - the flag alone was never sufficient, this is the other half of that fix."""
+    if prefix == "character":
+        exact = find_exact(value, index, "character_legendary") + find_exact(value, index, "character_real")
+        if len(exact) == 1:
+            return ("attach", exact[0][0], exact[0][1], "exact", 1.0, value)
+        return ("unresolved", None, None, None, None, None)
+    if prefix in sourced_keys:
+        exact = find_exact(value, index, prefix)
         if len(exact) == 1:
             return ("attach", exact[0][0], exact[0][1], "exact", 1.0, value)
         if len(exact) > 1:
             return ("unresolved", None, None, None, None, None)
-        fuzzy = find_fuzzy(value, index, cat_hint)
+        fuzzy = find_fuzzy(value, index, prefix)
         if len(fuzzy) == 1:
             cat_key, score, entry, _ = fuzzy[0]
             return ("attach", cat_key, entry, "fuzzy", score, value)
         return ("unresolved", None, None, None, None, None)
-    if prefix == "character":
-        exact = find_exact(value, index) if False else (
-            find_exact(value, index, "character_legendary") + find_exact(value, index, "character_real")
-        )
-        if len(exact) == 1:
-            return ("attach", exact[0][0], exact[0][1], "exact", 1.0, value)
-        return ("unresolved" if not exact else "unresolved", None, None, None, None, None)
-    # era_ensayo / era_esquema / era_libro / year_esquema / highway / train / airport / route / etc.
     return ("out_of_scope", None, None, None, None, None)
 
 
@@ -247,6 +262,15 @@ def resolve_bare(value: str, index: list, other_known: set):
     if len(exact) == 1:
         return ("attach", exact[0][0], exact[0][1], "exact", 1.0, value)
     if len(exact) > 1:
+        # Default to "location" on a tie (added 2026-08-11, on user direction) - a bare,
+        # unprefixed about-reference is overwhelmingly a place name in practice, and several
+        # locations double as an airport of the same name (Gorff, Salthos Cruzados, Khol
+        # Moshin...), which is what actually produces these ties. Only ties involving exactly one
+        # location candidate get resolved this way - a genuine ambiguity between two non-location
+        # categories, or two location candidates, still goes unresolved rather than guessed.
+        location_hits = [h for h in exact if h[0] == "location"]
+        if len(location_hits) == 1:
+            return ("attach", location_hits[0][0], location_hits[0][1], "exact", 1.0, value)
         return ("unresolved", None, None, None, None, None)
     if normalize(value) in other_known:
         return ("out_of_scope", None, None, None, None, None)
@@ -281,7 +305,7 @@ def resolve_touches_path(value: str, index: list, other_known: set):
     return resolve_bare(value, index, other_known)
 
 
-def resolve_ref(raw: str, index: list, other_known: set, hearsay_ids: set):
+def resolve_ref(raw: str, index: list, other_known: set, hearsay_ids: set, sourced_keys: set):
     s = raw.strip()
     if CONFLICT_ID_RE.match(s):
         return ("out_of_scope", None, None, None, None, None)
@@ -290,17 +314,17 @@ def resolve_ref(raw: str, index: list, other_known: set, hearsay_ids: set):
         return ("out_of_scope", None, None, None, None, None)  # inter-claim chain ref, not a node
     if ": " in s:
         prefix, value = s.split(": ", 1)
-        return resolve_prefixed(prefix.strip().lower(), value.strip(), index)
+        return resolve_prefixed(prefix.strip().lower(), value.strip(), index, sourced_keys)
     if "." in s and s.split(".", 1)[0] in ("concepts", "locations", "characters"):
         return resolve_touches_path(s, index, other_known)
     return resolve_bare(s, index, other_known)
 
 
-def process_refs(data: dict, index: list, other_known: set, hearsay_ids: set, report: dict) -> None:
+def process_refs(data: dict, index: list, other_known: set, hearsay_ids: set, sourced_keys: set, specs: dict, report: dict) -> None:
     def handle(raw: str, origin_category: str, origin: str, source_label: str):
         if not raw:
             return
-        status, cat_key, entry, match_kind, score, display = resolve_ref(raw, index, other_known, hearsay_ids)
+        status, cat_key, entry, match_kind, score, display = resolve_ref(raw, index, other_known, hearsay_ids, sourced_keys)
         if status == "out_of_scope":
             return
         if status == "unresolved":
@@ -309,17 +333,19 @@ def process_refs(data: dict, index: list, other_known: set, hearsay_ids: set, re
         # status == "attach"
         if match_kind == "fuzzy":
             add_name_if_new(entry, display)  # `display` is the resolved candidate value, not the matched entry's own name
+            id_field = specs.get(cat_key, {}).get("id_field") or "id"
+            entry_id = str(entry[id_field])
             conflict_id = next_conflict_id(data)
             data["conflicts"].append({
                 "id": conflict_id,
                 "topic": "possible same-entity spelling, auto-grouped (unconfirmed)",
                 "detail": (
                     f"'{raw}' (from {source_label}) auto-grouped with existing {cat_key} "
-                    f"'{entry['id']}' at similarity {score:.2f} (threshold {FUZZY_THRESHOLD}) via "
+                    f"'{entry_id}' at similarity {score:.2f} (threshold {FUZZY_THRESHOLD}) via "
                     f"build_source_index.py. Unconfirmed - needs user review."
                 ),
             })
-            report["fuzzy_grouped"].append((source_label, raw, entry["id"], round(score, 2), conflict_id))
+            report["fuzzy_grouped"].append((source_label, raw, entry_id, round(score, 2), conflict_id))
         did_attach = attach_source(entry, origin_category, origin)
         if did_attach:
             report["linked"] += 1
@@ -351,8 +377,10 @@ def main() -> None:
     migrate_sources(categories, report)
     other_known = build_other_known_ids(data)
     hearsay_ids = {e["id"] for e in data["hearsay"]["entries"]}
-    index = build_index(categories)
-    process_refs(data, index, other_known, hearsay_ids, report)
+    specs = data["_categories"]
+    index = build_index(categories, specs)
+    sourced_keys = set(categories.keys())
+    process_refs(data, index, other_known, hearsay_ids, sourced_keys, specs, report)
 
     print(f"Migrated source strings to {{category, origin}}: {report['migrated']}")
     print(f"Newly linked hearsay/tale sources: {report['linked']}")

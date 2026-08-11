@@ -36,7 +36,7 @@
         "detail"
       ],
       "epistemology_group": "conflict",
-      "has_sources": false
+      "has_sources": true
     },
     "character_legendary": {
       "path": "characters.in_world_or_legendary",
@@ -65,7 +65,7 @@
       "path": "characters.named_inhabitants.by_locality",
       "shape": "grouped_list",
       "epistemology_group": "ambiguous",
-      "has_sources": false
+      "has_sources": true
     },
     "highway": {
       "path": "routes.highways",
@@ -75,7 +75,7 @@
         "name"
       ],
       "epistemology_group": "ambiguous",
-      "has_sources": false
+      "has_sources": true
     },
     "train_segment": {
       "path": "routes.trains.segments",
@@ -85,7 +85,7 @@
         "name"
       ],
       "epistemology_group": "ambiguous",
-      "has_sources": false
+      "has_sources": true
     },
     "airport": {
       "path": "routes.airports",
@@ -95,7 +95,7 @@
         "location"
       ],
       "epistemology_group": "ambiguous",
-      "has_sources": false
+      "has_sources": true
     },
     "route_named": {
       "path": "routes.named_but_unplotted",
@@ -105,7 +105,7 @@
         "name"
       ],
       "epistemology_group": "ambiguous",
-      "has_sources": false
+      "has_sources": true
     },
     "era_ensayo": {
       "path": "time_systems.ensayo_i_eras",
@@ -115,7 +115,7 @@
         "name"
       ],
       "epistemology_group": "chronicles",
-      "has_sources": false
+      "has_sources": true
     },
     "era_esquema": {
       "path": "time_systems.esquema_poster_eras.era_row",
@@ -125,7 +125,7 @@
         "name"
       ],
       "epistemology_group": "chronicles",
-      "has_sources": false
+      "has_sources": true
     },
     "year_esquema": {
       "path": "time_systems.esquema_poster_eras.year_by_year_foundations",
@@ -135,7 +135,7 @@
         "places"
       ],
       "epistemology_group": "chronicles",
-      "has_sources": false
+      "has_sources": true
     },
     "era_libro": {
       "path": "time_systems.libro_venidas_eras.list",
@@ -145,13 +145,23 @@
         "name"
       ],
       "epistemology_group": "chronicles",
-      "has_sources": false
+      "has_sources": true
     },
     "hearsay": {
       "path": "hearsay.entries",
       "shape": "claims",
       "epistemology_group": "hearsay",
       "has_sources": false
+    },
+    "tale": {
+      "path": "tales.entries",
+      "shape": "list",
+      "id_field": "id",
+      "text_fields": [
+        "summary"
+      ],
+      "epistemology_group": "hearsay",
+      "has_sources": true
     }
   },
   "time_systems": {
@@ -189,7 +199,21 @@
         "range_vortex": "18 d.V. - 114 d.V.",
         "range_real": "abril 2013 - julio 2014",
         "players": 3,
-        "artifact": "antepasado de Gorff"
+        "artifact": "antepasado de Gorff",
+        "sources": [
+          {
+            "category": "hearsay",
+            "origin": "aureobalo_farlis_castillo_en_miniatura#7"
+          },
+          {
+            "category": "hearsay",
+            "origin": "auroboro_iii_farlis_alcoba#1"
+          },
+          {
+            "category": "hearsay",
+            "origin": "auroboro_iii_farlis_alcoba#4"
+          }
+        ]
       },
       {
         "n": 3,
@@ -224,7 +248,17 @@
         "range_real": "enero 2020 - diciembre 2021",
         "players": 9,
         "artifact": null,
-        "notes": "ensayo_i_final leaves this era's artifact tag empty/unclosed - a bare '(' with no closing text."
+        "notes": "ensayo_i_final leaves this era's artifact tag empty/unclosed - a bare '(' with no closing text.",
+        "sources": [
+          {
+            "category": "hearsay",
+            "origin": "gok_milkucha_alcove#1#5"
+          },
+          {
+            "category": "hearsay",
+            "origin": "farlis_gok_alcove#1#1"
+          }
+        ]
       },
       {
         "n": 7,
@@ -238,7 +272,13 @@
         "name": "Era de la Imaginacion",
         "range_vortex": "826 d.V. - 946 d.V.",
         "range_real": "marzo 2024 - octubre 2025",
-        "players": null
+        "players": null,
+        "sources": [
+          {
+            "category": "hearsay",
+            "origin": "gok_milkucha_alcove#1#3"
+          }
+        ]
       },
       {
         "n": 9,
@@ -246,7 +286,13 @@
         "range_vortex": "952 d.V. - actualidad",
         "range_real": "noviembre 2025 - actualidad",
         "players": null,
-        "notes": "ensayo_i_final extends this era substantially. The village founded at its opening is named Humucherry (ensayo_i's parenthetical 'aldea Camilo Ricarda'; see CONFLICT-15), and the subsistence-forcing spell's frontier widens from 'norte' to 'norte y oeste'. Därnis's expedition additionally founds Auräli (absent from ensayo_i's telling of the same passage). A new closing arc (964-980 d.V.) follows, absent from ensayo_i entirely: a 3x time-slowdown from 964 d.V./enero 2026 (60 min real = 1 dia, down from 20 min - see concept 'seasons_eas' and CONFLICT-12), the founding of Kursuviros, Puerto de las Lunas (cargo then passenger terminal, plus 'el gran Faro'), Shonogami (966 d.V., near the Sit:Nalta ruins), an unnamed first prison (966 d.V., an island west of Milkän), and Tax de rich (968 d.V., on the new continent); full mapping of the new continent and a day/night-manipulation ban at 970 d.V.; and confirmation that the Feria del Milenio began construction ~980 d.V. and was inaugurated 26 julio 2026, '1000 años SBW' - see concept 'feria_del_milenio' and context.md entry 21."
+        "notes": "ensayo_i_final extends this era substantially. The village founded at its opening is named Humucherry (ensayo_i's parenthetical 'aldea Camilo Ricarda'; see CONFLICT-15), and the subsistence-forcing spell's frontier widens from 'norte' to 'norte y oeste'. Därnis's expedition additionally founds Auräli (absent from ensayo_i's telling of the same passage). A new closing arc (964-980 d.V.) follows, absent from ensayo_i entirely: a 3x time-slowdown from 964 d.V./enero 2026 (60 min real = 1 dia, down from 20 min - see concept 'seasons_eas' and CONFLICT-12), the founding of Kursuviros, Puerto de las Lunas (cargo then passenger terminal, plus 'el gran Faro'), Shonogami (966 d.V., near the Sit:Nalta ruins), an unnamed first prison (966 d.V., an island west of Milkän), and Tax de rich (968 d.V., on the new continent); full mapping of the new continent and a day/night-manipulation ban at 970 d.V.; and confirmation that the Feria del Milenio began construction ~980 d.V. and was inaugurated 26 julio 2026, '1000 años SBW' - see concept 'feria_del_milenio' and context.md entry 21.",
+        "sources": [
+          {
+            "category": "hearsay",
+            "origin": "doran_eras_of_culture#4"
+          }
+        ]
       },
       {
         "n": 10,
@@ -337,7 +383,13 @@
         {
           "name": "Era de las Maravillas",
           "range_vortex": "804 d.V. - ? (no end extracted)",
-          "matches": "unclear; possibly analogous to ensayo_i's Era de la Imaginacion or Era de la Magia"
+          "matches": "unclear; possibly analogous to ensayo_i's Era de la Imaginacion or Era de la Magia",
+          "sources": [
+            {
+              "category": "hearsay",
+              "origin": "doran_eras_of_culture#3"
+            }
+          ]
         }
       ],
       "year_by_year_foundations": [
@@ -365,7 +417,13 @@
             "Tërfila",
             "Salthos Cruzados"
           ],
-          "range_as_extracted": "18 d.V. - 72 d.V."
+          "range_as_extracted": "18 d.V. - 72 d.V.",
+          "sources": [
+            {
+              "category": "hearsay",
+              "origin": "gok_milkucha_alcove#1#1"
+            }
+          ]
         },
         {
           "year": 2014,
@@ -379,7 +437,13 @@
           "places": [
             "Catraniz"
           ],
-          "range_as_extracted": "144 d.V. - 216 a.V. (sic)"
+          "range_as_extracted": "144 d.V. - 216 a.V. (sic)",
+          "sources": [
+            {
+              "category": "hearsay",
+              "origin": "gok_milkucha_alcove#1#1"
+            }
+          ]
         },
         {
           "year": 2016,

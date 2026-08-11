@@ -12445,7 +12445,7 @@
     "label": "Luminacion",
     "kind": "root",
     "path": ".",
-    "size": 346787428,
+    "size": 346792179,
     "degree": 13
    },
    {
@@ -27308,7 +27308,7 @@
     "label": "_lore",
     "kind": "dir",
     "path": "_lore",
-    "size": 55363139,
+    "size": 55367890,
     "degree": 9
    },
    {
@@ -27348,7 +27348,7 @@
     "label": "characters",
     "kind": "dir",
     "path": "_lore/characters",
-    "size": 158390,
+    "size": 163141,
     "degree": 69
    },
    {
@@ -27372,7 +27372,7 @@
     "label": "aureobalo.json",
     "kind": "lore",
     "path": "_lore/characters/aureobalo.json",
-    "size": 7162,
+    "size": 7983,
     "degree": 1
    },
    {
@@ -27396,7 +27396,7 @@
     "label": "bardaglis.json",
     "kind": "lore",
     "path": "_lore/characters/bardaglis.json",
-    "size": 9644,
+    "size": 10486,
     "degree": 1
    },
    {
@@ -27412,7 +27412,7 @@
     "label": "doran.json",
     "kind": "lore",
     "path": "_lore/characters/doran.json",
-    "size": 7496,
+    "size": 8282,
     "degree": 1
    },
    {
@@ -27548,7 +27548,7 @@
     "label": "ilaria.json",
     "kind": "lore",
     "path": "_lore/characters/ilaria.json",
-    "size": 9054,
+    "size": 9728,
     "degree": 1
    },
    {
@@ -27580,7 +27580,7 @@
     "label": "khaasan.json",
     "kind": "lore",
     "path": "_lore/characters/khaasan.json",
-    "size": 7230,
+    "size": 8204,
     "degree": 1
    },
    {
@@ -27588,7 +27588,7 @@
     "label": "khaoe.json",
     "kind": "lore",
     "path": "_lore/characters/khaoe.json",
-    "size": 9458,
+    "size": 10112,
     "degree": 1
    },
    {

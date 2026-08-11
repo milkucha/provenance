@@ -146,24 +146,29 @@ def main() -> None:
     entries_by_id = {e["id"]: e for e in entries}
     name_to_key = notify_death.name_to_key_map(characters)
 
-    circle_keys = set()
+    relations = notify_death.compute_relations([key], characters)
+
+    extended_keys = set()
     for _scene_id, others in notify_death.scene_participants_of(name, entries):
         for other_name in others:
-            k = name_to_key.get(other_name.lower())
+            k = name_to_key.get(notify_death.normalize(other_name))
             if k and k != key:
-                circle_keys.add(k)
+                extended_keys.add(k)
     backstory_all = character.get("backstory") or ""
     for other_key, other_char in characters.items():
         if other_key == key:
             continue
-        if other_char.get("name", "").lower() in backstory_all.lower():
-            circle_keys.add(other_key)
+        if notify_death.normalize(other_char.get("name", "")) in notify_death.normalize(backstory_all):
+            extended_keys.add(other_key)
+    extended_keys = notify_death.living_only(extended_keys, characters) - relations
 
-    circle = sorted(circle_keys)
-    n_notify = 0 if not circle else max(1, round(0.30 * len(circle)))
+    extended = sorted(extended_keys)
+    n_notify = 0 if not extended else max(1, round(0.30 * len(extended)))
     from random import Random
     rng = Random(args.seed)
-    notified = sorted(rng.sample(circle, n_notify)) if n_notify else []
+    sampled = sorted(rng.sample(extended, n_notify)) if n_notify else []
+    notified = sorted(relations) + sampled
+    circle = sorted(relations | extended_keys)
 
     shock_candidates = []
     for k in notified:
@@ -182,10 +187,11 @@ def main() -> None:
 
     print(f"deceased: {key} ({name})")
     print(f"tale written: _lore/tales/{slug}.md  (id: {slug})")
-    print(f"circle size: {len(circle)}  ->  notified {len(notified)} (30%)")
+    print(f"relations (guaranteed): {len(relations)}  |  extended circle: {len(extended)} -> sampled {len(sampled)} (30%)  |  total notified: {len(notified)}")
     for k in notified:
+        tag = "  [relation]" if k in relations else ""
         flag = "  <-- SHOCK CANDIDATE: resolve per /character Step 6" if k in shock_candidates else ""
-        print(f"  notified: {k}{flag}")
+        print(f"  notified: {k}{tag}{flag}")
     if not notified:
         print("  (no one notified - empty circle)")
     print()

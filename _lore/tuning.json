@@ -11,5 +11,12 @@
     "reproduction": 40,
     "lead_followup": 30,
     "death_legacy": 40
+  },
+  "offspring_knowledge": {
+    "_comment": "Design debrief 2026-08-11: a child's education.items used to be a random 1-to-100% subset of the union of both parents' items only - could be as thin as a single fact, and the population-wide knowledge pool could never grow past what the founding six started with. Retuned so parental knowledge reliably survives at least partially, some of each parent's own lived experience carries over as family lore (not as the child's own lived experience - see generate_offspring.py's own docstring), and every child also draws a small amount of genuinely new material from _lore/encodings.json's world-lore pools (concepts/locations/conflicts/named_inhabitants) - skewed toward whatever the child's own (independently inherited) criterion already cares about - so the population's total knowledge can expand generation over generation instead of only ever recombining what already existed.",
+    "parent_education_min_fraction": 0.5,
+    "parent_experience_fraction_range": [0.1, 0.35],
+    "general_knowledge_fraction_range": [0.15, 0.45],
+    "criterion_skew_weight": 3
   }
 }

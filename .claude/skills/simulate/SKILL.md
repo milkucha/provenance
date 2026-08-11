@@ -245,21 +245,83 @@ rather than trusting this prose.**
       authored (archetype + personal specialization + criterion, scoped against `horizon.py`'s
       band - see `.claude/skills/character/SKILL.md`) the next time this character wins a primacy
       roll as home_frame.
+    **Every time an arc gets authored - both this re-authoring case and a character's very first
+    arc, at their first primacy win as home_frame with no existing arc - immediately run
+    `scripts/lore/register_arc_concept.py <character_key>` (added 2026-08-11, on user report: 42
+    arc concepts from earlier runs had been referenced by hundreds of hearsay claims but never
+    once existed as a real `concepts[]` entry in `encodings.json`, so nothing could ever fold into
+    them - `build_source_index.py` can only cross-link a claim into something that already exists).
+    No-ops cleanly if the concept is already registered (a transform or death-legacy reuses an
+    existing tag rather than minting a new one, and correctly should not re-register it). This
+    only registers that the concept exists, with an empty `sources: []` - it never decides which
+    claims are about it; that's `build_source_index.py`'s own job, at whatever point that next
+    runs (see Step 17 below) - keeping every concept's provenance honestly hearsay-tagged rather
+    than silently implied as material-sourced fact.
 12. **Partner tracking** (mechanical, always, both directions): `record_partner.py <p1> --with
     <p2>` and `record_partner.py <p2> --with <p1>`.
-13. **Reproduction eligibility + roll** (arithmetic, then one roll - only if step 12 just crossed
-    either direction's count to `>= partner_threshold` (5) **and** neither participant's
-    `last_reproduced_pass` is within the last `parent_cooldown_passes` (10) passes -- both from
-    `_lore/tuning.json`): `roll_reproduction.py --p1 <p1> --p2 <p2>` (odds from
-    `odds_percent.reproduction`, 40 as of this writing). If `reproduces: true`, this is the **first
+13. **Reproduction eligibility + roll** (arithmetic, then one roll - fires every pass, not only
+    the first, that both hold: either direction's count already sits `>= partner_threshold` (5)
+    **and** neither participant's `last_reproduced_pass` is within the last `parent_cooldown_passes`
+    (10) passes -- both from `_lore/tuning.json`. Corrected 2026-08-10, on user report: an earlier
+    reading of this step as "only the exact pass the count first crosses the threshold" made a birth
+    effectively a one-shot lottery ticket per pair for the rest of the run - once past the crossing
+    pass, an eligible pair could meet indefinitely without ever rolling again, which contradicts
+    `roll_reproduction.py`'s own docstring (eligibility framed as a plain recurring state check, not
+    a one-time event) and defeats the mechanic's point for a small cast. The fix: `roll_reproduction.py
+    --p1 <p1> --p2 <p2>` (odds from `odds_percent.reproduction`, 40 as of this writing) runs on
+    *every* pairing of two already-eligible people, cooldown permitting - a real chance each time
+    they meet, not a single missed roll locking them out for good. **Neither participant may already list the
+    other in their own `parents` field** (added 2026-08-10, on user report, before this was ever
+    exercised in a run) - check both directions (`p1 in p2.parents` or `p2 in p1.parents`) before
+    rolling at all; a parent and their own child skip this step entirely regardless of partner
+    count or cooldown. Every character `generate_offspring.py` produces already carries a
+    structured `parents` list (`[parent_a_slug, parent_b_slug]`), so this is a plain field read,
+    not a new mechanism - the original hand-authored cast simply has no `parents` key at all,
+    which reads as an empty/absent list and never blocks anything for them. If `reproduces: true`, this is the **first
     of the two places a model's judgment belongs**: the roll's own `name_lead` output already
     decided mechanically which parent's name leads the blend - the subagent's only job is composing
     a name that reads as a plausible blend starting from that parent's name (not a script's job -
     see `generate_offspring.py`'s own docstring for why), then run `generate_offspring.py
     --parent-a <p1> --parent-b <p2> --name "<composed name>" --pass-number <N>` (the slug is
-    derived from the name automatically, not a second thing to decide). This also writes a direct
-    `knowledge.experience` line to both parents and notifies 30% of their combined circle, the same
-    shape as `record_death.py`'s own notification - the child only enters `pick_pair.py`'s eligible
+    derived from the name automatically, not a second thing to decide). **The script now also
+    writes a real `tales.entries` row for the birth itself** (added 2026-08-11, on user correction:
+    a birth is a discrete event, same shape as a death, and belongs in `tales.entries` - not a
+    `concepts[]` entry, which earlier passes had been inventing ad hoc as "concept: <child>_birth"
+    with no real backing, purely a scene-writing convention with no script behind it) - printed as
+    `tale written: ... (id: birth_of_<key>)`. When writing the birth-announcement hearsay claim
+    (the scene where a parent tells someone the news), tag it `about: "tale: birth_of_<key>"`, never
+    a made-up concept tag. **Knowledge inheritance
+    retuned 2026-08-11, on user report that a child's `education.items` could previously inherit as
+    little as a single fact from two well-read parents, and that the population's total knowledge
+    could never grow past what the founding cast started with.** Now three layers, every fraction
+    from `_lore/tuning.json`'s `offspring_knowledge`: (1) a random subset of the union of both
+    parents' `education.items`, floored at `parent_education_min_fraction` (50%) rather than
+    unfloored, so a parent's own knowledge reliably survives at least partially instead of on a coin
+    flip; (2) a small amount of genuinely new material (`general_knowledge_fraction_range`, 15-45% of
+    however many item (1) produced) drawn from ALL of `_lore/encodings.json` - not just the static
+    pre-run world-lore (`concepts`/`locations`/`conflicts`/`characters.named_inhabitants`/
+    `characters.in_world_or_legendary`/`characters.real_world_authors_and_players`/
+    `routes.highways`/`.trains`/`.airports`/`.named_but_unplotted`/`tales.entries`/
+    `time_systems.ensayo_i_eras`), but `hearsay.entries` too - every claim any `/simulate` or
+    `/enact` pass has ever recorded, via `record_hearsay.py`, which is the actual living lore record
+    and usually the largest single pool by far (corrected 2026-08-11, on user report - an earlier
+    version of this draw wrongly scoped "general knowledge" to only the static categories) - the
+    shared setting record, not any specific character's own file. Weighted toward whatever the
+    child's own already-inherited criterion shares vocabulary with (`criterion_skew_weight`, 3x)
+    without being restricted to it - this is what lets the population's known lore actually expand
+    generation over generation instead of only ever recombining the original six's own items; (3) a random subset
+    (`parent_experience_fraction_range`, 10-35%) of the union of both parents' own
+    `knowledge.experience` entries, each wrapped as `"Grew up hearing: <text>"` and written into the
+    child's own (previously always-empty) `experience` list - family lore, not the child's own lived
+    action, but still tagged with its original `about` reference so it can honestly participate in a
+    future arc's Step 8 gate-check. See `generate_offspring.py`'s own docstring for the full mechanism
+    and rationale. This also writes a direct
+    `knowledge.experience` line to both parents and notifies their combined circle - **relations
+    (each parent's own parents, other children, and partners at/above `partner_threshold`) always,
+    in full, plus 30% of everyone else who's shared a scene with either parent or is named in their
+    backstory** (fixed 2026-08-10, on user report: previously nothing guaranteed a sibling or
+    frequent partner ever actually made the circle - see `notify_death.py`'s own docstring for the
+    full split). Same shape as `record_death.py`'s own notification - the child only enters `pick_pair.py`'s eligible
     pool once the current pass number reaches `birth_pass + child_cooldown_passes` (5, **distinct
     from** the parent cooldown above - the script prints the exact threshold, so this never needs
     computing by hand) - track this the same way the living pool itself is tracked in Step 3 base
@@ -272,9 +334,11 @@ rather than trusting this prose.**
     shock, drift) exactly as base mode requires - this sequence sits on top of that, not instead of
     it.
 15. **Death check** (existing mechanism, unchanged): `horizon.py` per participant after `life.lived`
-    increments; `ending: true` -> `record_death.py` (already computes the circle, notifies 30%,
-    flags shock candidates whose `criterion.anchor` references the deceased for the existing
-    `/character` Step 6 judgment call - this already covers "criterion checked against close ones").
+    increments; `ending: true` -> `record_death.py` (already computes the circle - relations
+    (parents, children, partners at/above `partner_threshold`) notified in full, plus 30% of the
+    extended circle beyond that, fixed 2026-08-10 on user report - and flags shock candidates whose
+    `criterion.anchor` references the deceased for the existing `/character` Step 6 judgment call -
+    this already covers "criterion checked against close ones").
     Note the `band` `horizon.py` reported at this exact call - needed by step 16.
 16. **Death-legacy check** (mechanical, only if step 15 fired): "died early" = step 15's noted band
     read `"established"` rather than `"late"` (a rolled span can never sit below the world-normal
@@ -290,7 +354,15 @@ rather than trusting this prose.**
     pass's one-line summary to the running log, same as base mode. If either participant died this
     pass, drop them from the living pool before the next draw (base mode's existing rule, unchanged).
     If a birth happened this pass, add the child to the living pool once the current pass number
-    reaches the threshold `generate_offspring.py` printed - not before.
+    reaches the threshold `generate_offspring.py` printed - not before. **At the natural end of a
+    batch** (added 2026-08-11, closing the loop the point above opens) - the run's requested pass
+    count is reached, or the session is otherwise wrapping up - run
+    `scripts/lore/build_source_index.py` once, so every concept registered this batch actually gets
+    its accumulated hearsay claims folded into its own `sources[]`, the same absorption a separate
+    `/integrate` pass would eventually do anyway. Not needed after every single pass (`about`
+    references from a pass or two ago aren't going anywhere - this is a batch-level tidy-up, not a
+    per-pass requirement), but do not let a whole batch finish without it - that's exactly how the
+    42-concept backlog this fixes accumulated in the first place.
 
 ## Step 3 — Run passes
 
@@ -438,6 +510,14 @@ Once all passes are done (or the pool ran out early):
 - Write `SIMULATION_LOG.md` at the worktree root: the Step 1 setup (participants, pass count,
   context, model), the pass-by-pass one-liners in order, and the tally script's output as the closing
   section.
+- **Append a "Narrative report" section** (standing requirement, added 2026-08-10 on request) —
+  prose, not another mechanical recap: for each participant's arc, how it actually developed across
+  the run (the shape of it - steady, volatile, stalled, resolved), what changed in their
+  relationships to each other, any criterion moves and what prompted them, and an honest account of
+  what didn't happen (deaths, reproductions, resolutions) alongside what did. This is the section a
+  person would actually want to read to know what this slice of the world's history was about: write
+  it that way, grounded in the specific pass-by-pass facts already on record above it, not invented
+  beyond them. Required every time this step runs, not only when a run happens to feel eventful.
 - Tell the user: how many passes ran, headline events, the worktree's path and branch name, and that
   it stays on disk untouched by anything here — nothing in the original working directory changed.
   They can `/enact` a character from inside this worktree, read any file directly, ask questions
