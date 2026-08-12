@@ -85,5 +85,25 @@
   "life": {
     "lived": 0,
     "deceased": false
-  }
+  },
+  "routines": [
+    {
+      "location": "Terfila",
+      "archetype": "waystation",
+      "weight": 40,
+      "specialization": "passes back through asking after the road to Puerto Tortuga, and still won't explain why"
+    },
+    {
+      "location": "Nvhi",
+      "archetype": "market",
+      "weight": 35,
+      "specialization": "trades news and small goods for anyone who might know the way south"
+    },
+    {
+      "location": "Puerto Pastizal",
+      "archetype": "waystation",
+      "weight": 25,
+      "specialization": "a stop on the search, more rumor collected than road found"
+    }
+  ]
 }

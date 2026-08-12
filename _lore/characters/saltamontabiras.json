@@ -14,5 +14,25 @@
   "life": {
     "lived": 0,
     "deceased": false
-  }
+  },
+  "routines": [
+    {
+      "location": "Terfila",
+      "archetype": "waystation",
+      "weight": 40,
+      "specialization": "breaks the camelback run here, always the middle stop, never the destination"
+    },
+    {
+      "location": "Görff",
+      "archetype": "waystation",
+      "weight": 30,
+      "specialization": "delivers whatever Tyrnea sent, picks up whatever Görff owes back"
+    },
+    {
+      "location": "Tyrnea",
+      "archetype": "market",
+      "weight": 30,
+      "specialization": "sells off the last of the caravan's goods before turning back"
+    }
+  ]
 }

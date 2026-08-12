@@ -97,5 +97,25 @@
   "life": {
     "lived": 0,
     "deceased": false
-  }
+  },
+  "routines": [
+    {
+      "location": "Görff",
+      "archetype": "archive",
+      "weight": 40,
+      "specialization": "trades in eras and quarrels between the Ensayo and the Libro he owns, exaggerates just enough to be asked back"
+    },
+    {
+      "location": "Terfila",
+      "archetype": "waystation",
+      "weight": 35,
+      "specialization": "runs the return ferry leg, first ashore with whatever a traveler picked up in Görff"
+    },
+    {
+      "location": "Catraniz",
+      "archetype": "market",
+      "weight": 25,
+      "specialization": "barters passage and small cargo along the coastal route, an old book trader's habits still on him"
+    }
+  ]
 }

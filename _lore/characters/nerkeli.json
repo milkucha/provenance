@@ -65,5 +65,25 @@
   "life": {
     "lived": 0,
     "deceased": false
-  }
+  },
+  "routines": [
+    {
+      "location": "Feria del Milenio",
+      "archetype": "waystation",
+      "weight": 30,
+      "specialization": "minds the airplane hangar exhibit, first to hand travelers a route they haven't flown yet"
+    },
+    {
+      "location": "Terfila",
+      "archetype": "market",
+      "weight": 35,
+      "specialization": "flies freight into Terfila - tools, mail, the odd fragile shipment nobody else will carry"
+    },
+    {
+      "location": "Khol Moshin",
+      "archetype": "waystation",
+      "weight": 35,
+      "specialization": "stationed here between M7 runs, swaps corridor gossip with whoever's grounded"
+    }
+  ]
 }

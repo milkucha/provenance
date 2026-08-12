@@ -174,5 +174,25 @@
   "life": {
     "lived": 2,
     "deceased": false
-  }
+  },
+  "routines": [
+    {
+      "location": "Khan Ice",
+      "archetype": "archive",
+      "weight": 40,
+      "specialization": "keeps Hotel Kholi's own record straight against whoever would rather it be forgotten"
+    },
+    {
+      "location": "Feria del Milenio",
+      "archetype": "archive",
+      "weight": 35,
+      "specialization": "keeps the Era del Confinamiento's own alcove honest, one documented fact at a time"
+    },
+    {
+      "location": "Catraniz",
+      "archetype": "waystation",
+      "weight": 25,
+      "specialization": "checks in on family and old ties passing through, keeps half an ear on what's said there"
+    }
+  ]
 }

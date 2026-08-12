@@ -129,5 +129,25 @@
   "life": {
     "lived": 9,
     "deceased": false
-  }
+  },
+  "routines": [
+    {
+      "location": "Görff",
+      "archetype": "workshop",
+      "weight": 45,
+      "specialization": "keeps faith with the Collective's rebuild, insists what's shared outlasts what's owned"
+    },
+    {
+      "location": "Terfila",
+      "archetype": "market",
+      "weight": 25,
+      "specialization": "checks in on the family's old accounts without touching them, just to prove he still could"
+    },
+    {
+      "location": "Feria del Milenio",
+      "archetype": "waystation",
+      "weight": 30,
+      "specialization": "goes pavilion to pavilion collecting magnificent tales to retell later"
+    }
+  ]
 }
