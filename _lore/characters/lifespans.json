@@ -36,6 +36,22 @@
     "auroboro_iii": {
       "span": 31,
       "range": "30-60"
+    },
+    "gondarfolas": {
+      "span": 40,
+      "range": "30-60"
+    },
+    "nerkeli": {
+      "span": 30,
+      "range": "30-60"
+    },
+    "nawom": {
+      "span": 54,
+      "range": "30-60"
+    },
+    "saltamontabiras": {
+      "span": 49,
+      "range": "30-60"
     }
   }
 }
