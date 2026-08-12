@@ -120,7 +120,12 @@ The system has four layers, each authored from the one below it:
     file with inherited knowledge and a birth tale) and death legacy (an ongoing arc transferring to
     someone in the deceased's notified circle). Currently piloted on 6 seeded characters; whether the
     mechanism is actually producing good results, as opposed to just running, is tracked in
-    `LAB_REPORT.md`, not here.
+    `LAB_REPORT.md`, not here. **`/simulate -generate`** is a separate mode for pregenerating a
+    large multi-generation starting population quickly rather than a showcase trail of scenes: the
+    same extended-mode mechanics (routines, arcs, reproduction, death) run as one script-driven pass
+    loop with no scene-writing and no subagent per pass, deferring the two things that genuinely
+    need a model's judgment (a child's name, a fresh arc's content) into a single batched subagent
+    pass at the very end. See the skill file's own "Mode: `-generate`" section.
 - **`_lore/`** — the raw material and its analysis, plus two further sources of truth: one told
   directly by the user, and one (`facts/`) that is universal and never sampled:
   - `_lore/material/` — source artifacts as uploaded: screenshots of in-game books, maps,
