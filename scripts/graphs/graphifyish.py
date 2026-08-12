@@ -20,6 +20,7 @@ world grows. Nothing is hand-maintained here except the concept graph's shape.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -59,6 +60,14 @@ def load_authors_table(path: Path) -> dict:
         if m and m.group(1) not in ("Id", "---"):
             result[m.group(1)] = {"responsible": m.group(2), "recorded_date": m.group(3)}
     return result
+
+
+def load_characters() -> dict:
+    """Every character file under _lore/characters/ - the full lore-side cast, keyed by slug,
+    since a character can exist here fully developed with no Minecraft entry at all."""
+    return {
+        p.stem: load(p) for p in CHAR_DIR.glob("*.json") if p.stem not in ("_template", "lifespans")
+    }
 
 
 def norm(text: str) -> str:
@@ -118,10 +127,9 @@ class Graph:
 def build_lore() -> tuple[Graph, dict]:
     enc = load(ENCODINGS)
     npcs = load(NPCS)["npcs"]  # Minecraft-side only now: skin, taterzen_uuid, taterzen_name, spawn_position
-    characters = {
-        p.stem: load(p) for p in CHAR_DIR.glob("*.json") if p.stem not in ("_template", "lifespans")
-    }  # lore-side: name, city, backstory, knowledge, criterion, life - the full character universe,
-       # since a character can exist here with no Minecraft entry at all (never embodied)
+    characters = load_characters()  # lore-side: name, city, backstory, knowledge, criterion, life,
+                                     # parents - the full character universe, since a character can
+                                     # exist here with no Minecraft entry at all (never embodied)
     dialog_reg = load(DIALOGS)["npcs"]
     g = Graph("lore")
 
@@ -481,6 +489,178 @@ def build_lore() -> tuple[Graph, dict]:
 
 
 # --------------------------------------------------------------------------------------
+# Family graph - who's descended from whom, coloured by inherited criterion
+# --------------------------------------------------------------------------------------
+#
+# generate_offspring.py coin-flips each of a child's five criterion fields independently to
+# one parent's exact value, but never records which parent won which flip - only the result
+# survives, in the child's own file. inheritance_fraction() reconstructs it after the fact by
+# comparing the child's value for each field against both parents' own values.
+#
+# Colour comes from the same fraction, mixed the way paint mixes rather than the way light
+# mixes: an RGB average of yellow and blue is a flat grey, but the artist's RYB wheel used
+# here (red/yellow/blue primaries, trilinearly interpolated across a cube whose corners are
+# the eight named pigment mixes - Gossett & Chen's 2004 model) puts yellow and blue next to
+# each other on the same edge, so splitting the difference lands on green, matching what
+# mixing two actual paints would do. Founders (no recorded `parents`) sit on the outer edge
+# of that wheel at a hue derived from their own key, spaced apart from already-assigned
+# founders so a small cast stays readable. Every child's colour is a literal barycentric mix
+# of both parents' own colours at the inheritance fraction above - descendants of the same
+# founder drift toward each other's hue instead of being independently reassigned each
+# generation, so the blend is genuinely genealogical, not just a fresh colour per node.
+
+CRITERION_FIELDS = ("standard", "wasted_life", "anchor", "trusts", "distrusts")
+
+# the cube's 8 named corners: how much of each gets painted when red/yellow/blue pigment is
+# either fully present (1) or fully absent (0) - opposite corners are white (no pigment) and
+# a near-black (all three at once, the way real pigments do darken when mixed together)
+RYB_CUBE = {
+    (0, 0, 0): (1.000, 1.000, 1.000),  # white
+    (1, 0, 0): (1.000, 0.000, 0.000),  # red
+    (0, 1, 0): (1.000, 1.000, 0.000),  # yellow
+    (0, 0, 1): (0.163, 0.373, 0.600),  # blue
+    (1, 1, 0): (1.000, 0.500, 0.000),  # orange
+    (1, 0, 1): (0.500, 0.000, 0.500),  # violet
+    (0, 1, 1): (0.000, 0.660, 0.200),  # green
+    (1, 1, 1): (0.200, 0.094, 0.000),  # near-black
+}
+
+
+def stable_hue(key: str) -> float:
+    """A deterministic 0-359.9 hue for a key, stable across regenerations (no random.seed
+    juggling needed) - the post-commit hook re-runs this on every commit, so a founder's
+    colour must not jitter just because the cast grew."""
+    h = int(hashlib.sha1(key.encode("utf-8")).hexdigest()[:8], 16)
+    return (h % 3600) / 10.0
+
+
+def assign_founder_hues(founder_keys: list) -> dict:
+    """Spreads founders around the RYB wheel, nudging a hue away from an already-assigned one
+    that lands within 24 degrees of it - processed in sorted-key order so results are stable
+    regardless of dict iteration order, and so adding a new founder later never reshuffles an
+    existing one's colour."""
+    assigned: list = []
+    hues: dict = {}
+    for key in sorted(founder_keys):
+        hue = stable_hue(key)
+        tries = 0
+        while tries < 15 and any(min(abs(hue - h), 360 - abs(hue - h)) < 24 for h in assigned):
+            hue = (hue + 41.0) % 360  # deterministic nudge; 41 keeps the walk from cycling short
+            tries += 1
+        assigned.append(hue)
+        hues[key] = hue
+    return hues
+
+
+def hue_to_ryb(hue: float) -> tuple:
+    """A point on the wheel's outer edge (red->yellow->green->blue->violet->red), the fully-
+    saturated pigment colours with no white or black mixed in."""
+    hue %= 360
+    if hue < 120:
+        t = hue / 120
+        return (1 - t, t, 0.0)
+    elif hue < 240:
+        t = (hue - 120) / 120
+        return (0.0, 1 - t, t)
+    else:
+        t = (hue - 240) / 120
+        return (t, 0.0, 1 - t)
+
+
+def ryb_to_rgb(r: float, y: float, b: float) -> tuple:
+    out = [0.0, 0.0, 0.0]
+    for (br, by, bb), c in RYB_CUBE.items():
+        w = (r if br else 1 - r) * (y if by else 1 - y) * (b if bb else 1 - b)
+        for i in range(3):
+            out[i] += w * c[i]
+    return tuple(out)
+
+
+def rgb_to_hex(rgb: tuple, lighten: float = 0.10) -> str:
+    # a touch of white keeps deep multi-generation mixes from reading as mud on a dark background
+    r, g, b = (min(1.0, max(0.0, c * (1 - lighten) + lighten)) for c in rgb)
+    return "#{:02x}{:02x}{:02x}".format(round(r * 255), round(g * 255), round(b * 255))
+
+
+def inheritance_fraction(child: dict, parent_a: dict, parent_b: dict) -> float:
+    """Fraction of the child's criterion attributable to parent A, reconstructed field-by-field
+    (see the module comment above for why this can't just be read off the record directly)."""
+    crit = child.get("criterion") or {}
+    a_crit = parent_a.get("criterion") or {}
+    b_crit = parent_b.get("criterion") or {}
+    total = 0.0
+    for field in CRITERION_FIELDS:
+        val = crit.get(field)
+        a_match, b_match = val == a_crit.get(field), val == b_crit.get(field)
+        if a_match and not b_match:
+            total += 1.0
+        elif b_match and not a_match:
+            total += 0.0
+        else:  # tie (both parents share the value) or neither matches - split the difference
+            total += 0.5
+    return total / len(CRITERION_FIELDS)
+
+
+def build_family() -> Graph:
+    characters = load_characters()
+    g = Graph("family")
+
+    founder_keys = [k for k, c in characters.items() if not c.get("parents")]
+    hues = assign_founder_hues(founder_keys)
+
+    effective_ryb: dict = {}
+    generation: dict = {}
+
+    def resolve(key: str, stack: frozenset = frozenset()) -> tuple:
+        if key in effective_ryb:
+            return effective_ryb[key]
+        char = characters.get(key)
+        parents = (char or {}).get("parents") or []
+        # a founder, an unresolvable reference, or a cycle all fall back to the same thing a
+        # founder gets: a colour of their own, never an invented parent
+        if not char or key in stack or len(parents) != 2 or not all(p in characters for p in parents):
+            ryb = hue_to_ryb(hues.get(key) if key in hues else stable_hue(key))
+            effective_ryb[key] = ryb
+            generation[key] = 0
+            return ryb
+        a_key, b_key = parents
+        ryb_a = resolve(a_key, stack | {key})
+        ryb_b = resolve(b_key, stack | {key})
+        frac_a = inheritance_fraction(char, characters[a_key], characters[b_key])
+        ryb = tuple(frac_a * ca + (1 - frac_a) * cb for ca, cb in zip(ryb_a, ryb_b))
+        effective_ryb[key] = ryb
+        generation[key] = max(generation[a_key], generation[b_key]) + 1
+        return ryb
+
+    for key in characters:
+        resolve(key)
+
+    for key, char in characters.items():
+        parents = char.get("parents") or []
+        parentage = None
+        if len(parents) == 2 and all(p in characters for p in parents):
+            frac_a = inheritance_fraction(char, characters[parents[0]], characters[parents[1]])
+            name_a = characters[parents[0]].get("name", parents[0])
+            name_b = characters[parents[1]].get("name", parents[1])
+            parentage = (f"{round(frac_a * 100)}% {name_a}, {round((1 - frac_a) * 100)}% {name_b} "
+                         f"(reconstructed from which parent's criterion field it matches)")
+        g.node(
+            f"npc:{key}", char.get("name") or key, "person",
+            city=char.get("city", ""), backstory=char.get("backstory", ""),
+            criterion=(char.get("criterion") or {}).get("standard", ""),
+            generation=generation[key], color=rgb_to_hex(ryb_to_rgb(*effective_ryb[key])),
+            deceased=bool((char.get("life") or {}).get("deceased")),
+            parentage=parentage, birth_pass=char.get("birth_pass"),
+            file="_lore/characters/",
+        )
+    for key, char in characters.items():
+        for parent_key in char.get("parents") or []:
+            if parent_key in characters:
+                g.edge(f"npc:{parent_key}", f"npc:{key}", "parent_of")
+    return g
+
+
+# --------------------------------------------------------------------------------------
 # Structure graph - the repo on disk
 # --------------------------------------------------------------------------------------
 
@@ -656,11 +836,13 @@ def main() -> int:
     lore, stats = build_lore()
     structure = build_structure()
     concept = build_concept(lore, structure)
+    family = build_family()
 
     payload = {
         "lore": lore.dump(),
         "structure": structure.dump(),
         "concept": concept.dump(),
+        "family": family.dump(),
         "generated": __import__("datetime").date.today().isoformat(),
     }
 
@@ -672,7 +854,7 @@ def main() -> int:
         (OUT_DIR / "graph.json").write_text(
             json.dumps(payload, ensure_ascii=False, indent=1), encoding="utf-8")
 
-    for g in (lore, structure, concept):
+    for g in (lore, structure, concept, family):
         d = g.dump()
         by_kind = Counter(n["kind"] for n in d["nodes"])
         print(f"{g.name:10} {len(d['nodes']):5} nodes {len(d['edges']):6} edges  "

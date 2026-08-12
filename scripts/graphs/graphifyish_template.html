@@ -151,6 +151,7 @@ canvas.grabbing{cursor:grabbing}
     <h1>Luminacion <small id="gen"></small></h1>
     <div class="tabs" role="tablist">
       <button role="tab" data-view="lore" aria-selected="true">Lore</button>
+      <button role="tab" data-view="family" aria-selected="false">Family</button>
       <button role="tab" data-view="structure" aria-selected="false">Structure</button>
       <button role="tab" data-view="concept" aria-selected="false">Architecture</button>
     </div>
@@ -222,7 +223,7 @@ const COLORS = {
   layer:"#6b7280", root:"#e8643c", dir:"#8892a0", skill:"#e8643c", script:"#3d8bfd",
   registry:"#d4a017", template:"#a463d9", function:"#2fa87a", datapack:"#2fa87a",
   resourcepack:"#47b0c4", material:"#b0741f", lore:"#a463d9", doc:"#7a9a4f",
-  source:"#a463d9", other:"#9aa0a6"
+  source:"#a463d9", other:"#9aa0a6", person:"#b09a5a"
 };
 const color = k => COLORS[k] || "#9aa0a6";
 
@@ -232,7 +233,7 @@ const LINK = {
   lives_in:{d:115,k:.30}, speaks:{d:80,k:.45}, set_in:{d:100,k:.35},
   claims_about:{d:140,k:.14}, knows:{d:190,k:.03}, touches:{d:120,k:.24},
   disputed_by:{d:125,k:.20}, connects:{d:95,k:.35}, census:{d:95,k:.24},
-  founds:{d:105,k:.28}, is:{d:42,k:.6}
+  founds:{d:105,k:.28}, is:{d:42,k:.6}, parent_of:{d:150,k:.4}
 };
 // user-tunable shape handles - read live by tick()/radius(), so a slider reshapes the
 // layout in place without rebuilding the graph
@@ -323,7 +324,7 @@ function applySizes(){ nodes.forEach(n=>{ n.r=radius(n); }); }
 
 // 'knows' is ~70% of all lore edges; start with it off so the structure is readable,
 // and let the chip turn the full knowledge web back on.
-const MUTED = {lore:["knows"], structure:[], concept:[]};
+const MUTED = {lore:["knows"], structure:[], concept:[], family:[]};
 
 function setView(v){
   view=v; G=DATA[v]; hidKind=new Set(); hidRel=new Set(MUTED[v]||[]); query="";
@@ -369,6 +370,11 @@ function setView(v){
   // the layer node itself sits a notch above its children's row, or the two blur together
   if(v==="concept") nodes.forEach(n=>{
     if(n.tier) n.ty=(2.5-n.tier)*230 + (n.kind==="layer" ? -100 : 0);
+  });
+  // family reads top-to-bottom by generation, same banding trick as the architecture
+  // view's layers - founders (generation 0) on top, each birth a row further down
+  if(v==="family") nodes.forEach(n=>{
+    if(n.generation!=null) n.ty=n.generation*170;
   });
   edges=G.edges.map(e=>({...e, s:byId.get(e.source), t:byId.get(e.target)}))
                .filter(e=>e.s&&e.t);
@@ -416,6 +422,7 @@ function buildChips(){
   document.getElementById("legendbar").textContent =
     view==="lore" ? "every NPC, dialogue, place and claim, wired together"
     : view==="structure" ? "the repo on disk — node size follows file size"
+    : view==="family" ? "descent by parents[] — colour blends by which parent's criterion the child kept"
     : "the four layers of README §0, each authored from the one below";
   stats();
 }
@@ -610,7 +617,7 @@ function draw(){
     const dimmed = near && !near.has(n.id);
     ctx.globalAlpha = dimmed ? .16 : 1;
     ctx.beginPath(); ctx.arc(p.x,p.y,r,0,6.2832);
-    ctx.fillStyle=color(n.kind); ctx.fill();
+    ctx.fillStyle=n.color||color(n.kind); ctx.fill();
     if(n===sel||n===hover){
       ctx.lineWidth=2.2; ctx.strokeStyle=inkC; ctx.stroke();
     } else if(n.developed===false){
@@ -713,6 +720,8 @@ function select(n){
   add("Lifespan",n.lifespan); add("Criterion",n.criterion);
   add("Size",n.size!=null?fmtBytes(n.size):null);
   add("Connections",n.degree);
+  add("Generation",n.generation); add("Deceased",n.deceased?"yes":null);
+  add("Born pass",n.birth_pass);
   if(n.coords&&n.coords.x!=null) add("Coords",`${n.coords.x}, ${n.coords.y}`);
   else if(Array.isArray(n.coords)) add("Coords",n.coords.join(", "));
 
@@ -725,7 +734,7 @@ function select(n){
 
   document.getElementById("dbody").innerHTML =
     `<span class="kind"><span class="sw" style="width:9px;height:9px;border-radius:50%;
-       background:${color(n.kind)};display:inline-block"></span>${esc(n.kind)}</span>
+       background:${n.color||color(n.kind)};display:inline-block"></span>${esc(n.kind)}</span>
      <h3>${esc(n.label)}</h3>`
     + (n.file||n.path?`<div class="path">${esc(n.file||n.path)}</div>`:"")
     + (rows.length?`<dl>${rows.map(([k,v])=>`<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}</dl>`:"")
@@ -734,6 +743,7 @@ function select(n){
     + (n.description?`<p>${esc(n.description)}</p>`:"")
     + (n.detail?`<p>${esc(n.detail)}</p>`:"")
     + (n.resolution?`<p><b>Resolved:</b> ${esc(n.resolution)}</p>`:"")
+    + (n.parentage?`<p><b>Inherited:</b> ${esc(n.parentage)}</p>`:"")
     + (n.note?`<p>${esc(n.note)}</p>`:"")
     + (n.notes?`<p>${esc(n.notes)}</p>`:"")
     + (Array.isArray(n.experience)&&n.experience.length
@@ -741,7 +751,7 @@ function select(n){
     + Object.entries(groups).sort((a,b)=>b[1].length-a[1].length).map(([rel,list])=>
         `<div class="rel"><h4>${esc(rel)} · ${list.length}</h4>`
         + list.slice(0,40).map(o=>`<a data-id="${esc(o.id)}">
-            <span class="sw" style="background:${color(o.kind)}"></span>${esc(o.label)}</a>`).join("")
+            <span class="sw" style="background:${o.color||color(o.kind)}"></span>${esc(o.label)}</a>`).join("")
         + (list.length>40?`<a style="color:var(--dim)">+${list.length-40} more</a>`:"")
         + `</div>`).join("");
 
