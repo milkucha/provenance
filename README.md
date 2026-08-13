@@ -1,47 +1,80 @@
 # Luminacion
 
-Luminacion is the AI-assisted NPC storytelling system for **Milkantis** (a 12-year-old Minecraft world). Raw lore material gets analysed into structured encodings, NPCs are enacted and wired up through Claude Code skills, and the system outputs two packs that ship together: a **datapack** (this repo's `data/`) and a **resource pack** (gestures, localization, sounds). NPCs are Taterzens that react to player right-clicks, run Blabber dialogs, and follow their own routines (paths, wandering, etc.) — pausing to talk, then picking their routine back up.
+Luminacion is a standalone culture simulator and world-building generator for authors: a system for
+growing a fictional society from a small planted seed — sociocultural parameters, a handful of
+authored facts — into an organically drifting, ecosystemic record, through procedural and semantic
+generation rather than being hand-written end to end.
 
-This document is a practical, step-by-step guide to building things with the pack, plus (§0) the architecture of the system as a whole — read that first in a new session to get oriented without having to re-read the whole codebase. The rest assumes you already know *what* NPC or story you want to add — it's about *how* to wire it up.
+The design leans on a negative-space principle: a world's real structure lives in what stays
+unsurfaced — the objective record, the pillars a character's convictions stand on — while what
+actually gets communicated (dialogue, hearsay, tales) is a thin, subjective positive space drawn
+from that foundation, never the whole of it. (Loosely in the spirit of Luhmann's account of society
+as constituted by communication, and of mytheme/monomyth-style thinking about recurring narrative
+structure — both still under active discussion here, not settled theory this repo commits to.)
 
-- Minecraft 1.20.1, datapack pack format 15
-- Namespace: `luminacion`
-- Requires: [Taterzens](https://modrinth.com/mod/taterzens) 1.11.7, [Blabber](https://modrinth.com/mod/blabber) 1.6.2
+It's equally an experiment in agent-based social simulation: characters are played by model agents
+constrained to a bounded, randomly-sampled slice of the record, deliberately stripped of room to
+sprawl, so creativity has to work with fewer, authored elements instead of inventing freely. The
+system is designed to run across different models and harnesses rather than depend on one vendor,
+and to stay slim in token consumption — that budget work is ongoing, and it matters beyond cost: the
+simulation only means something if it can run at the scale a living culture requires, which is what
+makes the whole thing usable and testable at all. The project is currently in an experimentation
+phase, run and evaluated lab-report style (`LAB_REPORT.md`) against two standing questions: whether
+the result reads as immersive, and whether it reads as organic rather than mechanically repetitive.
+
+The system currently ships one embodiment backend: it can surface its generated characters and lore
+live inside a Minecraft world — this repo's original context, a 12-year-old world called Milkantis —
+as NPCs (Taterzens) that run dialogs (Blabber) and follow their own routines, pausing to talk and
+picking their routine back up. That embodiment layer is documented at the end of this file (§5
+onward); everything before it is embodiment-agnostic — the actual lore engine the rest is built on.
+
+This document is a practical, step-by-step guide to working with the system, plus (§0) the
+architecture of the whole as it stands today — read that first in a new session to get oriented
+without having to re-read the whole codebase. The rest assumes you already know *what* character or
+story you want to add — it's about *how* to realize it, in lore and (currently) in Minecraft.
 
 ## Index
 
 **Starting a new session? Read the intro above plus §0–§2 first — that's the compulsory minimum for
 orientation.** Everything past that, read only the section(s) the task at hand actually needs.
 
-- [§0 System architecture](#0-system-architecture) — the four-layer system, start here every session
+- [§0 System architecture](#0-system-architecture) — the lore engine, then the current embodiment stack built on it; start here every session
   - [Layer 1 — Foundation: skills + lore](#layer-1--foundation-skills--lore)
+  - [Simulating and evaluating the lore](#simulating-and-evaluating-the-lore)
   - [Layer 2 — Supporting functions](#layer-2--supporting-functions)
   - [Layer 3 — Datapack](#layer-3--datapack)
   - [Layer 4 — Resource pack](#layer-4--resource-pack)
-- [§1 Folder structure](#1-folder-structure) — compulsory: the literal `data/`/`_npcs/` tree
-- [§2 Core concepts](#2-core-concepts) — compulsory: NPC / Dialog / Action / routine pause-resume, defined
-- [§3 Building a new NPC, start to finish](#3-building-a-new-npc-start-to-finish) — the manual walkthrough (`/spawn` automates this)
+- [§1 Folder structure](#1-folder-structure) — compulsory: the literal `_lore/`/`data/`/`_npcs/` tree
+- [§2 Core concepts](#2-core-concepts) — compulsory: Fact / Criterion / Lifespan / Death first, then NPC / Dialog / Action / routine pause-resume for the current embodiment backend
+- [§3 Writing lore through enactment](#3-writing-lore-through-enactment) — the manual walkthrough (`/enact` automates Steps 1–2, `/embody` Steps 3–4)
+  - [Step 1 — Bound the character's knowledge](#step-1--bound-the-characters-knowledge)
+  - [Step 2 — Enact the conversation](#step-2--enact-the-conversation)
+  - [Step 3 — Convert the transcript into a Blabber dialog](#step-3--convert-the-transcript-into-a-blabber-dialog)
+  - [Step 4 — Register it](#step-4--register-it)
+- [§4 Where design decisions live](#4-where-design-decisions-live) — why lore/story content isn't in this file, and where the standing test of the whole system is tracked
+
+**Embodiment backend: Minecraft.** Everything from §5 on is specific to the system's current
+embodiment target, not to the lore engine itself.
+
+- [§5 Building a new NPC, start to finish](#5-building-a-new-npc-start-to-finish) — the manual walkthrough (`/spawn` automates this)
   - [Step 1 — Register it](#step-1--register-it)
   - [Step 2 — Create the spawn function](#step-2--create-the-spawn-function)
   - [Step 3 — Write the dialog](#step-3--write-the-dialog)
   - [Step 4 — Spawn it in-game](#step-4--spawn-it-in-game)
   - [Step 5 — Capture its UUID](#step-5--capture-its-uuid)
   - [Step 6 — Set up routine pause/resume](#step-6--set-up-routine-pauseresume-only-if-movement-isnt-none)
-- [§4 Routine pause/resume (every NPC)](#4-routine-pauseresume-every-npc) — read for every NPC, including stationary (`NONE`) ones
-- [§5 Capturing NPC UUIDs](#5-capturing-npc-uuids) — the `scripts/minecraft/update_uuids.py` workflow
-- [§6 Reference](#6-reference) — lookup tables: scoreboard objectives, entity tags, movement modes, Blabber selectors, command cheat sheet
-- [§7 Where design decisions live](#7-where-design-decisions-live) — why lore/story content isn't in this file
-- [§8 Writing a dialog through enactment](#8-writing-a-dialog-through-enactment) — the manual walkthrough (`/enact` automates this)
-  - [Step 1 — Bound the character's knowledge](#step-1--bound-the-characters-knowledge)
-  - [Step 2 — Enact the conversation](#step-2--enact-the-conversation)
-  - [Step 3 — Convert the transcript into a Blabber dialog](#step-3--convert-the-transcript-into-a-blabber-dialog)
-  - [Step 4 — Register it](#step-4--register-it)
+- [§6 Routine pause/resume (every NPC)](#6-routine-pauseresume-every-npc) — read for every NPC, including stationary (`NONE`) ones
+- [§7 Capturing NPC UUIDs](#7-capturing-npc-uuids) — the `scripts/minecraft/update_uuids.py` workflow
+- [§8 Reference](#8-reference) — lookup tables: scoreboard objectives, entity tags, movement modes, Blabber selectors, command cheat sheet
 
 ---
 
 ## 0. System architecture
 
-The system has four layers, each authored from the one below it:
+The system splits into two halves. The **lore engine** — Layer 1 below, plus how it's simulated and
+evaluated — is the actual product: embodiment-agnostic, generating and evolving a culture on its own
+terms. **Embodiment** is how a run of that engine gets surfaced somewhere live; today that's one
+backend, Minecraft, built as a dependency stack on top of Layer 1:
 
 ```
 4. Resource pack      gestures (EMF/Iris model overrides), localization, custom sounds
@@ -53,13 +86,16 @@ The system has four layers, each authored from the one below it:
 1. Foundation         skills (/character, /enact, /embody, /spawn, /integrate, /simulate) + _lore/ (material → analysis)
 ```
 
+A different or additional embodiment backend would replace Layers 2–4 without touching Layer 1 or
+the simulation/evaluation tooling described next.
+
 ### Layer 1 — Foundation: skills + lore
 
 - **Skills** (`.claude/skills/`) — repeatable procedures, invoked as slash commands. They split
   cleanly along the lore/Minecraft line that runs through the whole system: `/character` and `/enact`
   are lore-only and know nothing of Minecraft, with one narrow exception — `/enact` stages a scene's
   raw transcript at `_npcs/scenes/<id>.md`, purely so `/embody` has something to read later. That's
-  staging content for the Minecraft layer, not lore itself, and `/enact` still never touches either
+  staging content for the embodiment layer, not lore itself, and `/enact` still never touches either
   registry or `data/`. `/embody` and `/spawn` only ever touch `_npcs/`/`data/` and know nothing of
   lore. Every skill answers to one shared rule, stated once in `.claude/PRINCIPLES.md` rather than
   repeated per skill: nothing gets decided silently.
@@ -68,13 +104,13 @@ The system has four layers, each authored from the one below it:
     `backstory`, knowledge sample, **criterion**, and **lifespan**. It owns the criterion model —
     Step 4 derives one, Step 5 rolls a lifespan, and Step 6 is the canonical reference for how a
     criterion changes. `/enact` points back at those rather than restating them. Purely lore-side: a
-    character can be fully fleshed out here with no in-game representation at all, and this skill
-    never touches `_npcs/`.
+    character can be fully fleshed out here with no embodiment at all, and this skill never touches
+    `_npcs/`.
   - **`/enact`** (`enact/SKILL.md`) — plays a character in a live conversation, sampled from a bounded
     slice of the lore, then records what the scene did to that lore (hearsay, criterion, `life`) and
     saves the scene's raw transcript to `_npcs/scenes/<id>.md` so `/embody` can convert it later, even
     cold in a later session. That transcript is the only thing this skill writes under `_npcs/` — it
-    never writes a dialog file or touches either registry. See §8.
+    never writes a dialog file or touches either registry. See §3.
   - **`/embody`** (`embody/SKILL.md`) — takes a scene `/enact` played and puts it in the game: reads the
     transcript from `_npcs/scenes/<id>.md` (so this works cold, in a later session, exactly as well as
     right after `/enact` in the same conversation), converts it into a registered Blabber dialog, bakes
@@ -88,11 +124,11 @@ The system has four layers, each authored from the one below it:
     `/embody` in full, for the common case of wanting a scene played, recorded, and put in the game in
     one pass.
   - **`/spawn`** (`spawn/SKILL.md`) — builds a registered NPC's `spawn.mcfunction` (and every
-    supporting function) from `_npcs/templates/`. See §3/§4.
+    supporting function) from `_npcs/templates/`. See §5/§6.
   - **`/integrate`** (`integrate/SKILL.md`) — three independent passes: analyse newly-added
     `_lore/material/` files into `context.md`/`encodings.json`/`unknowns.md` per the conventions those
     files already establish (below); audit every dialogue under `data/luminacion/blabber/dialogues/`
-    for a matching `hearsay.entries` record (§8 Step 5 — unconditional by rule, but easy to miss on a
+    for a matching `hearsay.entries` record (§3 Step 5 — unconditional by rule, but easy to miss on a
     hand-written dialogue that skipped `/enact`); and check for drift between what's referenced
     elsewhere (registries, sampled knowledge, and `tales` `touches` refs) and what's actually recorded
     in `encodings.json`. Run whichever pass(es) fit the situation, not necessarily all three.
@@ -120,7 +156,7 @@ The system has four layers, each authored from the one below it:
     file with inherited knowledge and a birth tale) and death legacy (an ongoing arc transferring to
     someone in the deceased's notified circle). Currently piloted on 6 seeded characters; whether the
     mechanism is actually producing good results, as opposed to just running, is tracked in
-    `LAB_REPORT.md`, not here. **`/simulate -generate`** is a separate mode for pregenerating a
+    `LAB_REPORT.md` — see below. **`/simulate -generate`** is a separate mode for pregenerating a
     large multi-generation starting population quickly rather than a showcase trail of scenes: the
     same extended-mode mechanics (routines, arcs, reproduction, death) run as one script-driven pass
     loop with no scene-writing and no subagent per pass, deferring the two things that genuinely
@@ -137,7 +173,7 @@ The system has four layers, each authored from the one below it:
     that's source-specific rather than cross-cutting.
   - `_lore/encodings.json` — the central, structured, queryable form of the record: `time_systems`,
     `locations`, `routes`, `characters`, `concepts`, `conflicts` (cross-source disagreements, each with
-    a `user_resolution` once settled), `tales`, and `hearsay` (claims made *in* dialogues — §8 Step 5).
+    a `user_resolution` once settled), `tales`, and `hearsay` (claims made *in* dialogues — §3 Step 5).
     This is what `scripts/lore/sample_lore_knowledge.py` draws an NPC's knowledge pool from. Sits at `_lore/`
     root since every source type writes into it — it's the hub.
   - `_lore/unknowns.md` — gaps and open questions that material, tale, and hearsay all feed (a claim can
@@ -148,7 +184,7 @@ The system has four layers, each authored from the one below it:
   - `_lore/characters/` — one JSON file per character (`<key>.json`, key = lowercased, slugified
     name), the complete lore record for who they are: `name` (canonical — the one place a character's
     name is decided), `city`, `backstory`, `knowledge` (`education`/`experience`), `criterion`, and
-    `life` (`lived`/`deceased`). Has no Minecraft-facing field at all — a character can live here
+    `life` (`lived`/`deceased`). Has no embodiment-facing field at all — a character can live here
     fully developed with no in-game body. `/character` and `/enact` are the only writers.
     `_lore/characters/lifespans.json` sits beside them, holding each character's secret total span
     (see **Lifespan** in §2). `_lore/characters/hearsay.md` is the human-readable counterpart to
@@ -186,16 +222,38 @@ The system has four layers, each authored from the one below it:
     have no in-world attribution at all, so unlike the tale version there's no `told_by` this file
     needs to stay distinct from - `responsible` is simply the only provenance a fact ever has.
 
+### Simulating and evaluating the lore
+
+`/simulate` (above) is the mechanism; two more things sit alongside it, reading the lore engine's
+output rather than feeding it, and aren't part of the Layer 1–4 dependency stack at all:
+
+- **`LAB_REPORT.md`** — the persistent, cross-run record of whether the system's design actually
+  works, kept deliberately outside any worktree so it survives past any single run or conversation.
+  It states the standing objective (does drift over many interactions read as genuinely emergent,
+  with real material consequence, rather than a repeated pattern or a smooth model-biased
+  convergence?), the methodology for judging a run against that objective, and a dated run log. Read
+  it before any `/simulate` run meant to test or extend the design, not a casual one-off — and append
+  to it after one, per its own instructions. See also §4.
+- **`graphs/graphifyish/`** — `scripts/graphs/graphifyish.py`'s output: a standalone
+  `graphifyish.html` visualizing three graphs built from the repo's own live sources of truth (never
+  hand-maintained except the concept graph's shape) — the **lore** graph (NPCs, dialogues, locations,
+  concepts, characters, conflicts, routes, eras, tales, facts, wired by who lives where / says what /
+  knows what / disputes what), the **structure** graph (the repo on disk, sized by bytes), and the
+  **concept** graph (this section's own four-layer architecture, with live counts). Regenerate with
+  `python scripts/graphs/graphifyish.py` (`--json` also dumps `graph.json`); `scripts/hooks/post-commit`
+  does this automatically after every commit if installed.
+
 ### Layer 2 — Supporting functions
 
-Reusable patterns every NPC/dialog is built from, so each new one doesn't reinvent structure:
+Reusable patterns every NPC/dialog is built from, so each new one doesn't reinvent structure — part
+of the current Minecraft embodiment backend, not the lore engine:
 
 - `_npcs/templates/` — placeholder-filled `.mcfunction` patterns (`spawn.mcfunction`,
   `resume_routine.mcfunction`, `check_proximity.mcfunction`, `end_with_gift.mcfunction`, plus
   `paths/` and `states/` variants for roaming/multi-state NPCs) — copied per NPC, never called
   directly. See §1.
 - `data/luminacion/blabber/dialogues/_template_*.json` — the three dialog shapes (one-off, linear,
-  branching). See §1/§3.
+  branching). See §1/§5.
 - `_npcs/actions/registry.json`'s `_action_templates` — documents every right-click action pattern
   (`movement`, `give_item`, `blabber_dialog`, `routine_pause_resume`, `scripted_path`,
   `multi_state_npc`, `random_dialog`, `scoreboard_set`) with copy-paste command patterns and, for
@@ -219,7 +277,7 @@ Reusable patterns every NPC/dialog is built from, so each new one doesn't reinve
 `data/luminacion/` — the pack Minecraft actually loads and calls: `functions/` (per-NPC and shared
 `.mcfunction` files), `predicates/`, `tags/functions/` (load/tick hooks, the routine-tick registry),
 and `blabber/dialogues/` (the written dialogs). This is what gets built *from* layers 1–2 for a given
-NPC — see §1 for the full folder breakdown and §3 for the build sequence.
+NPC — see §1 for the full folder breakdown and §5 for the build sequence.
 
 ### Layer 4 — Resource pack
 
@@ -250,31 +308,9 @@ and the separate not-yet-built distribution zip — is in `GESTURES.md`.
 
 ```
 Luminacion/
-├── pack.mcmeta
-├── data/
-│   ├── minecraft/tags/functions/
-│   │   ├── load.json                  → calls luminacion:load
-│   │   └── tick.json                  → calls luminacion:tick
-│   └── luminacion/
-│       ├── functions/
-│       │   ├── load.mcfunction        (registers scoreboard objectives — runs once on load/reload)
-│       │   ├── tick.mcfunction        (runs every tick — drives the routine pause/resume checks)
-│       │   ├── admin/
-│       │   │   └── export_npc_uuids.mcfunction   (auto-generated — see §5)
-│       │   └── npcs/
-│       │       ├── _shared/           (used by every NPC as-is — never copied)
-│       │       │   ├── pause_routine.mcfunction
-│       │       │   └── enter_dialog.mcfunction
-│       │       └── <npc_key>/         (one real folder per NPC you've built)
-│       ├── predicates/
-│       ├── tags/functions/
-│       │   └── npc_routine_tick.json  (registry: which NPCs get checked each tick)
-│       └── blabber/
-│           └── dialogues/
-│               ├── _template_one_off.json
-│               ├── _template_linear.json
-│               └── _template_branching.json
-├── _lore/
+├── LAB_REPORT.md                      (the standing test of the whole system — read before a
+│                                       design-testing /simulate run; see §0)
+├── _lore/                             (the lore engine's sources of truth)
 │   ├── encodings.json                 (the central record — every source type writes in here)
 │   ├── unknowns.md                    (gaps — fed by material and tales, not hearsay)
 │   ├── material/                      (excavated primary sources — read-only)
@@ -291,7 +327,58 @@ Luminacion/
 │   │                                   tale, walled off from encodings.json; not lore)
 │   └── facts/                         (universal, NEVER sampled — facts.json + one .md per fact,
 │       └── _authors.md                see _index.md; deliberately outside encodings.json)
-├── _npcs/                             (Minecraft-facing NPC data only — no lore field anywhere)
+├── graphs/
+│   └── graphifyish/                   (scripts/graphs/graphifyish.py's output — graph.json + a standalone
+│                                       graphifyish.html visualizing the lore/structure/concept graphs)
+├── scripts/
+│   ├── lore/                          (only ever touch _lore/ — no embodiment awareness)
+│   │   ├── sample_lore_knowledge.py    (draws a character's education sample — §3 Step 1)
+│   │   ├── lineage_coin.py            (rolls traceable/untraceable when a hearsay claim is retold)
+│   │   ├── check_character_name.py    (the shared name-uniqueness check /character and /enact both
+│   │   │                               call before treating a name as a brand-new character)
+│   │   ├── roll_lifespan.py           (rolls how many scenes a character has in them, 30–60 —
+│   │   │                               written to lifespans.json, never to the character's own file)
+│   │   ├── horizon.py                 (the only thing /enact may ask about a life's horizon —
+│   │   │                               answers early/established/late, plus a post-scene-only
+│   │   │                               ending: true/false, never the number)
+│   │   └── notify_death.py            (on a character's death, computes their "circle" and
+│   │                                   mechanically samples 30% of it to notify immediately)
+│   ├── graphs/                        (builds the lore/structure/concept graphs)
+│   │   ├── graphifyish.py             (writes into graphs/graphifyish/)
+│   │   └── graphifyish_template.html  (the standalone page shell graphifyish.py fills in)
+│   ├── hooks/
+│   │   └── post-commit                (optional git hook — regenerates the graph after every commit)
+│   └── minecraft/                     (only ever touch _npcs/ / data/ — embodiment backend only)
+│       ├── update_uuids.py            (automates NPC UUID capture — see §7)
+│       └── package.py                 (zips the datapack + resource pack for release — see /package)
+│
+│   ── everything below is the current embodiment backend (Minecraft) — §5 onward ──
+│
+├── pack.mcmeta
+├── data/
+│   ├── minecraft/tags/functions/
+│   │   ├── load.json                  → calls luminacion:load
+│   │   └── tick.json                  → calls luminacion:tick
+│   └── luminacion/
+│       ├── functions/
+│       │   ├── load.mcfunction        (registers scoreboard objectives — runs once on load/reload)
+│       │   ├── tick.mcfunction        (runs every tick — drives the routine pause/resume checks)
+│       │   ├── admin/
+│       │   │   └── export_npc_uuids.mcfunction   (auto-generated — see §7)
+│       │   └── npcs/
+│       │       ├── _shared/           (used by every NPC as-is — never copied)
+│       │       │   ├── pause_routine.mcfunction
+│       │       │   └── enter_dialog.mcfunction
+│       │       └── <npc_key>/         (one real folder per NPC you've built)
+│       ├── predicates/
+│       ├── tags/functions/
+│       │   └── npc_routine_tick.json  (registry: which NPCs get checked each tick)
+│       └── blabber/
+│           └── dialogues/
+│               ├── _template_one_off.json
+│               ├── _template_linear.json
+│               └── _template_branching.json
+├── _npcs/                             (embodiment-facing NPC data only — no lore field anywhere)
 │   ├── npcs/registry.json             (master NPC data: display_name, taterzen_name, skin,
 │   │                                   taterzen_uuid, spawn_position)
 │   ├── dialogs/registry.json          (NPC key → dialog IDs)
@@ -312,36 +399,12 @@ Luminacion/
 │       └── states/
 │           ├── roaming_state.mcfunction
 │           └── stationary_state.mcfunction
-├── graphs/
-│   └── graphifyish/                   (scripts/graphs/graphifyish.py's output — graph.json + a standalone
-│                                       graphifyish.html visualizing the lore/structure/concept graphs)
-├── resourcepack/                      (the resource pack — §0 Layer 4; junctioned into
-│   │                                   resourcepacks/luminacion/ in the PrismLauncher instance)
-│   ├── pack.mcmeta
-│   └── assets/
-│       ├── luminacion/                (invisible gesture-marker item model + texture)
-│       └── minecraft/emf/cem/         (player.jem, player_slim.jem — the gesture pose overrides)
-└── scripts/
-    ├── lore/                          (only ever touch _lore/ — no Minecraft awareness)
-    │   ├── sample_lore_knowledge.py    (draws a character's education sample — §8 Step 1)
-    │   ├── lineage_coin.py            (rolls traceable/untraceable when a hearsay claim is retold)
-    │   ├── check_character_name.py    (the shared name-uniqueness check /character and /enact both
-    │   │                               call before treating a name as a brand-new character)
-    │   ├── roll_lifespan.py           (rolls how many scenes a character has in them, 30–60 —
-    │   │                               written to lifespans.json, never to the character's own file)
-    │   ├── horizon.py                 (the only thing /enact may ask about a life's horizon —
-    │   │                               answers early/established/late, plus a post-scene-only
-    │   │                               ending: true/false, never the number)
-    │   └── notify_death.py            (on a character's death, computes their "circle" and
-    │                                   mechanically samples 30% of it to notify immediately)
-    ├── minecraft/                     (only ever touch _npcs/ / data/ — no lore awareness)
-    │   ├── update_uuids.py            (automates NPC UUID capture — see §5)
-    │   └── package.py                 (zips the datapack + resource pack for release — see /package)
-    ├── graphs/                        (builds the lore/structure/concept graphs)
-    │   ├── graphifyish.py             (writes into graphs/graphifyish/)
-    │   └── graphifyish_template.html  (the standalone page shell graphifyish.py fills in)
-    └── hooks/
-        └── post-commit                (optional git hook — regenerates the graph after every commit)
+└── resourcepack/                      (the resource pack — §0 Layer 4; junctioned into
+    │                                   resourcepacks/luminacion/ in the PrismLauncher instance)
+    ├── pack.mcmeta
+    └── assets/
+        ├── luminacion/                (invisible gesture-marker item model + texture)
+        └── minecraft/emf/cem/         (player.jem, player_slim.jem — the gesture pose overrides)
 ```
 
 `_npcs/templates/` holds placeholder-filled patterns to copy — kept outside `data/` on purpose, since Minecraft
@@ -353,14 +416,6 @@ string values, which parse fine either way. Anything named `_shared` is called d
 ---
 
 ## 2. Core concepts
-
-**NPC** — a Taterzen entity. Everything about it (identity, skin, movement, right-click actions) is set once via `/npc edit` commands in that NPC's `spawn.mcfunction`.
-
-**Dialog** — a Blabber conversation, defined as JSON in `blabber/dialogues/`. Started from an NPC's right-click actions.
-
-**Action** — anything a right-click triggers: opening a dialog, giving an item, setting a scoreboard flag, etc. `_npcs/actions/registry.json` documents every action type with copy-paste command patterns.
-
-**Routine pause/resume** — every NPC, regardless of movement mode (including `NONE`), stops within 2 blocks of a player or when clicked, self-heals its skin (and path, if it has one) periodically, and resumes afterwards. Covered in full in §4.
 
 **Fact** — one of the handful of things true of being a person in this world at all, living in `_lore/facts/`. Every character knows every fact in full; facts are never sampled, never attributed, and never contestable. Currently two: life ends, and everyone wants theirs to have been worthwhile. Together they're the will to live. See §0 Layer 1 and `_lore/facts/_index.md`.
 
@@ -376,13 +431,75 @@ string values, which parse fine either way. Anything named `_shared` is called d
 
 **Three mutability classes.** Worth holding onto, since they're easy to conflate: `knowledge.education` is **frozen** at creation, `knowledge.experience` **appends freely** every scene, and `criterion` is **sticky-but-revisable** — it changes only when a referencing shock lands on a susceptible character, and the default outcome of any given scene is no change at all.
 
+*The following four are specific to the current embodiment backend (Minecraft) — see §5 onward.*
+
+**NPC** — a Taterzen entity. Everything about it (identity, skin, movement, right-click actions) is set once via `/npc edit` commands in that NPC's `spawn.mcfunction`.
+
+**Dialog** — a Blabber conversation, defined as JSON in `blabber/dialogues/`. Started from an NPC's right-click actions.
+
+**Action** — anything a right-click triggers: opening a dialog, giving an item, setting a scoreboard flag, etc. `_npcs/actions/registry.json` documents every action type with copy-paste command patterns.
+
+**Routine pause/resume** — every NPC, regardless of movement mode (including `NONE`), stops within 2 blocks of a player or when clicked, self-heals its skin (and path, if it has one) periodically, and resumes afterwards. Covered in full in §6.
+
 ---
 
-## 3. Building a new NPC, start to finish
+## 3. Writing lore through enactment
+
+One way to build a scene: play the character in a live conversation first, then convert the transcript into pack content. This is how `sonoros_lost_traveler.json` was written, following the steps below by hand before the skills existed. `/enact` (`.claude/skills/enact/SKILL.md`) now runs Steps 1–2 below, plus recording what the scene did to the character's lore (`_lore/characters/<key>.json` — hearsay, criterion, `life`). `/embody` (`.claude/skills/embody/SKILL.md`) then runs Steps 3–4 against that same scene, and — as part of the same run, not a separate follow-up — bakes the dialog's gestures itself, replacing a minority of its default `nod_up_down` states with an emotionally-matched gesture from the vocabulary in `GESTURES.md`. There is no longer a standalone baking skill — every dialog in the pack is produced through `/enact`/`/embody` (or their pre-split ancestor), so `/embody` baking inline covers every case; a handful of pre-existing dialogs left uniform before this step existed got a one-time manual pass instead (see `TODO.md`). `/enact-embody` (`.claude/skills/enact-embody/SKILL.md`) chains `/enact` and `/embody` back to back, for the common case of wanting the whole pipeline — gestures included — in one pass. Steps 1–2 are embodiment-agnostic — pure lore; Steps 3–4 are where the current embodiment backend enters, converting a scene into a Blabber dialog specifically. The steps below are still worth knowing, since the skills just automate them.
+
+### Step 1 — Bound the character's knowledge
+
+Before playing the NPC, decide what slice of the record (`_lore/material/_context.md`, `_lore/encodings.json`, `_lore/unknowns.md`) they actually know. Don't hand-pick a flattering or convenient subset — flatten every atomic fact across the analysis (locations, concepts, characters, routes, era entries, conflicts...) into one pool and randomly sample a small percentage of it. 5% produced a character who was coherent but genuinely, unevenly gapped — knowledgeable about a handful of unrelated things, ignorant of most everything else — which is a far more natural starting point than a hand-curated backstory. Keep the sample somewhere referenceable for the length of the session, since you'll be checking answers against it constantly.
+
+The pool also includes every individual claim from `encodings.json`'s `hearsay.entries` (one pool item per claim, tagged category `hearsay`), at the same odds as any objective-record fact. This is deliberate: a claim one NPC made in a past dialogue can resurface as something a new character has "heard," exactly like real gossip — including claims that were invented character texture, not lore (Gondarfolas's Bracco, Nuvilo's Navalius), and claims already flagged `inconsistent_with_record`/`inconsistent_with_facts` (a hearsay item doesn't need to check out against the record to be worth knowing secondhand). A sampled `hearsay` item is never upgraded to fact by being sampled — play it as something the character heard, attributed to whoever said it if pressed ("I heard Gondarfolas say once that..."), never as settled history. This is how the lore is meant to accrete emergent, subjective material on top of the fixed objective record over time.
+
+### Step 2 — Enact the conversation
+
+Play the NPC strictly within that sample.
+
+- **Never invent as fact anything that contradicts or extends the lore itself.** If a question falls outside the sample, the character genuinely doesn't know — say so, in character, rather than papering over the gap with new "lore." Don't volunteer the boundary unprompted either; the honesty is about never lying when it matters, not about narrating your own limits at every turn.
+- **Personality, mannerisms, small human texture — invent freely.** A reason for being somewhere, a job, a turn of phrase, a mood: a person is more than their entry in the record, and the lore was never going to specify any of that anyway.
+- **Write short.** Blabber's dialog boxes are small — a constraint of the current embodiment backend, not the lore itself — so keep both sides of the conversation to a few sentences per turn from the start; it saves a rewrite later, and it's closer to how the final dialog will actually read in-game.
+
+Once the scene is done, record what it did to the character before converting anything: an entry in `_lore/characters/hearsay.md` and `encodings.json`'s `hearsay.entries` (participants, location, claims), any resulting change to `criterion`, and `life.lived` incremented — all written to `_lore/characters/<key>.json`. This is the point of an enactment and isn't embodiment-facing at all; see §2's Criterion/Death entries and `/character` Step 6 for the mechanics.
+
+### Step 3 — Convert the transcript into a Blabber dialog
+
+Once the conversation feels complete, restructure it — don't add to it:
+
+- Each NPC line becomes a state's `"text"`.
+- Each player line becomes a `"choices"[].text` leading to the next state.
+- Where the conversation had a genuine fork — a moment where a different in-character reaction would plausibly lead somewhere slightly different — render it as a real multiple-choice branch (see `_template_branching.json`). Converge branches back into a shared state as soon as the divergent flavor is spent; don't let the tree sprawl past what the actual conversation supported.
+- Rename every state to a short, meaningful id (never leave `state_1`, `state_2`...).
+- Wire up the final `end_dialogue` state per the existing templates, including the `resume_routine` call *only if* the NPC ends up with a roaming movement mode (§6) — if it's stationary (`NONE`), drop that action entirely.
+
+### Step 4 — Register it
+
+Same as §5 Step 1 below: add (or update) the NPC's entry in `_npcs/npcs/registry.json` — if this is their first time in-game, `display_name`/`taterzen_name` are copied in from the `name` already set on their `_lore/characters/<key>.json` file, and a blank `skin`/`taterzen_uuid`/`spawn_position` is fine, since the dialog can exist before the NPC is spawned. Then register the dialog itself under that NPC's key in `_npcs/dialogs/registry.json`.
+
+---
+
+## 4. Where design decisions live
+
+This README documents *how the system works*. Story content, character personalities, routes, and dialog writing are design decisions — they live in `_lore/` and the registries under `_npcs/`, not in this file. Whether the `/simulate` mechanism's design is actually working — as opposed to just running correctly — is tracked separately in `LAB_REPORT.md` at the repo root: a persistent, cross-run assessment log against the standing objective described in §0 (real emergent drift and material consequence, versus repetition or model-biased convergence), not this file either. The lore/structure/concept graphs under `graphs/graphifyish/` (§0) are a visualization of the record, not a design decision in themselves, but often the fastest way to spot one that needs making.
+
+---
+
+## Embodiment backend: Minecraft
+
+Everything from here on is specific to the system's current embodiment target — surfacing generated
+characters and lore live inside a Minecraft world via Taterzens NPCs and Blabber dialogs. A different
+or additional embodiment backend would replace this section without touching anything above it.
+
+- Minecraft 1.20.1, datapack pack format 15
+- Namespace: `luminacion`
+- Requires: [Taterzens](https://modrinth.com/mod/taterzens) 1.11.7, [Blabber](https://modrinth.com/mod/blabber) 1.6.2
+
+## 5. Building a new NPC, start to finish
 
 ### Step 1 — Register it
 
-Add an entry to `_npcs/npcs/registry.json` under `"npcs"` — purely Minecraft-facing, keyed by the
+Add an entry to `_npcs/npcs/registry.json` under `"npcs"` — purely embodiment-facing, keyed by the
 same lowercased, slugified name as any lore file this character might have:
 
 ```json
@@ -395,7 +512,7 @@ same lowercased, slugified name as any lore file this character might have:
 }
 ```
 
-Leave `taterzen_uuid` empty for now — that's filled in automatically at the end (§5). `display_name`
+Leave `taterzen_uuid` empty for now — that's filled in automatically at the end (§7). `display_name`
 is set here by hand for a hand-built NPC like this one; for an enacted character it's instead copied
 in from their `_lore/characters/<key>.json` file's canonical `name` the first time they're embodied
 (by `/embody` or `/spawn`), never authored independently.
@@ -403,7 +520,7 @@ in from their `_lore/characters/<key>.json` file's canonical `name` the first ti
 If this character should also have lore depth — `backstory`, a knowledge sample, `criterion`, a
 lifespan — that's a separate, optional file at `_lore/characters/maren.json`, built by `/character`
 or by hand (see §0 Layer 1 and §2). A hand-built NPC like this one is free to skip it entirely and
-exist as pure Minecraft data with no lore file at all.
+exist as pure embodiment data with no lore file at all.
 
 ### Step 2 — Create the spawn function
 
@@ -411,7 +528,7 @@ Copy `_npcs/templates/spawn.mcfunction` to `data/luminacion/functions/npcs/maren
 
 Read the comments in the template as you go — they explain each section. In particular:
 
-- **Movement**: pick `NONE` (stationary) or one of `FORCED_LOOK` / `PATH` / `FORCED_PATH` / `FOLLOW` / `FREE` (roaming). If it's not `NONE`, you'll need §4 as well.
+- **Movement**: pick `NONE` (stationary) or one of `FORCED_LOOK` / `PATH` / `FORCED_PATH` / `FOLLOW` / `FREE` (roaming). If it's not `NONE`, you'll need §6 as well.
 - **Right-click actions**: the first line should always be `npc edit commands add minecraft function luminacion:npcs/_shared/enter_dialog` when a dialog is involved — it pauses the NPC and marks it mid-conversation before the dialog opens. Don't skip it, even for stationary NPCs — it costs nothing and keeps every NPC consistent.
 
 ### Step 3 — Write the dialog
@@ -440,15 +557,15 @@ Stand at the spawn location (or set `spawn_position` in the registry and uncomme
 
 ### Step 5 — Capture its UUID
 
-See §5 below — don't do this by hand.
+See §7 below — don't do this by hand.
 
 ### Step 6 — Set up routine pause/resume (only if movement isn't NONE)
 
-See §4 below.
+See §6 below.
 
 ---
 
-## 4. Routine pause/resume (every NPC)
+## 6. Routine pause/resume (every NPC)
 
 Every NPC needs two more files, regardless of movement mode — including a stationary `NONE` NPC. This used to be scoped to "roaming NPCs only," which was wrong: the skin self-heal race (Taterzens fetches skins asynchronously from mineskin.org, and the fetch can lose the race against anything else touching the NPC) applies just as much to a `NONE` NPC as a roaming one, and confirmed the hard way — Khaoe shipped without this machinery first, under the old rule, and her skin never healed after a failed fetch. For a `NONE` NPC, `resume_routine.mcfunction`'s movement line is just `npc edit movement NONE` again (a no-op on behavior) — it's the tag cleanup and the periodic heal calls that actually matter there.
 
@@ -474,7 +591,7 @@ Full technical rationale (with source references) lives in `_npcs/actions/regist
 
 ---
 
-## 5. Capturing NPC UUIDs
+## 7. Capturing NPC UUIDs
 
 Taterzens NPCs need their UUID recorded in the registry so other functions (paths, follow targets, etc.) can reference them reliably. This is scripted — never copy a UUID by hand.
 
@@ -503,7 +620,7 @@ This updates `taterzen_uuid` for every NPC in the registry that was exported. Sa
 
 ---
 
-## 6. Reference
+## 8. Reference
 
 ### Scoreboard objectives (registered in `load.mcfunction`)
 
@@ -558,45 +675,3 @@ matching a gesture to a dialogue line's emotional content, use the keyword table
 /npc edit commands setPermissionLevel <0-4> set execution authority for right-click actions
 /blabber dialogue start <id> <target> [interlocutor]   start a dialog
 ```
-
----
-
-## 7. Where design decisions live
-
-This README documents *how the pack works*. Story content, NPC personalities, routes, and dialog writing are design decisions — they live in `_lore/` and the registries under `_npcs/`, not in this file. Whether the `/simulate` mechanism's design is actually working — as opposed to just running correctly — is tracked separately in `LAB_REPORT.md` at the repo root, a persistent cross-run assessment log, not this file either.
-
----
-
-## 8. Writing a dialog through enactment
-
-One way to build a scene: play the character in a live conversation first, then convert the transcript into pack content. This is how `sonoros_lost_traveler.json` was written, following the steps below by hand before the skills existed. `/enact` (`.claude/skills/enact/SKILL.md`) now runs Steps 1–2 below, plus recording what the scene did to the character's lore (`_lore/characters/<key>.json` — hearsay, criterion, `life`). `/embody` (`.claude/skills/embody/SKILL.md`) then runs Steps 3–4 against that same scene, and — as part of the same run, not a separate follow-up — bakes the dialog's gestures itself, replacing a minority of its default `nod_up_down` states with an emotionally-matched gesture from the vocabulary in `GESTURES.md`. There is no longer a standalone baking skill — every dialog in the pack is produced through `/enact`/`/embody` (or their pre-split ancestor), so `/embody` baking inline covers every case; a handful of pre-existing dialogs left uniform before this step existed got a one-time manual pass instead (see `TODO.md`). `/enact-embody` (`.claude/skills/enact-embody/SKILL.md`) chains `/enact` and `/embody` back to back, for the common case of wanting the whole pipeline — gestures included — in one pass. The steps below are still worth knowing, since the skills just automate them.
-
-### Step 1 — Bound the character's knowledge
-
-Before playing the NPC, decide what slice of the record (`_lore/material/_context.md`, `_lore/encodings.json`, `_lore/unknowns.md`) they actually know. Don't hand-pick a flattering or convenient subset — flatten every atomic fact across the analysis (locations, concepts, characters, routes, era entries, conflicts...) into one pool and randomly sample a small percentage of it. 5% produced a character who was coherent but genuinely, unevenly gapped — knowledgeable about a handful of unrelated things, ignorant of most everything else — which is a far more natural starting point than a hand-curated backstory. Keep the sample somewhere referenceable for the length of the session, since you'll be checking answers against it constantly.
-
-The pool also includes every individual claim from `encodings.json`'s `hearsay.entries` (one pool item per claim, tagged category `hearsay`), at the same odds as any objective-record fact. This is deliberate: a claim one NPC made in a past dialogue can resurface as something a new character has "heard," exactly like real gossip — including claims that were invented character texture, not lore (Gondarfolas's Bracco, Nuvilo's Navalius), and claims already flagged `inconsistent_with_record`/`inconsistent_with_facts` (a hearsay item doesn't need to check out against the record to be worth knowing secondhand). A sampled `hearsay` item is never upgraded to fact by being sampled — play it as something the character heard, attributed to whoever said it if pressed ("I heard Gondarfolas say once that..."), never as settled history. This is how the lore is meant to accrete emergent, subjective material on top of the fixed objective record over time.
-
-### Step 2 — Enact the conversation
-
-Play the NPC strictly within that sample.
-
-- **Never invent as fact anything that contradicts or extends the lore itself.** If a question falls outside the sample, the character genuinely doesn't know — say so, in character, rather than papering over the gap with new "lore." Don't volunteer the boundary unprompted either; the honesty is about never lying when it matters, not about narrating your own limits at every turn.
-- **Personality, mannerisms, small human texture — invent freely.** A reason for being somewhere, a job, a turn of phrase, a mood: a person is more than their entry in the record, and the lore was never going to specify any of that anyway.
-- **Write short.** Blabber's dialog boxes are small. Keep both sides of the conversation to a few sentences per turn from the start — it saves a rewrite later, and it's closer to how the final dialog will actually read in-game.
-
-Once the scene is done, record what it did to the character before converting anything: an entry in `_lore/characters/hearsay.md` and `encodings.json`'s `hearsay.entries` (participants, location, claims), any resulting change to `criterion`, and `life.lived` incremented — all written to `_lore/characters/<key>.json`. This is the point of an enactment and isn't Minecraft-facing at all; see §2's Criterion/Death entries and `/character` Step 6 for the mechanics.
-
-### Step 3 — Convert the transcript into a Blabber dialog
-
-Once the conversation feels complete, restructure it — don't add to it:
-
-- Each NPC line becomes a state's `"text"`.
-- Each player line becomes a `"choices"[].text` leading to the next state.
-- Where the conversation had a genuine fork — a moment where a different in-character reaction would plausibly lead somewhere slightly different — render it as a real multiple-choice branch (see `_template_branching.json`). Converge branches back into a shared state as soon as the divergent flavor is spent; don't let the tree sprawl past what the actual conversation supported.
-- Rename every state to a short, meaningful id (never leave `state_1`, `state_2`...).
-- Wire up the final `end_dialogue` state per the existing templates, including the `resume_routine` call *only if* the NPC ends up with a roaming movement mode (§4) — if it's stationary (`NONE`), drop that action entirely.
-
-### Step 4 — Register it
-
-Same as §3 Step 1 above: add (or update) the NPC's entry in `_npcs/npcs/registry.json` — if this is their first time in-game, `display_name`/`taterzen_name` are copied in from the `name` already set on their `_lore/characters/<key>.json` file, and a blank `skin`/`taterzen_uuid`/`spawn_position` is fine, since the dialog can exist before the NPC is spawned. Then register the dialog itself under that NPC's key in `_npcs/dialogs/registry.json`.

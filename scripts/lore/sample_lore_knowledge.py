@@ -19,8 +19,10 @@ once that..."), not asserted as settled history.
 NOT sampled, ever: _lore/facts/facts.json. Facts are the handful of things true of being a person in
 this world at all (life ends; a life should be worthwhile) - every character knows every one of them
 in full, regardless of their education percentage, so drawing them at 5% odds would be a bug. They
-live outside encodings.json on purpose and must never be folded into it; /enact loads them
-separately. See _lore/facts/_index.md.
+live outside encodings.json on purpose and must never be folded into the pool - but since /character
+and /enact both need them unconditionally on every single run anyway, this script prints them as
+their own clearly-separate block ahead of the sample, so neither skill needs a second manual read of
+facts.json just to get content they always need in full. See _lore/facts/_index.md.
 
 The set of categories is read from encodings.json's own `_categories` block, not hardcoded here (see
 that key's `_categories_method_note` for the shape convention) - this is what lets /integrate register
@@ -42,6 +44,24 @@ from random import Random
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 ENCODINGS_PATH = ROOT / "_lore" / "encodings.json"
+FACTS_PATH = ROOT / "_lore" / "facts" / "facts.json"
+
+
+def load_facts() -> list[dict]:
+    with open(FACTS_PATH, encoding="utf-8") as f:
+        return json.load(f)["facts"]
+
+
+def print_facts(facts: list[dict]) -> None:
+    print("Universal facts (every character knows these in full, from creation - never sampled, never contestable):")
+    print()
+    for fact in facts:
+        print(f"[{fact['id']}] {fact['title']}")
+        print(f"  {fact['text']}")
+        print(f"  Known: {'; '.join(fact.get('known', []))}")
+        print(f"  Withheld: {'; '.join(fact.get('withheld', []))}")
+        print(f"  Effects: {'; '.join(fact.get('effects', []))}")
+        print()
 
 
 def _get_path(data: dict, path: str):
@@ -175,6 +195,7 @@ def main() -> None:
     pool = flatten_pool(data)
     sample = draw_sample(pool, args.percent, args.mode, args.topic, rng)
 
+    print_facts(load_facts())
     print(f"Pool size: {len(pool)}")
     print(f"Sample size ({args.percent:.0f}%): {len(sample)}")
     if args.mode == "skewed":
