@@ -491,6 +491,62 @@ the extended-mode section only pointed backward at base mode's absolute-path/nev
 rules rather than restating them where they're actually needed first, and never explicitly required
 the safety-net check to run at all. Both fixed directly in `SKILL.md`'s extended-mode section.
 
+### Run 3 — 2026-08-13 — worktree `generate-run2` (`/simulate -generate` first real run)
+
+**Different objective from Runs 1-2.** This wasn't testing the standing hypothesis above (emergent
+criterion/hearsay drift) — `-generate` mode explicitly skips criterion shocks and hearsay mutation by
+design (see `scripts/lore/simulate_generate_population.py`'s own docstring). What this run tested:
+does the mechanical pass loop actually run clean at scale with no subagent per pass, and does
+deferring name/arc-authoring judgment into one batched subagent pass at the very end produce content
+as good as the interactive per-pass version would.
+
+**Setup.** 12 participants: the original 6 piloted characters (Aureobalo, Bardaglis, Döran, Iläria,
+Khaasan, Khaoe) plus 6 newly-routined ones authored specifically for this run (Farlis, Gondarfolas,
+Nerkeli, Nawom, Saltamontabiras, Gok — 5 Terfila-tied, 1 Khan Ice-tied, picked for depth of existing
+backstory/knowledge). 300 mechanical passes, no scene prose, one batched language-layer subagent
+(Sonnet) at the end for 7 child names + 12 fresh arcs.
+
+**Outcomes.**
+- All 300 passes ran with zero crashes or leaks (this mode has no subagent-per-pass, so the
+  relative-path-leak failure mode Runs 1-2 had to guard against structurally doesn't apply here —
+  every sibling-script call resolves from this script's own `__file__`, never a subagent's
+  possibly-wrong cwd).
+- 7 births, 8 deaths (Döran, Iläria, Khaasan, Khaoe, Farlis, Gondarfolas, Nerkeli, Gok — every
+  deceased character's final `life.lived` landed exactly on their secretly-rolled span, confirming
+  `horizon.py`'s `ending` check fired correctly every time), 0 criterion moves (expected — this mode
+  never triggers a shock), 12 arcs queued (all `reason: "first"`, none `"reauthor_failed"` — no
+  active arc happened to cross the failure threshold this run), max generation depth 1 (no
+  grandchildren — 300 passes across 12 starting slots wasn't enough for a child to itself clear
+  `partner_threshold`/cooldowns and reproduce, though the mechanism for it to happen is confirmed
+  working via `generate_offspring.py`'s own routine inheritance).
+- No death-legacy transfers fired (`roll_death_legacy.py`'s 40% odds simply didn't hit across however
+  many "died early" checks ran) — untested this run whether the arc-copy itself is correct; that's
+  still only exercised by Runs 1-2's interactive mode so far.
+- The one real bug this run caught: `simulate_generate_population.py` didn't precondition-check
+  `_lore/characters/lifespans.json` coverage, so a pool member with routines but no rolled lifespan
+  crashed the run mid-pass (`horizon.py` exits non-zero rather than returning a usable "no lifespan"
+  result) instead of failing fast at startup like the routines/deceased checks already did. Fixed by
+  adding the same upfront check for lifespans; also exposed a real data-prep gap (`/character` Step
+  8's own "routines only" framing makes it easy to forget Step 5's lifespan roll when adding routines
+  to an *existing* character rather than a brand-new one — worth a `/character` Step 8 note if this
+  recurs).
+- **Language-layer quality, one batched subagent for 19 items (7 names + 12 arcs) vs. the interactive
+  mode's one subagent per event:** names read as genuine blends (`Nerkaglis` from Nerkeli+Bardaglis,
+  `Khaoran` from Khaoe+Döran, `Aureobaloe` from Aureobalo+Khaoe), all mutually distinct, correctly
+  led from `name_lead`'s side. Arcs all used a valid archetype matching one of that character's own
+  routines, included a `concept:` tag, and read as grounded in that character's specific
+  criterion/backstory rather than generic (e.g. Nawom's `road_to_puerto_tortuga` arc picks up directly
+  on his backstory's unresolved search; Gok's `hotel_kholi_grandes_juegos_archive` extends his existing
+  criterion about keeping Khan Ice facing its past). No obvious quality drop from batching 19 items in
+  one pass versus one-at-a-time — worth watching on a larger run (a much bigger manifest might strain
+  a single context window or start producing more generic content toward the end of a long list).
+
+**Assessment against `-generate` mode's own goal** (not the standing objective): confirmed viable as
+a way to produce a larger starting population fast. The real open question this run couldn't test is
+whether the resulting population, once handed to an ordinary interactive `/simulate` run, produces
+material/narrative drift as convincing as a population that was interactively generated throughout —
+that requires a follow-up interactive run using this worktree's population as its starting pool.
+
 ## Open design questions (carried forward)
 
 - **Odds and thresholds are all first-guess numbers, untuned by any actual run** — all now

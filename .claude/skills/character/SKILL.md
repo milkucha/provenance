@@ -1,6 +1,6 @@
 ---
 description: Create or update a character's entry in _lore/characters/<key>.json — backstory, location, knowledge, criterion, and lifespan — without running a full /enact conversation. Use when the user wants to flesh out a character's sheet on its own, ahead of (or instead of) enacting a dialog.
-disable-model-invocation: true
+disable-model-invocation: false
 ---
 
 Lighter-weight sibling of `/enact` Step 1/Step 6: this skill only maintains a character's file in

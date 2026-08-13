@@ -41,15 +41,21 @@ what the interactive skill's Step 3 has to defend against by convention (a subag
 misresolve a relative path); a single Python process constructing its own sibling paths has no such
 failure mode; there is no subagent here to make that mistake, only this file.
 
+The `call()`/`kv()` plumbing and every sibling-script wrapper below now live in simulate_pass_lib.py
+(extracted 2026-08-13) so the interactive skill's own per-pass drivers (simulate_pass_brief.py,
+simulate_pass_resolve.py) can reuse the exact same tested wrappers instead of a second, subtly
+different reimplementation - this file only keeps the parts specific to running N passes with no
+subagent at all: State, queue_arc/maybe_admit_children (the deferred-authoring bookkeeping this mode
+alone needs), and run_pass() itself.
+
 Usage:
     py scripts/lore/simulate_generate_population.py --pool khaoe farlis khaasan --passes 60
     py scripts/lore/simulate_generate_population.py --pool khaoe farlis --passes 40 --seed 7
+    py scripts/lore/simulate_generate_population.py --pool khaoe farlis --passes 40 --living-pool-out .living_pool.json
 """
 
 import argparse
 import json
-import re
-import subprocess
 import sys
 from pathlib import Path
 
@@ -61,191 +67,37 @@ SNAPSHOT_PATH = ROOT / ".simulate_snapshot.json"
 LOG_PATH = ROOT / "GENERATION_LOG.md"
 
 sys.path.insert(0, str(SCRIPTS_DIR))
-import tuning  # noqa: E402
+import simulate_pass_lib as lib  # noqa: E402
 
-T = tuning.load()
-PARTNER_THRESHOLD = T["partner_threshold"]
-PARENT_COOLDOWN_PASSES = T["parent_cooldown_passes"]
-CHILD_COOLDOWN_PASSES = T["child_cooldown_passes"]
-LEAD_EXPIRY_PASSES = T["lead_expiry_passes"]
-ARC_RESOLUTION_THRESHOLD = T["arc_resolution_threshold"]
+PARTNER_THRESHOLD = lib.PARTNER_THRESHOLD
+PARENT_COOLDOWN_PASSES = lib.PARENT_COOLDOWN_PASSES
+CHILD_COOLDOWN_PASSES = lib.CHILD_COOLDOWN_PASSES
+LEAD_EXPIRY_PASSES = lib.LEAD_EXPIRY_PASSES
+ARC_RESOLUTION_THRESHOLD = lib.ARC_RESOLUTION_THRESHOLD
+ARCHETYPES = lib.ARCHETYPES
 
-ARCHETYPES = json.loads((ROOT / "_lore" / "archetypes.json").read_text(encoding="utf-8"))
-
-
-# --------------------------------------------------------------------------------------------
-# Plumbing: character file I/O, sibling-script invocation, stdout parsing
-# --------------------------------------------------------------------------------------------
-
-def load_char(key: str) -> dict:
-    path = CHAR_DIR / f"{key}.json"
-    with open(path, encoding="utf-8") as f:
-        return json.load(f)
-
-
-def save_char(key: str, character: dict) -> None:
-    path = CHAR_DIR / f"{key}.json"
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(character, f, indent=2, ensure_ascii=False)
-        f.write("\n")
-
-
-def call(script_name: str, argv: list) -> str:
-    result = subprocess.run(
-        [sys.executable, str(SCRIPTS_DIR / script_name), *argv],
-        capture_output=True, text=True,
-    )
-    if result.returncode != 0:
-        raise RuntimeError(f"{script_name} {argv} failed (exit {result.returncode}):\n{result.stderr}")
-    return result.stdout
-
-
-def kv(stdout: str) -> dict:
-    """Parses top-level (non-indented) 'key: value' lines into a dict. Indented lines (e.g. a
-    script's per-item '  notified: x' listing) are deliberately excluded - use a dedicated
-    line-scraper (see notified_keys()) for those instead."""
-    out = {}
-    for line in stdout.splitlines():
-        if not line or line[0] in " \t":
-            continue
-        key, sep, value = line.partition(":")
-        if sep:
-            out[key.strip()] = value.strip()
-    return out
-
-
-def notified_keys(stdout: str) -> list:
-    return re.findall(r"^\s+notified:\s+(\S+)", stdout, re.MULTILINE)
-
-
-# --------------------------------------------------------------------------------------------
-# Sibling-script wrappers (one per scripts/lore/*.py this loop calls)
-# --------------------------------------------------------------------------------------------
-
-def pick_pair(pool: list) -> tuple:
-    d = kv(call("pick_pair.py", pool))
-    return d["participant_1"], d["participant_2"]
-
-
-def roll_lead_followup(leads: list) -> dict:
-    return kv(call("roll_lead_followup.py", ["--leads", *leads]))
-
-
-def roll_routine(routines: list) -> str:
-    args = [f"{r['location']}:{r['weight']}" for r in routines]
-    return kv(call("roll_routine.py", args))["routine"]
-
-
-def resolve_location(p1: str, p1_routine: str, p2: str, p2_routine: str) -> dict:
-    return kv(call("resolve_location.py", [
-        "--p1", p1, "--p1-routine", p1_routine, "--p2", p2, "--p2-routine", p2_routine,
-    ]))
-
-
-def check_needs_provides(needs: list, provides: list) -> dict:
-    args = []
-    for n in needs:
-        args += ["--needs", n]
-    for p in provides:
-        args += ["--provides", p]
-    return kv(call("check_needs_provides.py", args))
-
-
-def roll_arc_primacy(p1: str, p2: str) -> str:
-    return kv(call("roll_arc_primacy.py", ["--p1", p1, "--p2", p2]))["primary"]
-
-
-def peer_knowledge_items(character: dict, cap: int = 15) -> list:
-    items = []
-    for entry in character.get("knowledge", {}).get("experience", []):
-        if isinstance(entry, dict) and entry.get("about"):
-            about = entry["about"]
-            tags = about if isinstance(about, list) else [about]
-            items.append(f"{entry.get('text', '')}::{','.join(tags)}")
-    return items[-cap:]
-
-
-def check_arc_alignment(arc_about: list, arc_needs: list, peer: dict) -> dict:
-    args = []
-    for tag in arc_about:
-        args += ["--arc-about", tag]
-    for tag in arc_needs:
-        args += ["--arc-needs", tag]
-    criterion = peer.get("criterion", {})
-    args += ["--peer-standard", criterion.get("standard", "")]
-    args += ["--peer-wasted-life", criterion.get("wasted_life", "")]
-    for item in peer_knowledge_items(peer):
-        args += ["--peer-knowledge-item", item]
-    out = kv(call("check_arc_alignment.py", args))
-    out["matched_about"] = [t for t in out.get("matched_about", "").split(",") if t]
-    return out
-
-
-def roll_contested() -> bool:
-    return kv(call("roll_contested.py", []))["contested"] == "true"
-
-
-def roll_arc_outcome(inclined: str) -> str:
-    return kv(call("roll_arc_outcome.py", ["--inclined", inclined]))["outcome"]
-
-
-def record_partner(key: str, other: str) -> None:
-    call("record_partner.py", [key, "--with", other])
-
-
-def roll_reproduction(p1: str, p2: str) -> dict:
-    return kv(call("roll_reproduction.py", ["--p1", p1, "--p2", p2]))
-
-
-def generate_offspring(parent_a: str, parent_b: str, name: str, pass_number: int) -> dict:
-    stdout = call("generate_offspring.py", [
-        "--parent-a", parent_a, "--parent-b", parent_b, "--name", name, "--pass-number", str(pass_number),
-    ])
-    born_match = re.search(r"^born: (\S+) \(", stdout, re.MULTILINE)
-    eligible_match = re.search(r">=\s*(\d+)", stdout)
-    return {
-        "slug": born_match.group(1),
-        "eligible_pass": int(eligible_match.group(1)),
-    }
-
-
-def horizon(key: str) -> dict:
-    return kv(call("horizon.py", [key]))
-
-
-def record_death(key: str) -> dict:
-    stdout = call("record_death.py", [key])
-    return {"notified": notified_keys(stdout)}
-
-
-def roll_death_legacy(candidates: list) -> dict:
-    return kv(call("roll_death_legacy.py", ["--candidates", *candidates]))
-
-
-def update_character_lived(key: str, delta: int = 1) -> None:
-    call("update_character.py", [key, "--lived-delta", str(delta)])
-
-
-# --------------------------------------------------------------------------------------------
-# Arc bookkeeping (no script exists for this even in the interactive skill - it's a direct
-# character-file edit there too, just done by hand instead of by this function)
-# --------------------------------------------------------------------------------------------
-
-def resolve_archetype_for_location(character: dict, location: str) -> str:
-    for r in character.get("routines", []):
-        if r["location"] == location:
-            return r["archetype"]
-    raise RuntimeError(f"'{character.get('name')}' has no routine at location '{location}'.")
-
-
-def tally(history: list) -> int:
-    last_transform = -1
-    for i, h in enumerate(history):
-        if h.get("outcome") == "transform":
-            last_transform = i
-    relevant = history[last_transform + 1:]
-    score = {"advance": 1, "stall": 0, "reverse": -1}
-    return sum(score.get(h.get("outcome"), 0) for h in relevant)
+load_char = lib.load_char
+save_char = lib.save_char
+call = lib.call
+kv = lib.kv
+notified_keys = lib.notified_keys
+pick_pair = lib.pick_pair
+roll_lead_followup = lib.roll_lead_followup
+roll_routine = lib.roll_routine
+resolve_archetype_for_location = lib.resolve_archetype_for_location
+check_needs_provides = lib.check_needs_provides
+roll_arc_primacy = lib.roll_arc_primacy
+check_arc_alignment = lib.check_arc_alignment
+roll_contested = lib.roll_contested
+roll_arc_outcome = lib.roll_arc_outcome
+record_partner = lib.record_partner
+roll_reproduction = lib.roll_reproduction
+generate_offspring = lib.generate_offspring
+horizon = lib.horizon
+record_death = lib.record_death
+roll_death_legacy = lib.roll_death_legacy
+update_character_lived = lib.update_character_lived
+tally = lib.tally
 
 
 # --------------------------------------------------------------------------------------------
@@ -318,19 +170,22 @@ def run_pass(state: State, pass_number: int) -> str:
                 forced_visit = True
                 notes.append(f"{p1} followed a lead to {p2}")
 
-    # Step 3/4 - routine + location
+    # Step 3/4/5 - routine, location, and archetype+texture, folded into one call
     p2_routine = roll_routine(p2_char["routines"])
     if forced_visit:
-        mode, location, home_frame, traveler = "visit", p2_routine, p2, p1
+        archetype = resolve_archetype_for_location(p2_char, p2_routine)
+        loc = {
+            "mode": "visit", "location": p2_routine, "home_frame": p2, "traveler": p1,
+            "archetype": archetype, "texture": ARCHETYPES[archetype]["texture"],
+            "provides": ARCHETYPES[archetype]["provides"],
+        }
     else:
         p1_routine = roll_routine(p1_char["routines"])
-        loc = resolve_location(p1, p1_routine, p2, p2_routine)
-        mode, location, home_frame = loc["mode"], loc["location"], loc["home_frame"]
-        traveler = loc["traveler"] if loc["traveler"] != "none" else None
+        loc = lib.resolve_location(p1, p1_routine, p1_char, p2, p2_routine, p2_char)
 
-    home_frame_char = p1_char if home_frame == p1 else p2_char
-    archetype = resolve_archetype_for_location(home_frame_char, location)
-    provides = ARCHETYPES[archetype]["provides"]
+    mode, location, home_frame = loc["mode"], loc["location"], loc["home_frame"]
+    traveler = loc["traveler"] if loc["traveler"] != "none" else None
+    archetype, provides = loc["archetype"], loc["provides"]
 
     # Step 6 - needs/provides (visit only, traveler must have an active arc with needs)
     motivated, contested = False, False
@@ -473,7 +328,10 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--pool", nargs="+", required=True, help="Starting living participants (must all have routines)")
     parser.add_argument("--passes", type=int, required=True)
+    parser.add_argument("--living-pool-out", default=None, help="Also write the ending living pool (JSON array of slugs) to this path - for a caller that wants to feed it straight into a subsequent showcase-trail run without retyping it (see SKILL.md's --pregenerate)")
     args = parser.parse_args()
+
+    lifespans = json.loads((CHAR_DIR / "lifespans.json").read_text(encoding="utf-8"))["lifespans"]
 
     pool = [s.lower() for s in args.pool]
     for slug in pool:
@@ -485,6 +343,8 @@ def main() -> None:
             raise SystemExit(f"'{slug}' is already deceased - drop them from --pool.")
         if not c.get("routines"):
             raise SystemExit(f"'{slug}' has no routines - generate mode requires every starting participant to have them (a routine-less character can never be paired into the reproduction mechanic).")
+        if slug not in lifespans:
+            raise SystemExit(f"'{slug}' has no entry in lifespans.json - run scripts/lore/roll_lifespan.py and record it there (/character Step 5) before including them in --pool.")
 
     call("simulate_tally.py", ["snapshot", *pool, "--out", str(SNAPSHOT_PATH)])
 
@@ -505,6 +365,9 @@ def main() -> None:
     )
     LOG_PATH.write_text("# Generation log\n\n" + "\n".join(f"- {line}" for line in state.log) + "\n", encoding="utf-8")
 
+    if args.living_pool_out:
+        Path(args.living_pool_out).write_text(json.dumps(state.living, indent=2) + "\n", encoding="utf-8")
+
     max_gen = max(state.generation.values(), default=0)
     print()
     print(f"passes run: {ran}")
@@ -515,6 +378,8 @@ def main() -> None:
     print(f"pending language manifest: {PENDING_PATH}")
     print(f"log: {LOG_PATH}")
     print(f"snapshot (for simulate_tally.py report): {SNAPSHOT_PATH}")
+    if args.living_pool_out:
+        print(f"living pool written: {args.living_pool_out}")
 
 
 if __name__ == "__main__":

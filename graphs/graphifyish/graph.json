@@ -12445,7 +12445,7 @@
     "label": "Luminacion",
     "kind": "root",
     "path": ".",
-    "size": 407465798,
+    "size": 407635456,
     "degree": 13
    },
    {
@@ -12477,7 +12477,7 @@
     "label": "README.md",
     "kind": "doc",
     "path": "README.md",
-    "size": 48858,
+    "size": 49399,
     "degree": 1
    },
    {
@@ -12501,7 +12501,7 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
-    "size": 347390609,
+    "size": 347482517,
     "degree": 6
    },
    {
@@ -12533,7 +12533,7 @@
     "label": "skills",
     "kind": "dir",
     "path": ".claude/skills",
-    "size": 172091,
+    "size": 179191,
     "degree": 11
    },
    {
@@ -12541,7 +12541,7 @@
     "label": "character",
     "kind": "dir",
     "path": ".claude/skills/character",
-    "size": 25012,
+    "size": 25013,
     "degree": 2
    },
    {
@@ -12549,7 +12549,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/character/SKILL.md",
-    "size": 25012,
+    "size": 25013,
     "degree": 1
    },
    {
@@ -12653,7 +12653,7 @@
     "label": "simulate",
     "kind": "dir",
     "path": ".claude/skills/simulate",
-    "size": 45283,
+    "size": 52382,
     "degree": 2
    },
    {
@@ -12661,7 +12661,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/simulate/SKILL.md",
-    "size": 45283,
+    "size": 52382,
     "degree": 1
    },
    {
@@ -12701,7 +12701,7 @@
     "label": "worktrees",
     "kind": "dir",
     "path": ".claude/worktrees",
-    "size": 347216785,
+    "size": 347301593,
     "degree": 7
    },
    {
@@ -27308,7 +27308,7 @@
     "label": "simulate-20260810-164704",
     "kind": "dir",
     "path": ".claude/worktrees/simulate-20260810-164704",
-    "size": 59532395,
+    "size": 59617203,
     "degree": 322
    },
    {
@@ -34804,7 +34804,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": ".claude/worktrees/simulate-20260810-164704/graphs",
-    "size": 1829299,
+    "size": 1906362,
     "degree": 2
    },
    {
@@ -34812,7 +34812,7 @@
     "label": "graphifyish",
     "kind": "dir",
     "path": ".claude/worktrees/simulate-20260810-164704/graphs/graphifyish",
-    "size": 1829299,
+    "size": 1906362,
     "degree": 3
    },
    {
@@ -34820,7 +34820,7 @@
     "label": "graph.json",
     "kind": "other",
     "path": ".claude/worktrees/simulate-20260810-164704/graphs/graphifyish/graph.json",
-    "size": 1018579,
+    "size": 1061237,
     "degree": 1
    },
    {
@@ -34828,7 +34828,7 @@
     "label": "graphifyish.html",
     "kind": "other",
     "path": ".claude/worktrees/simulate-20260810-164704/graphs/graphifyish/graphifyish.html",
-    "size": 810720,
+    "size": 845125,
     "degree": 1
    },
    {
@@ -34980,7 +34980,7 @@
     "label": "scripts",
     "kind": "dir",
     "path": ".claude/worktrees/simulate-20260810-164704/scripts",
-    "size": 296023,
+    "size": 303768,
     "degree": 5
    },
    {
@@ -34988,7 +34988,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": ".claude/worktrees/simulate-20260810-164704/scripts/graphs",
-    "size": 70425,
+    "size": 78170,
     "degree": 3
    },
    {
@@ -34996,7 +34996,7 @@
     "label": "graphifyish.py",
     "kind": "other",
     "path": ".claude/worktrees/simulate-20260810-164704/scripts/graphs/graphifyish.py",
-    "size": 32874,
+    "size": 40722,
     "degree": 1
    },
    {
@@ -35004,7 +35004,7 @@
     "label": "graphifyish_template.html",
     "kind": "other",
     "path": ".claude/worktrees/simulate-20260810-164704/scripts/graphs/graphifyish_template.html",
-    "size": 37551,
+    "size": 37448,
     "degree": 1
    },
    {
@@ -35348,7 +35348,7 @@
     "label": "_lore",
     "kind": "dir",
     "path": "_lore",
-    "size": 55370650,
+    "size": 55374760,
     "degree": 9
    },
    {
@@ -35388,7 +35388,7 @@
     "label": "characters",
     "kind": "dir",
     "path": "_lore/characters",
-    "size": 163141,
+    "size": 167251,
     "degree": 69
    },
    {
@@ -35484,7 +35484,7 @@
     "label": "farlis.json",
     "kind": "lore",
     "path": "_lore/characters/farlis.json",
-    "size": 9661,
+    "size": 10296,
     "degree": 1
    },
    {
@@ -35524,7 +35524,7 @@
     "label": "gok.json",
     "kind": "lore",
     "path": "_lore/characters/gok.json",
-    "size": 8595,
+    "size": 9241,
     "degree": 1
    },
    {
@@ -35532,7 +35532,7 @@
     "label": "gondarfolas.json",
     "kind": "lore",
     "path": "_lore/characters/gondarfolas.json",
-    "size": 4672,
+    "size": 5362,
     "degree": 1
    },
    {
@@ -35668,7 +35668,7 @@
     "label": "lifespans.json",
     "kind": "lore",
     "path": "_lore/characters/lifespans.json",
-    "size": 1525,
+    "size": 1811,
     "degree": 1
    },
    {
@@ -35732,7 +35732,7 @@
     "label": "nawom.json",
     "kind": "lore",
     "path": "_lore/characters/nawom.json",
-    "size": 3484,
+    "size": 4084,
     "degree": 1
    },
    {
@@ -35740,7 +35740,7 @@
     "label": "nerkeli.json",
     "kind": "lore",
     "path": "_lore/characters/nerkeli.json",
-    "size": 3637,
+    "size": 4308,
     "degree": 1
    },
    {
@@ -35820,7 +35820,7 @@
     "label": "saltamontabiras.json",
     "kind": "lore",
     "path": "_lore/characters/saltamontabiras.json",
-    "size": 356,
+    "size": 938,
     "degree": 1
    },
    {
@@ -37427,7 +37427,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": "graphs",
-    "size": 3812944,
+    "size": 3819104,
     "degree": 2
    },
    {
@@ -37435,7 +37435,7 @@
     "label": "graphifyish",
     "kind": "dir",
     "path": "graphs/graphifyish",
-    "size": 3812944,
+    "size": 3819104,
     "degree": 3
    },
    {
@@ -37443,7 +37443,7 @@
     "label": "graph.json",
     "kind": "graph",
     "path": "graphs/graphifyish/graph.json",
-    "size": 2078492,
+    "size": 2082022,
     "degree": 1
    },
    {
@@ -37451,7 +37451,7 @@
     "label": "graphifyish.html",
     "kind": "graph",
     "path": "graphs/graphifyish/graphifyish.html",
-    "size": 1734452,
+    "size": 1737082,
     "degree": 1
    },
    {
@@ -37603,7 +37603,7 @@
     "label": "scripts",
     "kind": "dir",
     "path": "scripts",
-    "size": 300462,
+    "size": 367401,
     "degree": 5
    },
    {
@@ -37651,8 +37651,8 @@
     "label": "lore",
     "kind": "dir",
     "path": "scripts/lore",
-    "size": 205829,
-    "degree": 36
+    "size": 272768,
+    "degree": 43
    },
    {
     "id": "file:scripts/lore/add_categories_schema.py",
@@ -37660,6 +37660,22 @@
     "kind": "script",
     "path": "scripts/lore/add_categories_schema.py",
     "size": 7026,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/apply_contested_lead.py",
+    "label": "apply_contested_lead.py",
+    "kind": "script",
+    "path": "scripts/lore/apply_contested_lead.py",
+    "size": 3614,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/apply_language_layer.py",
+    "label": "apply_language_layer.py",
+    "kind": "script",
+    "path": "scripts/lore/apply_language_layer.py",
+    "size": 10592,
     "degree": 1
    },
    {
@@ -37903,6 +37919,38 @@
     "degree": 1
    },
    {
+    "id": "file:scripts/lore/simulate_generate_population.py",
+    "label": "simulate_generate_population.py",
+    "kind": "script",
+    "path": "scripts/lore/simulate_generate_population.py",
+    "size": 23159,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/simulate_pass_brief.py",
+    "label": "simulate_pass_brief.py",
+    "kind": "script",
+    "path": "scripts/lore/simulate_pass_brief.py",
+    "size": 13254,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/simulate_pass_lib.py",
+    "label": "simulate_pass_lib.py",
+    "kind": "script",
+    "path": "scripts/lore/simulate_pass_lib.py",
+    "size": 8470,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/simulate_pass_resolve.py",
+    "label": "simulate_pass_resolve.py",
+    "kind": "script",
+    "path": "scripts/lore/simulate_pass_resolve.py",
+    "size": 3896,
+    "degree": 1
+   },
+   {
     "id": "file:scripts/lore/simulate_setup_worktree.py",
     "label": "simulate_setup_worktree.py",
     "kind": "script",
@@ -37932,6 +37980,14 @@
     "kind": "script",
     "path": "scripts/lore/update_character.py",
     "size": 11164,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/write_arc.py",
+    "label": "write_arc.py",
+    "kind": "script",
+    "path": "scripts/lore/write_arc.py",
+    "size": 3954,
     "degree": 1
    },
    {
@@ -56882,6 +56938,18 @@
    },
    {
     "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/apply_contested_lead.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/apply_language_layer.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/backfill_lived.py",
     "rel": "contains",
     "weight": 1
@@ -57062,6 +57130,30 @@
    },
    {
     "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/simulate_generate_population.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/simulate_pass_brief.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/simulate_pass_lib.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/simulate_pass_resolve.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/simulate_setup_worktree.py",
     "rel": "contains",
     "weight": 1
@@ -57081,6 +57173,12 @@
    {
     "source": "dir:scripts/lore",
     "target": "file:scripts/lore/update_character.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/write_arc.py",
     "rel": "contains",
     "weight": 1
    },
@@ -57127,7 +57225,7 @@
     "kind": "layer",
     "note": "templates, registries, gesture dispatch",
     "tier": 2,
-    "degree": 45
+    "degree": 52
    },
    {
     "id": "layer:3",
@@ -57303,6 +57401,22 @@
     "kind": "script",
     "tier": 2,
     "file": "scripts/lore/add_categories_schema.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/apply_contested_lead.py",
+    "label": "apply_contested_lead.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/apply_contested_lead.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/apply_language_layer.py",
+    "label": "apply_language_layer.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/apply_language_layer.py",
     "degree": 1
    },
    {
@@ -57546,6 +57660,38 @@
     "degree": 3
    },
    {
+    "id": "script:lore/simulate_generate_population.py",
+    "label": "simulate_generate_population.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/simulate_generate_population.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/simulate_pass_brief.py",
+    "label": "simulate_pass_brief.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/simulate_pass_brief.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/simulate_pass_lib.py",
+    "label": "simulate_pass_lib.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/simulate_pass_lib.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/simulate_pass_resolve.py",
+    "label": "simulate_pass_resolve.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/simulate_pass_resolve.py",
+    "degree": 1
+   },
+   {
     "id": "script:lore/simulate_setup_worktree.py",
     "label": "simulate_setup_worktree.py",
     "kind": "script",
@@ -57575,6 +57721,14 @@
     "kind": "script",
     "tier": 2,
     "file": "scripts/lore/update_character.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/write_arc.py",
+    "label": "write_arc.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/write_arc.py",
     "degree": 1
    },
    {
@@ -57775,6 +57929,18 @@
    },
    {
     "source": "layer:2",
+    "target": "script:lore/apply_contested_lead.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/apply_language_layer.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
     "target": "script:lore/backfill_lived.py",
     "rel": "holds",
     "weight": 1
@@ -57955,6 +58121,30 @@
    },
    {
     "source": "layer:2",
+    "target": "script:lore/simulate_generate_population.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/simulate_pass_brief.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/simulate_pass_lib.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/simulate_pass_resolve.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
     "target": "script:lore/simulate_setup_worktree.py",
     "rel": "holds",
     "weight": 1
@@ -57974,6 +58164,12 @@
    {
     "source": "layer:2",
     "target": "script:lore/update_character.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/write_arc.py",
     "rel": "holds",
     "weight": 1
    },
