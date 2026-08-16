@@ -1,0 +1,400 @@
+<title>The Extended&#8209;Mode Pass</title>
+<style>
+:root{
+  --paper:#f3f4ef; --ink:#1c231f; --ink-soft:#5c675f; --line:#d4d8ce;
+  --panel:#fbfbf9; --panel-alt:#e9ebe1; --judgment:#a56a17; --judgment-soft:#f2e4c6;
+  --judgment-line:#c98a2c; --roll:#2f636d; --roll-soft:#e2edee;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#14181a; --ink:#e8e6dd; --ink-soft:#9ea69f; --line:#2c332e;
+    --panel:#191d1d; --panel-alt:#20241f; --judgment:#e0a83f; --judgment-soft:#392c14;
+    --judgment-line:#c98a2c; --roll:#7fb0b9; --roll-soft:#1b2c2e;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#14181a; --ink:#e8e6dd; --ink-soft:#9ea69f; --line:#2c332e;
+  --panel:#191d1d; --panel-alt:#20241f; --judgment:#e0a83f; --judgment-soft:#392c14;
+  --judgment-line:#c98a2c; --roll:#7fb0b9; --roll-soft:#1b2c2e;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font:16px/1.6 "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+}
+.wrap{max-width:880px; margin:0 auto; padding:56px 28px 80px}
+.mono{
+  font-family:ui-monospace,"Cascadia Code","Cascadia Mono","Segoe UI Mono",Consolas,
+    "Liberation Mono",Menlo,monospace;
+}
+.eyebrow{
+  font-size:11.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--ink-soft);
+  margin:0 0 10px;
+}
+h1{
+  font-family:ui-monospace,"Cascadia Code","Cascadia Mono","Segoe UI Mono",Consolas,
+    "Liberation Mono",Menlo,monospace;
+  font-size:clamp(26px,4vw,36px); font-weight:600; letter-spacing:-.01em; margin:0 0 12px;
+  text-wrap:balance;
+}
+.dek{font-size:18px; color:var(--ink-soft); margin:0 0 18px; max-width:62ch; text-wrap:balance}
+.meta{
+  font-size:12px; color:var(--ink-soft); margin:0 0 34px; display:flex; gap:18px; flex-wrap:wrap;
+  border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:10px 0;
+}
+.meta span b{color:var(--ink); font-weight:600}
+.lede{max-width:66ch; margin:0 0 14px}
+.lede + .lede{margin-top:14px}
+.updated{
+  max-width:66ch; margin:0 0 22px; padding:11px 16px; background:var(--roll-soft);
+  border:1px solid var(--line); border-radius:6px; font-size:13px; color:var(--ink-soft);
+}
+.updated b{color:var(--roll); font-family:ui-monospace,"Cascadia Code","Cascadia Mono",
+  "Segoe UI Mono",Consolas,"Liberation Mono",Menlo,monospace; font-weight:600}
+.callout{
+  max-width:66ch; margin:22px 0 36px; padding:16px 20px; background:var(--panel);
+  border:1px solid var(--line); border-left:3px solid var(--judgment-line); border-radius:3px;
+  font-size:14.5px;
+}
+.callout b{color:var(--judgment)}
+.callout ol{margin:10px 0 0; padding-left:20px}
+.callout li{margin:0 0 4px}
+.callout li b{color:var(--ink); font-weight:600}
+
+.legend{
+  display:flex; flex-wrap:wrap; gap:10px 26px; margin:0 0 40px; padding:16px 20px;
+  background:var(--panel); border:1px solid var(--line); border-radius:6px;
+}
+.legend-item{display:flex; align-items:center; gap:9px; font-size:12.5px; color:var(--ink-soft)}
+.legend-item .swatch{flex:none}
+.sw-rect{width:20px; height:13px; border:1.4px solid var(--ink); border-radius:2px; background:var(--panel)}
+.sw-roll{width:20px; height:13px; border:1.4px solid var(--ink); border-left:4px solid var(--roll); border-radius:2px; background:var(--panel)}
+.sw-judge{width:20px; height:13px; border:1.6px solid var(--judgment-line); border-radius:2px; background:var(--judgment-soft)}
+.sw-dashed{width:20px; height:13px; border:1.4px dashed var(--ink-soft); border-radius:2px; background:var(--panel)}
+
+figure{margin:0 0 40px}
+
+figure svg{width:100%; height:auto; display:block}
+figure svg text{
+  font-family:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  fill:var(--ink);
+}
+figure svg text.mono, figure svg tspan.mono{
+  font-family:ui-monospace,"Cascadia Code","Cascadia Mono","Segoe UI Mono",Consolas,
+    "Liberation Mono",Menlo,monospace;
+}
+.phase-label{font-size:12px; letter-spacing:.12em; text-transform:uppercase; font-weight:700}
+.phase-label.roll{fill:var(--roll)}
+.phase-label.judge{fill:var(--judgment)}
+.section-frame{fill:none; stroke-width:1.2}
+.section-frame.roll{stroke:var(--roll)}
+.section-frame.judge{stroke:var(--judgment-line)}
+.nbox{fill:var(--panel); stroke:var(--line); stroke-width:1.3}
+.nbox.hub{fill:var(--panel-alt)}
+.nbox.gated{stroke-dasharray:4 3; stroke:var(--ink-soft)}
+.nbox.always{fill:var(--judgment-soft); stroke:var(--judgment-line); stroke-width:1.6}
+.stripe{fill:var(--roll)}
+.badge-circle{fill:var(--panel-alt); stroke:var(--line); stroke-width:1}
+.badge-text{font-size:10px; fill:var(--ink-soft); text-anchor:middle; dominant-baseline:central}
+.ntitle{font-size:12.8px; dominant-baseline:central}
+.nsub{font-size:11.3px; fill:var(--ink-soft); dominant-baseline:central}
+.cond-label{font-size:10.8px; fill:var(--judgment); dominant-baseline:central}
+.cond-label.always{fill:var(--judgment); font-weight:700}
+.skip-label{font-size:10.3px; fill:var(--ink-soft); font-style:italic; dominant-baseline:central}
+.conn-label{font-size:12px; fill:var(--ink-soft)}
+.flow-line{stroke:var(--ink-soft); stroke-width:1.4; fill:none}
+.corridor-line{stroke:var(--ink-soft); stroke-width:1.1; fill:none; stroke-dasharray:3 3; opacity:.8}
+.junction{fill:var(--ink-soft)}
+.loop-line{stroke:var(--roll); stroke-width:1.5; fill:none}
+.loop-label{font-size:11.5px; fill:var(--roll)}
+
+.closing{max-width:66ch; padding-top:8px; border-top:1px solid var(--line)}
+.closing h2{
+  font-family:ui-monospace,"Cascadia Code","Cascadia Mono","Segoe UI Mono",Consolas,
+    "Liberation Mono",Menlo,monospace;
+  font-size:13px; text-transform:uppercase; letter-spacing:.1em; color:var(--ink-soft);
+  margin:26px 0 10px; font-weight:600;
+}
+.closing p{margin:0 0 12px}
+.closing code{
+  font-family:ui-monospace,"Cascadia Code","Cascadia Mono","Segoe UI Mono",Consolas,
+    "Liberation Mono",Menlo,monospace;
+  background:var(--panel-alt); padding:1px 5px; border-radius:3px; font-size:.88em;
+}
+@media (max-width:600px){
+  .chip-grid, .slot-grid{grid-template-columns:1fr}
+  .slot-card.always{grid-column:1}
+}
+</style>
+
+<div class="wrap">
+
+  <p class="eyebrow">/simulate &middot; extended mode</p>
+  <h1>The Extended&#8209;Mode Pass</h1>
+  <p class="dek">One trip through Step&nbsp;3, run once per pass &mdash; now two driver&#8209;script
+    calls wrapping a single subagent that only ever touches whichever of four judgment slots are
+    open.</p>
+  <p class="meta">
+    <span>Source: <b class="mono">.claude/skills/simulate/SKILL.md</b>, &ldquo;Step 3 (extended
+      mode)&rdquo;</span>
+    <span>Applies whenever a participant has a non&#8209;empty <b class="mono">routines</b>
+      array</span>
+  </p>
+
+  <p class="updated"><b>Redrawn 2026-08-13.</b> A same-day rewrite folded the old
+    hand&#8209;relayed sequence (a subagent stringing 15+ separate script calls together itself,
+    hand&#8209;copying each result into the next call) into three phases: two calls the
+    <em>orchestrator</em> makes directly, wrapped around one subagent dispatch. The hand&#8209;relay
+    was its own failure mode &mdash; a smaller model could misread or mistype a value crossing that
+    many hops.</p>
+
+  <p class="lede">Every pass still runs the same mechanism underneath &mdash; the pairing, the gate,
+    the dice &mdash; it's just no longer the subagent's job to thread the calls together one at a
+    time. Phase A resolves everything decidable before a word is written; Phase B writes the scene
+    and handles whatever's left for a model to decide; Phase C resolves what a pass leaves behind.</p>
+
+  <div class="callout">
+    <b>Exactly four places a model's judgment is the right tool</b> &mdash; nothing else in a pass is
+    the subagent's to decide:
+    <ol>
+      <li><b>Name</b> a newborn &mdash; a plausible blend of both parents' names.</li>
+      <li><b>Author</b> a freshly&#8209;needed arc's topic, needs, and archetype.</li>
+      <li><b>Optionally name</b> a specific rival in a contested&#8209;and&#8209;hinder scene.</li>
+      <li><b>Write</b> the scene itself &mdash; the only one of the four that's never skipped.</li>
+    </ol>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><span class="swatch sw-roll"></span>a script call &mdash; teal edge
+      marks a genuine dice roll inside it</div>
+    <div class="legend-item"><span class="swatch sw-judge"></span>model judgment</div>
+    <div class="legend-item"><span class="swatch sw-dashed"></span>only if this pass flags it open</div>
+    <div class="legend-item"><span class="swatch sw-rect"></span>always runs</div>
+  </div>
+
+  <figure>
+<svg viewBox="0 0 780 1788" width="780" height="1788" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Flowchart of one extended-mode pass. Phase A: simulate_pass_brief.py runs thirteen steps in order, seven of them dice rolls, and writes a brief flagging which judgment slots are open. Phase B: a single subagent reads the brief, then for each of three optional slots either fills it or skips it via a bypass line, before always writing the scene. Phase C: simulate_pass_resolve.py runs six closing steps, one a death-legacy roll. A loop line on the right returns from the end of Phase C to the start of Phase A for as long as two or more characters remain alive.">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"/>
+  </marker>
+  <marker id="arrow-loop" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="var(--roll)"/>
+  </marker>
+</defs>
+<text class="phase-label roll" x="170" y="48">PHASE A &middot; simulate_pass_brief.py &mdash; one call, before the scene</text>
+<g>
+  <rect class="nbox" x="170" y="66" width="460" height="30" rx="5"/>
+  <rect class="stripe" x="171" y="67" width="4" height="28"/>
+  <circle class="badge-circle" cx="192" cy="81.0" r="9"/>
+  <text class="badge-text" x="192" y="81.0">1</text>
+  <text class="ntitle" x="212" y="81.0"><tspan font-weight="600">pick_pair.py</tspan> &mdash; draws the pair</text>
+</g>
+<path class="flow-line" d="M400,96 L400,118" marker-end="url(#arrow)"/>
+<g>
+  <rect class="nbox" x="170" y="118" width="460" height="30" rx="5"/>
+  <rect class="stripe" x="171" y="119" width="4" height="28"/>
+  <circle class="badge-circle" cx="192" cy="133.0" r="9"/>
+  <text class="badge-text" x="192" y="133.0">2</text>
+  <text class="ntitle" x="212" y="133.0"><tspan font-weight="600">lead-override check</tspan> &mdash; does an expiring lead still apply</text>
+</g>
+<path class="flow-line" d="M400,148 L400,170" marker-end="url(#arrow)"/>
+<g>
+  <rect class="nbox" x="170" y="170" width="460" height="30" rx="5"/>
+  <rect class="stripe" x="171" y="171" width="4" height="28"/>
+  <circle class="badge-circle" cx="192" cy="185.0" r="9"/>
+  <text class="badge-text" x="192" y="185.0">3</text>
+  <text class="ntitle" x="212" y="185.0"><tspan font-weight="600">routine rolls</tspan> &mdash; which routines actually fire this pass</text>
+</g>
+<path class="flow-line" d="M400,200 L400,222" marker-end="url(#arrow)"/>
+<g>
+  <rect class="nbox" x="170" y="222" width="460" height="30" rx="5"/>
+  <circle class="badge-circle" cx="192" cy="237.0" r="9"/>
+  <text class="badge-text" x="192" y="237.0">4</text>
+  <text class="ntitle" x="212" y="237.0"><tspan font-weight="600">location resolution</tspan> &mdash; where the scene lands</text>
+</g>
+<path class="flow-line" d="M400,252 L400,274" marker-end="url(#arrow)"/>
+<g>
+  <rect class="nbox" x="170" y="274" width="460" height="30" rx="5"/>
+  <circle class="badge-circle" cx="192" cy="289.0" r="9"/>
+  <text class="badge-text" x="192" y="289.0">5</text>
+  <text class="ntitle" x="212" y="289.0"><tspan font-weight="600">archetype / texture lookup</tspan> &mdash; flavor for the scene brief</text>
+</g>
+<path class="flow-line" d="M400,304 L400,326" marker-end="url(#arrow)"/>
+<g>
+  <rect class="nbox" x="170" y="326" width="460" height="30" rx="5"/>
+  <circle class="badge-circle" cx="192" cy="341.0" r="9"/>
+  <text class="badge-text" x="192" y="341.0">6</text>
+  <text class="ntitle" x="212" y="341.0"><tspan font-weight="600">needs/provides check</tspan> &mdash; motivation match between the pair</text>
+</g>
+<path class="flow-line" d="M400,356 L400,378" marker-end="url(#arrow)"/>
+<g>
+  <rect class="nbox" x="170" y="378" width="460" height="30" rx="5"/>
+  <rect class="stripe" x="171" y="379" width="4" height="28"/>
+  <circle class="badge-circle" cx="192" cy="393.0" r="9"/>
+  <text class="badge-text" x="192" y="393.0">7</text>
+  <text class="ntitle" x="212" y="393.0"><tspan font-weight="600">contested roll</tspan> &mdash; does a rival try to hinder</text>
+</g>
+<path class="flow-line" d="M400,408 L400,430" marker-end="url(#arrow)"/>
+<g>
+  <rect class="nbox" x="170" y="430" width="460" height="30" rx="5"/>
+  <rect class="stripe" x="171" y="431" width="4" height="28"/>
+  <circle class="badge-circle" cx="192" cy="445.0" r="9"/>
+  <text class="badge-text" x="192" y="445.0">8</text>
+  <text class="ntitle" x="212" y="445.0"><tspan font-weight="600">arc primacy roll</tspan> &mdash; whose arc leads the scene</text>
+</g>
+<path class="flow-line" d="M400,460 L400,482" marker-end="url(#arrow)"/>
+<g>
+  <rect class="nbox" x="170" y="482" width="460" height="30" rx="5"/>
+  <circle class="badge-circle" cx="192" cy="497.0" r="9"/>
+  <text class="badge-text" x="192" y="497.0">9</text>
+  <text class="ntitle" x="212" y="497.0"><tspan font-weight="600">knowledge/criteria gate</tspan> &mdash; is this pair even eligible</text>
+</g>
+<path class="flow-line" d="M400,512 L400,534" marker-end="url(#arrow)"/>
+<g>
+  <rect class="nbox" x="170" y="534" width="460" height="30" rx="5"/>
+  <rect class="stripe" x="171" y="535" width="4" height="28"/>
+  <circle class="badge-circle" cx="192" cy="549.0" r="9"/>
+  <text class="badge-text" x="192" y="549.0">10</text>
+  <text class="ntitle" x="212" y="549.0"><tspan font-weight="600">arc-outcome roll</tspan> &mdash; advances or resolves the lead arc</text>
+</g>
+<path class="flow-line" d="M400,564 L400,586" marker-end="url(#arrow)"/>
+<g>
+  <rect class="nbox" x="170" y="586" width="460" height="30" rx="5"/>
+  <circle class="badge-circle" cx="192" cy="601.0" r="9"/>
+  <text class="badge-text" x="192" y="601.0">11</text>
+  <text class="ntitle" x="212" y="601.0"><tspan font-weight="600">tally vs. threshold</tspan> &mdash; reproduction-scene count check</text>
+</g>
+<path class="flow-line" d="M400,616 L400,638" marker-end="url(#arrow)"/>
+<g>
+  <rect class="nbox" x="170" y="638" width="460" height="30" rx="5"/>
+  <circle class="badge-circle" cx="192" cy="653.0" r="9"/>
+  <text class="badge-text" x="192" y="653.0">12</text>
+  <text class="ntitle" x="212" y="653.0"><tspan font-weight="600">partner tracking</tspan> &mdash; records who&#x27;s paired this pass</text>
+</g>
+<path class="flow-line" d="M400,668 L400,690" marker-end="url(#arrow)"/>
+<g>
+  <rect class="nbox" x="170" y="690" width="460" height="30" rx="5"/>
+  <rect class="stripe" x="171" y="691" width="4" height="28"/>
+  <circle class="badge-circle" cx="192" cy="705.0" r="9"/>
+  <text class="badge-text" x="192" y="705.0">13</text>
+  <text class="ntitle" x="212" y="705.0"><tspan font-weight="600">reproduction eligibility + roll</tspan> &mdash; does this pass produce a birth</text>
+</g>
+<rect class="section-frame roll" x="44" y="26" width="646" height="710" rx="10"/>
+<path class="flow-line" d="M400,736 L400,792" marker-end="url(#arrow)"/>
+<text class="conn-label" x="400" y="765.0" text-anchor="middle">writes <tspan class="mono">.simulate_pass_brief.json</tspan></text>
+<text class="conn-label" x="400" y="780.0" text-anchor="middle">flags which of the four slots below are open</text>
+<text class="phase-label judge" x="170" y="824">PHASE B &middot; one subagent dispatch</text>
+<rect class="nbox hub" x="170" y="842" width="460" height="30" rx="5"/>
+<text class="ntitle" x="400" y="857.0" text-anchor="middle">reads <tspan class="mono" font-weight="600">.simulate_pass_brief.json</tspan></text>
+<path class="flow-line" d="M400,872 L400,896" marker-end="url(#arrow)"/>
+<circle class="junction" cx="400" cy="896" r="3"/>
+<path class="flow-line" d="M400,896 L400,916" marker-end="url(#arrow)"/>
+<text class="cond-label" x="414" y="908">reproduction_slot open</text>
+<rect class="nbox gated" x="170" y="916" width="460" height="46" rx="6"/>
+<text class="ntitle" x="188" y="934"><tspan font-weight="600">Name the newborn</tspan></text>
+<text class="nsub" x="188" y="951">generate_offspring.py &mdash; blends both parents&rsquo; names, led by the dice-chosen side</text>
+<path class="flow-line" d="M400,962 L400,1006" marker-end="url(#arrow)"/>
+<circle class="junction" cx="400" cy="1006" r="3"/>
+<path class="corridor-line" d="M400,896 Q144,904 104,912 L104,990 Q144,998 400,1006" marker-end="url(#arrow)"/>
+<text class="skip-label" x="96" y="951.0" text-anchor="end">not open</text>
+<path class="flow-line" d="M400,1006 L400,1026" marker-end="url(#arrow)"/>
+<text class="cond-label" x="414" y="1018">arc_authoring_needed open</text>
+<rect class="nbox gated" x="170" y="1026" width="460" height="46" rx="6"/>
+<text class="ntitle" x="188" y="1044"><tspan font-weight="600">Author the arc</tspan></text>
+<text class="nsub" x="188" y="1061">write_arc.py &mdash; scoped to the character&rsquo;s own horizon band</text>
+<path class="flow-line" d="M400,1072 L400,1116" marker-end="url(#arrow)"/>
+<circle class="junction" cx="400" cy="1116" r="3"/>
+<path class="corridor-line" d="M400,1006 Q144,1014 104,1022 L104,1100 Q144,1108 400,1116" marker-end="url(#arrow)"/>
+<text class="skip-label" x="96" y="1061.0" text-anchor="end">not open</text>
+<path class="flow-line" d="M400,1116 L400,1136" marker-end="url(#arrow)"/>
+<text class="cond-label" x="414" y="1128">contested_hinder_slot open (optional even then)</text>
+<rect class="nbox gated" x="170" y="1136" width="460" height="46" rx="6"/>
+<text class="ntitle" x="188" y="1154"><tspan font-weight="600">Maybe name a rival</tspan></text>
+<text class="nsub" x="188" y="1171">apply_contested_lead.py &mdash; only if the scene points at someone who already has a file</text>
+<path class="flow-line" d="M400,1182 L400,1226" marker-end="url(#arrow)"/>
+<circle class="junction" cx="400" cy="1226" r="3"/>
+<path class="corridor-line" d="M400,1116 Q144,1124 104,1132 L104,1210 Q144,1218 400,1226" marker-end="url(#arrow)"/>
+<text class="skip-label" x="96" y="1171.0" text-anchor="end">not open</text>
+<path class="flow-line" d="M400,1226 L400,1246" marker-end="url(#arrow)"/>
+<text class="cond-label always" x="414" y="1238">always</text>
+<rect class="nbox always" x="170" y="1246" width="460" height="50" rx="6"/>
+<text class="ntitle" x="188" y="1264"><tspan font-weight="600">Write the scene</tspan></text>
+<text class="nsub" x="188" y="1281">/enact Steps 3b, 5, 5b, 6 &mdash; dialogue, hearsay mutation, shock, drift</text>
+<path class="flow-line" d="M400,1296 L400,1320" marker-end="url(#arrow)"/>
+<rect class="nbox hub" x="170" y="1320" width="460" height="30" rx="5"/>
+<text class="ntitle" x="400" y="1335.0" text-anchor="middle">returns a short summary to the orchestrator</text>
+<rect class="section-frame judge" x="44" y="802" width="646" height="564" rx="10"/>
+<path class="flow-line" d="M400,1366 L400,1406" marker-end="url(#arrow)"/>
+<text class="conn-label" x="400" y="1395.0" text-anchor="middle">reads the brief back for who was in the scene &mdash; nothing to retype</text>
+<text class="phase-label roll" x="170" y="1438">PHASE C &middot; simulate_pass_resolve.py &mdash; one call, after the scene</text>
+<g>
+  <rect class="nbox" x="170" y="1456" width="460" height="30" rx="5"/>
+  <circle class="badge-circle" cx="192" cy="1471.0" r="9"/>
+  <text class="badge-text" x="192" y="1471.0">1</text>
+  <text class="ntitle" x="212" y="1471.0"><tspan font-weight="600">horizon.py</tspan> &mdash; per participant</text>
+</g>
+<path class="flow-line" d="M400,1486 L400,1508" marker-end="url(#arrow)"/>
+<g>
+  <rect class="nbox" x="170" y="1508" width="460" height="30" rx="5"/>
+  <circle class="badge-circle" cx="192" cy="1523.0" r="9"/>
+  <text class="badge-text" x="192" y="1523.0">2</text>
+  <text class="ntitle" x="212" y="1523.0"><tspan font-weight="600">record_death.py</tspan> &mdash; if either participant ended</text>
+</g>
+<path class="flow-line" d="M400,1538 L400,1560" marker-end="url(#arrow)"/>
+<g>
+  <rect class="nbox" x="170" y="1560" width="460" height="30" rx="5"/>
+  <rect class="stripe" x="171" y="1561" width="4" height="28"/>
+  <circle class="badge-circle" cx="192" cy="1575.0" r="9"/>
+  <text class="badge-text" x="192" y="1575.0">3</text>
+  <text class="ntitle" x="212" y="1575.0"><tspan font-weight="600">death-legacy roll</tspan> &mdash; if either died early</text>
+</g>
+<path class="flow-line" d="M400,1590 L400,1612" marker-end="url(#arrow)"/>
+<g>
+  <rect class="nbox" x="170" y="1612" width="460" height="30" rx="5"/>
+  <circle class="badge-circle" cx="192" cy="1627.0" r="9"/>
+  <text class="badge-text" x="192" y="1627.0">4</text>
+  <text class="ntitle" x="212" y="1627.0"><tspan font-weight="600">safety net</tspan> &mdash; reverts any leaked mid-pass state</text>
+</g>
+<path class="flow-line" d="M400,1642 L400,1664" marker-end="url(#arrow)"/>
+<g>
+  <rect class="nbox" x="170" y="1664" width="460" height="30" rx="5"/>
+  <circle class="badge-circle" cx="192" cy="1679.0" r="9"/>
+  <text class="badge-text" x="192" y="1679.0">5</text>
+  <text class="ntitle" x="212" y="1679.0"><tspan font-weight="600">log the pass</tspan> &mdash; advances the pool</text>
+</g>
+<path class="flow-line" d="M400,1694 L400,1716" marker-end="url(#arrow)"/>
+<g>
+  <rect class="nbox" x="170" y="1716" width="460" height="30" rx="5"/>
+  <circle class="badge-circle" cx="192" cy="1731.0" r="9"/>
+  <text class="badge-text" x="192" y="1731.0">6</text>
+  <text class="ntitle" x="212" y="1731.0"><tspan font-weight="600">build_source_index.py</tspan> &mdash; batch end only</text>
+</g>
+<rect class="section-frame roll" x="44" y="1416" width="646" height="346" rx="10"/>
+<path class="loop-line" d="M698,1768 Q710,1768 710,1728 L710,66 Q710,26 698,26" marker-end="url(#arrow-loop)"/>
+<text class="loop-label" x="724" y="897.0" transform="rotate(90 724 897.0)" text-anchor="middle">&#8635; next pass &mdash; while the living pool holds &ge; 2</text>
+</svg>
+    <figcaption style="margin-top:16px; font-size:12.5px; color:var(--ink-soft); text-align:center; max-width:66ch; margin-left:auto; margin-right:auto;">
+      One pass, start to finish &mdash; Phase A&rsquo;s thirteen mechanical steps, Phase B&rsquo;s four judgment
+      slots (three optional, routed around when closed), Phase C&rsquo;s six closing steps, then back to
+      Phase A. Teal-edged items are genuine dice rolls; nothing else in the chain is left to chance,
+      and nothing outside the four amber slots is left to a model&rsquo;s guess.
+    </figcaption>
+  </figure>
+
+  <div class="closing">
+    <h2>A few things the diagram compresses</h2>
+    <p>Base mode (no <code>routines</code> on either participant) still skips this whole chain for
+      a plain four-step loop: draw a pair, dispatch a scene, log it, check for deaths. It isn't
+      drawn here since it doesn't branch, and the rewrite didn't touch it.</p>
+    <p>Every number this chain rolls against &mdash; the 5-scene reproduction threshold, the 15%
+      contested odds, the 8-pass lead expiry &mdash; still lives in <code>_lore/tuning.json</code>,
+      now read once, inside <code>simulate_pass_brief.py</code> itself, rather than by each of the
+      old separate scripts.</p>
+    <p>An optional pregeneration step (Step&nbsp;2h, only if asked for) can run
+      <code>-generate</code> mode's own mechanical loop inline before Phase A ever starts, to grow
+      the starting cast first &mdash; not drawn here since it's a separate, opt-in mode with its own
+      shape.</p>
+  </div>
+
+</div>
