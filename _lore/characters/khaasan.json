@@ -126,21 +126,21 @@
   "routines": [
     {
       "location": "Görff",
-      "archetype": "waystation",
+      "context": "waystation",
       "weight": 55,
-      "specialization": "the departure post where he keeps track of who's arrived and who hasn't"
+      "routine_actions": "the departure post where he keeps track of who's arrived and who hasn't"
     },
     {
       "location": "Khan Ice",
-      "archetype": "waystation",
+      "context": "waystation",
       "weight": 30,
-      "specialization": "his uncle's house, the one fixed point he circles back to"
+      "routine_actions": "his uncle's house, the one fixed point he circles back to"
     },
     {
       "location": "Salthos Cruzados",
-      "archetype": "waystation",
+      "context": "waystation",
       "weight": 15,
-      "specialization": "a stop on the long route where Khaoe once waited for him"
+      "routine_actions": "a stop on the long route where Khaoe once waited for him"
     }
   ],
   "arc": {
@@ -152,7 +152,7 @@
       "contacts",
       "news"
     ],
-    "archetype": "waystation",
+    "context": "waystation",
     "resolution": "ongoing",
     "history": []
   }

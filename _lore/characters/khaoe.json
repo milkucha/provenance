@@ -123,15 +123,15 @@
   "routines": [
     {
       "location": "Görff",
-      "archetype": "workshop",
+      "context": "workshop",
       "weight": 70,
-      "specialization": "oversees Collective building work, keeps crews to the standard that it has to stand"
+      "routine_actions": "oversees Collective building work, keeps crews to the standard that it has to stand"
     },
     {
       "location": "Feria del Milenio",
-      "archetype": "waystation",
+      "context": "waystation",
       "weight": 30,
-      "specialization": "checks in on cousins and old friends passing through the Feria"
+      "routine_actions": "checks in on cousins and old friends passing through the Feria"
     }
   ],
   "arc": {
@@ -142,7 +142,7 @@
       "materials",
       "expertise"
     ],
-    "archetype": "workshop",
+    "context": "workshop",
     "resolution": "ongoing",
     "history": []
   }

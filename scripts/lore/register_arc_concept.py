@@ -67,7 +67,7 @@ def main() -> None:
         return
 
     needs = ", ".join(arc.get("needs", [])) or "none on record"
-    archetype = arc.get("archetype", "unspecified")
+    context = arc.get("context", "unspecified")
     resolution = arc.get("resolution", "unspecified")
     premise = arc.get("premise", "").strip()
     name = character.get("name", key)
@@ -78,7 +78,7 @@ def main() -> None:
         # Legacy fallback for an arc written before `premise` existed - the old boilerplate,
         # which never actually described what the project concretely is. See TODO.md.
         description = (
-            f"{name}'s /simulate-authored arc project (archetype: {archetype}; needs: {needs}). "
+            f"{name}'s /simulate-authored arc project (context: {context}; needs: {needs}). "
             f"Resolution as of this record: {resolution}. Registered from the simulation's own "
             f"arc-tracking tag at authoring time - see the character's own arc.history for the "
             f"full progression."

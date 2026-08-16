@@ -69,21 +69,21 @@
   "routines": [
     {
       "location": "Feria del Milenio",
-      "archetype": "waystation",
+      "context": "waystation",
       "weight": 30,
-      "specialization": "minds the airplane hangar exhibit, first to hand travelers a route they haven't flown yet"
+      "routine_actions": "minds the airplane hangar exhibit, first to hand travelers a route they haven't flown yet"
     },
     {
       "location": "Terfila",
-      "archetype": "market",
+      "context": "market",
       "weight": 35,
-      "specialization": "flies freight into Terfila - tools, mail, the odd fragile shipment nobody else will carry"
+      "routine_actions": "flies freight into Terfila - tools, mail, the odd fragile shipment nobody else will carry"
     },
     {
       "location": "Khol Moshin",
-      "archetype": "waystation",
+      "context": "waystation",
       "weight": 35,
-      "specialization": "stationed here between M7 runs, swaps corridor gossip with whoever's grounded"
+      "routine_actions": "stationed here between M7 runs, swaps corridor gossip with whoever's grounded"
     }
   ]
 }

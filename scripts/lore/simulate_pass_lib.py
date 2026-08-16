@@ -5,8 +5,8 @@ interactive/showcase-trail mode's own pre-scene and post-scene drivers (simulate
 simulate_pass_resolve.py) can reuse the exact same tested sibling-script wrappers instead of a
 second, subtly-different reimplementation. Not a standalone script - import from a sibling driver.
 
-Step 5's archetype lookup is folded directly into `resolve_location()` here (design debrief
-2026-08-13): a plain dict lookup in _lore/archetypes.json never needed its own pipeline step, only a
+Step 5's context lookup is folded directly into `resolve_location()` here (design debrief
+2026-08-13): a plain dict lookup in _lore/contexts.json never needed its own pipeline step, only a
 caller who already has both the resolved location and the home-frame character's routines - which
 this function has by construction, since it's the one that just resolved them.
 
@@ -37,7 +37,7 @@ CHILD_COOLDOWN_PASSES = T["child_cooldown_passes"]
 LEAD_EXPIRY_PASSES = T["lead_expiry_passes"]
 ARC_RESOLUTION_THRESHOLD = T["arc_resolution_threshold"]
 
-ARCHETYPES = json.loads((ROOT / "_lore" / "archetypes.json").read_text(encoding="utf-8"))
+CONTEXTS = json.loads((ROOT / "_lore" / "contexts.json").read_text(encoding="utf-8"))
 
 
 # --------------------------------------------------------------------------------------------
@@ -103,26 +103,26 @@ def roll_routine(routines: list) -> str:
     return kv(call("roll_routine.py", args))["routine"]
 
 
-def resolve_archetype_for_location(character: dict, location: str) -> str:
+def resolve_context_for_location(character: dict, location: str) -> str:
     for r in character.get("routines", []):
         if r["location"] == location:
-            return r["archetype"]
+            return r["context"]
     raise RuntimeError(f"'{character.get('name')}' has no routine at location '{location}'.")
 
 
 def resolve_location(p1: str, p1_routine: str, p1_char: dict, p2: str, p2_routine: str, p2_char: dict) -> dict:
-    """Folds the old separate steps 3/4/5 (routine resolution -> location resolution -> archetype
+    """Folds the old separate steps 3/4/5 (routine resolution -> location resolution -> context
     lookup) into one call: resolves mode/location/home_frame/traveler via resolve_location.py, then
     looks up whichever routine matched that location on the home-frame character's own file for its
-    archetype, texture, and provides tags - a plain dict fetch, never worth a script of its own."""
+    context, texture, and provides tags - a plain dict fetch, never worth a script of its own."""
     out = kv(call("resolve_location.py", [
         "--p1", p1, "--p1-routine", p1_routine, "--p2", p2, "--p2-routine", p2_routine,
     ]))
     home_frame_char = p1_char if out["home_frame"] == p1 else p2_char
-    archetype = resolve_archetype_for_location(home_frame_char, out["location"])
-    out["archetype"] = archetype
-    out["texture"] = ARCHETYPES[archetype]["texture"]
-    out["provides"] = ARCHETYPES[archetype]["provides"]
+    context = resolve_context_for_location(home_frame_char, out["location"])
+    out["context"] = context
+    out["texture"] = CONTEXTS[context]["texture"]
+    out["provides"] = CONTEXTS[context]["provides"]
     return out
 
 

@@ -1615,18 +1615,23 @@ it's what the character actually *does* there, i.e. the routine's own action, no
 names invert the intuitive reading (an "archetype" sounds like it describes the character; a
 "specialization" sounds like a skill/role label, not a scene of concrete action).
 
-- [ ] **Rename `archetype` -> `context`, `specialization` -> `routine_actions`** (or close variants,
-      user's call on exact wording) throughout: `_lore/archetypes.json` itself (filename and its
-      `_comment`), `/character` SKILL.md Step 8, `/simulate` SKILL.md (Step 3 extended mode's
-      archetype/texture lookup language throughout), and every script that references the field by
-      name - `write_arc.py` (`--archetype` CLI flag), `simulate_pass_lib.py`
-      (`resolve_archetype_for_location`), `check_needs_provides.py`'s docstring ("destination
-      archetype's provides tags"), `roll_routine.py` if it references the field anywhere. **Also a real
-      data migration, not just a rename**: every already-authored character file with a `routines[]`
-      array or an `arc` (the 6 pilot characters plus Zarkatraz once this session's work lands) has
-      `archetype`/`specialization` keys literally in their JSON right now - a field rename needs a
-      pass over all of them, not just the schema/docs, or old files silently stop matching what the
-      (renamed) code expects.
+- [x] **Rename `archetype` -> `context`, `specialization` -> `routine_actions`, done 2026-08-16.**
+      `_lore/archetypes.json` renamed to `_lore/contexts.json` (old file deleted, content preserved
+      plus a note on the rename); `/character` SKILL.md Step 8 and `/simulate` SKILL.md updated
+      throughout; every script updated (`write_arc.py`'s `--context` flag, `simulate_pass_lib.py`'s
+      `resolve_context_for_location`/`CONTEXTS`, `check_needs_provides.py`,
+      `simulate_generate_population.py`, `simulate_pass_brief.py`, `simulate_pass_resolve.py`,
+      `apply_language_layer.py`, `register_arc_concept.py`, `roll_death_legacy.py`,
+      `generate_offspring.py`, `diagrams/gen_extended_mode_pass.py` + its generated
+      `extended-mode-pass.html`); all 13 existing character files' `routines[]`/`arc` keys migrated
+      (mechanical script, verified against JSON validity + diacritics after). **Two real bugs caught
+      while doing this, not part of the original ask**: `simulate_generate_population.py` had its own
+      *second*, separate death-legacy arc-copy implementation (parallel to
+      `simulate_pass_resolve.py`'s) that was also missing `premise` entirely - fixed in both places.
+      Every touched `.py` file passed a syntax check, a clean import, and (for `write_arc.py`) a real
+      end-to-end run against Zarkatraz. `LAB_REPORT.md`'s historical dated entries deliberately left
+      unrenamed - it's a run log, not living documentation; those entries describe the mechanism as it
+      was named at the time, same discipline as not rewriting history elsewhere in this file.
 
 ## User design correction: `arc` should be authored at character creation, same as `routines` (2026-08-16)
 

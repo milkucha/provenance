@@ -13,7 +13,7 @@ it's true.
 A legacy arc isn't a fresh derivation for the recipient - the about/needs tags carry over from the
 deceased's own arc directly (same mechanical copy the transform mechanism already uses, see
 check_arc_alignment.py's matched_about output), and the recipient's own `resolution` resets to
-"ongoing" the same way a transform does. Their `archetype`/routine stays their own; only the goal
+"ongoing" the same way a transform does. Their `context`/routine stays their own; only the goal
 moves.
 
 Default odds come from _lore/tuning.json (odds_percent.death_legacy) - override with --odds only

@@ -60,15 +60,15 @@ def main() -> None:
                 if deceased_arc:
                     recipient_char = lib.load_char(recipient)
                     prev_arc = recipient_char.get("arc") or {}
-                    archetype = prev_arc.get("archetype")
-                    if not archetype:
+                    context = prev_arc.get("context")
+                    if not context:
                         routines = recipient_char.get("routines", [])
                         if routines:
-                            archetype = max(routines, key=lambda r: r.get("weight", 0))["archetype"]
+                            context = max(routines, key=lambda r: r.get("weight", 0))["context"]
                     recipient_char["arc"] = {
                         "about": list(deceased_arc.get("about", [])),
                         "needs": list(deceased_arc.get("needs", [])),
-                        "archetype": archetype or deceased_arc.get("archetype"),
+                        "context": context or deceased_arc.get("context"),
                         "premise": deceased_arc.get("premise", ""),
                         "resolution": "ongoing",
                         "history": [],

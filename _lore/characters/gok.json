@@ -178,21 +178,21 @@
   "routines": [
     {
       "location": "Khan Ice",
-      "archetype": "archive",
+      "context": "archive",
       "weight": 40,
-      "specialization": "keeps Hotel Kholi's own record straight against whoever would rather it be forgotten"
+      "routine_actions": "keeps Hotel Kholi's own record straight against whoever would rather it be forgotten"
     },
     {
       "location": "Feria del Milenio",
-      "archetype": "archive",
+      "context": "archive",
       "weight": 35,
-      "specialization": "keeps the Era del Confinamiento's own alcove honest, one documented fact at a time"
+      "routine_actions": "keeps the Era del Confinamiento's own alcove honest, one documented fact at a time"
     },
     {
       "location": "Catraniz",
-      "archetype": "waystation",
+      "context": "waystation",
       "weight": 25,
-      "specialization": "checks in on family and old ties passing through, keeps half an ear on what's said there"
+      "routine_actions": "checks in on family and old ties passing through, keeps half an ear on what's said there"
     }
   ]
 }

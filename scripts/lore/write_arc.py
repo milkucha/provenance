@@ -3,7 +3,7 @@ Write a freshly-authored (or re-authored) arc onto a character's own file, and r
 tag in the same call - folds what used to be a hand-edited JSON write plus a separate
 register_arc_concept.py invocation into one mechanical step (design debrief 2026-08-13).
 
-This script makes NO judgement calls. `--about`/`--needs`/`--archetype`/`--premise` are content only a
+This script makes NO judgement calls. `--about`/`--needs`/`--context`/`--premise` are content only a
 model can compose - a name-blend-shaped problem, not a dice-roll-shaped one, same reasoning
 generate_offspring.py's own docstring gives for why it can't script the child's name. What this script
 owns is getting that already-decided content into the file correctly (resolution always starts
@@ -29,7 +29,7 @@ encodings.json via whatever it registered, not on the character file itself).
 
 Usage:
     py scripts/lore/write_arc.py khaoe --about "concept: khaoe_banco_colectivo" --about "location: terfila" \\
-        --needs "materials" --needs "contacts" --archetype market \\
+        --needs "materials" --needs "contacts" --context market \\
         --premise "Khaoe wants the Collective hall roofed before the next rains - real timber, real crews, a real finish date."
 """
 
@@ -49,7 +49,7 @@ def main() -> None:
     parser.add_argument("npc_key", help="Character key whose arc gets (re)written")
     parser.add_argument("--about", action="append", default=[], required=True, help="Arc.about tag(s), repeatable - at least one 'concept: <id>' tag for a genuinely new project")
     parser.add_argument("--needs", action="append", default=[], required=True, help="Arc.needs tag(s), repeatable")
-    parser.add_argument("--archetype", required=True, help="Must be a key already in _lore/archetypes.json, ordinarily matching one of this character's own routines[].archetype")
+    parser.add_argument("--context", required=True, help="Must be a key already in _lore/contexts.json, ordinarily matching one of this character's own routines[].context")
     parser.add_argument("--premise", required=True, help="The arc's concrete content, one-or-few-sentence prose - see /character Step 8 for the authoring discipline (resolution-moment test, grounding, claim attribution)")
     args = parser.parse_args()
 
@@ -60,14 +60,14 @@ def main() -> None:
     with open(char_path, encoding="utf-8") as f:
         character = json.load(f)
 
-    archetypes = json.loads((ROOT / "_lore" / "archetypes.json").read_text(encoding="utf-8"))
-    if args.archetype not in archetypes:
-        raise SystemExit(f"'{args.archetype}' is not a key in _lore/archetypes.json - known: {sorted(archetypes)}")
+    contexts = json.loads((ROOT / "_lore" / "contexts.json").read_text(encoding="utf-8"))
+    if args.context not in contexts:
+        raise SystemExit(f"'{args.context}' is not a key in _lore/contexts.json - known: {sorted(contexts)}")
 
     character["arc"] = {
         "about": list(args.about),
         "needs": list(args.needs),
-        "archetype": args.archetype,
+        "context": args.context,
         "premise": args.premise,
         "resolution": "ongoing",
         "history": [],
@@ -76,7 +76,7 @@ def main() -> None:
         json.dump(character, f, indent=2, ensure_ascii=False)
         f.write("\n")
 
-    print(f"{key}: arc written (about: {args.about}, needs: {args.needs}, archetype: {args.archetype})")
+    print(f"{key}: arc written (about: {args.about}, needs: {args.needs}, context: {args.context})")
     print(f"{key}: premise: {args.premise}")
 
     result = subprocess.run(

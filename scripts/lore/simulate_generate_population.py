@@ -4,7 +4,7 @@ subagent per pass - built for `/simulate -generate`, whose whole point is produc
 multi-generation starting population quickly rather than a showcase trail of prose. Every
 mechanical sub-step of the interactive skill's Step 3 (.claude/skills/simulate/SKILL.md) that's
 already backed by a script or plain arithmetic runs here exactly as documented there: pairing,
-lead-followup, routine/location rolls, archetype lookup, needs/provides, arc primacy/gate/contested/
+lead-followup, routine/location rolls, context lookup, needs/provides, arc primacy/gate/contested/
 outcome, tally+threshold (including transform), partner tracking, reproduction eligibility+roll,
 offspring generation, life.lived + death + death-legacy.
 
@@ -15,7 +15,8 @@ than assumed:
    this mode's whole reason to exist. Criteria stay exactly as inherited/authored; they get tested
    later in real /enact or interactive /simulate scenes.
 2. The two things that genuinely need a model's judgment - a child's blended name, and a freshly
-   authored arc's about/needs/archetype/specialization content - are never invented here. Instead
+   authored arc's about/needs/context/premise content (and a rewritten routine's routine_actions
+   line for a child) - are never invented here. Instead
    this script writes a placeholder identity immediately (so the child can exist and participate in
    later passes: reproduce, be visited, die) and queues the real content into `_pending_language.json`
    at the worktree root for a SINGLE batched subagent pass at the very end of the whole run (see
@@ -74,7 +75,7 @@ PARENT_COOLDOWN_PASSES = lib.PARENT_COOLDOWN_PASSES
 CHILD_COOLDOWN_PASSES = lib.CHILD_COOLDOWN_PASSES
 LEAD_EXPIRY_PASSES = lib.LEAD_EXPIRY_PASSES
 ARC_RESOLUTION_THRESHOLD = lib.ARC_RESOLUTION_THRESHOLD
-ARCHETYPES = lib.ARCHETYPES
+CONTEXTS = lib.CONTEXTS
 
 load_char = lib.load_char
 save_char = lib.save_char
@@ -84,7 +85,7 @@ notified_keys = lib.notified_keys
 pick_pair = lib.pick_pair
 roll_lead_followup = lib.roll_lead_followup
 roll_routine = lib.roll_routine
-resolve_archetype_for_location = lib.resolve_archetype_for_location
+resolve_context_for_location = lib.resolve_context_for_location
 check_needs_provides = lib.check_needs_provides
 roll_arc_primacy = lib.roll_arc_primacy
 check_arc_alignment = lib.check_arc_alignment
@@ -170,14 +171,14 @@ def run_pass(state: State, pass_number: int) -> str:
                 forced_visit = True
                 notes.append(f"{p1} followed a lead to {p2}")
 
-    # Step 3/4/5 - routine, location, and archetype+texture, folded into one call
+    # Step 3/4/5 - routine, location, and context+texture, folded into one call
     p2_routine = roll_routine(p2_char["routines"])
     if forced_visit:
-        archetype = resolve_archetype_for_location(p2_char, p2_routine)
+        context = resolve_context_for_location(p2_char, p2_routine)
         loc = {
             "mode": "visit", "location": p2_routine, "home_frame": p2, "traveler": p1,
-            "archetype": archetype, "texture": ARCHETYPES[archetype]["texture"],
-            "provides": ARCHETYPES[archetype]["provides"],
+            "context": context, "texture": CONTEXTS[context]["texture"],
+            "provides": CONTEXTS[context]["provides"],
         }
     else:
         p1_routine = roll_routine(p1_char["routines"])
@@ -185,7 +186,7 @@ def run_pass(state: State, pass_number: int) -> str:
 
     mode, location, home_frame = loc["mode"], loc["location"], loc["home_frame"]
     traveler = loc["traveler"] if loc["traveler"] != "none" else None
-    archetype, provides = loc["archetype"], loc["provides"]
+    context, provides = loc["context"], loc["provides"]
 
     # Step 6 - needs/provides (visit only, traveler must have an active arc with needs)
     motivated, contested = False, False
@@ -295,15 +296,16 @@ def run_pass(state: State, pass_number: int) -> str:
                     if deceased_arc:
                         recipient_char = load_char(recipient)
                         prev_arc = recipient_char.get("arc") or {}
-                        archetype_ = prev_arc.get("archetype")
-                        if not archetype_:
+                        context_ = prev_arc.get("context")
+                        if not context_:
                             routines = recipient_char.get("routines", [])
                             if routines:
-                                archetype_ = max(routines, key=lambda r: r.get("weight", 0))["archetype"]
+                                context_ = max(routines, key=lambda r: r.get("weight", 0))["context"]
                         recipient_char["arc"] = {
                             "about": list(deceased_arc.get("about", [])),
                             "needs": list(deceased_arc.get("needs", [])),
-                            "archetype": archetype_ or deceased_arc.get("archetype"),
+                            "context": context_ or deceased_arc.get("context"),
+                            "premise": deceased_arc.get("premise", ""),
                             "resolution": "ongoing",
                             "history": [],
                         }

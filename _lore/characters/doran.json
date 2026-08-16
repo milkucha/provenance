@@ -120,15 +120,15 @@
   "routines": [
     {
       "location": "Feria del Milenio",
-      "archetype": "archive",
+      "context": "archive",
       "weight": 70,
-      "specialization": "tends the Plaza de las Culturas' map table, filling gaps as travelers report them"
+      "routine_actions": "tends the Plaza de las Culturas' map table, filling gaps as travelers report them"
     },
     {
       "location": "Salthos Cruzados",
-      "archetype": "market",
+      "context": "market",
       "weight": 30,
-      "specialization": "checks the harbor market for traders who've been somewhere his map hasn't"
+      "routine_actions": "checks the harbor market for traders who've been somewhere his map hasn't"
     }
   ],
   "arc": {
@@ -139,7 +139,7 @@
       "news",
       "records"
     ],
-    "archetype": "archive",
+    "context": "archive",
     "resolution": "ongoing",
     "history": []
   }

@@ -150,7 +150,7 @@ the simulation/evaluation tooling described next.
     for inspection and is never merged back automatically. Lore-only, same as `/enact`. **Extended
     mode** (Step 3) kicks in automatically once a participant's character file has a non-empty
     `routines` array: rolls a routine/location for each pass, tracks each character's own `arc`
-    (mechanical primacy/gate/outcome rolls against `_lore/archetypes.json`, tallied toward
+    (mechanical primacy/gate/outcome rolls against `_lore/contexts.json`, tallied toward
     advance/stall/reverse/transform/resolve), and — beyond `/enact`'s own hearsay/criterion/death
     machinery — adds reproduction (`roll_reproduction.py`/`generate_offspring.py`, a new character
     file with inherited knowledge and a birth tale) and death legacy (an ongoing arc transferring to

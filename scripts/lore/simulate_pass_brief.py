@@ -14,7 +14,7 @@ fill - nothing else in this file's output is the subagent's to decide:
     without an arc already on file (as of 2026-08-16, `/character` Step 8 authors `arc` at creation
     time by default): their first arc, or a re-authored one after a failure or after completing the
     prior one (`reauthor_failed`/`reauthor_complete` - completing an arc isn't a reason to stop
-    having one). Content (about/needs/archetype/premise) is composed by the subagent, then written
+    having one). Content (about/needs/context/premise) is composed by the subagent, then written
     with write_arc.py (which also registers the concept in the same call).
   - `contested_hinder_slot` - only present on a contested visit that resolved "hinder" homeward. The
     subagent may dramatize this against a SPECIFIC existing rival (if one plausibly fits and already
@@ -76,14 +76,14 @@ def run_pre_scene(pool: list, pass_number: int) -> dict:
                 forced_visit = True
                 notes.append(f"{p1} followed a lead to {p2}")
 
-    # Steps 3/4/5 - routine, location, and archetype+texture, folded into one call
+    # Steps 3/4/5 - routine, location, and context+texture, folded into one call
     p2_routine = lib.roll_routine(p2_char["routines"])
     if forced_visit:
-        archetype = lib.resolve_archetype_for_location(p2_char, p2_routine)
+        context = lib.resolve_context_for_location(p2_char, p2_routine)
         loc = {
             "mode": "visit", "location": p2_routine, "home_frame": p2, "traveler": p1,
-            "archetype": archetype, "texture": lib.ARCHETYPES[archetype]["texture"],
-            "provides": lib.ARCHETYPES[archetype]["provides"],
+            "context": context, "texture": lib.CONTEXTS[context]["texture"],
+            "provides": lib.CONTEXTS[context]["provides"],
         }
     else:
         p1_routine = lib.roll_routine(p1_char["routines"])
@@ -91,7 +91,7 @@ def run_pre_scene(pool: list, pass_number: int) -> dict:
 
     mode, location, home_frame = loc["mode"], loc["location"], loc["home_frame"]
     traveler = loc["traveler"] if loc["traveler"] != "none" else None
-    archetype, texture, provides = loc["archetype"], loc["texture"], loc["provides"]
+    context, texture, provides = loc["context"], loc["texture"], loc["provides"]
 
     # Step 6 - needs/provides (visit only, traveler must have an active arc with needs)
     motivated, matched_need, matched_provide = False, None, None
@@ -206,7 +206,7 @@ def run_pre_scene(pool: list, pass_number: int) -> dict:
         "participant_1": p1, "participant_2": p2,
         "forced_visit": forced_visit,
         "mode": mode, "location": location, "home_frame": home_frame, "traveler": traveler,
-        "archetype": archetype, "texture": texture,
+        "context": context, "texture": texture,
         "motivated": motivated, "matched_need": matched_need, "matched_provide": matched_provide,
         "contested": contested,
         "arc": {
@@ -237,7 +237,7 @@ def main() -> None:
     print(f"pass {brief['pass']}: {brief['participant_1']} x {brief['participant_2']} ({brief['mode']} at {brief['location']})")
     if brief["forced_visit"]:
         print(f"  forced visit (lead followup): {brief['participant_1']} sought out {brief['participant_2']}")
-    print(f"  archetype: {brief['archetype']}  |  motivated: {brief['motivated']}" + (f" ({brief['matched_need']} <-> {brief['matched_provide']})" if brief["motivated"] else ""))
+    print(f"  context: {brief['context']}  |  motivated: {brief['motivated']}" + (f" ({brief['matched_need']} <-> {brief['matched_provide']})" if brief["motivated"] else ""))
     print(f"  contested: {brief['contested']}")
     arc = brief["arc"]
     print(f"  arc: primacy={arc['primacy_winner']}  gate={arc['gate']}  inclined={arc['inclined']}  outcome={arc['outcome']}  tally={arc['tally_result']}")
@@ -247,7 +247,7 @@ def main() -> None:
     print(f"brief written: {BRIEF_PATH}")
     if brief["arc_authoring_needed"]:
         a = brief["arc_authoring_needed"]
-        print(f"JUDGMENT NEEDED - arc authoring: {a['character_slug']} ({a['reason']}, band={a['band']}) - compose about/needs/archetype/premise, then run write_arc.py")
+        print(f"JUDGMENT NEEDED - arc authoring: {a['character_slug']} ({a['reason']}, band={a['band']}) - compose about/needs/context/premise, then run write_arc.py")
     if brief["contested_hinder_slot"]:
         c = brief["contested_hinder_slot"]
         print(f"JUDGMENT SLOT - contested hinder: may name an existing rival for {c['traveler']} (supplier: {c['supplier']}, provide: {c['matched_provide']}) - if named, run apply_contested_lead.py; otherwise leave ambient")

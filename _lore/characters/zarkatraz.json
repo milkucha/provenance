@@ -146,21 +146,21 @@
   "routines": [
     {
       "location": "Balahm",
-      "archetype": "market",
+      "context": "market",
       "weight": 30,
-      "specialization": "trades precious stones and souvenirs from Balahm; keeps a small stall in the market, trading new elements he brings from Salthos Cruzados and which he gets from people he trades with"
+      "routine_actions": "trades precious stones and souvenirs from Balahm; keeps a small stall in the market, trading new elements he brings from Salthos Cruzados and which he gets from people he trades with"
     },
     {
       "location": "Salthos Cruzados",
-      "archetype": "market",
+      "context": "market",
       "weight": 30,
-      "specialization": "stands in the market with a little improvised stall, just a rug with a bunch of stones in it; says the stones are taken from the temples in Balahm, but not stolen, only the ones that have fallen off - though he actually sources them from different places, a secret he only shares with people he deeply trusts"
+      "routine_actions": "stands in the market with a little improvised stall, just a rug with a bunch of stones in it; says the stones are taken from the temples in Balahm, but not stolen, only the ones that have fallen off - though he actually sources them from different places, a secret he only shares with people he deeply trusts"
     },
     {
       "location": "Puente Continental",
-      "archetype": "waystation",
+      "context": "waystation",
       "weight": 40,
-      "specialization": "sits there with his camel resting, likes to strike conversation with passers by to share news"
+      "routine_actions": "sits there with his camel resting, likes to strike conversation with passers by to share news"
     }
   ],
   "arc": {
@@ -173,7 +173,7 @@
       "contacts",
       "materials"
     ],
-    "archetype": "market",
+    "context": "market",
     "premise": "Zarkatraz is chasing a single real piece of Órikal - the barely-understood mineral said to hold an old power of manifestation. Traders passing through Puente Continental have taken to calling it 'la Lágrima de Balahm' (the Balahm Teardrop); he's heard, secondhand and unconfirmed, that it's already changed hands twice and that it's said to come from somewhere in his own home desert. He means to be the one who finally holds it and keeps it - so that when he's gone, it passes to whoever in his family carries the trade forward next.",
     "resolution": "ongoing",
     "history": []

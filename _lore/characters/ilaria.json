@@ -162,15 +162,15 @@
   "routines": [
     {
       "location": "Feria del Milenio",
-      "archetype": "archive",
+      "context": "archive",
       "weight": 65,
-      "specialization": "copies and cross-checks accounts of the Ensayo for contradictions"
+      "routine_actions": "copies and cross-checks accounts of the Ensayo for contradictions"
     },
     {
       "location": "Lúndria",
-      "archetype": "archive",
+      "context": "archive",
       "weight": 35,
-      "specialization": "returns to where the magic first manifested, hunting the earliest sources"
+      "routine_actions": "returns to where the magic first manifested, hunting the earliest sources"
     }
   ],
   "arc": {
@@ -182,7 +182,7 @@
       "records",
       "expertise"
     ],
-    "archetype": "archive",
+    "context": "archive",
     "resolution": "ongoing",
     "history": []
   }

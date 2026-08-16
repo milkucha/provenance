@@ -152,15 +152,15 @@
   "routines": [
     {
       "location": "Khol Moshin",
-      "archetype": "market",
+      "context": "market",
       "weight": 50,
-      "specialization": "busks in the market of a hundred tongues, trading songs for news"
+      "routine_actions": "busks in the market of a hundred tongues, trading songs for news"
     },
     {
       "location": "Görff",
-      "archetype": "workshop",
+      "context": "workshop",
       "weight": 50,
-      "specialization": "works new songs into shape between towns, testing them on strangers before he lets them travel"
+      "routine_actions": "works new songs into shape between towns, testing them on strangers before he lets them travel"
     }
   ],
   "arc": {
@@ -172,7 +172,7 @@
       "news",
       "contacts"
     ],
-    "archetype": "workshop",
+    "context": "workshop",
     "resolution": "ongoing",
     "history": []
   }

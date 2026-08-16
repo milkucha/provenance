@@ -10,8 +10,8 @@ Reads two files at the worktree root:
 - `_pending_language_resolved.json` - the subagent's own output, same shape keyed by
   `placeholder_slug`/`character_slug`:
     {"children": [{"placeholder_slug": "...", "name": "Real Name",
-                   "routines": [{"location": "...", "specialization": "..."}]}],
-     "arcs":     [{"character_slug": "...", "about": [...], "needs": [...], "archetype": "...", "premise": "..."}]}
+                   "routines": [{"location": "...", "routine_actions": "..."}]}],
+     "arcs":     [{"character_slug": "...", "about": [...], "needs": [...], "context": "...", "premise": "..."}]}
 
 For each resolved child: the character's SLUG never changes (only ever the `name` field and prose
 that quotes it) - see `simulate_generate_population.py`'s docstring point 2 for why: renaming a slug
@@ -29,10 +29,10 @@ substitution of the placeholder name string, scoped to exactly the files
     (parents' "Had a child with X, named <placeholder>." and the notified circle's "Heard that X and
     Y now have a child, <placeholder>." - scanned rather than enumerated, since exactly who got
     notified isn't tracked outside those files themselves)
-Any routine specialization the subagent rewrote is applied by matching `location` against the
-child's own `routines[]`.
+Any routine's `routine_actions` line the subagent rewrote is applied by matching `location` against
+the child's own `routines[]`.
 
-For each resolved arc: writes `arc = {about, needs, archetype, premise, resolution: "ongoing",
+For each resolved arc: writes `arc = {about, needs, context, premise, resolution: "ongoing",
 history: []}` onto that character's file, then runs `register_arc_concept.py` now that `premise` is
 real content (folded into the registered concept's own `description`, not the old boilerplate) -
 mirroring the interactive skill's own rule that only a genuinely-authored arc gets registered (a
@@ -123,7 +123,7 @@ def rename_child(placeholder_slug: str, placeholder_name: str, real_name: str, r
     for update in routine_updates or []:
         for r in child.get("routines", []):
             if r["location"] == update.get("location"):
-                r["specialization"] = update.get("specialization", r.get("specialization", ""))
+                r["routine_actions"] = update.get("routine_actions", r.get("routine_actions", ""))
     save_char(placeholder_slug, child)
 
     tale_path = TALES_DIR / f"birth_of_{placeholder_slug}.md"
@@ -164,12 +164,12 @@ def rename_child(placeholder_slug: str, placeholder_name: str, real_name: str, r
     print(f"renamed: {placeholder_slug}  '{placeholder_name}' -> '{real_name}'  ({renamed_elsewhere} other file(s) updated)")
 
 
-def apply_arc(character_slug: str, about: list, needs: list, archetype: str, premise: str) -> None:
+def apply_arc(character_slug: str, about: list, needs: list, context: str, premise: str) -> None:
     character = load_char(character_slug)
     character["arc"] = {
         "about": about,
         "needs": needs or [],
-        "archetype": archetype,
+        "context": context,
         "premise": premise or "",
         "resolution": "ongoing",
         "history": [],
@@ -206,7 +206,7 @@ def main() -> None:
         rename_child(slug, pending_children[slug]["placeholder_name"], entry["name"], entry.get("routines"))
 
     for entry in resolved.get("arcs", []):
-        apply_arc(entry["character_slug"], entry.get("about", []), entry.get("needs", []), entry.get("archetype", ""), entry.get("premise", ""))
+        apply_arc(entry["character_slug"], entry.get("about", []), entry.get("needs", []), entry.get("context", ""), entry.get("premise", ""))
 
     print(call("build_source_index.py", []).strip())
 

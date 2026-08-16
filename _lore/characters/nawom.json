@@ -89,21 +89,21 @@
   "routines": [
     {
       "location": "Terfila",
-      "archetype": "waystation",
+      "context": "waystation",
       "weight": 40,
-      "specialization": "passes back through asking after the road to Puerto Tortuga, and still won't explain why"
+      "routine_actions": "passes back through asking after the road to Puerto Tortuga, and still won't explain why"
     },
     {
       "location": "Nvhi",
-      "archetype": "market",
+      "context": "market",
       "weight": 35,
-      "specialization": "trades news and small goods for anyone who might know the way south"
+      "routine_actions": "trades news and small goods for anyone who might know the way south"
     },
     {
       "location": "Puerto Pastizal",
-      "archetype": "waystation",
+      "context": "waystation",
       "weight": 25,
-      "specialization": "a stop on the search, more rumor collected than road found"
+      "routine_actions": "a stop on the search, more rumor collected than road found"
     }
   ]
 }

@@ -128,15 +128,15 @@
   "routines": [
     {
       "location": "Terfila",
-      "archetype": "market",
+      "context": "market",
       "weight": 60,
-      "specialization": "runs the ledger at the collective bank, deciding who gets what's given away"
+      "routine_actions": "runs the ledger at the collective bank, deciding who gets what's given away"
     },
     {
       "location": "Khol Moshin",
-      "archetype": "market",
+      "context": "market",
       "weight": 40,
-      "specialization": "meets suppliers and debtors along the route, keeping the fortune moving instead of sitting"
+      "routine_actions": "meets suppliers and debtors along the route, keeping the fortune moving instead of sitting"
     }
   ],
   "arc": {
@@ -148,7 +148,7 @@
       "contacts",
       "news"
     ],
-    "archetype": "market",
+    "context": "market",
     "resolution": "ongoing",
     "history": []
   }

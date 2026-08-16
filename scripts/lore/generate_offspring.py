@@ -42,12 +42,14 @@ What's inherited and how:
   arc's Step 8 gate-check the same way a genuinely lived experience would.
 - `routines` - a random-sized random subset of the union of both parents' routine entries, weights
   renormalized to sum to 100. Still a placeholder in the sense that routines are meant to be
-  hand-authored (see _lore/archetypes.json) - there's no author present mid-run, so this is the
+  hand-authored (see _lore/contexts.json) - there's no author present mid-run, so this is the
   honest fallback, not a substitute for eventually hand-revising a child's routines. Not touched by
   this knowledge-inheritance retune - the union-of-both-parents' logic here was never the part that
   needed fixing.
-- `arc` - none at birth. Seeded the normal way (archetype + specialization + criterion) the first
-  time this character is actually a scene's home_frame, same as any character.
+- `arc` - none at birth. Seeded the normal way (context + routine_actions + criterion) the first
+  time this character is actually a scene's home_frame - the fallback path (as of 2026-08-16, a
+  hand-authored character gets `arc` at creation instead; a newborn still can't, since nothing is
+  present to compose one at the moment of birth - see TODO.md's "arc at birth" open question).
 - `city` - copied whole from a coin-flipped parent.
 - `backstory` - deliberately minimal and factual ("Child of X and Y."), not invented prose. Left
   open for a human/`/character` session to enrich later, same as any other placeholder in this

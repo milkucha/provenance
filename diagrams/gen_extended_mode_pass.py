@@ -55,7 +55,7 @@ phaseA_items = [
     ("lead-override check", "does an expiring lead still apply", True),
     ("routine rolls", "which routines actually fire this pass", True),
     ("location resolution", "where the scene lands", False),
-    ("archetype / texture lookup", "flavor for the scene brief", False),
+    ("context / texture lookup", "flavor for the scene brief", False),
     ("needs/provides check", "motivation match between the pair", False),
     ("contested roll", "does a rival try to hinder", True),
     ("arc primacy roll", "whose arc leads the scene", True),

@@ -1,5 +1,5 @@
 """
-Check whether a visit destination's archetype happens to supply what the traveler's arc currently
+Check whether a visit destination's context happens to supply what the traveler's arc currently
 needs - mechanical, not a model deciding "this visit feels purposeful." A match means the visit
 gets framed as motivated; no match means it's an ordinary, unmotivated visit, same as always.
 
@@ -29,7 +29,7 @@ def significant_words(text: str) -> set[str]:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--needs", action="append", default=[], required=True, help="Traveler's arc.needs tag(s), repeatable")
-    parser.add_argument("--provides", action="append", default=[], required=True, help="Destination archetype's provides tag(s), repeatable")
+    parser.add_argument("--provides", action="append", default=[], required=True, help="Destination context's provides tag(s), repeatable")
     args = parser.parse_args()
 
     for need in args.needs:

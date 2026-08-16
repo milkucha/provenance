@@ -55,15 +55,15 @@ to it):
 - For each entry in `children`: compose a name that reads as a plausible blend of `parent_a`'s and
   `parent_b`'s names, leading from `name_lead`'s side (per `generate_offspring.py`'s own docstring -
   this is the one thing in the whole mechanism that can't be scripted). Also rewrite each of that
-  child's `routines[]` entries' `specialization` line so it reads as grounded in the CHILD - their
+  child's `routines[]` entries' `routine_actions` line so it reads as grounded in the CHILD - their
   own blended backstory/parents, not a verbatim restatement of whichever parent it was inherited
-  from - keeping the same `location`/`archetype`, only rewording `specialization` (one line, same
+  from - keeping the same `location`/`context`, only rewording `routine_actions` (one line, same
   register as `character/SKILL.md` Step 8's own examples, e.g. "blacksmith, values good craft").
 - For each entry in `arcs`: author `about` (topic tags, at least one `"concept: <id>"` tag for a
   genuinely new project - see `register_arc_concept.py`), `needs` (what it currently requires, in
-  the same vocabulary `check_needs_provides.py` matches against an archetype's `provides` tags),
-  `archetype` (must be a key already in `_lore/archetypes.json`, ordinarily matching one of that
-  character's own `routines[].archetype`), and `premise` (the arc's actual concrete content -
+  the same vocabulary `check_needs_provides.py` matches against a context's `provides` tags),
+  `context` (must be a key already in `_lore/contexts.json`, ordinarily matching one of that
+  character's own `routines[].context`), and `premise` (the arc's actual concrete content -
   `character/SKILL.md` Step 8's full authoring discipline applies here too: the resolution-moment
   test, grounding the target in the character's own known corpus when possible, and the
   texture-vs-claim-shaped-content attribution rule). Scope the ambition against the entry's own
@@ -74,8 +74,8 @@ to it):
 - Write `<worktree>/_pending_language_resolved.json` (absolute path) in exactly this shape:
   ```json
   {"children": [{"placeholder_slug": "...", "name": "...",
-                 "routines": [{"location": "...", "specialization": "..."}]}],
-   "arcs":     [{"character_slug": "...", "about": ["..."], "needs": ["..."], "archetype": "...",
+                 "routines": [{"location": "...", "routine_actions": "..."}]}],
+   "arcs":     [{"character_slug": "...", "about": ["..."], "needs": ["..."], "context": "...",
                  "premise": "..."}]}
   ```
 - No scene-writing, no `AskUserQuestion`, no touching any other file. Report back only a short
@@ -294,7 +294,7 @@ see Step 2's point 3 on path substitution for the same class of bug). There are 
 places a model's judgment is the right tool instead of a script, and nothing else in this pass is
 the subagent's to decide:
 1. Composing a plausible name-blend for a newborn character.
-2. Composing a freshly-authored (or re-authored) arc's `about`/`needs`/`archetype` content.
+2. Composing a freshly-authored (or re-authored) arc's `about`/`needs`/`context`/`premise` content.
 3. Optionally naming a specific existing rival in a contested-and-hinder scene.
 4. Picking the actual words of the scene itself (`/enact` Steps 3b, 5, 5b, 6 in full).
 
@@ -310,8 +310,8 @@ py "<worktree>/scripts/lore/simulate_pass_brief.py" --pool <every slug still in 
 This one call runs, in order, everything the old step-by-step sequence used to make 12+ separate
 calls for - pairing (`pick_pair.py`), the lead-override check (an unexpired `leads` entry younger
 than `lead_expiry_passes` forces `mode: visit` toward that target, consuming the lead), routine
-rolls, location resolution, and the archetype/texture lookup folded into the same call (a plain
-`_lore/archetypes.json` dict lookup never needed its own step, only a caller that already has the
+rolls, location resolution, and the context/texture lookup folded into the same call (a plain
+`_lore/contexts.json` dict lookup never needed its own step, only a caller that already has the
 resolved location - which this call has by construction), the needs/provides motivation check, the
 contested roll, arc primacy, the knowledge/criteria gate, the arc-outcome roll (**already resolved
 before any scene gets written** - rolling after the fact and writing dialogue to match risks
@@ -352,7 +352,7 @@ four judgment slots above are open this pass:
   present: a rival only gets named if the scene plausibly points at a SPECIFIC character who
   already has a file (`_lore/characters/<slug>.json` exists) - otherwise leave it ambient/unnamed,
   the default and common case.
-- The scene itself (`mode`/`location`/`home_frame`/`traveler`/`archetype`/`texture`/`motivated`/
+- The scene itself (`mode`/`location`/`home_frame`/`traveler`/`context`/`texture`/`motivated`/
   `contested`/the arc's already-decided `outcome`) is always present and always fixed - dramatize
   it, never re-decide it. **"advance" and "complete" are not staged the same way.** An "advance"
   outcome can be any small step forward and still read fine. A "complete" outcome (`tally_result:
@@ -380,10 +380,10 @@ model chosen in Step 1, `run_in_background: false`), same as base mode. Brief it
     `about: "tale: birth_of_<key>"`, never a made-up concept tag. Knowledge inheritance (education
     items, general world-lore, family-lore experience) all happens inside this one call - see the
     script's own docstring if the exact fractions matter.
-  - `arc_authoring_needed`: compose `about`/`needs`/`archetype`/`premise` per `/character` Step 8's
+  - `arc_authoring_needed`: compose `about`/`needs`/`context`/`premise` per `/character` Step 8's
     authoring discipline (resolution-moment test, ground the target in the character's own known
     corpus when possible, texture vs. claim-shaped-content attribution for `premise`), then run
-    `write_arc.py <character_slug> --about "<tag>" [--about "<tag>" ...] --needs "<tag>" [...] --archetype <name> --premise "<premise text>"`
+    `write_arc.py <character_slug> --about "<tag>" [--about "<tag>" ...] --needs "<tag>" [...] --context <name> --premise "<premise text>"`
     (absolute path) - this single call writes the arc AND registers its `concept: <id>` tag in
     `encodings.json` (with `premise` folded into the registered concept's own `description`, not
     the old boilerplate) in the same step (folds what used to be two separate hand-tracked calls;
@@ -418,8 +418,8 @@ pass's Step 6 judgment call), then, only if they died "early" (`horizon.py`'s no
 `established` rather than `late` - `early` is structurally impossible at the exact pass death fires,
 so this comparison is the correct proxy, not a new threshold), `roll_death_legacy.py` against the
 notified circle - a `passes: true` result copies the deceased's arc onto the recipient exactly the
-way a transform does (about/needs copied, `resolution` reset to `"ongoing"`, tally reset;
-archetype/routine stay the recipient's own). Prints which participant(s) died, for the living-pool
+way a transform does (about/needs/premise copied, `resolution` reset to `"ongoing"`, tally reset;
+context/routine stay the recipient's own). Prints which participant(s) died, for the living-pool
 bookkeeping below.
 
 Then, same as always: run Step 3's point 4 safety net (`git -C "<main repo root>" status --short --

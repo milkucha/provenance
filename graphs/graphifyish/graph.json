@@ -155,7 +155,7 @@
     ],
     "notes": "three mutually inconsistent coordinate values across three sources; see CONFLICT-02. No airport code recorded for Khan Ice in the Cartography Airports sheet despite catastro listing it as 'En Construccion' for aeropuerto.",
     "file": "_lore/encodings.json#locations",
-    "degree": 20
+    "degree": 21
    },
    {
     "id": "loc:khol_moshin",
@@ -189,7 +189,7 @@
     ],
     "notes": "X-coordinates roughly agree (1275 vs 1300); Y-coordinates disagree in sign (225 vs -200); see CONFLICT-02",
     "file": "_lore/encodings.json#locations",
-    "degree": 14
+    "degree": 15
    },
    {
     "id": "loc:gorff",
@@ -496,7 +496,7 @@
     ],
     "notes": "four spellings for one place across four sources",
     "file": "_lore/encodings.json#locations",
-    "degree": 10
+    "degree": 11
    },
    {
     "id": "loc:nvhi",
@@ -547,7 +547,7 @@
     ],
     "notes": "airport coord and highway-route coord are both far northeast (x~2000-2200, y~5700-6200), in the same rough neighborhood as each other but not identical - internally consistent-ish, distinct from grid7's implied position",
     "file": "_lore/encodings.json#locations",
-    "degree": 13
+    "degree": 14
    },
    {
     "id": "loc:soti",
@@ -605,7 +605,7 @@
     ],
     "notes": "start-year mismatch (ensayo_i implies 2023, catastro says 2024); see CONFLICT-06. The airport coordinate (x=-11374) is dramatically farther west than any other located place in the entire dataset, consistent with ensayo_i describing it as a remote mountain site",
     "file": "_lore/encodings.json#locations",
-    "degree": 6
+    "degree": 7
    },
    {
     "id": "loc:osmory",
@@ -703,7 +703,7 @@
     ],
     "notes": null,
     "file": "_lore/encodings.json#locations",
-    "degree": 2
+    "degree": 3
    },
    {
     "id": "loc:puerto_del_este",
@@ -772,7 +772,7 @@
     ],
     "notes": "listed on the grid map as a discrete place alongside cities, distinct from its separate use as a candidate name for the world/continent as a whole (see concept 'world_name_variants' and CONFLICT-03)",
     "file": "_lore/encodings.json#locations",
-    "degree": 5
+    "degree": 6
    },
    {
     "id": "loc:salthos_cruzados",
@@ -816,7 +816,7 @@
     ],
     "notes": "atlax_ii's raw coordinates do not correspond to image7's grid cell 4,-1; the airport coord and train-endpoint coord are both in the same general area (roughly x=-25 to -516, z=3100-3249) and reasonably close to each other, but neither matches atlax_ii's numbers; see CONFLICT-02",
     "file": "_lore/encodings.json#locations",
-    "degree": 12
+    "degree": 13
    },
    {
     "id": "loc:kuritsa",
@@ -980,7 +980,7 @@
     ],
     "notes": "possibly related to 'Villa Naranja' (see CONFLICT-08), not confirmed",
     "file": "_lore/encodings.json#locations",
-    "degree": 4
+    "degree": 5
    },
    {
     "id": "loc:sindaara",
@@ -1002,7 +1002,7 @@
     ],
     "notes": null,
     "file": "_lore/encodings.json#locations",
-    "degree": 2
+    "degree": 3
    },
    {
     "id": "loc:grosslor",
@@ -1102,7 +1102,7 @@
     ],
     "notes": "treated as the same wall by name and date match, not stated as identical in either source",
     "file": "_lore/encodings.json#locations",
-    "degree": 4
+    "degree": 5
    },
    {
     "id": "loc:puerto_tortuga",
@@ -1128,7 +1128,7 @@
     ],
     "notes": "possibly, but not confirmed, the same place as 'Isla Tortuga' on image7 (grid 7,3); see CONFLICT-09",
     "file": "_lore/encodings.json#locations",
-    "degree": 7
+    "degree": 8
    },
    {
     "id": "loc:isla_tortuga",
@@ -1235,7 +1235,7 @@
     ],
     "notes": null,
     "file": "_lore/encodings.json#locations",
-    "degree": 5
+    "degree": 6
    },
    {
     "id": "loc:aurora",
@@ -1293,7 +1293,7 @@
     ],
     "notes": "not mentioned in any other source",
     "file": "_lore/encodings.json#locations",
-    "degree": 1
+    "degree": 2
    },
    {
     "id": "loc:castillo_del_sol",
@@ -1319,7 +1319,7 @@
     ],
     "notes": null,
     "file": "_lore/encodings.json#locations",
-    "degree": 1
+    "degree": 2
    },
    {
     "id": "loc:bahia_pelicanos",
@@ -1558,7 +1558,7 @@
     ],
     "notes": "founded at the opening of the 964 d.V. 'época del World Edit'; region not stated.",
     "file": "_lore/encodings.json#locations",
-    "degree": 1
+    "degree": 2
    },
    {
     "id": "loc:puerto_de_las_lunas",
@@ -1594,7 +1594,7 @@
     ],
     "notes": "founded 966 d.V. by an unnamed new player who began their journey near the Sit:Nalta ruins.",
     "file": "_lore/encodings.json#locations",
-    "degree": 0
+    "degree": 1
    },
    {
     "id": "loc:prison_west_of_milkan",
@@ -1710,7 +1710,7 @@
      }
     ],
     "file": "_lore/encodings.json#concepts",
-    "degree": 6
+    "degree": 7
    },
    {
     "id": "con:peregrins",
@@ -1826,7 +1826,7 @@
      }
     ],
     "file": "_lore/encodings.json#concepts",
-    "degree": 6
+    "degree": 7
    },
    {
     "id": "con:antiguo_continente_and_mapa_del_milenio",
@@ -1932,7 +1932,7 @@
      }
     ],
     "file": "_lore/encodings.json#concepts",
-    "degree": 2
+    "degree": 3
    },
    {
     "id": "con:townland",
@@ -1971,6 +1971,15 @@
     "degree": 11
    },
    {
+    "id": "con:la_lagrima_de_balahm",
+    "label": "La Lágrima de Balahm",
+    "kind": "concept",
+    "description": "A single, individual specimen of Órikal (see the `orikal` concept) that traders passing through Puente Continental have taken to calling 'la Lágrima de Balahm' (the Balahm Teardrop). Everything about its history is unconfirmed, secondhand trader rumor, not established fact: that it has already changed hands twice, and that it's said to come from somewhere in the Balahm desert. The subject of Zarkatraz's ongoing arc.",
+    "sources": [],
+    "file": "_lore/encodings.json#concepts",
+    "degree": 0
+   },
+   {
     "id": "chr:pitaglorias",
     "label": "Pitaglorias",
     "kind": "character",
@@ -2004,7 +2013,7 @@
     "notes": "possible name relation to the concept 'Dääx' (unconfirmed - see concept entry)",
     "legendary": true,
     "file": "_lore/encodings.json#characters.in_world_or_legendary",
-    "degree": 2
+    "degree": 3
    },
    {
     "id": "chr:storfilias",
@@ -2088,7 +2097,7 @@
     "notes": null,
     "legendary": true,
     "file": "_lore/encodings.json#characters.in_world_or_legendary",
-    "degree": 2
+    "degree": 3
    },
    {
     "id": "chr:vlaar",
@@ -2120,7 +2129,7 @@
     "notes": "possibly, but not confirmed, connected to the Catastro site 'Casa De Esteban'; see CONFLICT-10",
     "legendary": true,
     "file": "_lore/encodings.json#characters.in_world_or_legendary",
-    "degree": 4
+    "degree": 5
    },
    {
     "id": "chr:darnis",
@@ -2156,7 +2165,7 @@
     "notes": null,
     "legendary": true,
     "file": "_lore/encodings.json#characters.in_world_or_legendary",
-    "degree": 7
+    "degree": 8
    },
    {
     "id": "chr:ilaria",
@@ -2212,7 +2221,7 @@
      }
     ],
     "file": "_lore/encodings.json#characters.real_world_authors_and_players",
-    "degree": 0
+    "degree": 1
    },
    {
     "id": "chr:player_roster",
@@ -2226,7 +2235,7 @@
      }
     ],
     "file": "_lore/encodings.json#characters.real_world_authors_and_players",
-    "degree": 4
+    "degree": 5
    },
    {
     "id": "inh:Gorff/Bardaglis",
@@ -2446,7 +2455,7 @@
     "count": null,
     "notes": "",
     "file": "_lore/encodings.json#characters.named_inhabitants",
-    "degree": 4
+    "degree": 5
    },
    {
     "id": "inh:Gorff/Socorlis",
@@ -2479,7 +2488,7 @@
     "count": null,
     "notes": "",
     "file": "_lore/encodings.json#characters.named_inhabitants",
-    "degree": 4
+    "degree": 5
    },
    {
     "id": "inh:Gorff/Zun",
@@ -2501,7 +2510,7 @@
     "count": null,
     "notes": "",
     "file": "_lore/encodings.json#characters.named_inhabitants",
-    "degree": 5
+    "degree": 6
    },
    {
     "id": "inh:Gorff/Gondarfolas",
@@ -2523,7 +2532,7 @@
     "count": null,
     "notes": "",
     "file": "_lore/encodings.json#characters.named_inhabitants",
-    "degree": 7
+    "degree": 8
    },
    {
     "id": "inh:Terfila/Puri",
@@ -2578,7 +2587,7 @@
     "count": null,
     "notes": "",
     "file": "_lore/encodings.json#characters.named_inhabitants",
-    "degree": 4
+    "degree": 5
    },
    {
     "id": "inh:Puente Continental/Sari",
@@ -2589,7 +2598,7 @@
     "count": null,
     "notes": "",
     "file": "_lore/encodings.json#characters.named_inhabitants",
-    "degree": 5
+    "degree": 6
    },
    {
     "id": "inh:Puente Continental/Soro",
@@ -2600,7 +2609,7 @@
     "count": null,
     "notes": "",
     "file": "_lore/encodings.json#characters.named_inhabitants",
-    "degree": 4
+    "degree": 5
    },
    {
     "id": "inh:Puente Continental/Trifolis",
@@ -2611,7 +2620,7 @@
     "count": null,
     "notes": "",
     "file": "_lore/encodings.json#characters.named_inhabitants",
-    "degree": 2
+    "degree": 3
    },
    {
     "id": "inh:Puente Continental/Zarkatraz",
@@ -2622,7 +2631,7 @@
     "count": null,
     "notes": "",
     "file": "_lore/encodings.json#characters.named_inhabitants",
-    "degree": 3
+    "degree": 4
    },
    {
     "id": "inh:Volcano-Gorff/Jaalax",
@@ -2633,7 +2642,7 @@
     "count": null,
     "notes": "",
     "file": "_lore/encodings.json#characters.named_inhabitants",
-    "degree": 6
+    "degree": 7
    },
    {
     "id": "inh:Volcano-Gorff/Juori",
@@ -2732,7 +2741,7 @@
     "count": null,
     "notes": "",
     "file": "_lore/encodings.json#characters.named_inhabitants",
-    "degree": 2
+    "degree": 3
    },
    {
     "id": "inh:Khol Moshin (Taterzen sheet, distinct from the NPC-sheet locality list above)/Soro",
@@ -2765,7 +2774,7 @@
     "count": null,
     "notes": "",
     "file": "_lore/encodings.json#characters.named_inhabitants",
-    "degree": 6
+    "degree": 7
    },
    {
     "id": "inh:cross-locality travelers/routes (named, with a mode of travel)/Gizen",
@@ -2776,7 +2785,7 @@
     "count": null,
     "notes": "",
     "file": "_lore/encodings.json#characters.named_inhabitants",
-    "degree": 5
+    "degree": 6
    },
    {
     "id": "inh:cross-locality travelers/routes (named, with a mode of travel)/Gondorlikas",
@@ -2875,7 +2884,7 @@
     "count": null,
     "notes": "",
     "file": "_lore/encodings.json#characters.named_inhabitants",
-    "degree": 2
+    "degree": 3
    },
    {
     "id": "inh:cross-locality travelers/routes (named, with a mode of travel)/Malkinimies",
@@ -2930,7 +2939,7 @@
     "count": null,
     "notes": "",
     "file": "_lore/encodings.json#characters.named_inhabitants",
-    "degree": 4
+    "degree": 5
    },
    {
     "id": "inh:unlocated (skin only, no locality/role given)/Korin",
@@ -3084,7 +3093,7 @@
     "resolution": "",
     "resolved": false,
     "file": "_lore/encodings.json#conflicts",
-    "degree": 8
+    "degree": 9
    },
    {
     "id": "cfl:CONFLICT-10",
@@ -3150,7 +3159,7 @@
     "resolution": "",
     "resolved": false,
     "file": "_lore/encodings.json#conflicts",
-    "degree": 5
+    "degree": 6
    },
    {
     "id": "cfl:CONFLICT-16",
@@ -3183,7 +3192,7 @@
     "resolution": "",
     "resolved": false,
     "file": "_lore/encodings.json#conflicts",
-    "degree": 0
+    "degree": 1
    },
    {
     "id": "era:ensayo/La Isla de la Amistad y la Primera Etapa de Subsistencia",
@@ -3213,7 +3222,7 @@
     "span": "finales 2014",
     "notes": "",
     "file": "_lore/encodings.json#time_systems.ensayo_i_eras",
-    "degree": 2
+    "degree": 3
    },
    {
     "id": "era:ensayo/Era del Mosaico",
@@ -3233,7 +3242,7 @@
     "span": "enero 2018 - diciembre 2019",
     "notes": "as printed; very likely a typo for 'miniatura'.",
     "file": "_lore/encodings.json#time_systems.ensayo_i_eras",
-    "degree": 4
+    "degree": 5
    },
    {
     "id": "era:ensayo/Era del Confinamiento",
@@ -3243,7 +3252,7 @@
     "span": "enero 2020 - diciembre 2021",
     "notes": "ensayo_i_final leaves this era's artifact tag empty/unclosed - a bare '(' with no closing text.",
     "file": "_lore/encodings.json#time_systems.ensayo_i_eras",
-    "degree": 5
+    "degree": 6
    },
    {
     "id": "era:ensayo/Era de los Continentes",
@@ -3283,7 +3292,7 @@
     "span": "agosto 2026",
     "notes": "ensayo_i (nov 2025) lists four proposed new cities: Arkän, Prismätika, Mirage Citadel, Zafiria. ensayo_i_final (jul 2026) replaces this wholesale with five different predicted developments: el auge del Orikäl, la resurrección de Tÿrnia y Têrfyla, el colapso del muro del norte, la construcción del Museo de las Estructuras y el Jardín de las Naciones, el Ministerio del Tiempo funcionando - no overlap between the two lists. ensayo_i_final also gives an exact date, 26 julio 2026, matching the Feria del Milenio's own inauguration date, in place of the vaguer 'agosto 2026'. See CONFLICT-16.",
     "file": "_lore/encodings.json#time_systems.ensayo_i_eras",
-    "degree": 1
+    "degree": 2
    },
    {
     "id": "era:libro/Primera Venida",
@@ -3313,7 +3322,7 @@
     "span": "2013 ago - 2014 jul",
     "notes": "Se fundan las primeras ciudades",
     "file": "_lore/encodings.json#time_systems.libro_venidas_eras.list",
-    "degree": 2
+    "degree": 3
    },
    {
     "id": "era:libro/Era del Mosaico",
@@ -3323,7 +3332,7 @@
     "span": "2016-2017",
     "notes": "Se fundan nuevas ciudades",
     "file": "_lore/encodings.json#time_systems.libro_venidas_eras.list",
-    "degree": 1
+    "degree": 2
    },
    {
     "id": "era:libro/Era del Daax o de las Maquinas",
@@ -3363,7 +3372,7 @@
     "span": "18 d.V. - 114 d.V.",
     "notes": "ensayo_i era 2 exactly",
     "file": "_lore/encodings.json#time_systems.esquema_poster_eras.era_row",
-    "degree": 1
+    "degree": 2
    },
    {
     "id": "era:esquema/Guerras de Görff (repeated name, likely extraction artifact)",
@@ -3447,7 +3456,7 @@
     "kind": "year",
     "span": "18 d.V. - 72 d.V.",
     "file": "_lore/encodings.json#time_systems.esquema_poster_eras.year_by_year_foundations",
-    "degree": 11
+    "degree": 12
    },
    {
     "id": "year:2014",
@@ -3495,7 +3504,7 @@
     "kind": "year",
     "span": "432 d.V. - 504 a.V. (sic, printed '504a.V.')",
     "file": "_lore/encodings.json#time_systems.esquema_poster_eras.year_by_year_foundations",
-    "degree": 5
+    "degree": 6
    },
    {
     "id": "year:2020",
@@ -3511,7 +3520,7 @@
     "kind": "year",
     "span": "576 d.V. - 648 d.V.",
     "file": "_lore/encodings.json#time_systems.esquema_poster_eras.year_by_year_foundations",
-    "degree": 3
+    "degree": 4
    },
    {
     "id": "year:2022",
@@ -3527,7 +3536,7 @@
     "kind": "year",
     "span": "720 d.V. - 792 d.V.",
     "file": "_lore/encodings.json#time_systems.esquema_poster_eras.year_by_year_foundations",
-    "degree": 5
+    "degree": 6
    },
    {
     "id": "rte:hw/M7",
@@ -3576,7 +3585,7 @@
     "mode": "train",
     "distance": 3769.37,
     "file": "_lore/encodings.json#routes.trains",
-    "degree": 9
+    "degree": 10
    },
    {
     "id": "rte:tr/Khan Ice - Puerto del Norte",
@@ -3594,7 +3603,7 @@
     "mode": "train",
     "distance": null,
     "file": "_lore/encodings.json#routes.trains",
-    "degree": 5
+    "degree": 6
    },
    {
     "id": "rte:tr/Khan Ice - Balhâm",
@@ -3612,7 +3621,7 @@
     "mode": "train",
     "distance": 3992.24,
     "file": "_lore/encodings.json#routes.trains",
-    "degree": 6
+    "degree": 7
    },
    {
     "id": "rte:air/Catraniz",
@@ -3651,7 +3660,7 @@
      1794
     ],
     "file": "_lore/encodings.json#routes.airports",
-    "degree": 6
+    "degree": 7
    },
    {
     "id": "rte:air/Sit:Nalta",
@@ -3742,7 +3751,7 @@
      6243
     ],
     "file": "_lore/encodings.json#routes.airports",
-    "degree": 4
+    "degree": 5
    },
    {
     "id": "rte:named/Ruta Lundria-Salthos Cruzados",
@@ -3751,7 +3760,7 @@
     "mode": "unplotted",
     "notes": "a route name not matching any of the highway/train segments already plotted in Cartography...xlsx; the image shows a purple traced line but no accompanying coordinate table, so its actual waypoints are not captured here",
     "file": "_lore/encodings.json#routes.named_but_unplotted",
-    "degree": 4
+    "degree": 5
    },
    {
     "id": "dlg:aureobalo_farlis_castillo_en_miniatura",
@@ -3767,7 +3776,7 @@
     ],
     "claims": 7,
     "file": "data/luminacion/blabber/dialogues/aureobalo_farlis_castillo_en_miniatura.json",
-    "degree": 2
+    "degree": 3
    },
    {
     "id": "dlg:auroboro_iii_farlis_alcoba",
@@ -3783,7 +3792,7 @@
     ],
     "claims": 4,
     "file": "data/luminacion/blabber/dialogues/auroboro_iii_farlis_alcoba.json",
-    "degree": 0
+    "degree": 1
    },
    {
     "id": "dlg:bardaglis_ilaria_khaoe_segunda_noche",
@@ -3800,7 +3809,7 @@
     ],
     "claims": 8,
     "file": "data/luminacion/blabber/dialogues/bardaglis_ilaria_khaoe_segunda_noche.json",
-    "degree": 4
+    "degree": 5
    },
    {
     "id": "dlg:doran_eras_of_culture",
@@ -3816,7 +3825,7 @@
     ],
     "claims": 4,
     "file": "data/luminacion/blabber/dialogues/doran_eras_of_culture.json",
-    "degree": 7
+    "degree": 8
    },
    {
     "id": "dlg:doran_four_castles",
@@ -3832,7 +3841,7 @@
     ],
     "claims": 9,
     "file": "data/luminacion/blabber/dialogues/doran_four_castles.json",
-    "degree": 16
+    "degree": 17
    },
    {
     "id": "dlg:doran_plaza_orientation",
@@ -3848,7 +3857,7 @@
     ],
     "claims": 5,
     "file": "data/luminacion/blabber/dialogues/doran_plaza_orientation.json",
-    "degree": 12
+    "degree": 13
    },
    {
     "id": "dlg:gondarfolas_darnis_and_bracco",
@@ -3864,7 +3873,7 @@
     ],
     "claims": 8,
     "file": "data/luminacion/blabber/dialogues/gondarfolas_darnis_and_bracco.json",
-    "degree": 17
+    "degree": 18
    },
    {
     "id": "dlg:ilaria_espiral_de_la_historia",
@@ -3880,7 +3889,7 @@
     ],
     "claims": 3,
     "file": "data/luminacion/blabber/dialogues/ilaria_espiral_de_la_historia.json",
-    "degree": 9
+    "degree": 10
    },
    {
     "id": "dlg:khaoe_banco_colectivo",
@@ -3896,7 +3905,7 @@
     ],
     "claims": 6,
     "file": "data/luminacion/blabber/dialogues/khaoe_banco_colectivo.json",
-    "degree": 8
+    "degree": 9
    },
    {
     "id": "dlg:khaoe_calendario_mecanografico",
@@ -3912,7 +3921,7 @@
     ],
     "claims": 4,
     "file": "data/luminacion/blabber/dialogues/khaoe_calendario_mecanografico.json",
-    "degree": 7
+    "degree": 8
    },
    {
     "id": "dlg:khaoe_farlis_el_castillo_que_fue",
@@ -3960,7 +3969,7 @@
     ],
     "claims": 3,
     "file": "data/luminacion/blabber/dialogues/khaoe_farlis_lo_que_cambia_el_tiempo.json",
-    "degree": 11
+    "degree": 12
    },
    {
     "id": "dlg:khaoe_khaasan_partida_a_khan_ice",
@@ -3976,7 +3985,7 @@
     ],
     "claims": 8,
     "file": "data/luminacion/blabber/dialogues/khaoe_khaasan_partida_a_khan_ice.json",
-    "degree": 2
+    "degree": 3
    },
    {
     "id": "dlg:khaoe_milkucha_jardin_de_los_parajes",
@@ -3992,7 +4001,7 @@
     ],
     "claims": 11,
     "file": "data/luminacion/blabber/dialogues/khaoe_milkucha_jardin_de_los_parajes.json",
-    "degree": 3
+    "degree": 4
    },
    {
     "id": "dlg:nawom_morkulo_first_meeting",
@@ -4008,7 +4017,7 @@
     ],
     "claims": 6,
     "file": "data/luminacion/blabber/dialogues/nawom_morkulo_first_meeting.json",
-    "degree": 16
+    "degree": 17
    },
    {
     "id": "dlg:nerkeli_hangar_talk",
@@ -4040,7 +4049,7 @@
     ],
     "claims": 4,
     "file": "data/luminacion/blabber/dialogues/nuvilo_nerkeli_feria_del_milenio.json",
-    "degree": 13
+    "degree": 14
    },
    {
     "id": "dlg:nuvilo_scholar_at_the_feria",
@@ -4056,7 +4065,7 @@
     ],
     "claims": 4,
     "file": "data/luminacion/blabber/dialogues/nuvilo_scholar_at_the_feria.json",
-    "degree": 11
+    "degree": 12
    },
    {
     "id": "dlg:sonoros_lost_traveler",
@@ -4072,7 +4081,7 @@
     ],
     "claims": 6,
     "file": "data/luminacion/blabber/dialogues/sonoros_lost_traveler.json",
-    "degree": 15
+    "degree": 16
    },
    {
     "id": "npc:aureobalo",
@@ -5391,17 +5400,17 @@
     "city": "Puente Continental",
     "skin": true,
     "uuid": false,
-    "backstory": "",
-    "education": null,
-    "mode": "",
-    "known": 0,
+    "backstory": "A trader originally from Balahm, the desert ancient temple city where priests and traders make their dwelling. Usually found in Puente Continental, where he stops to let his camel rest on the way back and forth from Salthos Cruzados, the main city he conducts his trade with. Deals in precious stones - lapis lazuli, emerald, diamond, red stone.",
+    "education": 30,
+    "mode": "skewed",
+    "known": 111,
     "experience": [],
-    "developed": false,
-    "criterion": "",
+    "developed": true,
+    "criterion": "counts a life by what he actually delivered whole, stone by stone, not what he left half-carried on the road",
     "lifespan": null,
     "embodied": true,
     "file": "_lore/characters/",
-    "degree": 2
+    "degree": 80
    },
    {
     "id": "npc:zun",
@@ -12276,6 +12285,474 @@
     "weight": 1
    },
    {
+    "source": "npc:zarkatraz",
+    "target": "rte:air/Nvhi",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "rte:air/Terfila",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "chr:auroboro",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "chr:daaxagoras",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "chr:darnis",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "chr:esteban",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "chr:nikkostratos",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "chr:player_roster",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "con:hechizo_subsistencia_forzada",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "con:orikal",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "con:world_name_variants",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "cfl:CONFLICT-09",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "cfl:CONFLICT-15",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "cfl:CONFLICT-18",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "era:ensayo/Era del Confinamiento",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "era:ensayo/Era del Daax",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "era:ensayo/Okasia y la Segunda Etapa de Subsistencia",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "era:ensayo/Predicciones para el anio 1000 d.V.",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "era:esquema/Guerras de Görff",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "era:libro/Era del Mosaico",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "era:libro/Tercera Venida",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "dlg:aureobalo_farlis_castillo_en_miniatura",
+    "rel": "knows",
+    "weight": 2
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "dlg:auroboro_iii_farlis_alcoba",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "dlg:bardaglis_ilaria_khaoe_segunda_noche",
+    "rel": "knows",
+    "weight": 8
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "dlg:doran_eras_of_culture",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "dlg:doran_four_castles",
+    "rel": "knows",
+    "weight": 4
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "dlg:doran_plaza_orientation",
+    "rel": "knows",
+    "weight": 2
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "dlg:gondarfolas_darnis_and_bracco",
+    "rel": "knows",
+    "weight": 3
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "dlg:ilaria_espiral_de_la_historia",
+    "rel": "knows",
+    "weight": 2
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "dlg:khaoe_banco_colectivo",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "dlg:khaoe_calendario_mecanografico",
+    "rel": "knows",
+    "weight": 2
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "dlg:khaoe_farlis_lo_que_cambia_el_tiempo",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "dlg:khaoe_khaasan_partida_a_khan_ice",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "dlg:khaoe_milkucha_jardin_de_los_parajes",
+    "rel": "knows",
+    "weight": 4
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "dlg:nawom_morkulo_first_meeting",
+    "rel": "knows",
+    "weight": 3
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "dlg:nuvilo_nerkeli_feria_del_milenio",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "dlg:nuvilo_scholar_at_the_feria",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "dlg:sonoros_lost_traveler",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "inh:cross-locality travelers/routes (named, with a mode of travel)/Farlis",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "inh:cross-locality travelers/routes (named, with a mode of travel)/Garfeld",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "inh:Gorff/Garnako",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "inh:cross-locality travelers/routes (named, with a mode of travel)/Gizen",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "inh:Khol Moshin (Taterzen sheet, distinct from the NPC-sheet locality list above)/Gondorlikas",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "inh:Puente Continental/Grogar / Grograr",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "inh:Volcano-Gorff/Jaalax",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "inh:Terfila/Lumi",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "inh:unlocated (skin only, no locality/role given)/Mragk",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "inh:Gorff/Nroki",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "inh:Puente Continental/Sari",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "inh:Puente Continental/Soro",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "inh:Gorff/Tetto",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "inh:Puente Continental/Trifolis",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "inh:Puente Continental/Zarkatraz",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "loc:balham",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "loc:castillo_del_sol",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "loc:khan_ice",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "loc:khol_moshin",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "loc:kursuviros",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "loc:milkantida_as_place",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "loc:muro_norte",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "loc:nalhue",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "loc:nvhi",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "loc:orange_manor",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "loc:puerto_del_norte",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "loc:puerto_tortuga",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "loc:reznik",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "loc:salthos_cruzados",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "loc:shonogami",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "loc:sindaara",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "loc:templo_del_gato",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "rte:named/Ruta Lundria-Salthos Cruzados",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "rte:tr/Balhâm - Salthos Cruzados",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "rte:tr/Gorff - Khan Ice",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "rte:tr/Khol Moshin",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "year:2013",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "year:2019",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "year:2021",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
+    "source": "npc:zarkatraz",
+    "target": "year:2023",
+    "rel": "knows",
+    "weight": 1
+   },
+   {
     "source": "npc:zun",
     "target": "loc:gorff",
     "rel": "lives_in",
@@ -12445,8 +12922,8 @@
     "label": "Luminacion",
     "kind": "root",
     "path": ".",
-    "size": 468117517,
-    "degree": 13
+    "size": 468580894,
+    "degree": 14
    },
    {
     "id": "file:.gitignore",
@@ -12477,7 +12954,7 @@
     "label": "README.md",
     "kind": "doc",
     "path": "README.md",
-    "size": 49399,
+    "size": 55225,
     "degree": 1
    },
    {
@@ -12485,7 +12962,7 @@
     "label": "TODO.md",
     "kind": "doc",
     "path": "TODO.md",
-    "size": 116816,
+    "size": 154846,
     "degree": 1
    },
    {
@@ -12501,7 +12978,7 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
-    "size": 407961315,
+    "size": 407968309,
     "degree": 6
    },
    {
@@ -12525,7 +13002,7 @@
     "label": "settings.local.json",
     "kind": "other",
     "path": ".claude/settings.local.json",
-    "size": 537,
+    "size": 561,
     "degree": 1
    },
    {
@@ -12533,7 +13010,7 @@
     "label": "skills",
     "kind": "dir",
     "path": ".claude/skills",
-    "size": 172939,
+    "size": 179909,
     "degree": 11
    },
    {
@@ -12541,7 +13018,7 @@
     "label": "character",
     "kind": "dir",
     "path": ".claude/skills/character",
-    "size": 25013,
+    "size": 28288,
     "degree": 2
    },
    {
@@ -12549,7 +13026,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/character/SKILL.md",
-    "size": 25013,
+    "size": 28288,
     "degree": 1
    },
    {
@@ -12573,7 +13050,7 @@
     "label": "enact",
     "kind": "dir",
     "path": ".claude/skills/enact",
-    "size": 37804,
+    "size": 38797,
     "degree": 2
    },
    {
@@ -12581,7 +13058,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/enact/SKILL.md",
-    "size": 37804,
+    "size": 38797,
     "degree": 1
    },
    {
@@ -12653,7 +13130,7 @@
     "label": "simulate",
     "kind": "dir",
     "path": ".claude/skills/simulate",
-    "size": 46130,
+    "size": 48832,
     "degree": 2
    },
    {
@@ -12661,7 +13138,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/simulate/SKILL.md",
-    "size": 46130,
+    "size": 48832,
     "degree": 1
    },
    {
@@ -38468,7 +38945,7 @@
     "label": "_lore",
     "kind": "dir",
     "path": "_lore",
-    "size": 55374760,
+    "size": 55384183,
     "degree": 9
    },
    {
@@ -38484,7 +38961,7 @@
     "label": "encodings.json",
     "kind": "lore",
     "path": "_lore/encodings.json",
-    "size": 199814,
+    "size": 200796,
     "degree": 1
    },
    {
@@ -38508,7 +38985,7 @@
     "label": "characters",
     "kind": "dir",
     "path": "_lore/characters",
-    "size": 167251,
+    "size": 175692,
     "degree": 69
    },
    {
@@ -38788,7 +39265,7 @@
     "label": "lifespans.json",
     "kind": "lore",
     "path": "_lore/characters/lifespans.json",
-    "size": 1811,
+    "size": 1882,
     "degree": 1
    },
    {
@@ -39044,7 +39521,7 @@
     "label": "zarkatraz.json",
     "kind": "lore",
     "path": "_lore/characters/zarkatraz.json",
-    "size": 281,
+    "size": 8651,
     "degree": 1
    },
    {
@@ -40543,11 +41020,35 @@
     "degree": 1
    },
    {
+    "id": "dir:diagrams",
+    "label": "diagrams",
+    "kind": "dir",
+    "path": "diagrams",
+    "size": 35137,
+    "degree": 3
+   },
+   {
+    "id": "file:diagrams/extended-mode-pass.html",
+    "label": "extended-mode-pass.html",
+    "kind": "other",
+    "path": "diagrams/extended-mode-pass.html",
+    "size": 24352,
+    "degree": 1
+   },
+   {
+    "id": "file:diagrams/gen_extended_mode_pass.py",
+    "label": "gen_extended_mode_pass.py",
+    "kind": "other",
+    "path": "diagrams/gen_extended_mode_pass.py",
+    "size": 10785,
+    "degree": 1
+   },
+   {
     "id": "dir:graphs",
     "label": "graphs",
     "kind": "dir",
     "path": "graphs",
-    "size": 3821606,
+    "size": 4183330,
     "degree": 2
    },
    {
@@ -40555,7 +41056,7 @@
     "label": "graphifyish",
     "kind": "dir",
     "path": "graphs/graphifyish",
-    "size": 3821606,
+    "size": 4183330,
     "degree": 3
    },
    {
@@ -40563,7 +41064,7 @@
     "label": "graph.json",
     "kind": "graph",
     "path": "graphs/graphifyish/graph.json",
-    "size": 2083453,
+    "size": 2282000,
     "degree": 1
    },
    {
@@ -40571,7 +41072,7 @@
     "label": "graphifyish.html",
     "kind": "graph",
     "path": "graphs/graphifyish/graphifyish.html",
-    "size": 1738153,
+    "size": 1901330,
     "degree": 1
    },
    {
@@ -40723,7 +41224,7 @@
     "label": "scripts",
     "kind": "dir",
     "path": "scripts",
-    "size": 363448,
+    "size": 369691,
     "degree": 5
    },
    {
@@ -40771,7 +41272,7 @@
     "label": "lore",
     "kind": "dir",
     "path": "scripts/lore",
-    "size": 268815,
+    "size": 275058,
     "degree": 43
    },
    {
@@ -40795,7 +41296,7 @@
     "label": "apply_language_layer.py",
     "kind": "script",
     "path": "scripts/lore/apply_language_layer.py",
-    "size": 10592,
+    "size": 10777,
     "degree": 1
    },
    {
@@ -40947,7 +41448,7 @@
     "label": "register_arc_concept.py",
     "kind": "script",
     "path": "scripts/lore/register_arc_concept.py",
-    "size": 3981,
+    "size": 4347,
     "degree": 1
    },
    {
@@ -41035,7 +41536,7 @@
     "label": "sample_lore_knowledge.py",
     "kind": "script",
     "path": "scripts/lore/sample_lore_knowledge.py",
-    "size": 8741,
+    "size": 12287,
     "degree": 1
    },
    {
@@ -41043,7 +41544,7 @@
     "label": "simulate_generate_population.py",
     "kind": "script",
     "path": "scripts/lore/simulate_generate_population.py",
-    "size": 19206,
+    "size": 19319,
     "degree": 1
    },
    {
@@ -41051,7 +41552,7 @@
     "label": "simulate_pass_brief.py",
     "kind": "script",
     "path": "scripts/lore/simulate_pass_brief.py",
-    "size": 13254,
+    "size": 14034,
     "degree": 1
    },
    {
@@ -41067,7 +41568,7 @@
     "label": "simulate_pass_resolve.py",
     "kind": "script",
     "path": "scripts/lore/simulate_pass_resolve.py",
-    "size": 3896,
+    "size": 3964,
     "degree": 1
    },
    {
@@ -41107,7 +41608,7 @@
     "label": "write_arc.py",
     "kind": "script",
     "path": "scripts/lore/write_arc.py",
-    "size": 3954,
+    "size": 5139,
     "degree": 1
    },
    {
@@ -62218,6 +62719,24 @@
    },
    {
     "source": "dir:.",
+    "target": "dir:diagrams",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:diagrams",
+    "target": "file:diagrams/extended-mode-pass.html",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:diagrams",
+    "target": "file:diagrams/gen_extended_mode_pass.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.",
     "target": "dir:graphs",
     "rel": "contains",
     "weight": 1
@@ -62796,7 +63315,7 @@
     "label": "_lore/encodings.json",
     "kind": "source",
     "tier": 1,
-    "note": "58 locations, 19 concepts, 18 conflicts",
+    "note": "58 locations, 20 concepts, 18 conflicts",
     "degree": 5
    },
    {
@@ -64735,8 +65254,8 @@
     "label": "Zarkatraz",
     "kind": "person",
     "city": "Puente Continental",
-    "backstory": "",
-    "criterion": "",
+    "backstory": "A trader originally from Balahm, the desert ancient temple city where priests and traders make their dwelling. Usually found in Puente Continental, where he stops to let his camel rest on the way back and forth from Salthos Cruzados, the main city he conducts his trade with. Deals in precious stones - lapis lazuli, emerald, diamond, red stone.",
+    "criterion": "counts a life by what he actually delivered whole, stone by stone, not what he left half-carried on the road",
     "generation": 0,
     "color": "#fb2124",
     "deceased": false,
@@ -64763,5 +65282,5 @@
   ],
   "edges": []
  },
- "generated": "2026-08-13"
+ "generated": "2026-08-16"
 }

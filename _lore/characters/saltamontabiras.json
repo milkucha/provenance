@@ -18,21 +18,21 @@
   "routines": [
     {
       "location": "Terfila",
-      "archetype": "waystation",
+      "context": "waystation",
       "weight": 40,
-      "specialization": "breaks the camelback run here, always the middle stop, never the destination"
+      "routine_actions": "breaks the camelback run here, always the middle stop, never the destination"
     },
     {
       "location": "Görff",
-      "archetype": "waystation",
+      "context": "waystation",
       "weight": 30,
-      "specialization": "delivers whatever Tyrnea sent, picks up whatever Görff owes back"
+      "routine_actions": "delivers whatever Tyrnea sent, picks up whatever Görff owes back"
     },
     {
       "location": "Tyrnea",
-      "archetype": "market",
+      "context": "market",
       "weight": 30,
-      "specialization": "sells off the last of the caravan's goods before turning back"
+      "routine_actions": "sells off the last of the caravan's goods before turning back"
     }
   ]
 }
