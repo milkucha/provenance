@@ -250,6 +250,17 @@ as often as embellishment, and an unverified claim is not the same as a false on
 step on "did anyone say 'I heard X say...'" — that test only decides the two optional fields below,
 not whether the step happens at all.
 
+**The player is a full participant in this step, not an exception.** Whenever the player states
+something in-scene that reads as a kernel — an assertion, an opinion, an invented detail — it gets a
+claim exactly as it would for any NPC speaker, `about`-tagged the same way, held to the same "capture
+kernels, not connective tissue" bar. Don't silently skip this because the speaker is the player rather
+than an NPC — a scene where the player only asked questions and asserted nothing genuinely produces no
+player-sourced claims, but that has to be a real observation about *that* scene, not a default. The
+player has no `criterion`/`trusts`/`distrusts` on file, so their claims skip Step 5's mutation
+machinery entirely and go in as a flat, unmutated report of what they actually said — there's nothing
+to filter it through. This applies identically inside `/simulate`'s extended mode, since its subagent
+runs this exact step whenever a scene involves a player-equivalent participant.
+
 Build an entry for this dialog — participants, location, summary, and a `claims` list phrased as
 reported assertions (not restated as fact), each with an `about` reference
 into the objective arrays where it topically overlaps (a bare era name from `time_systems` is a valid

@@ -11,7 +11,7 @@ Reads two files at the worktree root:
   `placeholder_slug`/`character_slug`:
     {"children": [{"placeholder_slug": "...", "name": "Real Name",
                    "routines": [{"location": "...", "specialization": "..."}]}],
-     "arcs":     [{"character_slug": "...", "about": [...], "needs": [...], "archetype": "..."}]}
+     "arcs":     [{"character_slug": "...", "about": [...], "needs": [...], "archetype": "...", "premise": "..."}]}
 
 For each resolved child: the character's SLUG never changes (only ever the `name` field and prose
 that quotes it) - see `simulate_generate_population.py`'s docstring point 2 for why: renaming a slug
@@ -32,8 +32,9 @@ substitution of the placeholder name string, scoped to exactly the files
 Any routine specialization the subagent rewrote is applied by matching `location` against the
 child's own `routines[]`.
 
-For each resolved arc: writes `arc = {about, needs, archetype, resolution: "ongoing", history: []}`
-onto that character's file, then runs `register_arc_concept.py` now that `about` is real content -
+For each resolved arc: writes `arc = {about, needs, archetype, premise, resolution: "ongoing",
+history: []}` onto that character's file, then runs `register_arc_concept.py` now that `premise` is
+real content (folded into the registered concept's own `description`, not the old boilerplate) -
 mirroring the interactive skill's own rule that only a genuinely-authored arc gets registered (a
 transform or death-legacy reuses an existing tag and is never routed through this script at all).
 
@@ -163,12 +164,13 @@ def rename_child(placeholder_slug: str, placeholder_name: str, real_name: str, r
     print(f"renamed: {placeholder_slug}  '{placeholder_name}' -> '{real_name}'  ({renamed_elsewhere} other file(s) updated)")
 
 
-def apply_arc(character_slug: str, about: list, needs: list, archetype: str) -> None:
+def apply_arc(character_slug: str, about: list, needs: list, archetype: str, premise: str) -> None:
     character = load_char(character_slug)
     character["arc"] = {
         "about": about,
         "needs": needs or [],
         "archetype": archetype,
+        "premise": premise or "",
         "resolution": "ongoing",
         "history": [],
     }
@@ -204,7 +206,7 @@ def main() -> None:
         rename_child(slug, pending_children[slug]["placeholder_name"], entry["name"], entry.get("routines"))
 
     for entry in resolved.get("arcs", []):
-        apply_arc(entry["character_slug"], entry.get("about", []), entry.get("needs", []), entry.get("archetype", ""))
+        apply_arc(entry["character_slug"], entry.get("about", []), entry.get("needs", []), entry.get("archetype", ""), entry.get("premise", ""))
 
     print(call("build_source_index.py", []).strip())
 

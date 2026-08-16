@@ -140,7 +140,7 @@ def queue_arc(state: State, key: str, character: dict, reason: str, pass_number:
         "backstory": character.get("backstory", ""),
         "criterion": character.get("criterion", {}),
         "routines": character.get("routines", []),
-        "prior_arc": character.get("arc") if reason == "reauthor_failed" else None,
+        "prior_arc": character.get("arc") if reason in ("reauthor_failed", "reauthor_complete") else None,
     })
     return True
 
@@ -222,6 +222,7 @@ def run_pass(state: State, pass_number: int) -> str:
             if score >= ARC_RESOLUTION_THRESHOLD:
                 arc["resolution"] = "complete"
                 notes.append(f"{primacy}'s arc completed")
+                queue_arc(state, primacy, primary_char, "reauthor_complete", pass_number)
             elif score <= -ARC_RESOLUTION_THRESHOLD:
                 matched_about = gate_res.get("matched_about") or []
                 if matched_about:

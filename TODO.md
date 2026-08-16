@@ -1370,3 +1370,444 @@ one worktree's own data.
       committed - that needs a commit from a session that isn't worktree-isolated, or a manual `git add`
       + `git commit` in the main repo directly. Do this before starting new work there, or the sync
       history gets confusing.
+
+## `sample_lore_knowledge.py --mode skewed` can't do proportioned multi-topic splits (2026-08-16)
+
+Surfaced auditing `/character` Step 3 with the user (walking Zarkatraz through knowledge sampling from
+scratch). The user wanted a 30% draw split into three independently-sized thirds - one skewed toward
+Balahm/Salthos Cruzados, one toward trade, one genuinely random. Read `draw_sample()` directly to
+confirm rather than guess: every `--topic` value passed is OR'd into a single flat "matching" bucket via
+a plain case-insensitive substring check against each pool item's `id + " " + text`; there's no
+per-topic weighting and no third bucket - only "matched at least one given topic" vs. "everything else"
+(the random fallback fill). A request for N separately-proportioned topic groups in one draw isn't
+expressible as a single call today; the closest the tool supports is collapsing every topic into one
+skewed group against a single random remainder.
+
+- [ ] **Multi-topic proportioned skew.** Either extend `--mode skewed` to accept repeatable
+      `--topic-group "kw1,kw2" --group-percent <N>`-shaped args and allocate the sample across groups
+      (falling back to random for whatever's left), or explicitly document the current one-call
+      limitation in `/character` Step 3 and have the author hand-merge multiple single-topic draws
+      (one `sample_lore_knowledge.py` call per group, each at its own `--percent`) when an exact split
+      actually matters. Either way, a deliberate decision, not a silently-discovered gap each time
+      someone asks for this.
+
+## VERY IMPORTANT: the player's own lines aren't guaranteed to become claims (2026-08-16)
+
+Surfaced same audit session as the section above, user's explicit priority - this is how the user (the
+world's author) can shape canon *through enactment itself*, not just via `/tell` or uploaded material,
+so a silent drop here is a real authoring-control gap, not a cosmetic one.
+
+**Current state, checked against real data, not assumed:** the mechanism can already do this -
+`khaoe_milkucha_jardin_de_los_parajes` has several claims sourced to Milkucha (the player), e.g. "Milkucha
+built the Cinema in Grosslor," "Milkucha can move mountains using mod power..." - captured and folded
+into the pool exactly like an NPC's claims would be. But `sonoros_lost_traveler` and every `doran_*`
+solo dialogue have **zero** player-attributed claims, and nothing in `/enact` Step 5's text
+(`.claude/skills/enact/SKILL.md`) states a rule guaranteeing the player's own assertions get the same
+"capture the kernels" treatment an NPC's lines do - it currently rides entirely on the enacting agent's
+own per-scene judgment call about whether to bother. That may be correct in the two zero-claim scenes
+(the player may have only asked questions there, nothing assertion-worthy said) or may not be - there's
+no way to tell after the fact, and that's exactly the problem: nothing forces the question to even be
+asked.
+
+- [ ] **Make Step 5 treat the player as a full participant, explicitly, not by convention.** Add a
+      stated rule: whenever the player (as a named participant) states something in-scene that reads as
+      a kernel - an assertion, an opinion, an invented detail - it gets a claim exactly as it would for
+      any NPC speaker, `about`-tagged the same way, with the same "capture kernels, not connective
+      tissue" bar applying symmetrically. Mutation (Step 5's framing/emphasis/moral-judgment filter) is
+      normally driven by `criterion`/`trusts`/`distrusts`, which the player has none of on file - decide
+      explicitly whether the player's claims go in unmutated (a flat report of what they said, since
+      there's no criterion to filter it through) or whether some lighter treatment applies, rather than
+      leaving that undefined too. Applies to `/simulate` identically, since its subagent runs this same
+      Step 5 in full whenever a scene involves a player-equivalent participant.
+
+## `claim.about` doesn't feed `sample_lore_knowledge.py` - structural tag and keyword match diverge (2026-08-16)
+
+Same audit session. A claim's `about` (single ref or list, e.g. `["location: khan_ice", "concept:
+hotel_kholi"]`) links it to a target entry via `build_source_index.py`, but `_flatten_claims()` in
+`sample_lore_knowledge.py` only builds a hearsay pool item's matchable text from `claim.text` +
+`participants` + the scene's own location label - `about` is never read. So a claim structurally
+tagged `about: "location: khan_ice"` whose prose never says "Khan Ice" (e.g. only says "Hotel Kholi")
+is invisible to a `--mode skewed --topic "khan ice"` draw even though it's genuinely about that place.
+Confirmed real, not hypothetical: `gok_milkucha_alcove#1`'s Hotel Kholi claims are exactly this shape.
+
+- [ ] **Fold `about` into the claim's matchable text - but resolve it, don't just append the raw id.**
+      The cheap version (append the raw `about` strings like `location: khan_ice` to the claim's text)
+      only partially works: ids are snake_case machine keys (`khan_ice`), not what a human would type
+      as a `--topic` (`"Khan Ice"`, possibly with the diacritic `Khan Ic�`) - so it still misses the
+      natural-language case despite closing the literal-substring case. The complete fix resolves each
+      `about` reference to its target entry (same lookup `build_source_index.py` already does) and
+      pulls in *that entry's own* `names`/`description`-shaped text too, not just its bare id - a real
+      cross-category join inside `flatten_pool()`, since each category is currently flattened
+      independently with no lookups between them. Scope check before building: only affects `--mode
+      skewed` draws; random draws are already blind to text content by design and don't need this.
+      **Does not interact with the "no knowledge cascade" rule (confirmed 2026-08-16: sampling a
+      hearsay item never grants knowledge of its `about` target's own entry, by design - a character
+      can know a rumor about a place without knowing the place).** This fix only enriches the pool
+      item's *matching* text to widen which draws can select it; it must NOT change what
+      `knowledge.education.items` stores (still just `"hearsay: <id>#<n>"`) or what gets read at play
+      time (still just that claim's own `text`/`note`, never the resolved target's fields) - same
+      "text is for matching only, never shown as content" wall `sample_lore_knowledge.py`'s own
+      docstring already states for the existing case. Flagging explicitly since it's an easy line to
+      blur while implementing: pulling target text in for matching purposes could look, at a glance,
+      like it should also count as "knowing" that target - it must not.
+
+## CRITICAL, user design correction: epistemology should derive from source provenance, not pool category (2026-08-16)
+
+**User's explicit direction, overriding the current design.** `/character` Step 4d currently derives a
+criterion's `trusts`/`distrusts` lean from `epistemology_group`, a field assigned per *pool category*
+(`location`/`concept`/... -> `ambiguous`; `era_ensayo`/`era_esquema`/`era_libro`/`year_esquema` ->
+`chronicles`; `conflict` -> `conflict`; `hearsay` -> `hearsay`; **`tale` -> `hearsay`**). The user wants
+this replaced: **epistemology should be derived from `sources[].category` - `material`, `hearsay`, or
+`tale` - and nothing else.** Two specific corrections named:
+
+1. **Tale must not share hearsay's epistemology group.** Grouping `tale` under `hearsay` was an agent
+   design decision made while building this system, never actually surfaced to the user for
+   confirmation, and the user disagrees with it on inspection: a tale is *objective truth* (told
+   directly by the world's author, folded into the objective arrays, never subject to the
+   `inconsistent_with_record` doubt a hearsay claim can carry) even though it arrives through oral
+   tradition/narrative rather than documented material - closer to myth than to gossip. That's a third,
+   genuinely distinct epistemology, not a hearsay variant.
+2. **Provenance-driven, full stop:** knowing something because it's material, because it's hearsay, or
+   because it's a tale should be the *entire* signal - not which top-level array/category the item
+   happens to sit in. This removes the current `chronicles`/`conflict`/`ambiguous` groupings as
+   independent categories; whatever they get replaced with should fall out of provenance instead (see
+   open questions below - not decided here).
+
+**The complication, confirmed against real data, not hypothetical:** an entry's `sources` array can
+(and often does) carry more than one category at once. Checked `gorff` directly: 5 `material` sources
+(atlas coords, catastro, the libro, dated screenshots, NPC roster - what actually established the
+place) plus 10 `hearsay` sources (`khaoe_banco_colectivo#4`, `doran_plaza_orientation#4`, etc. - claims
+that later *mentioned* Görff, backlinks only, never merged into its own `names`/`region`/`notes`
+fields - this is NOT hearsay content overwriting or corroborating the objective entry, confirmed by
+reading the entry directly). 23 `location`/`concept` entries currently carry mixed `material`+`hearsay`
+sources this way. **User's resolution: when an item's sources span more than one category, pick one at
+random as the leading source for epistemology purposes**, rather than trying to rank or merge them.
+
+- [ ] **Implement provenance-based epistemology derivation**, replacing `epistemology_group` (or
+      repurposing the field to hold a provenance-category value instead of a pool-category one) as
+      `/character` Step 4d's actual lookup key. `material`/`hearsay`/`tale` each need their own row in
+      Step 4d's trusts/distrusts table (currently `hearsay`, `chronicles`, `conflict`, `ambiguous` -
+      `material` and `tale` don't cleanly exist as named rows yet since the table was built around pool
+      category, not provenance).
+- [ ] **Random tiebreak on multi-source items**, per the user's explicit call above. Left open,
+      flagged rather than silently decided:
+      - Random among literally every category present in `sources[]` (so Görff's 10 hearsay backlinks
+        and 5 material ones are just two options, coin-flip odds regardless of count - "random over the
+        *set* of categories present," not "random over the *list* of source entries," unless the user
+        wants the latter, which would let sheer backlink volume skew the odds) - or random weighted by
+        how many entries of each category are present (in which case Görff would lean 2:1 hearsay,
+        arguably backwards for a place material established and hearsay only later talked about,
+        flagged above as worth a second look) - or **original-source priority**: the category of
+        whichever `sources[]` entry was recorded *first* wins outright, no randomness, tiebreak only
+        needed if two entries genuinely tie for first. The user asked for "random," but which of these
+        three "random" actually means wasn't specified - needs a decision, not an assumption.
+      - Does a `hearsay` backlink (Görff's case: the location was *mentioned in* a claim, not itself
+        the claim) count toward this at all, or should only an item's *own* originating sources compete
+        for its epistemology, with backlinks from later-linked claims excluded entirely? This changes
+        the answer materially for every multi-sourced location/concept in the corpus.
+- [ ] **What happens to `conflict`-category items?** A conflict entry (`CONFLICT-NN`) is inherently
+      about two sources disagreeing - it's unclear what "provenance" even means for an anchor that IS a
+      disagreement between (potentially) two different provenance categories. Needs its own resolution,
+      not silently folded into the general tiebreak rule above.
+- [ ] **What happens to era/chronicle items?** `era_ensayo`/`era_esquema`/`era_libro`/`year_esquema`
+      currently get a distinct `chronicles` lean (trusts the written record) independent of `location`/
+      `concept`'s `ambiguous` lean, even though both are typically material-sourced. Under pure
+      provenance-derivation, both collapse to the same `material` epistemology, losing that distinction
+      entirely - confirm this is actually intended (per the user's "nothing else should matter" framing,
+      it reads as intended, but it's a real behavior change for any character whose anchor is an
+      era/year item, so flagging rather than assuming).
+- [ ] **Existing derived criteria are not retroactively affected** (criteria only change via a shock,
+      never by re-deriving - `/character` Step 4c/Step 6) but this does change what a *freshly derived*
+      criterion looks like from here on, and may be worth a pass over already-derived
+      `trusts`/`distrusts` fields to see whether any would read differently under the corrected model,
+      once it exists.
+
+## `/simulate` local-model driver for large-N stress runs (planned 2026-08-16, not yet built)
+
+**Goal, user's own framing:** run `/simulate` at thousands-of-passes scale - both to afford volume no
+commercial model API budget would cover, and to stress-test the mechanism itself with less reliance on
+agents (most of the mechanical work is already scripted per Steps 2/3's Phase A/C and the design debrief
+quoted there). Hardware: RTX 4070 Super, 12GB VRAM, 32GB RAM, Ryzen 7 5800XT. Ollama already installed
+with `qwen3:8b`, `qwen2.5-coder:14b`, `mistral:latest`, `llama3.2:1b` pulled (see the Model-agnosticism
+plan below) - **Mistral-Nemo-12B-Instruct-2407, the model chosen for this, is not pulled yet.**
+
+**Key distinction from the Model-agnosticism plan above - this is neither Axis A nor Axis B.** Axis A
+(point a local model at Claude Code's own tool-calling loop) already failed a real smoke test
+(2026-08-08, below): three distinct failure modes (hallucinated tool calls, under-triggered real ones,
+mid-conversation tool amnesia) across two models and two proxy paths, all pointing at the same root
+cause - an 8-14B local model doesn't reliably hold together inside a harness shaped around Claude's own
+tool-calling conventions. Axis B (switch to a model-agnostic harness like OpenHands) sidesteps that but
+is a real, still-unbuilt repo restructuring. This plan sidesteps both by removing the local model from
+any tool-calling loop entirely - it mirrors the pattern `-generate` mode's Step 4g/5g already established
+(the one subagent in that mode returns structured content only; a script applies it), extended to cover
+base/extended-mode Phase B, which today still has the Claude-dispatched subagent execute `/enact` Steps
+5/5b/6 directly via real tool calls. Text/JSON in, text/JSON out, every `py scripts/lore/*.py` call stays
+in a deterministic Python driver that always knows its own absolute paths - none of the three logged
+failure modes have a tool-calling protocol to fail at in the first place. Whether this reduces the
+urgency of the OpenHands pivot for `/simulate` specifically, or whether Axis B is still needed for other
+skills that genuinely need a full local agentic loop, is open - not resolved here.
+
+**Model choice: Mistral-Nemo-12B-Instruct-2407**, over `qwen2.5-coder:14b` (already pulled) and
+`qwen2.5-14B-Instruct` (not pulled). Once tool execution is off the model's plate, the job is ~pure
+two-character dialogue/roleplay plus a small structured judgment payload - coder specialization buys
+nothing there and costs prose quality; Nemo-12B is well-regarded specifically for natural two-character
+voice and fits the 12GB budget with headroom for context at Q4-Q6.
+
+**Architecture agreed so far:**
+- The local model's only job per pass: read the same brief `simulate_pass_brief.py` already produces,
+  return one JSON payload - the scene (character-vs-character dialogue, natural stopping point) plus
+  whichever judgment fields that pass's brief flags as open (reproduction name-blend, arc `about`/
+  `needs`/`archetype`, optional contested-rival name, hearsay mutation/shock-resolution/drift decisions -
+  the same four judgment slots Step 3's design debrief already enumerates as the only places a model's
+  judgment belongs). Schema/grammar-constrained decoding (GBNF via llama.cpp, or Ollama's JSON mode)
+  enforces the shape - not a model-specific concern, works regardless of which model is picked.
+- **New script needed, `scripts/lore/`** (location confirmed by the user): an apply script mirroring
+  `apply_language_layer.py`'s pattern but broader - Phase B today does the *full* `/enact` Steps 5/5b/6
+  (hearsay mutation, shock resolution, drift, record update) via direct tool calls made by the dispatched
+  subagent itself; this needs to become a script that takes the model's JSON and calls
+  `record_hearsay.py`/`update_character.py`/etc. deterministically instead. Not yet designed in detail -
+  see open questions below.
+- **New standalone driver loop, also `scripts/lore/`** - can no longer be a Claude Code `Agent` dispatch
+  (see above); a plain Python loop calling `simulate_pass_brief.py` -> the local model's API -> the new
+  apply script -> `simulate_pass_resolve.py`, per pass, with checkpointing so a multi-thousand-pass run
+  survives an interruption rather than losing progress. Not yet started.
+
+**Orchestrator role, once this exists (discussed, not yet spec'd into the skill file itself): shrinks to
+bookends, not per-pass dispatch.** The orchestrating model (Sonnet, or whatever this session runs on)
+still owns Step 0/1's interactive setup (worktree preconditions, participants/pass-count/pool - genuine
+judgment plus `AskUserQuestion`, can't be scripted away) and launches the driver loop - but no longer sits
+in the loop per pass. What still needs a capable model, and doesn't shrink with pass count: **Step 4's
+closing synthesis.** The tally script's output and the driver's structured pass log are just facts;
+turning them into the required prose Narrative report ("the shape of it - steady, volatile, stalled,
+resolved," "an honest account of what didn't happen") and any `LAB_REPORT.md` entry is a one-time
+synthesis cost regardless of whether N was 50 or 5000, and nothing the mechanical driver output can
+substitute for - this is the part of the current design that was never really about dispatching tasks and
+logging results, it's the part where the run's outcome actually gets *read and understood*.
+**Bonus structural simplification:** Step 3 point 4's git-leak safety net (the relative-path-resolves-
+against-the-main-checkout bug, observed at roughly a 1-in-10 pass rate even under maximal prompt
+hardening) becomes unnecessary by construction once tool execution moves into a driver script that always
+builds its own absolute paths from a known worktree argument - the exact failure class it exists to catch
+(a spawned Agent's cwd silently defaulting to the wrong checkout) can't occur without an Agent guessing at
+its own cwd in the first place.
+
+**Not yet decided / open questions:**
+- [ ] Exact JSON schema for the model's per-pass response (scene-text field, each judgment field's shape).
+- [ ] Whether the apply script is one file or split - mutation/shock-resolution/drift/record-update might
+      not collapse into one call as cleanly as `-generate` mode's language layer did.
+- [ ] How hearsay mutation and shock resolution - genuinely judgment-shaped, not mechanical - translate
+      into a JSON schema the driver can apply verbatim, versus needing the driver itself to still make
+      some interpretive choice (e.g. resolving `record_hearsay.py`'s exact argument shape from the
+      model's freeform mutation description).
+- [ ] Checkpointing/resume format for the driver loop across a multi-thousand-pass run.
+- [ ] Whether/how this interacts with `-generate` mode's own single batched subagent (Step 4g) - could
+      plausibly move to the same local-model pattern once the base-mode driver exists; not scoped here.
+- [ ] Cross-reference to the Model-agnosticism plan above: does this reduce the urgency of the OpenHands
+      repo-restructuring plan, or is that still needed for other skills? Not resolved.
+
+## Rename `routines[].archetype`/`.specialization` - the field names read backwards (2026-08-16)
+
+Surfaced auditing `/character` Step 8 with the user while hand-authoring Zarkatraz's routines. User's
+read, and it's correct: `archetype` is the shared, generic place-type template (texture + `provides`,
+identical for every character who has a routine tagged with it, authored once in
+`_lore/archetypes.json`) - it's the *context* a routine happens in, not a personality or role.
+`specialization` is the one-line personal grounding that makes a routine *this character's own* -
+it's what the character actually *does* there, i.e. the routine's own action, not a trait. The current
+names invert the intuitive reading (an "archetype" sounds like it describes the character; a
+"specialization" sounds like a skill/role label, not a scene of concrete action).
+
+- [ ] **Rename `archetype` -> `context`, `specialization` -> `routine_actions`** (or close variants,
+      user's call on exact wording) throughout: `_lore/archetypes.json` itself (filename and its
+      `_comment`), `/character` SKILL.md Step 8, `/simulate` SKILL.md (Step 3 extended mode's
+      archetype/texture lookup language throughout), and every script that references the field by
+      name - `write_arc.py` (`--archetype` CLI flag), `simulate_pass_lib.py`
+      (`resolve_archetype_for_location`), `check_needs_provides.py`'s docstring ("destination
+      archetype's provides tags"), `roll_routine.py` if it references the field anywhere. **Also a real
+      data migration, not just a rename**: every already-authored character file with a `routines[]`
+      array or an `arc` (the 6 pilot characters plus Zarkatraz once this session's work lands) has
+      `archetype`/`specialization` keys literally in their JSON right now - a field rename needs a
+      pass over all of them, not just the schema/docs, or old files silently stop matching what the
+      (renamed) code expects.
+
+## User design correction: `arc` should be authored at character creation, same as `routines` (2026-08-16)
+
+Surfaced continuing the Zarkatraz audit into `/character` Step 8's second half. Current Step 8 text
+treats `routines` and `arc` asymmetrically: `routines` is authored at character creation, always,
+hand-authored, no exceptions stated. `arc`, by contrast, is explicitly deferrable: "A character with
+no `arc` yet gets one authored the first time `/simulate`'s extended mode gives them primacy as
+`home_frame` - this can be left blank here and filled in then, rather than forced at
+character-creation time." **User's correction: this should be the same discipline as `routines` -
+authored at character creation as the default, with `/simulate`'s first-primacy-win authoring staying
+only as a fallback for a character that reached extended-mode play without ever getting one set.**
+
+- [ ] **Flip `/character` Step 8's `arc` guidance to match `routines`.** Author `arc` at the same time
+      as `routines` (it's explicitly seeded from routine archetype + specialization + criterion
+      together anyway, per Step 8's own text, so authoring them in the same pass is also more coherent
+      than splitting them across two different moments/skills). Keep the `/simulate`
+      `arc_authoring_needed` path (first primacy win, no arc on file) working exactly as it does now,
+      but reframe it in both `.claude/skills/character/SKILL.md` and `.claude/skills/simulate/SKILL.md`
+      as the fallback for a character that slipped through without one - not the normal path.
+- [ ] **Use `write_arc.py` from `/character` too, not only from `/simulate`.** It already does the
+      right thing regardless of caller (writes the arc + registers its `concept:` tag in
+      `encodings.json` in one call) - no new script needed, just a new caller. Worth double-checking
+      nothing in `write_arc.py`'s own docstring assumes a `/simulate` worktree context that wouldn't
+      hold when called directly from `/character` in the main repo (a quick read suggests it doesn't -
+      it just takes a character key and writes - but confirm before relying on it as the fallback-free
+      default path).
+
+## CRITICAL, user design correction: arcs have no persistent, concrete premise (2026-08-16)
+
+Surfaced authoring Zarkatraz's arc. Checked directly, not assumed: `character.arc` holds only
+`about`/`needs`/`archetype`/`resolution`/`history` - short tags, no prose field anywhere. The
+`concept:` entry `register_arc_concept.py` writes into `encodings.json`'s `description` doesn't fill
+that gap either - it's a templated sentence that just echoes the tags back ("`{name}`'s
+`/simulate`-authored arc project (archetype: `{archetype}`; needs: `{needs}`). Resolution as of this
+record: `{resolution}`..."), never a description of what the project concretely *is*. Net effect:
+**nothing about an arc's actual premise survives past the conversation that invented it.** Whoever
+plays a scene involving that arc later has to reconstruct its meaning fresh from four bare tags, with
+no guarantee they land on the same idea twice - and even the prose the agent DOES compose in a given
+authoring conversation (e.g. this session's first pass: "he's working toward a source he could stand
+behind if pressed") tends to default to something abstract, which stays incomprehensible as a
+"concrete project" even if it *were* saved verbatim.
+
+**User's correction is two-part, both required:**
+
+1. **Add a real, persistent prose field** - `arc.premise` (naming TBD) - written once at authoring
+   time (character creation, going forward per the `routines`-parity fix above) and re-written only
+   on a legitimate `transform`/re-author event, never drifting silently between those. This is the
+   actual fix for "the arc changes depending on who's telling it," which should only ever happen
+   through the tracked `transform` mechanism (`arc.history`, tally-gated) - never as an artifact of
+   nothing being on record to stay consistent with.
+2. **The premise must be concrete, not thematic.** User's worked example, replacing this session's
+   abstract first draft: not "find a legitimate source for his stones" (a theme/tension, not a
+   project), but "find a specific precious stone nobody else has found, and treasure it - a project
+   with a real object, a real name, and a real possible outcome (his descendants inheriting it if he
+   succeeds)." The stone needs an actual invented name, not a placeholder - **this is exactly the kind
+   of texture-invention `/enact`'s own Step 2 already licenses ("personality, mannerisms, small human
+   texture - invent freely") applied to arc premises specifically: the agent composing the premise
+   should name the object/place/person involved, but stay within what's actually plausible given the
+   character's own known knowledge/backstory** - the same "never invent as fact anything that
+   contradicts or extends the lore itself" boundary `/enact` Step 2 already states, not a new rule,
+   just applied to a spot (arc authoring) that currently has no such discipline attached to it at all.
+
+- [ ] **Schema: add `arc.premise`** (concrete, one-or-few-sentence prose, human/agent-authored) to the
+      character-file shape, `/character` Step 8, and `/simulate` SKILL.md's arc-authoring language.
+- [ ] **`write_arc.py` needs a new `--premise` argument** to actually persist this - currently only
+      accepts `--about`/`--needs`/`--archetype`, so there is no way to save this text through the
+      existing tool at all. Should stay a single required judgment-call argument, same discipline as
+      `--about`/`--needs`.
+- [ ] **New authoring guidance: concreteness bar for `arc.premise`, as an actual test, not just a
+      preference.** Needs an explicit instruction (in `/character` Step 8 and `/simulate`'s
+      arc-authoring language) that a premise names a real, singular object/goal/outcome - not a
+      tension or a theme - the same "anchor must be a concrete, singular case" discipline Step 4b
+      already enforces for `criterion.anchor`, applied here for the first time to arcs. Worth
+      cross-referencing Step 4b directly rather than restating the rule from scratch, since it's the
+      same underlying discipline. **Diagnosed from a real failure, not hypothetical**: this session's
+      first pass at Zarkatraz's arc ("find a legitimate source for his stones he could stand behind")
+      read as abstract and had to be redone after the user pushed back - the fix (a specific named
+      Órikal specimen, "la Lágrima de Balahm") worked, but nothing in the instructions would have
+      caught the first version on its own; it took a human noticing. Two concrete, checkable rules
+      worth writing into the instruction itself so this doesn't depend on being caught each time:
+      1. **The resolution-moment test.** The premise must support one sentence describing the exact
+         moment the arc resolves, success or failure (holds the stone / doesn't). If the honest answer
+         is inherently gradual - "builds a better reputation," "improves his standing," "finds better
+         sources over time" - it's still a theme wearing a project's clothes, not a concrete arc, and
+         needs to be pushed toward an actual object/person/place/event with a sharp yes/no outcome.
+      2. **Ground the target in something already known, when possible.** Prefer seeding the arc's
+         central object/goal from something already present in the character's own drawn
+         `knowledge.education.items` or the objective record (as done here: `concept: orikal` was
+         already in Zarkatraz's sample) over inventing a target from nothing - an existing corpus item
+         already carries real, checkable specifics (a name, a description, a status) for free, which
+         is exactly what made the second attempt concrete and the first one abstract.
+- [ ] **Clarify the `transform` interaction.** When a tally-triggered transform mechanically injects a
+      new `about` tag (`matched_about`, pulled from a peer's own knowledge item), does the agent still
+      compose fresh premise prose around it (most likely, matching the "re-authoring" judgment slot
+      `/simulate` Step 3 already names), or does something else need deciding? Not resolved here -
+      flagging so it doesn't get silently assumed either way when this is implemented.
+- [ ] **Retroactive question, not urgent:** the 6 pilot characters (Aureobalo, Döran, Khaoe, etc.) and
+      any arc `/simulate` has already authored in a worktree run all currently have this same gap -
+      abstract or absent premise, nothing concrete on record. Worth a backfill pass once the field
+      exists, not blocking the schema/tooling fix itself.
+
+## User design correction: `arc.premise` needs the same attribution discipline as everything else invented (2026-08-16)
+
+Surfaced reviewing the drafted Zarkatraz premise (Órikal / "la Lágrima de Balahm"). Real problem
+found, not a style nitpick: **every other invented/uncertain claim in this system carries a source and
+a confidence status** - hearsay is always "X said Y," gets `traceable`/`untraceable` via
+`lineage_coin.py`, and can be flagged `oral_lore`/`inconsistent_with_record`; a criterion's
+`cost_ledger` and `about` field exist so nothing floats free of a source. `arc.premise` (the field
+logged two sections above) was about to become the **one place in the whole system where invented
+content just gets asserted as flat narrator fact, with no speaker and no traceability** - the actual
+version of "sloppifying the story" the user flagged, not the specific content itself.
+
+**The fix distinguishes two different things that were being treated the same:**
+
+1. **Texture** (an invented name, a mood, a turn of phrase) - already licensed freely by `/enact`
+   Step 2 ("personality, mannerisms, small human texture - invent freely"), doesn't assert anything
+   checkable, stays safe to invent without attribution. Worked example: naming the stone "la Lágrima
+   de Balahm" is texture - fine as-is.
+2. **Claim-shaped content** (provenance, history, "it changed hands twice," "it's from his home
+   desert") - a fact-shaped statement about the world, which everywhere else in this system gets a
+   source. An `arc.premise` asserting one with no attribution is the actual gap.
+
+- [ ] **`arc.premise` authoring rule: claim-shaped detail must be attributed, not asserted.** Texture
+      (names, color) can be invented freely per the existing `/enact` Step 2 license. Anything
+      claim-shaped needs to be phrased as something a character heard/believes/reported ("he's heard,
+      secondhand and unconfirmed, that...") rather than stated as settled fact in the premise's own
+      voice - the same epistemic status hearsay already has, applied here for the first time. Needs a
+      line in whatever doc ends up hosting `arc.premise`'s authoring rule (`/character` Step 8 and
+      `/simulate`'s arc-authoring language, per the two sections above).
+- [ ] **New mechanism, user's own proposal: a "prone to rumor/embellishment" character trait.**
+      Concrete, nameable trait (not vague color) a character can carry, marking them as a legitimate
+      in-world source for unconfirmed/embellished claims - gives invented texture a real causal origin
+      (a specific unreliable narrator) instead of floating free, mirroring how folklore already spreads
+      through this system's hearsay mechanism. Real precedent already exists informally: Sonoros
+      already relays an unconfirmed claim without vouching for it
+      (`hearsay: sonoros_lost_traveler#5` - "Sálthos Cruzados is rumored to be the biggest town...
+      Sonoros does not confirm this, only reports the rumor") - this trait would formalize that
+      existing pattern into something explicitly flaggable on a character file, rather than something
+      that just happens to read that way in one dialog. Not built - where the trait lives
+      (`knowledge`? a new top-level field? `backstory` prose alone?) and how it interacts with
+      `lineage_coin.py`'s traceable/untraceable roll are both open, not decided here.
+
+## Bug: a completed arc never gets replaced - asymmetric with the failure path (2026-08-16)
+
+Confirmed by reading both places arc resolution is computed - `simulate_pass_brief.py` (interactive
+driver) and `simulate_generate_population.py` (`-generate` mode) - identical logic in both, so this
+isn't a one-off. Arc processing for a pass only runs at all when `arc.get("resolution") == "ongoing"`.
+When the tally crosses the *negative* threshold with no `matched_about` available, `resolution`
+becomes `"failed"` and `arc_authoring_needed`/`queue_arc(..., "reauthor_failed", ...)` fires in the
+same pass, immediately queuing a replacement. When the tally crosses the *positive* threshold,
+`resolution` becomes `"complete"` - and nothing else happens. No branch anywhere checks for
+`"complete"` and queues a fresh arc; the `elif ... == "ongoing"` guard means a completed arc is simply
+never touched again, forever, in either the interactive driver or `-generate` mode. **User's
+correction: a character who successfully completes their arc should get a new one authored, the same
+as a character whose arc fails - completion isn't a valid reason to stop having a project.**
+
+- [ ] **Fix: treat `"complete"` the same as `"failed"` for re-authoring purposes.** Add the
+      `arc_authoring_needed`/`queue_arc` call to the `score >= ARC_RESOLUTION_THRESHOLD` branch in both
+      `simulate_pass_brief.py` and `simulate_generate_population.py`, mirroring the `reauthor_failed`
+      shape (reason `"reauthor_complete"` or similar - `prior_arc` should still be passed for
+      continuity/contrast, same as the failure case). Cross-check whether `roll_death_legacy.py`'s
+      circle-selection logic (which copies an arc onto a living recipient) has any assumption baked in
+      about a source arc always being `"ongoing"` at the point it's copied - unclear from a first read,
+      worth confirming before this fix lands. **Explicit, not assumed (user, 2026-08-16): a
+      `reauthor_complete` arc must be authored under the exact same corrected rules as `"first"` and
+      `reauthor_failed"` - the resolution-moment test, grounding the target in the character's own
+      known corpus when possible, and the claim-attribution discipline for `arc.premise` (see the two
+      sections above). It reuses the same `arc_authoring_needed` slot as those two, so it inherits the
+      same governing instructions by construction, not by a separate rule that needs writing - but
+      worth stating outright rather than leaving as an assumption, per this project's own
+      nothing-decided-silently discipline.**
+- [ ] **Completion scenes need their own staging guidance, not just "dramatize the fixed outcome."**
+      Surfaced working through a hypothetical completion scene with the user: `/simulate`'s current
+      dispatch instructions treat every fixed arc outcome the same way ("the scene itself... is always
+      present and always fixed - dramatize it, never re-decide it"), but "advance" and "complete" are
+      not dramatically equivalent. An "advance" scene can be any small step forward and still read
+      fine. A "complete" scene has to depict the arc's object/goal actually being obtained/resolved
+      *within that one scene* - a first draft of this exact worked example wrongly showed a character
+      just handing over a *lead* (an advance-shaped beat) while the mechanical fact said "complete,"
+      which reads as inconsistent once you notice it. Needs explicit guidance for the subagent: a
+      completion scene must stage the culminating action itself (the object changing hands, the search
+      concluding), not another incremental step - and should be plausible as a single-sitting
+      resolution given the participants/location already fixed by that pass's brief, not just narrated
+      as suddenly finished.

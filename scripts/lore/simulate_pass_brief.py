@@ -10,9 +10,12 @@ instead of N in a row, with three deliberate stopping points left open for the s
 
 Exactly three things are deliberately left undecided here, flagged in the brief for the subagent to
 fill - nothing else in this file's output is the subagent's to decide:
-  - `arc_authoring_needed` - a character's first arc, or a re-authored one after a failure. Content
-    (about/needs/archetype) is composed by the subagent, then written with write_arc.py (which also
-    registers the concept in the same call).
+  - `arc_authoring_needed` - the fallback path for a character who reached extended-mode play
+    without an arc already on file (as of 2026-08-16, `/character` Step 8 authors `arc` at creation
+    time by default): their first arc, or a re-authored one after a failure or after completing the
+    prior one (`reauthor_failed`/`reauthor_complete` - completing an arc isn't a reason to stop
+    having one). Content (about/needs/archetype/premise) is composed by the subagent, then written
+    with write_arc.py (which also registers the concept in the same call).
   - `contested_hinder_slot` - only present on a contested visit that resolved "hinder" homeward. The
     subagent may dramatize this against a SPECIFIC existing rival (if one plausibly fits and already
     has a character file) or keep it ambient/unnamed (the default). If named, call
@@ -136,6 +139,13 @@ def run_pre_scene(pool: list, pass_number: int) -> dict:
                 arc["resolution"] = "complete"
                 tally_result = "complete"
                 notes.append(f"{primacy}'s arc completed")
+                arc_authoring_needed = {
+                    "character_slug": primacy, "reason": "reauthor_complete",
+                    "band": lib.horizon(primacy)["band"],
+                    "city": primary_char.get("city", ""), "backstory": primary_char.get("backstory", ""),
+                    "criterion": primary_char.get("criterion", {}), "routines": primary_char.get("routines", []),
+                    "prior_arc": arc,
+                }
             elif score <= -lib.ARC_RESOLUTION_THRESHOLD:
                 matched_about = gate_res.get("matched_about") or []
                 if matched_about:
@@ -237,7 +247,7 @@ def main() -> None:
     print(f"brief written: {BRIEF_PATH}")
     if brief["arc_authoring_needed"]:
         a = brief["arc_authoring_needed"]
-        print(f"JUDGMENT NEEDED - arc authoring: {a['character_slug']} ({a['reason']}, band={a['band']}) - compose about/needs/archetype, then run write_arc.py")
+        print(f"JUDGMENT NEEDED - arc authoring: {a['character_slug']} ({a['reason']}, band={a['band']}) - compose about/needs/archetype/premise, then run write_arc.py")
     if brief["contested_hinder_slot"]:
         c = brief["contested_hinder_slot"]
         print(f"JUDGMENT SLOT - contested hinder: may name an existing rival for {c['traveler']} (supplier: {c['supplier']}, provide: {c['matched_provide']}) - if named, run apply_contested_lead.py; otherwise leave ambient")

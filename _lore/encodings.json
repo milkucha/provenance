@@ -3507,6 +3507,16 @@
         }
       ],
       "notes": "previously known only through hearsay.md entries from played dialogues (e.g. nuvilo_nerkeli_feria_del_milenio, nuvilo_scholar_at_the_feria); this is its first appearance in the objective record. Individual pavilions are not named here; see hearsay.md and _npcs/npcs/registry.json for in-play detail (e.g. Iläria's 'Espiral de la Historia', established through the /enact skill as her personal backstory, not a primary-source fact)."
+    },
+    {
+      "id": "la_lagrima_de_balahm",
+      "names": [
+        "La Lágrima de Balahm",
+        "la_lagrima_de_balahm"
+      ],
+      "description": "A single, individual specimen of Órikal (see the `orikal` concept) that traders passing through Puente Continental have taken to calling 'la Lágrima de Balahm' (the Balahm Teardrop). Everything about its history is unconfirmed, secondhand trader rumor, not established fact: that it has already changed hands twice, and that it's said to come from somewhere in the Balahm desert. The subject of Zarkatraz's ongoing arc.",
+      "sources": [],
+      "notes": "Arc-authored (Zarkatraz, 2026-08-16) - a specific invented specimen layered on top of the real, established `orikal` concept. Its provenance/history claims are deliberately written as unconfirmed trader rumor rather than asserted fact, per the arc-premise attribution rule (see TODO.md). No material-source confirmation exists or should be implied."
     }
   ],
   "conflicts": [

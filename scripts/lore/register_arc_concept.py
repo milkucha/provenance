@@ -69,17 +69,25 @@ def main() -> None:
     needs = ", ".join(arc.get("needs", [])) or "none on record"
     archetype = arc.get("archetype", "unspecified")
     resolution = arc.get("resolution", "unspecified")
+    premise = arc.get("premise", "").strip()
     name = character.get("name", key)
 
-    entry = {
-        "id": cid,
-        "names": [humanize(cid), cid],
-        "description": (
+    if premise:
+        description = f"{premise} (Resolution as of this record: {resolution}.)"
+    else:
+        # Legacy fallback for an arc written before `premise` existed - the old boilerplate,
+        # which never actually described what the project concretely is. See TODO.md.
+        description = (
             f"{name}'s /simulate-authored arc project (archetype: {archetype}; needs: {needs}). "
             f"Resolution as of this record: {resolution}. Registered from the simulation's own "
             f"arc-tracking tag at authoring time - see the character's own arc.history for the "
             f"full progression."
-        ),
+        )
+
+    entry = {
+        "id": cid,
+        "names": [humanize(cid), cid],
+        "description": description,
         "sources": [],
         "notes": (
             "Auto-registered by register_arc_concept.py at arc-authoring time. Sourced entirely "

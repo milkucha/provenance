@@ -52,6 +52,10 @@
     "saltamontabiras": {
       "span": 49,
       "range": "30-60"
+    },
+    "zarkatraz": {
+      "span": 55,
+      "range": "30-60"
     }
   }
 }

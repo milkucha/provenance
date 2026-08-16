@@ -124,6 +124,56 @@ SHAPE_HANDLERS = {
 }
 
 
+def _enrich_hearsay_matching_text(data: dict, pool: list[dict]) -> None:
+    """Widens each hearsay pool item's matchable `text` with its own claim's resolved `about`
+    target(s), so a claim tagged e.g. `about: "location: khan_ice"` whose own prose never says
+    "Khan Ice" still becomes findable under a `--mode skewed --topic "khan ice"` draw - Khan Ice's
+    own `names`/`description` text gets folded in too, not just its bare id. See TODO.md
+    ("claim.about doesn't feed sample_lore_knowledge.py") for the gap this closes.
+
+    Deliberately best-effort, not a full resolver: only handles refs that already match a pool
+    item's own `"category: id"` key exactly, or (as a fallback) a bare id/name shared by exactly
+    one pool item - the same style of reference build_source_index.py resolves far more
+    thoroughly (fuzzy matching, bare-reference disambiguation). This never guesses past that; an
+    unresolvable ref is simply left alone, same as it is today.
+
+    Deliberately does NOT touch what a sampled character actually knows: `knowledge.education.items`
+    still stores only the bare "hearsay: <id>#<n>" pointer, and playing the character still reads
+    only that claim's own text/note, never the resolved target's fields - this only widens which
+    draws can SELECT the claim in the first place."""
+    if "hearsay" not in data.get("_categories", {}):
+        return
+
+    prefixed_index: dict[str, str] = {}
+    bare_index: dict[str, str] = {}
+    for item in pool:
+        prefixed_index[f"{item['category']}: {item['id']}"] = item["text"]
+        bare_index.setdefault(item["id"], item["text"])
+
+    def resolve(ref: str) -> str:
+        ref = ref.strip()
+        if ref in prefixed_index:
+            return prefixed_index[ref]
+        if ": " in ref:
+            ref = ref.split(": ", 1)[1].strip()
+        return bare_index.get(ref, "")
+
+    by_id = {item["id"]: item for item in pool if item["category"] == "hearsay"}
+    hearsay_spec = data["_categories"]["hearsay"]
+    for entry in _get_path(data, hearsay_spec["path"]):
+        for i, claim in enumerate(entry.get("claims", []), start=1):
+            about = claim.get("about")
+            if not about:
+                continue
+            refs = about if isinstance(about, list) else [about]
+            extra = " ".join(t for t in (resolve(r) for r in refs) if t)
+            if not extra:
+                continue
+            item = by_id.get(f"{entry['id']}#{i}")
+            if item is not None:
+                item["text"] = f"{item['text']} {extra}"
+
+
 def flatten_pool(data: dict) -> list[dict]:
     """Every atomic fact in encodings.json, as {category, id, text} dicts. 'text' is a loose
     bag of words used only for --mode skewed keyword matching, not shown to the user."""
@@ -154,6 +204,7 @@ def flatten_pool(data: dict) -> list[dict]:
             )
         handler(data, cat_key, spec, add)
 
+    _enrich_hearsay_matching_text(data, pool)
     return pool
 
 

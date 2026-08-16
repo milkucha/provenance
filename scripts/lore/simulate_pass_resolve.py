@@ -69,6 +69,7 @@ def main() -> None:
                         "about": list(deceased_arc.get("about", [])),
                         "needs": list(deceased_arc.get("needs", [])),
                         "archetype": archetype or deceased_arc.get("archetype"),
+                        "premise": deceased_arc.get("premise", ""),
                         "resolution": "ongoing",
                         "history": [],
                     }

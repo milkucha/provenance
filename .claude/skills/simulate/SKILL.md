@@ -61,17 +61,22 @@ to it):
   register as `character/SKILL.md` Step 8's own examples, e.g. "blacksmith, values good craft").
 - For each entry in `arcs`: author `about` (topic tags, at least one `"concept: <id>"` tag for a
   genuinely new project - see `register_arc_concept.py`), `needs` (what it currently requires, in
-  the same vocabulary `check_needs_provides.py` matches against an archetype's `provides` tags), and
+  the same vocabulary `check_needs_provides.py` matches against an archetype's `provides` tags),
   `archetype` (must be a key already in `_lore/archetypes.json`, ordinarily matching one of that
-  character's own `routines[].archetype`). Scope the ambition against the entry's own
+  character's own `routines[].archetype`), and `premise` (the arc's actual concrete content -
+  `character/SKILL.md` Step 8's full authoring discipline applies here too: the resolution-moment
+  test, grounding the target in the character's own known corpus when possible, and the
+  texture-vs-claim-shaped-content attribution rule). Scope the ambition against the entry's own
   `horizon_band` exactly as `character/SKILL.md` Step 8 prescribes: `early` can be ambitious;
   `established`/`late` should read as realistically closer to finishable. For `reason:
-  "reauthor_failed"`, read `prior_arc` for continuity/contrast rather than starting from nothing.
+  "reauthor_failed"` or `"reauthor_complete"`, read `prior_arc` for continuity/contrast rather than
+  starting from nothing.
 - Write `<worktree>/_pending_language_resolved.json` (absolute path) in exactly this shape:
   ```json
   {"children": [{"placeholder_slug": "...", "name": "...",
                  "routines": [{"location": "...", "specialization": "..."}]}],
-   "arcs":     [{"character_slug": "...", "about": ["..."], "needs": ["..."], "archetype": "..."}]}
+   "arcs":     [{"character_slug": "...", "about": ["..."], "needs": ["..."], "archetype": "...",
+                 "premise": "..."}]}
   ```
 - No scene-writing, no `AskUserQuestion`, no touching any other file. Report back only a short
   summary: how many children named, how many arcs authored.
@@ -324,12 +329,23 @@ four judgment slots above are open this pass:
   `parent_cooldown_passes` of their last birth, neither already lists the other in their own
   `parents`). Carries `name_lead` (which parent's name leads the blend - the one part of this
   decision that's still dice-driven, not the subagent's to pick) and `other_parent`.
-- `arc_authoring_needed` - present when the primacy winner needs a fresh arc: either their very
-  first one (primacy win as home_frame, no arc yet) or a re-authored one (their prior arc's tally
-  just crossed `-arc_resolution_threshold` with no gate hit to transform it into instead). Carries
-  `band` (scope the ambition against it, per `.claude/skills/character/SKILL.md` Step 8 - `early`
-  can be ambitious, `established`/`late` should read as realistically closer to finishable),
-  `criterion`, `routines`, and (for the re-author case) `prior_arc` for continuity/contrast.
+- `arc_authoring_needed` - the **fallback** path only, for a character who reached extended-mode
+  play without an arc already on file - as of 2026-08-16, `/character` Step 8 authors `arc` at
+  character creation by default, same discipline as `routines`, so this slot should be the
+  exception, not the normal way arcs come to exist (it still fires routinely for newborns from
+  `generate_offspring.py`, which never assigns one). Present when the primacy winner needs a fresh
+  arc for any of three reasons: their very first one (primacy win as home_frame, no arc yet), a
+  re-authored one after their prior arc's tally crossed `-arc_resolution_threshold` with no gate hit
+  to transform it into instead (`reason: "reauthor_failed"`), or a re-authored one after their prior
+  arc's tally crossed `+arc_resolution_threshold` and resolved `"complete"` (`reason:
+  "reauthor_complete"` - completing an arc isn't a reason to stop having one). Carries `band` (scope
+  the ambition against it, per `.claude/skills/character/SKILL.md` Step 8 - `early` can be
+  ambitious, `established`/`late` should read as realistically closer to finishable), `criterion`,
+  `routines`, and (for either re-author case) `prior_arc` for continuity/contrast. Whichever reason
+  fires, the fresh arc is authored under the exact same discipline as `/character` Step 8's own
+  `arc` guidance - the resolution-moment test, grounding the target in the character's own known
+  corpus when possible, and the texture-vs-claim-shaped-content attribution rule for `premise` - not
+  a lighter version because it happened here instead of in `/character`.
 - `contested_hinder_slot` - present only when a motivated visit rolled contested AND the alignment
   gate resolved `hinder`. Carries `traveler`, `supplier` (who the traveler heard it from - usually
   the home_frame character), and `matched_provide`. This one is genuinely optional even when
@@ -338,7 +354,15 @@ four judgment slots above are open this pass:
   the default and common case.
 - The scene itself (`mode`/`location`/`home_frame`/`traveler`/`archetype`/`texture`/`motivated`/
   `contested`/the arc's already-decided `outcome`) is always present and always fixed - dramatize
-  it, never re-decide it.
+  it, never re-decide it. **"advance" and "complete" are not staged the same way.** An "advance"
+  outcome can be any small step forward and still read fine. A "complete" outcome (`tally_result:
+  "complete"`) has to depict the arc's own object/goal actually being obtained or resolved *within
+  this one scene* - not another lead, not one step closer, the culminating action itself (the object
+  changing hands, the search concluding). It has to be plausible as a single-sitting resolution
+  given the participants/location this pass's brief already fixed, not narrated as abruptly
+  finished. A scene that hands the primacy winner a lead instead of the thing itself, while the
+  brief says "complete," is staged as "advance" and doesn't match the fixed fact - rewrite it so the
+  culminating moment actually happens on the page.
 
 **Phase B — Dispatch exactly one subagent** (Agent tool, `subagent_type: general-purpose`, the
 model chosen in Step 1, `run_in_background: false`), same as base mode. Brief it self-contained:
@@ -356,12 +380,16 @@ model chosen in Step 1, `run_in_background: false`), same as base mode. Brief it
     `about: "tale: birth_of_<key>"`, never a made-up concept tag. Knowledge inheritance (education
     items, general world-lore, family-lore experience) all happens inside this one call - see the
     script's own docstring if the exact fractions matter.
-  - `arc_authoring_needed`: compose `about`/`needs`/`archetype`, then run
-    `write_arc.py <character_slug> --about "<tag>" [--about "<tag>" ...] --needs "<tag>" [...] --archetype <name>`
+  - `arc_authoring_needed`: compose `about`/`needs`/`archetype`/`premise` per `/character` Step 8's
+    authoring discipline (resolution-moment test, ground the target in the character's own known
+    corpus when possible, texture vs. claim-shaped-content attribution for `premise`), then run
+    `write_arc.py <character_slug> --about "<tag>" [--about "<tag>" ...] --needs "<tag>" [...] --archetype <name> --premise "<premise text>"`
     (absolute path) - this single call writes the arc AND registers its `concept: <id>` tag in
-    `encodings.json` in the same step (folds what used to be two separate hand-tracked calls; see
-    `write_arc.py`'s own docstring for why forgetting the registration half was a recurring bug
-    before this fold).
+    `encodings.json` (with `premise` folded into the registered concept's own `description`, not
+    the old boilerplate) in the same step (folds what used to be two separate hand-tracked calls;
+    see `write_arc.py`'s own docstring for why forgetting the registration half was a recurring bug
+    before this fold). On a `reauthor_complete`/`reauthor_failed` re-author, read `prior_arc` for
+    continuity/contrast, same as any other re-authoring.
   - `contested_hinder_slot`: only if the scene actually names a specific existing rival, run
     `apply_contested_lead.py --traveler <slug> --rival <slug> --supplier <slug> --matched-provide "<tag>" --pass-number <N>`
     (absolute path) - writes the `leads` entry on the traveler's file and the fixed attributed note
