@@ -3501,6 +3501,86 @@
       "description": "A single, individual specimen of Órikal (see the `orikal` concept) that traders passing through Puente Continental have taken to calling 'la Lágrima de Balahm' (the Balahm Teardrop). Everything about its history is unconfirmed, secondhand trader rumor, not established fact: that it has already changed hands twice, and that it's said to come from somewhere in the Balahm desert. The subject of Zarkatraz's ongoing arc.",
       "sources": [],
       "notes": "Arc-authored (Zarkatraz, 2026-08-16) - a specific invented specimen layered on top of the real, established `orikal` concept. Its provenance/history claims are deliberately written as unconfirmed trader rumor rather than asserted fact, per the arc-premise attribution rule (see TODO.md). No material-source confirmation exists or should be implied."
+    },
+    {
+      "id": "dome_market_repair",
+      "names": [
+        "Dome Market Repair",
+        "dome_market_repair"
+      ],
+      "description": "Farkolus wants the cracked section of the Dome Market's old roof actually fixed before the rains, not patched again with borrowed tarps - real stone, a real crew, before the season turns. He's heard, secondhand and unconfirmed, that there's a mason still living in Terfila who trained on the original dome-work generations back, though he hasn't found her yet. (Resolution as of this record: ongoing.)",
+      "sources": [],
+      "notes": "Auto-registered by register_arc_concept.py at arc-authoring time. Sourced entirely from hearsay once build_source_index.py links it (see sources[]) - no material-source confirmation."
+    },
+    {
+      "id": "forlisen_incense_contract",
+      "names": [
+        "Forlisen Incense Contract",
+        "forlisen_incense_contract"
+      ],
+      "description": "Forlisen wants the temple's standing supply order for oil and wax - right now it goes to a merchant who ships it in from Salthos Cruzados at a markup, and she's certain her own stock, sourced closer, could underprice it if anyone at the temple would actually try her stall first. (Resolution as of this record: ongoing.)",
+      "sources": [],
+      "notes": "Auto-registered by register_arc_concept.py at arc-authoring time. Sourced entirely from hearsay once build_source_index.py links it (see sources[]) - no material-source confirmation."
+    },
+    {
+      "id": "farlan_overdue_crossing",
+      "names": [
+        "Farlan Overdue Crossing",
+        "farlan_overdue_crossing"
+      ],
+      "description": "Farlan logs every crossing on the Terfila-Görff route, and one boat - the one that carries Gondarfolas's own goods - has been three weeks overdue with no word. He means to find out what happened, one way or the other, before the harbor master lists it lost and moves on to the next manifest. (Resolution as of this record: ongoing.)",
+      "sources": [],
+      "notes": "Auto-registered by register_arc_concept.py at arc-authoring time. Sourced entirely from hearsay once build_source_index.py links it (see sources[]) - no material-source confirmation."
+    },
+    {
+      "id": "auroben_cursed_plot",
+      "names": [
+        "Auroben Cursed Plot",
+        "auroben_cursed_plot"
+      ],
+      "description": "Auroben wants to prove the city gardens' worst plot - the one everyone quietly blames on the old 882 d.V. curse - can still grow something whole. He's heard, secondhand and unconfirmed, that a gardener two generations back managed one good harvest there before giving up on it again; if true, it's been done before, and he means to do it again this season rather than just keep the soil turned over and call it managed. (Resolution as of this record: ongoing.)",
+      "sources": [],
+      "notes": "Auto-registered by register_arc_concept.py at arc-authoring time. Sourced entirely from hearsay once build_source_index.py links it (see sources[]) - no material-source confirmation."
+    },
+    {
+      "id": "aurora_peregrin_ledger",
+      "names": [
+        "Aurora Peregrin Ledger",
+        "aurora_peregrin_ledger"
+      ],
+      "description": "Aurora wants to keep an honest, first-hand record of every peregrin who passes through the temple and what they actually said the 'diverse divinity' looked like to them - not the tidy composite the old temple ledgers already claim to have settled. She means to have enough unedited testimony written down before the ledger comes up for its once-a-generation recopying, so what's carried forward is what was actually said, not the composite smoothed in last time. (Resolution as of this record: ongoing.)",
+      "sources": [],
+      "notes": "Auto-registered by register_arc_concept.py at arc-authoring time. Sourced entirely from hearsay once build_source_index.py links it (see sources[]) - no material-source confirmation."
+    },
+    {
+      "id": "krastomus_lending_case",
+      "names": [
+        "Krastomus Lending Case",
+        "krastomus_lending_case"
+      ],
+      "description": "Krastomus is building one real case - around a Dome Market stallholder he's watched work honestly for years, no family name behind them at all - to bring before the bank's senior partners before the season's ledgers close. He means to prove the bank's standing rule against lending past old money wrong, or watch it hold and know exactly what it costs. (Resolution as of this record: ongoing.)",
+      "sources": [],
+      "notes": "Auto-registered by register_arc_concept.py at arc-authoring time. Sourced entirely from hearsay once build_source_index.py links it (see sources[]) - no material-source confirmation."
+    },
+    {
+      "id": "terniko_succession_record",
+      "names": [
+        "Terniko Succession Record",
+        "terniko_succession_record"
+      ],
+      "description": "Terniko wants to settle, once and for all in the municipal record, whether the old citadel succession - prince Doran's father, and after him the two princes, Forlan and Forlias - actually passed cleanly, or whether the disputed half-record everyone in the office quietly argues about is closer to the truth. He's pulled the oldest ledger up from storage and means to have a real answer entered before the record's next official review, not another shrug passed on to whoever takes the desk after him. (Resolution as of this record: ongoing.)",
+      "sources": [],
+      "notes": "Auto-registered by register_arc_concept.py at arc-authoring time. Sourced entirely from hearsay once build_source_index.py links it (see sources[]) - no material-source confirmation."
+    },
+    {
+      "id": "muli_gorff_correction",
+      "names": [
+        "Muli Gorff Correction",
+        "muli_gorff_correction"
+      ],
+      "description": "Muli wants Terfila's own municipal record to finally list Görff's Collective as what it actually is now - a real, horizontally-run body - rather than the old entry that still names individual claimants who left or died years ago. She means to get the correction filed and stamped before the next cross-city census, so the record matches what she already knows firsthand from home instead of what a clerk assumed decades back. (Resolution as of this record: ongoing.)",
+      "sources": [],
+      "notes": "Auto-registered by register_arc_concept.py at arc-authoring time. Sourced entirely from hearsay once build_source_index.py links it (see sources[]) - no material-source confirmation."
     }
   ],
   "conflicts": [

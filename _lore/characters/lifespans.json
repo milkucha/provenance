@@ -56,6 +56,38 @@
     "zarkatraz": {
       "span": 55,
       "range": "30-60"
+    },
+    "farkolus": {
+      "span": 35,
+      "range": "30-60"
+    },
+    "forlisen": {
+      "span": 56,
+      "range": "30-60"
+    },
+    "farlan": {
+      "span": 58,
+      "range": "30-60"
+    },
+    "auroben": {
+      "span": 52,
+      "range": "30-60"
+    },
+    "aurora": {
+      "span": 57,
+      "range": "30-60"
+    },
+    "krastomus": {
+      "span": 52,
+      "range": "30-60"
+    },
+    "terniko": {
+      "span": 40,
+      "range": "30-60"
+    },
+    "muli": {
+      "span": 35,
+      "range": "30-60"
     }
   }
 }

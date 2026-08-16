@@ -15,5 +15,25 @@
   "waystation": {
     "texture": "Travelers passing through, news carried in and out, brief contact that isn't expected to repeat, schedules and delays.",
     "provides": ["news", "contacts"]
+  },
+  "port": {
+    "texture": "Ships arriving and departing, cargo manifests, customs, tides and sailing schedules, news and goods carried in fresh with every crew.",
+    "provides": ["goods", "materials", "news", "contacts"]
+  },
+  "temple": {
+    "texture": "Rites, quiet devotion, disputes over doctrine or upkeep, the material cost of keeping a sacred place running, pilgrims and mourners passing through.",
+    "provides": ["records", "expertise", "contacts"]
+  },
+  "gardens": {
+    "texture": "Growing things, seasons and blight, water rights, quiet unglamorous labor, a green space the rest of the city treats as either a shared resource or an afterthought to fund.",
+    "provides": ["materials", "goods", "expertise"]
+  },
+  "municipality": {
+    "texture": "Permits, disputes referred upward, budgets, the paperwork that makes a city a city, favors owed and called in.",
+    "provides": ["records", "contacts", "expertise"]
+  },
+  "bank": {
+    "texture": "Ledgers, loans, interest, a city's money moving or not moving, trust extended or withdrawn, disputes over debts.",
+    "provides": ["records", "contacts", "trade"]
   }
 }
