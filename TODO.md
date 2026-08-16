@@ -1483,39 +1483,31 @@ reading the entry directly). 23 `location`/`concept` entries currently carry mix
 sources this way. **User's resolution: when an item's sources span more than one category, pick one at
 random as the leading source for epistemology purposes**, rather than trying to rank or merge them.
 
-- [ ] **Implement provenance-based epistemology derivation**, replacing `epistemology_group` (or
-      repurposing the field to hold a provenance-category value instead of a pool-category one) as
-      `/character` Step 4d's actual lookup key. `material`/`hearsay`/`tale` each need their own row in
-      Step 4d's trusts/distrusts table (currently `hearsay`, `chronicles`, `conflict`, `ambiguous` -
-      `material` and `tale` don't cleanly exist as named rows yet since the table was built around pool
-      category, not provenance).
-- [ ] **Random tiebreak on multi-source items**, per the user's explicit call above. Left open,
-      flagged rather than silently decided:
-      - Random among literally every category present in `sources[]` (so Görff's 10 hearsay backlinks
-        and 5 material ones are just two options, coin-flip odds regardless of count - "random over the
-        *set* of categories present," not "random over the *list* of source entries," unless the user
-        wants the latter, which would let sheer backlink volume skew the odds) - or random weighted by
-        how many entries of each category are present (in which case Görff would lean 2:1 hearsay,
-        arguably backwards for a place material established and hearsay only later talked about,
-        flagged above as worth a second look) - or **original-source priority**: the category of
-        whichever `sources[]` entry was recorded *first* wins outright, no randomness, tiebreak only
-        needed if two entries genuinely tie for first. The user asked for "random," but which of these
-        three "random" actually means wasn't specified - needs a decision, not an assumption.
-      - Does a `hearsay` backlink (Görff's case: the location was *mentioned in* a claim, not itself
-        the claim) count toward this at all, or should only an item's *own* originating sources compete
-        for its epistemology, with backlinks from later-linked claims excluded entirely? This changes
-        the answer materially for every multi-sourced location/concept in the corpus.
-- [ ] **What happens to `conflict`-category items?** A conflict entry (`CONFLICT-NN`) is inherently
-      about two sources disagreeing - it's unclear what "provenance" even means for an anchor that IS a
-      disagreement between (potentially) two different provenance categories. Needs its own resolution,
-      not silently folded into the general tiebreak rule above.
-- [ ] **What happens to era/chronicle items?** `era_ensayo`/`era_esquema`/`era_libro`/`year_esquema`
-      currently get a distinct `chronicles` lean (trusts the written record) independent of `location`/
-      `concept`'s `ambiguous` lean, even though both are typically material-sourced. Under pure
-      provenance-derivation, both collapse to the same `material` epistemology, losing that distinction
-      entirely - confirm this is actually intended (per the user's "nothing else should matter" framing,
-      it reads as intended, but it's a real behavior change for any character whose anchor is an
-      era/year item, so flagging rather than assuming).
+- [x] **Implemented 2026-08-16.** `epistemology_group` removed entirely from `_categories` (every
+      entry, plus its own method note explaining why a category-level field never worked - two items
+      in the same category can have different provenance). New `scripts/lore/anchor_epistemology.py`
+      resolves an anchor's provenance mechanically (`material`/`hearsay`/`tale` from `sources[0]`, or
+      the trivial self-evident case when the anchor's own category already is one of those). `/character`
+      Step 4d rewritten around it, with a `material`/`hearsay`/`tale` trusts/distrusts table replacing
+      the old `ambiguous`/`chronicles`/`conflict`/`hearsay` one. Tested against real data including the
+      exact Görff mixed-provenance case cited above.
+- [x] **Tiebreak resolved: original-source priority**, not random. `sources[]` is append-only
+      (`build_source_index.py` only ever adds backlinks onto what's already there), so "recorded
+      first" means "what actually established this in the record," not an arbitrary pick - and it
+      naturally excludes later backlinks from competing at all, closing the exact "10 hearsay backlinks
+      shouldn't outweigh 5 founding material sources" problem this section flagged. Verified: Görff
+      resolves to `material` (its first-recorded source), correctly ignoring its 10 later hearsay
+      mentions regardless of count.
+- [x] **Conflict resolved: kept as a fixed special case, outside the material/hearsay/tale system
+      entirely.** A conflict is definitionally two sources disagreeing, not sourced from one
+      provenance - `anchor_epistemology.py` reports it as a special case rather than computing
+      anything, and Step 4d keeps its existing fixed row unchanged (trusts verification, distrusts
+      certainty). (Same treatment extended to `experience`-entry anchors, which aren't in
+      `encodings.json` at all and so have no `sources[]` to resolve either - also kept as a fixed
+      special case, a call made during implementation, worth confirming.)
+- [x] **Era/chronicle distinction eliminated, confirmed by the user.** Era/year items now resolve to
+      `material` the same as any other material-sourced item, per "we only want material, hearsay and
+      tale" (user, 2026-08-16).
 - [ ] **Existing derived criteria are not retroactively affected** (criteria only change via a shock,
       never by re-deriving - `/character` Step 4c/Step 6) but this does change what a *freshly derived*
       criterion looks like from here on, and may be worth a pass over already-derived

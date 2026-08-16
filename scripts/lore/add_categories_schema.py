@@ -8,15 +8,16 @@ Every entry here reproduces `sample_lore_knowledge.py`'s previous hardcoded `fla
 exactly - this migration changes WHERE the shape is described (data, not code), not what the pool
 actually contains. Verified via scripts/lore/compare_pool.py against a pre-migration baseline.
 
-`epistemology_group` ties each category to a row in `/character` Step 4d's trusts/distrusts table
-(`.claude/skills/character/SKILL.md`) - "ambiguous" for the bottom row (read the lean from backstory
-instead), or a named group ("chronicles", "conflict", "hearsay") matching that table's other rows.
-When `/integrate` Pass 1 approves a genuinely new category, it registers a spec here (`shape: "list"`
-covers a flat list of `{id-ish field, ...}` dicts automatically; a structurally novel shape needs a new
-handler added to `sample_lore_knowledge.py`'s SHAPE_HANDLERS by hand - this migration doesn't remove
-that limit, it only removes hardcoded per-path iteration for every category that already follows the
-common shape) and proposes an `epistemology_group` for the user to confirm, appending a new Step 4d
-table row if it's genuinely new territory rather than joining an existing group.
+Historical note (2026-08-16): this migration originally also stamped each category with an
+`epistemology_group` field, tying it to a row in /character Step 4d's old trusts/distrusts table.
+That field has since been removed entirely - Step 4d now derives trusts/distrusts per item from that
+item's own `sources[]` provenance (`scripts/lore/anchor_epistemology.py`), not from a per-category
+classification, so the CATEGORIES dict below no longer needs one and this script won't reintroduce it
+if ever re-run. When `/integrate` Pass 1 approves a genuinely new category, it registers a spec here
+(`shape: "list"` covers a flat list of `{id-ish field, ...}` dicts automatically; a structurally novel
+shape needs a new handler added to `sample_lore_knowledge.py`'s SHAPE_HANDLERS by hand - this
+migration doesn't remove that limit, it only removes hardcoded per-path iteration for every category
+that already follows the common shape) - nothing else needs authoring alongside it anymore.
 
 Usage:
     py scripts/lore/add_categories_schema.py
@@ -32,75 +33,60 @@ CATEGORIES = {
     "location": {
         "path": "locations", "shape": "list", "id_field": "id",
         "text_fields": ["names", "region", "type_catastro", "notes"],
-        "epistemology_group": "ambiguous",
     },
     "concept": {
         "path": "concepts", "shape": "list", "id_field": "id",
         "text_fields": ["names", "description", "notes"],
-        "epistemology_group": "ambiguous",
     },
     "conflict": {
         "path": "conflicts", "shape": "list", "id_field": "id",
         "text_fields": ["topic", "detail"],
-        "epistemology_group": "conflict",
     },
     "character_legendary": {
         "path": "characters.in_world_or_legendary", "shape": "list", "id_field": "id",
         "text_fields": ["names", "role", "notes"],
-        "epistemology_group": "ambiguous",
     },
     "character_real": {
         "path": "characters.real_world_authors_and_players", "shape": "list", "id_field": "id",
         "text_fields": ["names", "role"],
-        "epistemology_group": "ambiguous",
     },
     "inhabitant": {
         "path": "characters.named_inhabitants.by_locality", "shape": "grouped_list",
-        "epistemology_group": "ambiguous",
     },
     "highway": {
         "path": "routes.highways", "shape": "list", "id_field": "code",
         "text_fields": ["name"],
-        "epistemology_group": "ambiguous",
     },
     "train_segment": {
         "path": "routes.trains.segments", "shape": "list", "id_field": "name",
         "text_fields": ["name"],
-        "epistemology_group": "ambiguous",
     },
     "airport": {
         "path": "routes.airports", "shape": "list", "id_field": "location",
         "text_fields": ["location"],
-        "epistemology_group": "ambiguous",
     },
     "route_named": {
         "path": "routes.named_but_unplotted", "shape": "list", "id_field": "name",
         "text_fields": ["name"],
-        "epistemology_group": "ambiguous",
     },
     "era_ensayo": {
         "path": "time_systems.ensayo_i_eras", "shape": "list", "id_field": "name",
         "text_fields": ["name"],
-        "epistemology_group": "chronicles",
     },
     "era_esquema": {
         "path": "time_systems.esquema_poster_eras.era_row", "shape": "list", "id_field": "name",
         "text_fields": ["name"],
-        "epistemology_group": "chronicles",
     },
     "year_esquema": {
         "path": "time_systems.esquema_poster_eras.year_by_year_foundations", "shape": "list",
         "id_field": "year", "text_fields": ["places"],
-        "epistemology_group": "chronicles",
     },
     "era_libro": {
         "path": "time_systems.libro_venidas_eras.list", "shape": "list", "id_field": "name",
         "text_fields": ["name"],
-        "epistemology_group": "chronicles",
     },
     "hearsay": {
         "path": "hearsay.entries", "shape": "claims",
-        "epistemology_group": "hearsay",
     },
 }
 

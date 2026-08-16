@@ -56,15 +56,12 @@ will hit step 2's "doesn't fit any existing category" branch, which is expected,
      explicitly to the user — that shape needs a new handler written into that script's
      `SHAPE_HANDLERS` by hand before the category can be sampled, and sampling will refuse to run
      until one exists rather than silently skip the category.
-   - **Also propose an `epistemology_group` for the new category**, for `/character` Step 4d's
-     trusts/distrusts table (`.claude/skills/character/SKILL.md`): does holding this kind of knowledge
-     imply a lean (join an existing group — `"chronicles"`, `"conflict"`, `"hearsay"` — or genuinely
-     new territory, needing a new Step 4d table row drafted and confirmed), or is it `"ambiguous"` like
-     most categories (the lean gets read from a character's backstory instead, per Step 4d)? This is
-     real interpretive judgment, not a lookup — draft a proposal and let the user confirm or redirect
-     it, the same discipline every other judgment call in this skill already follows. Never derive it
-     from category size or how much of the corpus it takes up — Step 4d documents exactly why that
-     approach already failed once.
+   - **No epistemology proposal needed anymore (2026-08-16).** `/character` Step 4d used to need a
+     per-category `epistemology_group` classification here; it now derives trusts/distrusts per item
+     from that item's own `sources[]` provenance instead (`scripts/lore/anchor_epistemology.py`), so a
+     newly-registered category needs nothing beyond the `_categories` spec above — `has_sources: true`
+     (the default for any category that carries a `sources` list, per point 3 below) is all Step 4d
+     needs to work with it.
 3. Fold the transcribed material into `encodings.json`'s objective arrays (`time_systems`,
    `locations`, `routes`, `characters`, `concepts`) in the same shape as their existing entries. For the
    four categories that carry a `sources` list (`locations`, `concepts`,
@@ -81,8 +78,8 @@ will hit step 2's "doesn't fit any existing category" branch, which is expected,
    sources; otherwise it's a standalone gap).
 5. Report a short summary back to the user: what was added, how many new entries per array, how many
    new conflicts (if any) and what they're about, how many new open questions, and whether a new
-   category was created (with its `_categories` spec and proposed `epistemology_group`). Flag every
-   new conflict and every new category explicitly — don't bury either in a large diff.
+   category was created (with its `_categories` spec). Flag every new conflict and every new category
+   explicitly — don't bury either in a large diff.
 
 ## Pass 2 — Hearsay coverage audit
 

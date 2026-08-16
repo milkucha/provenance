@@ -142,49 +142,58 @@ A criterion implies an epistemology. What a character believes a life is *for* s
 trust to tell them how to live it — so the same anchor that gives them a standard also gives them a
 lean about which **kind of knowing** carries weight.
 
-The signal is already in the anchor, because every anchor carries its pool category:
+**Derived from provenance, and only provenance (design correction, 2026-08-16)** — knowing something
+because it's `material`, because it's `hearsay`, or because it's a `tale` is the entire signal. This
+replaced an earlier pool-category-based table (ambiguous/chronicles/conflict/hearsay groupings) that
+never actually worked: two items in the same pool category — two locations, say — can have completely
+different provenance, which a category-level classification could never express.
 
-| Anchor category | The character built their life on… | Leans toward | Leans against |
-|---|---|---|---|
-| `hearsay: <entry>#<n>` | what someone said | testimony, especially named and firsthand | the written record, as bloodless or secondhand |
-| `era_ensayo`, `era_libro`, `era_esquema`, `year_esquema` | the chronicles | what's written down and checkable | gossip, rumor, "they say" |
-| `conflict: CONFLICT-NN` | two records disagreeing | verification; distrusts confident answers of any kind | anyone who sounds certain |
-| an `experience` entry | what they saw themselves | firsthand presence | anything nobody present can vouch for |
-| `location`, `inhabitant`, `concept`, route/airport categories | ambiguous on its own | — | — |
+Run `py scripts/lore/anchor_epistemology.py "<anchor>"` to resolve it mechanically — the script only
+computes the signal, same discipline as every other script in this pack. Four cases:
 
-This table's rows are the four `epistemology_group` values `_lore/encodings.json`'s own `_categories`
-block tags each pool category with (`hearsay`, `chronicles`, `conflict`, plus `ambiguous` for the
-bottom row — an `experience` entry isn't a pool category at all, it's `knowledge.experience`, but gets
-the same firsthand-presence lean regardless). When `/integrate` approves a genuinely new category, it
-either joins one of these groups or proposes a new row here — never invent one without that proposal
-being confirmed first, same as every other judgment call in this pack.
+1. **The anchor's own category already IS a provenance.** `hearsay: <entry>#<n>` resolves trivially to
+   `hearsay` — the item *is* a hearsay claim. `tale: <id>` resolves trivially to `tale`. No lookup.
+2. **`conflict: CONFLICT-NN` is a fixed special case, outside this system entirely** — a conflict is
+   definitionally two sources disagreeing, not sourced from one provenance itself, so it doesn't get
+   a material/hearsay/tale derivation at all. Kept exactly as before: `trusts: "verification"` /
+   `distrusts: "anyone who sounds certain"`.
+3. **An `experience` entry is also a fixed special case**, for the same structural reason: it lives in
+   the character's own file, not in `encodings.json`, so there's no `sources[]` to resolve at all —
+   it's the character's own firsthand witness, full stop. Kept exactly as before: `trusts: "firsthand
+   presence"` / `distrusts: "anything nobody present can vouch for"`.
+4. **Everything else** (`location`, `concept`, `era_*`, `character_*`, route/airport categories, ...) —
+   the script reads the item's own `sources[]` array and reports the *first-recorded* entry's
+   category. `sources[]` is append-only (`build_source_index.py` only ever adds hearsay/tale
+   backlinks onto what's already there), so "recorded first" means "what actually established this
+   in the record" — not an arbitrary pick among however many backlinks have since accumulated.
+   Checked against real mixed-provenance data: Görff carries 5 `material` sources (what actually put
+   it on the map) plus 10 `hearsay` backlinks (later conversations that happened to mention it) — the
+   script correctly reports `material`, ignoring the later backlinks regardless of their count.
+   If `sources[]` is empty (a freshly arc-authored concept with no link yet), the script says so
+   plainly — **leave `trusts`/`distrusts` blank rather than guess**, same discipline as
+   `origin: "uncollided"` elsewhere in this file. A character with no particular epistemology is
+   perfectly normal.
 
-For the ambiguous bottom row, don't force it — read the lean off the **backstory** instead (a
-seafarer who reads history trusts differently from a bard who collects what people say), or leave
-both fields blank. A character with no particular epistemology is perfectly normal.
-
-**Do not derive this from which category the character holds most of.** That was tried and it fails:
-one dialog yields many `hearsay` claims while an era yields one item, so the pool is hearsay-heavy
-for everybody, and raw counts made five of the first seven characters "testimony-trusters" —
-including Iläria, who *wrote one of the chronicles* and holds 15 of the corpus's conflicts. Raw
-distribution measures how the sample was drawn (your own `--mode skewed` topics, e.g. a "15%
-hearsay-only" slice), not who the character is.
-
-What *is* usable, and only as a tiebreaker when the anchor lands in the ambiguous row:
-**over-representation against the other characters' baseline.** Döran holding 12% chronicle items
-where everyone else holds 2–7%, or Iläria holding 15 conflicts where others hold 0–6, is a real
-signal. "Has more hearsay than anything else" is not — everyone does. Run
-`py scripts/lore/baseline_stats.py <npc_key>` to compute this instead of eyeballing item lists across
-every character file — it reports each category's count/percentage for this character against the
-corpus-wide average and range, flagged where this character sits well above the average (Iläria's
-`conflict` category is the worked example the flag actually catches). The script only computes the
-signal; whether it's a strong enough tiebreaker for *this* character, and how `trusts`/`distrusts`
-end up phrased, stays entirely a judgement call.
+**Do not derive this from which category the character holds most of, and do not use
+`baseline_stats.py` for this anymore** — that script backed the old ambiguous-category tiebreaker,
+which no longer exists now that every anchor resolves to a definite provenance (or genuinely has none
+to derive from). Raw distribution across a character's sample measures how it was drawn (a
+`--mode skewed` topic), not who the character is — that critique of category-counting still holds,
+it's just no longer solved by a tiebreaker script, since there's no tie left to break.
 
 Write `trusts` and `distrusts` as one line each, in the character's own terms, the same way
-`standard`/`wasted_life` are written. Good: `trusts: "a name attached to a story - someone who was
-there and can be asked"` / `distrusts: "chronicles, which he'll say were written by people who
-weren't"`.
+`standard`/`wasted_life` are written:
+
+| Provenance | Trusts | Distrusts |
+|---|---|---|
+| `material` | what's written down and can be checked against the record | a claim with no paper trail, however sincerely told |
+| `hearsay` | a name attached to a story — someone who was there and can be asked | the written record, as bloodless or secondhand |
+| `tale` | a story that's been carried and retold and still holds together | a record that insists on a precision no one who was actually there ever needed |
+
+`tale` is deliberately its own row, not folded into `hearsay` — a tale is *objective truth* (told
+directly by the world's author, never subject to the `inconsistent_with_record` doubt a hearsay claim
+can carry) even though it arrives through oral narrative rather than documented material, closer to
+myth than to gossip. Fold it into `hearsay`'s row and that distinction disappears.
 
 Three hard limits:
 

@@ -68,13 +68,13 @@ CATEGORIES_METHOD_NOTE = (
     "are pre-built handlers for two structural shapes this framework already anticipated (a "
     "dict-of-lists grouping, and a claims-per-entry log like hearsay) - use one of those only if a "
     "new category's shape genuinely matches, otherwise flag that a new handler is needed rather than "
-    "force-fitting. 'epistemology_group' ties the category to a row in /character Step 4d's "
-    "trusts/distrusts table (.claude/skills/character/SKILL.md) - 'ambiguous' for a category with no "
-    "inherent epistemological lean (read it from backstory instead), or a named group shared with "
-    "other categories that imply the same kind of trust. 'has_sources' (bool) marks whether entries "
-    "in this category carry a 'sources' list (provenance - see "
-    ".claude/skills/integrate/SKILL.md Pass 1 step 3) - scripts/lore/build_source_index.py reads "
-    "this to know which categories it should link hearsay/tale references into."
+    "force-fitting. 'has_sources' (bool) marks whether entries in this category carry a 'sources' "
+    "list (provenance - see .claude/skills/integrate/SKILL.md Pass 1 step 3) - "
+    "scripts/lore/build_source_index.py reads this to know which categories it should link "
+    "hearsay/tale references into. No per-category epistemology field is needed: /character Step 4d "
+    "derives a criterion's trusts/distrusts from an anchor's own item-level 'sources[0].category' "
+    "(material/hearsay/tale), via scripts/lore/anchor_epistemology.py, not from anything registered "
+    "here."
 )
 
 HEARSAY_METHOD_NOTE = (

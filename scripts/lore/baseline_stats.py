@@ -1,16 +1,17 @@
 """
-Compute a character's knowledge.education.items category distribution against the rest of the
-corpus's baseline - the statistical signal behind /character Step 4d's tiebreaker for trusts/
-distrusts ("over-representation against the other characters' baseline", e.g. "Döran holding 12%
-chronicle items where everyone else holds 2-7%").
+DEPRECATED for its original purpose (2026-08-16): computes a character's knowledge.education.items
+category distribution against the rest of the corpus's baseline. This used to back /character Step
+4d's tiebreaker for trusts/distrusts ("over-representation against the other characters' baseline",
+e.g. "Döran holding 12% chronicle items where everyone else holds 2-7%") - Step 4d now derives
+trusts/distrusts from provenance instead (see scripts/lore/anchor_epistemology.py), which resolves
+every anchor to a definite answer (or genuinely none) without needing a tiebreaker at all. Left in
+place since the underlying distribution-vs-corpus-baseline computation may still be useful for other
+purposes; just no longer called by Step 4d.
 
-This script only ever computes the signal. It does NOT decide trusts/distrusts, and does not decide
-whether a given over-representation is even meaningful for this character - Step 4d is explicit that
-this is a tiebreaker, used only when the anchor's own category lands in the ambiguous row, and reading
-the lean off the backstory is just as valid a call. Read Step 4d's own reasoning before treating a
-number here as decisive: raw distribution mostly measures how the sample was drawn (a `--mode skewed`
-topic), not who the character is - the corpus-wide baseline in this script's output is what corrects
-for that, a single character's raw count does not.
+This script only ever computes the signal, never decides anything - same discipline as
+anchor_epistemology.py. Read Step 4d's own reasoning before treating a number here as decisive: raw
+distribution mostly measures how the sample was drawn (a `--mode skewed` topic), not who the
+character is.
 
 Each item in knowledge.education.items is a string like "era_ensayo: Las Guerras de Gorff" - the
 category is everything before the first ": ".
