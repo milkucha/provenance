@@ -260,7 +260,16 @@ def run_pass(state: State, pass_number: int) -> str:
             name_lead = repro["name_lead"]
             other_parent = p2 if name_lead == p1 else p1
             state.child_counter += 1
-            placeholder = f"placeholder_{name_lead}_{other_parent}_{state.child_counter}"
+            # Bounded and fixed-width on purpose: chaining both parents' own slugs into a child's
+            # placeholder (the pre-2026-08-17 scheme) compounds every generation, since a
+            # placeholder is never renamed and a grandchild's parent slug is already a chain of
+            # its own parents' - by generation 5-6 this blew past Windows' 260-char path limit on
+            # the birth tale write (confirmed the hard way at pass 561 of a 2000-pass run). The
+            # fixed 4-digit width also keeps every placeholder safe against apply_language_layer.py's
+            # plain-substring rename (child_0003 is never a substring of child_0037, unlike
+            # unpadded 3 vs 37) - lineage is already carried in full in pending["children"]'s own
+            # parent_a/parent_b fields, so the slug itself never needed to encode it.
+            placeholder = f"placeholder_child_{state.child_counter:04d}"
             birth = generate_offspring(p1, p2, placeholder, pass_number)
             child = load_char(birth["slug"])
             state.pending_births.append((birth["slug"], birth["eligible_pass"]))

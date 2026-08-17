@@ -547,7 +547,97 @@ whether the resulting population, once handed to an ordinary interactive `/simul
 material/narrative drift as convincing as a population that was interactively generated throughout —
 that requires a follow-up interactive run using this worktree's population as its starting pool.
 
+### Run 4 — 2026-08-17 — worktree `simulate-20260817-012440`
+
+**Objective.** Stress-test `-generate` mode at an order of magnitude past Run 3's scale (2000 passes
+vs. 300), specifically to answer the two things Run 3 flagged as untested: whether deep generational
+recursion (grandchildren reproducing) works at all, and whether one batched language-layer subagent
+holds up past ~20 items.
+
+**Setup.** 8 brand-new characters authored specifically for this run (Farkolus, Forlisen - Dome Market
+shopkeepers; Farlan - harbor; Auroben - gardens; Aurora - temple; Krastomus - bank; Terniko, Muli -
+municipality, Muli originally from Görff), all Terfila-based, routines deliberately cross-linked so
+every character shares at least one location with another (Dome Market/Terfila Harbor/Municipal
+Office each tie 3-4 of them together). Five new contexts added (port, temple, gardens, municipality,
+bank). 2000 requested passes.
+
+**The mechanism bug this run found and fixed.** The original single-invocation attempt crashed at
+pass 561 with a Windows `[Errno 22] Invalid argument` / path-too-long failure writing a birth tale.
+Root cause: `simulate_generate_population.py`'s placeholder slug scheme
+(`placeholder_{name_lead}_{other_parent}_{counter}`) chains both parents' own slugs into a child's
+placeholder, and a placeholder is never renamed (only the human-facing `name` is, by
+`apply_language_layer.py`'s own design) - so a grandchild's placeholder embeds its already-chained
+parent placeholders, compounding every generation. By generation 5-6 this exceeds Windows' 260-char
+path limit. Run 3 never hit this because it only ever reached generation 1. **Fixed** by changing the
+scheme to a flat, fixed-width `placeholder_child_{counter:04d}` - bounded length regardless of
+generation depth, and the fixed width is also collision-safe against `apply_language_layer.py`'s
+plain-substring rename (`child_0003` is never a substring of `child_0037`, unlike unpadded `3`/`37`).
+Verified nothing else in the mechanism depends on the placeholder's structure encoding lineage -
+`pending["children"]`'s own `parent_a`/`parent_b` fields already carry that for the language layer.
+**Fix applied directly to this base branch** (`scripts/lore/simulate_generate_population.py`), same
+commit as this log entry - future `-generate` runs of any real size no longer need to rediscover this.
+
+**Operational note, not a mechanism bug: a single 2000-pass background invocation of the script was
+killed twice** by the surrounding harness (once with no error, empty log) before completing - unrelated
+to the script itself (a shorter 200-pass foreground chunk of the same script, same worktree, ran clean
+every time). Worked around by chunking: 10 sequential 200-pass foreground invocations, chaining
+`--living-pool-out`'s printed living pool as the next chunk's `--pool`, manually merging each chunk's
+`_pending_language.json`/`GENERATION_LOG.md` into running totals, and preserving the *first* chunk's
+`.simulate_snapshot.json` (each chunk's own invocation overwrites it, which would otherwise corrupt
+the final `simulate_tally.py report` diff). This incidentally exercised `generate_offspring.py`'s
+existing slug-collision loop (`while (CHAR_DIR / f"{key}.json").exists()`) for real, since each
+chunk's own `child_counter` restarts at 1 and collides with the previous chunk's `placeholder_child_
+0001..000N` files - confirmed it correctly suffixes (`_2`, `_3`, ...) rather than overwriting. Worth
+promoting chunking to a documented option in `SKILL.md`'s `-generate` mode for any run past a few
+hundred passes, independent of whether this particular kill cause recurs.
+
+**Outcomes.**
+- All 2000 passes completed (across the 10 chunks) with zero further crashes after the placeholder fix.
+- All 8 founders died, every one landing `life.lived` exactly on their secretly-rolled span again
+  (Farkolus 35, Forlisen 56, Farlan 58, Auroben 52, Aurora 57, Krastomus 52, Terniko 40, Muli 35) -
+  `horizon.py`'s ending check remains reliable at scale.
+- 84 births, 146 arcs queued, 0 criterion moves (expected - this mode never triggers a shock).
+- **Max generation depth: 22** (computed from the final `parents` chains, not from any single chunk's
+  own `state.generation` counter, which resets to 0 at every chunk boundary and so only ever reported
+  each chunk's *local* depth - up to 3 - not the true cumulative figure). Directly answers Run 3's open
+  question: deep recursive reproduction across many generations works correctly once the placeholder
+  bug above is fixed.
+- Living pool at the end: 3 (a fast-cycling population with founder spans of 35-58 scenes churns hard
+  over 2000 passes on a small pool - expected, not a bug).
+- **Language-layer quality at 230 items (84 names + 146 arcs) in one subagent dispatch, directly
+  answering Run 3's other open question:** completed cleanly (881s, ~181k tokens, all 230 entries
+  resolved, zero skipped). But the failure mode Run 3 predicted ("more generic content toward the end
+  of a long list") didn't manifest the way expected - instead, the subagent discovered the 146 queued
+  arcs collapsed to only **25 distinct (criterion × primary-routine-context × horizon-band)
+  signatures**, because `-generate` mode never runs a criterion shock, so a criterion inherited at
+  birth stays byte-identical for that whole lineage's descendants. It authored each signature once and
+  reused that content across its instances (still one real, separately-registered arc per character -
+  not skipped), which kept every individual arc mechanically valid and well-formed but means a deep,
+  fast-cycling lineage's arcs are far less thematically diverse than the count suggests. Also visible
+  in `encodings.json`: many near-duplicate `concept:` entries (`dome_pitch_succession`,
+  `dome_pitch_succession_1` .. `_19`, etc.) - one real registration per arc instance, as designed, but
+  worth knowing this is why the concept registry now has long near-duplicate runs.
+- Names: all 84 unique, correctly led from `name_lead`'s side, no collisions.
+
+**Assessment against `-generate` mode's own goal:** confirmed viable at real scale (2000 passes, 22
+generations) once the path-length bug is fixed. The population is ready to serve as a starting cast
+for an ordinary interactive `/simulate` run, same as Run 3's. The full population lives in worktree
+branch `worktree-simulate-20260817-012440` (not merged into this branch).
+
 ## Open design questions (carried forward)
+
+- **A deep, fast-cycling `-generate` lineage's arcs converge onto very few distinct signatures**
+  (Run 4: 146 queued arcs, only 25 distinct criterion×context×horizon combinations) because
+  `-generate` mode by design never runs a criterion shock, so a criterion inherited at birth never
+  drifts from its parent's. Each arc instance is still individually authored, valid, and separately
+  registered - this isn't wrong content, just thematically narrower than the raw count suggests, and
+  it's a direct, probably-unavoidable consequence of pairing "no shocks in this mode" with "many
+  generations." Worth deciding whether that's fine as-is (this mode's whole point is a fast
+  starting-cast generator, not narrative depth - real drift is meant to come from the *interactive*
+  mode that follows) or whether a light mutation on inheritance (e.g. jittering `wasted_life`'s
+  wording, or occasionally leaving a child's criterion `origin: "uncollided"` instead of copying the
+  parent's) would make the resulting starting cast more varied without reintroducing a full shock
+  mechanism into a mode designed specifically to skip them.
 
 - **Odds and thresholds are all first-guess numbers, untuned by any actual run** — all now
   collected in `_lore/tuning.json`, so retuning any of them after a pilot is a one-file edit, not a
