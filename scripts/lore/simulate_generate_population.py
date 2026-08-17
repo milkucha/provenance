@@ -114,6 +114,7 @@ class State:
         self.generation = {slug: 0 for slug in pool}
         self.child_counter = 0
         self.log = []
+        self.ancestor_cache = {}  # memoizes lib.ancestors_of() across the whole run
 
 
 def maybe_admit_children(state: State, pass_number: int) -> None:
@@ -252,9 +253,9 @@ def run_pass(state: State, pass_number: int) -> str:
         or pass_number - c["last_reproduced_pass"] >= PARENT_COOLDOWN_PASSES
         for c in (p1_char, p2_char)
     )
-    already_parent_child = p2 in p1_char.get("parents", []) or p1 in p2_char.get("parents", [])
+    already_related = lib.already_related(p1, p1_char, p2, p2_char, cache=state.ancestor_cache)
 
-    if eligible and cooldown_ok and not already_parent_child:
+    if eligible and cooldown_ok and not already_related:
         repro = roll_reproduction(p1, p2)
         if repro["reproduces"] == "true":
             name_lead = repro["name_lead"]

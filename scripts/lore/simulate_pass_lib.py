@@ -18,6 +18,7 @@ Usage (from a sibling script in this same directory):
 """
 
 import json
+import random
 import re
 import subprocess
 import sys
@@ -139,14 +140,63 @@ def roll_arc_primacy(p1: str, p2: str) -> str:
     return kv(call("roll_arc_primacy.py", ["--p1", p1, "--p2", p2]))["primary"]
 
 
+def ancestors_of(key: str, cache: dict | None = None) -> set:
+    """Every ancestor of `key`, walking `parents` all the way up (parents, grandparents,
+    great-grandparents, ...) - not just the immediate one. A founder (no `parents` field) returns an
+    empty set. `cache`, if given, memoizes per-key results across many calls in one long-running
+    process (2026-08-17 fix, see LAB_REPORT.md Run 4/5: `-generate` mode calls this every pass for
+    up to thousands of passes, and a lineage 20+ generations deep would otherwise re-walk and re-load
+    the same ancestor chain from disk repeatedly)."""
+    if cache is not None and key in cache:
+        return cache[key]
+    direct = load_char(key).get("parents", [])
+    result = set(direct)
+    for p in direct:
+        result |= ancestors_of(p, cache)
+    if cache is not None:
+        cache[key] = result
+    return result
+
+
+def already_related(key1: str, char1: dict, key2: str, char2: dict, cache: dict | None = None) -> bool:
+    """True if key1/key2 must not reproduce together: either is an ancestor of the other (any number
+    of generations - parent, grandparent, great-grandparent, ...), or they share at least one parent
+    (full or half sibling). Cousins (share only a grandparent, not a parent) are deliberately
+    allowed - excluding them too would exhaust a small closed founding population's eligible pairs
+    even faster, and `-generate` mode's own intent is a starting population that stays somewhat
+    homogeneous (a town/dynasty), not one engineered for maximum diversity. See LAB_REPORT.md Run 4's
+    entry on population convergence for why this replaced the old direct-parent-only check (2026-08-17)."""
+    if key2 in ancestors_of(key1, cache) or key1 in ancestors_of(key2, cache):
+        return True
+    return bool(set(char1.get("parents", [])) & set(char2.get("parents", [])))
+
+
 def peer_knowledge_items(character: dict, cap: int = 15) -> list:
-    items = []
+    """Candidate items fed to check_arc_alignment.py's gate. Experience entries with an explicit
+    `about` tag come first (richest, narrated text - what /enact's interactive mode actually
+    produces). Any remaining cap budget is filled with a random sample of the character's own
+    `knowledge.education.items` (2026-08-17 fix, see LAB_REPORT.md Run 4: the gate previously only
+    ever saw `about`-tagged experience entries, which nothing in `-generate` mode's own data pipeline
+    produces - `generate_offspring.py` only ever appends bare, untagged strings - so the gate silently
+    missed every single time across a whole 2000-pass run, for every character, founders included. A
+    bare education item doubles as both its own searchable text and its own tag, since that's exactly
+    the vocabulary an arc's own about/needs tags are already written in - no format conversion needed)."""
+    exp_items = []
     for entry in character.get("knowledge", {}).get("experience", []):
         if isinstance(entry, dict) and entry.get("about"):
             about = entry["about"]
             tags = about if isinstance(about, list) else [about]
-            items.append(f"{entry.get('text', '')}::{','.join(tags)}")
-    return items[-cap:]
+            exp_items.append(f"{entry.get('text', '')}::{','.join(tags)}")
+    exp_items = exp_items[-cap:]
+
+    remaining = cap - len(exp_items)
+    edu_items = []
+    if remaining > 0:
+        pool = character.get("knowledge", {}).get("education", {}).get("items", [])
+        sample = random.sample(pool, min(remaining, len(pool))) if pool else []
+        edu_items = [f"{item}::{item}" for item in sample]
+
+    return exp_items + edu_items
 
 
 def check_arc_alignment(arc_about: list, arc_needs: list, peer: dict) -> dict:

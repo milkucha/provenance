@@ -7,11 +7,26 @@ inherits one's `standard` and the other's `distrusts`, a combination neither par
 authored, without any text being freely invented to make it happen.
 
 What's inherited and how:
-- `criterion.standard` / `wasted_life` / `anchor` / `trusts` / `distrusts` - each field
-  independently coin-flipped to one parent's exact value. `origin` is set to "inherited" (a new
-  value, distinct from "derived"/"uncollided") so this is visibly not a fresh Step 4 derivation.
-  `tempered`, `cost_ledger`, `history` all start empty - nothing has tested this criterion yet.
-  Computed first, before knowledge, because the general-knowledge draw below is skewed by it.
+- `criterion` - **mechanically re-derived, not copied (2026-08-17)**. A straight coin-flip copy
+  from one parent (the original 2026-08-10 design, `origin: "inherited"`) meant a whole fast-cycling
+  lineage kept a byte-identical criterion generation after generation - confirmed producing exactly
+  that in a real 2000-pass run (see LAB_REPORT.md Run 4). A real /character Step 4 derivation is a
+  judgment call and can't run here as a subagent: criterion is read SYNCHRONOUSLY the moment a later
+  generation reproduces, so deferring it to an end-of-run batch (the way arc/name authoring already
+  is) would leave every intervening generation's reproduction/arc-gate decisions made off a
+  placeholder no later pass could retroactively fix. So this derivation is mechanical instead:
+  `compose_backstory()` first seeds a real (if plain) backstory from one of the child's own
+  newly-drawn knowledge items, which guarantees that item collides with it; `find_collision_items()`
+  then runs the actual Step 4a scan (word-overlap against backstory OR city, deliberately blind - no
+  preference for a city match over a backstory-only one) across the child's FULL knowledge sample,
+  `derive_criterion_mechanical()` picks a random item from whatever collides as the anchor and
+  composes `wasted_life`/`standard` from a template keyed to it, and `trusts`/`distrusts` come from
+  `anchor_epistemology.py`'s real provenance signal (imported directly, not shelled out to) exactly
+  as Step 4d prescribes. `origin` is `"derived"` when something collided, `"uncollided"` (blank
+  standard/wasted_life/trusts/distrusts) when nothing did - same two values Step 4 itself uses, not
+  a third "inherited" value anymore. An internal-only coin-flipped `skew_criterion` (not persisted)
+  still exists solely to weight the general-knowledge draw below, same as the old inherited criterion
+  used to. See the module-level note above `BACKSTORY_TEMPLATES` for the full reasoning.
 - `knowledge.education.items` - three layers, all from _lore/tuning.json's `offspring_knowledge`:
   1. A random subset of the UNION of both parents' own items, floored at
      `parent_education_min_fraction` (default 50%) rather than the old 2026-08-10 version's
@@ -51,9 +66,11 @@ What's inherited and how:
   hand-authored character gets `arc` at creation instead; a newborn still can't, since nothing is
   present to compose one at the moment of birth - see TODO.md's "arc at birth" open question).
 - `city` - copied whole from a coin-flipped parent.
-- `backstory` - deliberately minimal and factual ("Child of X and Y."), not invented prose. Left
-  open for a human/`/character` session to enrich later, same as any other placeholder in this
-  system that's honest about being unfinished rather than papering over it.
+- `backstory` - **templated, not just "Child of X and Y." (2026-08-17)** - see `compose_backstory()`
+  and the module-level note above `BACKSTORY_TEMPLATES`. Still mechanical, still cruder than a human/
+  `/character` session would write, and still open for later enrichment - but now carries a real
+  seeded knowledge item so Step 4a's collision-finding has something to work with. Falls back to the
+  plain "Child of X and Y." only if the child ended up with no knowledge items at all to seed from.
 - `life.span` - freshly rolled via the same range as any character (_lore/tuning.json's
   lifespan_range - not inherited from either parent) - open question left in the original design
   sketch, resolved here as "fresh roll" rather than "heritable trait" for now.
@@ -99,7 +116,8 @@ from datetime import date
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import notify_death  # noqa: E402  (sibling module, sys.path adjusted above)
+import anchor_epistemology as ae  # noqa: E402  (sibling module, sys.path adjusted above)
+import notify_death  # noqa: E402
 import tuning  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent.parent
@@ -405,6 +423,138 @@ def draw_inherited_experience(parent_a_exp: list, parent_b_exp: list) -> list:
     return result
 
 
+# --------------------------------------------------------------------------------------------
+# Backstory + criterion: mechanical stand-ins for /character Step 2b/4, added 2026-08-17.
+#
+# A newborn's criterion used to be a straight field-by-field coin-flip copy from one parent
+# (origin: "inherited"), and its backstory a hardcoded "Child of X and Y." - neither ever mutated,
+# so a whole fast-cycling lineage inherited byte-identical criteria (see LAB_REPORT.md Run 4's open
+# question on arc repetition at depth). A real /character Step 4 derivation is a judgment call
+# (composing wasted_life/standard in the character's own words) and can't run here: it would have to
+# be a subagent, but criterion is read SYNCHRONOUSLY by every later generation the moment they
+# reproduce - deferring it to an end-of-run batch (the way arc/name authoring already is) would mean
+# generations 2..N make reproduction/arc-gate decisions off whatever placeholder was on file at the
+# time, which no later batch pass could retroactively fix. So this has to be mechanical, not authored,
+# same constraint that already makes knowledge/routines dice-driven instead of hand-written.
+#
+# The approach: compose a real (if plain) backstory by splicing one of the child's own newly-drawn
+# knowledge items into a template - this guarantees that item collides with the backstory by
+# construction, giving Step 4a's collision-finding something real to work with instead of the empty
+# "Child of X and Y." that made every child fall through to origin: "uncollided". Then run the actual
+# Step 4a scan (word-overlap against backstory OR city, deliberately blind - no preference for a
+# city-touching item over a backstory-only one, same discipline the hand-authored flow uses) across
+# the child's FULL knowledge sample, pick a random item from whatever collides, and compose
+# wasted_life/standard from a template keyed to that anchor's own text. trusts/distrusts still come
+# from anchor_epistemology.py's real signal, exactly as Step 4d prescribes - that part was already
+# fully mechanical and needed no change.
+# --------------------------------------------------------------------------------------------
+
+BACKSTORY_TEMPLATES = [
+    "Child of {a} and {b}; grew up around {trade} in {city}, and knows something of {item}.",
+    "Child of {a} and {b} in {city}; raised alongside {trade}, having heard about {item}.",
+    "Child of {a} and {b}; raised in {city} on {trade}, and carries some knowledge of {item}.",
+    "Child of {a} and {b}, in {city}; grew up around {trade}, and picked up a little of {item} along the way.",
+]
+
+# (wasted_life, standard) template pairs, each filled with the anchor's own (humanized) text.
+CRITERION_TEMPLATES = [
+    ("a life spent never once engaging with {a}", "counts a life well spent only if it stayed close to {a}"),
+    ("forgetting what {a} actually meant, the way most people already have", "measures a life by whether {a} is still remembered rightly"),
+    ("letting {a} slip past unexamined, the way it's easiest to", "counts it worthwhile only by paying real attention to {a}"),
+    ("one that never had to answer for {a}", "holds themself accountable to {a}, whatever it costs"),
+    ("treating {a} as someone else's concern", "counts a life well spent only by making {a} their own concern"),
+]
+
+# Fixed trusts/distrusts wording per provenance - the same table /character Step 4d hand-authors
+# from; a script can't compose bespoke "own terms" phrasing, so this uses the table's own baseline
+# wording verbatim rather than guess at a paraphrase. "conflict" is Step 4d's own fixed special case.
+EPISTEMOLOGY_WORDING = {
+    "material": ("what's written down and can be checked against the record", "a claim with no paper trail, however sincerely told"),
+    "hearsay": ("a name attached to a story - someone who was there and can be asked", "the written record, as bloodless or secondhand"),
+    "tale": ("a story that's been carried and retold and still holds together", "a record that insists on a precision no one who was actually there ever needed"),
+    "conflict": ("verification", "anyone who sounds certain"),
+}
+
+
+def truncate_fragment(text: str, max_words: int = 8) -> str:
+    """Bounds a spliced-in text fragment to a short, sentence-fragment-friendly length. Many
+    encodings.json descriptions run to full paragraphs (a concept's whole write-up, a conflict's
+    topic+detail, a routine's own routine_actions line) - read badly spliced in whole where a template
+    expects a short noun/verb phrase. Takes the first clause up to '.'/';' when that's shorter, then
+    hard-caps word count either way."""
+    text = (text or "").strip()
+    if not text:
+        return text
+    first_clause = re.split(r"[.;]", text, maxsplit=1)[0].strip()
+    words = first_clause.split()
+    if len(words) > max_words:
+        return " ".join(words[:max_words]) + "..."
+    return first_clause
+
+
+def humanize_tag(tag: str) -> str:
+    """Turns a bare 'category: id' tag into a short, phrase-shaped display label - strips the
+    category prefix, drops a trailing hearsay claim number ('#3'), and de-snake-cases a machine id
+    ('la_lagrima_de_balahm' -> 'La Lagrima De Balahm', same trick register_arc_concept.py's own
+    humanize() uses). Deliberately never touches an item's own long-form description text (that's
+    what `pool_text` is for, and it's full-sentence-shaped, not phrase-shaped - splicing it into a
+    template built around a noun phrase produces broken grammar, confirmed the hard way testing this
+    against real data) - a tag id, however plain, is at least reliably phrase-shaped."""
+    _, _, rest = tag.partition(": ")
+    rest = rest or tag
+    rest = re.sub(r"#\d+$", "", rest).strip()
+    if "_" in rest and " " not in rest:
+        rest = " ".join(w.capitalize() for w in rest.split("_"))
+    elif rest.islower():
+        rest = rest.capitalize()
+    return rest
+
+
+def find_collision_items(items: list, backstory: str, city: str, pool_text: dict) -> list:
+    """/character Step 4a, mechanically: every item (by tag) whose own text touches the backstory OR
+    the city - deliberately OR, not AND, and deliberately blind (no preference for a city-touching
+    item over a backstory-only one) - see the module-level note above for why. `pool_text` maps a
+    tag to its own real description where one exists (general_knowledge_pool()'s own lookup); a tag
+    with no entry there falls back to matching against its own bare 'category: id' string, same
+    fallback simulate_pass_lib.py's peer_knowledge_items() already uses for the arc-alignment gate."""
+    target_words = extract_keywords(backstory) | extract_keywords(city)
+    if not target_words:
+        return []
+    return [tag for tag in items if extract_keywords(pool_text.get(tag, tag)) & target_words]
+
+
+def compose_backstory(name_a: str, name_b: str, city: str, routines: list, seed_text: str | None) -> str:
+    trade = truncate_fragment(routines[0]["routine_actions"]) if routines else "no particular trade"
+    if not seed_text:
+        return f"Child of {name_a} and {name_b}."
+    template = random.choice(BACKSTORY_TEMPLATES)
+    return template.format(a=name_a, b=name_b, city=city or "an unrecorded city", trade=trade, item=seed_text)
+
+
+def derive_criterion_mechanical(items: list, backstory: str, city: str, pool_text: dict, world_enc: dict) -> dict:
+    base = {"tempered": 0, "cost_ledger": [], "history": []}
+    collision_pool = find_collision_items(items, backstory, city, pool_text)
+    if not collision_pool:
+        return {**base, "standard": "", "wasted_life": "", "anchor": "", "origin": "uncollided", "trusts": "", "distrusts": ""}
+
+    anchor = random.choice(collision_pool)
+    anchor_text = truncate_fragment(humanize_tag(anchor))
+    wasted_life_t, standard_t = random.choice(CRITERION_TEMPLATES)
+
+    epi = ae.resolve_epistemology(anchor, world_enc)
+    trusts, distrusts = EPISTEMOLOGY_WORDING.get(epi["epistemology"], ("", ""))
+
+    return {
+        **base,
+        "standard": standard_t.format(a=anchor_text),
+        "wasted_life": wasted_life_t.format(a=anchor_text),
+        "anchor": anchor,
+        "origin": "derived",
+        "trusts": trusts,
+        "distrusts": distrusts,
+    }
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--parent-a", required=True)
@@ -425,18 +575,19 @@ def main() -> None:
         key = f"{base_key}_{n}"
         n += 1
 
+    name_a, name_b = parent_a.get("name", a_key), parent_b.get("name", b_key)
+    city = coin(parent_a.get("city", ""), parent_b.get("city", ""))
+
+    # Internal-only coin-flip criterion, used SOLELY to skew the general-knowledge draw below toward
+    # roughly what this child would have leaned toward if criteria were still inherited - never
+    # persisted as the child's own criterion (see derive_criterion_mechanical() below for that).
     crit_a = parent_a.get("criterion", {})
     crit_b = parent_b.get("criterion", {})
-    criterion = {
+    skew_criterion = {
         "standard": coin(crit_a.get("standard", ""), crit_b.get("standard", "")),
         "wasted_life": coin(crit_a.get("wasted_life", ""), crit_b.get("wasted_life", "")),
-        "anchor": coin(crit_a.get("anchor", ""), crit_b.get("anchor", "")),
-        "origin": "inherited",
         "trusts": coin(crit_a.get("trusts", ""), crit_b.get("trusts", "")),
         "distrusts": coin(crit_a.get("distrusts", ""), crit_b.get("distrusts", "")),
-        "tempered": 0,
-        "cost_ledger": [],
-        "history": [],
     }
 
     edu_a = parent_a.get("knowledge", {}).get("education", {})
@@ -444,8 +595,9 @@ def main() -> None:
     edu_source = coin(edu_a, edu_b)
     inherited_items = sample_union(edu_a.get("items", []), edu_b.get("items", []), min_fraction=PARENT_EDU_MIN_FRACTION)
     world_enc = load_encodings()
-    general_items = draw_general_knowledge(world_enc, criterion, inherited_items, len(inherited_items))
+    general_items = draw_general_knowledge(world_enc, skew_criterion, inherited_items, len(inherited_items))
     items = inherited_items + general_items
+    pool_text = dict(general_knowledge_pool(world_enc))
 
     inherited_experience = draw_inherited_experience(
         parent_a.get("knowledge", {}).get("experience", []),
@@ -464,13 +616,22 @@ def main() -> None:
         for r in routines:
             r["weight"] = equal_weight
 
+    # Backstory seeded from one of the child's own newly-drawn items (prefer general_items - the
+    # genuinely NEW draw, so the backstory reflects something distinctly theirs, not just recycled
+    # parent material - falling back to inherited_items only if the new draw came back empty).
+    seed_pool = general_items or inherited_items
+    seed_tag = random.choice(seed_pool) if seed_pool else None
+    seed_text = truncate_fragment(humanize_tag(seed_tag)) if seed_tag else None
+    backstory = compose_backstory(name_a, name_b, city, routines, seed_text)
+
+    criterion = derive_criterion_mechanical(items, backstory, city, pool_text, world_enc)
+
     span = random.randint(SPAN_MIN, SPAN_MAX)
-    name_a, name_b = parent_a.get("name", a_key), parent_b.get("name", b_key)
 
     child = {
         "name": args.name,
-        "city": coin(parent_a.get("city", ""), parent_b.get("city", "")),
-        "backstory": f"Child of {name_a} and {name_b}.",
+        "city": city,
+        "backstory": backstory,
         "knowledge": {
             "education": {
                 "percent": edu_source.get("percent"),

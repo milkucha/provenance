@@ -326,9 +326,13 @@ Writes `<worktree>/.simulate_pass_brief.json` and prints a summary, including wh
 four judgment slots above are open this pass:
 - `reproduction_slot` - present only when an already-eligible pair's roll came back true this pass
   (eligibility: either direction's partner count `>= partner_threshold`, neither parent within
-  `parent_cooldown_passes` of their last birth, neither already lists the other in their own
-  `parents`). Carries `name_lead` (which parent's name leads the blend - the one part of this
-  decision that's still dice-driven, not the subagent's to pick) and `other_parent`.
+  `parent_cooldown_passes` of their last birth, and the pair isn't related - `lib.already_related()`
+  (2026-08-17, replacing a direct-`parents`-only check that let siblings and grandparent/grandchild
+  pairs through) walks both characters' full ancestor chains and excludes any ancestor/descendant
+  relationship at any depth plus shared-parent siblings; cousins are deliberately still allowed, see
+  `already_related()`'s own docstring for why). Carries `name_lead` (which parent's name leads the
+  blend - the one part of this decision that's still dice-driven, not the subagent's to pick) and
+  `other_parent`.
 - `arc_authoring_needed` - the **fallback** path only, for a character who reached extended-mode
   play without an arc already on file - as of 2026-08-16, `/character` Step 8 authors `arc` at
   character creation by default, same discipline as `routines`, so this slot should be the

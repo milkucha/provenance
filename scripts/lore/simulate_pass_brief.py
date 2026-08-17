@@ -192,8 +192,8 @@ def run_pre_scene(pool: list, pass_number: int) -> dict:
         or pass_number - c["last_reproduced_pass"] >= lib.PARENT_COOLDOWN_PASSES
         for c in (p1_char, p2_char)
     )
-    already_parent_child = p2 in p1_char.get("parents", []) or p1 in p2_char.get("parents", [])
-    if eligible and cooldown_ok and not already_parent_child:
+    already_related = lib.already_related(p1, p1_char, p2, p2_char)
+    if eligible and cooldown_ok and not already_related:
         repro = lib.roll_reproduction(p1, p2)
         if repro["reproduces"] == "true":
             name_lead = repro["name_lead"]

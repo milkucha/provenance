@@ -61,51 +61,73 @@ def find_item(data: dict, category: str, item_id: str) -> dict | None:
     return None
 
 
+def resolve_epistemology(anchor: str, data: dict) -> dict:
+    """The importable half of this script (2026-08-17, extracted so generate_offspring.py's own
+    mechanical criterion derivation can call this directly instead of shelling out once per child) -
+    same three-case logic the CLI below just prints. Returns
+    `{"epistemology": "material"/"hearsay"/"tale"/"conflict"/None, "reason": "..."}`.
+    `epistemology: None` means there's nothing to derive from (unregistered item, or a real item with
+    an empty `sources[]`) - the caller must leave trusts/distrusts blank rather than guess, same
+    discipline as every other 'nothing to derive from' case in this system."""
+    if ": " not in anchor:
+        raise ValueError(f"'{anchor}' doesn't look like a '<category>: <id>' anchor reference.")
+    category, item_id = anchor.split(": ", 1)
+    category, item_id = category.strip(), item_id.strip()
+
+    if category == "hearsay":
+        return {"epistemology": "hearsay", "reason": "the anchor IS a hearsay claim - trivial, no lookup needed"}
+    if category == "tale":
+        return {"epistemology": "tale", "reason": "the anchor IS a tale - trivial, no lookup needed"}
+    if category == "conflict":
+        return {
+            "epistemology": "conflict",
+            "reason": (
+                "a conflict is definitionally two sources disagreeing, not sourced from one "
+                "provenance itself - use /character Step 4d's own fixed conflict row "
+                '("trusts verification, distrusts anyone who sounds certain") unchanged.'
+            ),
+        }
+
+    item = find_item(data, category, item_id)
+    if item is None:
+        return {"epistemology": None, "reason": f"no '{category}' entry with id '{item_id}' found in encodings.json"}
+
+    sources = item.get("sources", [])
+    if not sources:
+        return {"epistemology": None, "reason": "no sources on record for this item"}
+
+    leading = sources[0]
+    return {
+        "epistemology": leading["category"],
+        "reason": f"first-recorded source ({leading['category']}: {leading.get('origin', '?')})",
+        "other_sources": [s["category"] for s in sources[1:]],
+    }
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("anchor", help='Anchor reference, e.g. "location: gorff" or "hearsay: khaoe_banco_colectivo#4"')
     args = parser.parse_args()
 
-    if ": " not in args.anchor:
-        raise SystemExit(f"'{args.anchor}' doesn't look like a '<category>: <id>' anchor reference.")
-    category, item_id = args.anchor.split(": ", 1)
-    category, item_id = category.strip(), item_id.strip()
-
-    if category == "hearsay":
-        print("epistemology: hearsay")
-        print("reason: the anchor IS a hearsay claim - trivial, no lookup needed")
-        return
-    if category == "tale":
-        print("epistemology: tale")
-        print("reason: the anchor IS a tale - trivial, no lookup needed")
-        return
-    if category == "conflict":
-        print("epistemology: conflict (fixed special case, not material/hearsay/tale)")
-        print("reason: a conflict is definitionally two sources disagreeing, not sourced from one")
-        print("        provenance itself - use /character Step 4d's own fixed conflict row")
-        print('        ("trusts verification, distrusts anyone who sounds certain") unchanged.')
-        return
-
     with open(ENCODINGS_PATH, encoding="utf-8") as f:
         data = json.load(f)
 
-    item = find_item(data, category, item_id)
-    if item is None:
-        raise SystemExit(f"No '{category}' entry with id '{item_id}' found in encodings.json.")
+    try:
+        result = resolve_epistemology(args.anchor, data)
+    except ValueError as e:
+        raise SystemExit(str(e))
 
-    sources = item.get("sources", [])
-    if not sources:
-        print("epistemology: none - no sources on record for this item")
+    if result["epistemology"] is None:
+        print(f"epistemology: none - {result['reason']}")
         print("reason: leave trusts/distrusts blank, same as any other 'nothing to derive from' case")
         print("        (do not guess or fall back to a default)")
         return
 
-    leading = sources[0]
-    print(f"epistemology: {leading['category']}")
-    print(f"reason: first-recorded source ({leading['category']}: {leading.get('origin', '?')})")
-    if len(sources) > 1:
-        others = ", ".join(f"{s['category']}" for s in sources[1:])
-        print(f"note: {len(sources) - 1} later-linked source(s) also present ({others}) - ignored,")
+    print(f"epistemology: {result['epistemology']}")
+    print(f"reason: {result['reason']}")
+    others = result.get("other_sources") or []
+    if others:
+        print(f"note: {len(others)} later-linked source(s) also present ({', '.join(others)}) - ignored,")
         print("      per the original-source-priority rule (later backlinks don't compete)")
 
 
