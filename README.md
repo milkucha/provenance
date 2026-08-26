@@ -1,10 +1,8 @@
 
 
 <div align="center">
-<img src="https://i.imgur.com/384pR7V.png" alt="logo" style="display: block; margin: 0 auto;">
+<img src="https://i.imgur.com/cASXA69.png" alt="logo" style="display: block; margin: 0 auto;">
 </div>
-
-# Provenance
 
 Provenance is a storytelling and world-building tool for authors: a system for growing a fictional
 society from a small authored seed — sociocultural parameters, a handful of authored facts — into
