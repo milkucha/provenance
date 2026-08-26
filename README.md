@@ -1,7 +1,7 @@
 
 
 <div align="center">
-<img src="https://i.imgur.com/t2wv1OZ.png" alt="logo" style="display: block; margin: 0 auto;">
+<img src="https://i.imgur.com/384pR7V.png" alt="logo" style="display: block; margin: 0 auto;">
 </div>
 
 # Provenance
