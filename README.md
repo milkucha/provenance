@@ -1,9 +1,9 @@
-# Luminacion
+# Provenance
 
-Luminacion is a standalone culture simulator and world-building generator for authors: a system for
-growing a fictional society from a small planted seed — sociocultural parameters, a handful of
-authored facts — into an organically drifting, ecosystemic record, through procedural and semantic
-generation rather than being hand-written end to end.
+Provenance is a storytelling and world-building tool for authors: a system for growing a fictional
+society from a small authored seed — sociocultural parameters, a handful of authored facts — into
+an organically drifting, ecosystemic record of tales, through procedural and semantic generation
+rather than being hand-written end to end.
 
 The design leans on a negative-space principle: a world's real structure lives in what stays
 unsurfaced — the objective record, the pillars a character's convictions stand on — while what
@@ -22,11 +22,15 @@ makes the whole thing usable and testable at all. The project is currently in an
 phase, run and evaluated lab-report style (`LAB_REPORT.md`) against two standing questions: whether
 the result reads as immersive, and whether it reads as organic rather than mechanically repetitive.
 
-The system currently ships one embodiment backend: it can surface its generated characters and lore
-live inside a Minecraft world — this repo's original context, a 12-year-old world called Milkantis —
-as NPCs (Taterzens) that run dialogs (Blabber) and follow their own routines, pausing to talk and
-picking their routine back up. That embodiment layer is documented at the end of this file (§5
-onward); everything before it is embodiment-agnostic — the actual lore engine the rest is built on.
+The engine itself is embodiment-agnostic — it never assumes any particular place its generated
+characters and lore need to surface. This repo currently ships one optional embodiment backend on
+top of it: a Minecraft datapack layer (the repo's original context) that can put the generated
+characters live in a Minecraft world as NPCs (Taterzens) running dialogs (Blabber) and following
+their own routines, pausing to talk and picking their routine back up. That's one integration, not
+the product — the tales and the world they accrete into exist entirely independent of it, and a
+different or additional embodiment backend could replace this layer without touching the engine at
+all. The embodiment layer is documented at the end of this file (§5 onward); everything before it is
+the actual lore engine, usable entirely on its own with no Minecraft (or any embodiment) involved.
 
 This document is a practical, step-by-step guide to working with the system, plus (§0) the
 architecture of the whole as it stands today — read that first in a new session to get oriented
@@ -307,7 +311,7 @@ and the separate not-yet-built distribution zip — is in `GESTURES.md`.
 ## 1. Folder structure
 
 ```
-Luminacion/
+Provenance/
 ├── LAB_REPORT.md                      (the standing test of the whole system — read before a
 │                                       design-testing /simulate run; see §0)
 ├── _lore/                             (the lore engine's sources of truth)
