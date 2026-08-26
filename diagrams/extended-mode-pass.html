@@ -107,6 +107,55 @@ figure svg text.mono, figure svg tspan.mono{
 .junction{fill:var(--ink-soft)}
 .loop-line{stroke:var(--roll); stroke-width:1.5; fill:none}
 .loop-label{font-size:11.5px; fill:var(--roll)}
+.no-script-tag{font-style:italic; fill:var(--ink-soft)}
+
+figure svg g.clickable{cursor:pointer}
+figure svg g.clickable .nbox{transition:stroke .1s,stroke-width .1s}
+figure svg g.clickable:hover .nbox,figure svg g.clickable:focus .nbox{stroke:var(--roll); stroke-width:2}
+figure svg g.clickable:hover .nbox.always,figure svg g.clickable:focus .nbox.always{stroke:var(--judgment)}
+figure svg g.clickable:focus{outline:none}
+
+.hint{font-size:12.5px; color:var(--ink-soft); margin:-30px 0 40px}
+
+figure{position:relative}
+
+.node-popover{
+  position:absolute; left:0; right:0; z-index:5; margin:0;
+  padding:16px 46px 18px 20px; background:var(--panel);
+  border:1px solid var(--line); border-left:3px solid var(--roll); border-radius:6px;
+  box-shadow:0 10px 30px rgba(0,0,0,.28); max-height:min(60vh,480px); overflow-y:auto;
+}
+.node-popover[hidden]{display:none}
+.node-popover .popover-close{
+  position:absolute; top:8px; right:8px; width:28px; height:28px; padding:0;
+  border:none; border-radius:5px; background:transparent; color:var(--ink-soft);
+  font-size:19px; line-height:1; cursor:pointer;
+}
+.node-popover .popover-close:hover{background:var(--panel-alt); color:var(--ink)}
+.node-popover .detail-breadcrumb{
+  font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); margin:0 20px 6px 0;
+}
+.node-popover .detail-title{
+  font-family:ui-monospace,"Cascadia Code","Cascadia Mono","Segoe UI Mono",Consolas,
+    "Liberation Mono",Menlo,monospace;
+  font-size:16px; font-weight:600; margin:0 0 12px; color:var(--ink);
+}
+.node-popover .detail-label{
+  font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--roll); margin:14px 0 4px;
+  font-weight:600;
+}
+.node-popover .detail-label:first-of-type{margin-top:0}
+.node-popover pre.detail-code{
+  font-family:ui-monospace,"Cascadia Code","Cascadia Mono","Segoe UI Mono",Consolas,
+    "Liberation Mono",Menlo,monospace;
+  font-size:12.5px; background:var(--panel-alt); border:1px solid var(--line); border-radius:4px;
+  padding:9px 12px; margin:0; white-space:pre-wrap; word-break:break-word; color:var(--ink);
+}
+.node-popover p{margin:6px 0 0; font-size:14px}
+.node-popover p.detail-note{color:var(--ink-soft); font-size:13px}
+.node-popover ol.detail-substeps{margin:6px 0 0; padding-left:20px}
+.node-popover ol.detail-substeps li{margin:0 0 10px; font-size:13.5px}
+.node-popover ol.detail-substeps li:last-child{margin-bottom:0}
 
 .closing{max-width:66ch; padding-top:8px; border-top:1px solid var(--line)}
 .closing h2{
@@ -141,6 +190,15 @@ figure svg text.mono, figure svg tspan.mono{
       array</span>
   </p>
 
+  <p class="updated"><b>Redrawn 2026-08-16.</b> Made every step clickable for its exact command
+    and what it reads/writes (hover for a one-line summary first); broke &ldquo;Write the
+    scene&rdquo; open into its own four <code>/enact</code> sub&#8209;steps; corrected two things
+    that had drifted from the live scripts &mdash; &ldquo;Author the arc&rdquo; is now the
+    <em>fallback</em> path, not the normal one, since <code>/character</code> Step&nbsp;8 authors an
+    arc at character creation by default; and Phase C's last three items (safety net, log the pass,
+    <code>build_source_index.py</code>) are the orchestrator acting <em>after</em>
+    <code>simulate_pass_resolve.py</code> returns, not inside that one call. Also widened the
+    spacing throughout so it reads as a flow diagram rather than a compacted list.</p>
   <p class="updated"><b>Redrawn 2026-08-13.</b> A same-day rewrite folded the old
     hand&#8209;relayed sequence (a subagent stringing 15+ separate script calls together itself,
     hand&#8209;copying each result into the next call) into three phases: two calls the
@@ -158,7 +216,9 @@ figure svg text.mono, figure svg tspan.mono{
     the subagent's to decide:
     <ol>
       <li><b>Name</b> a newborn &mdash; a plausible blend of both parents' names.</li>
-      <li><b>Author</b> a freshly&#8209;needed arc's topic, needs, context, and premise.</li>
+      <li><b>Author</b> a freshly&#8209;needed arc's topic, needs, context, and premise &mdash; the
+        fallback path now, since <code>/character</code> Step&nbsp;8 authors one at creation by
+        default.</li>
       <li><b>Optionally name</b> a specific rival in a contested&#8209;and&#8209;hinder scene.</li>
       <li><b>Write</b> the scene itself &mdash; the only one of the four that's never skipped.</li>
     </ol>
@@ -171,9 +231,11 @@ figure svg text.mono, figure svg tspan.mono{
     <div class="legend-item"><span class="swatch sw-dashed"></span>only if this pass flags it open</div>
     <div class="legend-item"><span class="swatch sw-rect"></span>always runs</div>
   </div>
+  <p class="hint">Hover any step for a one-line summary. Click a step to open the exact command
+    and what it reads/writes right below it &mdash; click again (or press Esc) to close.</p>
 
   <figure>
-<svg viewBox="0 0 780 1788" width="780" height="1788" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Flowchart of one extended-mode pass. Phase A: simulate_pass_brief.py runs thirteen steps in order, seven of them dice rolls, and writes a brief flagging which judgment slots are open. Phase B: a single subagent reads the brief, then for each of three optional slots either fills it or skips it via a bypass line, before always writing the scene. Phase C: simulate_pass_resolve.py runs six closing steps, one a death-legacy roll. A loop line on the right returns from the end of Phase C to the start of Phase A for as long as two or more characters remain alive.">
+<svg viewBox="0 0 780 2372" width="780" height="2372" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Flowchart of one extended-mode pass. Phase A: simulate_pass_brief.py runs thirteen steps in order, seven of them dice rolls and two of them plain arithmetic or a lookup rather than a separate script, and writes a brief flagging which judgment slots are open. Phase B: a single subagent reads the brief, then for each of three optional slots either fills it or skips it via a bypass line, before always writing the scene, itself made of four /enact sub-steps. Phase C: simulate_pass_resolve.py runs three closing steps (one a death-legacy roll), then the orchestrator itself runs three more (a safety-net check, logging the pass, and an end-of-batch index rebuild) that are not part of that script call. A loop line on the right returns from the end of Phase C to the start of Phase A for as long as two or more characters remain alive. Every step can be clicked for its exact command and what it reads or writes.">
 <defs>
   <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
     <path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"/>
@@ -183,196 +245,228 @@ figure svg text.mono, figure svg tspan.mono{
   </marker>
 </defs>
 <text class="phase-label roll" x="170" y="48">PHASE A &middot; simulate_pass_brief.py &mdash; one call, before the scene</text>
-<g>
+<g class="clickable" tabindex="0" role="button" data-node-id="a1" onclick="showDetail('a1', event)">
+  <title>pick_pair.py &mdash; draws the pair. Click for the exact command.</title>
   <rect class="nbox" x="170" y="66" width="460" height="30" rx="5"/>
   <rect class="stripe" x="171" y="67" width="4" height="28"/>
   <circle class="badge-circle" cx="192" cy="81.0" r="9"/>
   <text class="badge-text" x="192" y="81.0">1</text>
   <text class="ntitle" x="212" y="81.0"><tspan font-weight="600">pick_pair.py</tspan> &mdash; draws the pair</text>
 </g>
-<path class="flow-line" d="M400,96 L400,118" marker-end="url(#arrow)"/>
-<g>
-  <rect class="nbox" x="170" y="118" width="460" height="30" rx="5"/>
-  <rect class="stripe" x="171" y="119" width="4" height="28"/>
-  <circle class="badge-circle" cx="192" cy="133.0" r="9"/>
-  <text class="badge-text" x="192" y="133.0">2</text>
-  <text class="ntitle" x="212" y="133.0"><tspan font-weight="600">lead-override check</tspan> &mdash; does an expiring lead still apply</text>
+<path class="flow-line" d="M400,96 L400,140" marker-end="url(#arrow)"/>
+<g class="clickable" tabindex="0" role="button" data-node-id="a2" onclick="showDetail('a2', event)">
+  <title>lead-override check &mdash; does an expiring lead still apply. Click for the exact command.</title>
+  <rect class="nbox" x="170" y="140" width="460" height="30" rx="5"/>
+  <rect class="stripe" x="171" y="141" width="4" height="28"/>
+  <circle class="badge-circle" cx="192" cy="155.0" r="9"/>
+  <text class="badge-text" x="192" y="155.0">2</text>
+  <text class="ntitle" x="212" y="155.0"><tspan font-weight="600">lead-override check</tspan> &mdash; does an expiring lead still apply</text>
 </g>
-<path class="flow-line" d="M400,148 L400,170" marker-end="url(#arrow)"/>
-<g>
-  <rect class="nbox" x="170" y="170" width="460" height="30" rx="5"/>
-  <rect class="stripe" x="171" y="171" width="4" height="28"/>
-  <circle class="badge-circle" cx="192" cy="185.0" r="9"/>
-  <text class="badge-text" x="192" y="185.0">3</text>
-  <text class="ntitle" x="212" y="185.0"><tspan font-weight="600">routine rolls</tspan> &mdash; which routines actually fire this pass</text>
+<path class="flow-line" d="M400,170 L400,214" marker-end="url(#arrow)"/>
+<g class="clickable" tabindex="0" role="button" data-node-id="a3" onclick="showDetail('a3', event)">
+  <title>routine rolls &mdash; which routines actually fire this pass. Click for the exact command.</title>
+  <rect class="nbox" x="170" y="214" width="460" height="30" rx="5"/>
+  <rect class="stripe" x="171" y="215" width="4" height="28"/>
+  <circle class="badge-circle" cx="192" cy="229.0" r="9"/>
+  <text class="badge-text" x="192" y="229.0">3</text>
+  <text class="ntitle" x="212" y="229.0"><tspan font-weight="600">routine rolls</tspan> &mdash; which routines actually fire this pass</text>
 </g>
-<path class="flow-line" d="M400,200 L400,222" marker-end="url(#arrow)"/>
-<g>
-  <rect class="nbox" x="170" y="222" width="460" height="30" rx="5"/>
-  <circle class="badge-circle" cx="192" cy="237.0" r="9"/>
-  <text class="badge-text" x="192" y="237.0">4</text>
-  <text class="ntitle" x="212" y="237.0"><tspan font-weight="600">location resolution</tspan> &mdash; where the scene lands</text>
+<path class="flow-line" d="M400,244 L400,288" marker-end="url(#arrow)"/>
+<g class="clickable" tabindex="0" role="button" data-node-id="a4" onclick="showDetail('a4', event)">
+  <title>location resolution &mdash; where the scene lands. Click for the exact command.</title>
+  <rect class="nbox" x="170" y="288" width="460" height="30" rx="5"/>
+  <circle class="badge-circle" cx="192" cy="303.0" r="9"/>
+  <text class="badge-text" x="192" y="303.0">4</text>
+  <text class="ntitle" x="212" y="303.0"><tspan font-weight="600">location resolution</tspan> &mdash; where the scene lands</text>
 </g>
-<path class="flow-line" d="M400,252 L400,274" marker-end="url(#arrow)"/>
-<g>
-  <rect class="nbox" x="170" y="274" width="460" height="30" rx="5"/>
-  <circle class="badge-circle" cx="192" cy="289.0" r="9"/>
-  <text class="badge-text" x="192" y="289.0">5</text>
-  <text class="ntitle" x="212" y="289.0"><tspan font-weight="600">context / texture lookup</tspan> &mdash; flavor for the scene brief</text>
+<path class="flow-line" d="M400,318 L400,362" marker-end="url(#arrow)"/>
+<g class="clickable" tabindex="0" role="button" data-node-id="a5" onclick="showDetail('a5', event)">
+  <title>context / texture lookup &mdash; flavor for the scene brief. Click for the exact command.</title>
+  <rect class="nbox" x="170" y="362" width="460" height="30" rx="5"/>
+  <circle class="badge-circle" cx="192" cy="377.0" r="9"/>
+  <text class="badge-text" x="192" y="377.0">5</text>
+  <text class="ntitle" x="212" y="377.0"><tspan font-weight="600">context / texture lookup</tspan> &mdash; flavor for the scene brief <tspan class="no-script-tag">&middot; no separate script</tspan></text>
 </g>
-<path class="flow-line" d="M400,304 L400,326" marker-end="url(#arrow)"/>
-<g>
-  <rect class="nbox" x="170" y="326" width="460" height="30" rx="5"/>
-  <circle class="badge-circle" cx="192" cy="341.0" r="9"/>
-  <text class="badge-text" x="192" y="341.0">6</text>
-  <text class="ntitle" x="212" y="341.0"><tspan font-weight="600">needs/provides check</tspan> &mdash; motivation match between the pair</text>
+<path class="flow-line" d="M400,392 L400,436" marker-end="url(#arrow)"/>
+<g class="clickable" tabindex="0" role="button" data-node-id="a6" onclick="showDetail('a6', event)">
+  <title>needs/provides check &mdash; motivation match between the pair. Click for the exact command.</title>
+  <rect class="nbox" x="170" y="436" width="460" height="30" rx="5"/>
+  <circle class="badge-circle" cx="192" cy="451.0" r="9"/>
+  <text class="badge-text" x="192" y="451.0">6</text>
+  <text class="ntitle" x="212" y="451.0"><tspan font-weight="600">needs/provides check</tspan> &mdash; motivation match between the pair</text>
 </g>
-<path class="flow-line" d="M400,356 L400,378" marker-end="url(#arrow)"/>
-<g>
-  <rect class="nbox" x="170" y="378" width="460" height="30" rx="5"/>
-  <rect class="stripe" x="171" y="379" width="4" height="28"/>
-  <circle class="badge-circle" cx="192" cy="393.0" r="9"/>
-  <text class="badge-text" x="192" y="393.0">7</text>
-  <text class="ntitle" x="212" y="393.0"><tspan font-weight="600">contested roll</tspan> &mdash; does a rival try to hinder</text>
+<path class="flow-line" d="M400,466 L400,510" marker-end="url(#arrow)"/>
+<g class="clickable" tabindex="0" role="button" data-node-id="a7" onclick="showDetail('a7', event)">
+  <title>contested roll &mdash; does a rival try to hinder. Click for the exact command.</title>
+  <rect class="nbox" x="170" y="510" width="460" height="30" rx="5"/>
+  <rect class="stripe" x="171" y="511" width="4" height="28"/>
+  <circle class="badge-circle" cx="192" cy="525.0" r="9"/>
+  <text class="badge-text" x="192" y="525.0">7</text>
+  <text class="ntitle" x="212" y="525.0"><tspan font-weight="600">contested roll</tspan> &mdash; does a rival try to hinder</text>
 </g>
-<path class="flow-line" d="M400,408 L400,430" marker-end="url(#arrow)"/>
-<g>
-  <rect class="nbox" x="170" y="430" width="460" height="30" rx="5"/>
-  <rect class="stripe" x="171" y="431" width="4" height="28"/>
-  <circle class="badge-circle" cx="192" cy="445.0" r="9"/>
-  <text class="badge-text" x="192" y="445.0">8</text>
-  <text class="ntitle" x="212" y="445.0"><tspan font-weight="600">arc primacy roll</tspan> &mdash; whose arc leads the scene</text>
+<path class="flow-line" d="M400,540 L400,584" marker-end="url(#arrow)"/>
+<g class="clickable" tabindex="0" role="button" data-node-id="a8" onclick="showDetail('a8', event)">
+  <title>arc primacy roll &mdash; whose arc leads the scene. Click for the exact command.</title>
+  <rect class="nbox" x="170" y="584" width="460" height="30" rx="5"/>
+  <rect class="stripe" x="171" y="585" width="4" height="28"/>
+  <circle class="badge-circle" cx="192" cy="599.0" r="9"/>
+  <text class="badge-text" x="192" y="599.0">8</text>
+  <text class="ntitle" x="212" y="599.0"><tspan font-weight="600">arc primacy roll</tspan> &mdash; whose arc leads the scene</text>
 </g>
-<path class="flow-line" d="M400,460 L400,482" marker-end="url(#arrow)"/>
-<g>
-  <rect class="nbox" x="170" y="482" width="460" height="30" rx="5"/>
-  <circle class="badge-circle" cx="192" cy="497.0" r="9"/>
-  <text class="badge-text" x="192" y="497.0">9</text>
-  <text class="ntitle" x="212" y="497.0"><tspan font-weight="600">knowledge/criteria gate</tspan> &mdash; is this pair even eligible</text>
+<path class="flow-line" d="M400,614 L400,658" marker-end="url(#arrow)"/>
+<g class="clickable" tabindex="0" role="button" data-node-id="a9" onclick="showDetail('a9', event)">
+  <title>knowledge/criteria gate &mdash; is this pair even eligible. Click for the exact command.</title>
+  <rect class="nbox" x="170" y="658" width="460" height="30" rx="5"/>
+  <circle class="badge-circle" cx="192" cy="673.0" r="9"/>
+  <text class="badge-text" x="192" y="673.0">9</text>
+  <text class="ntitle" x="212" y="673.0"><tspan font-weight="600">knowledge/criteria gate</tspan> &mdash; is this pair even eligible</text>
 </g>
-<path class="flow-line" d="M400,512 L400,534" marker-end="url(#arrow)"/>
-<g>
-  <rect class="nbox" x="170" y="534" width="460" height="30" rx="5"/>
-  <rect class="stripe" x="171" y="535" width="4" height="28"/>
-  <circle class="badge-circle" cx="192" cy="549.0" r="9"/>
-  <text class="badge-text" x="192" y="549.0">10</text>
-  <text class="ntitle" x="212" y="549.0"><tspan font-weight="600">arc-outcome roll</tspan> &mdash; advances or resolves the lead arc</text>
+<path class="flow-line" d="M400,688 L400,732" marker-end="url(#arrow)"/>
+<g class="clickable" tabindex="0" role="button" data-node-id="a10" onclick="showDetail('a10', event)">
+  <title>arc-outcome roll &mdash; advances or resolves the lead arc. Click for the exact command.</title>
+  <rect class="nbox" x="170" y="732" width="460" height="30" rx="5"/>
+  <rect class="stripe" x="171" y="733" width="4" height="28"/>
+  <circle class="badge-circle" cx="192" cy="747.0" r="9"/>
+  <text class="badge-text" x="192" y="747.0">10</text>
+  <text class="ntitle" x="212" y="747.0"><tspan font-weight="600">arc-outcome roll</tspan> &mdash; advances or resolves the lead arc</text>
 </g>
-<path class="flow-line" d="M400,564 L400,586" marker-end="url(#arrow)"/>
-<g>
-  <rect class="nbox" x="170" y="586" width="460" height="30" rx="5"/>
-  <circle class="badge-circle" cx="192" cy="601.0" r="9"/>
-  <text class="badge-text" x="192" y="601.0">11</text>
-  <text class="ntitle" x="212" y="601.0"><tspan font-weight="600">tally vs. threshold</tspan> &mdash; reproduction-scene count check</text>
+<path class="flow-line" d="M400,762 L400,806" marker-end="url(#arrow)"/>
+<g class="clickable" tabindex="0" role="button" data-node-id="a11" onclick="showDetail('a11', event)">
+  <title>arc tally vs. threshold &mdash; complete / transform / failed / ongoing. Click for the exact command.</title>
+  <rect class="nbox" x="170" y="806" width="460" height="30" rx="5"/>
+  <circle class="badge-circle" cx="192" cy="821.0" r="9"/>
+  <text class="badge-text" x="192" y="821.0">11</text>
+  <text class="ntitle" x="212" y="821.0"><tspan font-weight="600">arc tally vs. threshold</tspan> &mdash; complete / transform / failed / ongoing <tspan class="no-script-tag">&middot; no separate script</tspan></text>
 </g>
-<path class="flow-line" d="M400,616 L400,638" marker-end="url(#arrow)"/>
-<g>
-  <rect class="nbox" x="170" y="638" width="460" height="30" rx="5"/>
-  <circle class="badge-circle" cx="192" cy="653.0" r="9"/>
-  <text class="badge-text" x="192" y="653.0">12</text>
-  <text class="ntitle" x="212" y="653.0"><tspan font-weight="600">partner tracking</tspan> &mdash; records who&#x27;s paired this pass</text>
+<path class="flow-line" d="M400,836 L400,880" marker-end="url(#arrow)"/>
+<g class="clickable" tabindex="0" role="button" data-node-id="a12" onclick="showDetail('a12', event)">
+  <title>partner tracking &mdash; records who&#x27;s paired this pass. Click for the exact command.</title>
+  <rect class="nbox" x="170" y="880" width="460" height="30" rx="5"/>
+  <circle class="badge-circle" cx="192" cy="895.0" r="9"/>
+  <text class="badge-text" x="192" y="895.0">12</text>
+  <text class="ntitle" x="212" y="895.0"><tspan font-weight="600">partner tracking</tspan> &mdash; records who&#x27;s paired this pass</text>
 </g>
-<path class="flow-line" d="M400,668 L400,690" marker-end="url(#arrow)"/>
-<g>
-  <rect class="nbox" x="170" y="690" width="460" height="30" rx="5"/>
-  <rect class="stripe" x="171" y="691" width="4" height="28"/>
-  <circle class="badge-circle" cx="192" cy="705.0" r="9"/>
-  <text class="badge-text" x="192" y="705.0">13</text>
-  <text class="ntitle" x="212" y="705.0"><tspan font-weight="600">reproduction eligibility + roll</tspan> &mdash; does this pass produce a birth</text>
+<path class="flow-line" d="M400,910 L400,954" marker-end="url(#arrow)"/>
+<g class="clickable" tabindex="0" role="button" data-node-id="a13" onclick="showDetail('a13', event)">
+  <title>reproduction eligibility + roll &mdash; does this pass produce a birth. Click for the exact command.</title>
+  <rect class="nbox" x="170" y="954" width="460" height="30" rx="5"/>
+  <rect class="stripe" x="171" y="955" width="4" height="28"/>
+  <circle class="badge-circle" cx="192" cy="969.0" r="9"/>
+  <text class="badge-text" x="192" y="969.0">13</text>
+  <text class="ntitle" x="212" y="969.0"><tspan font-weight="600">reproduction eligibility + roll</tspan> &mdash; does this pass produce a birth</text>
 </g>
-<rect class="section-frame roll" x="44" y="26" width="646" height="710" rx="10"/>
-<path class="flow-line" d="M400,736 L400,792" marker-end="url(#arrow)"/>
-<text class="conn-label" x="400" y="765.0" text-anchor="middle">writes <tspan class="mono">.simulate_pass_brief.json</tspan></text>
-<text class="conn-label" x="400" y="780.0" text-anchor="middle">flags which of the four slots below are open</text>
-<text class="phase-label judge" x="170" y="824">PHASE B &middot; one subagent dispatch</text>
-<rect class="nbox hub" x="170" y="842" width="460" height="30" rx="5"/>
-<text class="ntitle" x="400" y="857.0" text-anchor="middle">reads <tspan class="mono" font-weight="600">.simulate_pass_brief.json</tspan></text>
-<path class="flow-line" d="M400,872 L400,896" marker-end="url(#arrow)"/>
-<circle class="junction" cx="400" cy="896" r="3"/>
-<path class="flow-line" d="M400,896 L400,916" marker-end="url(#arrow)"/>
-<text class="cond-label" x="414" y="908">reproduction_slot open</text>
-<rect class="nbox gated" x="170" y="916" width="460" height="46" rx="6"/>
-<text class="ntitle" x="188" y="934"><tspan font-weight="600">Name the newborn</tspan></text>
-<text class="nsub" x="188" y="951">generate_offspring.py &mdash; blends both parents&rsquo; names, led by the dice-chosen side</text>
-<path class="flow-line" d="M400,962 L400,1006" marker-end="url(#arrow)"/>
-<circle class="junction" cx="400" cy="1006" r="3"/>
-<path class="corridor-line" d="M400,896 Q144,904 104,912 L104,990 Q144,998 400,1006" marker-end="url(#arrow)"/>
-<text class="skip-label" x="96" y="951.0" text-anchor="end">not open</text>
-<path class="flow-line" d="M400,1006 L400,1026" marker-end="url(#arrow)"/>
-<text class="cond-label" x="414" y="1018">arc_authoring_needed open</text>
-<rect class="nbox gated" x="170" y="1026" width="460" height="46" rx="6"/>
-<text class="ntitle" x="188" y="1044"><tspan font-weight="600">Author the arc</tspan></text>
-<text class="nsub" x="188" y="1061">write_arc.py &mdash; scoped to the character&rsquo;s own horizon band</text>
-<path class="flow-line" d="M400,1072 L400,1116" marker-end="url(#arrow)"/>
-<circle class="junction" cx="400" cy="1116" r="3"/>
-<path class="corridor-line" d="M400,1006 Q144,1014 104,1022 L104,1100 Q144,1108 400,1116" marker-end="url(#arrow)"/>
-<text class="skip-label" x="96" y="1061.0" text-anchor="end">not open</text>
-<path class="flow-line" d="M400,1116 L400,1136" marker-end="url(#arrow)"/>
-<text class="cond-label" x="414" y="1128">contested_hinder_slot open (optional even then)</text>
-<rect class="nbox gated" x="170" y="1136" width="460" height="46" rx="6"/>
-<text class="ntitle" x="188" y="1154"><tspan font-weight="600">Maybe name a rival</tspan></text>
-<text class="nsub" x="188" y="1171">apply_contested_lead.py &mdash; only if the scene points at someone who already has a file</text>
-<path class="flow-line" d="M400,1182 L400,1226" marker-end="url(#arrow)"/>
-<circle class="junction" cx="400" cy="1226" r="3"/>
-<path class="corridor-line" d="M400,1116 Q144,1124 104,1132 L104,1210 Q144,1218 400,1226" marker-end="url(#arrow)"/>
-<text class="skip-label" x="96" y="1171.0" text-anchor="end">not open</text>
-<path class="flow-line" d="M400,1226 L400,1246" marker-end="url(#arrow)"/>
-<text class="cond-label always" x="414" y="1238">always</text>
-<rect class="nbox always" x="170" y="1246" width="460" height="50" rx="6"/>
-<text class="ntitle" x="188" y="1264"><tspan font-weight="600">Write the scene</tspan></text>
-<text class="nsub" x="188" y="1281">/enact Steps 3b, 5, 5b, 6 &mdash; dialogue, hearsay mutation, shock, drift</text>
-<path class="flow-line" d="M400,1296 L400,1320" marker-end="url(#arrow)"/>
-<rect class="nbox hub" x="170" y="1320" width="460" height="30" rx="5"/>
-<text class="ntitle" x="400" y="1335.0" text-anchor="middle">returns a short summary to the orchestrator</text>
-<rect class="section-frame judge" x="44" y="802" width="646" height="564" rx="10"/>
-<path class="flow-line" d="M400,1366 L400,1406" marker-end="url(#arrow)"/>
-<text class="conn-label" x="400" y="1395.0" text-anchor="middle">reads the brief back for who was in the scene &mdash; nothing to retype</text>
-<text class="phase-label roll" x="170" y="1438">PHASE C &middot; simulate_pass_resolve.py &mdash; one call, after the scene</text>
-<g>
-  <rect class="nbox" x="170" y="1456" width="460" height="30" rx="5"/>
-  <circle class="badge-circle" cx="192" cy="1471.0" r="9"/>
-  <text class="badge-text" x="192" y="1471.0">1</text>
-  <text class="ntitle" x="212" y="1471.0"><tspan font-weight="600">horizon.py</tspan> &mdash; per participant</text>
+<rect class="section-frame roll" x="44" y="26" width="646" height="980" rx="10"/>
+<path class="flow-line" d="M400,1006 L400,1096" marker-end="url(#arrow)"/>
+<text class="conn-label" x="400" y="1053.0" text-anchor="middle">writes <tspan class="mono">.simulate_pass_brief.json</tspan></text>
+<text class="conn-label" x="400" y="1072.0" text-anchor="middle">flags which of the four slots below are open</text>
+<text class="phase-label judge" x="170" y="1134">PHASE B &middot; one subagent dispatch</text>
+<rect class="nbox hub" x="170" y="1152" width="460" height="30" rx="5"/>
+<text class="ntitle" x="400" y="1167.0" text-anchor="middle">reads <tspan class="mono" font-weight="600">.simulate_pass_brief.json</tspan></text>
+<path class="flow-line" d="M400,1182 L400,1222" marker-end="url(#arrow)"/>
+<circle class="junction" cx="400" cy="1222" r="3"/>
+<path class="flow-line" d="M400,1222 L400,1254" marker-end="url(#arrow)"/>
+<text class="cond-label" x="414" y="1234">reproduction_slot open</text>
+<g class="clickable" tabindex="0" role="button" data-node-id="brepro" onclick="showDetail('brepro', event)">
+  <title>Name the newborn. Click for the exact command.</title>
+<rect class="nbox gated" x="170" y="1254" width="460" height="46" rx="6"/>
+<text class="ntitle" x="188" y="1272"><tspan font-weight="600">Name the newborn</tspan></text>
+<text class="nsub" x="188" y="1289">generate_offspring.py &mdash; blends both parents&rsquo; names, led by the dice-chosen side</text>
 </g>
-<path class="flow-line" d="M400,1486 L400,1508" marker-end="url(#arrow)"/>
-<g>
-  <rect class="nbox" x="170" y="1508" width="460" height="30" rx="5"/>
-  <circle class="badge-circle" cx="192" cy="1523.0" r="9"/>
-  <text class="badge-text" x="192" y="1523.0">2</text>
-  <text class="ntitle" x="212" y="1523.0"><tspan font-weight="600">record_death.py</tspan> &mdash; if either participant ended</text>
+<path class="flow-line" d="M400,1300 L400,1354" marker-end="url(#arrow)"/>
+<circle class="junction" cx="400" cy="1354" r="3"/>
+<path class="corridor-line" d="M400,1222 Q144,1230 104,1244 L104,1332 Q144,1346 400,1354" marker-end="url(#arrow)"/>
+<text class="skip-label" x="96" y="1288.0" text-anchor="end">not open</text>
+<path class="flow-line" d="M400,1354 L400,1386" marker-end="url(#arrow)"/>
+<text class="cond-label" x="414" y="1366">arc_authoring_needed open</text>
+<g class="clickable" tabindex="0" role="button" data-node-id="barc" onclick="showDetail('barc', event)">
+  <title>Author the arc (fallback). Click for the exact command.</title>
+<rect class="nbox gated" x="170" y="1386" width="460" height="46" rx="6"/>
+<text class="ntitle" x="188" y="1404"><tspan font-weight="600">Author the arc (fallback)</tspan></text>
+<text class="nsub" x="188" y="1421">write_arc.py &mdash; scoped to the character&rsquo;s own horizon band</text>
 </g>
-<path class="flow-line" d="M400,1538 L400,1560" marker-end="url(#arrow)"/>
-<g>
-  <rect class="nbox" x="170" y="1560" width="460" height="30" rx="5"/>
-  <rect class="stripe" x="171" y="1561" width="4" height="28"/>
-  <circle class="badge-circle" cx="192" cy="1575.0" r="9"/>
-  <text class="badge-text" x="192" y="1575.0">3</text>
-  <text class="ntitle" x="212" y="1575.0"><tspan font-weight="600">death-legacy roll</tspan> &mdash; if either died early</text>
+<path class="flow-line" d="M400,1432 L400,1486" marker-end="url(#arrow)"/>
+<circle class="junction" cx="400" cy="1486" r="3"/>
+<path class="corridor-line" d="M400,1354 Q144,1362 104,1376 L104,1464 Q144,1478 400,1486" marker-end="url(#arrow)"/>
+<text class="skip-label" x="96" y="1420.0" text-anchor="end">not open</text>
+<path class="flow-line" d="M400,1486 L400,1518" marker-end="url(#arrow)"/>
+<text class="cond-label" x="414" y="1498">contested_hinder_slot open (optional even then)</text>
+<g class="clickable" tabindex="0" role="button" data-node-id="brival" onclick="showDetail('brival', event)">
+  <title>Maybe name a rival. Click for the exact command.</title>
+<rect class="nbox gated" x="170" y="1518" width="460" height="46" rx="6"/>
+<text class="ntitle" x="188" y="1536"><tspan font-weight="600">Maybe name a rival</tspan></text>
+<text class="nsub" x="188" y="1553">apply_contested_lead.py &mdash; only if the scene points at someone who already has a file</text>
 </g>
-<path class="flow-line" d="M400,1590 L400,1612" marker-end="url(#arrow)"/>
-<g>
-  <rect class="nbox" x="170" y="1612" width="460" height="30" rx="5"/>
-  <circle class="badge-circle" cx="192" cy="1627.0" r="9"/>
-  <text class="badge-text" x="192" y="1627.0">4</text>
-  <text class="ntitle" x="212" y="1627.0"><tspan font-weight="600">safety net</tspan> &mdash; reverts any leaked mid-pass state</text>
+<path class="flow-line" d="M400,1564 L400,1618" marker-end="url(#arrow)"/>
+<circle class="junction" cx="400" cy="1618" r="3"/>
+<path class="corridor-line" d="M400,1486 Q144,1494 104,1508 L104,1596 Q144,1610 400,1618" marker-end="url(#arrow)"/>
+<text class="skip-label" x="96" y="1552.0" text-anchor="end">not open</text>
+<path class="flow-line" d="M400,1618 L400,1650" marker-end="url(#arrow)"/>
+<text class="cond-label always" x="414" y="1630">always</text>
+<g class="clickable" tabindex="0" role="button" data-node-id="bscene" onclick="showDetail('bscene', event)">
+  <title>Write the scene &mdash; /enact Steps 3b, 5, 5b, 6. Click to see each sub-step.</title>
+<rect class="nbox always" x="170" y="1650" width="460" height="50" rx="6"/>
+<text class="ntitle" x="188" y="1668"><tspan font-weight="600">Write the scene</tspan></text>
+<text class="nsub" x="188" y="1685">/enact Steps 3b, 5, 5b, 6 &mdash; dialogue, hearsay mutation, shock, drift</text>
 </g>
-<path class="flow-line" d="M400,1642 L400,1664" marker-end="url(#arrow)"/>
-<g>
-  <rect class="nbox" x="170" y="1664" width="460" height="30" rx="5"/>
-  <circle class="badge-circle" cx="192" cy="1679.0" r="9"/>
-  <text class="badge-text" x="192" y="1679.0">5</text>
-  <text class="ntitle" x="212" y="1679.0"><tspan font-weight="600">log the pass</tspan> &mdash; advances the pool</text>
+<path class="flow-line" d="M400,1700 L400,1740" marker-end="url(#arrow)"/>
+<rect class="nbox hub" x="170" y="1740" width="460" height="30" rx="5"/>
+<text class="ntitle" x="400" y="1755.0" text-anchor="middle">returns a short summary to the orchestrator</text>
+<rect class="section-frame judge" x="44" y="1112" width="646" height="680" rx="10"/>
+<path class="flow-line" d="M400,1792 L400,1852" marker-end="url(#arrow)"/>
+<text class="conn-label" x="400" y="1834.0" text-anchor="middle">reads the brief back for who was in the scene &mdash; nothing to retype</text>
+<text class="phase-label roll" x="170" y="1890">PHASE C &middot; simulate_pass_resolve.py &mdash; one call, after the scene</text>
+<g class="clickable" tabindex="0" role="button" data-node-id="c1" onclick="showDetail('c1', event)">
+  <title>horizon.py &mdash; per participant. Click for the exact command.</title>
+  <rect class="nbox" x="170" y="1908" width="460" height="30" rx="5"/>
+  <circle class="badge-circle" cx="192" cy="1923.0" r="9"/>
+  <text class="badge-text" x="192" y="1923.0">1</text>
+  <text class="ntitle" x="212" y="1923.0"><tspan font-weight="600">horizon.py</tspan> &mdash; per participant</text>
 </g>
-<path class="flow-line" d="M400,1694 L400,1716" marker-end="url(#arrow)"/>
-<g>
-  <rect class="nbox" x="170" y="1716" width="460" height="30" rx="5"/>
-  <circle class="badge-circle" cx="192" cy="1731.0" r="9"/>
-  <text class="badge-text" x="192" y="1731.0">6</text>
-  <text class="ntitle" x="212" y="1731.0"><tspan font-weight="600">build_source_index.py</tspan> &mdash; batch end only</text>
+<path class="flow-line" d="M400,1938 L400,1982" marker-end="url(#arrow)"/>
+<g class="clickable" tabindex="0" role="button" data-node-id="c2" onclick="showDetail('c2', event)">
+  <title>record_death.py &mdash; if either participant ended. Click for the exact command.</title>
+  <rect class="nbox" x="170" y="1982" width="460" height="30" rx="5"/>
+  <circle class="badge-circle" cx="192" cy="1997.0" r="9"/>
+  <text class="badge-text" x="192" y="1997.0">2</text>
+  <text class="ntitle" x="212" y="1997.0"><tspan font-weight="600">record_death.py</tspan> &mdash; if either participant ended</text>
 </g>
-<rect class="section-frame roll" x="44" y="1416" width="646" height="346" rx="10"/>
-<path class="loop-line" d="M698,1768 Q710,1768 710,1728 L710,66 Q710,26 698,26" marker-end="url(#arrow-loop)"/>
-<text class="loop-label" x="724" y="897.0" transform="rotate(90 724 897.0)" text-anchor="middle">&#8635; next pass &mdash; while the living pool holds &ge; 2</text>
+<path class="flow-line" d="M400,2012 L400,2056" marker-end="url(#arrow)"/>
+<g class="clickable" tabindex="0" role="button" data-node-id="c3" onclick="showDetail('c3', event)">
+  <title>death-legacy roll &mdash; if either died early. Click for the exact command.</title>
+  <rect class="nbox" x="170" y="2056" width="460" height="30" rx="5"/>
+  <rect class="stripe" x="171" y="2057" width="4" height="28"/>
+  <circle class="badge-circle" cx="192" cy="2071.0" r="9"/>
+  <text class="badge-text" x="192" y="2071.0">3</text>
+  <text class="ntitle" x="212" y="2071.0"><tspan font-weight="600">death-legacy roll</tspan> &mdash; if either died early</text>
+</g>
+<path class="flow-line" d="M400,2086 L400,2146" marker-end="url(#arrow)"/>
+<text class="conn-label" x="400" y="2116" text-anchor="middle">orchestrator, after the script above returns &mdash; not part of that one call</text>
+<g class="clickable" tabindex="0" role="button" data-node-id="c4" onclick="showDetail('c4', event)">
+  <title>safety net &mdash; reverts any leaked mid-pass state. Click for the exact command.</title>
+  <rect class="nbox" x="170" y="2146" width="460" height="30" rx="5"/>
+  <circle class="badge-circle" cx="192" cy="2161.0" r="9"/>
+  <text class="badge-text" x="192" y="2161.0">4</text>
+  <text class="ntitle" x="212" y="2161.0"><tspan font-weight="600">safety net</tspan> &mdash; reverts any leaked mid-pass state <tspan class="no-script-tag">&middot; no separate script</tspan></text>
+</g>
+<path class="flow-line" d="M400,2176 L400,2220" marker-end="url(#arrow)"/>
+<g class="clickable" tabindex="0" role="button" data-node-id="c5" onclick="showDetail('c5', event)">
+  <title>log the pass &mdash; advances the pool. Click for the exact command.</title>
+  <rect class="nbox" x="170" y="2220" width="460" height="30" rx="5"/>
+  <circle class="badge-circle" cx="192" cy="2235.0" r="9"/>
+  <text class="badge-text" x="192" y="2235.0">5</text>
+  <text class="ntitle" x="212" y="2235.0"><tspan font-weight="600">log the pass</tspan> &mdash; advances the pool <tspan class="no-script-tag">&middot; no separate script</tspan></text>
+</g>
+<path class="flow-line" d="M400,2250 L400,2294" marker-end="url(#arrow)"/>
+<g class="clickable" tabindex="0" role="button" data-node-id="c6" onclick="showDetail('c6', event)">
+  <title>build_source_index.py &mdash; batch end only. Click for the exact command.</title>
+  <rect class="nbox" x="170" y="2294" width="460" height="30" rx="5"/>
+  <circle class="badge-circle" cx="192" cy="2309.0" r="9"/>
+  <text class="badge-text" x="192" y="2309.0">6</text>
+  <text class="ntitle" x="212" y="2309.0"><tspan font-weight="600">build_source_index.py</tspan> &mdash; batch end only</text>
+</g>
+<rect class="section-frame roll" x="44" y="1868" width="646" height="478" rx="10"/>
+<path class="loop-line" d="M698,2352 Q710,2352 710,2312 L710,66 Q710,26 698,26" marker-end="url(#arrow-loop)"/>
+<text class="loop-label" x="724" y="1189.0" transform="rotate(90 724 1189.0)" text-anchor="middle">&#8635; next pass &mdash; while the living pool holds &ge; 2</text>
 </svg>
     <figcaption style="margin-top:16px; font-size:12.5px; color:var(--ink-soft); text-align:center; max-width:66ch; margin-left:auto; margin-right:auto;">
       One pass, start to finish &mdash; Phase A&rsquo;s thirteen mechanical steps, Phase B&rsquo;s four judgment
@@ -380,7 +474,316 @@ figure svg text.mono, figure svg tspan.mono{
       Phase A. Teal-edged items are genuine dice rolls; nothing else in the chain is left to chance,
       and nothing outside the four amber slots is left to a model&rsquo;s guess.
     </figcaption>
+    <div id="node-popover" class="node-popover" hidden>
+      <button type="button" class="popover-close" onclick="hideDetail()" aria-label="Close">&times;</button>
+      <p class="detail-breadcrumb" id="detail-breadcrumb"></p>
+      <p class="detail-title" id="detail-title"></p>
+      <div id="detail-body"></div>
+    </div>
   </figure>
+
+  <script id="diagram-details-data">
+window.DIAGRAM_DETAILS = {
+  "a1": {
+    "phase": "A",
+    "title": "pick_pair.py",
+    "script": "py scripts/lore/pick_pair.py <every slug in the living pool>",
+    "returns": "participant_1, participant_2",
+    "note": "A genuine uniform draw over the pool — not the model's own guess at “random”, which skews toward whichever names are most salient in context.",
+    "substeps": null
+  },
+  "a2": {
+    "phase": "A",
+    "title": "lead-override check",
+    "script": "py scripts/lore/roll_lead_followup.py --leads <target1> [<target2> ...]",
+    "returns": "followed: true/false, plus which lead",
+    "note": "Only runs at all if participant_1 is carrying an unexpired leads entry (younger than lead_expiry_passes — 8, from _lore/tuning.json). A true result forces mode: visit toward that target and consumes the lead — participant_2 for this pass is overridden to the lead's target.",
+    "substeps": null
+  },
+  "a3": {
+    "phase": "A",
+    "title": "routine rolls",
+    "script": "py scripts/lore/roll_routine.py <location:weight> [<location:weight> ...]",
+    "returns": "the routine that fires",
+    "note": "Called once (forced-visit pass) or twice (an ordinary pairing, one roll per participant) against each character's own routines[] weights.",
+    "substeps": null
+  },
+  "a4": {
+    "phase": "A",
+    "title": "location resolution",
+    "script": "py scripts/lore/resolve_location.py --p1 <slug> --p1-routine <loc> --p2 <slug> --p2-routine <loc>",
+    "returns": "mode, location, home_frame, traveler",
+    "note": "Decides whether this pass is a home-turf pairing or a visit, and who's travelling to whom.",
+    "substeps": null
+  },
+  "a5": {
+    "phase": "A",
+    "title": "context / texture lookup",
+    "script": null,
+    "returns": "context, texture, provides",
+    "note": "Not a script call — a plain dict lookup in _lore/contexts.json, done inline inside resolve_location() itself: it already has the resolved location and the home-frame character's own routines by construction, so a caller never needed a step of its own.",
+    "substeps": null
+  },
+  "a6": {
+    "phase": "A",
+    "title": "needs/provides check",
+    "script": "py scripts/lore/check_needs_provides.py --needs <tag> [...] --provides <tag> [...]",
+    "returns": "match: true/false, matched_need, matched_provide",
+    "note": "Only runs on a visit whose traveler has an ongoing arc with needs — checked against this location's provides tags.",
+    "substeps": null
+  },
+  "a7": {
+    "phase": "A",
+    "title": "contested roll",
+    "script": "py scripts/lore/roll_contested.py",
+    "returns": "contested: true/false",
+    "note": "Only rolled when the visit was motivated (a6 matched). Odds: 15% (_lore/tuning.json odds_percent.contested).",
+    "substeps": null
+  },
+  "a8": {
+    "phase": "A",
+    "title": "arc primacy roll",
+    "script": "py scripts/lore/roll_arc_primacy.py --p1 <slug> --p2 <slug>",
+    "returns": "primary: whichever slug leads this scene's arc",
+    "note": "Decides whose arc gets to advance/resolve this pass — the loser's own arc sits out.",
+    "substeps": null
+  },
+  "a9": {
+    "phase": "A",
+    "title": "knowledge/criteria gate",
+    "script": "py scripts/lore/check_arc_alignment.py --arc-about <tag> [...] --arc-needs <tag> [...] --peer-standard \"<text>\" --peer-wasted-life \"<text>\" --peer-knowledge-item <item> [...]",
+    "returns": "gate: hit/miss, inclined: advance/hinder/neutral, matched_about",
+    "note": "Only runs when the primacy winner already has an ongoing arc — checks whether the OTHER participant's own knowledge/criterion actually touches it at all.",
+    "substeps": null
+  },
+  "a10": {
+    "phase": "A",
+    "title": "arc-outcome roll",
+    "script": "py scripts/lore/roll_arc_outcome.py --inclined <advance|hinder|neutral>",
+    "returns": "outcome: advance/stall/reverse",
+    "note": "Only rolled when the gate hit (a9). Resolved before the scene is written on purpose — writing dialogue first and rolling after risks the roll contradicting what was already dramatized.",
+    "substeps": null
+  },
+  "a11": {
+    "phase": "A",
+    "title": "arc tally vs. threshold",
+    "script": null,
+    "returns": "tally_result: complete/transform/failed/ongoing",
+    "note": "Not a script call — plain arithmetic (score the outcome history since the last transform, compare against arc_resolution_threshold: 3 from _lore/tuning.json). A transform additionally needs a matched_about from the gate check (a9); without one a failing tally resolves the arc “failed” outright.",
+    "substeps": null
+  },
+  "a12": {
+    "phase": "A",
+    "title": "partner tracking",
+    "script": "py scripts/lore/record_partner.py <slug> --with <other slug>",
+    "returns": "(no return value — pure bookkeeping)",
+    "note": "Called twice, once per direction (p1→p2 and p2→p1) — this is what a13's eligibility check reads back.",
+    "substeps": null
+  },
+  "a13": {
+    "phase": "A",
+    "title": "reproduction eligibility + roll",
+    "script": "py scripts/lore/roll_reproduction.py --p1 <slug> --p2 <slug>",
+    "returns": "reproduces: true/false, name_lead",
+    "note": "Eligibility itself is inline arithmetic, not a script: either direction's partner count >= partner_threshold (5), neither parent within parent_cooldown_passes (10) of their last birth, neither already lists the other as a parent. Only if all three hold does the roll above actually run. Odds when it does: 40% (odds_percent.reproduction).",
+    "substeps": null
+  },
+  "brepro": {
+    "phase": "B",
+    "title": "Name the newborn",
+    "script": "py scripts/lore/generate_offspring.py --parent-a <slug> --parent-b <slug> --name \"<composed name>\" --pass-number <N>",
+    "returns": "writes a tales.entries birth tale (id: birth_of_<key>); handles knowledge inheritance in the same call",
+    "note": "The name blend itself is the one thing about a birth that can't be scripted — the subagent composes it, leading from name_lead's side, before making this call. Tag the birth-announcement hearsay claim about: \"tale: birth_of_<key>\", never a made-up concept tag.",
+    "substeps": null
+  },
+  "barc": {
+    "phase": "B",
+    "title": "Author the arc",
+    "script": "py scripts/lore/write_arc.py <slug> --about \"<tag>\" [...] --needs \"<tag>\" [...] --context <name> --premise \"<text>\"",
+    "returns": "writes the arc AND registers its concept: <id> tag in encodings.json, in one call",
+    "note": "As of 2026-08-16 this is the FALLBACK path, not the normal way arcs come to exist — /character Step 8 now authors a character's arc at creation time by default. This slot only still fires for a newborn from generate_offspring.py (which never assigns one) or a re-author after the prior arc resolved “failed” or “complete”. The subagent composes about/needs/context/premise per /character Step 8's own authoring discipline before calling this.",
+    "substeps": null
+  },
+  "brival": {
+    "phase": "B",
+    "title": "Maybe name a rival",
+    "script": "py scripts/lore/apply_contested_lead.py --traveler <slug> --rival <slug> --supplier <slug> --matched-provide \"<tag>\" --pass-number <N>",
+    "returns": "writes a leads entry on the traveler's file and a fixed attributed note on the rival's file",
+    "note": "Genuinely optional even when the slot is open: a rival is only named if the scene plausibly points at a SPECIFIC character who already has a file. The default and common case is to leave it ambient/unnamed — this script is then never called at all. The note text is fixed, never invented prose: “According to <supplier>, <rival> already claimed <matched_provide> before <traveler> arrived.”",
+    "substeps": null
+  },
+  "bscene": {
+    "phase": "B",
+    "title": "Write the scene",
+    "script": null,
+    "returns": "the scene transcript, a hearsay entry, and any criterion/life update — all on the participants' own character files",
+    "note": "The only one of the four judgment slots that's never skipped — this is the actual mechanism being exercised, run in full, never shortened for speed.",
+    "substeps": [
+      {
+        "step": "3b",
+        "label": "Enact both characters",
+        "detail": "Write the full scene as one message, alternating clearly labeled turns, each character honoring their own bounded knowledge sample independently. Bring it to a natural stopping point rather than running indefinitely."
+      },
+      {
+        "step": "5",
+        "label": "Update the hearsay record",
+        "detail": "Record each character's mutated interpretation, not what was objectively said — framing, emphasis, and moral judgment all filtered through their criterion/trusts/distrusts. Written via py scripts/lore/record_hearsay.py --json-file <path>."
+      },
+      {
+        "step": "5b",
+        "label": "Resolve shocks, drift, and the scene count",
+        "detail": "py scripts/lore/check_anchor_reference.py gates whether any claim actually touches a participant's criterion.anchor; if so, resolve reject/reinterpret/break and record it (plus the life.lived+1 every participant gets regardless) via py scripts/lore/update_character.py. Runs py scripts/lore/horizon.py again afterward to check for an ending, and py scripts/lore/record_death.py if so."
+      },
+      {
+        "step": "6",
+        "label": "Update the character record",
+        "detail": "Append knowledge.experience for anything the scene established beyond the original sample, via py scripts/lore/update_character.py --add-experience / --add-grounded-experience. criterion/life are typically already written by Step 5b's own calls by this point."
+      }
+    ]
+  },
+  "c1": {
+    "phase": "C",
+    "title": "horizon.py",
+    "script": "py scripts/lore/horizon.py <slug>",
+    "returns": "band: early/established/late, lived, ending: true/false",
+    "note": "Run for both participants. life.lived was already incremented inside the subagent's own Step 5b work — this call only reads what's already on record.",
+    "substeps": null
+  },
+  "c2": {
+    "phase": "C",
+    "title": "record_death.py",
+    "script": "py scripts/lore/record_death.py <slug> [--cause \"<text>\"]",
+    "returns": "sets life.deceased: true, writes a _lore/tales/ entry, notifies 30% of the deceased's circle",
+    "note": "Only runs for a participant whose horizon.py just read ending: true. Prints which notified characters are shock candidates, for a future pass's own Step 5b judgment.",
+    "substeps": null
+  },
+  "c3": {
+    "phase": "C",
+    "title": "death-legacy roll",
+    "script": "py scripts/lore/roll_death_legacy.py --candidates <notified slug> [...]",
+    "returns": "passes: true/false, recipient",
+    "note": "Only rolled if the death was “early” in the structural sense horizon.py can report at this point (band read “established”, not “late”) AND the notified circle isn't empty. Odds: 40% (odds_percent.death_legacy). A true result copies the deceased's arc onto the recipient — about/needs/premise carried over, resolution reset to “ongoing”, tally reset; context/routine stay the recipient's own. Done inline in Python, not a further script call.",
+    "substeps": null
+  },
+  "c4": {
+    "phase": "C",
+    "title": "safety net",
+    "script": null,
+    "returns": "auto-reverts any pass content that leaked into the main repo instead of the worktree",
+    "note": "Not part of simulate_pass_resolve.py — the orchestrator runs git -C \"<main repo root>\" status --short -- _lore/ _npcs/ directly and reverts any leaked path it finds, without asking, before moving to the next pass.",
+    "substeps": null
+  },
+  "c5": {
+    "phase": "C",
+    "title": "log the pass",
+    "script": null,
+    "returns": "the running in-conversation log gains one more line",
+    "note": "Pure bookkeeping by the orchestrator — nothing written to disk here; SIMULATION_LOG.md itself is only written once, at the end of the whole batch (Step 4).",
+    "substeps": null
+  },
+  "c6": {
+    "phase": "C",
+    "title": "build_source_index.py",
+    "script": "py scripts/lore/build_source_index.py",
+    "returns": "folds this batch's accumulated hearsay claims into each concept's own sources[]",
+    "note": "A separate script call the orchestrator makes only at the natural end of a batch — not after every single pass.",
+    "substeps": null
+  }
+};
+</script>
+  <script>
+  (function(){
+    var figureEl = document.querySelector('figure');
+    var popover = document.getElementById('node-popover');
+    var breadEl = document.getElementById('detail-breadcrumb');
+    var titleEl = document.getElementById('detail-title');
+    var bodyEl = document.getElementById('detail-body');
+    var currentId = null;
+
+    function esc(s){
+      return String(s).replace(/[&<>"']/g, function(c){
+        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+      });
+    }
+
+    function findNode(id){
+      return figureEl.querySelector('g[data-node-id="' + id + '"]');
+    }
+
+    function position(nodeEl){
+      var figureRect = figureEl.getBoundingClientRect();
+      var nodeRect = nodeEl.getBoundingClientRect();
+      popover.style.top = (nodeRect.bottom - figureRect.top + 10) + 'px';
+    }
+
+    window.hideDetail = function(){
+      popover.hidden = true;
+      currentId = null;
+    };
+
+    window.showDetail = function(id, evt){
+      var d = window.DIAGRAM_DETAILS && window.DIAGRAM_DETAILS[id];
+      if(!d) return;
+      if(currentId === id && !popover.hidden){
+        hideDetail();
+        return;
+      }
+      currentId = id;
+      breadEl.textContent = 'Phase ' + d.phase + ' · ' + d.title;
+      titleEl.textContent = d.title;
+      var html = '';
+      if(d.script){
+        html += '<p class="detail-label">Script call</p><pre class="detail-code">' + esc(d.script) + '</pre>';
+      } else {
+        html += '<p class="detail-label">No separate script</p>';
+      }
+      if(d.returns){
+        html += '<p><b>Reads/writes:</b> ' + esc(d.returns) + '</p>';
+      }
+      if(d.note){
+        html += '<p class="detail-note">' + esc(d.note) + '</p>';
+      }
+      if(d.substeps){
+        html += '<p class="detail-label">Sub-steps</p><ol class="detail-substeps">';
+        d.substeps.forEach(function(s){
+          html += '<li><b>Step ' + esc(s.step) + ' &mdash; ' + esc(s.label) + '.</b> ' + esc(s.detail) + '</li>';
+        });
+        html += '</ol>';
+      }
+      bodyEl.innerHTML = html;
+      popover.hidden = false;
+      var nodeEl = (evt && evt.currentTarget) || findNode(id);
+      if(nodeEl){
+        position(nodeEl);
+        popover.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+      }
+    };
+
+    document.querySelectorAll('figure svg g.clickable').forEach(function(g){
+      g.addEventListener('keydown', function(e){
+        if(e.key === 'Enter' || e.key === ' '){
+          e.preventDefault();
+          g.dispatchEvent(new MouseEvent('click'));
+        }
+      });
+    });
+
+    document.addEventListener('click', function(e){
+      if(popover.hidden) return;
+      if(popover.contains(e.target)) return;
+      if(e.target.closest && e.target.closest('g.clickable')) return;
+      hideDetail();
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape') hideDetail();
+    });
+    window.addEventListener('resize', function(){
+      if(popover.hidden || !currentId) return;
+      var nodeEl = findNode(currentId);
+      if(nodeEl) position(nodeEl);
+    });
+  })();
+  </script>
 
   <div class="closing">
     <h2>A few things the diagram compresses</h2>
