@@ -21,7 +21,7 @@ topic, criterion collision, how the scene resolves) gets asked, never guessed. M
 questions — skin, UUID, movement mode, how a two-NPC dialog gets registered — are `/embody`'s concern,
 not this skill's; it doesn't ask about them because it never touches that layer.
 
-A character's knowledge comes in three kinds:
+A character's knowledge comes in four kinds:
 
 - **`facts`** — `_lore/facts/facts.json`. Universal: **every character knows every fact in full**,
   from creation, regardless of their education percentage. Facts are never sampled, never folded into
@@ -29,6 +29,12 @@ A character's knowledge comes in three kinds:
   wrong, cannot cite who told them, and cannot dismiss one. Load this file at the start of every run
   and treat its contents as standing knowledge for every character in the scene. See
   `_lore/facts/_index.md`.
+- **`grounding`** — `_lore/grounding/` (`mechanics.json` + `world_state.json`), computed live every
+  run via `python scripts/lore/sample_grounding.py --character <key>` — never cached, never a random
+  draw. Objective (true regardless of anyone's knowledge), unlike ordinary lore; access-conditional
+  (gated by the character's own routines), unlike a fact. Unlike a fact, it CAN be attributed — a
+  character knows it first-hand, the same way they'd cite something they've seen or used themselves.
+  Run this alongside the education sample below, not instead of it. See `_lore/grounding/_index.md`.
 - **`education`** — the sample drawn once at creation (Step 1/2), mirrored in
   `_lore/characters/<key>.json`'s `knowledge` object. Fixed for life: never redrawn, never hand-edited,
   on this run or any later one.

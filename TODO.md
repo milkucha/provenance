@@ -1808,3 +1808,17 @@ as a character whose arc fails - completion isn't a valid reason to stop having 
       concluding), not another incremental step - and should be plausible as a single-sitting
       resolution given the participants/location already fixed by that pass's brief, not just narrated
       as suddenly finished.
+
+## Grounding: mod-sourced mechanics, deferred until a mod is actually added (2026-08-26)
+
+`_lore/grounding/mechanics.json` (design + schema this session, see `_lore/grounding/_index.md`) is
+being populated with vanilla Minecraft 1.20.1 mechanics. When mods eventually get added to the
+datapack, their own mechanics (new mobs, new crafting, new survival systems) should get added here
+too - tagged distinctly from vanilla content so a character's grounding can be scoped to which mods
+are actually active in their world, and the vanilla baseline stays swappable/comparable on its own.
+Not urgent - no mods are in the datapack as of this entry - flagging now so it isn't rediscovered as
+a gap later.
+
+- [ ] Decide the tagging scheme for mod-sourced entries once the first mod's content actually needs
+      adding (extend `embodiment` to something like `"minecraft:modname"`, or add a separate `mod`
+      field alongside it - not decided, don't guess when the time comes).

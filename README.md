@@ -221,6 +221,17 @@ the simulation/evaluation tooling described next.
     consistency, even though facts are added rarely: which real user added each fact, and when. Facts
     have no in-world attribution at all, so unlike the tale version there's no `told_by` this file
     needs to stay distinct from - `responsible` is simply the only provenance a fact ever has.
+  - `_lore/grounding/` — a fifth source of truth, added 2026-08-26: objective, "true regardless of
+    anyone's knowledge" content, distinct from a fact (true of being a person at all) and from
+    material (a claim that may or may not be true - see the folder's own Troy distinction).
+    `mechanics.json` holds embodiment rules (tagged `embodiment: "minecraft"` so a future backend
+    only swaps this content); `world_state.json` holds the world's actual physical state, sourced
+    from an external region-file/machine-vision pipeline outside this repo (empty until that pipeline
+    delivers). Neither is sampled by `sample_lore_knowledge.py` or folded into `encodings.json` -
+    `scripts/lore/sample_grounding.py` computes access live instead, gated by a character's own
+    routine contexts (`_lore/contexts.json`'s `grounding_provides`) and routine locations, never
+    randomly. Unlike a fact, grounding *can* be attributed - a character knows it first-hand, and
+    `build_source_index.py` indexes it as its own sourced category. See `_lore/grounding/_index.md`.
 
 ### Simulating and evaluating the lore
 
@@ -325,14 +336,18 @@ Luminacion/
 │   │   │                               see _index.md)
 │   │   └── _authors.md                (real-world recordkeeping only — who told the system each
 │   │                                   tale, walled off from encodings.json; not lore)
-│   └── facts/                         (universal, NEVER sampled — facts.json + one .md per fact,
-│       └── _authors.md                see _index.md; deliberately outside encodings.json)
+│   ├── facts/                         (universal, NEVER sampled — facts.json + one .md per fact,
+│   │   └── _authors.md                see _index.md; deliberately outside encodings.json)
+│   └── grounding/                     (objective, access-gated, NOT sampled — mechanics.json +
+│       └── _authors.md                world_state.json; see _index.md; outside encodings.json too)
 ├── graphs/
 │   └── graphifyish/                   (scripts/graphs/graphifyish.py's output — graph.json + a standalone
 │                                       graphifyish.html visualizing the lore/structure/concept graphs)
 ├── scripts/
 │   ├── lore/                          (only ever touch _lore/ — no embodiment awareness)
 │   │   ├── sample_lore_knowledge.py    (draws a character's education sample — §3 Step 1)
+│   │   ├── sample_grounding.py        (computes a character's live-gated grounding access — see
+│   │   │                               _lore/grounding/_index.md; never cached, never random)
 │   │   ├── lineage_coin.py            (rolls traceable/untraceable when a hearsay claim is retold)
 │   │   ├── check_character_name.py    (the shared name-uniqueness check /character and /enact both
 │   │   │                               call before treating a name as a brand-new character)
@@ -418,6 +433,8 @@ string values, which parse fine either way. Anything named `_shared` is called d
 ## 2. Core concepts
 
 **Fact** — one of the handful of things true of being a person in this world at all, living in `_lore/facts/`. Every character knows every fact in full; facts are never sampled, never attributed, and never contestable. Currently two: life ends, and everyone wants theirs to have been worthwhile. Together they're the will to live. See §0 Layer 1 and `_lore/facts/_index.md`.
+
+**Grounding** — objective content that's true regardless of whether any character knows it, living in `_lore/grounding/` (embodiment mechanics + world state). Unlike a fact, access is conditional, not universal: `scripts/lore/sample_grounding.py` computes it live from a character's own routines, never randomly and never cached. Unlike material, it can't disagree with itself into a reconciled record — it's the world's actual current state, and is allowed to simply not match what `_lore/material/` claims about the same place. See §0 Layer 1 and `_lore/grounding/_index.md`.
 
 **Criterion** — what a character counts as a life well spent, in their character file (`_lore/characters/<key>.json`) as `criterion`. Derived once at creation from the collision of their knowledge sample with their backstory, stated negatively (what they'd count as a *wasted* life) and anchored to one concrete, refutable case. It's what makes two characters with the same knowledge in the same situation choose differently. Owned by `/character` (Step 4 derives, Step 6 is the reference for how it changes).
 
