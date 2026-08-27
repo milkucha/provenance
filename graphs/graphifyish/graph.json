@@ -29,7 +29,7 @@
     "label": "Luminacion",
     "kind": "root",
     "path": ".",
-    "size": 1135804,
+    "size": 1156456,
     "degree": 15
    },
    {
@@ -69,7 +69,7 @@
     "label": "README.md",
     "kind": "doc",
     "path": "README.md",
-    "size": 58592,
+    "size": 59293,
     "degree": 1
    },
    {
@@ -93,7 +93,7 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
-    "size": 186128,
+    "size": 185684,
     "degree": 4
    },
    {
@@ -117,15 +117,15 @@
     "label": "skills",
     "kind": "dir",
     "path": ".claude/skills",
-    "size": 184886,
-    "degree": 12
+    "size": 184442,
+    "degree": 13
    },
    {
     "id": "dir:.claude/skills/character",
     "label": "character",
     "kind": "dir",
     "path": ".claude/skills/character",
-    "size": 29740,
+    "size": 31297,
     "degree": 2
    },
    {
@@ -133,7 +133,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/character/SKILL.md",
-    "size": 29740,
+    "size": 31297,
     "degree": 1
    },
    {
@@ -157,7 +157,7 @@
     "label": "enact",
     "kind": "dir",
     "path": ".claude/skills/enact",
-    "size": 39332,
+    "size": 48761,
     "degree": 2
    },
    {
@@ -165,7 +165,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/enact/SKILL.md",
-    "size": 39332,
+    "size": 48761,
     "degree": 1
    },
    {
@@ -182,6 +182,22 @@
     "kind": "skill",
     "path": ".claude/skills/enact-embody/SKILL.md",
     "size": 1396,
+    "degree": 1
+   },
+   {
+    "id": "dir:.claude/skills/generate",
+    "label": "generate",
+    "kind": "dir",
+    "path": ".claude/skills/generate",
+    "size": 7680,
+    "degree": 2
+   },
+   {
+    "id": "file:.claude/skills/generate/SKILL.md",
+    "label": "SKILL.md",
+    "kind": "skill",
+    "path": ".claude/skills/generate/SKILL.md",
+    "size": 7680,
     "degree": 1
    },
    {
@@ -237,7 +253,7 @@
     "label": "simulate",
     "kind": "dir",
     "path": ".claude/skills/simulate",
-    "size": 49173,
+    "size": 30063,
     "degree": 2
    },
    {
@@ -245,7 +261,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/simulate/SKILL.md",
-    "size": 49173,
+    "size": 30063,
     "degree": 1
    },
    {
@@ -301,7 +317,7 @@
     "label": "_lore",
     "kind": "dir",
     "path": "_lore",
-    "size": 43011,
+    "size": 43007,
     "degree": 8
    },
    {
@@ -325,7 +341,7 @@
     "label": "tuning.json",
     "kind": "lore",
     "path": "_lore/tuning.json",
-    "size": 1944,
+    "size": 1941,
     "degree": 1
    },
    {
@@ -381,7 +397,7 @@
     "label": "facts",
     "kind": "dir",
     "path": "_lore/facts",
-    "size": 14178,
+    "size": 14177,
     "degree": 6
    },
    {
@@ -421,7 +437,7 @@
     "label": "life_is_finite.md",
     "kind": "lore",
     "path": "_lore/facts/life_is_finite.md",
-    "size": 3321,
+    "size": 3320,
     "degree": 1
    },
    {
@@ -1013,23 +1029,23 @@
     "label": "diagrams",
     "kind": "dir",
     "path": "diagrams",
-    "size": 74477,
+    "size": 92825,
     "degree": 3
    },
    {
-    "id": "file:diagrams/extended-mode-pass.html",
-    "label": "extended-mode-pass.html",
+    "id": "file:diagrams/gen_simulate_pass.py",
+    "label": "gen_simulate_pass.py",
     "kind": "other",
-    "path": "diagrams/extended-mode-pass.html",
-    "size": 49490,
+    "path": "diagrams/gen_simulate_pass.py",
+    "size": 32646,
     "degree": 1
    },
    {
-    "id": "file:diagrams/gen_extended_mode_pass.py",
-    "label": "gen_extended_mode_pass.py",
+    "id": "file:diagrams/simulate-pass.html",
+    "label": "simulate-pass.html",
     "kind": "other",
-    "path": "diagrams/gen_extended_mode_pass.py",
-    "size": 24987,
+    "path": "diagrams/simulate-pass.html",
+    "size": 60179,
     "degree": 1
    },
    {
@@ -1213,7 +1229,7 @@
     "label": "scripts",
     "kind": "dir",
     "path": "scripts",
-    "size": 400900,
+    "size": 402951,
     "degree": 5
    },
    {
@@ -1261,8 +1277,8 @@
     "label": "lore",
     "kind": "dir",
     "path": "scripts/lore",
-    "size": 303896,
-    "degree": 45
+    "size": 305947,
+    "degree": 46
    },
    {
     "id": "file:scripts/lore/add_categories_schema.py",
@@ -1289,11 +1305,19 @@
     "degree": 1
    },
    {
+    "id": "file:scripts/lore/apply_death_legacy.py",
+    "label": "apply_death_legacy.py",
+    "kind": "script",
+    "path": "scripts/lore/apply_death_legacy.py",
+    "size": 2419,
+    "degree": 1
+   },
+   {
     "id": "file:scripts/lore/apply_language_layer.py",
     "label": "apply_language_layer.py",
     "kind": "script",
     "path": "scripts/lore/apply_language_layer.py",
-    "size": 11005,
+    "size": 10971,
     "degree": 1
    },
    {
@@ -1333,7 +1357,7 @@
     "label": "check_anchor_reference.py",
     "kind": "script",
     "path": "scripts/lore/check_anchor_reference.py",
-    "size": 4889,
+    "size": 4888,
     "degree": 1
    },
    {
@@ -1365,7 +1389,7 @@
     "label": "check_resonance.py",
     "kind": "script",
     "path": "scripts/lore/check_resonance.py",
-    "size": 12975,
+    "size": 12972,
     "degree": 1
    },
    {
@@ -1381,7 +1405,7 @@
     "label": "horizon.py",
     "kind": "script",
     "path": "scripts/lore/horizon.py",
-    "size": 4366,
+    "size": 4365,
     "degree": 1
    },
    {
@@ -1405,7 +1429,7 @@
     "label": "notify_death.py",
     "kind": "script",
     "path": "scripts/lore/notify_death.py",
-    "size": 11063,
+    "size": 11061,
     "degree": 1
    },
    {
@@ -1429,7 +1453,7 @@
     "label": "record_death.py",
     "kind": "script",
     "path": "scripts/lore/record_death.py",
-    "size": 8753,
+    "size": 8752,
     "degree": 1
    },
    {
@@ -1453,7 +1477,7 @@
     "label": "register_arc_concept.py",
     "kind": "script",
     "path": "scripts/lore/register_arc_concept.py",
-    "size": 4447,
+    "size": 4430,
     "degree": 1
    },
    {
@@ -1549,7 +1573,7 @@
     "label": "simulate_generate_population.py",
     "kind": "script",
     "path": "scripts/lore/simulate_generate_population.py",
-    "size": 20716,
+    "size": 20680,
     "degree": 1
    },
    {
@@ -1557,7 +1581,7 @@
     "label": "simulate_pass_brief.py",
     "kind": "script",
     "path": "scripts/lore/simulate_pass_brief.py",
-    "size": 14227,
+    "size": 14710,
     "degree": 1
    },
    {
@@ -1565,15 +1589,15 @@
     "label": "simulate_pass_lib.py",
     "kind": "script",
     "path": "scripts/lore/simulate_pass_lib.py",
-    "size": 11844,
+    "size": 11815,
     "degree": 1
    },
    {
-    "id": "file:scripts/lore/simulate_pass_resolve.py",
-    "label": "simulate_pass_resolve.py",
+    "id": "file:scripts/lore/simulate_resolve_pair.py",
+    "label": "simulate_resolve_pair.py",
     "kind": "script",
-    "path": "scripts/lore/simulate_pass_resolve.py",
-    "size": 4037,
+    "path": "scripts/lore/simulate_resolve_pair.py",
+    "size": 3312,
     "degree": 1
    },
    {
@@ -1605,7 +1629,7 @@
     "label": "update_character.py",
     "kind": "script",
     "path": "scripts/lore/update_character.py",
-    "size": 11350,
+    "size": 11348,
     "degree": 1
    },
    {
@@ -1761,6 +1785,18 @@
    {
     "source": "dir:.claude/skills/enact-embody",
     "target": "file:.claude/skills/enact-embody/SKILL.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/skills",
+    "target": "dir:.claude/skills/generate",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/skills/generate",
+    "target": "file:.claude/skills/generate/SKILL.md",
     "rel": "contains",
     "weight": 1
    },
@@ -2390,13 +2426,13 @@
    },
    {
     "source": "dir:diagrams",
-    "target": "file:diagrams/extended-mode-pass.html",
+    "target": "file:diagrams/gen_simulate_pass.py",
     "rel": "contains",
     "weight": 1
    },
    {
     "source": "dir:diagrams",
-    "target": "file:diagrams/gen_extended_mode_pass.py",
+    "target": "file:diagrams/simulate-pass.html",
     "rel": "contains",
     "weight": 1
    },
@@ -2589,6 +2625,12 @@
    {
     "source": "dir:scripts/lore",
     "target": "file:scripts/lore/apply_contested_lead.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/apply_death_legacy.py",
     "rel": "contains",
     "weight": 1
    },
@@ -2804,7 +2846,7 @@
    },
    {
     "source": "dir:scripts/lore",
-    "target": "file:scripts/lore/simulate_pass_resolve.py",
+    "target": "file:scripts/lore/simulate_resolve_pair.py",
     "rel": "contains",
     "weight": 1
    },
@@ -2873,7 +2915,7 @@
     "kind": "layer",
     "note": "skills + lore: the sources of truth",
     "tier": 1,
-    "degree": 16
+    "degree": 17
    },
    {
     "id": "layer:2",
@@ -2881,7 +2923,7 @@
     "kind": "layer",
     "note": "templates, registries, gesture dispatch",
     "tier": 2,
-    "degree": 54
+    "degree": 55
    },
    {
     "id": "layer:3",
@@ -2929,6 +2971,14 @@
     "kind": "skill",
     "tier": 1,
     "file": ".claude/skills/enact-embody/SKILL.md",
+    "degree": 1
+   },
+   {
+    "id": "skill:generate",
+    "label": "/generate",
+    "kind": "skill",
+    "tier": 1,
+    "file": ".claude/skills/generate/SKILL.md",
     "degree": 1
    },
    {
@@ -3081,6 +3131,14 @@
     "kind": "script",
     "tier": 2,
     "file": "scripts/lore/apply_contested_lead.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/apply_death_legacy.py",
+    "label": "apply_death_legacy.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/apply_death_legacy.py",
     "degree": 1
    },
    {
@@ -3364,11 +3422,11 @@
     "degree": 1
    },
    {
-    "id": "script:lore/simulate_pass_resolve.py",
-    "label": "simulate_pass_resolve.py",
+    "id": "script:lore/simulate_resolve_pair.py",
+    "label": "simulate_resolve_pair.py",
     "kind": "script",
     "tier": 2,
-    "file": "scripts/lore/simulate_pass_resolve.py",
+    "file": "scripts/lore/simulate_resolve_pair.py",
     "degree": 1
    },
    {
@@ -3513,6 +3571,12 @@
    },
    {
     "source": "layer:1",
+    "target": "skill:generate",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:1",
     "target": "skill:integrate",
     "rel": "holds",
     "weight": 1
@@ -3622,6 +3686,12 @@
    {
     "source": "layer:2",
     "target": "script:lore/apply_contested_lead.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/apply_death_legacy.py",
     "rel": "holds",
     "weight": 1
    },
@@ -3837,7 +3907,7 @@
    },
    {
     "source": "layer:2",
-    "target": "script:lore/simulate_pass_resolve.py",
+    "target": "script:lore/simulate_resolve_pair.py",
     "rel": "holds",
     "weight": 1
    },
