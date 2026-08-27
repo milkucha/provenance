@@ -13,3 +13,8 @@ judgment.
 Every skill in this pack answers to this one rule. A skill's own `SKILL.md` states only how it
 applies in that skill's domain — what counts as a genuine open question there, and where the
 question or the log entry goes — not the rule itself; point back here instead of restating it.
+
+**Project prose sounds like the author.** README, TODO, LAB_REPORT, commit messages, and any other
+documentation or first-person writing in this repo gets written in the author's own voice — see
+`VOICE.md` for the rule and the accumulating list of actual verbal patterns to imitate. (This is
+separate from lore/character content, which has its own author-primacy rule.)

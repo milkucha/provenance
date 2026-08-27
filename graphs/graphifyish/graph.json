@@ -16698,8 +16698,8 @@
     "label": "Luminacion",
     "kind": "root",
     "path": ".",
-    "size": 595260143,
-    "degree": 14
+    "size": 596744880,
+    "degree": 16
    },
    {
     "id": "file:.gitignore",
@@ -16707,6 +16707,22 @@
     "kind": "other",
     "path": ".gitignore",
     "size": 45,
+    "degree": 1
+   },
+   {
+    "id": "file:CHRONICLE.md",
+    "label": "CHRONICLE.md",
+    "kind": "doc",
+    "path": "CHRONICLE.md",
+    "size": 4512,
+    "degree": 1
+   },
+   {
+    "id": "file:CLAUDE.md",
+    "label": "CLAUDE.md",
+    "kind": "doc",
+    "path": "CLAUDE.md",
+    "size": 1149,
     "degree": 1
    },
    {
@@ -16730,7 +16746,7 @@
     "label": "README.md",
     "kind": "doc",
     "path": "README.md",
-    "size": 58003,
+    "size": 58312,
     "degree": 1
    },
    {
@@ -16754,15 +16770,23 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
-    "size": 534474485,
-    "degree": 6
+    "size": 534487474,
+    "degree": 8
    },
    {
     "id": "file:.claude/PRINCIPLES.md",
     "label": "PRINCIPLES.md",
     "kind": "doc",
     "path": ".claude/PRINCIPLES.md",
-    "size": 928,
+    "size": 1301,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/VOICE.md",
+    "label": "VOICE.md",
+    "kind": "doc",
+    "path": ".claude/VOICE.md",
+    "size": 2337,
     "degree": 1
    },
    {
@@ -16770,7 +16794,7 @@
     "label": "settings.json",
     "kind": "other",
     "path": ".claude/settings.json",
-    "size": 286,
+    "size": 572,
     "degree": 1
    },
    {
@@ -16779,6 +16803,22 @@
     "kind": "other",
     "path": ".claude/settings.local.json",
     "size": 657,
+    "degree": 1
+   },
+   {
+    "id": "dir:.claude/hooks",
+    "label": "hooks",
+    "kind": "dir",
+    "path": ".claude/hooks",
+    "size": 2372,
+    "degree": 2
+   },
+   {
+    "id": "file:.claude/hooks/chronicle-nudge.sh",
+    "label": "chronicle-nudge.sh",
+    "kind": "other",
+    "path": ".claude/hooks/chronicle-nudge.sh",
+    "size": 2372,
     "degree": 1
    },
    {
@@ -16954,7 +16994,7 @@
     "label": "worktrees",
     "kind": "dir",
     "path": ".claude/worktrees",
-    "size": 534291087,
+    "size": 534298708,
     "degree": 11
    },
    {
@@ -16962,7 +17002,7 @@
     "label": "bare-test-20260826",
     "kind": "dir",
     "path": ".claude/worktrees/bare-test-20260826",
-    "size": 1126116,
+    "size": 1133737,
     "degree": 16
    },
    {
@@ -17002,7 +17042,7 @@
     "label": "README.md",
     "kind": "doc",
     "path": ".claude/worktrees/bare-test-20260826/README.md",
-    "size": 56276,
+    "size": 58592,
     "degree": 1
    },
    {
@@ -17026,7 +17066,7 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude/worktrees/bare-test-20260826/.claude",
-    "size": 184016,
+    "size": 186128,
     "degree": 4
    },
    {
@@ -17050,8 +17090,8 @@
     "label": "skills",
     "kind": "dir",
     "path": ".claude/worktrees/bare-test-20260826/.claude/skills",
-    "size": 182774,
-    "degree": 11
+    "size": 184886,
+    "degree": 12
    },
    {
     "id": "dir:.claude/worktrees/bare-test-20260826/.claude/skills/character",
@@ -17195,6 +17235,22 @@
     "kind": "doc",
     "path": ".claude/worktrees/bare-test-20260826/.claude/skills/spawn/SKILL.md",
     "size": 15840,
+    "degree": 1
+   },
+   {
+    "id": "dir:.claude/worktrees/bare-test-20260826/.claude/skills/start",
+    "label": "start",
+    "kind": "dir",
+    "path": ".claude/worktrees/bare-test-20260826/.claude/skills/start",
+    "size": 2112,
+    "degree": 2
+   },
+   {
+    "id": "file:.claude/worktrees/bare-test-20260826/.claude/skills/start/SKILL.md",
+    "label": "SKILL.md",
+    "kind": "doc",
+    "path": ".claude/worktrees/bare-test-20260826/.claude/skills/start/SKILL.md",
+    "size": 2112,
     "degree": 1
    },
    {
@@ -18130,7 +18186,7 @@
     "label": "scripts",
     "kind": "dir",
     "path": ".claude/worktrees/bare-test-20260826/scripts",
-    "size": 397707,
+    "size": 400900,
     "degree": 5
    },
    {
@@ -18178,8 +18234,8 @@
     "label": "lore",
     "kind": "dir",
     "path": ".claude/worktrees/bare-test-20260826/scripts/lore",
-    "size": 300703,
-    "degree": 44
+    "size": 303896,
+    "degree": 45
    },
    {
     "id": "file:.claude/worktrees/bare-test-20260826/scripts/lore/add_categories_schema.py",
@@ -18331,6 +18387,14 @@
     "kind": "other",
     "path": ".claude/worktrees/bare-test-20260826/scripts/lore/pick_pair.py",
     "size": 1466,
+    "degree": 1
+   },
+   {
+    "id": "file:.claude/worktrees/bare-test-20260826/scripts/lore/print_start_banner.py",
+    "label": "print_start_banner.py",
+    "kind": "other",
+    "path": ".claude/worktrees/bare-test-20260826/scripts/lore/print_start_banner.py",
+    "size": 3193,
     "degree": 1
    },
    {
@@ -55224,7 +55288,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": "graphs",
-    "size": 4203359,
+    "size": 5669137,
     "degree": 2
    },
    {
@@ -55232,7 +55296,7 @@
     "label": "graphifyish",
     "kind": "dir",
     "path": "graphs/graphifyish",
-    "size": 4203359,
+    "size": 5669137,
     "degree": 3
    },
    {
@@ -55240,7 +55304,7 @@
     "label": "graph.json",
     "kind": "graph",
     "path": "graphs/graphifyish/graph.json",
-    "size": 2293526,
+    "size": 3097499,
     "degree": 1
    },
    {
@@ -55248,7 +55312,7 @@
     "label": "graphifyish.html",
     "kind": "graph",
     "path": "graphs/graphifyish/graphifyish.html",
-    "size": 1909833,
+    "size": 2571638,
     "degree": 1
    },
    {
@@ -55845,6 +55909,18 @@
    },
    {
     "source": "dir:.",
+    "target": "file:CHRONICLE.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.",
+    "target": "file:CLAUDE.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.",
     "target": "file:GESTURES.md",
     "rel": "contains",
     "weight": 1
@@ -55887,6 +55963,12 @@
    },
    {
     "source": "dir:.claude",
+    "target": "file:.claude/VOICE.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude",
     "target": "file:.claude/settings.json",
     "rel": "contains",
     "weight": 1
@@ -55894,6 +55976,18 @@
    {
     "source": "dir:.claude",
     "target": "file:.claude/settings.local.json",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude",
+    "target": "dir:.claude/hooks",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/hooks",
+    "target": "file:.claude/hooks/chronicle-nudge.sh",
     "rel": "contains",
     "weight": 1
    },
@@ -56206,6 +56300,18 @@
    {
     "source": "dir:.claude/worktrees/bare-test-20260826/.claude/skills/spawn",
     "target": "file:.claude/worktrees/bare-test-20260826/.claude/skills/spawn/SKILL.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/bare-test-20260826/.claude/skills",
+    "target": "dir:.claude/worktrees/bare-test-20260826/.claude/skills/start",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/bare-test-20260826/.claude/skills/start",
+    "target": "file:.claude/worktrees/bare-test-20260826/.claude/skills/start/SKILL.md",
     "rel": "contains",
     "weight": 1
    },
@@ -57058,6 +57164,12 @@
    {
     "source": "dir:.claude/worktrees/bare-test-20260826/scripts/lore",
     "target": "file:.claude/worktrees/bare-test-20260826/scripts/lore/pick_pair.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/worktrees/bare-test-20260826/scripts/lore",
+    "target": "file:.claude/worktrees/bare-test-20260826/scripts/lore/print_start_banner.py",
     "rel": "contains",
     "weight": 1
    },

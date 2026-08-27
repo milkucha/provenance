@@ -9,5 +9,19 @@
       "Bash(curl -s \"https://api.github.com/*\")",
       "Bash(curl -s \"https://api.modrinth.com/*\")"
     ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/chronicle-nudge.sh\"",
+            "shell": "bash",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
   }
 }
