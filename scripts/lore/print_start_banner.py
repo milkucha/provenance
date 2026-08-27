@@ -73,7 +73,7 @@ def build_banner() -> str:
         "  Putting it in motion",
         "    /enact                one live scene, played turn by turn",
         "    /simulate             chain many scenes across a population",
-        "    /simulate -generate   fast-forward a whole starting cast, no prose",
+        "    /generate             fast-forward a whole starting cast, no prose",
         "",
         "  New here? README.md §0-2 has the full picture.",
     ]

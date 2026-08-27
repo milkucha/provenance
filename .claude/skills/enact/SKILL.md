@@ -1,5 +1,5 @@
 ---
-description: Play a lore-only enacted character scene for Luminacion — against the player or against another enacted character — sampling each character's lore knowledge from _lore/encodings.json, then recording what the scene did to that lore (hearsay, criterion, life) and saving the scene's raw transcript to _npcs/scenes/<id>.md so /embody can convert it later, even cold. Purely lore-side otherwise: touches nothing under data/luminacion/ or the _npcs/ registries. Use when the user wants to enact/roleplay a character at the lore level. To also put the scene in the game (Blabber dialog, NPC registration, gestures), follow with /embody, or use /enact-embody to run both in one pass.
+description: Play a lore-only enacted character scene for Luminacion — against the player or against another enacted character — sampling each character's lore knowledge from _lore/encodings.json, then recording what the scene did to that lore (hearsay, criterion, life) and saving the scene's raw transcript to _npcs/scenes/<id>.md so /embody can convert it later, even cold. Two characters (not the player) additionally run a scripted mechanical layer deciding location, arc progress, and reproduction before the scene is written — requires both to already have routines+arc on file; /simulate is nothing more than this run repeatedly over an automated pool. Purely lore-side otherwise: touches nothing under data/luminacion/ or the _npcs/ registries. Use when the user wants to enact/roleplay a character at the lore level. To also put the scene in the game (Blabber dialog, NPC registration, gestures), follow with /embody, or use /enact-embody to run both in one pass.
 disable-model-invocation: true
 ---
 
@@ -42,14 +42,15 @@ Two further fields on the same entry are not knowledge but govern how a characte
 have in them, and how many they've had). Both are owned by the `/character` skill
 (`.claude/skills/character/SKILL.md`): Step 4 derives a criterion, Step 5 rolls a lifespan, Step 6 is
 the reference for how a criterion changes. This skill points at those rather than restating them —
-don't fork the procedure.
+don't fork the procedure. Step 8 of that same skill authors `routines`/`arc`, required for Step 2's
+eligibility gate below.
 
 ## Step 1 — First interlocutor
 
 **Before anything else, slugify the name and look for `_lore/characters/<slug>.json`.**
 
 - **If it exists:** check `life.deceased`. If it's `true`, this character has already had their last
-  scene (Step 5b point 6) and cannot be enacted again, full stop — say so plainly and stop, rather
+  scene (Step 8 point 6) and cannot be enacted again, full stop — say so plainly and stop, rather
   than proceeding. They still exist in the world as whatever the notified circle now knows and
   whatever entered the discovery/sampling record; a new scene with them is not one of the ways that
   knowledge is allowed to grow.
@@ -72,7 +73,7 @@ Ask, as plain conversation (not multiple-choice):
    a `knowledge.education` already populated (`percent` not `null`), reuse it as-is — skip the
    percentage/mode/topic questions and the sampling script below entirely, and do not redraw.
    `education` is fixed at creation and never changes after; only `knowledge.experience` and the
-   hearsay record (Step 5) are allowed to keep growing across later runs. If no file exists yet, or
+   hearsay record (Step 7) are allowed to keep growing across later runs. If no file exists yet, or
    its `knowledge.education` is still the blank `_template` shape, proceed with the questions below:
    - Ask for a **percentage** (open number, e.g. "5", "11", "21").
    - Ask (AskUserQuestion, two options) whether the draw is **random** or **skewed toward a topic**.
@@ -88,17 +89,17 @@ py scripts/lore/sample_lore_knowledge.py --percent <N> --mode skewed --topic "<k
 
 Keep the printed list (or the reused list, for a returning character) — it's this character's
 entire knowledge of the world for the rest of this run, and it goes into their character file in
-Step 6 (or stays untouched there, if reused). Do not reveal the full list to the user unprompted (same
+Step 10 (or stays untouched there, if reused). Do not reveal the full list to the user unprompted (same
 reasoning as §8: better discovered through play than read off a list), but you may describe its
 general shape.
 
 Some drawn items will be `category: "hearsay"` (a claim from an earlier dialog's hearsay entry, not
 the objective record). Play those as things the character heard, not settled
-fact. The moment one of these actually gets voiced in the scene (Step 3), roll
+fact. The moment one of these actually gets voiced in the scene (Step 5), roll
 `scripts/lore/lineage_coin.py` right then — the result decides how the line is phrased: a `traceable`
 roll lets the character cite the source by name ("I heard Morkulo say..."); an `untraceable` roll
 means vague framing only ("they say...," "it's told that...") — no named source, on purpose. Keep
-the roll result; it determines `derived_from`/`oral_lore` in Step 5.
+the roll result; it determines `derived_from`/`oral_lore` in Step 7.
 
 ### Criterion and lifespan
 
@@ -117,7 +118,7 @@ same first-time-only discipline as `education`:
 - **Horizon.** Run `py scripts/lore/horizon.py <npc_key>` for each character before the scene starts
   and keep the band (`early` / `established` / `late`) for Step 3. Ignore the `ending` line this
   script also prints — before a scene it always reads `false` (see the script's docstring for why),
-  and it isn't the concern of the scene at all. It only matters afterward, at Step 5b point 6.
+  and it isn't the concern of the scene at all. It only matters afterward, at Step 8 point 6.
 
 **Never open `_lore/characters/lifespans.json` during an enactment, and never pass `--verbose` to
 `horizon.py`.** The span is kept in a separate file precisely so the number cannot end up in the
@@ -130,14 +131,25 @@ they do not know when.
 
 Ask (AskUserQuestion): is the second interlocutor **the player**, or **another character**?
 
-- **The player:** ask (AskUserQuestion) whether to start the scene now. If yes, go to Step 3a.
+- **The player:** ask (AskUserQuestion) whether to start the scene now. If yes, go to Step 5a.
 - **Another character:** repeat every question in Step 1 for them — name, backstory, location,
-  knowledge corpus, sample drawn the same way. Then ask (AskUserQuestion) whether to initiate the
-  interaction now. If yes, go to Step 3b.
+  knowledge corpus, sample drawn the same way.
+
+  **Eligibility gate — both participants need `routines` and `arc`.** Once both character files
+  exist, check each for a non-empty `routines` array and a populated `arc` (`/character` Step 8
+  authors both together). **If either is missing on either participant, stop here and say so
+  plainly** — name the character and the missing field(s) — and point at `/character` to complete
+  it (it can be re-run on an existing character for exactly this; see its Step 2a). There is no
+  freeform fallback any more: this used to silently drop to an ungrounded scene, and that path no
+  longer exists. Ask (AskUserQuestion) whether to go author the missing field(s) now or stop this
+  run.
+
+  Once both are eligible, ask (AskUserQuestion) whether to initiate the interaction now. If yes, go
+  to Step 4.
 
 ## Step 3 — How criterion and finitude modulate play
 
-Applies to both 3a and 3b, on top of the ground rules already given above (never invent as fact
+Applies to both 5a and 5b, on top of the ground rules already given above (never invent as fact
 outside the sample; personality and texture are free; write short).
 
 - **The criterion shows, it never gets recited.** It shapes what the character steers the
@@ -151,7 +163,7 @@ outside the sample; personality and texture are free; write short).
   to say the thing now rather than later — not as talk about mortality. An `early` character can
   defer; a `late` one ranks harder and drops what doesn't matter.
 - **Never write toward an ending.** Whether this happens to be a character's last scene is not
-  knowable until after it's played (see `scripts/lore/horizon.py`'s docstring and Step 5b point 6) — so it
+  knowable until after it's played (see `scripts/lore/horizon.py`'s docstring and Step 8 point 6) — so it
   is written exactly like any other scene, with no foreboding, no valediction, no character sensing
   anything is different. If the author independently wants a scene to carry a reflective or wistful
   tone, that's a legitimate craft choice, but it must be made on its own terms, never because the
@@ -165,34 +177,133 @@ outside the sample; personality and texture are free; write short).
 - **Facts are never subject to any of this.** A character cannot doubt, attribute, or argue with
   something from `_lore/facts/`, no matter what they distrust.
 - **Watch for anchor-touching claims as the scene runs.** Any time something said (by anyone) refers
-  to a participant's `criterion.anchor`, note it — that's a shock candidate, and Step 5b resolves it.
+  to a participant's `criterion.anchor`, note it — that's a shock candidate, and Step 8 resolves it.
   Don't resolve it mid-scene and don't let the character visibly recompute their life in dialogue;
   people don't do that out loud.
 
-## Step 3a — Enact against the player
+## Step 4 — Grounding the scene mechanically
+
+Only reached when the second interlocutor is another character — Step 2's eligibility gate already
+confirmed both participants have `routines`+`arc`. Skip this step entirely for a player scene;
+go straight from Step 2 to Step 5a.
+
+**Governing principle (design debrief 2026-08-10, mechanization debrief 2026-08-13): keep this
+step's own judgment to a minimum, and never hand-relay a mechanical fact from one script call to the
+next.** Everything decidable by a script, a dice roll, or plain arithmetic over numbers already on
+record is decided that way, in one call:
+
+```bash
+py scripts/lore/simulate_pass_brief.py --pair <p1 slug> <p2 slug> --pass-number <N>
+```
+
+`<N>` is this pairing's own running count if run standalone (one more than the higher of the two
+participants' `life.lived`), or the pass number `/simulate` is already tracking, when dispatched
+from there. Add `--forced-visit` only when `/simulate` has already resolved an unexpired lead of
+p1's toward p2 before dispatching here (see its own Step 3) — never set it for a standalone `/enact`
+call, since there's no lead-tracking pool to have resolved one against.
+
+This one call runs, in order: routine rolls (once, or twice for an ordinary pairing — one per
+participant, against each character's own `routines[]` weights), location resolution (home-turf
+pairing or a visit, and who's travelling to whom), the context/texture lookup (a plain
+`_lore/contexts.json` dict lookup, folded into the same call), the needs/provides motivation check
+(only on a visit whose traveler has an ongoing arc with needs), the contested roll (only if
+motivated; odds 15%, `_lore/tuning.json` `odds_percent.contested`), arc primacy (whose arc leads
+this scene), the knowledge/criteria gate (only if the primacy winner has an ongoing arc — checks
+whether the OTHER participant's own knowledge/criterion touches it at all), the arc-outcome roll
+(only if the gate hit — **resolved before the scene is written on purpose**, since writing dialogue
+first and rolling after risks the roll contradicting what was already dramatized), the tally/
+threshold arithmetic (complete/transform/failed/ongoing, against `arc_resolution_threshold: 3`),
+partner tracking (both directions), and the reproduction eligibility+roll (eligibility is inline
+arithmetic — either direction's partner count `>= partner_threshold` (5), neither parent within
+`parent_cooldown_passes` (10) of their last birth, the pair not already related; only then does the
+roll itself run, at 40% odds).
+
+Writes `.simulate_pass_brief.json` (the worktree root when dispatched from `/simulate`, this
+session's own working directory for a standalone `/enact` run) and prints a summary, including which
+(if any) of three judgment slots below are open this scene — resolved in Step 5b, not here:
+- `reproduction_slot` — present only when an already-eligible pair's roll came back true. Carries
+  `name_lead` (which parent's name leads the blend — still dice-driven) and `other_parent`.
+- `arc_authoring_needed` — the **fallback** path only, for a participant who reached this point
+  without an arc already on file (`/character` Step 8 authors one at creation by default, so this
+  should be the exception). Present when the primacy winner needs a fresh arc: their very first one,
+  a re-authored one after a `"failed"` tally with no gate hit to transform it instead, or after a
+  `"complete"` resolution. Carries `band`, `criterion`, `routines`, and (for either re-author case)
+  `prior_arc` for continuity/contrast.
+- `contested_hinder_slot` — present only when a motivated visit rolled contested AND the alignment
+  gate resolved `hinder`. Carries `traveler`, `supplier`, and `matched_provide`. Genuinely optional
+  even when present — only fill it if the scene plausibly points at a SPECIFIC character who already
+  has a file (`_lore/characters/<slug>.json` exists), otherwise leave it ambient/unnamed.
+
+The scene itself (`mode`/`location`/`home_frame`/`traveler`/`context`/`texture`/`motivated`/
+`contested`/the arc's already-decided `outcome`) is always present and always fixed — Step 5b
+dramatizes it, never re-decides it. **"advance" and "complete" are not staged the same way.** An
+"advance" outcome can be any small step forward and still read fine. A "complete" outcome
+(`tally_result: "complete"`) has to depict the arc's own object/goal actually being obtained or
+resolved *within this one scene* — not another lead, not one step closer, the culminating action
+itself, plausible as a single-sitting resolution given what this brief already fixed. A scene that
+hands the primacy winner a lead instead of the thing itself, while the brief says "complete," is
+staged as "advance" and doesn't match the fixed fact — rewrite it so the culminating moment actually
+happens on the page.
+
+## Step 5a — Enact against the player
 
 Play interlocutor 1 in character, turn by turn, waiting for the player's actual input each time —
 same shape as the Sonoros conversation. Keep responses to 2–3 sentences. Continue until the user
 signals the scene is over.
 
-## Step 3b — Enact both characters
+## Step 5b — Enact both characters
 
-Write the full scene as one message, alternating clearly labeled turns, same shape as the
+**If Step 4 ran** (it always does, for two NPCs), read `.simulate_pass_brief.json` first — every
+fact in it is already decided and already written to disk (the arc's own history/resolution,
+partner counts). Never re-roll, re-check, or reinterpret anything already settled in it. For each
+open judgment slot Step 4 flagged, resolve it now, before or while writing the scene:
+
+- `reproduction_slot`: compose the child's name, a plausible blend of both parents' names leading
+  from `name_lead`'s side (the one thing about a birth that can't be scripted), then run
+  `py scripts/lore/generate_offspring.py --parent-a <slug> --parent-b <slug> --name "<composed name>" --pass-number <N>`
+  — writes a `tales.entries` birth tale (`id: birth_of_<key>`) and handles knowledge inheritance in
+  the same call. **Also rewrite the inherited routine's `routine_actions` line so it reads as this
+  child's own progression of actions, not a verbatim copy of the parent's** (same discipline
+  `/character` Step 8 teaches from the start) — keep the same `location`/`context`, reword only
+  `routine_actions`. A parent's *"opens the stall at dawn, greets regulars, haggles with a supplier
+  midday, closes up at dusk"* might become, for the child, *"minds the stall while his mother
+  haggles, learning the regulars' faces one by one"* — same context, this child's own progression,
+  not a trait label and not a copy-paste. Do this immediately, in this same pass, never deferred.
+  Tag the birth-announcement hearsay claim `about: "tale: birth_of_<key>"`, never a made-up concept
+  tag.
+- `arc_authoring_needed`: compose `about`/`needs`/`context`/`premise` per `/character` Step 8's
+  authoring discipline in full (the resolution-moment test, grounding the target in the character's
+  own known corpus when possible, the texture-vs-claim-shaped-content attribution rule for
+  `premise` — `premise` is always agent-composed prose; no script generates it, only writes it to
+  disk), then run
+  `py scripts/lore/write_arc.py <slug> --about "<tag>" [...] --needs "<tag>" [...] --context <name> --premise "<text>"`
+  — writes the arc and registers its `concept: <id>` tag in one call. On a `reauthor_complete`/
+  `reauthor_failed` re-author, read `prior_arc` for continuity/contrast.
+- `contested_hinder_slot`: only if the scene actually names a specific existing rival, run
+  `py scripts/lore/apply_contested_lead.py --traveler <slug> --rival <slug> --supplier <slug> --matched-provide "<tag>" --pass-number <N>`
+  — writes the `leads` entry and the fixed attributed note (`"According to <supplier>, <rival>
+  already claimed <matched_provide> before <traveler> arrived."`). Skip entirely if the contest
+  stayed ambient.
+
+Then: write the full scene as one message, alternating clearly labeled turns, same shape as the
 Nawom/Morkulo conversation — you write one side, then respond to yourself as the other, honoring
-each character's own sample independently. Bring it to a natural stopping point rather than
-running indefinitely, then check with the user before moving on: satisfied, or continue/adjust?
+each character's own sample independently, dramatizing Step 4's already-fixed facts rather than
+re-deciding them. Bring it to a natural stopping point rather than running indefinitely, then check
+with the user before moving on: satisfied, or continue/adjust? (A subagent dispatched by `/simulate`
+with no live user present makes this same stopping-point call autonomously instead — see that
+skill's own dispatch briefing.)
 
-## Step 4 — Save the scene transcript
+## Step 6 — Save the scene transcript
 
-Immediately after the scene ends (3a or 3b), before Step 5 ever mutates or discards the original —
+Immediately after the scene ends (5a or 5b), before Step 7 ever mutates or discards the original —
 the same "record immediately, don't batch" discipline already in force for the hearsay entry, just
-started one step earlier. Once Step 5 runs, only the mutated version survives; this is the only point
+started one step earlier. Once Step 7 runs, only the mutated version survives; this is the only point
 where the verbatim scene still exists to be saved at all.
 
 **Choose the scene's id now** — the same slug this scene's eventual Blabber dialog file and hearsay
 entry will use (e.g. `khaoe_milkucha_jardin_de_los_parajes`): participant keys plus a short location
 slug, joined with underscores. Picking it here, once, means the transcript file, the hearsay entry
-(Step 5 below — pass this id explicitly rather than letting the script auto-generate one), and the
+(Step 7 below — pass this id explicitly rather than letting the script auto-generate one), and the
 dialog file `/embody` eventually writes all end up sharing one id by construction, not by coincidence.
 
 Write `_npcs/scenes/<scene_id>.md` (`_npcs/scenes/_template.md` has the exact shape): participants,
@@ -203,7 +314,7 @@ touches either registry or anything under `data/luminacion/`. The file stays und
 permanently, even after `/embody` converts it later — cheap to keep, and it's the only recoverable
 source if a dialogue ever needs re-converting after an editing mistake.
 
-## Step 5 — Update the hearsay record
+## Step 7 — Update the hearsay record
 
 **Cold start:** if `_lore/characters/hearsay.md` doesn't exist yet at all (a fresh project), run
 `py scripts/lore/bootstrap_lore.py` before the first `record_hearsay.py` call — it writes the file's
@@ -256,10 +367,9 @@ claim exactly as it would for any NPC speaker, `about`-tagged the same way, held
 kernels, not connective tissue" bar. Don't silently skip this because the speaker is the player rather
 than an NPC — a scene where the player only asked questions and asserted nothing genuinely produces no
 player-sourced claims, but that has to be a real observation about *that* scene, not a default. The
-player has no `criterion`/`trusts`/`distrusts` on file, so their claims skip Step 5's mutation
+player has no `criterion`/`trusts`/`distrusts` on file, so their claims skip this step's mutation
 machinery entirely and go in as a flat, unmutated report of what they actually said — there's nothing
-to filter it through. This applies identically inside `/simulate`'s extended mode, since its subagent
-runs this exact step whenever a scene involves a player-equivalent participant.
+to filter it through.
 
 Build an entry for this dialog — participants, location, summary, and a `claims` list phrased as
 reported assertions (not restated as fact), each with an `about` reference
@@ -296,7 +406,7 @@ a *sampled hearsay item* rather than a fresh read of the objective record (Step 
   entirely for the common case — a claim freshly drawn from the objective record, or a faithful,
   traceable retelling with nothing added.
 
-Use the same `id` chosen in Step 4 for this entry — pass it explicitly in the JSON (`record_hearsay.py`
+Use the same `id` chosen in Step 6 for this entry — pass it explicitly in the JSON (`record_hearsay.py`
 only auto-generates one when `id` is omitted, and an auto-generated id could drift from the transcript
 filename already on disk).
 
@@ -308,9 +418,9 @@ JSON afterward. Everything above this point (what a claim says, how it mutated, 
 still entirely yours to decide — the script only owns getting the decided content into the two files
 correctly, the mechanical half that used to be a hand-edited JSON diff every single run.
 
-## Step 5b — Resolve shocks, drift, and the scene count
+## Step 8 — Resolve shocks, drift, and the scene count
 
-Runs after Step 5 because Step 5's `claims` list is the input. For every character enacted this run:
+Runs after Step 7 because Step 7's `claims` list is the input. For every character enacted this run:
 
 **1. Reference gate.** For each claim just recorded (and for what the character actually lived
 through in the scene), check whether it **references that character's `criterion.anchor`** — same
@@ -368,7 +478,7 @@ actually paid.
 this scene.
 
 **6. Now, and only now, run `py scripts/lore/horizon.py <npc_key>` again and check `ending`.** Before
-Step 5 it could only ever read `false`; now that `life.lived` reflects the scene just played, it can
+Step 7 it could only ever read `false`; now that `life.lived` reflects the scene just played, it can
 truthfully say the character's life is complete. If it does, that scene — already written, already
 closed, with nothing in it played any differently — turns out to have been their last. Nothing about
 the scene itself changes retroactively; only what happens next does. The character must not be
@@ -413,9 +523,32 @@ find out later only the ordinary way: sampled into a new character's education, 
 from the circle in a future scene (subject to the usual `lineage_coin.py` traceable/untraceable
 rule on that retelling, same as any other claim).
 
-## Step 5c — Synthesis: characters forming their own theories
+**7. Death-legacy roll — only when a death was just recorded, this was a two-NPC scene (Step 4
+ran), and the death read structurally early.** "Early" means `horizon.py`'s band at the moment of
+death read `established`, not `late` — `late` is a normal completed life, and `early` is
+structurally impossible at the exact scene death fires, so this comparison is the correct proxy, not
+a new threshold. Skip entirely for a player scene (there's no Step 4 grounding to transfer) or when
+the notified circle from point 6 is empty:
 
-Runs immediately after Step 5b's shock resolution, same "reflect on what this scene did" position. For
+```bash
+py scripts/lore/roll_death_legacy.py --candidates <notified slug> [...]
+```
+
+Odds: 40% (`odds_percent.death_legacy`). On a `passes: true` result, apply it — this is the one
+place the roll itself deliberately leaves undone:
+
+```bash
+py scripts/lore/apply_death_legacy.py --deceased <npc_key> --recipient <recipient slug>
+```
+
+Copies the deceased's arc onto the recipient — `about`/`needs`/`premise` carried over, `resolution`
+reset to `"ongoing"`, tally reset; the recipient's own `context`/`routine` stay theirs (their own
+existing arc's context wins if they have one, else their own highest-weight routine's context, else
+the deceased's context as a last resort).
+
+## Step 9 — Synthesis: characters forming their own theories
+
+Runs immediately after Step 8's shock resolution, same "reflect on what this scene did" position. For
 every character enacted this run:
 
 **1. Candidate gathering (mechanical).** Run `py scripts/lore/check_resonance.py <npc_key> --hearsay-id
@@ -425,7 +558,7 @@ item, one standing-knowledge item) per subtype, using each subtype's own mechani
 instance, shared person). It reports pairs only — it never judges whether a pairing actually means
 anything.
 
-**2. The default is nothing, and it will be the answer almost every time** — same discipline as Step 5b
+**2. The default is nothing, and it will be the answer almost every time** — same discipline as Step 8
 point 2. Most reported candidates should produce no synthesis. Only continue past this point for
 candidates the script actually surfaced.
 
@@ -448,7 +581,7 @@ think"), not asserted. Reuses the existing `oral_lore`/traceable ledger; no new 
 `conflicts`: a match means the character independently caught a real structural ambiguity — worth
 noting as such. No match is a riskier, unbacked guess, held more tentatively (possibly its own
 `unknowns.md` entry if it resonates with the corpus, same "not every claim produces one" discipline as
-Step 5).
+Step 7).
 
 **8. Write each surviving synthesis** to `knowledge.experience`:
 
@@ -460,21 +593,21 @@ py scripts/lore/update_character.py <npc_key> --add-synthesis \
 (repeatable per synthesis this scene) — stored as `{"kind": "synthesis", "about": [A, B],
 "derived_from": [A, B], "text": "..."}`, appended alongside the plain-string entries
 `knowledge.experience` already holds. Stays private unless the character actually voices it in a later
-scene, at which point it becomes an ordinary hearsay claim through the existing Step 5 recording path —
+scene, at which point it becomes an ordinary hearsay claim through the existing Step 7 recording path —
 no new sampling-pool machinery.
 
 `knowledge.experience` held plain strings only before this; synthesis entries (`kind: synthesis`) and
-grounded entries (Step 6's `--add-grounded-experience`, no `kind` key) are both object-shaped, so
-anything iterating the list (Step 6's cross-check, future exports) needs an `isinstance(entry, dict)`
+grounded entries (Step 10's `--add-grounded-experience`, no `kind` key) are both object-shaped, so
+anything iterating the list (Step 10's cross-check, future exports) needs an `isinstance(entry, dict)`
 check, and a dict check needs `entry.get("kind") == "synthesis"` to tell the two apart. See `TODO.md`'s
 "Synthesis mechanism" entry for the full subtype breakdown (worked examples, each mechanical
 pre-filter) and design history.
 
-## Step 6 — Update the character record
+## Step 10 — Update the character record
 
 For every character enacted this run, add/update their file at `_lore/characters/<key>.json`
 (key = lowercased, slugified name). **`criterion` and `life` are typically already written** by the
-`update_character.py`/`record_death.py` calls made during Step 5b — don't hand-edit those fields again
+`update_character.py`/`record_death.py` calls made during Step 8 — don't hand-edit those fields again
 here, since a fresh JSON write could clobber what those calls just did. What's left for this step:
 
 - `name` — set once, for a first-time character. Never rewritten on a returning character.
@@ -490,12 +623,12 @@ here, since a fresh JSON write could clobber what those calls just did. What's l
   texture established for this character (something they revealed about themselves, an action they
   took), or — for the *other* character in a two-NPC scene — anything they said or did that this
   character would now plausibly have picked up just from being present. Both directions and both
-  speech and witnessed action are in scope — per Step 5's "Mutation at record time," a claim captures
+  speech and witnessed action are in scope — per Step 7's "Mutation at record time," a claim captures
   *what got done* as much as *what was said*, so this isn't limited to things the character was told.
 
-  **Cross-check against the hearsay entry's `claims` from Step 5, and when the experience entry
+  **Cross-check against the hearsay entry's `claims` from Step 7, and when the experience entry
   describes the same fact as a claim, reuse that claim's `about` ref** rather than writing a plain
-  string — this is what lets `check_resonance.py` (Step 5c) find it later. Real example: Aureobalo
+  string — this is what lets `check_resonance.py` (Step 9) find it later. Real example: Aureobalo
   voicing his own backstory ("Told Farlis, for the first time aloud, that his surname resembles the
   losing side of the Guerras de Gorff...") is both his own experience entry *and* claim #6 of
   `aureobalo_farlis_castillo_en_miniatura`, `about: "Las Guerras de Gorff"` — the experience entry
@@ -516,10 +649,10 @@ here, since a fresh JSON write could clobber what those calls just did. What's l
   ```
 
   Either call is repeatable per entry (one `--add-grounded-experience` call per grounded entry;
-  `--add-experience` takes several at once) — fold whichever apply into the same Step 5b call for this
+  `--add-experience` takes several at once) — fold whichever apply into the same Step 8 call for this
   character when there is one, rather than a separate write. Both append to the existing list; a
   returning character's prior entries are never touched or retroactively grounded.
-- `criterion`/`life` — already handled by Step 5b's `update_character.py`/`record_death.py` calls for
+- `criterion`/`life` — already handled by Step 8's `update_character.py`/`record_death.py` calls for
   every character whose criterion changed, cost something, or advanced `life.lived`/`life.deceased`
   this scene. Only touch these fields by hand for a first-time character's *initial* criterion (the
   whole object as derived in Step 1) — never re-derive on a later run, and never re-write what a
@@ -527,9 +660,9 @@ here, since a fresh JSON write could clobber what those calls just did. What's l
   If this run rolled a first lifespan (Step 1), the span went into
   `_lore/characters/lifespans.json`, never here.
 
-This is the last step `/enact` performs — nothing here (or anywhere in this skill, past Step 4's
+This is the last step `/enact` performs — nothing here (or anywhere in this skill, past Step 6's
 transcript) touches `_npcs/npcs/registry.json`, `_npcs/dialogs/registry.json`, or any file under
 `data/luminacion/`. To convert this scene into a registered Blabber dialog, register the NPC(s) in the
-Minecraft layer, and bake gestures, run `/embody` now (it reads the transcript Step 4 saved to
+Minecraft layer, and bake gestures, run `/embody` now (it reads the transcript Step 6 saved to
 `_npcs/scenes/<scene_id>.md`, so this works whether run right away or picked back up cold, in a later
 session), or use `/enact-embody` next time to run both skills back to back in one pass.

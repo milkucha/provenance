@@ -1,9 +1,9 @@
 """
-Find candidate pairs for /enact Step 5c (synthesis) - a character combining something they just
+Find candidate pairs for /enact Step 9 (synthesis) - a character combining something they just
 heard/lived this scene with something already in their standing knowledge into a third belief that
 isn't reducible to either parent. Like check_anchor_reference.py's reference gate, this is a
 mechanical narrowing pass only: it reports which pairs are even eligible, never whether a pairing
-actually means anything. See .claude/skills/enact/SKILL.md Step 5c for the full division of labor.
+actually means anything. See .claude/skills/enact/SKILL.md Step 9 for the full division of labor.
 
 Covers all five subtypes from TODO.md's "Synthesis mechanism" entry in one pass:
 
@@ -254,7 +254,7 @@ def main() -> None:
     if total == 0:
         print("No candidates in any subtype. Default applies: no synthesis this scene.")
     else:
-        print(f"{total} total candidate(s) across all subtypes. Judge each per SKILL.md Step 5c "
+        print(f"{total} total candidate(s) across all subtypes. Judge each per SKILL.md Step 9 "
               "point 3 - most should still produce nothing.")
 
 

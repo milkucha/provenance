@@ -64,9 +64,9 @@ there into motion.
   instantiation, played turn by turn against the player or another character.
 - **Simulate** (`/simulate`) — many enacted scenes chained across an existing population,
   unattended — a trail through the world's history, not mechanical.
-- **Simulate -generate** (`/simulate -generate`) — the odd one out: mechanical and scene-less,
-  fast-forwarding the population itself (births, arcs) with no prose at all, to grow a big starting
-  cast before a showcase run.
+- **Generate** (`/generate`) — the odd one out: mechanical and scene-less, fast-forwarding the
+  population itself (births, arcs) with no prose at all, to grow a big starting cast before a
+  showcase run.
 
 Pick any door — they combine in any order, and the record only grows richer for it.
 
@@ -146,11 +146,15 @@ the simulation/evaluation tooling described next.
     criterion changes. `/enact` points back at those rather than restating them. Purely lore-side: a
     character can be fully fleshed out here with no embodiment at all, and this skill never touches
     `_npcs/`.
-  - **`/enact`** (`enact/SKILL.md`) — plays a character in a live conversation, sampled from a bounded
-    slice of the lore, then records what the scene did to that lore (hearsay, criterion, `life`) and
-    saves the scene's raw transcript to `_npcs/scenes/<id>.md` so `/embody` can convert it later, even
-    cold in a later session. That transcript is the only thing this skill writes under `_npcs/` — it
-    never writes a dialog file or touches either registry. See §3.
+  - **`/enact`** (`enact/SKILL.md`) — the atomic interaction: plays a character in a live conversation
+    (against the player) or against another character, sampled from a bounded slice of the lore, then
+    records what the scene did to that lore (hearsay, criterion, `life`) and saves the scene's raw
+    transcript to `_npcs/scenes/<id>.md` so `/embody` can convert it later, even cold in a later
+    session. Against another character, it additionally requires both participants to have
+    `routines`+`arc` on file and runs a scripted mechanical layer (location, arc progress,
+    reproduction, death legacy) before the scene is written — `/simulate` is nothing more than this
+    run repeatedly over an automated pool. That transcript is the only thing this skill writes under
+    `_npcs/` — it never writes a dialog file or touches either registry. See §3.
   - **`/embody`** (`embody/SKILL.md`) — takes a scene `/enact` played and puts it in the game: reads the
     transcript from `_npcs/scenes/<id>.md` (so this works cold, in a later session, exactly as well as
     right after `/enact` in the same conversation), converts it into a registered Blabber dialog, bakes
@@ -168,7 +172,7 @@ the simulation/evaluation tooling described next.
   - **`/integrate`** (`integrate/SKILL.md`) — three independent passes: analyse newly-added
     `_lore/material/` files into `context.md`/`encodings.json`/`unknowns.md` per the conventions those
     files already establish (below); audit every dialogue under `data/luminacion/blabber/dialogues/`
-    for a matching `hearsay.entries` record (§3 Step 5 — unconditional by rule, but easy to miss on a
+    for a matching `hearsay.entries` record (§3 Step 7 — unconditional by rule, but easy to miss on a
     hand-written dialogue that skipped `/enact`); and check for drift between what's referenced
     elsewhere (registries, sampled knowledge, and `tales` `touches` refs) and what's actually recorded
     in `encodings.json`. Run whichever pass(es) fit the situation, not necessarily all three.
@@ -187,21 +191,25 @@ the simulation/evaluation tooling described next.
     `worktree.baseRef: "head"` in settings, so it branches from the current lore state rather than a
     stale `origin/<default-branch>`). For testing the enactment mechanism at scale, or producing a
     showcase trail of scenes, without risking the real files — the worktree stays on disk afterward
-    for inspection and is never merged back automatically. Lore-only, same as `/enact`. **Extended
-    mode** (Step 3) kicks in automatically once a participant's character file has a non-empty
-    `routines` array: rolls a routine/location for each pass, tracks each character's own `arc`
-    (mechanical primacy/gate/outcome rolls against `_lore/contexts.json`, tallied toward
-    advance/stall/reverse/transform/resolve), and — beyond `/enact`'s own hearsay/criterion/death
-    machinery — adds reproduction (`roll_reproduction.py`/`generate_offspring.py`, a new character
-    file with inherited knowledge and a birth tale) and death legacy (an ongoing arc transferring to
-    someone in the deceased's notified circle). Currently piloted on 6 seeded characters; whether the
-    mechanism is actually producing good results, as opposed to just running, is tracked in
-    `LAB_REPORT.md` — see below. **`/simulate -generate`** is a separate mode for pregenerating a
-    large multi-generation starting population quickly rather than a showcase trail of scenes: the
-    same extended-mode mechanics (routines, arcs, reproduction, death) run as one script-driven pass
-    loop with no scene-writing and no subagent per pass, deferring the two things that genuinely
-    need a model's judgment (a child's name, a fresh arc's content) into a single batched subagent
-    pass at the very end. See the skill file's own "Mode: `-generate`" section.
+    for inspection and is never merged back automatically. Lore-only, same as `/enact`, and nothing
+    but orchestration around it: `/simulate` owns pairing and batching only, none of the scene
+    mechanics itself. Every pass is one full `/enact` scene between two existing characters — its
+    own eligibility gate (Step 2) requires both to have `routines`+`arc` on file, non-negotiably; a
+    participant missing either gets flagged and pointed at `/character` rather than falling back to
+    a lesser mode. Once eligible, `/enact`'s mechanical block (Step 4) rolls a routine/location for
+    the pass, tracks each character's own `arc` (mechanical primacy/gate/outcome rolls against
+    `_lore/contexts.json`, tallied toward advance/stall/reverse/transform/resolve), and — beyond its
+    own hearsay/criterion/death machinery — adds reproduction (`roll_reproduction.py`/
+    `generate_offspring.py`, a new character file with inherited knowledge and a birth tale) and
+    death legacy (an ongoing arc transferring to someone in the deceased's notified circle).
+    Currently piloted on 6 seeded characters; whether the mechanism is actually producing good
+    results, as opposed to just running, is tracked in `LAB_REPORT.md` — see below. **`/generate`**
+    is a separate command for pregenerating a large multi-generation starting population quickly
+    rather than a showcase trail of scenes: the same underlying mechanics (routines, arcs,
+    reproduction, death) run as one script-driven pass loop with no scene-writing and no subagent
+    per pass, deferring the two things that genuinely need a model's judgment (a child's name, a
+    fresh arc's content) into a single batched subagent pass at the very end. See
+    `.claude/skills/generate/SKILL.md`.
 - **`_lore/`** — the raw material and its analysis, plus two further sources of truth: one told
   directly by the user, and one (`facts/`) that is universal and never sampled:
   - `_lore/material/` — source artifacts as uploaded: screenshots of in-game books, maps,
@@ -213,7 +221,7 @@ the simulation/evaluation tooling described next.
     that's source-specific rather than cross-cutting.
   - `_lore/encodings.json` — the central, structured, queryable form of the record: `time_systems`,
     `locations`, `routes`, `characters`, `concepts`, `conflicts` (cross-source disagreements, each with
-    a `user_resolution` once settled), `tales`, and `hearsay` (claims made *in* dialogues — §3 Step 5).
+    a `user_resolution` once settled), `tales`, and `hearsay` (claims made *in* dialogues — §3 Step 7).
     This is what `scripts/lore/sample_lore_knowledge.py` draws an NPC's knowledge pool from. Sits at `_lore/`
     root since every source type writes into it — it's the hub.
   - `_lore/unknowns.md` — gaps and open questions that material, tale, and hearsay all feed (a claim can
@@ -423,7 +431,7 @@ Provenance/
 │   │                                   taterzen_uuid, spawn_position)
 │   ├── dialogs/registry.json          (NPC key → dialog IDs)
 │   ├── actions/registry.json          (NPC key → actions, plus reference templates for every action type)
-│   ├── scenes/                        (raw scene transcripts — /enact Step 4 writes <scene_id>.md
+│   ├── scenes/                        (raw scene transcripts — /enact Step 6 writes <scene_id>.md
 │   │   │                               here, /embody Step 1 reads it; kept permanently even after
 │   │   │                               conversion)
 │   │   └── _template.md               (blank shape for a new scene file)
@@ -463,11 +471,11 @@ string values, which parse fine either way. Anything named `_shared` is called d
 
 **Trust (`criterion.trusts`/`distrusts`)** — a criterion also implies an epistemology, since what you think a life is *for* shapes what you'd trust to tell you how to live it. Derived from the anchor's own pool category: a life built on `hearsay` leans toward testimony and finds chronicles bloodless, one built on `era_libro`/`era_ensayo` leans the other way, one built on a `conflict` distrusts anyone who sounds certain. This makes a claim's credibility **subjective to the character** — it modulates whether they can dismiss a refuting claim (`/character` Step 6, move 1), so a weak claim from a trusted kind of source can land where a well-sourced one from a distrusted kind gets waved off. Facts are exempt: nothing about a character's epistemology touches them.
 
-**Shock and drift** — the only two ways a criterion moves. A *shock* is a claim or lived experience that **references the criterion's anchor** (a pointer check, never a judgment about how upsetting something was), resolving to one of three moves: reject the claim, accept and reinterpret, or accept and break. *Drift* — accrued cost plus a shortening horizon — never changes a criterion by itself; it changes how susceptible the character is when a shock does arrive. Applied by `/enact` Step 5b.
+**Shock and drift** — the only two ways a criterion moves. A *shock* is a claim or lived experience that **references the criterion's anchor** (a pointer check, never a judgment about how upsetting something was), resolving to one of three moves: reject the claim, accept and reinterpret, or accept and break. *Drift* — accrued cost plus a shortening horizon — never changes a criterion by itself; it changes how susceptible the character is when a shock does arrive. Applied by `/enact` Step 8.
 
 **Lifespan** — how many scenes a character has in them, rolled once by `scripts/lore/roll_lifespan.py` (default range 30–60) and **structurally hidden from them**: the span lives in `_lore/characters/lifespans.json`, *not* in the character's own file, because that file is what `/enact` loads in order to play the character. An enactment asks `scripts/lore/horizon.py` instead, which answers with a coarse band — `early`, `established`, `late` — and never the number. Only `life.lived` (their history, no secret) stays in the character's file. The same script also reports `ending: true/false`, but that can only ever read `true` *after* a scene closes and `life.lived` is incremented for it — there is no moment, even for the character's own last scene, where it's knowable in advance. Once `ending` does come back true, `life.deceased` is set `true` and they're never enacted again.
 
-**Death and its circle** — a character's death isn't announced to the world, it propagates in two tiers. `scripts/lore/notify_death.py` computes their *circle* (everyone they've shared a recorded scene with, plus everyone named in their own backstory) and mechanically notifies 30% of it immediately — a forced `knowledge.experience` entry, no attribution needed. Anyone notified whose `criterion.anchor` referenced the deceased gets that resolved as a shock, same reject/reinterpret/break machinery as any other (`/enact` Step 5b point 6). Everyone outside the circle only finds out the ordinary way: the death is recorded as a `_lore/tales/` entry (see `/tell`), which re-enters the normal sampling pool at ordinary odds, or they hear it from someone in the circle later, subject to the same `lineage_coin.py` traceable/untraceable rule as any retelling.
+**Death and its circle** — a character's death isn't announced to the world, it propagates in two tiers. `scripts/lore/notify_death.py` computes their *circle* (everyone they've shared a recorded scene with, plus everyone named in their own backstory) and mechanically notifies 30% of it immediately — a forced `knowledge.experience` entry, no attribution needed. Anyone notified whose `criterion.anchor` referenced the deceased gets that resolved as a shock, same reject/reinterpret/break machinery as any other (`/enact` Step 8 point 6). Everyone outside the circle only finds out the ordinary way: the death is recorded as a `_lore/tales/` entry (see `/tell`), which re-enters the normal sampling pool at ordinary odds, or they hear it from someone in the circle later, subject to the same `lineage_coin.py` traceable/untraceable rule as any retelling.
 
 **Three mutability classes.** Worth holding onto, since they're easy to conflate: `knowledge.education` is **frozen** at creation, `knowledge.experience` **appends freely** every scene, and `criterion` is **sticky-but-revisable** — it changes only when a referencing shock lands on a susceptible character, and the default outcome of any given scene is no change at all.
 

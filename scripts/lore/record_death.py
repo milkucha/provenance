@@ -1,6 +1,6 @@
 """
 Run the full mechanical death procedure for a character whose horizon.py just came back
-`ending: true` after Step 5's life.lived increment - see .claude/skills/enact/SKILL.md Step 5b
+`ending: true` after Step 8's life.lived increment - see .claude/skills/enact/SKILL.md Step 8
 point 6. This is everything in that point EXCEPT the one genuine judgement call it contains
 (whether a notified circle member's shock resolves as reject/reinterpret/break, per
 .claude/skills/character/SKILL.md Step 6) - that stays with whoever is running /enact, same as any
