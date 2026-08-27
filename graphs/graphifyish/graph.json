@@ -16698,7 +16698,7 @@
     "label": "Luminacion",
     "kind": "root",
     "path": ".",
-    "size": 596744880,
+    "size": 596752029,
     "degree": 16
    },
    {
@@ -16770,7 +16770,7 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
-    "size": 534487474,
+    "size": 534489541,
     "degree": 8
    },
    {
@@ -16994,7 +16994,7 @@
     "label": "worktrees",
     "kind": "dir",
     "path": ".claude/worktrees",
-    "size": 534298708,
+    "size": 534300775,
     "degree": 11
    },
    {
@@ -17002,7 +17002,7 @@
     "label": "bare-test-20260826",
     "kind": "dir",
     "path": ".claude/worktrees/bare-test-20260826",
-    "size": 1133737,
+    "size": 1135804,
     "degree": 16
    },
    {
@@ -18010,7 +18010,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": ".claude/worktrees/bare-test-20260826/graphs",
-    "size": 208445,
+    "size": 210512,
     "degree": 2
    },
    {
@@ -18018,7 +18018,7 @@
     "label": "graphifyish",
     "kind": "dir",
     "path": ".claude/worktrees/bare-test-20260826/graphs/graphifyish",
-    "size": 208445,
+    "size": 210512,
     "degree": 3
    },
    {
@@ -18026,7 +18026,7 @@
     "label": "graph.json",
     "kind": "other",
     "path": ".claude/worktrees/bare-test-20260826/graphs/graphifyish/graph.json",
-    "size": 97876,
+    "size": 99093,
     "degree": 1
    },
    {
@@ -18034,7 +18034,7 @@
     "label": "graphifyish.html",
     "kind": "other",
     "path": ".claude/worktrees/bare-test-20260826/graphs/graphifyish/graphifyish.html",
-    "size": 110569,
+    "size": 111419,
     "degree": 1
    },
    {
@@ -55288,7 +55288,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": "graphs",
-    "size": 5669137,
+    "size": 5674219,
     "degree": 2
    },
    {
@@ -55296,7 +55296,7 @@
     "label": "graphifyish",
     "kind": "dir",
     "path": "graphs/graphifyish",
-    "size": 5669137,
+    "size": 5674219,
     "degree": 3
    },
    {
@@ -55304,7 +55304,7 @@
     "label": "graph.json",
     "kind": "graph",
     "path": "graphs/graphifyish/graph.json",
-    "size": 3097499,
+    "size": 3100400,
     "degree": 1
    },
    {
@@ -55312,7 +55312,7 @@
     "label": "graphifyish.html",
     "kind": "graph",
     "path": "graphs/graphifyish/graphifyish.html",
-    "size": 2571638,
+    "size": 2573819,
     "degree": 1
    },
    {
