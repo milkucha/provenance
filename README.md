@@ -37,10 +37,46 @@ architecture of the whole as it stands today — read that first in a new sessio
 without having to re-read the whole codebase. The rest assumes you already know *what* character or
 story you want to add — it's about *how* to realize it, in lore and (currently) in Minecraft.
 
+## Getting started
+
+New to this repo? Run `/start` for a live welcome banner (what's already in this copy of the world,
+plus the two doors below) — or read this section once and skip it after. Everything the system does
+falls into one of two kinds: growing the raw record the world draws from, and setting what's already
+there into motion.
+
+**Growing the record**
+
+- **Material** (`/integrate`) — archaeological findings: knowledge sourced from something that
+  actually exists as evidence — a book, a map, a photograph of a construction, any document, in
+  whatever file format it happens to arrive in (PNG, JPG, PDF, XLSX, ...). Drop the file in
+  `_lore/material/`, then run `/integrate` to analyse it into `context.md`/`encodings.json`/
+  `unknowns.md`. Not a one-time dump — the well keeps getting fed for as long as the project runs.
+- **Character** (`/character`) — hand-author a person into the world directly: name, city, backstory,
+  and a knowledge sample. Criterion and lifespan are then *derived* from those choices, not chosen
+  separately — a consequence of what's already been authored, never invented on their own.
+- **Tell** (`/tell`) — knowledge with no material trace behind it: myth, legend, oral story, told
+  directly by you to the system rather than excavated from a document or spoken by a character. Its
+  own epistemological layer, distinct from both the objective record and from hearsay.
+
+**Putting it in motion**
+
+- **Enact** (`/enact`, or `/enact-embody` to also put it in the game) — one live scene, one
+  instantiation, played turn by turn against the player or another character.
+- **Simulate** (`/simulate`) — many enacted scenes chained across an existing population,
+  unattended — a trail through the world's history, not mechanical.
+- **Simulate -generate** (`/simulate -generate`) — the odd one out: mechanical and scene-less,
+  fast-forwarding the population itself (births, arcs) with no prose at all, to grow a big starting
+  cast before a showcase run.
+
+Pick any door — they combine in any order, and the record only grows richer for it.
+
 ## Index
 
 **Starting a new session? Read the intro above plus §0–§2 first — that's the compulsory minimum for
 orientation.** Everything past that, read only the section(s) the task at hand actually needs.
+
+- [Getting started](#getting-started) — brand new to this repo? The two doors in: growing the record
+  vs. putting it in motion. Run `/start` for a live version of this.
 
 - [§0 System architecture](#0-system-architecture) — the lore engine, then the current embodiment stack built on it; start here every session
   - [Layer 1 — Foundation: skills + lore](#layer-1--foundation-skills--lore)
