@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — Shared: Gesture — Point (Left)
+# Provenance — Shared: Gesture — Point (Left)
 # =============================================================================
 # Gives the NPC's own main hand an invisible marker item (CustomModelData
 # 202 — mirror-variant numbering is 100 + the base gesture's number, so

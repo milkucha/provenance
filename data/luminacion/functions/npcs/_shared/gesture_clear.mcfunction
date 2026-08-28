@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — Shared: Gesture — Clear (internal)
+# Provenance — Shared: Gesture — Clear (internal)
 # =============================================================================
 # Ends the current NPC's gesture: empties the main hand (dropping the
 # invisible CustomModelData marker item that the gesture resource pack

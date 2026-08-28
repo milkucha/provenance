@@ -1,4 +1,4 @@
-# Luminacion — load
+# Provenance — load
 # Runs once on world load / datapack reload.
 
 # Register scoreboard objectives.

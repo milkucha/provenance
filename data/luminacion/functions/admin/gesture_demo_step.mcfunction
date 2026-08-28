@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — Admin: Gesture Demo (step)
+# Provenance — Admin: Gesture Demo (step)
 # =============================================================================
 # Fires whichever gesture corresponds to the current gesture_demo/
 # luminacion.int counter value on the nearest Taterzen, then advances the

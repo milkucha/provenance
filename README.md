@@ -99,11 +99,10 @@ orientation.** Everything past that, read only the section(s) the task at hand a
   vs. putting it in motion. Run `/start` for a live version of this.
 
 - [§0 System architecture](#0-system-architecture) — the lore engine, then the current embodiment stack built on it; start here every session
-  - [Layer 1 — Foundation: skills + lore](#layer-1--foundation-skills--lore)
+  - [Tier 1 — Content](#tier-1--content)
   - [Simulating and evaluating the lore](#simulating-and-evaluating-the-lore)
-  - [Layer 2 — Supporting functions](#layer-2--supporting-functions)
-  - [Layer 3 — Datapack](#layer-3--datapack)
-  - [Layer 4 — Resource pack](#layer-4--resource-pack)
+  - [Tier 2 — Handlers](#tier-2--handlers)
+  - [Tier 3 — Shipping](#tier-3--shipping)
 - [§1 Folder structure](#1-folder-structure) — compulsory: the literal `_lore/`/`data/`/`_npcs/` tree
 - [§2 Core concepts](#2-core-concepts) — compulsory: Fact / Criterion / Lifespan / Death first, then NPC / Dialog / Action / routine pause-resume for the current embodiment backend
 - [§3 Writing lore through enactment](#3-writing-lore-through-enactment) — the manual walkthrough (`/enact` automates Steps 1–2, `/embody` Steps 3–4)
@@ -131,105 +130,28 @@ embodiment target, not to the lore engine itself.
 
 ## 0. System architecture
 
-The system splits into two halves. The **lore engine** — Layer 1 below, plus how it's simulated and
+The system splits into two halves. The **lore engine** — Tier 1 below, plus how it's simulated and
 evaluated — is the actual product: embodiment-agnostic, generating and evolving a culture on its own
 terms. **Embodiment** is how a run of that engine gets surfaced somewhere live; today that's one
-backend, Minecraft, built as a dependency stack on top of Layer 1:
+backend, Minecraft, built as a dependency stack on top of Tier 1:
 
 ```
-4. Resource pack      gestures (EMF/Iris model overrides), localization, custom sounds
-        ↑
-3. Datapack           data/luminacion/ — functions, predicates, tags, dialogues Minecraft loads
-        ↑
-2. Supporting layer   _npcs/templates/, _npcs/actions/registry.json (_action_templates), gesture dispatch
-        ↑
-1. Foundation         skills (/character, /enact, /embody, /spawn, /integrate, /simulate) + _lore/ (material → analysis)
+3. Shipping   Datapack: data/luminacion/ — functions, predicates, tags, dialogues Minecraft loads
+              Resource pack: gestures (EMF/Iris model overrides), localization, custom sounds
+        ↑                    what a run of the engine becomes, live in the current backend
+2. Handlers   Skills (/character, /enact, /embody, /spawn, /integrate, /simulate, ...) driving
+              scripts (scripts/lore/, scripts/minecraft/) through shared supporting patterns:
+              _npcs/templates/, _npcs/actions/registry.json (_action_templates), gesture dispatch
+        ↑                    the process that shapes content into shippable material
+1. Content    _lore/ — material → analysis → encodings.json, characters, tales, facts
+                                   the sources of truth, inert until a handler acts on them
 ```
 
-A different or additional embodiment backend would replace Layers 2–4 without touching Layer 1 or
+A different or additional embodiment backend would replace Tier 3 without touching Tiers 1–2 or
 the simulation/evaluation tooling described next.
 
-### Layer 1 — Foundation: skills + lore
+### Tier 1 — Content
 
-- **Skills** (`.claude/skills/`) — repeatable procedures, invoked as slash commands. They split
-  cleanly along the lore/Minecraft line that runs through the whole system: `/character` and `/enact`
-  are lore-only and know nothing of Minecraft, with one narrow exception — `/enact` stages a scene's
-  raw transcript at `_npcs/scenes/<id>.md`, purely so `/embody` has something to read later. That's
-  staging content for the embodiment layer, not lore itself, and `/enact` still never touches either
-  registry or `data/`. `/embody` and `/spawn` only ever touch `_npcs/`/`data/` and know nothing of
-  lore. Every skill answers to one shared rule, stated once in `.claude/PRINCIPLES.md` rather than
-  repeated per skill: nothing gets decided silently.
-  - **`/character`** (`character/SKILL.md`) — creates or maintains a character's file in
-    `_lore/characters/<key>.json` on its own, without running a conversation: `name`, `origin`,
-    `location`, `backstory`, knowledge sample, **criterion**, and **lifespan**. It owns the criterion model —
-    Step 4 derives one, Step 5 rolls a lifespan, and Step 6 is the canonical reference for how a
-    criterion changes. `/enact` points back at those rather than restating them. Purely lore-side: a
-    character can be fully fleshed out here with no embodiment at all, and this skill never touches
-    `_npcs/`.
-  - **`/enact`** (`enact/SKILL.md`) — the atomic interaction: plays a character in a live conversation
-    (against the player) or against another character, sampled from a bounded slice of the lore, then
-    records what the scene did to that lore (hearsay, criterion, `life`) and saves the scene's raw
-    transcript to `_npcs/scenes/<id>.md` so `/embody` can convert it later, even cold in a later
-    session. Against another character, it additionally requires both participants to have
-    `routines`+`arc` on file and runs a scripted mechanical layer (location, arc progress,
-    reproduction, death legacy) before the scene is written — `/simulate` is nothing more than this
-    run repeatedly over an automated pool. That transcript is the only thing this skill writes under
-    `_npcs/` — it never writes a dialog file or touches either registry. See §3.
-  - **`/embody`** (`embody/SKILL.md`) — takes a scene `/enact` played and puts it in the game: reads the
-    transcript from `_npcs/scenes/<id>.md` (so this works cold, in a later session, exactly as well as
-    right after `/enact` in the same conversation), converts it into a registered Blabber dialog, bakes
-    its gestures itself (Step 3 — replaces a minority of the dialog's default `nod_up_down` states with
-    an emotionally-matched gesture from the vocabulary in `GESTURES.md`), and registers the NPC(s) in
-    `_npcs/npcs/registry.json` and the dialog in `_npcs/dialogs/registry.json`. This is the only place
-    gestures get baked now — the earlier standalone `/bake_dialog` skill was retired once every dialog
-    in the pack turned out to be produced by tooling rather than by hand, leaving no case for it to
-    serve outside `/embody`.
-  - **`/enact-embody`** (`enact-embody/SKILL.md`) — a thin orchestrator: runs `/enact` in full, then
-    `/embody` in full, for the common case of wanting a scene played, recorded, and put in the game in
-    one pass.
-  - **`/spawn`** (`spawn/SKILL.md`) — builds a registered NPC's `spawn.mcfunction` (and every
-    supporting function) from `_npcs/templates/`. See §5/§6.
-  - **`/integrate`** (`integrate/SKILL.md`) — three independent passes: analyse newly-added
-    `_lore/material/` files into `context.md`/`encodings.json`/`unknowns.md` per the conventions those
-    files already establish (below); audit every dialogue under `data/luminacion/blabber/dialogues/`
-    for a matching `hearsay.entries` record (§3 Step 7 — unconditional by rule, but easy to miss on a
-    hand-written dialogue that skipped `/enact`); and check for drift between what's referenced
-    elsewhere (registries, sampled knowledge, and `tales` `touches` refs) and what's actually recorded
-    in `encodings.json`. Run whichever pass(es) fit the situation, not necessarily all three.
-  - **`/resolve`** (`resolve/SKILL.md`) — surfaces one open item at a time, either an unresolved entry
-    in `encodings.json`'s `conflicts` array or an open question in `_lore/unknowns.md`, with the full
-    detail plus every other place in the record that mentions it, and writes a decision only on the
-    user's own explicit call. Never suggests a resolution or infers one from source agreement. The only
-    skill that ever sets a conflict's `user_resolution` field.
-  - **`/tell`** (`tell/SKILL.md`) — records a tale the user tells directly, outside any excavated
-    document or character's mouth — narrated as a story or stated plainly as a fact now known, both
-    the same category — optionally credited to an in-world source (`told_by`), into `_lore/tales/` and
-    `encodings.json`'s `tales` category. Real-world provenance (`responsible` — who told the system) is
-    recorded separately, in `_lore/tales/_authors.md`, never in `encodings.json`.
-  - **`/simulate`** (`simulate/SKILL.md`) — batch-runs many `/enact` character-vs-character scenes
-    across an existing population, unattended, inside a dedicated git worktree (requires
-    `worktree.baseRef: "head"` in settings, so it branches from the current lore state rather than a
-    stale `origin/<default-branch>`). For testing the enactment mechanism at scale, or producing a
-    showcase trail of scenes, without risking the real files — the worktree stays on disk afterward
-    for inspection and is never merged back automatically. Lore-only, same as `/enact`, and nothing
-    but orchestration around it: `/simulate` owns pairing and batching only, none of the scene
-    mechanics itself. Every pass is one full `/enact` scene between two existing characters — its
-    own eligibility gate (Step 2) requires both to have `routines`+`arc` on file, non-negotiably; a
-    participant missing either gets flagged and pointed at `/character` rather than falling back to
-    a lesser mode. Once eligible, `/enact`'s mechanical block (Step 4) rolls a routine/location for
-    the pass, tracks each character's own `arc` (mechanical primacy/gate/outcome rolls against
-    `_lore/contexts.json`, tallied toward advance/stall/reverse/transform/resolve), and — beyond its
-    own hearsay/criterion/death machinery — adds reproduction (`roll_reproduction.py`/
-    `generate_offspring.py`, a new character file with inherited knowledge and a birth tale) and
-    death legacy (an ongoing arc transferring to someone in the deceased's notified circle).
-    Currently piloted on 6 seeded characters; whether the mechanism is actually producing good
-    results, as opposed to just running, is tracked in `LAB_REPORT.md` — see below. **`/generate`**
-    is a separate command for pregenerating a large multi-generation starting population quickly
-    rather than a showcase trail of scenes: the same underlying mechanics (routines, arcs,
-    reproduction, death) run as one script-driven pass loop with no scene-writing and no subagent
-    per pass, deferring the two things that genuinely need a model's judgment (a child's name, a
-    fresh arc's content) into a single batched subagent pass at the very end. See
-    `.claude/skills/generate/SKILL.md`.
 - **`_lore/`** — the raw material and its analysis, plus two further sources of truth: one told
   directly by the user, and one (`facts/`) that is universal and never sampled:
   - `_lore/material/` — source artifacts as uploaded: screenshots of in-game books, maps,
@@ -305,7 +227,7 @@ the simulation/evaluation tooling described next.
 ### Simulating and evaluating the lore
 
 `/simulate` (above) is the mechanism; two more things sit alongside it, reading the lore engine's
-output rather than feeding it, and aren't part of the Layer 1–4 dependency stack at all:
+output rather than feeding it, and aren't part of the Tier 1–3 dependency stack at all:
 
 - **`LAB_REPORT.md`** — the persistent, cross-run record of whether the system's design actually
   works, kept deliberately outside any worktree so it survives past any single run or conversation.
@@ -319,49 +241,133 @@ output rather than feeding it, and aren't part of the Layer 1–4 dependency sta
   hand-maintained except the concept graph's shape) — the **lore** graph (NPCs, dialogues, locations,
   concepts, characters, conflicts, routes, eras, tales, facts, wired by who lives where / says what /
   knows what / disputes what), the **structure** graph (the repo on disk, sized by bytes), and the
-  **concept** graph (this section's own four-layer architecture, with live counts). Regenerate with
+  **concept** graph (this section's own three-tier architecture, with live counts). Regenerate with
   `python scripts/graphs/graphifyish.py` (`--json` also dumps `graph.json`); `scripts/hooks/post-commit`
   does this automatically after every commit if installed.
 
-### Layer 2 — Supporting functions
+### Tier 2 — Handlers
 
-Reusable patterns every NPC/dialog is built from, so each new one doesn't reinvent structure — part
-of the current Minecraft embodiment backend, not the lore engine:
+Skills and scripts: the process that reads Tier 1 content and shapes it into what Tier 3 ships.
+Skills are the orchestration sub-layer — repeatable procedures invoked as slash commands, each one
+answering to one shared rule stated once in `.claude/PRINCIPLES.md` rather than repeated per skill:
+nothing gets decided silently. Scripts (`scripts/lore/`, `scripts/minecraft/`, `scripts/graphs/`) are
+the mechanical sub-layer skills call into. Both split cleanly along the lore/Minecraft line that runs
+through the whole system: `/character` and `/enact` are lore-only and know nothing of Minecraft, with
+one narrow exception — `/enact` stages a scene's raw transcript at `_npcs/scenes/<id>.md`, purely so
+`/embody` has something to read later. That's staging content for the shipping tier, not lore itself,
+and `/enact` still never touches either registry or `data/`. `/embody` and `/spawn` only ever touch
+`_npcs/`/`data/` and know nothing of lore.
 
-- `_npcs/templates/` — placeholder-filled `.mcfunction` patterns (`spawn.mcfunction`,
-  `resume_routine.mcfunction`, `check_proximity.mcfunction`, `end_with_gift.mcfunction`, plus
-  `paths/` and `states/` variants for roaming/multi-state NPCs) — copied per NPC, never called
-  directly. See §1.
-- `data/luminacion/blabber/dialogues/_template_*.json` — the three dialog shapes (one-off, linear,
-  branching). See §1/§5.
-- `_npcs/actions/registry.json`'s `_action_templates` — documents every right-click action pattern
-  (`movement`, `give_item`, `blabber_dialog`, `routine_pause_resume`, `scripted_path`,
-  `multi_state_npc`, `random_dialog`, `scoreboard_set`) with copy-paste command patterns and, for
-  several, hard-won in-game debugging notes (why `/random` never resolves in this environment, why
-  the pause/resume radii must differ).
-- **Gesture dispatch** — `data/luminacion/functions/npcs/_shared/gesture_<name>.mcfunction` (wave,
-  point, bow, shrug, palms-up, scratch-head, laugh, jump, cross-arms, no, face-palm, flex-arm, plus
-  left-arm mirror variants `wave_left`, `point_left`, and `scratch_head_left`) plus `gesture_clear.mcfunction`
-  and the `nod_up_down`/`nod_left_right` family: datapack-side functions that trigger the
-  resource-pack animations below via a tag + per-entity scoreboard countdown, ticked every game tick
-  from `tick.mcfunction` via `gesture_tick.mcfunction`/`nod_tick.mcfunction` — each NPC's hold/beat
-  timing is independent of every other NPC's. (Replaced an earlier
-  `schedule function ... replace` design, which used one datapack-wide timer shared by every gesture
-  and every nod; see TODO.md "Multi-NPC gesture/nod scheduling collision" for why that broke once
-  more than one NPC could gesture/nod at a time.) They physically live under `data/luminacion/`
-  (layer 3) but belong here conceptually — templated dispatch for content that's actually defined one
-  layer up.
+- **Skills** (`.claude/skills/`):
+  - **`/character`** (`character/SKILL.md`) — creates or maintains a character's file in
+    `_lore/characters/<key>.json` on its own, without running a conversation: `name`, `origin`,
+    `location`, `backstory`, knowledge sample, **criterion**, and **lifespan**. It owns the criterion model —
+    Step 4 derives one, Step 5 rolls a lifespan, and Step 6 is the canonical reference for how a
+    criterion changes. `/enact` points back at those rather than restating them. Purely lore-side: a
+    character can be fully fleshed out here with no embodiment at all, and this skill never touches
+    `_npcs/`.
+  - **`/enact`** (`enact/SKILL.md`) — the atomic interaction: plays a character in a live conversation
+    (against the player) or against another character, sampled from a bounded slice of the lore, then
+    records what the scene did to that lore (hearsay, criterion, `life`) and saves the scene's raw
+    transcript to `_npcs/scenes/<id>.md` so `/embody` can convert it later, even cold in a later
+    session. Against another character, it additionally requires both participants to have
+    `routines`+`arc` on file and runs a scripted mechanical layer (location, arc progress,
+    reproduction, death legacy) before the scene is written — `/simulate` is nothing more than this
+    run repeatedly over an automated pool. That transcript is the only thing this skill writes under
+    `_npcs/` — it never writes a dialog file or touches either registry. See §3.
+  - **`/embody`** (`embody/SKILL.md`) — takes a scene `/enact` played and puts it in the game: reads the
+    transcript from `_npcs/scenes/<id>.md` (so this works cold, in a later session, exactly as well as
+    right after `/enact` in the same conversation), converts it into a registered Blabber dialog, bakes
+    its gestures itself (Step 3 — replaces a minority of the dialog's default `nod_up_down` states with
+    an emotionally-matched gesture from the vocabulary in `GESTURES.md`), and registers the NPC(s) in
+    `_npcs/npcs/registry.json` and the dialog in `_npcs/dialogs/registry.json`. This is the only place
+    gestures get baked now — the earlier standalone `/bake_dialog` skill was retired once every dialog
+    in the pack turned out to be produced by tooling rather than by hand, leaving no case for it to
+    serve outside `/embody`.
+  - **`/enact-embody`** (`enact-embody/SKILL.md`) — a thin orchestrator: runs `/enact` in full, then
+    `/embody` in full, for the common case of wanting a scene played, recorded, and put in the game in
+    one pass.
+  - **`/spawn`** (`spawn/SKILL.md`) — builds a registered NPC's `spawn.mcfunction` (and every
+    supporting function) from `_npcs/templates/`. See §5/§6.
+  - **`/integrate`** (`integrate/SKILL.md`) — three independent passes: analyse newly-added
+    `_lore/material/` files into `context.md`/`encodings.json`/`unknowns.md` per the conventions those
+    files already establish (below); audit every dialogue under `data/luminacion/blabber/dialogues/`
+    for a matching `hearsay.entries` record (§3 Step 7 — unconditional by rule, but easy to miss on a
+    hand-written dialogue that skipped `/enact`); and check for drift between what's referenced
+    elsewhere (registries, sampled knowledge, and `tales` `touches` refs) and what's actually recorded
+    in `encodings.json`. Run whichever pass(es) fit the situation, not necessarily all three.
+  - **`/resolve`** (`resolve/SKILL.md`) — surfaces one open item at a time, either an unresolved entry
+    in `encodings.json`'s `conflicts` array or an open question in `_lore/unknowns.md`, with the full
+    detail plus every other place in the record that mentions it, and writes a decision only on the
+    user's own explicit call. Never suggests a resolution or infers one from source agreement. The only
+    skill that ever sets a conflict's `user_resolution` field.
+  - **`/tell`** (`tell/SKILL.md`) — records a tale the user tells directly, outside any excavated
+    document or character's mouth — narrated as a story or stated plainly as a fact now known, both
+    the same category — optionally credited to an in-world source (`told_by`), into `_lore/tales/` and
+    `encodings.json`'s `tales` category. Real-world provenance (`responsible` — who told the system) is
+    recorded separately, in `_lore/tales/_authors.md`, never in `encodings.json`.
+  - **`/simulate`** (`simulate/SKILL.md`) — batch-runs many `/enact` character-vs-character scenes
+    across an existing population, unattended, inside a dedicated git worktree (requires
+    `worktree.baseRef: "head"` in settings, so it branches from the current lore state rather than a
+    stale `origin/<default-branch>`). For testing the enactment mechanism at scale, or producing a
+    showcase trail of scenes, without risking the real files — the worktree stays on disk afterward
+    for inspection and is never merged back automatically. Lore-only, same as `/enact`, and nothing
+    but orchestration around it: `/simulate` owns pairing and batching only, none of the scene
+    mechanics itself. Every pass is one full `/enact` scene between two existing characters — its
+    own eligibility gate (Step 2) requires both to have `routines`+`arc` on file, non-negotiably; a
+    participant missing either gets flagged and pointed at `/character` rather than falling back to
+    a lesser mode. Once eligible, `/enact`'s mechanical block (Step 4) rolls a routine/location for
+    the pass, tracks each character's own `arc` (mechanical primacy/gate/outcome rolls against
+    `_lore/contexts.json`, tallied toward advance/stall/reverse/transform/resolve), and — beyond its
+    own hearsay/criterion/death machinery — adds reproduction (`roll_reproduction.py`/
+    `generate_offspring.py`, a new character file with inherited knowledge and a birth tale) and
+    death legacy (an ongoing arc transferring to someone in the deceased's notified circle).
+    Currently piloted on 6 seeded characters; whether the mechanism is actually producing good
+    results, as opposed to just running, is tracked in `LAB_REPORT.md` — see below. **`/generate`**
+    is a separate command for pregenerating a large multi-generation starting population quickly
+    rather than a showcase trail of scenes: the same underlying mechanics (routines, arcs,
+    reproduction, death) run as one script-driven pass loop with no scene-writing and no subagent
+    per pass, deferring the two things that genuinely need a model's judgment (a child's name, a
+    fresh arc's content) into a single batched subagent pass at the very end. See
+    `.claude/skills/generate/SKILL.md`.
+- **Supporting patterns** — reusable templates and registries every NPC/dialog is built from, so each
+  new one doesn't reinvent structure — the shared material skills and scripts read from and write into:
+  - `_npcs/templates/` — placeholder-filled `.mcfunction` patterns (`spawn.mcfunction`,
+    `resume_routine.mcfunction`, `check_proximity.mcfunction`, `end_with_gift.mcfunction`, plus
+    `paths/` and `states/` variants for roaming/multi-state NPCs) — copied per NPC, never called
+    directly. See §1.
+  - `data/luminacion/blabber/dialogues/_template_*.json` — the three dialog shapes (one-off, linear,
+    branching). See §1/§5.
+  - `_npcs/actions/registry.json`'s `_action_templates` — documents every right-click action pattern
+    (`movement`, `give_item`, `blabber_dialog`, `routine_pause_resume`, `scripted_path`,
+    `multi_state_npc`, `random_dialog`, `scoreboard_set`) with copy-paste command patterns and, for
+    several, hard-won in-game debugging notes (why `/random` never resolves in this environment, why
+    the pause/resume radii must differ).
+  - **Gesture dispatch** — `data/luminacion/functions/npcs/_shared/gesture_<name>.mcfunction` (wave,
+    point, bow, shrug, palms-up, scratch-head, laugh, jump, cross-arms, no, face-palm, flex-arm, plus
+    left-arm mirror variants `wave_left`, `point_left`, and `scratch_head_left`) plus `gesture_clear.mcfunction`
+    and the `nod_up_down`/`nod_left_right` family: datapack-side functions that trigger the
+    resource-pack animations below via a tag + per-entity scoreboard countdown, ticked every game tick
+    from `tick.mcfunction` via `gesture_tick.mcfunction`/`nod_tick.mcfunction` — each NPC's hold/beat
+    timing is independent of every other NPC's. (Replaced an earlier
+    `schedule function ... replace` design, which used one datapack-wide timer shared by every gesture
+    and every nod; see TODO.md "Multi-NPC gesture/nod scheduling collision" for why that broke once
+    more than one NPC could gesture/nod at a time.) They physically live under `data/luminacion/`
+    (Tier 3, shipping) but belong here conceptually — templated dispatch for content that's actually
+    defined one tier up.
 
-### Layer 3 — Datapack
+### Tier 3 — Shipping
 
-`data/luminacion/` — the pack Minecraft actually loads and calls: `functions/` (per-NPC and shared
+What a run of the engine becomes, live, in the current embodiment backend — built *from* Tiers 1–2
+for a given NPC, and what a different or additional backend would replace wholesale. Split across two
+Minecraft-mandated folders that are really one export:
+
+**Datapack.** `data/luminacion/` — the pack Minecraft actually loads and calls: `functions/` (per-NPC and shared
 `.mcfunction` files), `predicates/`, `tags/functions/` (load/tick hooks, the routine-tick registry),
-and `blabber/dialogues/` (the written dialogs). This is what gets built *from* layers 1–2 for a given
-NPC — see §1 for the full folder breakdown and §5 for the build sequence.
+and `blabber/dialogues/` (the written dialogs) — see §1 for the full folder breakdown and §5 for the
+build sequence.
 
-### Layer 4 — Resource pack
-
-Custom client-side content shipped alongside the datapack, version-controlled in this repo's
+**Resource pack.** Custom client-side content shipped alongside the datapack, version-controlled in this repo's
 `resourcepack/` folder (own `pack.mcmeta` + `assets/`, same idea as `data/` is to the datapack).
 Currently:
 
@@ -381,7 +387,6 @@ for local dev. The folder Minecraft actually reads, `resourcepacks/luminacion/`,
 directory junction pointing back at `resourcepack/` here, so edits apply instantly (reload with
 `F3+T`, or a full restart if that doesn't pick it up). The full wiring rationale — why a junction,
 and the separate not-yet-built distribution zip — is in `GESTURES.md`.
-
 ---
 
 ## 1. Folder structure
@@ -483,7 +488,7 @@ Provenance/
 │       └── states/
 │           ├── roaming_state.mcfunction
 │           └── stationary_state.mcfunction
-└── resourcepack/                      (the resource pack — §0 Layer 4; junctioned into
+└── resourcepack/                      (the resource pack — §0 Tier 3 Shipping; junctioned into
     │                                   resourcepacks/luminacion/ in the PrismLauncher instance)
     ├── pack.mcmeta
     └── assets/
@@ -501,9 +506,9 @@ string values, which parse fine either way. Anything named `_shared` is called d
 
 ## 2. Core concepts
 
-**Fact** — one of the handful of things true of being a person in this world at all, living in `_lore/facts/`. Every character knows every fact in full; facts are never sampled, never attributed, and never contestable. Currently two: life ends, and everyone wants theirs to have been worthwhile. Together they're the will to live. See §0 Layer 1 and `_lore/facts/_index.md`.
+**Fact** — one of the handful of things true of being a person in this world at all, living in `_lore/facts/`. Every character knows every fact in full; facts are never sampled, never attributed, and never contestable. Currently two: life ends, and everyone wants theirs to have been worthwhile. Together they're the will to live. See §0 Tier 1 and `_lore/facts/_index.md`.
 
-**Grounding** — objective content that's true regardless of whether any character knows it, living in `_lore/grounding/` (embodiment mechanics + world state). Unlike a fact, access is conditional, not universal: `scripts/lore/sample_grounding.py` computes it live from a character's own routines, never randomly and never cached. Unlike material, it can't disagree with itself into a reconciled record — it's the world's actual current state, and is allowed to simply not match what `_lore/material/` claims about the same place. See §0 Layer 1 and `_lore/grounding/_index.md`.
+**Grounding** — objective content that's true regardless of whether any character knows it, living in `_lore/grounding/` (embodiment mechanics + world state). Unlike a fact, access is conditional, not universal: `scripts/lore/sample_grounding.py` computes it live from a character's own routines, never randomly and never cached. Unlike material, it can't disagree with itself into a reconciled record — it's the world's actual current state, and is allowed to simply not match what `_lore/material/` claims about the same place. See §0 Tier 1 and `_lore/grounding/_index.md`.
 
 **Criterion** — what a character counts as a life well spent, in their character file (`_lore/characters/<key>.json`) as `criterion`. Derived once at creation from the collision of their knowledge sample with their backstory, stated negatively (what they'd count as a *wasted* life) and anchored to one concrete, refutable case. It's what makes two characters with the same knowledge in the same situation choose differently. Owned by `/character` (Step 4 derives, Step 6 is the reference for how it changes).
 
@@ -605,7 +610,7 @@ in from their `_lore/characters/<key>.json` file's canonical `name` the first ti
 
 If this character should also have lore depth — `backstory`, a knowledge sample, `criterion`, a
 lifespan — that's a separate, optional file at `_lore/characters/maren.json`, built by `/character`
-or by hand (see §0 Layer 1 and §2). A hand-built NPC like this one is free to skip it entirely and
+or by hand (see §0 Tier 1 and §2). A hand-built NPC like this one is free to skip it entirely and
 exist as pure embodiment data with no lore file at all.
 
 ### Step 2 — Create the spawn function

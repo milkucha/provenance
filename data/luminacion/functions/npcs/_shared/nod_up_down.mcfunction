@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — Shared: Nod Up And Down ("yes" gesture)
+# Provenance — Shared: Nod Up And Down ("yes" gesture)
 # =============================================================================
 # Plays a short two-beat downward nod (dip, return, smaller dip, return) that
 # decays back to whatever pitch the NPC already had — a prior look_up/

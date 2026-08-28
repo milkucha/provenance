@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — Shared: Look Down
+# Provenance — Shared: Look Down
 # =============================================================================
 # Tilts the NPC's head down and holds it there (a pose, not an animation)
 # until something else changes Rotation[1] — another gesture, or Taterzens'

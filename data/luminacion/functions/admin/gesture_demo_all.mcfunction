@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — Admin: Gesture Demo (all)
+# Provenance — Admin: Gesture Demo (all)
 # =============================================================================
 # Dev/QA tool, not part of any NPC's actual dialogue flow. Meant to play
 # every gesture in sequence, one at a time, on whichever Taterzen is

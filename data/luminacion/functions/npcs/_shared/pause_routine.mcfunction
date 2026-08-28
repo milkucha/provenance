@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — Shared: Pause Routine
+# Provenance — Shared: Pause Routine
 # =============================================================================
 # Stops the NPC's roaming and turns it to face the nearby player (FORCED_LOOK),
 # and flags it as paused, so the proximity/dialog resume logic knows to leave it

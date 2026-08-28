@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — Shared: Gesture — Laugh
+# Provenance — Shared: Gesture — Laugh
 # =============================================================================
 # Gives the NPC's own main hand an invisible marker item (CustomModelData
 # 107), which the gesture resource pack reads to lean the torso back, tip

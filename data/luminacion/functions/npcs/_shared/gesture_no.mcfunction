@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — Shared: Gesture — No
+# Provenance — Shared: Gesture — No
 # =============================================================================
 # Gives the NPC's own main hand an invisible marker item (CustomModelData
 # 108), which the gesture resource pack reads to shake the head side to side

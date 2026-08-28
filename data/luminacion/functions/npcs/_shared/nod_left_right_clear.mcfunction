@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — Shared: Nod Left And Right — Clear (internal)
+# Provenance — Shared: Nod Left And Right — Clear (internal)
 # =============================================================================
 # Final beat of nod_left_right.mcfunction's 4-beat sequence, run once per
 # entity by nod_tick.mcfunction when that entity's own luminacion.nod_timer

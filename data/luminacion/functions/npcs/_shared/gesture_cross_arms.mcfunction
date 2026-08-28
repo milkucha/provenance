@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — Shared: Gesture — Cross Arms
+# Provenance — Shared: Gesture — Cross Arms
 # =============================================================================
 # Gives the NPC's own main hand an invisible marker item (CustomModelData
 # 111), which the gesture resource pack (player.jem/player_slim.jem override

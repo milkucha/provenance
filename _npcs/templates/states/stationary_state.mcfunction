@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — NPC Stationary State Template
+# Provenance — NPC Stationary State Template
 # =============================================================================
 # For NPCs that switch between multiple named "states" at runtime (e.g.
 # standing still for one scene, roaming for another) — see

@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — Shared: Nod Up And Down — Clear (internal)
+# Provenance — Shared: Nod Up And Down — Clear (internal)
 # =============================================================================
 # Final beat of nod_up_down.mcfunction's 4-beat sequence, run once per
 # entity by nod_tick.mcfunction when that entity's own luminacion.nod_timer

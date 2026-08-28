@@ -25,11 +25,11 @@ py scripts/minecraft/package.py "<destination>"
 This writes/overwrites (never timestamps — re-running always replaces the previous
 export at that destination):
 
-- `Luminacion.zip` — the datapack: `pack.mcmeta` + `data/`, excluding the three
+- `Provenance.zip` — the datapack: `pack.mcmeta` + `data/`, excluding the three
   `_template_*.json` dialogue placeholders (`_template_one_off.json`,
   `_template_linear.json`, `_template_branching.json` — unfilled `<placeholder>` text,
   authoring scaffolding only).
-- `Luminacion-resourcepack.zip` — the resource pack: `resourcepack/pack.mcmeta` +
+- `Provenance-resourcepack.zip` — the resource pack: `resourcepack/pack.mcmeta` +
   `resourcepack/assets/`.
 
 Both zips are flat at the root — `pack.mcmeta` sits at the top level of the zip, not
@@ -44,9 +44,9 @@ from `data/`, `pack.mcmeta`, and `resourcepack/`.
 
 Report the two output paths and sizes (the script prints both). Remind the user:
 
-- Datapack: `<world>/datapacks/Luminacion.zip` (server or singleplayer world save),
+- Datapack: `<world>/datapacks/Provenance.zip` (server or singleplayer world save),
   then `/reload` or restart to load it.
-- Resource pack: `resourcepacks/Luminacion-resourcepack.zip` in the client's `.minecraft`
+- Resource pack: `resourcepacks/Provenance-resourcepack.zip` in the client's `.minecraft`
   folder (or the world's per-world resource pack mechanism), enabled via
   Options → Resource Packs.
 - The destination world/server needs [Taterzens](https://modrinth.com/mod/taterzens)

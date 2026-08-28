@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — Shared: Nod Tick (internal)
+# Provenance — Shared: Nod Tick (internal)
 # =============================================================================
 # Called every tick from tick.mcfunction. Advances every currently-nodding
 # NPC's 4-beat sequence (nod_up_down.mcfunction / nod_left_right.mcfunction)

@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — Dialog Ending Template: Give Item + Resume Routine
+# Provenance — Dialog Ending Template: Give Item + Resume Routine
 # =============================================================================
 # Use this pattern whenever a dialog ending needs to combine a side effect
 # (give / scoreboard / etc.) with resuming the NPC's routine — a Blabber
