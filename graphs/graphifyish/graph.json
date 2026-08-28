@@ -29,7 +29,7 @@
     "label": "Provenance",
     "kind": "root",
     "path": ".",
-    "size": 1181144,
+    "size": 1185895,
     "degree": 15
    },
    {
@@ -93,7 +93,7 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
-    "size": 196064,
+    "size": 198450,
     "degree": 6
    },
    {
@@ -109,7 +109,7 @@
     "label": "VOICE.md",
     "kind": "doc",
     "path": ".claude/VOICE.md",
-    "size": 8424,
+    "size": 10587,
     "degree": 1
    },
    {
@@ -133,7 +133,7 @@
     "label": "skills",
     "kind": "dir",
     "path": ".claude/skills",
-    "size": 184807,
+    "size": 185030,
     "degree": 13
    },
    {
@@ -285,7 +285,7 @@
     "label": "spawn",
     "kind": "dir",
     "path": ".claude/skills/spawn",
-    "size": 15617,
+    "size": 15840,
     "degree": 2
    },
    {
@@ -293,7 +293,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/spawn/SKILL.md",
-    "size": 15617,
+    "size": 15840,
     "degree": 1
    },
    {
@@ -333,7 +333,7 @@
     "label": "_lore",
     "kind": "dir",
     "path": "_lore",
-    "size": 42817,
+    "size": 42846,
     "degree": 8
    },
    {
@@ -373,7 +373,7 @@
     "label": "characters",
     "kind": "dir",
     "path": "_lore/characters",
-    "size": 5168,
+    "size": 5197,
     "degree": 5
    },
    {
@@ -389,7 +389,7 @@
     "label": "_template.json",
     "kind": "lore",
     "path": "_lore/characters/_template.json",
-    "size": 454,
+    "size": 483,
     "degree": 1
    },
    {
@@ -485,7 +485,7 @@
     "label": "_npcs",
     "kind": "dir",
     "path": "_npcs",
-    "size": 50948,
+    "size": 51312,
     "degree": 6
    },
    {
@@ -557,7 +557,7 @@
     "label": "templates",
     "kind": "dir",
     "path": "_npcs/templates",
-    "size": 22765,
+    "size": 23129,
     "degree": 9
    },
    {
@@ -565,7 +565,7 @@
     "label": "check_proximity.mcfunction",
     "kind": "template",
     "path": "_npcs/templates/check_proximity.mcfunction",
-    "size": 3383,
+    "size": 3430,
     "degree": 1
    },
    {
@@ -573,7 +573,7 @@
     "label": "end_with_gift.mcfunction",
     "kind": "template",
     "path": "_npcs/templates/end_with_gift.mcfunction",
-    "size": 1270,
+    "size": 1292,
     "degree": 1
    },
    {
@@ -581,7 +581,7 @@
     "label": "heal_path.mcfunction",
     "kind": "template",
     "path": "_npcs/templates/heal_path.mcfunction",
-    "size": 1161,
+    "size": 1178,
     "degree": 1
    },
    {
@@ -589,7 +589,7 @@
     "label": "heal_skin.mcfunction",
     "kind": "template",
     "path": "_npcs/templates/heal_skin.mcfunction",
-    "size": 1677,
+    "size": 1704,
     "degree": 1
    },
    {
@@ -597,7 +597,7 @@
     "label": "resume_routine.mcfunction",
     "kind": "template",
     "path": "_npcs/templates/resume_routine.mcfunction",
-    "size": 1552,
+    "size": 1579,
     "degree": 1
    },
    {
@@ -605,7 +605,7 @@
     "label": "spawn.mcfunction",
     "kind": "template",
     "path": "_npcs/templates/spawn.mcfunction",
-    "size": 6602,
+    "size": 6720,
     "degree": 1
    },
    {
@@ -613,7 +613,7 @@
     "label": "paths",
     "kind": "dir",
     "path": "_npcs/templates/paths",
-    "size": 2215,
+    "size": 2248,
     "degree": 2
    },
    {
@@ -621,7 +621,7 @@
     "label": "select_path.mcfunction",
     "kind": "template",
     "path": "_npcs/templates/paths/select_path.mcfunction",
-    "size": 2215,
+    "size": 2248,
     "degree": 1
    },
    {
@@ -629,7 +629,7 @@
     "label": "states",
     "kind": "dir",
     "path": "_npcs/templates/states",
-    "size": 4905,
+    "size": 4978,
     "degree": 3
    },
    {
@@ -637,7 +637,7 @@
     "label": "roaming_state.mcfunction",
     "kind": "template",
     "path": "_npcs/templates/states/roaming_state.mcfunction",
-    "size": 2845,
+    "size": 2886,
     "degree": 1
    },
    {
@@ -645,7 +645,7 @@
     "label": "stationary_state.mcfunction",
     "kind": "template",
     "path": "_npcs/templates/states/stationary_state.mcfunction",
-    "size": 2060,
+    "size": 2092,
     "degree": 1
    },
    {
@@ -653,7 +653,7 @@
     "label": "data",
     "kind": "dir",
     "path": "data",
-    "size": 52023,
+    "size": 52748,
     "degree": 3
    },
    {
@@ -661,7 +661,7 @@
     "label": "luminacion",
     "kind": "dir",
     "path": "data/luminacion",
-    "size": 51951,
+    "size": 52676,
     "degree": 5
    },
    {
@@ -709,7 +709,7 @@
     "label": "functions",
     "kind": "dir",
     "path": "data/luminacion/functions",
-    "size": 44341,
+    "size": 45066,
     "degree": 5
    },
    {
@@ -717,7 +717,7 @@
     "label": "load.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/load.mcfunction",
-    "size": 451,
+    "size": 461,
     "degree": 1
    },
    {
@@ -725,7 +725,7 @@
     "label": "tick.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/tick.mcfunction",
-    "size": 509,
+    "size": 521,
     "degree": 1
    },
    {
@@ -733,7 +733,7 @@
     "label": "admin",
     "kind": "dir",
     "path": "data/luminacion/functions/admin",
-    "size": 5199,
+    "size": 5256,
     "degree": 3
    },
    {
@@ -741,7 +741,7 @@
     "label": "gesture_demo_all.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/admin/gesture_demo_all.mcfunction",
-    "size": 1412,
+    "size": 1435,
     "degree": 1
    },
    {
@@ -749,7 +749,7 @@
     "label": "gesture_demo_step.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/admin/gesture_demo_step.mcfunction",
-    "size": 3787,
+    "size": 3821,
     "degree": 1
    },
    {
@@ -757,7 +757,7 @@
     "label": "npcs",
     "kind": "dir",
     "path": "data/luminacion/functions/npcs",
-    "size": 38182,
+    "size": 38828,
     "degree": 2
    },
    {
@@ -765,7 +765,7 @@
     "label": "_shared",
     "kind": "dir",
     "path": "data/luminacion/functions/npcs/_shared",
-    "size": 38182,
+    "size": 38828,
     "degree": 27
    },
    {
@@ -773,7 +773,7 @@
     "label": "enter_dialog.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/_shared/enter_dialog.mcfunction",
-    "size": 658,
+    "size": 670,
     "degree": 1
    },
    {
@@ -781,7 +781,7 @@
     "label": "gesture_bow.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/_shared/gesture_bow.mcfunction",
-    "size": 869,
+    "size": 885,
     "degree": 1
    },
    {
@@ -789,7 +789,7 @@
     "label": "gesture_clear.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/_shared/gesture_clear.mcfunction",
-    "size": 1093,
+    "size": 1111,
     "degree": 1
    },
    {
@@ -797,7 +797,7 @@
     "label": "gesture_cross_arms.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/_shared/gesture_cross_arms.mcfunction",
-    "size": 1168,
+    "size": 1188,
     "degree": 1
    },
    {
@@ -805,7 +805,7 @@
     "label": "gesture_face_palm.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/_shared/gesture_face_palm.mcfunction",
-    "size": 2185,
+    "size": 2223,
     "degree": 1
    },
    {
@@ -813,7 +813,7 @@
     "label": "gesture_flex_arm.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/_shared/gesture_flex_arm.mcfunction",
-    "size": 1502,
+    "size": 1527,
     "degree": 1
    },
    {
@@ -821,7 +821,7 @@
     "label": "gesture_jump.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/_shared/gesture_jump.mcfunction",
-    "size": 2248,
+    "size": 2284,
     "degree": 1
    },
    {
@@ -829,7 +829,7 @@
     "label": "gesture_laugh.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/_shared/gesture_laugh.mcfunction",
-    "size": 1167,
+    "size": 1187,
     "degree": 1
    },
    {
@@ -837,7 +837,7 @@
     "label": "gesture_no.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/_shared/gesture_no.mcfunction",
-    "size": 1553,
+    "size": 1581,
     "degree": 1
    },
    {
@@ -845,7 +845,7 @@
     "label": "gesture_palms_up.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/_shared/gesture_palms_up.mcfunction",
-    "size": 1007,
+    "size": 1025,
     "degree": 1
    },
    {
@@ -853,7 +853,7 @@
     "label": "gesture_point.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/_shared/gesture_point.mcfunction",
-    "size": 886,
+    "size": 902,
     "degree": 1
    },
    {
@@ -861,7 +861,7 @@
     "label": "gesture_point_left.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/_shared/gesture_point_left.mcfunction",
-    "size": 1046,
+    "size": 1064,
     "degree": 1
    },
    {
@@ -869,7 +869,7 @@
     "label": "gesture_scratch_head.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/_shared/gesture_scratch_head.mcfunction",
-    "size": 1032,
+    "size": 1050,
     "degree": 1
    },
    {
@@ -877,7 +877,7 @@
     "label": "gesture_scratch_head_left.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/_shared/gesture_scratch_head_left.mcfunction",
-    "size": 1164,
+    "size": 1184,
     "degree": 1
    },
    {
@@ -885,7 +885,7 @@
     "label": "gesture_shrug.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/_shared/gesture_shrug.mcfunction",
-    "size": 918,
+    "size": 935,
     "degree": 1
    },
    {
@@ -893,7 +893,7 @@
     "label": "gesture_tick.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/_shared/gesture_tick.mcfunction",
-    "size": 1377,
+    "size": 1397,
     "degree": 1
    },
    {
@@ -901,7 +901,7 @@
     "label": "gesture_wave.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/_shared/gesture_wave.mcfunction",
-    "size": 1869,
+    "size": 1900,
     "degree": 1
    },
    {
@@ -909,7 +909,7 @@
     "label": "gesture_wave_left.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/_shared/gesture_wave_left.mcfunction",
-    "size": 1117,
+    "size": 1137,
     "degree": 1
    },
    {
@@ -917,7 +917,7 @@
     "label": "look_down.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/_shared/look_down.mcfunction",
-    "size": 1326,
+    "size": 1348,
     "degree": 1
    },
    {
@@ -925,7 +925,7 @@
     "label": "look_up.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/_shared/look_up.mcfunction",
-    "size": 1323,
+    "size": 1345,
     "degree": 1
    },
    {
@@ -933,7 +933,7 @@
     "label": "nod_left_right.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/_shared/nod_left_right.mcfunction",
-    "size": 3297,
+    "size": 3354,
     "degree": 1
    },
    {
@@ -941,7 +941,7 @@
     "label": "nod_left_right_clear.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/_shared/nod_left_right_clear.mcfunction",
-    "size": 1315,
+    "size": 1338,
     "degree": 1
    },
    {
@@ -949,7 +949,7 @@
     "label": "nod_tick.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/_shared/nod_tick.mcfunction",
-    "size": 2674,
+    "size": 2713,
     "degree": 1
    },
    {
@@ -957,7 +957,7 @@
     "label": "nod_up_down.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/_shared/nod_up_down.mcfunction",
-    "size": 3305,
+    "size": 3361,
     "degree": 1
    },
    {
@@ -965,7 +965,7 @@
     "label": "nod_up_down_clear.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/_shared/nod_up_down_clear.mcfunction",
-    "size": 1304,
+    "size": 1326,
     "degree": 1
    },
    {
@@ -973,7 +973,7 @@
     "label": "pause_routine.mcfunction",
     "kind": "function",
     "path": "data/luminacion/functions/npcs/_shared/pause_routine.mcfunction",
-    "size": 779,
+    "size": 793,
     "degree": 1
    },
    {
@@ -1252,7 +1252,7 @@
     "label": "scripts",
     "kind": "dir",
     "path": "scripts",
-    "size": 399435,
+    "size": 400682,
     "degree": 5
    },
    {
@@ -1300,7 +1300,7 @@
     "label": "lore",
     "kind": "dir",
     "path": "scripts/lore",
-    "size": 302892,
+    "size": 303895,
     "degree": 46
    },
    {
@@ -1364,7 +1364,7 @@
     "label": "bootstrap_lore.py",
     "kind": "script",
     "path": "scripts/lore/bootstrap_lore.py",
-    "size": 16618,
+    "size": 16895,
     "degree": 1
    },
    {
@@ -1420,7 +1420,7 @@
     "label": "generate_offspring.py",
     "kind": "script",
     "path": "scripts/lore/generate_offspring.py",
-    "size": 38954,
+    "size": 39680,
     "degree": 1
    },
    {
@@ -1668,7 +1668,7 @@
     "label": "minecraft",
     "kind": "dir",
     "path": "scripts/minecraft",
-    "size": 15905,
+    "size": 16149,
     "degree": 4
    },
    {
@@ -1684,7 +1684,7 @@
     "label": "update_uuids.py",
     "kind": "script",
     "path": "scripts/minecraft/update_uuids.py",
-    "size": 8336,
+    "size": 8580,
     "degree": 1
    },
    {
