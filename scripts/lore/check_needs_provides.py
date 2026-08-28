@@ -1,11 +1,14 @@
 """
-Check whether a visit destination's context happens to supply what the traveler's arc currently
-needs - mechanical, not a model deciding "this visit feels purposeful." A match means the visit
-gets framed as motivated; no match means it's an ordinary, unmotivated visit, same as always.
+Check whether the scene's own context happens to supply what the arc-primacy winner currently
+needs - mechanical, not a model deciding "this visit feels purposeful." A match means the scene
+gets framed as motivated; no match means it's ordinary and unmotivated, same as always.
 
-The reason isn't invented - it's checked for, after the fact of pick_pair.py/roll_routine.py/
-resolve_location.py having already, independently, decided who's visiting whom. This runs strictly
-after those, never instead of them.
+Design debrief 2026-08-28: keyed to whichever participant WON arc primacy, not "the traveler" -
+primacy is now decided independently of home/visiting (roll_home_visit.py), so the primacy winner
+can just as easily be the home participant as the one visiting. The reason isn't invented - it's
+checked for, after the fact of roll_home_visit.py/roll_routine.py/roll_arc_primacy.py having already,
+independently, decided who's where and whose arc leads. This runs strictly after those, never
+instead of them.
 
 Usage:
     py scripts/lore/check_needs_provides.py --needs "rare ore" --needs "expertise" \
@@ -28,8 +31,8 @@ def significant_words(text: str) -> set[str]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--needs", action="append", default=[], required=True, help="Traveler's arc.needs tag(s), repeatable")
-    parser.add_argument("--provides", action="append", default=[], required=True, help="Destination context's provides tag(s), repeatable")
+    parser.add_argument("--needs", action="append", default=[], required=True, help="Arc-primacy winner's arc.needs tag(s), repeatable")
+    parser.add_argument("--provides", action="append", default=[], required=True, help="Scene context's provides tag(s), repeatable")
     args = parser.parse_args()
 
     for need in args.needs:

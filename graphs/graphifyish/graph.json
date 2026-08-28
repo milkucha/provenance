@@ -20421,7 +20421,7 @@
     "label": "Provenance",
     "kind": "root",
     "path": ".",
-    "size": 58319701,
+    "size": 58356120,
     "degree": 17
    },
    {
@@ -20445,7 +20445,7 @@
     "label": "CHRONICLE.md",
     "kind": "doc",
     "path": "CHRONICLE.md",
-    "size": 14359,
+    "size": 18230,
     "degree": 1
    },
    {
@@ -20485,7 +20485,7 @@
     "label": "TODO.md",
     "kind": "doc",
     "path": "TODO.md",
-    "size": 153631,
+    "size": 158443,
     "degree": 1
    },
    {
@@ -20501,7 +20501,7 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
-    "size": 204700,
+    "size": 208001,
     "degree": 6
    },
    {
@@ -20549,7 +20549,7 @@
     "label": "skills",
     "kind": "dir",
     "path": ".claude/skills",
-    "size": 189037,
+    "size": 192338,
     "degree": 13
    },
    {
@@ -20589,7 +20589,7 @@
     "label": "enact",
     "kind": "dir",
     "path": ".claude/skills/enact",
-    "size": 50533,
+    "size": 53834,
     "degree": 2
    },
    {
@@ -20597,7 +20597,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/enact/SKILL.md",
-    "size": 50533,
+    "size": 53834,
     "degree": 1
    },
    {
@@ -20749,7 +20749,7 @@
     "label": "_lore",
     "kind": "dir",
     "path": "_lore",
-    "size": 55569567,
+    "size": 55570437,
     "degree": 10
    },
    {
@@ -20773,7 +20773,7 @@
     "label": "tuning.json",
     "kind": "lore",
     "path": "_lore/tuning.json",
-    "size": 1941,
+    "size": 2811,
     "degree": 1
    },
    {
@@ -23021,7 +23021,7 @@
     "label": "diagrams",
     "kind": "dir",
     "path": "diagrams",
-    "size": 93371,
+    "size": 95555,
     "degree": 3
    },
    {
@@ -23029,7 +23029,7 @@
     "label": "gen_simulate_pass.py",
     "kind": "other",
     "path": "diagrams/gen_simulate_pass.py",
-    "size": 33192,
+    "size": 34792,
     "degree": 1
    },
    {
@@ -23037,7 +23037,7 @@
     "label": "simulate-pass.html",
     "kind": "other",
     "path": "diagrams/simulate-pass.html",
-    "size": 60179,
+    "size": 60763,
     "degree": 1
    },
    {
@@ -23221,7 +23221,7 @@
     "label": "scripts",
     "kind": "dir",
     "path": "scripts",
-    "size": 411714,
+    "size": 433095,
     "degree": 5
    },
    {
@@ -23253,7 +23253,7 @@
     "label": "hooks",
     "kind": "dir",
     "path": "scripts/hooks",
-    "size": 658,
+    "size": 1559,
     "degree": 2
    },
    {
@@ -23261,7 +23261,7 @@
     "label": "post-commit",
     "kind": "script",
     "path": "scripts/hooks/post-commit",
-    "size": 658,
+    "size": 1559,
     "degree": 1
    },
    {
@@ -23269,8 +23269,8 @@
     "label": "lore",
     "kind": "dir",
     "path": "scripts/lore",
-    "size": 314622,
-    "degree": 47
+    "size": 335102,
+    "degree": 50
    },
    {
     "id": "file:scripts/lore/add_categories_schema.py",
@@ -23373,7 +23373,7 @@
     "label": "check_needs_provides.py",
     "kind": "script",
     "path": "scripts/lore/check_needs_provides.py",
-    "size": 2017,
+    "size": 2291,
     "degree": 1
    },
    {
@@ -23389,7 +23389,7 @@
     "label": "generate_offspring.py",
     "kind": "script",
     "path": "scripts/lore/generate_offspring.py",
-    "size": 40359,
+    "size": 43667,
     "degree": 1
    },
    {
@@ -23441,6 +23441,14 @@
     "degree": 1
    },
    {
+    "id": "file:scripts/lore/record_bond_quality.py",
+    "label": "record_bond_quality.py",
+    "kind": "script",
+    "path": "scripts/lore/record_bond_quality.py",
+    "size": 2913,
+    "degree": 1
+   },
+   {
     "id": "file:scripts/lore/record_death.py",
     "label": "record_death.py",
     "kind": "script",
@@ -23481,19 +23489,11 @@
     "degree": 1
    },
    {
-    "id": "file:scripts/lore/resolve_location.py",
-    "label": "resolve_location.py",
-    "kind": "script",
-    "path": "scripts/lore/resolve_location.py",
-    "size": 1939,
-    "degree": 1
-   },
-   {
     "id": "file:scripts/lore/roll_arc_outcome.py",
     "label": "roll_arc_outcome.py",
     "kind": "script",
     "path": "scripts/lore/roll_arc_outcome.py",
-    "size": 2150,
+    "size": 3288,
     "degree": 1
    },
    {
@@ -23509,7 +23509,7 @@
     "label": "roll_contested.py",
     "kind": "script",
     "path": "scripts/lore/roll_contested.py",
-    "size": 2043,
+    "size": 4353,
     "degree": 1
    },
    {
@@ -23518,6 +23518,14 @@
     "kind": "script",
     "path": "scripts/lore/roll_death_legacy.py",
     "size": 2535,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/roll_home_visit.py",
+    "label": "roll_home_visit.py",
+    "kind": "script",
+    "path": "scripts/lore/roll_home_visit.py",
+    "size": 2120,
     "degree": 1
    },
    {
@@ -23573,7 +23581,7 @@
     "label": "simulate_generate_population.py",
     "kind": "script",
     "path": "scripts/lore/simulate_generate_population.py",
-    "size": 20832,
+    "size": 21372,
     "degree": 1
    },
    {
@@ -23581,7 +23589,7 @@
     "label": "simulate_pass_brief.py",
     "kind": "script",
     "path": "scripts/lore/simulate_pass_brief.py",
-    "size": 14860,
+    "size": 15053,
     "degree": 1
    },
    {
@@ -23589,7 +23597,15 @@
     "label": "simulate_pass_lib.py",
     "kind": "script",
     "path": "scripts/lore/simulate_pass_lib.py",
-    "size": 11815,
+    "size": 12774,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/simulate_pass_reproduction.py",
+    "label": "simulate_pass_reproduction.py",
+    "kind": "script",
+    "path": "scripts/lore/simulate_pass_reproduction.py",
+    "size": 4312,
     "degree": 1
    },
    {
@@ -23614,6 +23630,14 @@
     "kind": "script",
     "path": "scripts/lore/simulate_tally.py",
     "size": 4734,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/social_circle.py",
+    "label": "social_circle.py",
+    "kind": "script",
+    "path": "scripts/lore/social_circle.py",
+    "size": 4352,
     "degree": 1
    },
    {
@@ -25938,6 +25962,12 @@
    },
    {
     "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/record_bond_quality.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/record_death.py",
     "rel": "contains",
     "weight": 1
@@ -25968,12 +25998,6 @@
    },
    {
     "source": "dir:scripts/lore",
-    "target": "file:scripts/lore/resolve_location.py",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/roll_arc_outcome.py",
     "rel": "contains",
     "weight": 1
@@ -25993,6 +26017,12 @@
    {
     "source": "dir:scripts/lore",
     "target": "file:scripts/lore/roll_death_legacy.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/roll_home_visit.py",
     "rel": "contains",
     "weight": 1
    },
@@ -26052,6 +26082,12 @@
    },
    {
     "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/simulate_pass_reproduction.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/simulate_resolve_pair.py",
     "rel": "contains",
     "weight": 1
@@ -26065,6 +26101,12 @@
    {
     "source": "dir:scripts/lore",
     "target": "file:scripts/lore/simulate_tally.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/social_circle.py",
     "rel": "contains",
     "weight": 1
    },
@@ -26129,7 +26171,7 @@
     "kind": "layer",
     "note": "skills + scripts + supporting patterns",
     "tier": 2,
-    "degree": 68
+    "degree": 71
    },
    {
     "id": "layer:3",
@@ -26476,6 +26518,14 @@
     "degree": 1
    },
    {
+    "id": "script:lore/record_bond_quality.py",
+    "label": "record_bond_quality.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/record_bond_quality.py",
+    "degree": 1
+   },
+   {
     "id": "script:lore/record_death.py",
     "label": "record_death.py",
     "kind": "script",
@@ -26516,14 +26566,6 @@
     "degree": 1
    },
    {
-    "id": "script:lore/resolve_location.py",
-    "label": "resolve_location.py",
-    "kind": "script",
-    "tier": 2,
-    "file": "scripts/lore/resolve_location.py",
-    "degree": 1
-   },
-   {
     "id": "script:lore/roll_arc_outcome.py",
     "label": "roll_arc_outcome.py",
     "kind": "script",
@@ -26553,6 +26595,14 @@
     "kind": "script",
     "tier": 2,
     "file": "scripts/lore/roll_death_legacy.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/roll_home_visit.py",
+    "label": "roll_home_visit.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/roll_home_visit.py",
     "degree": 1
    },
    {
@@ -26628,6 +26678,14 @@
     "degree": 1
    },
    {
+    "id": "script:lore/simulate_pass_reproduction.py",
+    "label": "simulate_pass_reproduction.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/simulate_pass_reproduction.py",
+    "degree": 1
+   },
+   {
     "id": "script:lore/simulate_resolve_pair.py",
     "label": "simulate_resolve_pair.py",
     "kind": "script",
@@ -26649,6 +26707,14 @@
     "kind": "script",
     "tier": 2,
     "file": "scripts/lore/simulate_tally.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/social_circle.py",
+    "label": "social_circle.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/social_circle.py",
     "degree": 1
    },
    {
@@ -26999,6 +27065,12 @@
    },
    {
     "source": "layer:2",
+    "target": "script:lore/record_bond_quality.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
     "target": "script:lore/record_death.py",
     "rel": "holds",
     "weight": 1
@@ -27029,12 +27101,6 @@
    },
    {
     "source": "layer:2",
-    "target": "script:lore/resolve_location.py",
-    "rel": "holds",
-    "weight": 1
-   },
-   {
-    "source": "layer:2",
     "target": "script:lore/roll_arc_outcome.py",
     "rel": "holds",
     "weight": 1
@@ -27054,6 +27120,12 @@
    {
     "source": "layer:2",
     "target": "script:lore/roll_death_legacy.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/roll_home_visit.py",
     "rel": "holds",
     "weight": 1
    },
@@ -27113,6 +27185,12 @@
    },
    {
     "source": "layer:2",
+    "target": "script:lore/simulate_pass_reproduction.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
     "target": "script:lore/simulate_resolve_pair.py",
     "rel": "holds",
     "weight": 1
@@ -27126,6 +27204,12 @@
    {
     "source": "layer:2",
     "target": "script:lore/simulate_tally.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/social_circle.py",
     "rel": "holds",
     "weight": 1
    },

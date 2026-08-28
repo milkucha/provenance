@@ -3,6 +3,68 @@
 Open implementation decisions and work, deferred for later. This is a build/production backlog —
 open questions about the lore itself live in `_lore/unknowns.md`, not here.
 
+## Survival mechanism (design agreed 2026-08-28, not yet built — see `survival-arc-test` branch)
+
+`scripts/lore/roll_home_visit.py` (added 2026-08-28) decides who's home vs. visiting each pass with
+a flat 50/50 coin flip, on purpose — see its own docstring. The intended end state is for the
+survival mechanism designed below to weight that roll instead: a character under survival pressure
+should skew toward staying home, while one whose arc genuinely needs them elsewhere should skew
+toward visiting. When that system exists, this is the one call site to change — `roll_home_visit.py`'s
+own `--p1`/`--p2` `random.choice`, plus whatever new inputs (energy, pool health, arc pressure,
+`net_affinity`) the weighting needs to read. Nothing else in the pipeline depends on this staying a
+flat coin flip.
+
+**Design, agreed 2026-08-28 (not yet implemented):**
+
+- Each character has personal `energy` (start/cap 5, dies at 0). Every turn: −1, unconditional.
+- Each location has a `wealth` pool (a plain counter) and per-capita `upkeep` (`population × 0.5`,
+  drained every turn regardless of anyone's choice) — population is derived live from `location`
+  field counts, not separately tracked, since `location` already only changes when a character is
+  drawn and moved (same lazy-resolution precedent as `horizon.py`).
+- Each turn, a drawn character resolves **survive** or **arc** — only for characters actually drawn
+  that pass, never the whole population (matches the existing lazy per-character clock pattern; pool
+  upkeep is the only population-wide arithmetic, and it's O(1) per location).
+  - **Survive:** personal net 0 (−1 base, +1 taken from pool). Pool net +1 (contributes 2, taker
+    takes 1), before upkeep.
+  - **Arc:** personal net −2 (−1 base, −1 extra). Pool net −2 (drawn, uncontributed) — ties this
+    choice to the `needs`/`provides` gate below, so a starved location can't support ambition.
+  - Per-capita, folding in upkeep: survivors net the pool **+0.5**, arc-choosers net it **−2.5**.
+    Roughly 5 survivors' surplus per arc-chaser just to hold the pool steady — a real, steep
+    tradeoff, treat as tunable rather than locked.
+- **`provides` gate:** `wealth_per_capita = pool / population`. At or above a threshold (e.g. 2,
+  meaning real surplus above subsistence, not just break-even) the location provides for an arc's
+  `needs` (bonus on the arc-outcome roll, per the existing `needs`/`provides` mechanism); below it,
+  no bonus. Ties collective wealth directly to individual arc odds — a starved town doesn't just cost
+  individuals more, it makes everyone's ambition harder.
+- **The survive/arc choice is a weighted roll, not free choice** — same shape as `roll_arc_outcome.py`'s
+  existing `inclined` mechanism (weights skew odds, dice still decides):
+  ```
+  arc_score = w1·(energy / 5)
+            + w2·arc_pressure
+            + w3·pool_surplus · net_affinity
+            − w4·net_affinity
+  P(arc) = sigmoid(arc_score), roll against it
+  ```
+  - `arc_pressure = stage_weight[arc's current tally stage] + urgency_bonus[horizon band]` — both
+    free reads off existing mechanisms (`arc.history`'s tally, `horizon.py`'s band).
+  - `net_affinity = Σ(partners_quality[p]) / Σ(partners[p])`, established partners only
+    (`count ≥ partner_threshold`, same 5 already used in `roll_contested.py`) — reuses the just-built
+    bond-quality system directly, no new relationship data needed. Obligation (bonds pull toward
+    survive on their own) and reliance (a healthy pool only feels safe to lean on if you're actually
+    connected) share this one signed number in opposite roles, so a character with strong but
+    *negative* bonds gets pushed the correct direction on both terms, not just one.
+- **Choosing arc without winning that pass's primacy still costs the −2/−2** — a real gamble, not
+  wasted bookkeeping. Order: drawn characters roll survive/arc first → primacy resolves (existing
+  `contested` logic) → the loser who chose arc still paid for a bet that didn't pay off, same as any
+  other stalled/reversed arc outcome already in the system.
+- Energy-depletion death is a **second, independent death vector** alongside the existing rolled
+  lifespan — old age or starvation, whichever fires first. Not merged into `horizon.py`'s own clock.
+- **Open, not decided:** exact weights (`w1`–`w4`), the `provides` threshold value, and whether
+  `arc_pressure`'s two components should be additive or something else — all flagged as tunable
+  during design, not locked. First implementation target: `survival-arc-test` branch, off
+  `provenance-standalone`, so it can be tested against the real existing population rather than
+  template characters.
+
 ## Knowledge mutation system (2026-08-01)
 
 Implemented: Step 5 of `/enact` now records hearsay with mutations applied. Each character's
