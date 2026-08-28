@@ -29,7 +29,7 @@
     "label": "Luminacion",
     "kind": "root",
     "path": ".",
-    "size": 1175672,
+    "size": 1179487,
     "degree": 15
    },
    {
@@ -61,7 +61,7 @@
     "label": "README.md",
     "kind": "doc",
     "path": "README.md",
-    "size": 60294,
+    "size": 60821,
     "degree": 1
    },
    {
@@ -77,7 +77,7 @@
     "label": "conversation.md",
     "kind": "doc",
     "path": "conversation.md",
-    "size": 9616,
+    "size": 12904,
     "degree": 1
    },
    {
