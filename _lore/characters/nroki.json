@@ -1,6 +1,7 @@
 {
   "name": "Nroki",
-  "city": "Görff",
+  "origin": "",
+  "location": "Görff",
   "backstory": "",
   "knowledge": {
     "education": {

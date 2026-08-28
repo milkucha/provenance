@@ -63,7 +63,7 @@ Khaoe lived: 9 → 10. No shocks (anchor not referenced).
 - [x] Trigger/hosting decided (2026-07-30): proximity-based, same mechanism as the khaoe_farlis_*
       fragments — hosted under Nawom's key (his spawn.mcfunction will own the proximity check),
       rather than a plain right-click on either NPC.
-- [ ] Neither is registered in `_npcs/npcs/registry.json` yet at all — no skin, city, backstory, or
+- [ ] Neither is registered in `_npcs/npcs/registry.json` yet at all — no skin, origin, backstory, or
       spawn position decided for either. Run `/character` for both before building spawn functions.
 - [ ] Decide the dialog's `end` state action: resume routines for both NPCs, just the triggering
       one, or none at all (relying on the §4 proximity safety net)? Currently left with no `action`
@@ -683,13 +683,26 @@ Previously the only way to resolve one was to notice it while reading the file d
 
 ## Random character location selection in `/enact` (pinned 2026-08-01)
 
-When setting a scene location in `/enact` Step 1 (or any step that needs to pick a place), if the character's `city` field lists multiple locations or is blank, use weighted location selection rather than the user specifying it outright or picking at random:
+**Field note (2026-08-28):** this section originally said `city`; the character schema has since split
+that into `origin` (fixed birthplace) and `location` (current whereabouts). Everything below now
+refers to `location` — that's the field this mechanism was always actually describing (see
+`/character` SKILL.md and `/enact` SKILL.md's Step 1, which already updates it to "wherever the scene
+actually put" the character).
 
-1. **Primary locus:** the character's registered `city` (split on commas if multiple are listed) — each listed location gets equal weight within this group.
-2. **Secondary locus:** locations where people the character has shared scenes with are based (drawn from `hearsay.entries` — count unique co-participants and look up their `city` fields) — these are offered at lower weight than primary, and only if the user hasn't overridden the location in the scene prompt.
+When setting a scene location in `/enact` Step 1 (or any step that needs to pick a place), if the character's `location` field lists multiple locations or is blank, use weighted location selection rather than the user specifying it outright or picking at random:
+
+1. **Primary locus:** the character's registered `location` (split on commas if multiple are listed) — each listed location gets equal weight within this group.
+2. **Secondary locus:** locations where people the character has shared scenes with are based (drawn from `hearsay.entries` — count unique co-participants and look up their `location` fields) — these are offered at lower weight than primary, and only if the user hasn't overridden the location in the scene prompt.
 3. **Rationale:** makes the world feel organically connected — characters naturally gravitate toward places they know or toward people they've already met, rather than appearing randomly across the map. Also prevents unnatural isolation: a character who's been to a place twice already and knows someone there has more reason to return than to go somewhere fresh.
 4. **Implementation:** proposed as a heuristic for the human running `/enact` rather than a code-level feature. Decision should come up naturally when the user specifies only characters, not a location (e.g., `Farlis and Gok at his station in the Espiral` over-specifies and doesn't need this logic; `Gok runs into Nuvilo` does).
-5. **Open:** should the weight favor the character's *most-visited* city over others in their list? And should repeated co-participants (met in multiple scenes) carry more weight than meeting someone once? Current leaning: keep it simple and equal, let narrative preference override via explicit scene prompts.
+5. **Open:** should the weight favor the character's *most-visited* location over others in their list? And should repeated co-participants (met in multiple scenes) carry more weight than meeting someone once? Current leaning: keep it simple and equal, let narrative preference override via explicit scene prompts.
+6. **Open, added 2026-08-28 — the `transit` context.** A routine tagged `context: transit` names a
+   route in its own `location` field (`"Tyrnea <-> Görff"`), not a single point — see `_lore/contexts.json`'s
+   own note on it. None of the weighting logic above actually resolves that yet: picking a scene
+   location for a character whose primary/only routine is `transit` should mean choosing one end of
+   the route (weighted by whether the scene reads as a departure or an arrival), not just handing back
+   the raw `"A <-> B"` string as if it were a place name. Not implemented — flagged the moment the
+   context was created (Medusan, first character to use it), not yet needed in practice.
 
 ## General
 
@@ -795,10 +808,10 @@ loading, in-scene modulation, and Step 5b shock/drift resolution. Still open:
       and susceptibility alone and bias toward reinterpretation. Should be set at creation from the
       backstory and drift slowly with `knowledge.experience` (the working split: knowledge changes
       your criterion, experience changes your temperament).
-- [ ] **Inherited criteria (city/trade fallback).** `/character` Step 4e currently leaves
+- [ ] **Inherited criteria (place/trade fallback).** `/character` Step 4e currently leaves
       `criterion` blank with `"origin": "uncollided"` when nothing in the sample touches the
-      backstory or city, because the fallback implies giving every city (and trade) its own ambient
-      criterion. Pinned by the user on 2026-07-31. Worth building — it's what produces shared
+      backstory, origin, or location, because the fallback implies giving every place (and trade) its
+      own ambient criterion. Pinned by the user on 2026-07-31. Worth building — it's what produces shared
       culture rather than a hundred idiosyncratic philosophies, and it's the common case for
       ordinary people, who inherit their town's answer rather than authoring one.
 - [ ] **No `/fact` skill.** Adding a fact means hand-editing `_lore/facts/facts.json`, a new `.md`,

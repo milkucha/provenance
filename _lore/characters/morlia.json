@@ -1,6 +1,7 @@
 {
   "name": "Morlia",
-  "city": "Görff",
+  "origin": "",
+  "location": "Görff",
   "backstory": "Town Market Keeper.",
   "knowledge": {
     "education": {

@@ -71,7 +71,7 @@ there into motion.
   whatever file format it happens to arrive in (PNG, JPG, PDF, XLSX, ...). Drop the file in
   `_lore/material/`, then run `/integrate` to analyse it into `context.md`/`encodings.json`/
   `unknowns.md`. Not a one-time dump — the well keeps getting fed for as long as the project runs.
-- **Character** (`/character`) — hand-author a person into the world directly: name, city, backstory,
+- **Character** (`/character`) — hand-author a person into the world directly: name, origin, backstory,
   and a knowledge sample. Criterion and lifespan are then *derived* from those choices, not chosen
   separately — a consequence of what's already been authored, never invented on their own.
 - **Tell** (`/tell`) — knowledge with no material trace behind it: myth, legend, oral story, told
@@ -160,8 +160,8 @@ the simulation/evaluation tooling described next.
   lore. Every skill answers to one shared rule, stated once in `.claude/PRINCIPLES.md` rather than
   repeated per skill: nothing gets decided silently.
   - **`/character`** (`character/SKILL.md`) — creates or maintains a character's file in
-    `_lore/characters/<key>.json` on its own, without running a conversation: `name`, `city`,
-    `backstory`, knowledge sample, **criterion**, and **lifespan**. It owns the criterion model —
+    `_lore/characters/<key>.json` on its own, without running a conversation: `name`, `origin`,
+    `location`, `backstory`, knowledge sample, **criterion**, and **lifespan**. It owns the criterion model —
     Step 4 derives one, Step 5 rolls a lifespan, and Step 6 is the canonical reference for how a
     criterion changes. `/enact` points back at those rather than restating them. Purely lore-side: a
     character can be fully fleshed out here with no embodiment at all, and this skill never touches
@@ -251,7 +251,8 @@ the simulation/evaluation tooling described next.
     cross-cutting, not specific to any one source folder.
   - `_lore/characters/` — one JSON file per character (`<key>.json`, key = lowercased, slugified
     name), the complete lore record for who they are: `name` (canonical — the one place a character's
-    name is decided), `city`, `backstory`, `knowledge` (`education`/`experience`), `criterion`, and
+    name is decided), `origin` (fixed birthplace), `location` (current whereabouts), `backstory`,
+    `knowledge` (`education`/`experience`), `criterion`, and
     `life` (`lived`/`deceased`). Has no embodiment-facing field at all — a character can live here
     fully developed with no in-game body. `/character` and `/enact` are the only writers.
     `_lore/characters/lifespans.json` sits beside them, holding each character's secret total span
@@ -395,7 +396,7 @@ Provenance/
 │   ├── material/                      (excavated primary sources — read-only)
 │   │   └── _context.md                (per-source transcription, only this folder's concern)
 │   ├── characters/                    (one file per character — the complete lore record)
-│   │   ├── <key>.json                 (name, city, backstory, knowledge, criterion, life)
+│   │   ├── <key>.json                 (name, origin, location, backstory, knowledge, criterion, life)
 │   │   ├── _template.json             (blank shape for a new character)
 │   │   ├── lifespans.json             (SECRET — each character's total span; /enact never opens
 │   │   │                               this file, ask scripts/lore/horizon.py instead)

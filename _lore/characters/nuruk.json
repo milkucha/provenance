@@ -1,6 +1,7 @@
 {
   "name": "Nuruk",
-  "city": "Görff, Khol Moshin",
+  "origin": "",
+  "location": "Görff, Khol Moshin",
   "backstory": "Poet.",
   "knowledge": {
     "education": {

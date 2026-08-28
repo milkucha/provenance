@@ -1,6 +1,7 @@
 {
   "name": "Zarkapulos",
-  "city": "Terfila",
+  "origin": "",
+  "location": "Terfila",
   "backstory": "Peregrin.",
   "knowledge": {
     "education": {

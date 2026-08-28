@@ -1,6 +1,7 @@
 {
   "name": "Auroben",
-  "city": "Terfila",
+  "origin": "",
+  "location": "Terfila",
   "backstory": "Maintains Terfila's city gardens, plot by plot, including the one stretch everyone else has quietly given up on. Also keeps the temple's small garden watered and weeded, since nobody else on staff there will.",
   "knowledge": {
     "education": {

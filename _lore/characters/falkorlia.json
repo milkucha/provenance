@@ -1,6 +1,7 @@
 {
   "name": "Falkorlia",
-  "city": "Görff",
+  "origin": "",
+  "location": "Görff",
   "backstory": "Pedestrian.",
   "knowledge": {
     "education": {

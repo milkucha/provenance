@@ -1,6 +1,7 @@
 {
   "name": "Nawom",
-  "city": "Nvhi",
+  "origin": "",
+  "location": "Nvhi",
   "backstory": "From Terfila; declines to explain how his family came to be there (\"that's a longer story than it sounds\"). Traveling in search of the road to Puerto Tortuga.",
   "knowledge": {
     "education": {

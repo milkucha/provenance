@@ -1,6 +1,7 @@
 {
   "name": "Kristok Jakur",
-  "city": "Görff",
+  "origin": "",
+  "location": "Görff",
   "backstory": "Blacksmith.",
   "knowledge": {
     "education": {

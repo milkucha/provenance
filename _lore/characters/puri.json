@@ -1,6 +1,7 @@
 {
   "name": "Puri",
-  "city": "Terfila",
+  "origin": "",
+  "location": "Terfila",
   "backstory": "Kid.",
   "knowledge": {
     "education": {

@@ -1,6 +1,7 @@
 {
   "name": "Trifolis",
-  "city": "Puente Continental",
+  "origin": "",
+  "location": "Puente Continental",
   "backstory": "Archiecht.",
   "knowledge": {
     "education": {

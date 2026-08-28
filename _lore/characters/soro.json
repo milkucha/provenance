@@ -1,6 +1,7 @@
 {
   "name": "Soro",
-  "city": "Puente Continental, Khol Moshin",
+  "origin": "",
+  "location": "Puente Continental, Khol Moshin",
   "backstory": "Trader.",
   "knowledge": {
     "education": {

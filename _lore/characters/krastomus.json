@@ -1,6 +1,7 @@
 {
   "name": "Krastomus",
-  "city": "Terfila",
+  "origin": "",
+  "location": "Terfila",
   "backstory": "The banker in Terfila. Reviews loan applications personally rather than leave them to the standing rules, and keeps a running case for every stallholder those rules would otherwise turn away.",
   "knowledge": {
     "education": {

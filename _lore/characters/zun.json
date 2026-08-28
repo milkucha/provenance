@@ -1,6 +1,7 @@
 {
   "name": "Zun",
-  "city": "Görff",
+  "origin": "",
+  "location": "Görff",
   "backstory": "",
   "knowledge": {
     "education": {

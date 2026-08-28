@@ -1,6 +1,7 @@
 {
   "name": "Saski",
-  "city": "Görff",
+  "origin": "",
+  "location": "Görff",
   "backstory": "Painter.",
   "knowledge": {
     "education": {

@@ -1,6 +1,7 @@
 {
   "name": "Terrolis",
-  "city": "Terfila, Dragon City",
+  "origin": "",
+  "location": "Terfila, Dragon City",
   "backstory": "Pilot. Flies the Terfila-Dragon route.",
   "knowledge": {
     "education": {

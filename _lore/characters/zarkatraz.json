@@ -1,6 +1,7 @@
 {
   "name": "Zarkatraz",
-  "city": "Puente Continental",
+  "origin": "",
+  "location": "Puente Continental",
   "backstory": "A trader originally from Balahm, the desert ancient temple city where priests and traders make their dwelling. Usually found in Puente Continental, where he stops to let his camel rest on the way back and forth from Salthos Cruzados, the main city he conducts his trade with. Deals in precious stones - lapis lazuli, emerald, diamond, red stone.",
   "knowledge": {
     "education": {

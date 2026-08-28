@@ -1,6 +1,7 @@
 {
   "name": "Gondarfolas",
-  "city": "Görff, Terfila",
+  "origin": "",
+  "location": "Görff, Terfila",
   "backstory": "A seafarer normally based in Görff, travelling all around the continent. Owns a small ship he uses to take travellers from coast to coast. An avid reader of history, well versed in the history of Milkantis. Has a knack for exaggerating some things. Per the Luminacion Register, also based in Terfila on the return leg of the ferry run (\"Sailing to Gorff\") - the same sailor working both directions, per the register's own matched pair.",
   "knowledge": {
     "education": {

@@ -1,6 +1,7 @@
 {
   "name": "Kaukalus",
-  "city": "Görff (Volcano)",
+  "origin": "",
+  "location": "Görff (Volcano)",
   "backstory": "Worker from Volcano.",
   "knowledge": {
     "education": {

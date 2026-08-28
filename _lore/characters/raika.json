@@ -1,6 +1,7 @@
 {
   "name": "Raika",
-  "city": "Görff, Khol Moshin",
+  "origin": "",
+  "location": "Görff, Khol Moshin",
   "backstory": "Fish Shop Keeper.",
   "knowledge": {
     "education": {

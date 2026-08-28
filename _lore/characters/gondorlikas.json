@@ -1,6 +1,7 @@
 {
   "name": "Gondorlikas",
-  "city": "Lundria, Catraniz, Khol Moshin",
+  "origin": "",
+  "location": "Lundria, Catraniz, Khol Moshin",
   "backstory": "Flies between Lundria and Catraniz.",
   "knowledge": {
     "education": {

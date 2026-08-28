@@ -1,6 +1,7 @@
 {
   "name": "Peregrin",
-  "city": "Terfila",
+  "origin": "",
+  "location": "Terfila",
   "backstory": "Peregrins.",
   "knowledge": {
     "education": {

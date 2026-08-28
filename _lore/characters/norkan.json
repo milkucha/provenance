@@ -1,6 +1,7 @@
 {
   "name": "NORKAN",
-  "city": "Görff",
+  "origin": "",
+  "location": "Görff",
   "backstory": "Worker from Volcano.",
   "knowledge": {
     "education": {

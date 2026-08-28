@@ -1,6 +1,7 @@
 {
   "name": "Galandis",
-  "city": "Nvhi, Khan Ice",
+  "origin": "",
+  "location": "Nvhi, Khan Ice",
   "backstory": "Flies between Nvhi and Khan Ice.",
   "knowledge": {
     "education": {

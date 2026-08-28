@@ -1,6 +1,7 @@
 {
   "name": "Farlis",
-  "city": "Terfila, Görff, Khol Moshin, Feria del Milenio",
+  "origin": "",
+  "location": "Terfila, Görff, Khol Moshin, Feria del Milenio",
   "backstory": "Member of the Collective. Travels the Khol Moshin-Görff route on horseback. Originally from Terfila, a relative of the town's aristocratic family, which has had a stable financial situation for centuries. Moved to Görff years ago to join the revitalization of the abandoned citadel — he likes the romanticism (and the humor) of turning what was once a tyrant's castle, way back in time, into the opposite of that, though beyond the joke he genuinely believes it just makes more sense to share things; not that deep, plain common sense. Has been waiting years for the Feria del Milenio, ever since first hearing about it from the Peregrins, and is having a field day going pavilion to pavilion like a kid in a candy shop now that the thousand-year mark has finally arrived. Likes magnificent tales.",
   "knowledge": {
     "education": {

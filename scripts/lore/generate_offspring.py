@@ -17,8 +17,8 @@ What's inherited and how:
   placeholder no later pass could retroactively fix. So this derivation is mechanical instead:
   `compose_backstory()` first seeds a real (if plain) backstory from one of the child's own
   newly-drawn knowledge items, which guarantees that item collides with it; `find_collision_items()`
-  then runs the actual Step 4a scan (word-overlap against backstory OR city, deliberately blind - no
-  preference for a city match over a backstory-only one) across the child's FULL knowledge sample,
+  then runs the actual Step 4a scan (word-overlap against backstory OR location, deliberately blind -
+  no preference for a location match over a backstory-only one) across the child's FULL knowledge sample,
   `derive_criterion_mechanical()` picks a random item from whatever collides as the anchor and
   composes `wasted_life`/`standard` from a template keyed to it, and `trusts`/`distrusts` come from
   `anchor_epistemology.py`'s real provenance signal (imported directly, not shelled out to) exactly
@@ -65,7 +65,12 @@ What's inherited and how:
   time this character is actually a scene's home_frame - the fallback path (as of 2026-08-16, a
   hand-authored character gets `arc` at creation instead; a newborn still can't, since nothing is
   present to compose one at the moment of birth - see TODO.md's "arc at birth" open question).
-- `city` - copied whole from a coin-flipped parent.
+- `origin`/`location` - **schema split 2026-08-28** (character-level `city` became two fields:
+  `origin`, fixed birthplace, and `location`, current whereabouts). A newborn's `location` is copied
+  whole from a coin-flipped parent (same discipline as before), and `origin` is set to that same
+  value - a child is born wherever that parent currently is, so the two start identical; `origin`
+  then stays fixed for life while `location` can move in later scenes, same as a hand-authored
+  character.
 - `backstory` - **templated, not just "Child of X and Y." (2026-08-17)** - see `compose_backstory()`
   and the module-level note above `BACKSTORY_TEMPLATES`. Still mechanical, still cruder than a human/
   `/character` session would write, and still open for later enrichment - but now carries a real
@@ -441,8 +446,8 @@ def draw_inherited_experience(parent_a_exp: list, parent_b_exp: list) -> list:
 # knowledge items into a template - this guarantees that item collides with the backstory by
 # construction, giving Step 4a's collision-finding something real to work with instead of the empty
 # "Child of X and Y." that made every child fall through to origin: "uncollided". Then run the actual
-# Step 4a scan (word-overlap against backstory OR city, deliberately blind - no preference for a
-# city-touching item over a backstory-only one, same discipline the hand-authored flow uses) across
+# Step 4a scan (word-overlap against backstory OR location, deliberately blind - no preference for a
+# location-touching item over a backstory-only one, same discipline the hand-authored flow uses) across
 # the child's FULL knowledge sample, pick a random item from whatever collides, and compose
 # wasted_life/standard from a template keyed to that anchor's own text. trusts/distrusts still come
 # from anchor_epistemology.py's real signal, exactly as Step 4d prescribes - that part was already
@@ -450,10 +455,10 @@ def draw_inherited_experience(parent_a_exp: list, parent_b_exp: list) -> list:
 # --------------------------------------------------------------------------------------------
 
 BACKSTORY_TEMPLATES = [
-    "Child of {a} and {b}; grew up around {trade} in {city}, and knows something of {item}.",
-    "Child of {a} and {b} in {city}; raised alongside {trade}, having heard about {item}.",
-    "Child of {a} and {b}; raised in {city} on {trade}, and carries some knowledge of {item}.",
-    "Child of {a} and {b}, in {city}; grew up around {trade}, and picked up a little of {item} along the way.",
+    "Child of {a} and {b}; grew up around {trade} in {location}, and knows something of {item}.",
+    "Child of {a} and {b} in {location}; raised alongside {trade}, having heard about {item}.",
+    "Child of {a} and {b}; raised in {location} on {trade}, and carries some knowledge of {item}.",
+    "Child of {a} and {b}, in {location}; grew up around {trade}, and picked up a little of {item} along the way.",
 ]
 
 # (wasted_life, standard) template pairs, each filled with the anchor's own (humanized) text.
@@ -510,30 +515,31 @@ def humanize_tag(tag: str) -> str:
     return rest
 
 
-def find_collision_items(items: list, backstory: str, city: str, pool_text: dict) -> list:
+def find_collision_items(items: list, backstory: str, location: str, pool_text: dict) -> list:
     """/character Step 4a, mechanically: every item (by tag) whose own text touches the backstory OR
-    the city - deliberately OR, not AND, and deliberately blind (no preference for a city-touching
-    item over a backstory-only one) - see the module-level note above for why. `pool_text` maps a
-    tag to its own real description where one exists (general_knowledge_pool()'s own lookup); a tag
-    with no entry there falls back to matching against its own bare 'category: id' string, same
-    fallback simulate_pass_lib.py's peer_knowledge_items() already uses for the arc-alignment gate."""
-    target_words = extract_keywords(backstory) | extract_keywords(city)
+    the location - deliberately OR, not AND, and deliberately blind (no preference for a
+    location-touching item over a backstory-only one) - see the module-level note above for why.
+    `pool_text` maps a tag to its own real description where one exists (general_knowledge_pool()'s
+    own lookup); a tag with no entry there falls back to matching against its own bare 'category: id'
+    string, same fallback simulate_pass_lib.py's peer_knowledge_items() already uses for the
+    arc-alignment gate."""
+    target_words = extract_keywords(backstory) | extract_keywords(location)
     if not target_words:
         return []
     return [tag for tag in items if extract_keywords(pool_text.get(tag, tag)) & target_words]
 
 
-def compose_backstory(name_a: str, name_b: str, city: str, routines: list, seed_text: str | None) -> str:
+def compose_backstory(name_a: str, name_b: str, location: str, routines: list, seed_text: str | None) -> str:
     trade = truncate_fragment(routines[0]["routine_actions"]) if routines else "no particular trade"
     if not seed_text:
         return f"Child of {name_a} and {name_b}."
     template = random.choice(BACKSTORY_TEMPLATES)
-    return template.format(a=name_a, b=name_b, city=city or "an unrecorded city", trade=trade, item=seed_text)
+    return template.format(a=name_a, b=name_b, location=location or "an unrecorded place", trade=trade, item=seed_text)
 
 
-def derive_criterion_mechanical(items: list, backstory: str, city: str, pool_text: dict, world_enc: dict) -> dict:
+def derive_criterion_mechanical(items: list, backstory: str, location: str, pool_text: dict, world_enc: dict) -> dict:
     base = {"tempered": 0, "cost_ledger": [], "history": []}
-    collision_pool = find_collision_items(items, backstory, city, pool_text)
+    collision_pool = find_collision_items(items, backstory, location, pool_text)
     if not collision_pool:
         return {**base, "standard": "", "wasted_life": "", "anchor": "", "origin": "uncollided", "trusts": "", "distrusts": ""}
 
@@ -576,7 +582,8 @@ def main() -> None:
         n += 1
 
     name_a, name_b = parent_a.get("name", a_key), parent_b.get("name", b_key)
-    city = coin(parent_a.get("city", ""), parent_b.get("city", ""))
+    location = coin(parent_a.get("location", ""), parent_b.get("location", ""))
+    origin = location  # born wherever that coin-flipped parent currently is; fixed from here on
 
     # Internal-only coin-flip criterion, used SOLELY to skew the general-knowledge draw below toward
     # roughly what this child would have leaned toward if criteria were still inherited - never
@@ -622,15 +629,16 @@ def main() -> None:
     seed_pool = general_items or inherited_items
     seed_tag = random.choice(seed_pool) if seed_pool else None
     seed_text = truncate_fragment(humanize_tag(seed_tag)) if seed_tag else None
-    backstory = compose_backstory(name_a, name_b, city, routines, seed_text)
+    backstory = compose_backstory(name_a, name_b, location, routines, seed_text)
 
-    criterion = derive_criterion_mechanical(items, backstory, city, pool_text, world_enc)
+    criterion = derive_criterion_mechanical(items, backstory, location, pool_text, world_enc)
 
     span = random.randint(SPAN_MIN, SPAN_MAX)
 
     child = {
         "name": args.name,
-        "city": city,
+        "origin": origin,
+        "location": location,
         "backstory": backstory,
         "knowledge": {
             "education": {

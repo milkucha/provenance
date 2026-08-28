@@ -71,9 +71,11 @@ Ask, as plain conversation (not multiple-choice):
 1. **Name.**
 2. **Backstory** — optional. A user-given personal fact (like "family comes from somewhere else"),
    not a lore fact. Hold it as true for this character regardless of what their sample contains.
-3. **Location** — optional. Where this character is based/found — fills the `city` field in their
-   character file later. Not necessarily their backstory's place of origin (Sonoros's backstory has
-   him "out of Görff way," but his registered `city` is Balehm, where the scene actually put him).
+3. **Location** — optional. Where this character is based/found — fills the `location` field in their
+   character file later (their current whereabouts; distinct from `origin`, the fixed birthplace
+   `/character` sets at creation and this skill never touches). Not necessarily their backstory's
+   stated origin (Sonoros's backstory has him "out of Görff way," but his registered `location` is
+   Balehm, where the scene actually put him).
 4. **Knowledge corpus** — how much of the lore they know, and how it's chosen. **First, check
    `_lore/characters/<slug>.json` for an existing file under this character's key.** If one exists with
    a `knowledge.education` already populated (`percent` not `null`), reuse it as-is — skip the
@@ -114,11 +116,12 @@ same first-time-only discipline as `education`:
 
 - **Criterion.** If `criterion.standard` is blank and the character has both a backstory and a drawn
   sample, derive it now per `/character` **Step 4** (find the collision between the sample and the
-  backstory/city, pick a refutable anchor, derive negatively from "what would this character consider
-  a wasted life?", then derive `trusts`/`distrusts` from the anchor's category per Step 4d). If it's
-  already set, **use it as-is** — never re-derive on a later run. If nothing collides, leave it blank
-  with `"origin": "uncollided"` and log it in `TODO.md`; do not invent one and do not fall back to a
-  city default (`/character` Step 4e).
+  backstory/origin/location, pick a refutable anchor, derive negatively from "what would this
+  character consider a wasted life?", then derive `trusts`/`distrusts` from the anchor's category per
+  Step 4d). If it's already set, **use it as-is** — never re-derive on a later run. If nothing
+  collides, leave it blank with `"origin": "uncollided"` (that's `criterion.origin`, unrelated to the
+  character-level `origin` field) and log it in `TODO.md`; do not invent one and do not fall back to a
+  place default (`/character` Step 4e).
 - **Lifespan.** If the character has no entry in `_lore/characters/lifespans.json`, roll it now per
   `/character` **Step 5**. If they do, never reroll.
 - **Horizon.** Run `py scripts/lore/horizon.py <npc_key>` for each character before the scene starts
@@ -617,7 +620,10 @@ For every character enacted this run, add/update their file at `_lore/characters
 here, since a fresh JSON write could clobber what those calls just did. What's left for this step:
 
 - `name` — set once, for a first-time character. Never rewritten on a returning character.
-- `city` — the location from Step 1/2, or `""` if none was given.
+- `location` — the place from Step 1/2, or `""` if none was given. This always updates to wherever
+  the scene actually put the character, same as `city` used to — it's the *current* half of the
+  origin/location split (`/character` owns `origin`, the fixed birthplace; this skill only ever
+  touches `location`).
 - `backstory` — the backstory from Step 1/2, or `""` if none was given. Experience-knowledge,
   conceptually (see the intro), but its own top-level field. For a returning character, only append
   or amend this if the user gives *new* backstory in this run (as with Döran's added hologram/pedestal

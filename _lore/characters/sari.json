@@ -1,6 +1,7 @@
 {
   "name": "Sari",
-  "city": "Puente Continental",
+  "origin": "",
+  "location": "Puente Continental",
   "backstory": "Trader.",
   "knowledge": {
     "education": {

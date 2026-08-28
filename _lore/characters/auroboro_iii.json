@@ -1,6 +1,7 @@
 {
   "name": "Auroboro III",
-  "city": "Espiral de las Eras, Feria del Milenio",
+  "origin": "",
+  "location": "Espiral de las Eras, Feria del Milenio",
   "backstory": "A descendant of officers from the Guerras de Görff. Lonely, proud of his ancestors' military glory, never got over it. Keeps a replica of his old manor's living room in the alcove of that era within the Espiral de las Eras, receiving visitors to tell the story of the Guerras. Wine in hand, sweet deep down but rough around the edges, obnoxious about his topic. No script — says whatever he wants.",
   "knowledge": {
     "education": {

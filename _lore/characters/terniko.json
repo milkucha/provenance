@@ -1,6 +1,7 @@
 {
   "name": "Terniko",
-  "city": "Terfila",
+  "origin": "",
+  "location": "Terfila",
   "backstory": "Works the municipal desk in Terfila - permits, disputes, the paperwork that keeps the city a city. Still digging through the oldest storage ledgers on his own time.",
   "knowledge": {
     "education": {

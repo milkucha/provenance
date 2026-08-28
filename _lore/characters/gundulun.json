@@ -1,6 +1,7 @@
 {
   "name": "Gundulun",
-  "city": "Görff",
+  "origin": "",
+  "location": "Görff",
   "backstory": "Pilot.",
   "knowledge": {
     "education": {

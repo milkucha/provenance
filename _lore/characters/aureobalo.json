@@ -1,6 +1,7 @@
 {
   "name": "Aureobalo",
-  "city": "Terfila, Khol Moshin",
+  "origin": "",
+  "location": "Terfila, Khol Moshin",
   "backstory": "Banker en route. Travels the Terfila-Khol Moshin route by car. It's not known where he got his fortune - he arrived one day from afar with it already in hand. He was generous with it, so people didn't press him on where it came from. His name resembles those of people who fought in the Guerras de Görff, on the losing side, though he isn't related to them; his parents were great admirers of the loyalists, an association he was never comfortable inheriting.",
   "knowledge": {
     "education": {

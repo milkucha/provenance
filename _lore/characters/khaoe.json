@@ -1,6 +1,7 @@
 {
   "name": "Khaoe",
-  "city": "Görff, Feria del Milenio",
+  "origin": "",
+  "location": "Görff, Feria del Milenio",
   "backstory": "Originally from Görff, born and raised there, though her family comes from Khol Moshin, and before that from Khan Icé. Belongs to the Collective that runs Görff in the present — a horizontally-organized structure made up of the diverse peoples who came to the abandoned citadel and farms and turned it into an incipient revolutionary community built on agriculture, a bit of technology and magic, and above all an entrenched idea of pluriversality. Regularly meets with Farlis and Khaasan, her comrades and good friends. Just back from a trip to the temple in Lundria, and stopping at the Feria del Milenio on her way home — nobody misses the Feria, it only happens once in a lifetime, at least for most.",
   "knowledge": {
     "education": {

@@ -1,6 +1,7 @@
 {
   "name": "Forlisen",
-  "city": "Terfila",
+  "origin": "",
+  "location": "Terfila",
   "backstory": "The other shopkeeper under the Dome Market's roof - oils, wax, and dyed cloth, undercutting the imported suppliers whenever she can source closer. Banks her earnings in person every week, on principle, rather than trust a runner with them.",
   "knowledge": {
     "education": {

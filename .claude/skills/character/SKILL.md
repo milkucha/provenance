@@ -29,16 +29,21 @@ this check entirely when the file already exists — that's Step 2a, not a new n
 
 ## Step 2a — Existing entry
 
-If the file exists, show the user its current non-blank fields (`name`, `city`, `backstory`,
-`knowledge.education` summary if populated, `knowledge.experience` count, `criterion.standard`,
-`life.lived`, whether `routines`/`arc` are set, and `scripts/lore/horizon.py`'s band) as context,
-then ask, as plain conversation, what needs to be updated.
-Don't presuppose which fields — the user might want to amend the backstory, add/change the city, draw
-or redo their knowledge, or just fix a typo.
+If the file exists, show the user its current non-blank fields (`name`, `origin`, `location`,
+`backstory`, `knowledge.education` summary if populated, `knowledge.experience` count,
+`criterion.standard`, `life.lived`, whether `routines`/`arc` are set, and `scripts/lore/horizon.py`'s
+band) as context, then ask, as plain conversation, what needs to be updated.
+Don't presuppose which fields — the user might want to amend the backstory, add/change the
+origin/location, draw or redo their knowledge, or just fix a typo.
 
 - **Backstory** — if the user is adding to an existing non-empty backstory, append/amend rather than
   replace, same as `/enact` Step 6. If they're giving it fresh, just set it.
-- **City** — set directly from what the user says.
+- **Origin** — where this character was born/from. Fixed once set, same discipline as
+  `knowledge.education` — a birthplace doesn't change. The one exception is a corrective: if the user
+  says it was simply wrong, fix it in place (same exception `criterion` gets below).
+- **Location** — where this character currently is. Unlike `origin`, set freely from whatever the
+  user says, any time — this is expected to move as the character's story does (see `/enact` Step 1,
+  which updates it whenever a scene actually places the character somewhere).
 - **Knowledge** — if `knowledge.education.percent` is already set (non-null), never redraw it; that
   field is fixed for life. Only offer to draw it if it's still the blank `_template` shape
   (`percent: null`) — follow the sampling flow in Step 3 below. `knowledge.experience` only grows
@@ -50,11 +55,13 @@ or redo their knowledge, or just fix a typo.
   fix it in place and note the correction in `criterion.history` with `"cause": "author correction"`.
 - **Lifespan** — if the character has no entry in `_lore/characters/lifespans.json`, roll it (Step 5).
   If they do, never reroll.
-- **Routines and arc** — if either is missing, offer to author them now (Step 8) — this is what
-  makes the character eligible to face another character in `/enact` or take part in `/simulate`.
-  This is the system's answer to an incomplete character being flagged elsewhere: point back here
-  rather than inventing a separate backfill mechanism. Once authored, never redrawn/re-derived in
-  this step; only `/enact`'s own mechanical block advances `arc` further from here.
+- **Routines and arc** — required on every character going forward (Step 2b item 4), so a character
+  reaching this step still missing either is a pre-2026-08-28 character, or one that arrived some
+  other way (`/enact` directly, or a `generate_offspring.py` newborn). Offer to author them now (Step
+  8) — this is what makes the character eligible to face another character in `/enact` or take part
+  in `/simulate`. This is the system's backfill path for an incomplete character, not a separate
+  mechanism. Once authored, never redrawn/re-derived in this step; only `/enact`'s own mechanical
+  block advances `arc` further from here.
 
 ## Step 2b — New entry
 
@@ -62,10 +69,16 @@ If no file exists for this slug, this is a brand-new character — confirm the S
 came back `AVAILABLE` before going any further. Ask, as plain conversation (not multiple-choice):
 
 1. **Backstory** — optional.
-2. **Location** — optional, fills `city`.
+2. **Origin** — optional, fills `origin`. Where this character was born/from — this is the one
+   question this skill asks at creation time; `location` (where they currently are) isn't asked here
+   and defaults blank, since it's ordinarily set later by whatever scene first actually places the
+   character somewhere (see `/enact` Step 1). If the user volunteers a current location too, set both.
 3. **Knowledge** — how much of the lore they know. Follow the sampling flow in Step 3.
+4. **Routines and arc — required (2026-08-28), not optional.** Follow Step 8 below. When asking the
+   user to pick a context, list every context in `_lore/contexts.json` by name with a short (2-3 word)
+   gloss of its texture — not the full `texture` paragraph — so the question stays scannable.
 
-Then run Step 4 (criterion) and Step 5 (lifespan) before writing the entry.
+Then run Step 4 (criterion), Step 5 (lifespan), and Step 8 (routines/arc) before writing the entry.
 
 ## Step 3 — Knowledge sampling (shared)
 
@@ -101,9 +114,10 @@ Without both there's nothing to collide, so leave `criterion` blank and say so.
 
 ### 4a — Find the collision
 
-Scan `knowledge.education.items` for entries that touch the `backstory` and `city` — same place, same
-trade, same family, same route, same wound. Those two fields are the collision surface; an item that
-touches neither is just something the character knows, and can't ground a standard for *their* life.
+Scan `knowledge.education.items` for entries that touch the `backstory`, `origin`, or `location` —
+same place, same trade, same family, same route, same wound. Those three fields are the collision
+surface; an item that touches none of them is just something the character knows, and can't ground a
+standard for *their* life.
 
 **Do not derive from the whole sample.** "Given these forty facts, what does she live for" produces a
 balanced synthesis, which is mush. The derivation has to anchor to one thing.
@@ -125,7 +139,7 @@ against it by reference.
 
 ### 4c — Derive negatively
 
-Now ask, with exactly three inputs — the anchor, the backstory, the city:
+Now ask, with exactly four inputs — the anchor, the backstory, the origin, the location:
 
 > **What would this character consider a wasted life?**
 
@@ -212,8 +226,8 @@ Three hard limits:
 
 ### 4e — When nothing collides
 
-If no item in the sample touches the backstory or city, **do not invent a criterion and do not fall
-back to a city-level or trade-level default** — inherited criteria are a real part of the model but
+If no item in the sample touches the backstory, origin, or location, **do not invent a criterion and
+do not fall back to a place-level or trade-level default** — inherited criteria are a real part of the model but
 are deliberately not built yet (see `TODO.md`). Leave `criterion` blank with
 `"origin": "uncollided"`, and log the character in `TODO.md` as awaiting one. Same rule as
 `.claude/PRINCIPLES.md`: nothing gets decided silently.
@@ -347,7 +361,9 @@ Update (or create) `_lore/characters/<slug>.json`:
   later embodied in-game (`/embody` or `/spawn`), it gets copied into
   `_npcs/npcs/registry.json`'s `display_name`/`taterzen_name` at that point, not authored there
   independently.
-- `city` — from Step 2, if given.
+- `origin` — from Step 2, if given. Where they were born/from; fixed once set.
+- `location` — where they currently are, if given (Step 2 or a later Step 2a update). Otherwise left
+  blank until a scene (`/enact` Step 1) or another `/character` pass sets it.
 - `backstory` — from Step 2, appended/amended per the rule above.
 - `knowledge.education` — `{percent, mode, topic, items}` exactly as drawn in Step 3, only if this was
   a fresh draw. Otherwise leave untouched.
@@ -365,28 +381,34 @@ This skill never touches `_npcs/npcs/registry.json` — `skin`, `taterzen_uuid`,
 
 Validate the file still parses as JSON before finishing.
 
-## Step 8 — Routines and arc (required for `/enact`/`/simulate` eligibility)
+## Step 8 — Routines and arc
 
-Relevant the moment this character might ever face another character (not the player) in `/enact`,
-or take part in `/simulate` — both now require `routines`+`arc` on **every** NPC participant,
-unconditionally (`.claude/skills/enact/SKILL.md`'s mechanical block). A character can still exist
-perfectly well without this step — a pure lore-only figure never meant to be enacted against
-another NPC — but stays ineligible for either until it's done. Author both `routines` and `arc`
-together, in the same pass — see `arc` below for why this is no longer split across two different
-moments/skills.
+**Required at creation (2026-08-28) — this is Step 2b's item 4, not a deferred/optional step.** Both
+`/enact` and `/simulate` require `routines`+`arc` on **every** NPC participant unconditionally
+(`.claude/skills/enact/SKILL.md`'s mechanical block), so authoring them here, in the same pass as
+backstory/origin/knowledge, means a character is never left half-finished — there's no longer a
+"pure lore-only figure not meant to be enacted" carve-out; every context in `_lore/contexts.json`
+exists precisely so a routine is always quick to author. Author `routines` and `arc` together, in the
+same pass — see `arc` below for why this is no longer split across two different moments/skills.
 
-**Completing this later, for an existing character:** if `/character` is invoked again on a
-character who already has a file but is missing `routines`/`arc`, Step 2a's field list already
-covers offering to run this step now, the same as any other still-blank field — this is the
-system's flag-and-point solution for an incomplete character, not a separate mechanism.
+**Completing this later, for a character predating this requirement (or one that arrived some other
+way — `/enact` directly, or a `generate_offspring.py` newborn, which never assigns an arc):** if
+`/character` is invoked again on a character who already has a file but is missing `routines`/`arc`,
+Step 2a's field list already covers offering to run this step now, the same as any other still-blank
+field — this is the system's flag-and-point solution for an incomplete character, not a separate
+mechanism.
 
 - `routines` — a small (2-4), **hand-authored** array of `{location, context, weight,
   routine_actions}` (renamed 2026-08-16 from `archetype`/`specialization` — those names read
   backwards: `context` is the shared place-type the routine happens in, `routine_actions` is what
   *this* character actually does there). `context` must be a key already present in
-  `_lore/contexts.json` (market, workshop, archive, waystation as of this writing — add a new one
-  there by hand if none fits, rather than stretching an existing context to cover a place-type it
-  doesn't describe). **`routine_actions` is a short progression of actions this specific character
+  `_lore/contexts.json` — read the file fresh each time rather than trusting a remembered list, since
+  it grows by hand; as of 2026-08-28 it ships ten starter contexts (market, workshop, archive,
+  waystation, port, temple, gardens, municipality, bank, factory, tavern). Add a new one there by hand if none
+  fits, rather than stretching an existing context to cover a place-type it doesn't describe. When
+  asking the user to pick, list every context by name with a short (2-3 word) gloss of its `texture`
+  field, not the field verbatim — e.g. "workshop — hands-on making, craft" — so the question stays
+  scannable rather than reciting nine paragraphs. **`routine_actions` is a short progression of actions this specific character
   actually does within that context — not a trait or description, and not a restatement of the
   context's own generic texture** (corrected 2026-08-27 — the field was drifting toward
   identity-labels like "blacksmith, values good craft," which describes a person rather than what

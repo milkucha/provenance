@@ -1,6 +1,7 @@
 {
   "name": "Gizen",
-  "city": "Görff, Catraniz",
+  "origin": "",
+  "location": "Görff, Catraniz",
   "backstory": "Flies between Görff and Catraniz.",
   "knowledge": {
     "education": {

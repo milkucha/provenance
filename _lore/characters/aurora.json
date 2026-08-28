@@ -1,6 +1,7 @@
 {
   "name": "Aurora",
-  "city": "Terfila",
+  "origin": "",
+  "location": "Terfila",
   "backstory": "Runs the temple in Terfila - day-to-day rites and upkeep, and the peregrins who pass through on their way to every other temple in the world. Writes down what each one actually says about what they've found, in their own words.",
   "knowledge": {
     "education": {

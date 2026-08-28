@@ -1,6 +1,7 @@
 {
   "name": "Nuvilo",
-  "city": "Feria del Milenio",
+  "origin": "",
+  "location": "Feria del Milenio",
   "backstory": "A distant descendant of Navalius, the founder of Nvhi. Like many in his line, he has chosen to follow the path of knowledge, seeking to bring new light into the world through discovery. He has traveled to the Feria del Milenio to celebrate the 1000 years of Milkantis, hoping to find inspiration for his work among its exhibits - a homage to Milkantis's cultures and building styles, its landscapes, its artifacts (redstone contraptions, datapacks, mods), and its historical eras. Old childhood friend of Nerkeli, a pilot he ran into again at the fair. Despite the family's claimed tie to Nvhi's founding, he readily admits he knows little of the place's actual history - the family kept the name, not the history.",
   "knowledge": {
     "education": {

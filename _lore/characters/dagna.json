@@ -1,6 +1,7 @@
 {
   "name": "Dägna",
-  "city": "Görff, Khol Moshin",
+  "origin": "",
+  "location": "Görff, Khol Moshin",
   "backstory": "Barkeeper.",
   "knowledge": {
     "education": {

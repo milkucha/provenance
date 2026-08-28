@@ -1,6 +1,7 @@
 {
   "name": "Gok",
-  "city": "Khan Ice, Catraniz",
+  "origin": "",
+  "location": "Khan Ice, Catraniz",
   "backstory": "Works at Hotel Kholi, the main and oldest hotel in Khan Ice — a staple of Khanician architecture and flagship of Milkaan's hospitality. Built during the Grandes Juegos (Era del Confinamiento) and hosted all athletes and representatives from the world corners. Now stationed at the Feria del Milenio, in charge of one alcove of the Primer Pabellón's Espiral de las Eras: the station for Era del Confinamiento. Greets visitors there and tells them about the era.",
   "knowledge": {
     "education": {

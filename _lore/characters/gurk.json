@@ -1,6 +1,7 @@
 {
   "name": "Gurk",
-  "city": "Nueva Gondola, Görff",
+  "origin": "",
+  "location": "Nueva Gondola, Görff",
   "backstory": "Travels between Nueva Gondola and Görff.",
   "knowledge": {
     "education": {

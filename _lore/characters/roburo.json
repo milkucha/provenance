@@ -1,6 +1,7 @@
 {
   "name": "Roburo",
-  "city": "Görff",
+  "origin": "",
+  "location": "Görff",
   "backstory": "Fisherman.",
   "knowledge": {
     "education": {

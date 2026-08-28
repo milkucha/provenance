@@ -1,6 +1,7 @@
 {
   "name": "Muli",
-  "city": "Terfila",
+  "origin": "",
+  "location": "Terfila",
   "backstory": "Originally from Görff, now works the municipal desk in Terfila alongside Terniko. Files and corrects the city's civic records, most patiently the ones that still describe Görff wrong. Meets the Görff-bound crossings at the harbor when she can, more for news of home than for the job.",
   "knowledge": {
     "education": {

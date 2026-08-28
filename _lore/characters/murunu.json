@@ -1,6 +1,7 @@
 {
   "name": "Murunu",
-  "city": "Görff, Dragon City",
+  "origin": "",
+  "location": "Görff, Dragon City",
   "backstory": "Travels between Görff and Ciudad Dragon by boat.",
   "knowledge": {
     "education": {

@@ -1,6 +1,7 @@
 {
   "name": "Nerkeli",
-  "city": "Feria del Milenio, Sid Nalta, Khol Moshin",
+  "origin": "",
+  "location": "Feria del Milenio, Sid Nalta, Khol Moshin",
   "backstory": "An old childhood friend of Nuvilo. Raised in Terfila, he decided young to become a pilot and see the world - airplanes are his passion. Good sense of humor, with a running theory that ducks are the most likely descendants of the legendary Daax. At the Feria del Milenio helping run the airplane showcase. Flies the M7 corridor (Puente Intercontinental - Nvhi) regularly, reaching Nvhi's edge - though until catching up with Nuvilo at the fair, he'd never once connected the place to his old friend's family. Per the Luminacion Register, also flies a Sid Nalta-Terfila route, and has a separate instance stationed at Khol Moshin.",
   "knowledge": {
     "education": {

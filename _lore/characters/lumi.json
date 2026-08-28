@@ -1,6 +1,7 @@
 {
   "name": "Lumi",
-  "city": "Terfila",
+  "origin": "",
+  "location": "Terfila",
   "backstory": "Kid.",
   "knowledge": {
     "education": {

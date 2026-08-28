@@ -1,6 +1,7 @@
 {
   "name": "Saltamontabiras",
-  "city": "Tyrnea, Görff, Terfila",
+  "origin": "",
+  "location": "Tyrnea, Görff, Terfila",
   "backstory": "Travels the Tyrnea-Görff route by camelback, by way of Terfila.",
   "knowledge": {
     "education": {

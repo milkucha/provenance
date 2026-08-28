@@ -1,6 +1,7 @@
 {
   "name": "Farlan",
-  "city": "Terfila",
+  "origin": "",
+  "location": "Terfila",
   "backstory": "Works Terfila's harbor - logs every ship in and out, checks each manifest against what actually comes off the boat. Hauls overflow cargo up to the Dome Market stalls when the harbor storehouse runs short.",
   "knowledge": {
     "education": {

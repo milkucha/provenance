@@ -1,6 +1,7 @@
 {
   "name": "Bardaglis",
-  "city": "Görff, Khol Moshin",
+  "origin": "",
+  "location": "Görff, Khol Moshin",
   "backstory": "Musician. A travelling bard who mainly camps around Khol Moshin. Has no gender, and loves the diversity of that town, home to a market of diversities held every day of spring. Sings songs about the world and has written many - one of them is on the verge of becoming popular.",
   "knowledge": {
     "education": {

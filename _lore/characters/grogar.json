@@ -1,6 +1,7 @@
 {
   "name": "Grogar / Grograr",
-  "city": "Puente Continental",
+  "origin": "",
+  "location": "Puente Continental",
   "backstory": "Unknown.",
   "knowledge": {
     "education": {

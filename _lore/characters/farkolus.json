@@ -1,6 +1,7 @@
 {
   "name": "Farkolus",
-  "city": "Terfila",
+  "origin": "",
+  "location": "Terfila",
   "backstory": "One of two shopkeepers who keep stalls under the Dome Market's old roof - dry goods, mostly, whatever comes in reliable. Patches the cracked stretch of dome over his own row out of pocket when the city won't pay for it, and walks down to the docks most mornings to see what's come in before the other stallholders do.",
   "knowledge": {
     "education": {

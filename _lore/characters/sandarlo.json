@@ -1,6 +1,7 @@
 {
   "name": "Sandarlo",
-  "city": "Görff",
+  "origin": "",
+  "location": "Görff",
   "backstory": "Paint Shop Keeper.",
   "knowledge": {
     "education": {

@@ -164,7 +164,7 @@ canvas.grabbing{cursor:grabbing}
   <aside>
     <div>
       <h2>Search</h2>
-      <input id="search" type="search" placeholder="name, city, path…" autocomplete="off">
+      <input id="search" type="search" placeholder="name, location, path…" autocomplete="off">
     </div>
     <div>
       <div class="sectionhead">
@@ -392,7 +392,7 @@ function visible(n){
 function matches(n){
   const q=query.toLowerCase();
   return (n.label||"").toLowerCase().includes(q) || (n.id||"").toLowerCase().includes(q)
-      || (n.city||"").toLowerCase().includes(q) || (n.path||"").toLowerCase().includes(q)
+      || (n.location||"").toLowerCase().includes(q) || (n.path||"").toLowerCase().includes(q)
       || (n.role||"").toLowerCase().includes(q);
 }
 const eVisible = e => !hidRel.has(e.rel) && visible(e.s) && visible(e.t);
@@ -668,7 +668,7 @@ cv.addEventListener("mousemove",ev=>{
     tip.style.left=Math.min(sx+14, r.width-270)+"px"; tip.style.top=(sy+14)+"px";
     tip.innerHTML=`<b>${esc(h.label)}</b> <span style="color:var(--dim)">${esc(h.kind)}</span>`
       + (h.path?`<br><span style="color:var(--dim);font-size:11px">${esc(h.path)}</span>`:"")
-      + (h.city?`<br><span style="color:var(--dim);font-size:11px">${esc(h.city)}</span>`:"")
+      + (h.location?`<br><span style="color:var(--dim);font-size:11px">${esc(h.location)}</span>`:"")
       + (h.note?`<br><span style="color:var(--dim);font-size:11px">${esc(h.note)}</span>`:"");
   } else tip.style.display="none";
 });
@@ -709,7 +709,7 @@ function select(n){
   if(!n){detail.classList.remove("on"); draw(); return;}
   const rows=[];
   const add=(k,v)=>{ if(v!==undefined&&v!==null&&v!==""&&v!==false) rows.push([k,v]); };
-  add("Kind",n.kind); add("City",n.city); add("Region",n.region); add("Role",n.role);
+  add("Kind",n.kind); add("Origin",n.origin); add("Location",n.location); add("Region",n.region); add("Role",n.role);
   add("Type",n.type); add("Condition",n.condition); add("Locality",n.locality);
   add("Education",n.education!=null?n.education+"%":null); add("Sampling",n.mode);
   add("Knows",n.known); add("States",n.states); add("Choices",n.choices);

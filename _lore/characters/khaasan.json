@@ -1,6 +1,7 @@
 {
   "name": "Khaasan",
-  "city": "Görff",
+  "origin": "",
+  "location": "Görff",
   "backstory": "Teletraveller. Always travels by griffon — never on foot or by any other means. Has an uncle in Khan Ice who has never left the place and who expects him without fail; Khaasan has never missed the visit.",
   "knowledge": {
     "education": {
