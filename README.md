@@ -1,41 +1,53 @@
 # Provenance
 
-Provenance is a storytelling and world-building tool for authors: a system for growing a fictional
-society from a small authored seed — sociocultural parameters, a handful of authored facts — into
-an organically drifting, ecosystemic record of tales, through procedural and semantic generation
+The lore underneath this project is about 12 years old — authored in fragments, long before there
+was any system to grow it. Provenance is what I built to test whether an agent-driven system can
+actually take a seed like that and keep growing it in a way that still reads as *this* world's own
+culture: organic, drifting, full of honest gaps — not generic model output wearing the world's
+names. Basically, a storytelling and world-building tool for authors: it grows a fictional society
+from a small authored seed — sociocultural parameters, a handful of authored facts — into an
+organically drifting, ecosystemic record of tales, through procedural and semantic generation
 rather than being hand-written end to end.
 
 The design leans on a negative-space principle: a world's real structure lives in what stays
 unsurfaced — the objective record, the pillars a character's convictions stand on — while what
-actually gets communicated (dialogue, hearsay, tales) is a thin, subjective positive space drawn
-from that foundation, never the whole of it. (Loosely in the spirit of Luhmann's account of society
-as constituted by communication, and of mytheme/monomyth-style thinking about recurring narrative
-structure — both still under active discussion here, not settled theory this repo commits to.)
+actually gets communicated (dialogue, hearsay, tales) is a thin, subjective slice drawn from that
+foundation, never the whole of it. Like a good painting, which doesn't need to paint every detail of
+something, only needs to insinuate the existence of it, so imagination does the rest. (Loosely in
+the spirit of Luhmann's account of society as constituted by communication, and of mytheme/monomyth-
+style thinking about recurring narrative structure — both still under active discussion here, not
+settled theory this repo commits to.)
 
 It's equally an experiment in agent-based social simulation: characters are played by model agents
 constrained to a bounded, randomly-sampled slice of the record, deliberately stripped of room to
-sprawl, so creativity has to work with fewer, authored elements instead of inventing freely. The
-system is designed to run across different models and harnesses rather than depend on one vendor,
-and to stay slim in token consumption — that budget work is ongoing, and it matters beyond cost: the
-simulation only means something if it can run at the scale a living culture requires, which is what
-makes the whole thing usable and testable at all. The project is currently in an experimentation
-phase, run and evaluated lab-report style (`LAB_REPORT.md`) against two standing questions: whether
-the result reads as immersive, and whether it reads as organic rather than mechanically repetitive.
+sprawl, so creativity has to work with fewer, authored elements instead of inventing freely. I want
+this to run across different models and harnesses rather than depend on one vendor, and to stay slim
+in token consumption — that budget work is ongoing, and it's not just about cost: the simulation only
+means something if it can run at the scale a living culture requires, which is what makes the whole
+thing usable and testable at all. The project is currently in an experimentation phase, run and
+evaluated lab-report style (`LAB_REPORT.md`) against two standing questions: whether the result reads
+as immersive, and whether it reads as organic rather than mechanically repetitive — the standing fear
+behind most of the design choices here is producing *slop*: content that sounds plausible but isn't
+actually grounded in anything the record established.
 
 The engine itself is embodiment-agnostic — it never assumes any particular place its generated
 characters and lore need to surface. This repo currently ships one optional embodiment backend on
-top of it: a Minecraft datapack layer (the repo's original context) that can put the generated
-characters live in a Minecraft world as NPCs (Taterzens) running dialogs (Blabber) and following
-their own routines, pausing to talk and picking their routine back up. That's one integration, not
-the product — the tales and the world they accrete into exist entirely independent of it, and a
-different or additional embodiment backend could replace this layer without touching the engine at
-all. The embodiment layer is documented at the end of this file (§5 onward); everything before it is
-the actual lore engine, usable entirely on its own with no Minecraft (or any embodiment) involved.
+top of it: a Minecraft datapack layer (the repo's original context, and where I still get to stand
+in the world and talk to these characters myself) that puts the generated characters live in a
+Minecraft world as NPCs (Taterzens) running dialogs (Blabber) and following their own routines,
+pausing to talk and picking their routine back up. That's one integration, not the product — the
+tales and the world they accrete into exist entirely independent of it, and a different or
+additional embodiment backend could replace this layer without touching the engine at all. The
+embodiment layer is documented at the end of this file (§5 onward); everything before it is the
+actual lore engine, usable entirely on its own with no Minecraft (or any embodiment) involved.
 
 This document is a practical, step-by-step guide to working with the system, plus (§0) the
 architecture of the whole as it stands today — read that first in a new session to get oriented
-without having to re-read the whole codebase. The rest assumes you already know *what* character or
-story you want to add — it's about *how* to realize it, in lore and (currently) in Minecraft.
+without having to re-read the whole codebase. `conversation.md` carries the narrative alongside it:
+why a given design turn got taken, and what's still genuinely open — worth a read if the "why" behind
+something here isn't obvious from the "how." The rest of this file assumes you already know *what*
+character or story you want to add — it's about *how* to realize it, in lore and (currently) in
+Minecraft.
 
 ## Getting started
 
