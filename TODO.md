@@ -784,9 +784,11 @@ underspecified, not bugs in the data.
       declined to say; Khaoe's own castle line came up in her presence). The three moves are all
       responses to a refutation, so these were recorded as "no change," which feels right but isn't
       written down anywhere. Decide whether a reaffirmation ever tempers, and say so.
-- [ ] **No guidance on how often tempering should fire.** It fired in two of three scenes here, which
-      may be too eager for a mechanic meant to make characters gradually rigid. Worth a sentence on
-      what does *not* count as a challenge (banter, a friendly restatement) versus what does.
+- [x] **No guidance on how often tempering should fire — resolved.** `/character` Step 6 now gates on
+      *reference, not intensity*: "a claim... qualifies as a challenge only if it references the
+      anchor — same case, same person, same event... Anything else, however dramatic, is not a
+      challenge to *this* criterion; it's news." That's the "what does not count" sentence this item
+      asked for, phrased as a reference test rather than a frequency rule.
 
 ## Pre-existing dialog issues (found 2026-07-31 while validating)
 
@@ -850,15 +852,20 @@ loading, in-scene modulation, and Step 5b shock/drift resolution. Still open:
       Taterzen from standing in the world with a working right-click dialog after `life.deceased`
       flips true — this is the Minecraft-facing half the notification mechanism deliberately doesn't
       touch. Decide: despawn, stay as a silent fixture, or get replaced by someone retelling them.
-- [ ] **Not yet exercised on a real death.** No character is anywhere near their span (see the
-      lifespan entry below), so `notify_death.py` has only been tested by hypothetically running it
-      against living characters, never through an actual `/enact` Step 5b point 6 closing-out. Worth
-      running the short-lifespan test suggested below specifically to watch the full death procedure
-      fire end to end, including the tale-record write and a real shock resolution.
-- [ ] **`python` on PATH is the Microsoft Store stub** on this machine, and the repo's `.venv/` is a
-      dead Codespace artifact (`.venv/bin/python` points at `/home/codespace/...`). `py -3` works.
-      Either fix the venv, or update the `python scripts/...` invocations in README §5 and the
-      skills to `py -3`.
+- [x] **Exercised on real deaths since, across multiple `/simulate` runs — resolved.** `LAB_REPORT.md`
+      Run 1 recorded 4 natural-lifespan deaths (Auroboro III, Iläria, Khaoe, Nerkeli); a later run logs
+      `record_death.py` running cleanly end to end (tale written, circle computed, notification fired)
+      and "four of the original six now deceased; three genuine criterion shocks resolved, all as
+      reinterpret" — the full procedure (tale-record write, circle notification, real shock
+      resolution) has fired repeatedly. None of this reached `provenance-standalone`'s own
+      `_lore/characters/*.json` — every death happened inside a disposable `/simulate` worktree, which
+      by design never merges back (see README) — so no character here currently has `life.deceased:
+      true`, but the mechanism itself is proven, not merely tested hypothetically.
+- [x] **`python` on PATH fixed (2026-08-06) — resolved.** Bare `python`/`pip` now resolve to a real
+      3.14 install (confirmed: `python --version` and `py -3 --version` both report 3.14.6), not the
+      Microsoft Store stub. Skills still call `py -3` by convention rather than bare `python` — a style
+      choice now, not a workaround for a broken PATH. The dead `.venv/` Codespace artifact wasn't
+      re-checked here.
 
 ## Skills decoupled from README + shared house philosophy + `/simulate` scripting (2026-08-07)
 
@@ -1194,6 +1201,17 @@ should surface once this is actually tried:**
 
 ### /simulate debrief and next-phase design: materiality, arcs, and emergence (2026-08-10, planned — design only, NOT YET IMPLEMENTED)
 
+**Status update, verified against the live code: most of this shipped.** Of the 9 numbered proposals
+below, points 1 (routines-as-archetypes), 2 (cycling), 3 (pairing unchanged), 4 (mechanical
+coincidence/visit location resolution — `scripts/lore/resolve_location.py`), 6 (arc derived from
+routine archetype), and 8 (reproduction, `generate_offspring.py`) are all live in
+`.claude/skills/simulate/SKILL.md` and its scripts, and have run through multiple real `/simulate`
+extended-mode passes per `LAB_REPORT.md`. Point 5 (group scenes) is confirmed NOT shipped —
+`/simulate` still runs strictly two-participant scenes. Point 7 (scene content seeded from the arc's
+"last thing done") and point 9 (emergent routine acquisition) also aren't built — no `last_done`-shaped
+field exists anywhere in the schema or scripts. This matches the "explicitly still open" list below,
+which stays accurate and untouched.
+
 **See `LAB_REPORT.md` (repo root) for the persistent, cross-run assessment log this debrief seeded** —
 run-by-run findings against the standing objective, plus open design questions carried forward across
 sessions. This section is the original design writeup; that file is where it gets tested and revised.
@@ -1372,17 +1390,10 @@ one worktree's own data.
       `'Era del Daax'` reference doesn't match `time_systems.ensayo_i_eras`' own naming exactly). Left
       as `build_source_index.py`'s own honest "never guessed" report - worth a look next time someone's
       touching that part of the corpus, not blocking anything from this session.
-- [ ] **Main repo's own `.claude/worktrees/simulate-20260810-164704` worktree branch and the main repo's
-      working directory both have real uncommitted changes from this whole thread** - see `git status`
-      in each. The worktree-isolated session that did this work could only `git commit` inside its own
-      worktree (hard sandbox rule - `git -C <other path>` is refused outright, not just discouraged);
-      the main repo's own copies of `scripts/lore/build_source_index.py`, `generate_offspring.py`,
-      `register_arc_concept.py`, `_lore/tuning.json`, `_lore/encodings.json` (schema + 10 linked
-      sources), `.claude/skills/simulate/SKILL.md`, `LAB_REPORT.md`, and this file were all written via
-      direct Python file writes (bypassing the Edit/Write tool's own worktree sandboxing) but never
-      committed - that needs a commit from a session that isn't worktree-isolated, or a manual `git add`
-      + `git commit` in the main repo directly. Do this before starting new work there, or the sync
-      history gets confusing.
+- [x] **Committed since — resolved.** `scripts/lore/build_source_index.py`, `generate_offspring.py`,
+      and `register_arc_concept.py`/`_lore/tuning.json` all show clean, committed history now (last
+      touched by `2a2e8f6`, `eac3abb`, and `690f10d` respectively); the main checkout has no leftover
+      uncommitted state from this thread.
 
 ## `sample_lore_knowledge.py --mode skewed` can't do proportioned multi-topic splits (2026-08-16)
 
@@ -1422,16 +1433,10 @@ own per-scene judgment call about whether to bother. That may be correct in the 
 no way to tell after the fact, and that's exactly the problem: nothing forces the question to even be
 asked.
 
-- [ ] **Make Step 5 treat the player as a full participant, explicitly, not by convention.** Add a
-      stated rule: whenever the player (as a named participant) states something in-scene that reads as
-      a kernel - an assertion, an opinion, an invented detail - it gets a claim exactly as it would for
-      any NPC speaker, `about`-tagged the same way, with the same "capture kernels, not connective
-      tissue" bar applying symmetrically. Mutation (Step 5's framing/emphasis/moral-judgment filter) is
-      normally driven by `criterion`/`trusts`/`distrusts`, which the player has none of on file - decide
-      explicitly whether the player's claims go in unmutated (a flat report of what they said, since
-      there's no criterion to filter it through) or whether some lighter treatment applies, rather than
-      leaving that undefined too. Applies to `/simulate` identically, since its subagent runs this same
-      Step 5 in full whenever a scene involves a player-equivalent participant.
+- [x] **Resolved.** `/enact` Step 5 now states it outright: "The player is a full participant in this
+      step, not an exception... gets a claim exactly as it would for any NPC speaker... held to the
+      same 'capture kernels, not connective tissue' bar." Also settles the mutation question: player
+      claims "skip this step's mutation machinery entirely and go in as a flat, unmutated report."
 
 ## `claim.about` doesn't feed `sample_lore_knowledge.py` - structural tag and keyword match diverge (2026-08-16)
 
@@ -1443,26 +1448,13 @@ tagged `about: "location: khan_ice"` whose prose never says "Khan Ice" (e.g. onl
 is invisible to a `--mode skewed --topic "khan ice"` draw even though it's genuinely about that place.
 Confirmed real, not hypothetical: `gok_milkucha_alcove#1`'s Hotel Kholi claims are exactly this shape.
 
-- [ ] **Fold `about` into the claim's matchable text - but resolve it, don't just append the raw id.**
-      The cheap version (append the raw `about` strings like `location: khan_ice` to the claim's text)
-      only partially works: ids are snake_case machine keys (`khan_ice`), not what a human would type
-      as a `--topic` (`"Khan Ice"`, possibly with the diacritic `Khan Ic�`) - so it still misses the
-      natural-language case despite closing the literal-substring case. The complete fix resolves each
-      `about` reference to its target entry (same lookup `build_source_index.py` already does) and
-      pulls in *that entry's own* `names`/`description`-shaped text too, not just its bare id - a real
-      cross-category join inside `flatten_pool()`, since each category is currently flattened
-      independently with no lookups between them. Scope check before building: only affects `--mode
-      skewed` draws; random draws are already blind to text content by design and don't need this.
-      **Does not interact with the "no knowledge cascade" rule (confirmed 2026-08-16: sampling a
-      hearsay item never grants knowledge of its `about` target's own entry, by design - a character
-      can know a rumor about a place without knowing the place).** This fix only enriches the pool
-      item's *matching* text to widen which draws can select it; it must NOT change what
-      `knowledge.education.items` stores (still just `"hearsay: <id>#<n>"`) or what gets read at play
-      time (still just that claim's own `text`/`note`, never the resolved target's fields) - same
-      "text is for matching only, never shown as content" wall `sample_lore_knowledge.py`'s own
-      docstring already states for the existing case. Flagging explicitly since it's an easy line to
-      blur while implementing: pulling target text in for matching purposes could look, at a glance,
-      like it should also count as "knowing" that target - it must not.
+- [x] **Resolved.** `sample_lore_knowledge.py`'s `_enrich_hearsay_matching_text()` resolves each
+      claim's `about` ref(s) to their target pool item and folds that item's own text in, not just the
+      bare id — exactly the "complete fix" described here, including the no-knowledge-cascade
+      boundary (`knowledge.education.items` still stores only the bare `"hearsay: <id>#<n>"` pointer;
+      this only widens what a draw can *match*, never what a character *knows*). Explicitly scoped as
+      best-effort (exact/bare-id match only, not `build_source_index.py`'s fuzzy resolution) per its
+      own docstring — a deliberate, disclosed limit, not a gap.
 
 ## CRITICAL, user design correction: epistemology should derive from source provenance, not pool category (2026-08-16)
 
@@ -1649,20 +1641,14 @@ character-creation time." **User's correction: this should be the same disciplin
 authored at character creation as the default, with `/simulate`'s first-primacy-win authoring staying
 only as a fallback for a character that reached extended-mode play without ever getting one set.**
 
-- [ ] **Flip `/character` Step 8's `arc` guidance to match `routines`.** Author `arc` at the same time
-      as `routines` (it's explicitly seeded from routine archetype + specialization + criterion
-      together anyway, per Step 8's own text, so authoring them in the same pass is also more coherent
-      than splitting them across two different moments/skills). Keep the `/simulate`
-      `arc_authoring_needed` path (first primacy win, no arc on file) working exactly as it does now,
-      but reframe it in both `.claude/skills/character/SKILL.md` and `.claude/skills/simulate/SKILL.md`
-      as the fallback for a character that slipped through without one - not the normal path.
-- [ ] **Use `write_arc.py` from `/character` too, not only from `/simulate`.** It already does the
-      right thing regardless of caller (writes the arc + registers its `concept:` tag in
-      `encodings.json` in one call) - no new script needed, just a new caller. Worth double-checking
-      nothing in `write_arc.py`'s own docstring assumes a `/simulate` worktree context that wouldn't
-      hold when called directly from `/character` in the main repo (a quick read suggests it doesn't -
-      it just takes a character key and writes - but confirm before relying on it as the fallback-free
-      default path).
+- [x] **Resolved (2026-08-28).** `/character` Step 2b item 4 and Step 8 both now state "Required at
+      creation... not a deferred/optional step" — `arc` is authored in the same pass as `routines`.
+      `/simulate`'s `arc_authoring_needed` path is explicitly reframed as the fallback "for a
+      character predating this requirement... or one that arrived some other way," not the normal
+      path.
+- [x] **Resolved.** `/character` Step 8 calls `write_arc.py` directly (`py scripts/lore/write_arc.py
+      <key> --about ... --needs ... --context ... --premise "..."`), same tool `/enact`/`/simulate`
+      use.
 
 ## CRITICAL, user design correction: arcs have no persistent, concrete premise (2026-08-16)
 
@@ -1699,19 +1685,12 @@ behind if pressed") tends to default to something abstract, which stays incompre
    contradicts or extends the lore itself" boundary `/enact` Step 2 already states, not a new rule,
    just applied to a spot (arc authoring) that currently has no such discipline attached to it at all.
 
-- [ ] **Schema: add `arc.premise`** (concrete, one-or-few-sentence prose, human/agent-authored) to the
-      character-file shape, `/character` Step 8, and `/simulate` SKILL.md's arc-authoring language.
-- [ ] **`write_arc.py` needs a new `--premise` argument** to actually persist this - currently only
-      accepts `--about`/`--needs`/`--archetype`, so there is no way to save this text through the
-      existing tool at all. Should stay a single required judgment-call argument, same discipline as
-      `--about`/`--needs`.
-- [ ] **New authoring guidance: concreteness bar for `arc.premise`, as an actual test, not just a
-      preference.** Needs an explicit instruction (in `/character` Step 8 and `/simulate`'s
-      arc-authoring language) that a premise names a real, singular object/goal/outcome - not a
-      tension or a theme - the same "anchor must be a concrete, singular case" discipline Step 4b
-      already enforces for `criterion.anchor`, applied here for the first time to arcs. Worth
-      cross-referencing Step 4b directly rather than restating the rule from scratch, since it's the
-      same underlying discipline. **Diagnosed from a real failure, not hypothetical**: this session's
+- [x] **Resolved.** `arc.premise` is a real field now — 21 character files carry one — documented in
+      `/character` Step 8.
+- [x] **Resolved.** `write_arc.py --premise` is a required argument.
+- [x] **New authoring guidance: concreteness bar for `arc.premise` — resolved, both rules present in
+      `/character` Step 8 verbatim as "The resolution-moment test" and "Ground the target in something
+      already known, when possible." **Diagnosed from a real failure, not hypothetical**: this session's
       first pass at Zarkatraz's arc ("find a legitimate source for his stones he could stand behind")
       read as abstract and had to be redone after the user pushed back - the fix (a specific named
       Órikal specimen, "la Lágrima de Balahm") worked, but nothing in the instructions would have
@@ -1728,15 +1707,11 @@ behind if pressed") tends to default to something abstract, which stays incompre
          already in Zarkatraz's sample) over inventing a target from nothing - an existing corpus item
          already carries real, checkable specifics (a name, a description, a status) for free, which
          is exactly what made the second attempt concrete and the first one abstract.
-- [ ] **Clarify the `transform` interaction.** When a tally-triggered transform mechanically injects a
-      new `about` tag (`matched_about`, pulled from a peer's own knowledge item), does the agent still
-      compose fresh premise prose around it (most likely, matching the "re-authoring" judgment slot
-      `/simulate` Step 3 already names), or does something else need deciding? Not resolved here -
-      flagging so it doesn't get silently assumed either way when this is implemented.
-- [ ] **Retroactive question, not urgent:** the 6 pilot characters (Aureobalo, Döran, Khaoe, etc.) and
-      any arc `/simulate` has already authored in a worktree run all currently have this same gap -
-      abstract or absent premise, nothing concrete on record. Worth a backfill pass once the field
-      exists, not blocking the schema/tooling fix itself.
+- [x] **Resolved.** `/character` Step 8: "On a `transform`... `premise` gets re-composed around
+      whatever `about` the transform mechanically injected — same judgment-call moment as re-authoring
+      a failed arc, not a separate decision."
+- [ ] **Retroactive question, still open.** Checked directly: Aureobalo, Döran, and Khaoe still have no
+      `arc.premise` on file. Not blocking, but the pilot characters haven't been backfilled.
 
 ## User design correction: `arc.premise` needs the same attribution discipline as everything else invented (2026-08-16)
 
@@ -1759,13 +1734,8 @@ version of "sloppifying the story" the user flagged, not the specific content it
    desert") - a fact-shaped statement about the world, which everywhere else in this system gets a
    source. An `arc.premise` asserting one with no attribution is the actual gap.
 
-- [ ] **`arc.premise` authoring rule: claim-shaped detail must be attributed, not asserted.** Texture
-      (names, color) can be invented freely per the existing `/enact` Step 2 license. Anything
-      claim-shaped needs to be phrased as something a character heard/believes/reported ("he's heard,
-      secondhand and unconfirmed, that...") rather than stated as settled fact in the premise's own
-      voice - the same epistemic status hearsay already has, applied here for the first time. Needs a
-      line in whatever doc ends up hosting `arc.premise`'s authoring rule (`/character` Step 8 and
-      `/simulate`'s arc-authoring language, per the two sections above).
+- [x] **Resolved.** `/character` Step 8 rule 3, "Texture is free to invent; claim-shaped content is
+      not," states exactly this distinction and phrasing.
 - [ ] **New mechanism, user's own proposal: a "prone to rumor/embellishment" character trait.**
       Concrete, nameable trait (not vague color) a character can carry, marking them as a legitimate
       in-world source for unconfirmed/embellished claims - gives invented texture a real causal origin
@@ -1793,34 +1763,18 @@ never touched again, forever, in either the interactive driver or `-generate` mo
 correction: a character who successfully completes their arc should get a new one authored, the same
 as a character whose arc fails - completion isn't a valid reason to stop having a project.**
 
-- [ ] **Fix: treat `"complete"` the same as `"failed"` for re-authoring purposes.** Add the
-      `arc_authoring_needed`/`queue_arc` call to the `score >= ARC_RESOLUTION_THRESHOLD` branch in both
-      `simulate_pass_brief.py` and `simulate_generate_population.py`, mirroring the `reauthor_failed`
-      shape (reason `"reauthor_complete"` or similar - `prior_arc` should still be passed for
-      continuity/contrast, same as the failure case). Cross-check whether `roll_death_legacy.py`'s
-      circle-selection logic (which copies an arc onto a living recipient) has any assumption baked in
-      about a source arc always being `"ongoing"` at the point it's copied - unclear from a first read,
-      worth confirming before this fix lands. **Explicit, not assumed (user, 2026-08-16): a
-      `reauthor_complete` arc must be authored under the exact same corrected rules as `"first"` and
-      `reauthor_failed"` - the resolution-moment test, grounding the target in the character's own
-      known corpus when possible, and the claim-attribution discipline for `arc.premise` (see the two
-      sections above). It reuses the same `arc_authoring_needed` slot as those two, so it inherits the
-      same governing instructions by construction, not by a separate rule that needs writing - but
-      worth stating outright rather than leaving as an assumption, per this project's own
-      nothing-decided-silently discipline.**
-- [ ] **Completion scenes need their own staging guidance, not just "dramatize the fixed outcome."**
-      Surfaced working through a hypothetical completion scene with the user: `/simulate`'s current
-      dispatch instructions treat every fixed arc outcome the same way ("the scene itself... is always
-      present and always fixed - dramatize it, never re-decide it"), but "advance" and "complete" are
-      not dramatically equivalent. An "advance" scene can be any small step forward and still read
-      fine. A "complete" scene has to depict the arc's object/goal actually being obtained/resolved
-      *within that one scene* - a first draft of this exact worked example wrongly showed a character
-      just handing over a *lead* (an advance-shaped beat) while the mechanical fact said "complete,"
-      which reads as inconsistent once you notice it. Needs explicit guidance for the subagent: a
-      completion scene must stage the culminating action itself (the object changing hands, the search
-      concluding), not another incremental step - and should be plausible as a single-sitting
-      resolution given the participants/location already fixed by that pass's brief, not just narrated
-      as suddenly finished.
+- [x] **Resolved.** Both `simulate_pass_brief.py` and `simulate_generate_population.py` now fire
+      `queue_arc(..., "reauthor_complete", ...)` on the `score >= ARC_RESOLUTION_THRESHOLD` branch,
+      mirroring the failure path, and `prior_arc` is passed for continuity in both. Checked
+      `roll_death_legacy.py`: it copies a deceased's `about`/`needs` tags onto a recipient regardless
+      of the source arc's own `resolution` value and simply resets the recipient's copy to `"ongoing"`
+      — no assumption found that a source arc must be `"ongoing"` at copy time. Since `reauthor_complete`
+      reuses the same `arc_authoring_needed` slot as `"first"`/`reauthor_failed`, it inherits the
+      resolution-moment/grounding/attribution rules by construction, per `/character` Step 8.
+- [x] **Resolved.** `/enact`'s SKILL.md now states it explicitly: "'advance' and 'complete' are not
+      staged the same way... A 'complete' outcome... has to depict the arc's own object/goal actually
+      being obtained or resolved *within this one scene*... the culminating action itself... plausible
+      as a single-sitting resolution."
 
 ## Grounding: mod-sourced mechanics, deferred until a mod is actually added (2026-08-26)
 
