@@ -21,7 +21,29 @@ and open questions that were live at a given point, even ones later settled else
 
 ---
 
-### 2026-08-28 — Architecture reframed to 3 tiers; found this checkout mid-merge with lore staged for deletion
+### 2026-08-28 — provenance-bare/provenance-standalone architecture reconciled; two independent chronicle mechanisms collapsed to one
+
+`provenance-bare` and `provenance-standalone` had been diverging in isolation, each session unaware of
+the other's branch — VOICE.md, the three-tier README reframe, and a session-chronicle mechanism had
+all been built *twice*, independently, with real (if small) differences each time. Went through both
+branches file-by-file rather than trusting either one wholesale: merged bare's trailing three-tier/
+Provenance-rename commits into standalone (one real conflict — bare's tier-reorg had duplicated the
+`_lore/` doc bullet with stale pre-origin/location-split content, dropped in favor of standalone's
+current one), then reconciled the older architecture backlog (skills, scripts, PRINCIPLES.md,
+settings.json) by taking whichever side's version was the more complete, more recent evolution.
+
+The one genuine judgment call: bare had built `conversation.md` (2026-08-28) as its own session-
+chronicle file, unaware that standalone already had `CHRONICLE.md` + a `chronicle-nudge.sh` Stop hook
+doing the same job a day earlier (2026-08-27) — and that this very file's own header already recorded
+having absorbed `conversation.md`'s content and declared itself the survivor. Honored that
+already-recorded decision over a raw timestamp comparison: retired `conversation.md`, standardized
+both branches on this file and the hook. `TODO.md`/`LAB_REPORT.md` were deliberately left un-reconciled
+— `conversation.md` documented that bare intentionally ships them stripped for a lean checkout, a
+per-branch content difference rather than architecture drift, same category as the lore corpus itself.
+
+Also verified the "172 characters staged for deletion" open question logged just below (2026-08-28
+entry): turned out to be a resolved non-issue — `provenance-standalone` currently holds all 86 expected
+character files intact.
 
 Talked through the README §0 diagram out loud: the old "Foundation/Supporting/Datapack/Resource pack"
 4-layer split conflated inert content with the process that acts on it, and split shipping across two
