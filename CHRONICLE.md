@@ -21,6 +21,39 @@ and open questions that were live at a given point, even ones later settled else
 
 ---
 
+### 2026-08-28 — Survival mechanism designed end-to-end (not yet built); `provenance-bare`'s causal-reorder and social-relations work folded into `provenance-standalone`
+
+Long design conversation, working from the user's own rough sketch (locations have an energy pool,
+characters spend/replenish it, choosing between "survive" and "follow an arc") through to a complete,
+tunable mechanic — see the full spec now logged in `TODO.md`'s "Survival mechanism" section. Landed on
+this branch specifically because it needed folding onto real characters (Tyrnea's 12-character revival
+cast, already committed here) for `survival-arc-test`, a new branch off this one, to test against.
+
+**Real gaps the user caught mid-design, each one changing the shape of the final mechanic:**
+- The first draft's "survive" math was a wash (−1 base, +1 taken back = net 0 forever) — not a bug,
+  but nothing was pulling a character toward the costly arc branch instead. Fixed by making the
+  choice a weighted roll (matching the project's existing `inclined`/`contested` pattern) instead of
+  free will, and by giving the pool per-capita upkeep so it can actually run dry.
+- "Provides" (the existing needs/provides gate) needed a concrete threshold, not a vague "enough" —
+  landed on per-capita surplus above subsistence, and on arc-following actually drawing from the pool
+  too (previously it didn't touch the pool at all), so a starved location's inability to provide has
+  real teeth.
+- Population-wide per-pass energy resolution would have been expensive *and* semantically broken
+  against arc primacy (most rolls would never see a scene at all). Fixed by scoping energy resolution
+  to only the characters actually drawn each pass — same lazy-clock precedent `horizon.py` already
+  uses — with a losing arc-bet still costing the full price, deliberately, as real stakes rather than
+  wasted bookkeeping.
+- Social connectedness was being asked to pull toward both *obligation* (survive) and *reliance* (safe
+  to gamble) through one raw strength number — split into two roles for one signed `net_affinity`
+  value (`Σquality / Σstrength` across established partners) once the actual bond-quality system's
+  real field names were checked, rather than assumed.
+
+**Also folded in this session:** `provenance-bare` had independently built two more rounds of engine
+work since the last sync — a `/simulate` Step 4 causal reorder (see the entry directly below) and a
+social-relations system (`partners_quality`, relationship inheritance, `social_circle.py`,
+relationship-aware `contested` odds) — merged into this branch, corpus preserved, same
+most-recent-wins-with-real-review approach as the earlier architecture reconciliation.
+
 ### 2026-08-28 — `/simulate` Step 4 causal reorder: primacy, location, and reproduction timing all shift (implemented)
 
 User hand-redrew the repo's own auto-generated `diagrams/simulate-pass.html` in Coggle, reordering it
