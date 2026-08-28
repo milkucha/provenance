@@ -222,8 +222,9 @@ def check_arc_alignment(arc_about: list, arc_needs: list, peer: dict) -> dict:
     return out
 
 
-def roll_contested() -> bool:
-    return kv(call("roll_contested.py", []))["contested"] == "true"
+def roll_contested(strength: int = 0, quality: int = 0) -> bool:
+    args = ["--strength", str(strength), "--quality", str(quality)]
+    return kv(call("roll_contested.py", args))["contested"] == "true"
 
 
 def roll_arc_outcome(inclined: str, contested: bool = False) -> str:

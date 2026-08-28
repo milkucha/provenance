@@ -115,8 +115,11 @@ def run_pre_scene(p1: str, p2: str, pass_number: int, forced_visit: bool = False
             matched_need = np_res.get("matched_need")
             matched_provide = np_res.get("matched_provide")
 
-    # Contested - roll only if motivated, same as always.
-    contested = lib.roll_contested() if motivated else False
+    # Contested - roll only if motivated, same as always. Relationship-aware 2026-08-28: the peer's
+    # own established tie to the primacy winner skews the odds (see roll_contested.py's docstring).
+    peer_strength = other_char.get("partners", {}).get(primacy, 0)
+    peer_quality = other_char.get("partners_quality", {}).get(primacy, 0)
+    contested = lib.roll_contested(strength=peer_strength, quality=peer_quality) if motivated else False
 
     # Gate, outcome (now contested-aware), tally/threshold (including transform)
     arc_authoring_needed = None

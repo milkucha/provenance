@@ -210,11 +210,14 @@ def run_pass(state: State, pass_number: int) -> str:
         np_res = check_needs_provides(arc["needs"], provides)
         motivated = np_res["match"] == "true"
 
-    # Contested (only if motivated). Never names a rival (see module docstring point 3) - rolled
+    # Contested (only if motivated). Relationship-aware 2026-08-28, same as the interactive path -
+    # see roll_contested.py's docstring. Never names a rival (see module docstring point 3) - rolled
     # and reported, but never writes `leads`/a rival note, since that requires an invented identity
     # no script or dice roll here can supply.
     if motivated:
-        contested = roll_contested()
+        peer_strength = other_char.get("partners", {}).get(primacy, 0)
+        peer_quality = other_char.get("partners_quality", {}).get(primacy, 0)
+        contested = roll_contested(strength=peer_strength, quality=peer_quality)
 
     # Gate + outcome (now contested-aware) + tally
     if not arc:

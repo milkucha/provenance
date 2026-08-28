@@ -7,6 +7,7 @@
   "lead_expiry_passes": 8,
   "arc_resolution_threshold": 3,
   "contested_outcome_shift": 20,
+  "contested_relationship_shift": 10,
   "odds_percent": {
     "contested": 15,
     "reproduction": 40,

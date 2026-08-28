@@ -225,7 +225,11 @@ into the same call, no script of its own), arc primacy (whose arc leads this sce
 and *independently of* who's home vs visiting; the visiting participant's arc can still be the one
 that leads), the needs/provides motivation check (keyed to the **arc-primacy winner's** own arc,
 whichever participant that is — not "the traveler's" as a fixed role), the contested roll (only if
-motivated; odds 15%, `_lore/tuning.json` `odds_percent.contested`), the knowledge/criteria gate (only
+motivated; base odds 15%, `_lore/tuning.json` `odds_percent.contested` — **relationship-aware as of
+2026-08-28**: once the peer's own established tie to the primacy winner crosses `partner_threshold`
+(5), its `partners_quality` sign shifts the odds by `contested_relationship_shift` (10) — positive
+down, negative up, clamped to [2, 95]; below the threshold, or exactly neutral at it, nothing shifts
+— see `roll_contested.py`'s own docstring), the knowledge/criteria gate (only
 if the primacy winner has an ongoing arc — checks whether the OTHER participant's own
 knowledge/criterion touches it at all — **and, when it hits, also bumps that peer's own
 `partners_quality` toward the primacy winner**, `record_bond_quality.py`, `+1`/`-1`/`0` for
