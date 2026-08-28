@@ -29,7 +29,7 @@
     "label": "Provenance",
     "kind": "root",
     "path": ".",
-    "size": 1215851,
+    "size": 1218064,
     "degree": 16
    },
    {
@@ -1100,7 +1100,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": "graphs",
-    "size": 217208,
+    "size": 218540,
     "degree": 2
    },
    {
@@ -1108,7 +1108,7 @@
     "label": "graphifyish",
     "kind": "dir",
     "path": "graphs/graphifyish",
-    "size": 217208,
+    "size": 218540,
     "degree": 3
    },
    {
@@ -1116,7 +1116,7 @@
     "label": "graph.json",
     "kind": "graph",
     "path": "graphs/graphifyish/graph.json",
-    "size": 102946,
+    "size": 103702,
     "degree": 1
    },
    {
@@ -1124,7 +1124,7 @@
     "label": "graphifyish.html",
     "kind": "graph",
     "path": "graphs/graphifyish/graphifyish.html",
-    "size": 114262,
+    "size": 114838,
     "degree": 1
    },
    {
@@ -1276,7 +1276,7 @@
     "label": "scripts",
     "kind": "dir",
     "path": "scripts",
-    "size": 411677,
+    "size": 412558,
     "degree": 5
    },
    {
@@ -1308,7 +1308,7 @@
     "label": "hooks",
     "kind": "dir",
     "path": "scripts/hooks",
-    "size": 641,
+    "size": 1522,
     "degree": 2
    },
    {
@@ -1316,7 +1316,7 @@
     "label": "post-commit",
     "kind": "script",
     "path": "scripts/hooks/post-commit",
-    "size": 641,
+    "size": 1522,
     "degree": 1
    },
    {
