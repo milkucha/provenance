@@ -1,4 +1,8 @@
-# Provenance
+
+
+<div align="center">
+<img src="https://i.imgur.com/cASXA69.png" alt="logo" style="display: block; margin: 0 auto;">
+</div>
 
 The lore underneath this project is about 12 years old — authored in fragments, long before there
 was any system to grow it. Provenance is what I built to test whether an agent-driven system can
