@@ -237,6 +237,13 @@ def record_partner(key: str, other: str) -> None:
     call("record_partner.py", [key, "--with", other])
 
 
+BOND_QUALITY_DELTA = {"help": 1, "hinder": -1, "mixed": 0, "neutral": 0}
+
+
+def record_bond_quality(key: str, other: str, delta: int) -> None:
+    call("record_bond_quality.py", [key, "--with", other, "--delta", str(delta)])
+
+
 def roll_reproduction(p1: str, p2: str) -> dict:
     return kv(call("roll_reproduction.py", ["--p1", p1, "--p2", p2]))
 

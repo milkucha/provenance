@@ -137,6 +137,10 @@ def run_pre_scene(p1: str, p2: str, pass_number: int, forced_visit: bool = False
         gate_hit = gate_res["gate"] == "hit"
         if gate_hit:
             inclined = gate_res.get("inclined", "neutral")
+            other_key = p2 if primacy == p1 else p1
+            quality_delta = lib.BOND_QUALITY_DELTA[inclined]
+            if quality_delta:
+                lib.record_bond_quality(other_key, primacy, quality_delta)
             arc_outcome = lib.roll_arc_outcome(inclined, contested=contested)
             arc.setdefault("history", []).append({"pass": pass_number, "outcome": arc_outcome})
             score = lib.tally(arc["history"])

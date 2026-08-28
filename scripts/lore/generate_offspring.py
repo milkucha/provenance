@@ -79,6 +79,10 @@ What's inherited and how:
 - `life.span` - freshly rolled via the same range as any character (_lore/tuning.json's
   lifespan_range - not inherited from either parent) - open question left in the original design
   sketch, resolved here as "fresh roll" rather than "heritable trait" for now.
+- `partners`/`partners_quality` - **new 2026-08-28**, see `inherit_relationships()` below. A random
+  subset of the union of both parents' own `partners` keys (never the parents themselves - that's
+  the `parents` field), inherited at a scaled-down strength/quality since the child hasn't actually
+  lived any of those connections - only grown up around them.
 
 Cooldowns (both from _lore/tuning.json, and deliberately distinct from each other): a **parent**
 can't reproduce again for `parent_cooldown_passes` (checked by the caller before this script ever
@@ -140,6 +144,10 @@ PARENT_EDU_MIN_FRACTION = _OK["parent_education_min_fraction"]
 PARENT_EXP_FRACTION_RANGE = _OK["parent_experience_fraction_range"]
 GENERAL_KNOWLEDGE_FRACTION_RANGE = _OK["general_knowledge_fraction_range"]
 CRITERION_SKEW_WEIGHT = _OK["criterion_skew_weight"]
+_IR = _TUNING["inherited_relationships"]
+IR_FRACTION_RANGE = _IR["fraction_range"]
+IR_STRENGTH_SCALE = _IR["strength_scale"]
+IR_QUALITY_SCALE = _IR["quality_scale"]
 
 _STOPWORDS = {
     "the", "a", "an", "and", "or", "but", "of", "in", "on", "at", "to", "for", "with", "that",
@@ -253,6 +261,44 @@ def sample_union(pool_a: list, pool_b: list, min_fraction: float = 0.0) -> list:
     floor = max(1, round(min_fraction * len(union)))
     size = random.randint(min(floor, len(union)), len(union))
     return random.sample(union, size)
+
+
+def inherit_relationships(parent_a: dict, parent_b: dict, exclude: set) -> tuple:
+    """A child starts with a faint version of a random slice of both parents' own social ties -
+    design debrief 2026-08-28, added alongside partners_quality (record_bond_quality.py): 'even if
+    they have not interacted with those connections, they should be tracked as if they have some
+    kind of relationship,' per the user's own framing, so this seeds `partners`/`partners_quality`
+    on the child's own file rather than leaving them starting from nothing. `exclude` is normally
+    just the two parents' own keys - a child's tie to a parent is the `parents` field, not a
+    partners{} entry, so it's never eligible to be inherited as a separate connection.
+
+    Union of both parents' `partners` keys (not `partners_quality` - a key with a strength entry but
+    no quality one, meaning no gate ever hit for that pair, is still a real connection worth
+    inheriting), minus `exclude`. A random subset - sized by `inherited_relationships.fraction_range`
+    - actually gets inherited; the rest simply isn't part of the family's remembered circle for this
+    child. Both strength and quality are scaled down (`strength_scale`/`quality_scale`) from
+    whichever parent actually has the stronger tie to that person, floored at 1 for strength (a
+    connection worth inheriting at all is worth at least "heard of them," never 0) - the child hasn't
+    lived any of it themselves, only grown up around it."""
+    union_keys = (set(parent_a.get("partners", {})) | set(parent_b.get("partners", {}))) - exclude
+    if not union_keys:
+        return {}, {}
+    fraction = random.uniform(*IR_FRACTION_RANGE)
+    k = round(fraction * len(union_keys))
+    if k <= 0:
+        return {}, {}
+    chosen = random.sample(sorted(union_keys), min(k, len(union_keys)))
+
+    strength, quality = {}, {}
+    for other in chosen:
+        a_strength = parent_a.get("partners", {}).get(other, 0)
+        b_strength = parent_b.get("partners", {}).get(other, 0)
+        source = parent_a if a_strength >= b_strength else parent_b
+        strength[other] = max(1, round(source.get("partners", {}).get(other, 0) * IR_STRENGTH_SCALE))
+        source_quality = source.get("partners_quality", {}).get(other, 0)
+        if source_quality:
+            quality[other] = round(source_quality * IR_QUALITY_SCALE)
+    return strength, quality
 
 
 def extract_keywords(text: str) -> set:
@@ -611,6 +657,8 @@ def main() -> None:
         parent_b.get("knowledge", {}).get("experience", []),
     )
 
+    inherited_strength, inherited_quality = inherit_relationships(parent_a, parent_b, exclude={a_key, b_key})
+
     routines_pool_a = parent_a.get("routines", [])
     routines_pool_b = parent_b.get("routines", [])
     routines = sample_union(
@@ -653,6 +701,8 @@ def main() -> None:
         "life": {"lived": 0, "deceased": False},
         "routines": routines,
         "parents": [a_key, b_key],
+        "partners": inherited_strength,
+        "partners_quality": inherited_quality,
         "birth_pass": args.pass_number,
     }
     save_char(key, child)
@@ -725,6 +775,7 @@ def main() -> None:
     print(f"knowledge.education.items: {len(items)} total  ({len(inherited_items)} from parents, {len(general_items)} new from encodings.json's world-lore pools)")
     print(f"knowledge.experience: {len(inherited_experience)} inherited as family lore (wrapped 'Grew up hearing: ...', not lived firsthand)")
     print(f"routines: {len(routines)} inherited")
+    print(f"partners: {len(inherited_strength)} inherited (of which {len(inherited_quality)} carry an inherited quality sign too)")
     print("life.span: rolled fresh, written to lifespans.json - never into the child's own file")
     print(f"pool-eligible (pick_pair.py) once current pass number >= {args.pass_number + CHILD_COOLDOWN_PASSES}"
           f"  (child_cooldown_passes={CHILD_COOLDOWN_PASSES}, from _lore/tuning.json)")

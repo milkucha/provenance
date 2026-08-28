@@ -19,5 +19,11 @@
     "parent_experience_fraction_range": [0.1, 0.35],
     "general_knowledge_fraction_range": [0.15, 0.45],
     "criterion_skew_weight": 3
+  },
+  "inherited_relationships": {
+    "_comment": "Design debrief 2026-08-28: a child starts with a faint version of a random slice of both parents' own partners{}/partners_quality{} - 'even if they have not interacted with those connections, they should be tracked as if they have some kind of relationship,' per the user's own framing. fraction_range sizes the random subset of the union of both parents' partner keys (excluding the parents and the child themselves) that gets inherited at all; strength_scale/quality_scale shrink the inherited numbers down from the parent's own accumulated values, since the child hasn't actually lived any of those scenes themselves - only heard of the people.",
+    "fraction_range": [0.1, 0.3],
+    "strength_scale": 0.25,
+    "quality_scale": 0.25
   }
 }

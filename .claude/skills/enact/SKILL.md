@@ -227,7 +227,11 @@ that leads), the needs/provides motivation check (keyed to the **arc-primacy win
 whichever participant that is — not "the traveler's" as a fixed role), the contested roll (only if
 motivated; odds 15%, `_lore/tuning.json` `odds_percent.contested`), the knowledge/criteria gate (only
 if the primacy winner has an ongoing arc — checks whether the OTHER participant's own
-knowledge/criterion touches it at all), the arc-outcome roll (only if the gate hit — **resolved
+knowledge/criterion touches it at all — **and, when it hits, also bumps that peer's own
+`partners_quality` toward the primacy winner**, `record_bond_quality.py`, `+1`/`-1`/`0` for
+`help`/`hinder`/`mixed`-or-`neutral` — a signed number next to `partners`' own plain interaction
+count, added 2026-08-28: `partners` alone only ever said two characters have MET, never whether
+those meetings went well), the arc-outcome roll (only if the gate hit — **resolved
 before the scene is written on purpose**, since writing dialogue first and rolling after risks the
 roll contradicting what was already dramatized; **now contested-aware** — a contested scene shifts
 the odds toward `reverse` by `contested_outcome_shift` points, `_lore/tuning.json`, same "shifts the
@@ -573,8 +577,12 @@ On `reproduces: true`, compose the child's name — a plausible blend of both pa
 from `name_lead`'s side (the one thing about a birth that can't be scripted) — then run
 `py scripts/lore/generate_offspring.py --parent-a <slug> --parent-b <slug> --name "<composed name>" --pass-number <N>`
 — writes a `tales.entries` birth tale (`id: birth_of_<key>`) and handles knowledge inheritance in
-the same call. **Also rewrite the inherited routine's `routine_actions` line so it reads as this
-child's own progression of actions, not a verbatim copy of the parent's** (same discipline
+the same call — **also seeds the child's own `partners`/`partners_quality`** with a scaled-down
+random slice of both parents' own social ties (added 2026-08-28, `inherited_relationships` in
+`_lore/tuning.json`), so a family's social circle is on the child's file from birth even before
+they've lived a single scene of their own. **Also rewrite the inherited routine's `routine_actions`
+line so it reads as this child's own progression of actions, not a verbatim copy of the parent's**
+(same discipline
 `/character` Step 8 teaches from the start) — keep the same `location`/`context`, reword only
 `routine_actions`. A parent's *"opens the stall at dawn, greets regulars, haggles with a supplier
 midday, closes up at dusk"* might become, for the child, *"minds the stall while his mother

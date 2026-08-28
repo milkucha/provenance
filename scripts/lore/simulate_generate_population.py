@@ -225,6 +225,10 @@ def run_pass(state: State, pass_number: int) -> str:
         gate_hit = gate_res["gate"] == "hit"
         if gate_hit:
             inclined = gate_res.get("inclined", "neutral")
+            other_key = p2 if primacy == p1 else p1
+            quality_delta = lib.BOND_QUALITY_DELTA[inclined]
+            if quality_delta:
+                lib.record_bond_quality(other_key, primacy, quality_delta)
             outcome = roll_arc_outcome(inclined, contested=contested)
             arc.setdefault("history", []).append({"pass": pass_number, "outcome": outcome})
             score = tally(arc["history"])
