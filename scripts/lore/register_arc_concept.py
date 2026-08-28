@@ -3,9 +3,9 @@ Register a freshly-authored arc's own concept tag as a real concepts[] entry in 
 permanent-automation half of the 2026-08-11 fix (the one-time catch-up half was
 promote_arc_concepts.py, run once by hand; this script is what keeps the gap from reopening).
 
-Call this immediately after any arc gets authored or re-authored in /simulate's extended mode -
-Step 3's initial arc-authoring moment (a character's first primacy win as home_frame with no
-existing arc) and Step 11's "failed arc gets a fresh one authored" case both qualify. No-ops
+Call this immediately after any arc gets authored or re-authored via `/enact`'s `arc_authoring_needed`
+judgment slot (Step 5b) - a character's first primacy win as home_frame with no existing arc, and a
+failed arc getting a fresh one authored, both qualify. No-ops
 cleanly if the concept is already registered (e.g. a transform or death-legacy reuses an existing
 concept tag rather than minting a new one) - never overwrites an existing entry.
 

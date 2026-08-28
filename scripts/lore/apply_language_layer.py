@@ -1,7 +1,7 @@
 """
 Applies the single batched subagent pass's output back onto the character files -
-`/simulate -generate`'s Phase C (see `.claude/skills/simulate/SKILL.md`'s "-generate" mode, Step 5,
-and `simulate_generate_population.py`'s own docstring for why this is batched at all rather than
+`/generate`'s own Step 5 (see `.claude/skills/generate/SKILL.md`, and
+`simulate_generate_population.py`'s own docstring for why this is batched at all rather than
 one dispatch per birth/arc).
 
 Reads two files at the worktree root:
@@ -39,7 +39,7 @@ mirroring the interactive skill's own rule that only a genuinely-authored arc ge
 transform or death-legacy reuses an existing tag and is never routed through this script at all).
 
 Finally runs `build_source_index.py` once (the interactive skill's own Step 17 batch tidy-up) and
-archives both pending files under `_generation_archive/` so a later `-generate` run in the same
+archives both pending files under `_generation_archive/` so a later `/generate` run in the same
 worktree starts from a clean pending manifest.
 
 Usage:

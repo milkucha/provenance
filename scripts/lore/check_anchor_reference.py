@@ -1,6 +1,6 @@
 """
 Check whether any claims from a just-recorded scene reference a character's criterion.anchor - the
-"reference gate" that opens /enact Step 5b: "a pointer comparison, not a judgement about how upsetting
+"reference gate" that opens /enact Step 8: "a pointer comparison, not a judgement about how upsetting
 something was... never score intensity." That comparison is exactly what this script does, mechanically,
 so the model's job starts at "does the gate matter here" already answered, not at reading every claim's
 `about` field against the anchor string by eye.

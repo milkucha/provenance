@@ -32,7 +32,7 @@ thing, and never something the system signals in advance — see `scripts/lore/h
 Whether a scene was the last is only knowable afterward, mechanically, once it's already closed. Word
 of the death itself then reaches others the ordinary way — nobody present has to witness or announce
 it; it simply becomes known, ex post facto, the way anything else becomes known here (see
-`.claude/skills/enact/SKILL.md` Step 5b).
+`.claude/skills/enact/SKILL.md` Step 8).
 
 ## Why it is a fact and not lore
 

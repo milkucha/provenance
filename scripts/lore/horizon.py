@@ -22,12 +22,12 @@ count from.
 
 `ending` is `lived >= span` against the secretly-rolled `span`. Call this script before a scene and
 it will always read `false` - the scene that turns out to be the character's last still has
-`lived == span - 1` going in, so there is nothing to detect yet. Only after /enact Step 5 increments
+`lived == span - 1` going in, so there is nothing to detect yet. Only after /enact Step 8 increments
 `life.lived` for the scene just played does `ending` become knowable - because it isn't a fact until
 then. There is no character-side knowledge to protect here the way there is with `band`: a character
 does not experience their own death, and their last scene is not written any differently from any
-other. What changes is what happens *after* it closes - see .claude/skills/enact/SKILL.md Step 5b
-point 6 and _lore/facts/life_is_finite.md. `ending` must never be consulted before Step 5, and its
+other. What changes is what happens *after* it closes - see .claude/skills/enact/SKILL.md Step 8
+point 6 and _lore/facts/life_is_finite.md. `ending` must never be consulted before Step 8, and its
 pre-scene value must never be treated as informative (it always says the same thing: not yet).
 
 Usage:

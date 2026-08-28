@@ -1,8 +1,8 @@
 """
-Shared plumbing for /simulate's mechanical pass pipeline - originally lived only inside
-simulate_generate_population.py (the `-generate` mode driver), extracted 2026-08-13 so the
-interactive/showcase-trail mode's own pre-scene and post-scene drivers (simulate_pass_brief.py,
-simulate_pass_resolve.py) can reuse the exact same tested sibling-script wrappers instead of a
+Shared plumbing for /enact's mechanical grounding block - originally lived only inside
+simulate_generate_population.py (the `/generate` driver), extracted 2026-08-13 so
+simulate_pass_brief.py (`/enact`'s own Step 4) and apply_death_legacy.py/roll_death_legacy.py
+(`/enact`'s own Step 8) can reuse the exact same tested sibling-script wrappers instead of a
 second, subtly-different reimplementation. Not a standalone script - import from a sibling driver.
 
 Step 5's context lookup is folded directly into `resolve_location()` here (design debrief
@@ -144,7 +144,7 @@ def ancestors_of(key: str, cache: dict | None = None) -> set:
     """Every ancestor of `key`, walking `parents` all the way up (parents, grandparents,
     great-grandparents, ...) - not just the immediate one. A founder (no `parents` field) returns an
     empty set. `cache`, if given, memoizes per-key results across many calls in one long-running
-    process (2026-08-17 fix, see LAB_REPORT.md Run 4/5: `-generate` mode calls this every pass for
+    process (2026-08-17 fix, see LAB_REPORT.md Run 4/5: `/generate` calls this every pass for
     up to thousands of passes, and a lineage 20+ generations deep would otherwise re-walk and re-load
     the same ancestor chain from disk repeatedly)."""
     if cache is not None and key in cache:
@@ -163,7 +163,7 @@ def already_related(key1: str, char1: dict, key2: str, char2: dict, cache: dict 
     of generations - parent, grandparent, great-grandparent, ...), or they share at least one parent
     (full or half sibling). Cousins (share only a grandparent, not a parent) are deliberately
     allowed - excluding them too would exhaust a small closed founding population's eligible pairs
-    even faster, and `-generate` mode's own intent is a starting population that stays somewhat
+    even faster, and `/generate`'s own intent is a starting population that stays somewhat
     homogeneous (a town/dynasty), not one engineered for maximum diversity. See LAB_REPORT.md Run 4's
     entry on population convergence for why this replaced the old direct-parent-only check (2026-08-17)."""
     if key2 in ancestors_of(key1, cache) or key1 in ancestors_of(key2, cache):
@@ -176,7 +176,7 @@ def peer_knowledge_items(character: dict, cap: int = 15) -> list:
     `about` tag come first (richest, narrated text - what /enact's interactive mode actually
     produces). Any remaining cap budget is filled with a random sample of the character's own
     `knowledge.education.items` (2026-08-17 fix, see LAB_REPORT.md Run 4: the gate previously only
-    ever saw `about`-tagged experience entries, which nothing in `-generate` mode's own data pipeline
+    ever saw `about`-tagged experience entries, which nothing in `/generate`'s own data pipeline
     produces - `generate_offspring.py` only ever appends bare, untagged strings - so the gate silently
     missed every single time across a whole 2000-pass run, for every character, founders included. A
     bare education item doubles as both its own searchable text and its own tag, since that's exactly

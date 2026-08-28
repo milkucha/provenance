@@ -1,6 +1,6 @@
 """
 Apply a decided set of changes to one character's _lore/characters/<key>.json - the mechanical half
-of /enact Step 5b (points 3-5) and Step 6. Every value this script writes is something the caller (the
+of /enact Step 8 (points 3-5) and Step 10. Every value this script writes is something the caller (the
 model running /enact) already decided; this script only owns getting it into the file correctly -
 incrementing counters, appending to the right array, clearing the right pair of fields on a break -
 instead of that being a hand-edited JSON diff every single pass.
@@ -27,11 +27,11 @@ A break clears standard/wasted_life to blank and keeps the old values in history
 not pass --new-standard/--new-wasted-life here; the gap is deliberately left open for a future pass
 or /character session to fill, per Step 6 move 3.
 
-Drift bookkeeping (Step 5b point 4, only when honoring the criterion cost something this scene):
+Drift bookkeeping (Step 8 point 4, only when honoring the criterion cost something this scene):
 
     py scripts/lore/update_character.py nerkeli --cost-ledger "Turned down Auroboro III's offer, staying with routes instead of stories (nerkeli_auroboro_iii_terfila_plaza)."
 
-Recording a synthesis (Step 5c point 8, one call per synthesis - call again for a second one the
+Recording a synthesis (Step 9 point 8, one call per synthesis - call again for a second one the
 same scene, since --add-synthesis only takes one --about pair and one --text per call):
 
     py scripts/lore/update_character.py nerkeli \\
@@ -76,8 +76,8 @@ def main() -> None:
     parser.add_argument("--distrusts", default=None, help="New criterion.distrusts value, if this outcome moved it")
     parser.add_argument("--cost-ledger", action="append", default=[], dest="cost_ledger", help="Append one criterion.cost_ledger entry. Repeatable.")
     parser.add_argument("--deceased", action="store_true", help="Set life.deceased true directly. For a full death (tale, notify, circle), use record_death.py instead - this flag alone does none of that.")
-    parser.add_argument("--add-synthesis", action="store_true", help="Append one knowledge.experience synthesis entry (/enact Step 5c). Requires exactly two --about and one --text. Call again for a second synthesis the same scene.")
-    parser.add_argument("--add-grounded-experience", action="store_true", help="Append one knowledge.experience entry with a real 'about' ref, reused from a matching hearsay claim (/enact Step 6). Requires one or more --about and one --text. Call again for a second grounded entry the same scene.")
+    parser.add_argument("--add-synthesis", action="store_true", help="Append one knowledge.experience synthesis entry (/enact Step 9). Requires exactly two --about and one --text. Call again for a second synthesis the same scene.")
+    parser.add_argument("--add-grounded-experience", action="store_true", help="Append one knowledge.experience entry with a real 'about' ref, reused from a matching hearsay claim (/enact Step 10). Requires one or more --about and one --text. Call again for a second grounded entry the same scene.")
     parser.add_argument("--about", action="append", default=[], help="A parent/source ref for --add-synthesis (pass exactly twice) or --add-grounded-experience (pass one or more).")
     parser.add_argument("--text", default=None, help="The entry text for --add-synthesis or --add-grounded-experience.")
     args = parser.parse_args()

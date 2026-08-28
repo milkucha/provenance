@@ -2,7 +2,7 @@
 Compute who learns of a character's death directly, and who among them is due a shock.
 
 Used by /enact when a character's last scene closes them out (horizon.py's post-scene "ending" check
-comes back true - see .claude/skills/character/SKILL.md Step 6 and /enact Step 5b point 6). Death
+comes back true - see .claude/skills/character/SKILL.md Step 6 and /enact Step 8 point 6). Death
 itself is handled in two tiers, and this script only ever computes the first:
 
     1. GUARANTEED - two parts, both always notified in full, no sampling:
@@ -26,7 +26,7 @@ itself is handled in two tiers, and this script only ever computes the first:
 
 This script does only the mechanical half. It does NOT decide whether a notified character's
 criterion reacts to the news - that judgement (reject / reinterpret / break, per /character Step 6)
-stays with whoever is running /enact, same division of labor as Step 5b's shock resolution. What this
+stays with whoever is running /enact, same division of labor as Step 8's shock resolution. What this
 script CAN do mechanically is flag which notified characters are even eligible: anyone whose
 criterion.anchor is an `experience: <scene_id>` or `hearsay: <entry>#n` that the deceased was a
 participant in. That's a pointer check, not a judgement call, so it belongs here.

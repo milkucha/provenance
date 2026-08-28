@@ -21,6 +21,27 @@ and open questions that were live at a given point, even ones later settled else
 
 ---
 
+### 2026-08-28 — Architecture reframed to 3 tiers; found this checkout mid-merge with lore staged for deletion
+
+Talked through the README §0 diagram out loud: the old "Foundation/Supporting/Datapack/Resource pack"
+4-layer split conflated inert content with the process that acts on it, and split shipping across two
+layers that are really one export. Reframed as three tiers — **Content** (`_lore/`), **Handlers**
+(skills + scripts + the templates/registries they share), **Shipping** (datapack + resource pack) —
+and rewrote §0's prose/diagram plus `graphifyish.py`'s concept-graph layer defs to match. Also started
+a `Luminacion` → `Provenance` branding sweep (the project's old name), scoped to human-facing text —
+`pack.mcmeta` descriptions, script/skill docstrings, in-game chat prefixes, release zip names — while
+deliberately leaving the lowercase `luminacion` Minecraft namespace (`data/luminacion/`, `luminacion:`
+function calls, `resourcepacks/luminacion/` junction) untouched, since that's load-bearing for the live
+world and this repo's own folder name.
+
+Mid-sweep, discovered the checkout wasn't the clean `provenance-bare` state the session opened on: it's
+actually on `provenance-standalone-merge-bare`, mid an unresolved merge of `provenance-bare` into it,
+with 5 real conflicts (`PRINCIPLES.md`, `VOICE.md`, `TODO.md`, both `graphifyish` outputs) and — far
+more alarming — 172 `_lore/characters/*.json` files staged as deletions. Unclear whether that's
+intentional (building a lore-stripped template branch) or a merge gone wrong; also explains why several
+edits this session weren't persisting to disk. Paused all further changes and asked the user to
+confirm — **open question, unresolved as of this entry.**
+
 ### 2026-08-27 — Grounding, and why it alone won't fix epistemology dominance
 
 Long dialogic session about the standing "everything reads as verification/epistemology" complaint.
@@ -65,3 +86,84 @@ substantive and `CHRONICLE.md` doesn't already have uncommitted changes, blockin
 get the chance to actually check and append rather than just showing the user a message. Known gap:
 the "already touched" check is `git diff`-based, which can't see edits to `CHRONICLE.md` until after
 its first commit (it's currently untracked).
+
+---
+
+**Backfilled below: `provenance-bare`'s `conversation.md` Landmarks, folded in here during the
+2026-08-28 `provenance-bare` → `provenance-standalone` merge** (see the 2026-08-28 entry above) —
+`conversation.md` covered the same "project's own memory of itself" role as this file, independently,
+on that branch; rather than keep two competing chronicles going forward, its history moves here and
+the file itself is retired. Reordered newest-first to match this file's convention; original entries
+otherwise unedited.
+
+### 2026-08-26 to 27 — Provenance, `/start`, and folding extended mode into `/enact`
+
+The project renamed itself from Luminacion to Provenance in the README, leading with the engine rather
+than Minecraft. `/start` shipped as a live welcome banner for a fresh checkout. `/simulate`'s extended
+mode — until now an optional branch — became the only mode: `/enact` against another character now
+always requires routines+arc and always runs the mechanical layer first, with no more freeform
+fallback for an incomplete pair. This is also when voice dictation + TTS got wired up for this
+project, and when `.claude/VOICE.md` (this branch's own, now superseded above) got built — a direct
+response to noticing the README and docs didn't sound like the person building them.
+
+### 2026-08-16 to 17 — Provenance rework, genealogy bugs
+
+Criterion's trust/distrust derivation moved from a hardcoded per-category flag to resolving
+mechanically off an anchor's actual source provenance. A 2000-pass `-generate` run then surfaced real
+bugs in the reproduction mechanism itself (criterion copied verbatim instead of re-derived, arcs
+converging onto ~25 signatures, an unbounded placeholder-slug growth that crashed a deep lineage) —
+each one fixed and logged rather than the run just quietly discarded.
+
+### 2026-08-10 to 13 — Extended mode, Runs 2 and 3
+
+The redesign added routines tied to a real place-type archetype, arcs with progressive state
+(primacy, gate, outcome, transform), reproduction, and death legacy — the governing rule for the whole
+build: minimize the subagent's judgment, so almost every per-pass decision became a script, a dice
+roll, or arithmetic, leaving only scene-prose and a newborn's name-blend as genuine model calls. Run 2
+piloted it on 6 characters, then got extended in place seven more times up to 305 passes on direct
+request rather than as separate runs — and it delivered exactly the material stakes Run 1 was missing:
+arcs that stalled, reversed, transformed, and resolved on real dice rather than smooth convergence;
+four generations of births; deaths that triggered genuine criterion shocks; one arc that stayed open
+for 148 passes before resolving. It also surfaced a real string of bugs worth remembering because of
+what they say about the system's own blind spots: an accent mismatch ("Ilaría" vs. "Ilaria") silently
+broke an entire character's death-notification circle for 115 passes before anyone noticed; hearsay
+was never actually folding back into the concepts it referenced, because `/simulate`'s own recurring
+arc topics had never been registered as real `encodings.json` entries — the corpus looked like it was
+accreting when 325 of 331 references were silently going nowhere; a scene-transcript filename
+collision quietly overwrote earlier dialogue four separate times before a collision guard existed.
+Each was root-caused and fixed. Run 3 then validated `/generate` (300 mechanical passes, zero scenes)
+as a genuinely faster path to a starting population, at the cost of not testing drift itself — why
+`/generate` and `/simulate` stayed two separate commands.
+
+### 2026-08-05 to 09 — `/simulate`, Run 1, and the unattended-run problem
+
+`/simulate` was born to batch `/enact` across a population, run inside a disposable worktree so a
+stress-test run couldn't touch real files. Run 1 (97 passes on 5 characters) delivered real, unchosen
+material consequence — 4 natural deaths, a keeper network that structurally collapsed as the
+population shrank — but also the diagnosis that mattered most: nearly every scene still orbited the
+same one conflict (multiplicity vs. singular truth), because routines at that point were bare
+`{location: weight}` pairs with no authored practice behind them, and arcs were auto-derived from a
+character's existing criterion anchor instead of from what they actually did somewhere. Content
+converging like that was structural, not a prompting problem — it's what led straight into the
+extended-mode redesign above. Separately, what actually ate the most *time* in this stretch wasn't the
+simulation design at all — it was getting a run to survive unattended, overnight, with no permission
+prompts: worktree settings written before `EnterWorktree` instead of after, a relative-path leak that
+silently wrote real scene content into the main checkout, `cd`-in-Bash hard-blocked with no override.
+Each got documented as its own fix rather than papered over, since the failure mode kept recurring in
+slightly different shape until it was actually root-caused.
+
+### 2026-07-30 to 31 — Tale, fact, and criterion
+
+`/tell` and `/discover` (later merged into `/tell`) split off a third and fourth source of truth
+alongside material and hearsay. The criterion mechanism got designed in real time across one long
+session — negative derivation, anchors, the will to live, shocks vs. drift — settling most of the
+shape it still has today. Also the first fully bilingual enactments (Khan Icé, la Feria del Milenio,
+Gok, Bardaglis, Auroboro III) — the in-character register `.claude/VOICE.md`'s original "world voice"
+section was built from.
+
+### 2026-07-24 to 25 — Cold start
+
+First commits: hearsay, the gesture rig, `/character` as a lighter sibling of a full enacted scene.
+The gesture work in particular ran through a lot of in-game trial and error (an elbow joint that
+wouldn't compose with its parent bone, a shared timer that broke once more than one NPC could gesture
+at once) before landing on what's in `GESTURES.md` now.

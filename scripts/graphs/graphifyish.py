@@ -40,8 +40,10 @@ AUTHORS = ROOT / "_lore" / "tales" / "_authors.md"
 DIALOGUE_DIR = ROOT / "data" / "luminacion" / "blabber" / "dialogues"
 OUT_DIR = ROOT / "graphs" / "graphifyish"
 
-# Directories that are never part of the picture.
-SKIP_DIRS = {".git", ".venv", "__pycache__", "node_modules", ".idea", ".vscode"}
+# Directories that are never part of the picture. "worktrees" excludes .claude/worktrees/ -
+# each entry there is a full `git worktree add` checkout, so walking into them would duplicate
+# the entire repo's structure once per live/stale worktree.
+SKIP_DIRS = {".git", ".venv", "__pycache__", "node_modules", ".idea", ".vscode", "worktrees"}
 
 
 def load(path: Path):

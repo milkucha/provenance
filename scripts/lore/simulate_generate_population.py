@@ -1,6 +1,6 @@
 """
 Fast-forward many passes of /simulate's extended-mode mechanic with NO scene-writing and NO
-subagent per pass - built for `/simulate -generate`, whose whole point is producing a large,
+subagent per pass - built for `/generate`, whose whole point is producing a large,
 multi-generation starting population quickly rather than a showcase trail of prose. Every
 mechanical sub-step of the interactive skill's Step 3 (.claude/skills/simulate/SKILL.md) that's
 already backed by a script or plain arithmetic runs here exactly as documented there: pairing,
@@ -20,7 +20,7 @@ than assumed:
    this script writes a placeholder identity immediately (so the child can exist and participate in
    later passes: reproduce, be visited, die) and queues the real content into `_pending_language.json`
    at the worktree root for a SINGLE batched subagent pass at the very end of the whole run (see
-   `.claude/skills/simulate/SKILL.md`'s "-generate" mode, Step 4) - never one dispatch per event.
+   `.claude/skills/generate/SKILL.md`'s Step 4) - never one dispatch per event.
    The placeholder's SLUG is never renamed later, only the human-facing `name` field and prose that
    quotes it (see `apply_language_layer.py`) - this sidesteps rewriting every cross-file slug
    reference (`parents`, `partners`, `leads`, `lifespans.json`, tale ids) for a cosmetic rename.
@@ -43,8 +43,8 @@ misresolve a relative path); a single Python process constructing its own siblin
 failure mode; there is no subagent here to make that mistake, only this file.
 
 The `call()`/`kv()` plumbing and every sibling-script wrapper below now live in simulate_pass_lib.py
-(extracted 2026-08-13) so the interactive skill's own per-pass drivers (simulate_pass_brief.py,
-simulate_pass_resolve.py) can reuse the exact same tested wrappers instead of a second, subtly
+(extracted 2026-08-13) so `/enact`'s own mechanical-block drivers (simulate_pass_brief.py,
+apply_death_legacy.py) can reuse the exact same tested wrappers instead of a second, subtly
 different reimplementation - this file only keeps the parts specific to running N passes with no
 subagent at all: State, queue_arc/maybe_admit_children (the deferred-authoring bookkeeping this mode
 alone needs), and run_pass() itself.
