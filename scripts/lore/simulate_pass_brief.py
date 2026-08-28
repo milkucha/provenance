@@ -15,7 +15,7 @@ must already be settled by the time `/enact`'s own eligibility gate (both partic
 `routines`+`arc`) has already checked these exact two slugs - resolving identity here, after that
 gate already ran, could hand the scene a participant nobody vetted.
 
-Exactly three things are deliberately left undecided here, flagged in the brief for the subagent to
+Exactly two things are deliberately left undecided here, flagged in the brief for the subagent to
 fill - nothing else in this file's output is the subagent's to decide:
   - `arc_authoring_needed` - the fallback path for a character who reached extended-mode play
     without an arc already on file (as of 2026-08-16, `/character` Step 8 authors `arc` at creation
@@ -23,25 +23,29 @@ fill - nothing else in this file's output is the subagent's to decide:
     prior one (`reauthor_failed`/`reauthor_complete` - completing an arc isn't a reason to stop
     having one). Content (about/needs/context/premise) is composed by the subagent, then written
     with write_arc.py (which also registers the concept in the same call).
-  - `contested_hinder_slot` - only present on a contested visit that resolved "hinder" homeward. The
-    subagent may dramatize this against a SPECIFIC existing rival (if one plausibly fits and already
-    has a character file) or keep it ambient/unnamed (the default). If named, call
-    apply_contested_lead.py with the rival's slug.
-  - `reproduction_slot` - only present when an eligible pair's roll came back true. The subagent
-    composes the child's name (a blend leading from `name_lead`'s side) and calls
-    generate_offspring.py itself - the one thing about a birth that can't be scripted.
+  - `contested_hinder_slot` - only present on a contested scene that resolved "hinder" against the
+    arc-primacy winner. The subagent may dramatize this against a SPECIFIC existing rival (if one
+    plausibly fits and already has a character file) or keep it ambient/unnamed (the default). If
+    named, call apply_contested_lead.py with the rival's slug.
+
+Reproduction is deliberately NOT decided here any more (moved 2026-08-28, design debrief: the
+eligibility+roll used to run before the scene so a birth could be dramatized inside it; now it runs
+strictly AFTER, via the sibling script simulate_pass_reproduction.py, so a birth becomes a short coda
+after the scene instead). Partner counts still get bumped here, at the very top, the moment the pair
+is fixed - unconditional bookkeeping that has nothing to do with whether a birth happens, and
+simulate_pass_reproduction.py reads the counts this call already wrote.
 
 Everything else in the brief is already fixed and written to disk by the time this script returns:
-arc gate/outcome/tally (including any transform), partner counts, which participants are even in the
-scene, where, why, and whether contested - the subagent's job past this point is /enact Steps 3b, 5,
-5b, 6 (the scene itself, hearsay mutation, shock resolution, drift) plus the three slots above, never
-re-deciding anything already settled here.
+arc gate/outcome/tally (including any transform), partner counts, who's home vs visiting and why,
+and whether contested - the subagent's job past this point is /enact Steps 3b, 5, 5b, 6 (the scene
+itself, hearsay mutation, shock resolution, drift) plus the two slots above, never re-deciding
+anything already settled here.
 
 Writes `.simulate_pass_brief.json` at the worktree root (same location as .simulate_snapshot.json) -
-`/enact`'s own Step 5b reads it back to write the scene and resolve the three judgment slots above;
-nothing reads it again after that. Post-scene mechanics (horizon re-check, death, death-legacy) are
-`/enact` Step 8's own concern from there, working off the participant slugs directly, not this file -
-this script never touches life.lived.
+`/enact`'s own Step 5b reads it back to write the scene and resolve the two judgment slots above;
+nothing reads it again after that. Post-scene mechanics (horizon re-check, death, death-legacy,
+reproduction) are `/enact` Step 8's own concern from there, working off the participant slugs
+directly, not this file - this script never touches life.lived.
 
 Usage:
     py "<worktree>/scripts/lore/simulate_pass_brief.py" --pair khaoe farlis --pass-number 12
@@ -63,51 +67,58 @@ import simulate_pass_lib as lib  # noqa: E402
 def run_pre_scene(p1: str, p2: str, pass_number: int, forced_visit: bool = False) -> dict:
     """`forced_visit=True` means the caller already resolved an unexpired lead of p1's toward p2
     (pick_pair.py + roll_lead_followup.py, run by whoever fixed this pair before calling here) -
-    p1 is always the traveler in that case, visiting p2's own routine location outright, skipping
-    the ordinary home-turf-vs-visit coin flip below."""
+    p1 is always the traveler in that case, home is fixed to p2 outright, skipping the ordinary
+    home-visit coin flip below (roll_home_visit.py) since the lead is a stronger, already-resolved
+    signal.
+
+    Causal order rewritten 2026-08-28 design debrief - see CHRONICLE.md's matching entry for the
+    full reasoning: home/visiting is now decided BEFORE any routine is rolled (not derived after the
+    fact by comparing two independently-rolled routines), only the home participant ever rolls a
+    routine at all, and arc primacy is decided AFTER home/visiting and independently of it - the
+    visiting participant's arc can still be the one that leads the scene. Needs/provides, contested,
+    and the alignment gate all key off whichever arc primacy actually picked, never off "the
+    traveler" as a fixed role."""
     notes = []
     p1_char, p2_char = lib.load_char(p1), lib.load_char(p2)
+
+    # Partner tracking - moved to the very top (2026-08-28 reorder): unconditional bookkeeping the
+    # moment this pair is fixed, with nothing to do with anything decided below.
+    lib.record_partner(p1, p2)
+    lib.record_partner(p2, p1)
+    p1_char, p2_char = lib.load_char(p1), lib.load_char(p2)
+
+    # Home/visiting, then (home only) routine, then location/context assembly - no script call left
+    # for the location step itself, see simulate_pass_lib.assemble_location()'s own docstring.
     if forced_visit:
+        home, visiting = p2, p1
         notes.append(f"{p1} followed a lead to {p2}")
-
-    # Steps 3/4/5 - routine, location, and context+texture, folded into one call
-    p2_routine = lib.roll_routine(p2_char["routines"])
-    if forced_visit:
-        context = lib.resolve_context_for_location(p2_char, p2_routine)
-        loc = {
-            "mode": "visit", "location": p2_routine, "home_frame": p2, "traveler": p1,
-            "context": context, "texture": lib.CONTEXTS[context]["texture"],
-            "provides": lib.CONTEXTS[context]["provides"],
-        }
     else:
-        p1_routine = lib.roll_routine(p1_char["routines"])
-        loc = lib.resolve_location(p1, p1_routine, p1_char, p2, p2_routine, p2_char)
-
-    mode, location, home_frame = loc["mode"], loc["location"], loc["home_frame"]
-    traveler = loc["traveler"] if loc["traveler"] != "none" else None
+        home, visiting = lib.roll_home_visit(p1, p2)
+    home_char = p1_char if home == p1 else p2_char
+    home_routine = lib.roll_routine(home_char["routines"])
+    loc = lib.assemble_location(home, home_routine, visiting, home_char)
+    location, home_frame, traveler = loc["location"], loc["home_frame"], loc["traveler"]
     context, texture, provides = loc["context"], loc["texture"], loc["provides"]
 
-    # Step 6 - needs/provides (visit only, traveler must have an active arc with needs)
-    motivated, matched_need, matched_provide = False, None, None
-    if mode == "visit" and traveler:
-        traveler_char = p1_char if traveler == p1 else p2_char
-        t_arc = traveler_char.get("arc")
-        if t_arc and t_arc.get("resolution") == "ongoing" and t_arc.get("needs"):
-            np_res = lib.check_needs_provides(t_arc["needs"], provides)
-            motivated = np_res["match"] == "true"
-            if motivated:
-                matched_need = np_res.get("matched_need")
-                matched_provide = np_res.get("matched_provide")
-
-    # Step 9 (roll only) - contested, only if motivated
-    contested = lib.roll_contested() if motivated else False
-
-    # Steps 7/8/10/11 - arc primacy, gate, outcome, tally/threshold (including transform)
+    # Arc primacy - decided next, independently of who's home vs visiting.
     primacy = lib.roll_arc_primacy(p1, p2)
     primary_char = p1_char if primacy == p1 else p2_char
     other_char = p2_char if primacy == p1 else p1_char
     arc = primary_char.get("arc")
 
+    # Needs/provides - keyed to the primacy winner's own arc, whichever participant that is.
+    motivated, matched_need, matched_provide = False, None, None
+    if arc and arc.get("resolution") == "ongoing" and arc.get("needs"):
+        np_res = lib.check_needs_provides(arc["needs"], provides)
+        motivated = np_res["match"] == "true"
+        if motivated:
+            matched_need = np_res.get("matched_need")
+            matched_provide = np_res.get("matched_provide")
+
+    # Contested - roll only if motivated, same as always.
+    contested = lib.roll_contested() if motivated else False
+
+    # Gate, outcome (now contested-aware), tally/threshold (including transform)
     arc_authoring_needed = None
     gate_hit, inclined, arc_outcome, tally_result, matched_about = False, None, None, None, []
 
@@ -126,7 +137,7 @@ def run_pre_scene(p1: str, p2: str, pass_number: int, forced_visit: bool = False
         gate_hit = gate_res["gate"] == "hit"
         if gate_hit:
             inclined = gate_res.get("inclined", "neutral")
-            arc_outcome = lib.roll_arc_outcome(inclined)
+            arc_outcome = lib.roll_arc_outcome(inclined, contested=contested)
             arc.setdefault("history", []).append({"pass": pass_number, "outcome": arc_outcome})
             score = lib.tally(arc["history"])
             if score >= lib.ARC_RESOLUTION_THRESHOLD:
@@ -163,43 +174,21 @@ def run_pre_scene(p1: str, p2: str, pass_number: int, forced_visit: bool = False
                 notes.append(f"{primacy}'s arc: {arc_outcome}")
             lib.save_char(primacy, primary_char)
 
-    # Step 9 (consequence slot) - only surfaced on a contested visit that resolved "hinder"
+    # Consequence slot - only surfaced on a contested scene that resolved "hinder"
     contested_hinder_slot = None
-    if contested and gate_hit and inclined == "hinder" and traveler:
+    if contested and gate_hit and inclined == "hinder":
         contested_hinder_slot = {
             "traveler": traveler, "supplier": home_frame, "matched_provide": matched_provide,
         }
 
-    # Step 12 - partner tracking, always both directions
-    lib.record_partner(p1, p2)
-    lib.record_partner(p2, p1)
-    p1_char, p2_char = lib.load_char(p1), lib.load_char(p2)
-
-    # Step 13 (eligibility + roll only) - name composition and generate_offspring.py stay with
-    # the subagent; this driver deliberately never calls generate_offspring.py itself.
-    reproduction_slot = None
-    count_ab = p1_char.get("partners", {}).get(p2, 0)
-    count_ba = p2_char.get("partners", {}).get(p1, 0)
-    eligible = max(count_ab, count_ba) >= lib.PARTNER_THRESHOLD
-    cooldown_ok = all(
-        c.get("last_reproduced_pass") is None
-        or pass_number - c["last_reproduced_pass"] >= lib.PARENT_COOLDOWN_PASSES
-        for c in (p1_char, p2_char)
-    )
-    already_related = lib.already_related(p1, p1_char, p2, p2_char)
-    if eligible and cooldown_ok and not already_related:
-        repro = lib.roll_reproduction(p1, p2)
-        if repro["reproduces"] == "true":
-            name_lead = repro["name_lead"]
-            other_parent = p2 if name_lead == p1 else p1
-            reproduction_slot = {"parent_a": p1, "parent_b": p2, "name_lead": name_lead, "other_parent": other_parent}
-            notes.append(f"{p1}+{p2} eligible and rolled true - name composition needed (lead: {name_lead})")
+    # Reproduction is deliberately NOT decided here (2026-08-28: moved to
+    # simulate_pass_reproduction.py, run after the scene) - see this function's own docstring.
 
     return {
         "pass": pass_number,
         "participant_1": p1, "participant_2": p2,
         "forced_visit": forced_visit,
-        "mode": mode, "location": location, "home_frame": home_frame, "traveler": traveler,
+        "location": location, "home_frame": home_frame, "traveler": traveler,
         "context": context, "texture": texture,
         "motivated": motivated, "matched_need": matched_need, "matched_provide": matched_provide,
         "contested": contested,
@@ -209,7 +198,6 @@ def run_pre_scene(p1: str, p2: str, pass_number: int, forced_visit: bool = False
         },
         "arc_authoring_needed": arc_authoring_needed,
         "contested_hinder_slot": contested_hinder_slot,
-        "reproduction_slot": reproduction_slot,
         "character_files": {
             p1: str(lib.CHAR_DIR / f"{p1}.json"), p2: str(lib.CHAR_DIR / f"{p2}.json"),
         },
@@ -231,7 +219,7 @@ def main() -> None:
 
     BRIEF_PATH.write_text(json.dumps(brief, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
-    print(f"pass {brief['pass']}: {brief['participant_1']} x {brief['participant_2']} ({brief['mode']} at {brief['location']})")
+    print(f"pass {brief['pass']}: {brief['participant_1']} x {brief['participant_2']} (home: {brief['home_frame']}, at {brief['location']})")
     if brief["forced_visit"]:
         print(f"  forced visit (lead followup): {brief['participant_1']} sought out {brief['participant_2']}")
     print(f"  context: {brief['context']}  |  motivated: {brief['motivated']}" + (f" ({brief['matched_need']} <-> {brief['matched_provide']})" if brief["motivated"] else ""))
@@ -248,9 +236,7 @@ def main() -> None:
     if brief["contested_hinder_slot"]:
         c = brief["contested_hinder_slot"]
         print(f"JUDGMENT SLOT - contested hinder: may name an existing rival for {c['traveler']} (supplier: {c['supplier']}, provide: {c['matched_provide']}) - if named, run apply_contested_lead.py; otherwise leave ambient")
-    if brief["reproduction_slot"]:
-        r = brief["reproduction_slot"]
-        print(f"JUDGMENT NEEDED - child name: blend for {r['parent_a']}+{r['parent_b']}, leading from {r['name_lead']}'s name, then run generate_offspring.py")
+    print("(reproduction is no longer decided here - run simulate_pass_reproduction.py after the scene)")
 
 
 if __name__ == "__main__":

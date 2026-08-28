@@ -3,10 +3,12 @@ Fast-forward many passes of /simulate's extended-mode mechanic with NO scene-wri
 subagent per pass - built for `/generate`, whose whole point is producing a large,
 multi-generation starting population quickly rather than a showcase trail of prose. Every
 mechanical sub-step of the interactive skill's Step 3 (.claude/skills/simulate/SKILL.md) that's
-already backed by a script or plain arithmetic runs here exactly as documented there: pairing,
-lead-followup, routine/location rolls, context lookup, needs/provides, arc primacy/gate/contested/
-outcome, tally+threshold (including transform), partner tracking, reproduction eligibility+roll,
-offspring generation, life.lived + death + death-legacy.
+already backed by a script or plain arithmetic runs here exactly as documented there, in the same
+causal order (rewritten 2026-08-28 - see CHRONICLE.md's matching entry): pairing, lead-followup,
+partner tracking, home/visit roll, home-only routine roll, location/context assembly, arc primacy,
+needs/provides (keyed to the primacy winner), contested, gate, contested-aware outcome,
+tally+threshold (including transform), reproduction eligibility+roll, offspring generation,
+life.lived + death + death-legacy.
 
 Three deliberate scope differences from the interactive skill, all confirmed with the user rather
 than assumed:
@@ -69,13 +71,13 @@ LOG_PATH = ROOT / "GENERATION_LOG.md"
 
 sys.path.insert(0, str(SCRIPTS_DIR))
 import simulate_pass_lib as lib  # noqa: E402
+import simulate_pass_reproduction as repro_lib  # noqa: E402
 
 PARTNER_THRESHOLD = lib.PARTNER_THRESHOLD
 PARENT_COOLDOWN_PASSES = lib.PARENT_COOLDOWN_PASSES
 CHILD_COOLDOWN_PASSES = lib.CHILD_COOLDOWN_PASSES
 LEAD_EXPIRY_PASSES = lib.LEAD_EXPIRY_PASSES
 ARC_RESOLUTION_THRESHOLD = lib.ARC_RESOLUTION_THRESHOLD
-CONTEXTS = lib.CONTEXTS
 
 load_char = lib.load_char
 save_char = lib.save_char
@@ -84,15 +86,15 @@ kv = lib.kv
 notified_keys = lib.notified_keys
 pick_pair = lib.pick_pair
 roll_lead_followup = lib.roll_lead_followup
+roll_home_visit = lib.roll_home_visit
 roll_routine = lib.roll_routine
-resolve_context_for_location = lib.resolve_context_for_location
+assemble_location = lib.assemble_location
 check_needs_provides = lib.check_needs_provides
 roll_arc_primacy = lib.roll_arc_primacy
 check_arc_alignment = lib.check_arc_alignment
 roll_contested = lib.roll_contested
 roll_arc_outcome = lib.roll_arc_outcome
 record_partner = lib.record_partner
-roll_reproduction = lib.roll_reproduction
 generate_offspring = lib.generate_offspring
 horizon = lib.horizon
 record_death = lib.record_death
@@ -173,44 +175,48 @@ def run_pass(state: State, pass_number: int) -> str:
                 forced_visit = True
                 notes.append(f"{p1} followed a lead to {p2}")
 
-    # Step 3/4/5 - routine, location, and context+texture, folded into one call
-    p2_routine = roll_routine(p2_char["routines"])
-    if forced_visit:
-        context = resolve_context_for_location(p2_char, p2_routine)
-        loc = {
-            "mode": "visit", "location": p2_routine, "home_frame": p2, "traveler": p1,
-            "context": context, "texture": CONTEXTS[context]["texture"],
-            "provides": CONTEXTS[context]["provides"],
-        }
-    else:
-        p1_routine = roll_routine(p1_char["routines"])
-        loc = lib.resolve_location(p1, p1_routine, p1_char, p2, p2_routine, p2_char)
+    # Partner tracking - moved to the front (2026-08-28 reorder), unconditional the moment p1/p2
+    # are finalized (after any lead-override reassignment above); has nothing to do with anything
+    # decided below.
+    record_partner(p1, p2)
+    record_partner(p2, p1)
+    p1_char, p2_char = load_char(p1), load_char(p2)
 
-    mode, location, home_frame = loc["mode"], loc["location"], loc["home_frame"]
-    traveler = loc["traveler"] if loc["traveler"] != "none" else None
+    # Home/visiting, then (home only) routine, then location/context assembly - no script call
+    # left for the location step itself (2026-08-28 reorder: decided BEFORE any routine is rolled,
+    # not derived afterward by comparing two independently-rolled routines; only the home
+    # participant ever rolls one now).
+    if forced_visit:
+        home, visiting = p2, p1
+    else:
+        home, visiting = roll_home_visit(p1, p2)
+    home_char = p1_char if home == p1 else p2_char
+    home_routine = roll_routine(home_char["routines"])
+    loc = assemble_location(home, home_routine, visiting, home_char)
+    location, home_frame, traveler = loc["location"], loc["home_frame"], loc["traveler"]
     context, provides = loc["context"], loc["provides"]
 
-    # Step 6 - needs/provides (visit only, traveler must have an active arc with needs)
-    motivated, contested = False, False
-    if mode == "visit" and traveler:
-        traveler_char = p1_char if traveler == p1 else p2_char
-        t_arc = traveler_char.get("arc")
-        if t_arc and t_arc.get("resolution") == "ongoing" and t_arc.get("needs"):
-            np_res = check_needs_provides(t_arc["needs"], provides)
-            motivated = np_res["match"] == "true"
-
-    # Step 9 - contested (only if motivated). Never names a rival (see module docstring point 3) -
-    # rolled and reported, but never writes `leads`/a rival note, since that requires an invented
-    # identity no script or dice roll here can supply.
-    if motivated:
-        contested = roll_contested()
-
-    # Step 7/8 - arc primacy + gate
+    # Arc primacy - decided next, independently of who's home vs visiting (2026-08-28 reorder: the
+    # visiting participant's arc can still be the one that leads the scene).
     primacy = roll_arc_primacy(p1, p2)
     primary_char = p1_char if primacy == p1 else p2_char
     other_char = p2_char if primacy == p1 else p1_char
     arc = primary_char.get("arc")
 
+    # Needs/provides - keyed to the primacy winner's own arc, whichever participant that is
+    # (2026-08-28 reorder: not "the traveler's" as a fixed role).
+    motivated, contested = False, False
+    if arc and arc.get("resolution") == "ongoing" and arc.get("needs"):
+        np_res = check_needs_provides(arc["needs"], provides)
+        motivated = np_res["match"] == "true"
+
+    # Contested (only if motivated). Never names a rival (see module docstring point 3) - rolled
+    # and reported, but never writes `leads`/a rival note, since that requires an invented identity
+    # no script or dice roll here can supply.
+    if motivated:
+        contested = roll_contested()
+
+    # Gate + outcome (now contested-aware) + tally
     if not arc:
         if primacy == home_frame and queue_arc(state, primacy, primary_char, "first", pass_number):
             notes.append(f"{primacy} queued for a first arc")
@@ -219,7 +225,7 @@ def run_pass(state: State, pass_number: int) -> str:
         gate_hit = gate_res["gate"] == "hit"
         if gate_hit:
             inclined = gate_res.get("inclined", "neutral")
-            outcome = roll_arc_outcome(inclined)
+            outcome = roll_arc_outcome(inclined, contested=contested)
             arc.setdefault("history", []).append({"pass": pass_number, "outcome": outcome})
             score = tally(arc["history"])
             if score >= ARC_RESOLUTION_THRESHOLD:
@@ -240,55 +246,41 @@ def run_pass(state: State, pass_number: int) -> str:
                 notes.append(f"{primacy}'s arc: {outcome}")
             save_char(primacy, primary_char)
 
-    # Step 12 - partner tracking, always both directions
-    record_partner(p1, p2)
-    record_partner(p2, p1)
-    p1_char, p2_char = load_char(p1), load_char(p2)
-
-    # Step 13 - reproduction eligibility + roll
-    count_ab = p1_char.get("partners", {}).get(p2, 0)
-    count_ba = p2_char.get("partners", {}).get(p1, 0)
-    eligible = max(count_ab, count_ba) >= PARTNER_THRESHOLD
-    cooldown_ok = all(
-        c.get("last_reproduced_pass") is None
-        or pass_number - c["last_reproduced_pass"] >= PARENT_COOLDOWN_PASSES
-        for c in (p1_char, p2_char)
-    )
-    already_related = lib.already_related(p1, p1_char, p2, p2_char, cache=state.ancestor_cache)
-
-    if eligible and cooldown_ok and not already_related:
-        repro = roll_reproduction(p1, p2)
-        if repro["reproduces"] == "true":
-            name_lead = repro["name_lead"]
-            other_parent = p2 if name_lead == p1 else p1
-            state.child_counter += 1
-            # Bounded and fixed-width on purpose: chaining both parents' own slugs into a child's
-            # placeholder (the pre-2026-08-17 scheme) compounds every generation, since a
-            # placeholder is never renamed and a grandchild's parent slug is already a chain of
-            # its own parents' - by generation 5-6 this blew past Windows' 260-char path limit on
-            # the birth tale write (confirmed the hard way at pass 561 of a 2000-pass run). The
-            # fixed 4-digit width also keeps every placeholder safe against apply_language_layer.py's
-            # plain-substring rename (child_0003 is never a substring of child_0037, unlike
-            # unpadded 3 vs 37) - lineage is already carried in full in pending["children"]'s own
-            # parent_a/parent_b fields, so the slug itself never needed to encode it.
-            placeholder = f"placeholder_child_{state.child_counter:04d}"
-            birth = generate_offspring(p1, p2, placeholder, pass_number)
-            child = load_char(birth["slug"])
-            state.pending_births.append((birth["slug"], birth["eligible_pass"]))
-            state.generation[birth["slug"]] = 1 + max(
-                state.generation.get(p1, 0), state.generation.get(p2, 0)
-            )
-            lead_char, other_char_ = (p1_char, p2_char) if name_lead == p1 else (p2_char, p1_char)
-            state.pending["children"].append({
-                "placeholder_slug": birth["slug"],
-                "placeholder_name": placeholder,
-                "name_lead": name_lead,
-                "parent_a": {"slug": name_lead, "name": lead_char.get("name"), "origin": lead_char.get("origin", ""), "location": lead_char.get("location", ""), "backstory": lead_char.get("backstory", "")},
-                "parent_b": {"slug": other_parent, "name": other_char_.get("name"), "origin": other_char_.get("origin", ""), "location": other_char_.get("location", ""), "backstory": other_char_.get("backstory", "")},
-                "birth_pass": pass_number,
-                "routines": child.get("routines", []),
-            })
-            notes.append(f"{p1}+{p2} had a child ({birth['slug']}, generation {state.generation[birth['slug']]})")
+    # Reproduction eligibility + roll - shared with the interactive path's own post-scene check
+    # (simulate_pass_reproduction.py) rather than a third copy of the same logic; this file's own
+    # ancestor_cache still gets threaded through for the same perf reason it always was.
+    repro = repro_lib.check_and_roll(p1, p2, pass_number, ancestor_cache=state.ancestor_cache)
+    if repro["reproduces"]:
+        name_lead = repro["name_lead"]
+        other_parent = repro["other_parent"]
+        state.child_counter += 1
+        # Bounded and fixed-width on purpose: chaining both parents' own slugs into a child's
+        # placeholder (the pre-2026-08-17 scheme) compounds every generation, since a
+        # placeholder is never renamed and a grandchild's parent slug is already a chain of
+        # its own parents' - by generation 5-6 this blew past Windows' 260-char path limit on
+        # the birth tale write (confirmed the hard way at pass 561 of a 2000-pass run). The
+        # fixed 4-digit width also keeps every placeholder safe against apply_language_layer.py's
+        # plain-substring rename (child_0003 is never a substring of child_0037, unlike
+        # unpadded 3 vs 37) - lineage is already carried in full in pending["children"]'s own
+        # parent_a/parent_b fields, so the slug itself never needed to encode it.
+        placeholder = f"placeholder_child_{state.child_counter:04d}"
+        birth = generate_offspring(p1, p2, placeholder, pass_number)
+        child = load_char(birth["slug"])
+        state.pending_births.append((birth["slug"], birth["eligible_pass"]))
+        state.generation[birth["slug"]] = 1 + max(
+            state.generation.get(p1, 0), state.generation.get(p2, 0)
+        )
+        lead_char, other_char_ = (p1_char, p2_char) if name_lead == p1 else (p2_char, p1_char)
+        state.pending["children"].append({
+            "placeholder_slug": birth["slug"],
+            "placeholder_name": placeholder,
+            "name_lead": name_lead,
+            "parent_a": {"slug": name_lead, "name": lead_char.get("name"), "origin": lead_char.get("origin", ""), "location": lead_char.get("location", ""), "backstory": lead_char.get("backstory", "")},
+            "parent_b": {"slug": other_parent, "name": other_char_.get("name"), "origin": other_char_.get("origin", ""), "location": other_char_.get("location", ""), "backstory": other_char_.get("backstory", "")},
+            "birth_pass": pass_number,
+            "routines": child.get("routines", []),
+        })
+        notes.append(f"{p1}+{p2} had a child ({birth['slug']}, generation {state.generation[birth['slug']]})")
 
     # Step 15/16 - life.lived, death, death-legacy
     for participant in (p1, p2):
@@ -325,7 +317,7 @@ def run_pass(state: State, pass_number: int) -> str:
 
     maybe_admit_children(state, pass_number)
 
-    summary = f"pass {pass_number}: {p1} x {p2} ({mode}"
+    summary = f"pass {pass_number}: {p1} x {p2} (home: {home_frame}"
     if motivated:
         summary += f", motivated{' contested' if contested else ''}"
     summary += ")"

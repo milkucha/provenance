@@ -211,41 +211,52 @@ from there. Add `--forced-visit` only when `/simulate` has already resolved an u
 p1's toward p2 before dispatching here (see its own Step 3) — never set it for a standalone `/enact`
 call, since there's no lead-tracking pool to have resolved one against.
 
-This one call runs, in order: routine rolls (once, or twice for an ordinary pairing — one per
-participant, against each character's own `routines[]` weights), location resolution (home-turf
-pairing or a visit, and who's travelling to whom), the context/texture lookup (a plain
-`_lore/contexts.json` dict lookup, folded into the same call), the needs/provides motivation check
-(only on a visit whose traveler has an ongoing arc with needs), the contested roll (only if
-motivated; odds 15%, `_lore/tuning.json` `odds_percent.contested`), arc primacy (whose arc leads
-this scene), the knowledge/criteria gate (only if the primacy winner has an ongoing arc — checks
-whether the OTHER participant's own knowledge/criterion touches it at all), the arc-outcome roll
-(only if the gate hit — **resolved before the scene is written on purpose**, since writing dialogue
-first and rolling after risks the roll contradicting what was already dramatized), the tally/
-threshold arithmetic (complete/transform/failed/ongoing, against `arc_resolution_threshold: 3`),
-partner tracking (both directions), and the reproduction eligibility+roll (eligibility is inline
-arithmetic — either direction's partner count `>= partner_threshold` (5), neither parent within
-`parent_cooldown_passes` (10) of their last birth, the pair not already related; only then does the
-roll itself run, at 40% odds).
+This one call runs, in order (causal order rewritten 2026-08-28 design debrief — see CHRONICLE.md's
+matching entry for the full reasoning): partner tracking (both directions, unconditional bookkeeping
+the moment the pair is fixed — moved to the front; has nothing to do with anything decided below),
+who's home vs visiting (`roll_home_visit.py`, a flat coin flip for now — **not yet weighted by
+anything**; a not-yet-built survival-pressure mechanism is meant to eventually pull this odds one way
+or another, see `TODO.md`'s "survival mechanism" entry — decided *before* any routine is rolled, not
+derived afterward by comparing two independently-rolled routines), the routine roll (**only for the
+home participant** — the visiting participant simply enters whatever context the home participant's
+own roll produces; no more "coincidence" mode, since there's no second independent routine left for
+it to coincide with), the context/texture lookup (a plain `_lore/contexts.json` dict lookup, folded
+into the same call, no script of its own), arc primacy (whose arc leads this scene — decided *after*
+and *independently of* who's home vs visiting; the visiting participant's arc can still be the one
+that leads), the needs/provides motivation check (keyed to the **arc-primacy winner's** own arc,
+whichever participant that is — not "the traveler's" as a fixed role), the contested roll (only if
+motivated; odds 15%, `_lore/tuning.json` `odds_percent.contested`), the knowledge/criteria gate (only
+if the primacy winner has an ongoing arc — checks whether the OTHER participant's own
+knowledge/criterion touches it at all), the arc-outcome roll (only if the gate hit — **resolved
+before the scene is written on purpose**, since writing dialogue first and rolling after risks the
+roll contradicting what was already dramatized; **now contested-aware** — a contested scene shifts
+the odds toward `reverse` by `contested_outcome_shift` points, `_lore/tuning.json`, same "shifts the
+odds, never decides outright" philosophy as `inclined` itself), and the tally/threshold arithmetic
+(complete/transform/failed/ongoing, against `arc_resolution_threshold: 3`).
+
+**Reproduction is deliberately NOT part of this call any more** (moved 2026-08-28 — see the new
+Step 8 point 8 below). It used to run here, pre-scene, so a birth could be dramatized inside the same
+scene; now it runs strictly after the scene, hearsay, and shock resolution, so it becomes a short
+coda instead.
 
 Writes `.simulate_pass_brief.json` (the worktree root when dispatched from `/simulate`, this
 session's own working directory for a standalone `/enact` run) and prints a summary, including which
-(if any) of three judgment slots below are open this scene — resolved in Step 5b, not here:
-- `reproduction_slot` — present only when an already-eligible pair's roll came back true. Carries
-  `name_lead` (which parent's name leads the blend — still dice-driven) and `other_parent`.
+(if any) of two judgment slots below are open this scene — resolved in Step 5b, not here:
 - `arc_authoring_needed` — the **fallback** path only, for a participant who reached this point
   without an arc already on file (`/character` Step 8 authors one at creation by default, so this
   should be the exception). Present when the primacy winner needs a fresh arc: their very first one,
   a re-authored one after a `"failed"` tally with no gate hit to transform it instead, or after a
   `"complete"` resolution. Carries `band`, `criterion`, `routines`, and (for either re-author case)
   `prior_arc` for continuity/contrast.
-- `contested_hinder_slot` — present only when a motivated visit rolled contested AND the alignment
-  gate resolved `hinder`. Carries `traveler`, `supplier`, and `matched_provide`. Genuinely optional
-  even when present — only fill it if the scene plausibly points at a SPECIFIC character who already
-  has a file (`_lore/characters/<slug>.json` exists), otherwise leave it ambient/unnamed.
+- `contested_hinder_slot` — present only when a motivated scene rolled contested AND the alignment
+  gate resolved `hinder` against the primacy winner. Carries `traveler`, `supplier`, and
+  `matched_provide`. Genuinely optional even when present — only fill it if the scene plausibly
+  points at a SPECIFIC character who already has a file (`_lore/characters/<slug>.json` exists),
+  otherwise leave it ambient/unnamed.
 
-The scene itself (`mode`/`location`/`home_frame`/`traveler`/`context`/`texture`/`motivated`/
-`contested`/the arc's already-decided `outcome`) is always present and always fixed — Step 5b
-dramatizes it, never re-decides it. **"advance" and "complete" are not staged the same way.** An
+The scene itself (`location`/`home_frame`/`traveler`/`context`/`texture`/`motivated`/`contested`/the
+arc's already-decided `outcome`) is always present and always fixed — Step 5b dramatizes it, never
+re-decides it. **"advance" and "complete" are not staged the same way.** An
 "advance" outcome can be any small step forward and still read fine. A "complete" outcome
 (`tally_result: "complete"`) has to depict the arc's own object/goal actually being obtained or
 resolved *within this one scene* — not another lead, not one step closer, the culminating action
@@ -267,19 +278,6 @@ fact in it is already decided and already written to disk (the arc's own history
 partner counts). Never re-roll, re-check, or reinterpret anything already settled in it. For each
 open judgment slot Step 4 flagged, resolve it now, before or while writing the scene:
 
-- `reproduction_slot`: compose the child's name, a plausible blend of both parents' names leading
-  from `name_lead`'s side (the one thing about a birth that can't be scripted), then run
-  `py scripts/lore/generate_offspring.py --parent-a <slug> --parent-b <slug> --name "<composed name>" --pass-number <N>`
-  — writes a `tales.entries` birth tale (`id: birth_of_<key>`) and handles knowledge inheritance in
-  the same call. **Also rewrite the inherited routine's `routine_actions` line so it reads as this
-  child's own progression of actions, not a verbatim copy of the parent's** (same discipline
-  `/character` Step 8 teaches from the start) — keep the same `location`/`context`, reword only
-  `routine_actions`. A parent's *"opens the stall at dawn, greets regulars, haggles with a supplier
-  midday, closes up at dusk"* might become, for the child, *"minds the stall while his mother
-  haggles, learning the regulars' faces one by one"* — same context, this child's own progression,
-  not a trait label and not a copy-paste. Do this immediately, in this same pass, never deferred.
-  Tag the birth-announcement hearsay claim `about: "tale: birth_of_<key>"`, never a made-up concept
-  tag.
 - `arc_authoring_needed`: compose `about`/`needs`/`context`/`premise` per `/character` Step 8's
   authoring discipline in full (the resolution-moment test, grounding the target in the character's
   own known corpus when possible, the texture-vs-claim-shaped-content attribution rule for
@@ -554,6 +552,39 @@ Copies the deceased's arc onto the recipient — `about`/`needs`/`premise` carri
 reset to `"ongoing"`, tally reset; the recipient's own `context`/`routine` stay theirs (their own
 existing arc's context wins if they have one, else their own highest-weight routine's context, else
 the deceased's context as a last resort).
+
+**8. Reproduction check — run once per pair enacted this scene, after everything above.** Moved here
+2026-08-28 (design debrief — see CHRONICLE.md's matching entry): this used to run pre-scene, inside
+Step 4's own `simulate_pass_brief.py` call, so a birth could be dramatized inside that same scene's
+dialogue. Now it runs strictly after the scene, hearsay, and shock resolution are already written, so
+a birth this pass becomes a short coda instead — a real trade-off, accepted on purpose.
+
+```bash
+py scripts/lore/simulate_pass_reproduction.py --p1 <slug> --p2 <slug> --pass-number <N>
+```
+
+Checks eligibility first (plain arithmetic, no roll needed for this part): either direction's
+partner count `>= partner_threshold` (5, `_lore/tuning.json`), neither parent within
+`parent_cooldown_passes` (10) of their last birth, the pair not already related (parent/child/
+ancestor at any depth, or full/half siblings — cousins are deliberately still allowed). Only when
+eligible does the roll itself run, at 40% odds (`odds_percent.reproduction`).
+
+On `reproduces: true`, compose the child's name — a plausible blend of both parents' names leading
+from `name_lead`'s side (the one thing about a birth that can't be scripted) — then run
+`py scripts/lore/generate_offspring.py --parent-a <slug> --parent-b <slug> --name "<composed name>" --pass-number <N>`
+— writes a `tales.entries` birth tale (`id: birth_of_<key>`) and handles knowledge inheritance in
+the same call. **Also rewrite the inherited routine's `routine_actions` line so it reads as this
+child's own progression of actions, not a verbatim copy of the parent's** (same discipline
+`/character` Step 8 teaches from the start) — keep the same `location`/`context`, reword only
+`routine_actions`. A parent's *"opens the stall at dawn, greets regulars, haggles with a supplier
+midday, closes up at dusk"* might become, for the child, *"minds the stall while his mother
+haggles, learning the regulars' faces one by one"* — same context, this child's own progression, not
+a trait label and not a copy-paste. Then write a short coda — one or two sentences appended after
+the scene, in whichever character's voice fits, announcing the birth. Do this immediately, in this
+same pass, never deferred. Tag the birth-announcement hearsay claim `about: "tale: birth_of_<key>"`,
+never a made-up concept tag.
+
+On `eligible: false` or `reproduces: false`, nothing further happens — this is the common case.
 
 ## Step 9 — Synthesis: characters forming their own theories
 

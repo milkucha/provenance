@@ -6,6 +6,7 @@
   "child_cooldown_passes": 5,
   "lead_expiry_passes": 8,
   "arc_resolution_threshold": 3,
+  "contested_outcome_shift": 20,
   "odds_percent": {
     "contested": 15,
     "reproduction": 40,

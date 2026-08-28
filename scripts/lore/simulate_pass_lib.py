@@ -111,20 +111,27 @@ def resolve_context_for_location(character: dict, location: str) -> str:
     raise RuntimeError(f"'{character.get('name')}' has no routine at location '{location}'.")
 
 
-def resolve_location(p1: str, p1_routine: str, p1_char: dict, p2: str, p2_routine: str, p2_char: dict) -> dict:
-    """Folds the old separate steps 3/4/5 (routine resolution -> location resolution -> context
-    lookup) into one call: resolves mode/location/home_frame/traveler via resolve_location.py, then
-    looks up whichever routine matched that location on the home-frame character's own file for its
-    context, texture, and provides tags - a plain dict fetch, never worth a script of its own."""
-    out = kv(call("resolve_location.py", [
-        "--p1", p1, "--p1-routine", p1_routine, "--p2", p2, "--p2-routine", p2_routine,
-    ]))
-    home_frame_char = p1_char if out["home_frame"] == p1 else p2_char
-    context = resolve_context_for_location(home_frame_char, out["location"])
-    out["context"] = context
-    out["texture"] = CONTEXTS[context]["texture"]
-    out["provides"] = CONTEXTS[context]["provides"]
-    return out
+def roll_home_visit(p1: str, p2: str) -> tuple:
+    """Design debrief 2026-08-28: decides who's home BEFORE any routine gets rolled, replacing the
+    old order (roll both routines independently, then compare to resolve home-turf-vs-visit). Flat
+    coin flip for now - see roll_home_visit.py's own docstring for the survival-mechanism hook this
+    is meant to eventually plug into."""
+    d = kv(call("roll_home_visit.py", ["--p1", p1, "--p2", p2]))
+    return d["home"], d["visiting"]
+
+
+def assemble_location(home: str, home_routine: str, visiting: str, home_char: dict) -> dict:
+    """No script call - a plain assembly, same discipline as the context/texture lookup this always
+    folded in. With only the home participant ever rolling a routine (roll_home_visit.py already
+    decided home; roll_routine.py only ever runs for them now), there's nothing left to resolve by
+    comparison: location IS the home participant's own rolled routine, home_frame IS them, traveler
+    IS whoever else. Replaces the old resolve_location.py + its "coincidence" mode outright - that
+    mode depended on two independently-rolled routines, and only one is ever rolled per pass now."""
+    context = resolve_context_for_location(home_char, home_routine)
+    return {
+        "location": home_routine, "home_frame": home, "traveler": visiting,
+        "context": context, "texture": CONTEXTS[context]["texture"], "provides": CONTEXTS[context]["provides"],
+    }
 
 
 def check_needs_provides(needs: list, provides: list) -> dict:
@@ -219,8 +226,11 @@ def roll_contested() -> bool:
     return kv(call("roll_contested.py", []))["contested"] == "true"
 
 
-def roll_arc_outcome(inclined: str) -> str:
-    return kv(call("roll_arc_outcome.py", ["--inclined", inclined]))["outcome"]
+def roll_arc_outcome(inclined: str, contested: bool = False) -> str:
+    args = ["--inclined", inclined]
+    if contested:
+        args.append("--contested")
+    return kv(call("roll_arc_outcome.py", args))["outcome"]
 
 
 def record_partner(key: str, other: str) -> None:

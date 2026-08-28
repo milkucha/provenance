@@ -193,73 +193,76 @@ frameFork_top = labelEnact_top - 4
 frameFork_bottom = stop_top + BOX_H + FRAME_PAD_BOT
 emit(f'<rect class="section-frame judge" x="{FRAME_LEFT}" y="{frameFork_top}" width="{FRAME_RIGHT-FRAME_LEFT}" height="{frameFork_bottom-frameFork_top}" rx="10"/>')
 
-# ---------- STEP 4 mechanical block ----------
+# ---------- STEP 4 mechanical block (causal order rewritten 2026-08-28 — see CHRONICLE.md) ----------
 step4_items = [
-    ("a2",  "lead-override check", "does an expiring lead still apply", True, True),
-    ("a3",  "routine rolls", "which routines actually fire this pass", True, True),
-    ("a4",  "location resolution", "where the scene lands", False, True),
-    ("a5",  "context / texture lookup", "flavor for the scene brief", False, False),
-    ("a6",  "needs/provides check", "motivation match between the pair", False, True),
-    ("a7",  "contested roll", "does a rival try to hinder", True, True),
-    ("a8",  "arc primacy roll", "whose arc leads the scene", True, True),
-    ("a9",  "knowledge/criteria gate", "is this pair even eligible", False, True),
-    ("a10", "arc-outcome roll", "advances or resolves the lead arc", True, True),
-    ("a11", "arc tally vs. threshold", "complete / transform / failed / ongoing", False, False),
-    ("a12", "partner tracking", "records who's paired this pass", False, True),
-    ("a13", "reproduction eligibility + roll", "does this pass produce a birth", True, True),
+    ("a1", "partner tracking", "records who's paired this pass", False, True),
+    ("a2", "home/visit roll", "who's home, who's visiting", True, True),
+    ("a3", "routine roll (home only)", "which routine fires for the home participant", True, True),
+    ("a4", "location/context assembly", "where the scene lands, texture, provides", False, False),
+    ("a5", "arc primacy roll", "whose arc leads the scene", True, True),
+    ("a6", "needs/provides check", "does the scene satisfy the primacy winner's arc", False, True),
+    ("a7", "contested roll", "does a rival try to hinder", True, True),
+    ("a8", "knowledge/criteria gate", "is this pair even eligible", False, True),
+    ("a9", "arc-outcome roll", "advances or resolves the lead arc", True, True),
+    ("a10", "arc tally vs. threshold", "complete / transform / failed / ongoing", False, False),
 ]
-register("a2", "4", "lead-override check",
-    "py scripts/lore/roll_lead_followup.py --leads <target1> [<target2> ...]",
-    "followed: true/false, plus which lead",
-    "Historical note: as of 2026-08-27 this check itself has already happened in /simulate's own "
-    "pair-resolution step before /enact is ever called — simulate_pass_brief.py's internal copy of "
-    "this logic is now dead for the --pair call mode and only fires under its legacy --pool mode. "
-    "Kept in this diagram because the mechanic is real; the caller who resolves it has moved.")
-register("a3", "4", "routine rolls",
+register("a1", "4", "partner tracking",
+    "py scripts/lore/record_partner.py <slug> --with <other slug>",
+    "(no return value — pure bookkeeping)",
+    "Called twice, once per direction, moved to the very front 2026-08-28 — unconditional the "
+    "moment the pair is fixed, with nothing to do with anything decided below. The post-scene "
+    "reproduction check (Step 8 point 8) reads the counts this call already wrote.")
+register("a2", "4", "home/visit roll",
+    "py scripts/lore/roll_home_visit.py --p1 <slug> --p2 <slug>",
+    "home: whichever slug is home this pass; visiting: the other",
+    "Added 2026-08-28, replacing the old resolve_location.py. A flat coin flip for now — not yet "
+    "weighted by anything. Decided BEFORE any routine is rolled, not derived afterward by comparing "
+    "two independently-rolled routines. Skipped when the pair was fixed by a lead-override instead "
+    "(home is forced to the lead's target). A not-yet-built survival-pressure mechanism is meant to "
+    "eventually weight this roll one way or another — see TODO.md's \"survival mechanism\" entry.")
+register("a3", "4", "routine roll (home only)",
     "py scripts/lore/roll_routine.py <location:weight> [<location:weight> ...]",
     "the routine that fires",
-    "Called once (forced-visit pass) or twice (an ordinary pairing, one roll per participant) against "
-    "each character's own routines[] weights.")
-register("a4", "4", "location resolution",
-    "py scripts/lore/resolve_location.py --p1 <slug> --p1-routine <loc> --p2 <slug> --p2-routine <loc>",
-    "mode, location, home_frame, traveler",
-    "Decides whether this pass is a home-turf pairing or a visit, and who's travelling to whom.")
-register("a5", "4", "context / texture lookup",
-    None, "context, texture, provides",
-    "Not a script call — a plain dict lookup in _lore/contexts.json, done inline inside "
-    "resolve_location() itself.")
+    "Called once, only for the home participant, against their own routines[] weights. The visiting "
+    "participant simply enters whatever context this produces — they don't roll their own routine "
+    "this pass any more.")
+register("a4", "4", "location/context assembly",
+    None, "location, home_frame, traveler, context, texture, provides",
+    "Not a script call — a plain assembly (simulate_pass_lib.assemble_location()), same discipline "
+    "as the old context/texture lookup this always folded in. With only the home participant's "
+    "routine ever rolled, location IS that routine's own location — nothing left to resolve by "
+    "comparison. This also retires the old \"coincidence\" mode outright: it depended on two "
+    "independently-rolled routines, and only one is ever rolled per pass now.")
+register("a5", "4", "arc primacy roll",
+    "py scripts/lore/roll_arc_primacy.py --p1 <slug> --p2 <slug>",
+    "primary: whichever slug leads this scene's arc",
+    "Decides whose arc gets to advance/resolve this pass — the loser's own arc sits out. Moved "
+    "2026-08-28 to run AFTER home/visit is decided and independently of it: the visiting "
+    "participant's arc can still be the one that leads the scene.")
 register("a6", "4", "needs/provides check",
     "py scripts/lore/check_needs_provides.py --needs <tag> [...] --provides <tag> [...]",
     "match: true/false, matched_need, matched_provide",
-    "Only runs on a visit whose traveler has an ongoing arc with needs.")
+    "Only runs when the arc-PRIMACY WINNER has an ongoing arc with needs — keyed to whichever "
+    "participant that is (2026-08-28: no longer \"the traveler's\" arc as a fixed role; the primacy "
+    "winner can just as easily be the home participant).")
 register("a7", "4", "contested roll",
     "py scripts/lore/roll_contested.py", "contested: true/false",
-    "Only rolled when the visit was motivated. Odds: 15% (_lore/tuning.json odds_percent.contested).")
-register("a8", "4", "arc primacy roll",
-    "py scripts/lore/roll_arc_primacy.py --p1 <slug> --p2 <slug>",
-    "primary: whichever slug leads this scene's arc",
-    "Decides whose arc gets to advance/resolve this pass — the loser's own arc sits out.")
-register("a9", "4", "knowledge/criteria gate",
+    "Only rolled when the scene was motivated. Odds: 15% (_lore/tuning.json odds_percent.contested).")
+register("a8", "4", "knowledge/criteria gate",
     "py scripts/lore/check_arc_alignment.py --arc-about <tag> [...] --arc-needs <tag> [...] "
     "--peer-standard \"<text>\" --peer-wasted-life \"<text>\" --peer-knowledge-item <item> [...]",
     "gate: hit/miss, inclined: advance/hinder/neutral, matched_about",
     "Only runs when the primacy winner already has an ongoing arc.")
-register("a10", "4", "arc-outcome roll",
-    "py scripts/lore/roll_arc_outcome.py --inclined <advance|hinder|neutral>",
+register("a9", "4", "arc-outcome roll",
+    "py scripts/lore/roll_arc_outcome.py --inclined <advance|hinder|neutral> [--contested]",
     "outcome: advance/stall/reverse",
-    "Only rolled when the gate hit. Resolved before the scene is written on purpose.")
-register("a11", "4", "arc tally vs. threshold",
+    "Only rolled when the gate hit. Resolved before the scene is written on purpose. Contested-aware "
+    "as of 2026-08-28: a contested scene shifts the weights toward reverse by "
+    "contested_outcome_shift points (_lore/tuning.json) — it skews the odds, same as inclined "
+    "itself, never decides the outcome outright by itself.")
+register("a10", "4", "arc tally vs. threshold",
     None, "tally_result: complete/transform/failed/ongoing",
     "Not a script call — plain arithmetic against arc_resolution_threshold: 3 from _lore/tuning.json.")
-register("a12", "4", "partner tracking",
-    "py scripts/lore/record_partner.py <slug> --with <other slug>",
-    "(no return value — pure bookkeeping)",
-    "Called twice, once per direction — this is what a13's eligibility check reads back.")
-register("a13", "4", "reproduction eligibility + roll",
-    "py scripts/lore/roll_reproduction.py --p1 <slug> --p2 <slug>",
-    "reproduces: true/false, name_lead",
-    "Eligibility is inline arithmetic: partner_threshold (5), parent_cooldown_passes (10), not "
-    "already related. Odds when eligible: 40% (odds_percent.reproduction).")
 
 frameA_top = frameFork_bottom + 30
 emit(f'<text class="phase-label roll" x="{LEFT}" y="{frameA_top+LABEL_H-8}">/ENACT &middot; STEP 4 &middot; grounding the scene mechanically</text>')
@@ -288,9 +291,6 @@ arrow(CX, hub_bottom, CX, j0)
 emit(f'<circle class="junction" cx="{CX}" cy="{j0}" r="3"/>')
 
 gated = [
-    ("brepro", "Name the newborn",
-        "generate_offspring.py, then reword the inherited routine into an action progression",
-        "reproduction_slot open"),
     ("barc", "Author the arc (fallback)",
         "write_arc.py — scoped to the character’s own horizon band",
         "arc_authoring_needed open"),
@@ -298,17 +298,6 @@ gated = [
         "apply_contested_lead.py — only if the scene points at someone who already has a file",
         "contested_hinder_slot open (optional even then)"),
 ]
-register("brepro", "5b", "Name the newborn",
-    "py scripts/lore/generate_offspring.py --parent-a <slug> --parent-b <slug> "
-    "--name \"<composed name>\" --pass-number <N>",
-    "writes a tales.entries birth tale; handles knowledge inheritance in the same call",
-    "The name blend is the one thing about a birth that can't be scripted. Also rewrite the "
-    "inherited routine's routine_actions line so it reads as this child's own progression of "
-    "actions, not a verbatim copy — e.g. a parent's “opens the stall at dawn, greets regulars, "
-    "haggles with a supplier midday, closes up at dusk” might become, for the child, “minds "
-    "the stall while his mother haggles, learning the regulars' faces one by one.” Corrected "
-    "2026-08-27 — this field had drifted toward trait labels (“blacksmith, values good "
-    "craft”), which describe a person rather than what they do.")
 register("barc", "5b", "Author the arc",
     "py scripts/lore/write_arc.py <slug> --about \"<tag>\" [...] --needs \"<tag>\" [...] "
     "--context <name> --premise \"<text>\"",
@@ -402,9 +391,11 @@ step8_items = [
     ("c2", "record_death.py", "if either participant ended", False, True),
     ("c3", "death-legacy roll", "if either died early", True, True),
     ("c4", "apply_death_legacy.py", "only if c3 passed", False, True),
+    ("c5", "reproduction check", "eligibility, then the roll", True, True),
+    ("c6", "generate_offspring.py", "only if c5 reproduces", False, True),
 ]
 labelC_top = conn2_bottom + 20
-emit(f'<text class="phase-label roll" x="{LEFT}" y="{labelC_top+LABEL_H-8}">/ENACT &middot; STEP 8 &middot; points 6&ndash;7</text>')
+emit(f'<text class="phase-label roll" x="{LEFT}" y="{labelC_top+LABEL_H-8}">/ENACT &middot; STEP 8 &middot; points 6&ndash;8</text>')
 chainC_start = labelC_top + LABEL_H + 10
 chainC_bottom = chain(step8_items, chainC_start, left=LEFT)
 frameC_top = labelC_top - 4
@@ -432,6 +423,22 @@ register("c4", "8", "apply_death_legacy.py",
     "The roll itself (c3) deliberately leaves the actual transfer undone — about/needs/premise "
     "carried over, resolution reset to “ongoing,” tally reset; the recipient's own context/"
     "routine stay theirs.")
+register("c5", "8", "reproduction check",
+    "py scripts/lore/simulate_pass_reproduction.py --p1 <slug> --p2 <slug> --pass-number <N>",
+    "eligible: true/false, reproduces: true/false, name_lead, other_parent",
+    "Moved here 2026-08-28 — point 8, new. Used to run pre-scene inside Step 4's own "
+    "simulate_pass_brief.py call, so a birth could be dramatized inside the scene itself; now runs "
+    "strictly after the scene, hearsay, and shock resolution, so a birth becomes a short coda "
+    "instead. Eligibility (partner_threshold, parent_cooldown_passes, not already related) is plain "
+    "arithmetic; only then does the roll itself run, at 40% odds (odds_percent.reproduction).")
+register("c6", "8", "generate_offspring.py",
+    "py scripts/lore/generate_offspring.py --parent-a <slug> --parent-b <slug> "
+    "--name \"<composed name>\" --pass-number <N>",
+    "writes a tales.entries birth tale; handles knowledge inheritance in the same call",
+    "The name blend (leading from c5's name_lead) is the one thing about a birth that can't be "
+    "scripted. Also rewrite the inherited routine's routine_actions line so it reads as this "
+    "child's own progression of actions, not a verbatim copy of the parent's, then write a short "
+    "coda after the scene announcing the birth.")
 
 # ---------- STEP 9 / STEP 10 closing (brief) ----------
 conn3_top = frameC_bottom + 16
@@ -513,13 +520,18 @@ aria_label = ("Flowchart of the simulate/enact mechanism, single linear path, no
     "player versus another character, where the player path exits immediately to freeform Step 5a; "
     "the other-character path passes an eligibility gate requiring routines and arc on both files, "
     "stopping and flagging if either is missing. Once eligible, Step 4 runs one script call handling "
-    "twelve mechanical sub-decisions in order. Step 5b reads the resulting brief, fills or skips three "
-    "optional judgment slots, then always writes the scene, itself covering the transcript save, "
-    "hearsay update, and character record steps. Step 8 continued runs horizon, death, and the new "
-    "death-legacy roll and its apply step. Steps 9 and 10 close the pass. Control returns to simulate "
-    "for a safety-net check and pass logging, then loops back to the top for as long as two or more "
-    "characters remain alive. Every step can be clicked for its exact command and what it reads or "
-    "writes.")
+    "ten mechanical sub-decisions in order, rewritten 2026-08-28: partner tracking first, then a "
+    "coin-flip roll for who's home versus visiting, then a routine roll for the home participant "
+    "only, then location and context assembly, then arc primacy decided independently of who "
+    "traveled, then needs/provides keyed to the primacy winner, then contested, the alignment gate, "
+    "and a now contested-aware outcome roll, then the arc tally. Reproduction is no longer part of "
+    "this call. Step 5b reads the resulting brief, fills or skips two optional judgment slots, then "
+    "always writes the scene, itself covering the transcript save, hearsay update, and character "
+    "record steps. Step 8 continued runs horizon, death, the death-legacy roll and its apply step, "
+    "and now a post-scene reproduction check and its own offspring-generation step. Steps 9 and 10 "
+    "close the pass. Control returns to simulate for a safety-net check and pass logging, then loops "
+    "back to the top for as long as two or more characters remain alive. Every step can be clicked "
+    "for its exact command and what it reads or writes.")
 svg = (f'<svg viewBox="0 0 {W} {total_h}" width="{W}" height="{total_h}" '
     f'xmlns="http://www.w3.org/2000/svg" role="img" aria-label="{html.escape(aria_label)}">\n'
     f'{defs}\n{body}\n</svg>')

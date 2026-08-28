@@ -21,6 +21,55 @@ and open questions that were live at a given point, even ones later settled else
 
 ---
 
+### 2026-08-28 — `/simulate` Step 4 causal reorder: primacy, location, and reproduction timing all shift (implemented)
+
+User hand-redrew the repo's own auto-generated `diagrams/simulate-pass.html` in Coggle, reordering it
+for a reason: wants "more consequential logic" connecting the mechanical roles, which currently run
+almost independently of each other. Pulled the diagram's exact structure via Coggle's text-outline
+export and diffed it against the real execution order in `simulate_pass_brief.py`/`simulate_pass_lib.py`
+to separate genuine reorders from mind-map grouping artifacts.
+
+Confirmed with the user as real design, then built the same session:
+- **`contested` now skews `arc-outcome`'s odds, never decides it outright** — the two rolls used to be
+  fully decoupled (`roll_contested.py` a flat independent 15%; `roll_arc_outcome.py`'s weights came
+  only from `inclined`). Fixed with the same "shifts odds, doesn't decide" pattern the code already
+  used for help/hinder: a new `--contested` flag shifts `contested_outcome_shift` (20, `tuning.json`)
+  points from advance to reverse.
+- **Home-vs-visiting decided first, via a new flat coin-flip roll** (`roll_home_visit.py`) — the
+  user's final correction on the first design pass (which had this weighted by leads/arc-needs):
+  right now it's genuinely random, full stop. Only the home participant rolls a routine
+  (`roll_routine.py`, called once); the visitor just enters whatever context that produces — this
+  also retires `resolve_location.py`'s old "coincidence" mode outright, since there's no second
+  independently-rolled routine left for it to coincide with. An unexpired lead still overrides the
+  roll entirely, as before. Survival isn't built yet, so the odds stay flat on purpose — logged the
+  hook in `TODO.md` rather than faking the mechanic.
+- **Arc primacy decided after that, independently of who traveled** — the visitor's arc can still be
+  the one that leads the scene. Needs/provides, contested, and the alignment gate all key off
+  whichever arc primacy actually picked, not "the traveler's" arc as before.
+- **Reproduction moved to the end of the pass**, via a new post-scene script
+  (`simulate_pass_reproduction.py`) instead of running pre-scene inside `simulate_pass_brief.py` — user
+  accepted the consequence that a birth can no longer be dramatized inside that scene's own dialogue;
+  it gets a short coda after instead.
+- `record_partner.py` moved up to run right after pairing (unconditional the moment a pair is drawn).
+
+**Caught mid-implementation:** `simulate_generate_population.py` (the `/generate` mass-pregeneration
+driver) turned out to be a full parallel reimplementation of this same pre-scene logic, including a
+direct call to the now-deleted `resolve_location()` — would have silently broken `/generate` if left
+alone. Reordered it identically and de-duplicated its reproduction-eligibility check against the new
+`simulate_pass_reproduction.py` (threading its `ancestor_cache` through, so the 2026-08-17 perf fix for
+long runs wasn't lost).
+
+Touched: `roll_home_visit.py` (new), `simulate_pass_reproduction.py` (new), `resolve_location.py`
+(deleted), `roll_arc_outcome.py`, `check_needs_provides.py`, `simulate_pass_brief.py`,
+`simulate_pass_lib.py`, `simulate_generate_population.py`, `_lore/tuning.json`, `/enact` SKILL.md
+Step 4 and a new Step 8 point 8, `diagrams/gen_simulate_pass.py` (regenerated). Verified by
+compiling every touched file and smoke-running the two new scripts standalone — not by an actual
+`/enact`/`/generate` run against real character data.
+
+**Still open:** the pre-scene `horizon.py` band check (`/enact` Step 1) remains undiagrammed, and the
+exact shape of the survival-mechanism weighting (once that system exists) is still just a `TODO.md`
+note, not a design.
+
 ### 2026-08-28 — provenance-bare/provenance-standalone architecture reconciled; two independent chronicle mechanisms collapsed to one
 
 `provenance-bare` and `provenance-standalone` had been diverging in isolation, each session unaware of
