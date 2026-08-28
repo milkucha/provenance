@@ -1,18 +1,26 @@
 # Author's voice
 
-A style guide for any agent authoring text for this project — README/docs, in-world lore prose,
-NPC dialogue, or narration — in milkucha's own voice. Built from a direct read of milkucha's typed
-messages across this project's session history (agent replies excluded from the sample). Quotes
-below are verbatim.
+Read by every skill and session in this project, alongside `PRINCIPLES.md` — this is the house
+rule for one specific thing: how prose gets *written*, not what gets decided.
 
-Two registers show up, and they should not be blended:
+**Any prose written for this project in the author's own register — README, TODO, LAB_REPORT,
+commit messages, in-repo notes, and any other first-person or documentation writing — should sound
+like the author, not like default assistant prose.** That means imitating their actual recurring
+vocabulary and rhetorical habits, not approximating "casual tone" in generic terms. This does not
+apply to *lore/character content* (dialogue, hearsay, tales) — that already has its own rule, author
+primacy on user-supplied wording, and its own voice per character; this file is about the project's
+own documentation and meta-writing.
+
+Two registers show up in the source material, and they should not be blended:
 
 - **Working voice** — planning, system design, technical discussion, project docs (README, TODOs,
-  SKILL.md prose). Mostly English.
+  SKILL.md prose, this file). Mostly English.
 - **World voice** — in-character dialogue, lore prose, character backstories. Freely bilingual
   (English/Spanish), warmer, more poetic.
 
-Read the relevant section below depending on which kind of text is being authored.
+This file accumulates over sessions. Append a new dated bullet under "Session log" below whenever
+a session reveals another verbatim tic or phrase — don't treat the analysis below as finished, and
+don't invent "quirks" that weren't actually observed.
 
 ## Working voice
 
@@ -45,7 +53,8 @@ than staying in pure systems vocabulary.
 **Enumerate when responding to multiple points.** "For number one... For number two... Number
 three, it's all good. Number four..." — mirrors back the structure of what was asked before
 answering it. Use numbered call-and-response when a text is itself replying to a multi-part
-question.
+question. Related: stacks several related questions into one paragraph rather than asking one at a
+time (e.g. "Is there any recollection...? And if not...? anything else?").
 
 **Ask for less, explicitly.** Recurring requests to compress: "short answer", "briefly and in
 simple terms", "don't spit at me a lot of specific information... let's take a more generalist
@@ -54,7 +63,15 @@ earn length by first establishing that more detail is wanted.
 
 **Revise in the open.** Doesn't erase a false start — builds on top of it: "That's alright... So
 maybe that makes me rethink my first answer..." A first pass gets stated, then corrected on the
-page rather than silently replaced.
+page rather than silently replaced. Related: self-correcting repetition, restating a word/phrase
+immediately before moving on, e.g. "a certain — a certain expressions that I use," "I I wanted to
+sound." This stutter-restart cadence is part of the voice, not a typo to silently smooth over when
+imitating it.
+
+**States the meta-goal directly rather than implying it.** "I want to experiment with that," "I
+want to see also how the structure of the text actually also changes."
+
+**"okay?" dropped mid-paragraph** as a check-in / breath marker before continuing.
 
 **Close a deliberation with a terse go-ahead.** After a long exploratory passage, the turn ends
 abruptly: "Let's do it.", "Please implement.", "Perfect. We can commit now.", "Yes. Complete the
@@ -69,7 +86,7 @@ silo "practical" writing away from "conceptual" writing in this project — they
 ### Recurring diction (working voice)
 
 - **basically** — the single most common connective filler; used to restate/simplify a claim
-  mid-sentence, not to hedge.
+  mid-sentence, not to hedge. Also shows up as a closing hedge/summarizer at the end of a clause.
 - **organic**, **emergent / emergence**, **ecosystem** — the vocabulary for "not hand-authored,
   but produced by the interaction of simpler rules."
 - **slop** — pejorative, specifically for content invented without grounding in the established
@@ -84,6 +101,8 @@ silo "practical" writing away from "conceptual" writing in this project — they
   than an assertion.
 - **sweetspot**, **juxtaposing**, **axioms** (for author-supplied worldbuilding constraints),
   **anchors** (for the fixed points a character's criterion is derived against).
+- **dialogic** — a specific recurring keyword for this project; treat it as load-bearing, not a
+  one-off.
 
 ## World voice (lore prose, in-character dialogue)
 
@@ -125,8 +144,22 @@ style: e.g. "Do do I have a toggle?", "do you do you do you know what I mean?". 
 disfluency.** What's real signal from the dictated passages is the *underlying move* — associative
 reasoning that circles a topic from several angles before landing, reaching for an analogy,
 inviting pushback — not the stutter it arrived in. Write the clean version of that same move.
+(Exception: the self-correcting stutter-restart noted above under "Revise in the open" is a
+genuine rhetorical habit, not disfluency to strip — the distinction is whether the repetition
+*revises* a claim or just stalls before one.)
 
 Likewise, single-word or command-style utterances ("Yes", "Continue please", "1", "/enact") are
 utility, not voice — they say nothing about register and shouldn't be treated as a model for
 terse prose; the *closing directive* pattern above (a short imperative ending a longer
 deliberation) is the real pattern worth keeping.
+
+## Session log
+
+Dated entries for verbal patterns observed in later sessions, additive to the analysis above.
+
+- **2026-08-27** — initial pass folding a full history read into the sections above (see Working
+  voice, World voice, Project lexicon, What not to imitate).
+
+**Caveat:** the analysis above is built from a limited sample. Don't over-fit prose to these exact
+tics. Keep adding real examples as the author writes more, and let this file grow before leaning
+on any one pattern too hard.
