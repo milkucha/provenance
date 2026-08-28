@@ -1,0 +1,108 @@
+{
+  "name": "Michelnos",
+  "origin": "",
+  "location": "Tyrnea",
+  "backstory": "The architect hired to renovate the Plaza de Tyrnea, its old monument still standing out front despite everything else around it. Has only just recently arrived in the city, and is still getting to know people.",
+  "knowledge": {
+    "education": {
+      "percent": 10,
+      "mode": "skewed",
+      "topic": [
+        "Tyrnea",
+        "architecture",
+        "plaza"
+      ],
+      "items": [
+        "concept: degustarios_stall_expansion",
+        "concept: subsistence_settlements",
+        "concept: tyrnea_rose_window",
+        "hearsay: aureobalo_farlis_castillo_en_miniatura#2",
+        "hearsay: aureobalo_farlis_castillo_en_miniatura#3",
+        "hearsay: aureobalo_farlis_castillo_en_miniatura#6",
+        "hearsay: bardaglis_ilaria_khaoe_segunda_noche#1",
+        "hearsay: doran_eras_of_culture#1",
+        "hearsay: doran_eras_of_culture#2",
+        "hearsay: doran_eras_of_culture#3",
+        "hearsay: doran_eras_of_culture#4",
+        "hearsay: doran_four_castles#1",
+        "hearsay: doran_four_castles#4",
+        "hearsay: doran_four_castles#5",
+        "hearsay: doran_four_castles#6",
+        "hearsay: doran_four_castles#7",
+        "hearsay: doran_four_castles#8",
+        "hearsay: doran_four_castles#9",
+        "hearsay: doran_plaza_orientation#1",
+        "hearsay: doran_plaza_orientation#2",
+        "hearsay: doran_plaza_orientation#3",
+        "hearsay: doran_plaza_orientation#4",
+        "hearsay: doran_plaza_orientation#5",
+        "hearsay: farlis_aureobalo_bar_salthos_cruzados#1",
+        "hearsay: farlis_bardaglis_bar_salthos_cruzados#1",
+        "hearsay: farlis_bardaglis_bar_salthos_cruzados#2",
+        "hearsay: gok_milkucha_alcove#1#1",
+        "hearsay: khaoe_farlis_el_castillo_que_fue#1",
+        "hearsay: khaoe_farlis_el_castillo_que_fue#2",
+        "hearsay: khaoe_farlis_el_castillo_que_fue#3",
+        "hearsay: khaoe_farlis_lo_que_cambia_el_tiempo#1",
+        "hearsay: khaoe_farlis_lo_que_cambia_el_tiempo#2",
+        "hearsay: khaoe_farlis_lo_que_cambia_el_tiempo#3",
+        "hearsay: khaoe_khaasan_partida_a_khan_ice#4",
+        "hearsay: khaoe_khaasan_partida_a_khan_ice#6",
+        "hearsay: nawom_morkulo_first_meeting#4",
+        "inhabitant: Saltamontabiras (cross-locality travelers/routes (named, with a mode of travel))",
+        "location: tyrnea",
+        "year_esquema: 2013"
+      ]
+    },
+    "experience": []
+  },
+  "criterion": {
+    "standard": "counts it worthwhile only if Tyrnea actually knows his name by the time the plaza's finished, not just his work",
+    "wasted_life": "one spent renovating a place and still being a stranger to it when the work's done",
+    "anchor": "location: tyrnea",
+    "origin": "derived",
+    "trusts": "a foundation he's actually walked and measured himself",
+    "distrusts": "a client's word about what's underneath, without digging to check",
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": []
+  },
+  "routines": [
+    {
+      "location": "Tyrnea",
+      "context": "plaza",
+      "weight": 60,
+      "routine_actions": "walks the plaza site each morning with his own measurements, argues with the crew about what the old monument's foundation can actually bear"
+    },
+    {
+      "location": "Tyrnea",
+      "context": "tavern",
+      "weight": 25,
+      "routine_actions": "spends evenings trying to actually learn people's names, still catching himself calling regulars by the wrong one"
+    },
+    {
+      "location": "Tyrnea <-> wherever the last commission was",
+      "context": "transit",
+      "weight": 15,
+      "routine_actions": "makes the occasional trip out for materials or a second opinion, not yet sure which parts of Tyrnea's supply chain he can actually trust"
+    }
+  ],
+  "life": {
+    "lived": 0,
+    "deceased": false
+  },
+  "arc": {
+    "about": [
+      "concept: michelnos_plaza_restoration",
+      "location: tyrnea"
+    ],
+    "needs": [
+      "materials",
+      "contacts"
+    ],
+    "context": "plaza",
+    "premise": "Michelnos wants to finish the Plaza de Tyrnea's renovation around the old monument still standing at its front - restored, not replaced, so the town's revival looks like it grew from something instead of erasing it. Resolution: the plaza reopens with the monument intact and the town turns out for it, or the funding runs dry first and the half-finished square becomes one more thing Tyrnea has to explain to visitors.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

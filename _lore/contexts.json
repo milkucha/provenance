@@ -44,5 +44,40 @@
     "texture": "Ledgers, loans, interest, a city's money moving or not moving, trust extended or withdrawn, disputes over debts.",
     "provides": ["records", "contacts", "trade"],
     "grounding_provides": []
+  },
+  "factory": {
+    "texture": "Loud noises, tiredness, effort, wealth and value, struggle, workers, structures, hierarchies, tension, production, large halls.",
+    "provides": ["materials", "goods", "trade", "expertise", "contacts"],
+    "grounding_provides": ["crafting", "trade_goods", "redstone"]
+  },
+  "tavern": {
+    "texture": "Noise, a crowded room, chatter across strangers and regulars alike, music and drink, the easy enjoyment of a place people come to unwind — and, just as readily, the sickness that spreads through a room this close and this late into the night.",
+    "provides": ["stories", "contacts", "nourishment", "satisfaction", "sickness"],
+    "grounding_provides": []
+  },
+  "university": {
+    "texture": "Lectures, debate, students and visiting professors, discovery pursued for its own sake, rivalries between disciplines and schools of thought, the particular pride and precarity of an institution that lives or dies by its reputation.",
+    "provides": ["records", "expertise", "contacts"],
+    "grounding_provides": []
+  },
+  "transit": {
+    "texture": "Between places, not at one — the road, the crossing, the stretch of a journey with nowhere yet arrived. Distance measured in progress rather than a fixed point; provisional company, whoever else is making the same crossing; the open question of whether this leg is a going or a coming. A routine tagged with this context is deliberately not anchored to one place the way every other context is — its own `location` should name the route (e.g. 'Tyrnea <-> Görff'), not a single point, since the character genuinely could be assigned either end depending on the scene.",
+    "provides": ["news", "contacts"],
+    "grounding_provides": ["navigation"]
+  },
+  "quarry": {
+    "texture": "Rock dust and noise, the graded stone laid out by cut and quality, crews working a face that only gets deeper, the slow arithmetic of what a block is worth against what it cost to cut.",
+    "provides": ["materials", "goods", "expertise"],
+    "grounding_provides": ["crafting"]
+  },
+  "street": {
+    "texture": "Foot traffic and passing carts, vendors calling from doorways, neighbors crossing paths without meaning to, the ordinary publicness of a city's in-between spaces — and, for some, the closest thing to a home address they have.",
+    "provides": ["contacts", "news", "goods"],
+    "grounding_provides": []
+  },
+  "plaza": {
+    "texture": "A town's open civic center, monuments old and half-repaired, festivals and public announcements, the particular pride or embarrassment of whatever stands there for everyone passing through to see.",
+    "provides": ["contacts", "news", "records"],
+    "grounding_provides": []
   }
 }

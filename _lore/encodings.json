@@ -3581,6 +3581,116 @@
       "description": "Muli wants Terfila's own municipal record to finally list Görff's Collective as what it actually is now - a real, horizontally-run body - rather than the old entry that still names individual claimants who left or died years ago. She means to get the correction filed and stamped before the next cross-city census, so the record matches what she already knows firsthand from home instead of what a clerk assumed decades back. (Resolution as of this record: ongoing.)",
       "sources": [],
       "notes": "Auto-registered by register_arc_concept.py at arc-authoring time. Sourced entirely from hearsay once build_source_index.py links it (see sources[]) - no material-source confirmation."
+    },
+    {
+      "id": "tyrnea_rose_window",
+      "names": [
+        "Tyrnea Rose Window",
+        "tyrnea_rose_window"
+      ],
+      "description": "Folkorlo wants the reopened glass factory to cast a full stained-glass rose window for Tyrnea's ruined citadel gate - the piece that would make the town's revival undeniable rather than just a rumor of one. He's heard, secondhand, that the old citadel's Daax symbol was carved somewhere near that same gate before the ruin, and means the window to carry it. Resolution: the window is either raised into the gate frame, finished and holding, or the commission collapses - a cracked cast, a backer who pulls out, a fire in the kiln - and the gate stays bare. (Resolution as of this record: ongoing.)",
+      "sources": [],
+      "notes": "Auto-registered by register_arc_concept.py at arc-authoring time. Sourced entirely from hearsay once build_source_index.py links it (see sources[]) - no material-source confirmation."
+    },
+    {
+      "id": "medusan_algae_archive",
+      "names": [
+        "Medusan Algae Archive",
+        "medusan_algae_archive"
+      ],
+      "description": "Medusan wants to build the university's first real specimen archive of deep-sea and algae life - proof his field belongs here as more than a curiosity slot in the new curriculum. Resolution: the archive either gets a permanent room and the university's backing, or the department folds into someone else's for lack of interest and his specimens go into storage nobody visits. (Resolution as of this record: ongoing.)",
+      "sources": [],
+      "notes": "Auto-registered by register_arc_concept.py at arc-authoring time. Sourced entirely from hearsay once build_source_index.py links it (see sources[]) - no material-source confirmation."
+    },
+    {
+      "id": "kalmanatas_aggregate_method",
+      "names": [
+        "Kalmanatas Aggregate Method",
+        "kalmanatas_aggregate_method"
+      ],
+      "description": "Kalmanatas wants to prove his aggregate-stone method by using it to shore up the university's own crumbling east wing before the next class term - the same technique he lectures on, tested where anyone can see it fail or hold. Resolution: the wing holds through a full term's use, or it doesn't - a crack reopens, a beam gives, and the technique gets quietly dropped from the syllabus. (Resolution as of this record: ongoing.)",
+      "sources": [],
+      "notes": "Auto-registered by register_arc_concept.py at arc-authoring time. Sourced entirely from hearsay once build_source_index.py links it (see sources[]) - no material-source confirmation."
+    },
+    {
+      "id": "degustarios_stall_expansion",
+      "names": [
+        "Degustarios Stall Expansion",
+        "degustarios_stall_expansion"
+      ],
+      "description": "Degustarios wants to turn his single fruit stall into the plaza's first real permanent fruit stand - roofed, fixed in place, not packed up and hauled home every evening. Resolution: the stand gets built and stays standing through a full season, or the town turns him down and he's still loading the cart every night same as always. (Resolution as of this record: ongoing.)",
+      "sources": [],
+      "notes": "Auto-registered by register_arc_concept.py at arc-authoring time. Sourced entirely from hearsay once build_source_index.py links it (see sources[]) - no material-source confirmation."
+    },
+    {
+      "id": "tresno_bridge_stand",
+      "names": [
+        "Tresno Bridge Stand",
+        "tresno_bridge_stand"
+      ],
+      "description": "Tresno wants to trade the blanket on the ground for a real fixed stand at the bridge crossing, something that says he's staying instead of always looking ready to pack up and run. Resolution: the stand goes up and holds through a season of foot traffic, or the watch makes him take it down and he's back to the blanket, same as the day he arrived. (Resolution as of this record: ongoing.)",
+      "sources": [],
+      "notes": "Auto-registered by register_arc_concept.py at arc-authoring time. Sourced entirely from hearsay once build_source_index.py links it (see sources[]) - no material-source confirmation."
+    },
+    {
+      "id": "nagara_luzcalo_place_to_stay",
+      "names": [
+        "Nagara Luzcalo Place To Stay",
+        "nagara_luzcalo_place_to_stay"
+      ],
+      "description": "Nagara Luzcalo wants to actually stop somewhere - not pass through, not camp another night, but find a room in Tyrnea he can call his for more than a trial week. Resolution: a landlord takes him on past the week's trial, or doesn't, and he's back on the road out of Tyrnea same as every town before it. (Resolution as of this record: ongoing.)",
+      "sources": [],
+      "notes": "Auto-registered by register_arc_concept.py at arc-authoring time. Sourced entirely from hearsay once build_source_index.py links it (see sources[]) - no material-source confirmation."
+    },
+    {
+      "id": "niscolauk_garden_restoration",
+      "names": [
+        "Niscolauk Garden Restoration",
+        "niscolauk_garden_restoration"
+      ],
+      "description": "Niscolauk wants to bring the old ornamental garden bed near the Salon Divino back from rubble and weed - the last part of Sit:Nalta's grounds nobody's touched since the ruins went quiet. Resolution: it blooms again by the time the next visitors come through, or the frost gets it first and he's back to just clearing weeds for another year. (Resolution as of this record: ongoing.)",
+      "sources": [],
+      "notes": "Auto-registered by register_arc_concept.py at arc-authoring time. Sourced entirely from hearsay once build_source_index.py links it (see sources[]) - no material-source confirmation."
+    },
+    {
+      "id": "michelnos_plaza_restoration",
+      "names": [
+        "Michelnos Plaza Restoration",
+        "michelnos_plaza_restoration"
+      ],
+      "description": "Michelnos wants to finish the Plaza de Tyrnea's renovation around the old monument still standing at its front - restored, not replaced, so the town's revival looks like it grew from something instead of erasing it. Resolution: the plaza reopens with the monument intact and the town turns out for it, or the funding runs dry first and the half-finished square becomes one more thing Tyrnea has to explain to visitors. (Resolution as of this record: ongoing.)",
+      "sources": [],
+      "notes": "Auto-registered by register_arc_concept.py at arc-authoring time. Sourced entirely from hearsay once build_source_index.py links it (see sources[]) - no material-source confirmation."
+    },
+    {
+      "id": "ilendra_childrens_wing",
+      "names": [
+        "Ilendra Childrens Wing",
+        "ilendra_childrens_wing"
+      ],
+      "description": "Ilendra wants a room of the university actually set aside for the youngest students, instead of borrowing whichever lecture hall the professors aren't using that hour. Resolution: the town approves a dedicated children's wing, or it doesn't, and her class keeps meeting wherever there's a free room that week. (Resolution as of this record: ongoing.)",
+      "sources": [],
+      "notes": "Auto-registered by register_arc_concept.py at arc-authoring time. Sourced entirely from hearsay once build_source_index.py links it (see sources[]) - no material-source confirmation."
+    },
+    {
+      "id": "kulkilo_apprentice",
+      "names": [
+        "Kulkilo Apprentice",
+        "kulkilo_apprentice"
+      ],
+      "description": "Kulkilo wants to take on a real apprentice for the stall - someone who'll actually still be selling fish off that same spot by the bridge after he's gone, not just a nephew helping out for a season. Resolution: someone sticks with it a full year and the stall passes on when it needs to, or nobody does and the spot goes to whoever else wants it when he's done. (Resolution as of this record: ongoing.)",
+      "sources": [],
+      "notes": "Auto-registered by register_arc_concept.py at arc-authoring time. Sourced entirely from hearsay once build_source_index.py links it (see sources[]) - no material-source confirmation."
+    },
+    {
+      "id": "nicolopaulo_tyrnea_telling",
+      "names": [
+        "Nicolopaulo Tyrnea Telling",
+        "nicolopaulo_tyrnea_telling"
+      ],
+      "description": "Nicolopaulo wants to compose the first proper telling of Tyrnea's revival - not tavern gossip stitched together, but a real piece people will still be singing after the builders and professors who lived it are gone. Resolution: he finishes it and hears it sung back to him by someone who wasn't there for the telling, or it fades after one season same as every other tavern song. (Resolution as of this record: ongoing.)",
+      "sources": [],
+      "notes": "Auto-registered by register_arc_concept.py at arc-authoring time. Sourced entirely from hearsay once build_source_index.py links it (see sources[]) - no material-source confirmation."
     }
   ],
   "conflicts": [

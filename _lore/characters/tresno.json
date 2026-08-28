@@ -1,0 +1,106 @@
+{
+  "name": "Tresno",
+  "origin": "Görff",
+  "location": "Tyrnea",
+  "backstory": "Originally from Görff, a relative of Trentor — the old innkeeper with the famous guesthouse there, from olden times and still going. Moved to Tyrnea because he wanted to build something new for himself and wanted something new out of life, frankly. Built his own house there, and wants to help the town recover. Trades near the bridge with nothing more than a blanket spread on the ground — an informal merchant, not a stall-holder.",
+  "knowledge": {
+    "education": {
+      "percent": 10,
+      "mode": "skewed",
+      "topic": [
+        "Görff",
+        "Tyrnea",
+        "trade"
+      ],
+      "items": [
+        "character_legendary: auroboro",
+        "character_legendary: forlan",
+        "concept: juegos_de_milkaan",
+        "concept: tyrnea_rose_window",
+        "era_esquema: Guerras de Görff",
+        "hearsay: aureobalo_farlis_castillo_en_miniatura#1",
+        "hearsay: aureobalo_farlis_castillo_en_miniatura#2",
+        "hearsay: aureobalo_farlis_castillo_en_miniatura#3",
+        "hearsay: auroboro_iii_farlis_alcoba#1",
+        "hearsay: auroboro_iii_farlis_alcoba#2",
+        "hearsay: auroboro_iii_farlis_alcoba#3",
+        "hearsay: auroboro_iii_farlis_alcoba#4",
+        "hearsay: bardaglis_ilaria_khaoe_segunda_noche#1",
+        "hearsay: bardaglis_ilaria_khaoe_segunda_noche#4",
+        "hearsay: doran_eras_of_culture#1",
+        "hearsay: doran_plaza_orientation#2",
+        "hearsay: doran_plaza_orientation#4",
+        "hearsay: farlis_aureobalo_bar_salthos_cruzados#2",
+        "hearsay: farlis_bardaglis_bar_salthos_cruzados#1",
+        "hearsay: gok_milkucha_alcove#1#1",
+        "hearsay: khaoe_banco_colectivo#2",
+        "hearsay: khaoe_banco_colectivo#4",
+        "hearsay: khaoe_banco_colectivo#5",
+        "hearsay: khaoe_banco_colectivo#6",
+        "hearsay: khaoe_farlis_el_castillo_que_fue#3",
+        "hearsay: khaoe_farlis_esperando_a_khaasan#1",
+        "hearsay: khaoe_farlis_esperando_a_khaasan#2",
+        "hearsay: khaoe_farlis_lo_que_cambia_el_tiempo#1",
+        "hearsay: khaoe_farlis_lo_que_cambia_el_tiempo#2",
+        "hearsay: khaoe_farlis_lo_que_cambia_el_tiempo#3",
+        "hearsay: khaoe_khaasan_partida_a_khan_ice#4",
+        "hearsay: nawom_morkulo_first_meeting#4",
+        "hearsay: nerkeli_hangar_talk#5",
+        "inhabitant: Soro (Puente Continental)",
+        "location: gorff",
+        "location: tyrnea",
+        "year_esquema: 2013"
+      ]
+    },
+    "experience": []
+  },
+  "criterion": {
+    "standard": "counts it worthwhile only if what he helped build in Tyrnea outlasts the reasons he left Görff",
+    "wasted_life": "one spent starting over somewhere new and still leaving nothing behind, same as before",
+    "anchor": "location: tyrnea",
+    "origin": "derived",
+    "trusts": "a house you can point to and say you built it, not a story about building one",
+    "distrusts": "anyone who talks about a fresh start but never actually leaves the old one behind",
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": []
+  },
+  "routines": [
+    {
+      "location": "Tyrnea",
+      "context": "street",
+      "weight": 50,
+      "routine_actions": "spreads his blanket by the bridge most mornings, calls out to whoever's crossing, packs up and moves on if the watch gets particular about it"
+    },
+    {
+      "location": "Tyrnea",
+      "context": "market",
+      "weight": 20,
+      "routine_actions": "trades favors and goods with the stall-holders on the days he can't be bothered with the bridge crowd"
+    },
+    {
+      "location": "Tyrnea",
+      "context": "tavern",
+      "weight": 30,
+      "routine_actions": "tells anyone who'll listen about the guesthouse back in Görff, then insists he doesn't miss it"
+    }
+  ],
+  "life": {
+    "lived": 0,
+    "deceased": false
+  },
+  "arc": {
+    "about": [
+      "concept: tresno_bridge_stand",
+      "location: tyrnea"
+    ],
+    "needs": [
+      "goods",
+      "materials"
+    ],
+    "context": "street",
+    "premise": "Tresno wants to trade the blanket on the ground for a real fixed stand at the bridge crossing, something that says he's staying instead of always looking ready to pack up and run. Resolution: the stand goes up and holds through a season of foot traffic, or the watch makes him take it down and he's back to the blanket, same as the day he arrived.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

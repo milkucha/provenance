@@ -1,0 +1,112 @@
+{
+  "name": "Degustarios",
+  "origin": "Tyrnea",
+  "location": "Tyrnea",
+  "backstory": "Born in Tyrnea; his family is from the region. Runs a fruit stall in the main plaza, selling mostly watermelons and melons alongside whatever else the harvest gives. Often travels outside the city to bring the harvest back himself. Hopeful that Tyrnea becomes a bigger city one day, and excited about the new people arriving — tries to offer everyone a good price, newcomer or not.",
+  "knowledge": {
+    "education": {
+      "percent": 10,
+      "mode": "skewed",
+      "topic": [
+        "Tyrnea",
+        "market",
+        "trade"
+      ],
+      "items": [
+        "airport: Sälthos Cruzados",
+        "airport: Terfila",
+        "concept: krastomus_lending_case",
+        "concept: la_lagrima_de_balahm",
+        "concept: tyrnea_rose_window",
+        "conflict: CONFLICT-01",
+        "conflict: CONFLICT-07",
+        "era_ensayo: Okasia y la Segunda Etapa de Subsistencia",
+        "era_esquema: Era de las Maravillas",
+        "hearsay: aureobalo_farlis_castillo_en_miniatura#4",
+        "hearsay: doran_four_castles#8",
+        "hearsay: doran_plaza_orientation#4",
+        "hearsay: gok_milkucha_alcove#1#1",
+        "hearsay: gondarfolas_darnis_and_bracco#7",
+        "hearsay: khaoe_farlis_el_castillo_que_fue#3",
+        "hearsay: nawom_morkulo_first_meeting#4",
+        "hearsay: nuvilo_scholar_at_the_feria#1",
+        "hearsay: nuvilo_scholar_at_the_feria#4",
+        "hearsay: sonoros_lost_traveler#4",
+        "inhabitant: Falkorlia (Gorff)",
+        "inhabitant: Farlika (Gorff)",
+        "inhabitant: Garnako (Gorff)",
+        "inhabitant: Gorlia (Gorff)",
+        "inhabitant: Khaasan (Gorff)",
+        "inhabitant: Kjon (cross-locality travelers/routes (named, with a mode of travel))",
+        "inhabitant: Morlia (Gorff)",
+        "inhabitant: Saltamontabiras (cross-locality travelers/routes (named, with a mode of travel))",
+        "inhabitant: Sari (Puente Continental)",
+        "inhabitant: Soro (Puente Continental)",
+        "inhabitant: Terrolis (cross-locality travelers/routes (named, with a mode of travel))",
+        "location: cruce_de_trobal",
+        "location: fuerte_fabian",
+        "location: nalhue",
+        "location: tyrnea",
+        "train_segment: Khan Ice - Balhâm",
+        "year_esquema: 2013",
+        "year_esquema: 2022"
+      ]
+    },
+    "experience": []
+  },
+  "criterion": {
+    "standard": "counts it worthwhile only if Tyrnea actually grows into the city he's always believed it could be",
+    "wasted_life": "one spent watching Tyrnea stay the small, half-empty place it's been his whole life",
+    "anchor": "location: tyrnea",
+    "origin": "derived",
+    "trusts": "a fair price, honestly weighed, over anyone's fine talk",
+    "distrusts": "a deal that sounds too good before you've even haggled",
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": []
+  },
+  "routines": [
+    {
+      "location": "Tyrnea",
+      "context": "market",
+      "weight": 50,
+      "routine_actions": "sets up the fruit stall at first light, calls out prices to whoever passes, keeps a little back for regulars he knows by name"
+    },
+    {
+      "location": "Tyrnea",
+      "context": "temple",
+      "weight": 20,
+      "routine_actions": "stops by between the morning and afternoon rush to give thanks for a good harvest, or ask for a better one"
+    },
+    {
+      "location": "Tyrnea",
+      "context": "tavern",
+      "weight": 20,
+      "routine_actions": "closes the stall and trades harvest gossip over a drink, always first to say the town's finally turning a corner"
+    },
+    {
+      "location": "Tyrnea <-> the harvest fields",
+      "context": "transit",
+      "weight": 10,
+      "routine_actions": "makes the cart trip out to the fields himself when the stock runs low, rather than trust anyone else to pick the good melons"
+    }
+  ],
+  "life": {
+    "lived": 0,
+    "deceased": false
+  },
+  "arc": {
+    "about": [
+      "concept: degustarios_stall_expansion",
+      "location: tyrnea"
+    ],
+    "needs": [
+      "goods",
+      "contacts"
+    ],
+    "context": "market",
+    "premise": "Degustarios wants to turn his single fruit stall into the plaza's first real permanent fruit stand - roofed, fixed in place, not packed up and hauled home every evening. Resolution: the stand gets built and stays standing through a full season, or the town turns him down and he's still loading the cart every night same as always.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

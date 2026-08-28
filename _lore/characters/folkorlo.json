@@ -1,0 +1,113 @@
+{
+  "name": "Folkorlo",
+  "origin": "Tyrnea",
+  "location": "Tyrnea",
+  "backstory": "General manager of the glass factory of Tyrnea. Has run the factory since it was inaugurated twenty years ago, and works with most of the small population of the old city of Tyrnea, which after having been abandoned for centuries was starting to experience a new glow-up — all because of the glass factory.",
+  "knowledge": {
+    "education": {
+      "percent": 12,
+      "mode": "skewed",
+      "topic": [
+        "Tyrnea",
+        "crafting"
+      ],
+      "items": [
+        "airport: Catraniz",
+        "airport: Dragon",
+        "airport: Gorff",
+        "character_legendary: forlan",
+        "character_legendary: ilaria",
+        "character_legendary: vlaar",
+        "era_esquema: Era de la Expansión",
+        "era_esquema: Guerras de Görff",
+        "hearsay: aureobalo_farlis_castillo_en_miniatura#3",
+        "hearsay: aureobalo_farlis_castillo_en_miniatura#4",
+        "hearsay: auroboro_iii_farlis_alcoba#3",
+        "hearsay: doran_four_castles#6",
+        "hearsay: doran_plaza_orientation#5",
+        "hearsay: gok_milkucha_alcove#1#1",
+        "hearsay: gok_milkucha_alcove#1#2",
+        "hearsay: gondarfolas_darnis_and_bracco#2",
+        "hearsay: ilaria_espiral_de_la_historia#3",
+        "hearsay: khaoe_calendario_mecanografico#4",
+        "hearsay: khaoe_milkucha_jardin_de_los_parajes#2",
+        "hearsay: khaoe_milkucha_jardin_de_los_parajes#7",
+        "hearsay: nawom_morkulo_first_meeting#3",
+        "hearsay: nawom_morkulo_first_meeting#4",
+        "hearsay: nerkeli_hangar_talk#3",
+        "hearsay: sonoros_lost_traveler#1",
+        "inhabitant: Bardaglis (Gorff)",
+        "inhabitant: Dägna (Gorff)",
+        "inhabitant: Falkorlia (Gorff)",
+        "inhabitant: Gondorlikas (Khol Moshin (Taterzen sheet, distinct from the NPC-sheet locality list above))",
+        "inhabitant: Gurk (cross-locality travelers/routes (named, with a mode of travel))",
+        "inhabitant: Nroki (Gorff)",
+        "inhabitant: Saltamontabiras (cross-locality travelers/routes (named, with a mode of travel))",
+        "location: aldea_de_selenne",
+        "location: cruce_de_trobal",
+        "location: gorff",
+        "location: kursuviros",
+        "location: monte_pastizal",
+        "location: osmory",
+        "location: puerto_pastizal",
+        "location: soti",
+        "location: tyrnea",
+        "tale: peregrins",
+        "year_esquema: 2012",
+        "year_esquema: 2013",
+        "year_esquema: 2017",
+        "year_esquema: 2019"
+      ]
+    },
+    "experience": []
+  },
+  "criterion": {
+    "standard": "counts a life well spent only if Tyrnea is more alive when he's done than when the factory started",
+    "wasted_life": "one spent watching Tyrnea slide back into the ruin it was for centuries, without having done everything he could to stop it",
+    "anchor": "location: tyrnea",
+    "origin": "derived",
+    "trusts": "records and ledgers — what's written down and can be checked, the way the factory's own books and Tyrnea's ruins can be checked",
+    "distrusts": "a claim about Tyrnea backed by nothing but someone's say-so",
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": []
+  },
+  "routines": [
+    {
+      "location": "Tyrnea",
+      "context": "factory",
+      "weight": 70,
+      "routine_actions": "opens the glass factory at first light, walks the floor checking the kilns, settles disputes between crews, signs off shipments before dusk"
+    },
+    {
+      "location": "Tyrnea",
+      "context": "tavern",
+      "weight": 25,
+      "routine_actions": "spends evenings trading news over drinks with the crews, buys a round whenever a batch ships clean"
+    },
+    {
+      "location": "Tyrnea",
+      "context": "temple",
+      "weight": 5,
+      "routine_actions": "stops by on rest days to light something for the ones who didn't live to see the factory reopen"
+    }
+  ],
+  "life": {
+    "lived": 0,
+    "deceased": false
+  },
+  "arc": {
+    "about": [
+      "concept: tyrnea_rose_window",
+      "location: tyrnea"
+    ],
+    "needs": [
+      "materials",
+      "contacts"
+    ],
+    "context": "factory",
+    "premise": "Folkorlo wants the reopened glass factory to cast a full stained-glass rose window for Tyrnea's ruined citadel gate - the piece that would make the town's revival undeniable rather than just a rumor of one. He's heard, secondhand, that the old citadel's Daax symbol was carved somewhere near that same gate before the ruin, and means the window to carry it. Resolution: the window is either raised into the gate frame, finished and holding, or the commission collapses - a cracked cast, a backer who pulls out, a fire in the kiln - and the gate stays bare.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "name": "Nagara Luzcalo",
+  "origin": "Grösslor",
+  "location": "Tyrnea",
+  "backstory": "Comes from the region of Grösslor. Has been traveling and has arrived at Tyrnea, tired, looking for a place to stay — for peace, more than anything else.",
+  "knowledge": {
+    "education": {
+      "percent": 15,
+      "mode": "skewed",
+      "topic": [
+        "Grosslor",
+        "continent",
+        "Tyrnea"
+      ],
+      "items": [
+        "character_legendary: daaxagoras",
+        "character_legendary: darnis",
+        "concept: antiguo_continente_and_mapa_del_milenio",
+        "concept: la_lagrima_de_balahm",
+        "concept: tyrnea_rose_window",
+        "concept: world_name_variants",
+        "conflict: CONFLICT-01",
+        "conflict: CONFLICT-10",
+        "conflict: CONFLICT-13",
+        "conflict: CONFLICT-14",
+        "era_ensayo: Era de los Continentes",
+        "era_esquema: Era de los Continentes",
+        "hearsay: aureobalo_khaasan_bar_salthos_cruzados#2",
+        "hearsay: doran_four_castles#4",
+        "hearsay: doran_four_castles#5",
+        "hearsay: gok_milkucha_alcove#1#1",
+        "hearsay: gondarfolas_darnis_and_bracco#2",
+        "hearsay: gondarfolas_darnis_and_bracco#3",
+        "hearsay: gondarfolas_darnis_and_bracco#4",
+        "hearsay: khaoe_calendario_mecanografico#4",
+        "hearsay: khaoe_khaasan_partida_a_khan_ice#7",
+        "hearsay: khaoe_milkucha_jardin_de_los_parajes#11",
+        "hearsay: khaoe_milkucha_jardin_de_los_parajes#3",
+        "hearsay: khaoe_milkucha_jardin_de_los_parajes#4",
+        "hearsay: nawom_morkulo_first_meeting#4",
+        "hearsay: nawom_morkulo_first_meeting#5",
+        "hearsay: nerkeli_hangar_talk#1",
+        "hearsay: nuvilo_nerkeli_feria_del_milenio#2",
+        "hearsay: nuvilo_nerkeli_feria_del_milenio#4",
+        "hearsay: nuvilo_scholar_at_the_feria#3",
+        "hearsay: sonoros_lost_traveler#5",
+        "hearsay: sonoros_lost_traveler#6",
+        "highway: M7",
+        "inhabitant: Galandis (cross-locality travelers/routes (named, with a mode of travel))",
+        "inhabitant: Grogar / Grograr (Puente Continental)",
+        "inhabitant: Juori (Volcano-Gorff)",
+        "inhabitant: Khaoe (Gorff)",
+        "inhabitant: Murunu (cross-locality travelers/routes (named, with a mode of travel))",
+        "inhabitant: Nuruk (Khol Moshin (Taterzen sheet, distinct from the NPC-sheet locality list above))",
+        "inhabitant: Saltamontabiras (cross-locality travelers/routes (named, with a mode of travel))",
+        "inhabitant: Sari (Puente Continental)",
+        "inhabitant: Saski (Gorff)",
+        "inhabitant: Soro (Puente Continental)",
+        "inhabitant: Trentor (Gorff)",
+        "inhabitant: Trentor (Khol Moshin (Taterzen sheet, distinct from the NPC-sheet locality list above))",
+        "inhabitant: Trifolis (Puente Continental)",
+        "inhabitant: Zarkatraz (Puente Continental)",
+        "location: aurali",
+        "location: friendly_village",
+        "location: grosslor",
+        "location: khol_moshin",
+        "location: milkantida_as_place",
+        "location: tax_de_rich",
+        "location: tyrnea",
+        "year_esquema: 2013",
+        "year_esquema: 2014",
+        "year_esquema: 2019",
+        "year_esquema: 2023"
+      ]
+    },
+    "experience": []
+  },
+  "criterion": {
+    "standard": "counts it worthwhile only once he's found somewhere he genuinely doesn't need to leave",
+    "wasted_life": "one spent still moving, never once finding a place worth staying still for",
+    "anchor": "location: grosslor",
+    "origin": "derived",
+    "trusts": "a place he can see is still standing, not what someone promises will be there",
+    "distrusts": "a promise of rest from someone who's never actually stopped moving either",
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": []
+  },
+  "routines": [
+    {
+      "location": "Tyrnea",
+      "context": "market",
+      "weight": 50,
+      "routine_actions": "does odd work around the stalls for a meal and a few coins, never staying at any one long enough to be counted a regular"
+    },
+    {
+      "location": "Tyrnea",
+      "context": "tavern",
+      "weight": 40,
+      "routine_actions": "asks quietly around the tavern for anyone renting a room, listens more than he talks"
+    },
+    {
+      "location": "Tyrnea",
+      "context": "temple",
+      "weight": 10,
+      "routine_actions": "sits in the back on the quiet days, not for any particular rite, just for the stillness of the room"
+    }
+  ],
+  "life": {
+    "lived": 0,
+    "deceased": false
+  },
+  "arc": {
+    "about": [
+      "concept: nagara_luzcalo_place_to_stay",
+      "location: tyrnea"
+    ],
+    "needs": [
+      "contacts",
+      "nourishment"
+    ],
+    "context": "tavern",
+    "premise": "Nagara Luzcalo wants to actually stop somewhere - not pass through, not camp another night, but find a room in Tyrnea he can call his for more than a trial week. Resolution: a landlord takes him on past the week's trial, or doesn't, and he's back on the road out of Tyrnea same as every town before it.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

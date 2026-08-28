@@ -1,0 +1,127 @@
+{
+  "name": "Kalmanatas",
+  "origin": "",
+  "location": "Tyrnea",
+  "backstory": "One of the professors of the University of Tyrnea, recently reopened after the town's revival brought about by Folkorlo's glass factory. Professor of concrete and bricks, teaching construction — the mixture of elements to create durable \"aggregate stoning,\" as he insists on calling it, rather proud of the pun.",
+  "knowledge": {
+    "education": {
+      "percent": 15,
+      "mode": "skewed",
+      "topic": [
+        "Tyrnea",
+        "construction",
+        "stone",
+        "bricks"
+      ],
+      "items": [
+        "airport: Sälthos Cruzados",
+        "character_legendary: forlan",
+        "character_real: nikkostratos",
+        "concept: dome_market_repair",
+        "concept: feria_del_milenio",
+        "concept: peregrins",
+        "concept: redstone",
+        "concept: tyrnea_rose_window",
+        "concept: waystones",
+        "conflict: CONFLICT-06",
+        "conflict: CONFLICT-15",
+        "era_esquema: Era de la Expansión",
+        "era_esquema: Era del Mosaico",
+        "era_libro: Era de los Reinos Naturales",
+        "hearsay: aureobalo_farlis_castillo_en_miniatura#3",
+        "hearsay: aureobalo_farlis_castillo_en_miniatura#5",
+        "hearsay: auroboro_iii_farlis_alcoba#2",
+        "hearsay: bardaglis_ilaria_khaoe_segunda_noche#1",
+        "hearsay: bardaglis_ilaria_khaoe_segunda_noche#4",
+        "hearsay: bardaglis_ilaria_khaoe_segunda_noche#6",
+        "hearsay: doran_eras_of_culture#3",
+        "hearsay: doran_eras_of_culture#4",
+        "hearsay: doran_four_castles#6",
+        "hearsay: doran_plaza_orientation#4",
+        "hearsay: farlis_aureobalo_bar_salthos_cruzados#1",
+        "hearsay: farlis_bardaglis_bar_salthos_cruzados#1",
+        "hearsay: farlis_gok_alcove#1#1",
+        "hearsay: farlis_gok_alcove#1#4",
+        "hearsay: gok_milkucha_alcove#1#1",
+        "hearsay: gondarfolas_darnis_and_bracco#7",
+        "hearsay: ilaria_espiral_de_la_historia#1",
+        "hearsay: ilaria_espiral_de_la_historia#2",
+        "hearsay: khaoe_farlis_el_castillo_que_fue#3",
+        "hearsay: khaoe_milkucha_jardin_de_los_parajes#2",
+        "hearsay: khaoe_milkucha_jardin_de_los_parajes#3",
+        "hearsay: khaoe_milkucha_jardin_de_los_parajes#9",
+        "hearsay: nawom_morkulo_first_meeting#4",
+        "hearsay: nuvilo_nerkeli_feria_del_milenio#2",
+        "hearsay: nuvilo_scholar_at_the_feria#1",
+        "inhabitant: Bardaglis (Gorff)",
+        "inhabitant: Dägna (Gorff)",
+        "inhabitant: Dägna (Khol Moshin (Taterzen sheet, distinct from the NPC-sheet locality list above))",
+        "inhabitant: Gundulun (Gorff)",
+        "inhabitant: Jaalax (Volcano-Gorff)",
+        "inhabitant: Khaasan (Gorff)",
+        "inhabitant: Malkinimies (cross-locality travelers/routes (named, with a mode of travel))",
+        "inhabitant: Nerl (unlocated (skin only, no locality/role given))",
+        "inhabitant: Saltamontabiras (cross-locality travelers/routes (named, with a mode of travel))",
+        "location: aurali",
+        "location: cruce_de_trobal",
+        "location: gorff",
+        "location: osmory",
+        "location: soti",
+        "location: tyrnea",
+        "tale: redstone_and_basic_needs",
+        "year_esquema: 2013",
+        "year_esquema: 2018"
+      ]
+    },
+    "experience": []
+  },
+  "criterion": {
+    "standard": "counts a life well spent only if what he built in Tyrnea is still standing after he's gone",
+    "wasted_life": "one spent building things that don't outlast the person who paid for them",
+    "anchor": "location: tyrnea",
+    "origin": "derived",
+    "trusts": "a wall you can put your hand on, not a rumor about one",
+    "distrusts": "a claim about a structure nobody's actually tested",
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": []
+  },
+  "routines": [
+    {
+      "location": "Tyrnea",
+      "context": "university",
+      "weight": 70,
+      "routine_actions": "lectures on binding ratios and load-bearing walls, chalks diagrams of aggregate mixes on the board, argues with students who think faster-drying means better"
+    },
+    {
+      "location": "Tyrnea",
+      "context": "quarry",
+      "weight": 15,
+      "routine_actions": "walks the quarry face with the cutters most mornings, sorting stone by grade before it ever reaches the kiln or the mixing yard"
+    },
+    {
+      "location": "Tyrnea",
+      "context": "tavern",
+      "weight": 15,
+      "routine_actions": "holds court most evenings on why his mix outlasts the old mortar, buys a round when someone finally admits he's right"
+    }
+  ],
+  "life": {
+    "lived": 0,
+    "deceased": false
+  },
+  "arc": {
+    "about": [
+      "concept: kalmanatas_aggregate_method",
+      "location: tyrnea"
+    ],
+    "needs": [
+      "materials",
+      "expertise"
+    ],
+    "context": "university",
+    "premise": "Kalmanatas wants to prove his aggregate-stone method by using it to shore up the university's own crumbling east wing before the next class term - the same technique he lectures on, tested where anyone can see it fail or hold. Resolution: the wing holds through a full term's use, or it doesn't - a crack reopens, a beam gives, and the technique gets quietly dropped from the syllabus.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

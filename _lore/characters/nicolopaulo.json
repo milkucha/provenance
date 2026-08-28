@@ -1,0 +1,116 @@
+{
+  "name": "Nicolopaulo",
+  "origin": "Terfila",
+  "location": "Tyrnea",
+  "backstory": "The bard of the city. Originally from Terfila.",
+  "knowledge": {
+    "education": {
+      "percent": 12,
+      "mode": "skewed",
+      "topic": [
+        "Terfila",
+        "Tyrnea",
+        "tale"
+      ],
+      "items": [
+        "airport: Terfila",
+        "character_legendary: darnis",
+        "character_legendary: storfilias",
+        "concept: dome_market_repair",
+        "concept: farlan_overdue_crossing",
+        "concept: michelnos_plaza_restoration",
+        "concept: muli_gorff_correction",
+        "concept: nagara_luzcalo_place_to_stay",
+        "concept: peregrins",
+        "concept: tyrnea_rose_window",
+        "conflict: CONFLICT-16",
+        "conflict: CONFLICT-18",
+        "era_ensayo: Era de los Continentes",
+        "era_esquema: Era del Mosaico",
+        "hearsay: aureobalo_farlis_castillo_en_miniatura#6",
+        "hearsay: farlis_gok_alcove#1#4",
+        "hearsay: gok_milkucha_alcove#1#1",
+        "hearsay: gok_milkucha_alcove#1#4",
+        "hearsay: khaoe_banco_colectivo#3",
+        "hearsay: nawom_morkulo_first_meeting#2",
+        "hearsay: nawom_morkulo_first_meeting#3",
+        "hearsay: nawom_morkulo_first_meeting#4",
+        "inhabitant: Azaor (Gorff)",
+        "inhabitant: Garfeld (cross-locality travelers/routes (named, with a mode of travel))",
+        "inhabitant: Garnako (Gorff)",
+        "inhabitant: Gondarfolas (Gorff)",
+        "inhabitant: Gondarfolas (Terfila)",
+        "inhabitant: Jaalax (Volcano-Gorff)",
+        "inhabitant: Lumi (Terfila)",
+        "inhabitant: Nerkeli (cross-locality travelers/routes (named, with a mode of travel))",
+        "inhabitant: Nerl (unlocated (skin only, no locality/role given))",
+        "inhabitant: Peregrin (Terfila)",
+        "inhabitant: Puri (Terfila)",
+        "inhabitant: Saltamontabiras (cross-locality travelers/routes (named, with a mode of travel))",
+        "inhabitant: Terrolis (cross-locality travelers/routes (named, with a mode of travel))",
+        "inhabitant: Zarkapulos (Terfila)",
+        "location: jolystick",
+        "location: khan_ice",
+        "location: lundria",
+        "location: puerto_de_las_lunas",
+        "location: terfyla",
+        "location: tyrnea",
+        "location: wasteland",
+        "route_named: Ruta Lundria-Salthos Cruzados",
+        "year_esquema: 2011",
+        "year_esquema: 2013",
+        "year_esquema: 2019"
+      ]
+    },
+    "experience": []
+  },
+  "criterion": {
+    "standard": "counts it worthwhile only if something he's told gets carried on by someone who heard it from him",
+    "wasted_life": "one spent singing the same old verses and never once adding a true line of his own",
+    "anchor": "concept: peregrins",
+    "origin": "derived",
+    "trusts": "what's actually been written down about a story, not just how it's sung this week",
+    "distrusts": "a verse that changes every time you hear it, with no one keeping the true version",
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": []
+  },
+  "routines": [
+    {
+      "location": "Tyrnea",
+      "context": "tavern",
+      "weight": 60,
+      "routine_actions": "plays most nights for whoever's drinking, works new verses about the town's revival in between the old standards"
+    },
+    {
+      "location": "Tyrnea",
+      "context": "plaza",
+      "weight": 25,
+      "routine_actions": "performs for the crowds on market days, trades a song for whatever a listener can spare"
+    },
+    {
+      "location": "Tyrnea <-> Terfila",
+      "context": "transit",
+      "weight": 15,
+      "routine_actions": "makes the trip back to Terfila now and then to trade verses with the bards there and see what's changed"
+    }
+  ],
+  "life": {
+    "lived": 0,
+    "deceased": false
+  },
+  "arc": {
+    "about": [
+      "concept: nicolopaulo_tyrnea_telling",
+      "location: tyrnea"
+    ],
+    "needs": [
+      "stories",
+      "contacts"
+    ],
+    "context": "tavern",
+    "premise": "Nicolopaulo wants to compose the first proper telling of Tyrnea's revival - not tavern gossip stitched together, but a real piece people will still be singing after the builders and professors who lived it are gone. Resolution: he finishes it and hears it sung back to him by someone who wasn't there for the telling, or it fades after one season same as every other tavern song.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}
