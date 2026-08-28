@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — NPC Proximity Check Template
+# Provenance — NPC Proximity Check Template
 # =============================================================================
 # Needed for every NPC, regardless of movement mode — including NONE. This used
 # to be scoped to roaming modes only, which was wrong: the skin self-heal race

@@ -26,10 +26,10 @@
   "nodes": [
    {
     "id": "dir:.",
-    "label": "Luminacion",
+    "label": "Provenance",
     "kind": "root",
     "path": ".",
-    "size": 1179489,
+    "size": 1181625,
     "degree": 15
    },
    {
@@ -45,7 +45,7 @@
     "label": "GESTURES.md",
     "kind": "doc",
     "path": "GESTURES.md",
-    "size": 13937,
+    "size": 14101,
     "degree": 1
    },
    {
@@ -61,7 +61,7 @@
     "label": "README.md",
     "kind": "doc",
     "path": "README.md",
-    "size": 60821,
+    "size": 61595,
     "degree": 1
    },
    {
@@ -77,7 +77,7 @@
     "label": "conversation.md",
     "kind": "doc",
     "path": "conversation.md",
-    "size": 12904,
+    "size": 13067,
     "degree": 1
    },
    {
@@ -85,7 +85,7 @@
     "label": "pack.mcmeta",
     "kind": "other",
     "path": "pack.mcmeta",
-    "size": 125,
+    "size": 131,
     "degree": 1
    },
    {
@@ -93,7 +93,7 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
-    "size": 195866,
+    "size": 196064,
     "degree": 6
    },
    {
@@ -109,7 +109,7 @@
     "label": "VOICE.md",
     "kind": "doc",
     "path": ".claude/VOICE.md",
-    "size": 8292,
+    "size": 8424,
     "degree": 1
    },
    {
@@ -133,7 +133,7 @@
     "label": "skills",
     "kind": "dir",
     "path": ".claude/skills",
-    "size": 184741,
+    "size": 184807,
     "degree": 13
    },
    {
@@ -237,7 +237,7 @@
     "label": "package",
     "kind": "dir",
     "path": ".claude/skills/package",
-    "size": 3442,
+    "size": 3508,
     "degree": 2
    },
    {
@@ -245,7 +245,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/package/SKILL.md",
-    "size": 3442,
+    "size": 3508,
     "degree": 1
    },
    {
@@ -1108,7 +1108,7 @@
     "label": "resourcepack",
     "kind": "dir",
     "path": "resourcepack",
-    "size": 38909,
+    "size": 38915,
     "degree": 3
    },
    {
@@ -1116,7 +1116,7 @@
     "label": "pack.mcmeta",
     "kind": "resourcepack",
     "path": "resourcepack/pack.mcmeta",
-    "size": 133,
+    "size": 139,
     "degree": 1
    },
    {
@@ -1252,7 +1252,7 @@
     "label": "scripts",
     "kind": "dir",
     "path": "scripts",
-    "size": 398610,
+    "size": 399435,
     "degree": 5
    },
    {
@@ -1260,7 +1260,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": "scripts/graphs",
-    "size": 79255,
+    "size": 79997,
     "degree": 3
    },
    {
@@ -1268,7 +1268,7 @@
     "label": "graphifyish.py",
     "kind": "script",
     "path": "scripts/graphs/graphifyish.py",
-    "size": 41807,
+    "size": 41712,
     "degree": 1
    },
    {
@@ -1276,7 +1276,7 @@
     "label": "graphifyish_template.html",
     "kind": "script",
     "path": "scripts/graphs/graphifyish_template.html",
-    "size": 37448,
+    "size": 38285,
     "degree": 1
    },
    {
@@ -1668,7 +1668,7 @@
     "label": "minecraft",
     "kind": "dir",
     "path": "scripts/minecraft",
-    "size": 15822,
+    "size": 15905,
     "degree": 4
    },
    {
@@ -1676,7 +1676,7 @@
     "label": "package.py",
     "kind": "script",
     "path": "scripts/minecraft/package.py",
-    "size": 3117,
+    "size": 3200,
     "degree": 1
    },
    {
@@ -2952,41 +2952,33 @@
   "nodes": [
    {
     "id": "layer:1",
-    "label": "Layer 1 - Foundation",
+    "label": "Tier 1 - Content",
     "kind": "layer",
-    "note": "skills + lore: the sources of truth",
+    "note": "lore: the sources of truth",
     "tier": 1,
-    "degree": 17
-   },
-   {
-    "id": "layer:2",
-    "label": "Layer 2 - Supporting",
-    "kind": "layer",
-    "note": "templates, registries, gesture dispatch",
-    "tier": 2,
-    "degree": 55
-   },
-   {
-    "id": "layer:3",
-    "label": "Layer 3 - Datapack",
-    "kind": "layer",
-    "note": "what Minecraft loads from data/",
-    "tier": 3,
     "degree": 5
    },
    {
-    "id": "layer:4",
-    "label": "Layer 4 - Resource pack",
+    "id": "layer:2",
+    "label": "Tier 2 - Handlers",
     "kind": "layer",
-    "note": "gestures, localization, sounds",
-    "tier": 4,
-    "degree": 2
+    "note": "skills + scripts + supporting patterns",
+    "tier": 2,
+    "degree": 67
+   },
+   {
+    "id": "layer:3",
+    "label": "Tier 3 - Shipping",
+    "kind": "layer",
+    "note": "datapack + resource pack Minecraft loads",
+    "tier": 3,
+    "degree": 5
    },
    {
     "id": "skill:character",
     "label": "/character",
     "kind": "skill",
-    "tier": 1,
+    "tier": 2,
     "file": ".claude/skills/character/SKILL.md",
     "degree": 2
    },
@@ -2994,7 +2986,7 @@
     "id": "skill:embody",
     "label": "/embody",
     "kind": "skill",
-    "tier": 1,
+    "tier": 2,
     "file": ".claude/skills/embody/SKILL.md",
     "degree": 1
    },
@@ -3002,7 +2994,7 @@
     "id": "skill:enact",
     "label": "/enact",
     "kind": "skill",
-    "tier": 1,
+    "tier": 2,
     "file": ".claude/skills/enact/SKILL.md",
     "degree": 4
    },
@@ -3010,7 +3002,7 @@
     "id": "skill:enact-embody",
     "label": "/enact-embody",
     "kind": "skill",
-    "tier": 1,
+    "tier": 2,
     "file": ".claude/skills/enact-embody/SKILL.md",
     "degree": 1
    },
@@ -3018,7 +3010,7 @@
     "id": "skill:generate",
     "label": "/generate",
     "kind": "skill",
-    "tier": 1,
+    "tier": 2,
     "file": ".claude/skills/generate/SKILL.md",
     "degree": 1
    },
@@ -3026,7 +3018,7 @@
     "id": "skill:integrate",
     "label": "/integrate",
     "kind": "skill",
-    "tier": 1,
+    "tier": 2,
     "file": ".claude/skills/integrate/SKILL.md",
     "degree": 3
    },
@@ -3034,7 +3026,7 @@
     "id": "skill:package",
     "label": "/package",
     "kind": "skill",
-    "tier": 1,
+    "tier": 2,
     "file": ".claude/skills/package/SKILL.md",
     "degree": 2
    },
@@ -3042,7 +3034,7 @@
     "id": "skill:resolve",
     "label": "/resolve",
     "kind": "skill",
-    "tier": 1,
+    "tier": 2,
     "file": ".claude/skills/resolve/SKILL.md",
     "degree": 1
    },
@@ -3050,7 +3042,7 @@
     "id": "skill:simulate",
     "label": "/simulate",
     "kind": "skill",
-    "tier": 1,
+    "tier": 2,
     "file": ".claude/skills/simulate/SKILL.md",
     "degree": 1
    },
@@ -3058,7 +3050,7 @@
     "id": "skill:spawn",
     "label": "/spawn",
     "kind": "skill",
-    "tier": 1,
+    "tier": 2,
     "file": ".claude/skills/spawn/SKILL.md",
     "degree": 3
    },
@@ -3066,7 +3058,7 @@
     "id": "skill:start",
     "label": "/start",
     "kind": "skill",
-    "tier": 1,
+    "tier": 2,
     "file": ".claude/skills/start/SKILL.md",
     "degree": 1
    },
@@ -3074,7 +3066,7 @@
     "id": "skill:tell",
     "label": "/tell",
     "kind": "skill",
-    "tier": 1,
+    "tier": 2,
     "file": ".claude/skills/tell/SKILL.md",
     "degree": 2
    },
@@ -3562,7 +3554,7 @@
     "id": "rp:assets",
     "label": "resourcepack/assets",
     "kind": "resourcepack",
-    "tier": 4,
+    "tier": 3,
     "note": "6 files",
     "degree": 3
    }
@@ -3581,79 +3573,73 @@
     "weight": 1
    },
    {
-    "source": "layer:3",
-    "target": "layer:4",
-    "rel": "authors",
-    "weight": 1
-   },
-   {
-    "source": "layer:1",
+    "source": "layer:2",
     "target": "skill:character",
     "rel": "holds",
     "weight": 1
    },
    {
-    "source": "layer:1",
+    "source": "layer:2",
     "target": "skill:embody",
     "rel": "holds",
     "weight": 1
    },
    {
-    "source": "layer:1",
+    "source": "layer:2",
     "target": "skill:enact",
     "rel": "holds",
     "weight": 1
    },
    {
-    "source": "layer:1",
+    "source": "layer:2",
     "target": "skill:enact-embody",
     "rel": "holds",
     "weight": 1
    },
    {
-    "source": "layer:1",
+    "source": "layer:2",
     "target": "skill:generate",
     "rel": "holds",
     "weight": 1
    },
    {
-    "source": "layer:1",
+    "source": "layer:2",
     "target": "skill:integrate",
     "rel": "holds",
     "weight": 1
    },
    {
-    "source": "layer:1",
+    "source": "layer:2",
     "target": "skill:package",
     "rel": "holds",
     "weight": 1
    },
    {
-    "source": "layer:1",
+    "source": "layer:2",
     "target": "skill:resolve",
     "rel": "holds",
     "weight": 1
    },
    {
-    "source": "layer:1",
+    "source": "layer:2",
     "target": "skill:simulate",
     "rel": "holds",
     "weight": 1
    },
    {
-    "source": "layer:1",
+    "source": "layer:2",
     "target": "skill:spawn",
     "rel": "holds",
     "weight": 1
    },
    {
-    "source": "layer:1",
+    "source": "layer:2",
     "target": "skill:start",
     "rel": "holds",
     "weight": 1
    },
    {
-    "source": "layer:1",
+    "source": "layer:2",
     "target": "skill:tell",
     "rel": "holds",
     "weight": 1
@@ -4019,7 +4005,7 @@
     "weight": 1
    },
    {
-    "source": "layer:4",
+    "source": "layer:3",
     "target": "rp:assets",
     "rel": "holds",
     "weight": 1

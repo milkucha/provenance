@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — Shared: Gesture Tick (internal)
+# Provenance — Shared: Gesture Tick (internal)
 # =============================================================================
 # Called every tick from tick.mcfunction. Counts down every currently-active
 # gesture's own per-entity luminacion.gest_timer score (set by whichever

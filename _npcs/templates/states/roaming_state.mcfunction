@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — NPC Roaming State Template
+# Provenance — NPC Roaming State Template
 # =============================================================================
 # For NPCs that switch between multiple named "states" at runtime — see
 # _npcs/actions/registry.json → _action_templates.multi_state_npc for the full

@@ -1,6 +1,6 @@
 # Hearsay — What Has Been Said
 
-This is the second of two sources of truth in the Luminacion lore, and it is deliberately not the
+This is the second of two sources of truth in the Provenance lore, and it is deliberately not the
 same kind of source as the first.
 
 `context.md` (and the associative index built from it, `encodings.json`) is the **objective

@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — Shared: Gesture — Face-palm
+# Provenance — Shared: Gesture — Face-palm
 # =============================================================================
 # Gives the NPC's own main hand an invisible marker item (CustomModelData
 # 109), which the gesture resource pack reads to raise the right arm to

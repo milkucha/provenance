@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — NPC Path Self-Heal Template
+# Provenance — NPC Path Self-Heal Template
 # =============================================================================
 # Called every 100 ticks from check_proximity.mcfunction, alongside
 # heal_skin.mcfunction. Re-applies the currently active path only if

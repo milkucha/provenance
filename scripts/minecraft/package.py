@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Luminacion — Release Packager
+Provenance — Release Packager
 ==============================
 Uses only the Python standard library.
 
@@ -14,8 +14,8 @@ WORKFLOW
 --------
     python scripts/minecraft/package.py "<destination folder>"
 
-Writes/overwrites <destination>/Luminacion.zip and
-<destination>/Luminacion-resourcepack.zip. Both zips are flat at the root
+Writes/overwrites <destination>/Provenance.zip and
+<destination>/Provenance-resourcepack.zip. Both zips are flat at the root
 (pack.mcmeta at the zip's top level) — required for Minecraft to load them as a
 datapack/resource pack, whether dropped in zipped or unzipped into a folder.
 """
@@ -41,7 +41,7 @@ DATAPACK_EXCLUDES = {
 
 
 def zip_datapack(dest: Path) -> Path:
-    out = dest / "Luminacion.zip"
+    out = dest / "Provenance.zip"
     with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as zf:
         zf.write(DATAPACK_MCMETA, "pack.mcmeta")
         for path in DATAPACK_DATA.rglob("*"):
@@ -55,7 +55,7 @@ def zip_datapack(dest: Path) -> Path:
 
 
 def zip_resourcepack(dest: Path) -> Path:
-    out = dest / "Luminacion-resourcepack.zip"
+    out = dest / "Provenance-resourcepack.zip"
     with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as zf:
         zf.write(RESOURCEPACK_DIR / "pack.mcmeta", "pack.mcmeta")
         for path in (RESOURCEPACK_DIR / "assets").rglob("*"):

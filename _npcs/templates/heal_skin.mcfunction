@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — NPC Skin Self-Heal Template
+# Provenance — NPC Skin Self-Heal Template
 # =============================================================================
 # Works around a Taterzens bug: skins are fetched asynchronously from
 # mineskin.org (or a player name) on a background thread, decoupled from

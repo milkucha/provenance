@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — Shared: Gesture — Scratch Head
+# Provenance — Shared: Gesture — Scratch Head
 # =============================================================================
 # Gives the NPC's own main hand an invisible marker item (CustomModelData
 # 106), which the gesture resource pack reads to raise the right arm toward

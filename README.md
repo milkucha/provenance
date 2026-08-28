@@ -99,11 +99,10 @@ orientation.** Everything past that, read only the section(s) the task at hand a
   vs. putting it in motion. Run `/start` for a live version of this.
 
 - [§0 System architecture](#0-system-architecture) — the lore engine, then the current embodiment stack built on it; start here every session
-  - [Layer 1 — Foundation: skills + lore](#layer-1--foundation-skills--lore)
+  - [Tier 1 — Content](#tier-1--content)
   - [Simulating and evaluating the lore](#simulating-and-evaluating-the-lore)
-  - [Layer 2 — Supporting functions](#layer-2--supporting-functions)
-  - [Layer 3 — Datapack](#layer-3--datapack)
-  - [Layer 4 — Resource pack](#layer-4--resource-pack)
+  - [Tier 2 — Handlers](#tier-2--handlers)
+  - [Tier 3 — Shipping](#tier-3--shipping)
 - [§1 Folder structure](#1-folder-structure) — compulsory: the literal `_lore/`/`data/`/`_npcs/` tree
 - [§2 Core concepts](#2-core-concepts) — compulsory: Fact / Criterion / Lifespan / Death first, then NPC / Dialog / Action / routine pause-resume for the current embodiment backend
 - [§3 Writing lore through enactment](#3-writing-lore-through-enactment) — the manual walkthrough (`/enact` automates Steps 1–2, `/embody` Steps 3–4)
@@ -131,34 +130,123 @@ embodiment target, not to the lore engine itself.
 
 ## 0. System architecture
 
-The system splits into two halves. The **lore engine** — Layer 1 below, plus how it's simulated and
+The system splits into two halves. The **lore engine** — Tier 1 below, plus how it's simulated and
 evaluated — is the actual product: embodiment-agnostic, generating and evolving a culture on its own
 terms. **Embodiment** is how a run of that engine gets surfaced somewhere live; today that's one
-backend, Minecraft, built as a dependency stack on top of Layer 1:
+backend, Minecraft, built as a dependency stack on top of Tier 1:
 
 ```
-4. Resource pack      gestures (EMF/Iris model overrides), localization, custom sounds
-        ↑
-3. Datapack           data/luminacion/ — functions, predicates, tags, dialogues Minecraft loads
-        ↑
-2. Supporting layer   _npcs/templates/, _npcs/actions/registry.json (_action_templates), gesture dispatch
-        ↑
-1. Foundation         skills (/character, /enact, /embody, /spawn, /integrate, /simulate) + _lore/ (material → analysis)
+3. Shipping   Datapack: data/luminacion/ — functions, predicates, tags, dialogues Minecraft loads
+              Resource pack: gestures (EMF/Iris model overrides), localization, custom sounds
+        ↑                    what a run of the engine becomes, live in the current backend
+2. Handlers   Skills (/character, /enact, /embody, /spawn, /integrate, /simulate, ...) driving
+              scripts (scripts/lore/, scripts/minecraft/) through shared supporting patterns:
+              _npcs/templates/, _npcs/actions/registry.json (_action_templates), gesture dispatch
+        ↑                    the process that shapes content into shippable material
+1. Content    _lore/ — material → analysis → encodings.json, characters, tales, facts
+                                   the sources of truth, inert until a handler acts on them
 ```
 
-A different or additional embodiment backend would replace Layers 2–4 without touching Layer 1 or
+A different or additional embodiment backend would replace Tier 3 without touching Tiers 1–2 or
 the simulation/evaluation tooling described next.
 
-### Layer 1 — Foundation: skills + lore
+### Tier 1 — Content
 
-- **Skills** (`.claude/skills/`) — repeatable procedures, invoked as slash commands. They split
-  cleanly along the lore/Minecraft line that runs through the whole system: `/character` and `/enact`
-  are lore-only and know nothing of Minecraft, with one narrow exception — `/enact` stages a scene's
-  raw transcript at `_npcs/scenes/<id>.md`, purely so `/embody` has something to read later. That's
-  staging content for the embodiment layer, not lore itself, and `/enact` still never touches either
-  registry or `data/`. `/embody` and `/spawn` only ever touch `_npcs/`/`data/` and know nothing of
-  lore. Every skill answers to one shared rule, stated once in `.claude/PRINCIPLES.md` rather than
-  repeated per skill: nothing gets decided silently.
+- **`_lore/`** — the raw material and its analysis, plus two further sources of truth: one told
+  directly by the user, and one (`facts/`) that is universal and never sampled:
+  - `_lore/material/` — source artifacts as uploaded: screenshots of in-game books, maps,
+    spreadsheets (`Luminacion Register [Code].xlsx`, `Catastro Milkaan y Platinhëa.xlsx`, ...),
+    documents. Treated as excavated primary sources — never edited, only read.
+  - `_lore/material/_context.md` — one section per material artifact, transcribing only what that
+    specific source says or shows, with no cross-source reconciliation. Contradictions between
+    sources are noted here, not resolved. Lives inside `material/` itself, the only analysis output
+    that's source-specific rather than cross-cutting.
+  - `_lore/encodings.json` — the central, structured, queryable form of the record: `time_systems`,
+    `locations`, `routes`, `characters`, `concepts`, `conflicts` (cross-source disagreements, each with
+    a `user_resolution` once settled), `tales`, and `hearsay` (claims made *in* dialogues — §3 Step 7).
+    This is what `scripts/lore/sample_lore_knowledge.py` draws an NPC's knowledge pool from. Sits at `_lore/`
+    root since every source type writes into it — it's the hub.
+  - `_lore/unknowns.md` — gaps and open questions that material, tale, and hearsay all feed (a claim can
+    surface a genuine gap the objective record has never addressed, distinct from `inconsistent_with_record`,
+    which flags a claim that actively contradicts something already on record), plus a log of which
+    have since been resolved by the user. Sits at `_lore/` root alongside `encodings.json` since it's
+    cross-cutting, not specific to any one source folder.
+  - `_lore/characters/` — one JSON file per character (`<key>.json`, key = lowercased, slugified
+    name), the complete lore record for who they are: `name` (canonical — the one place a character's
+    name is decided), `city`, `backstory`, `knowledge` (`education`/`experience`), `criterion`, and
+    `life` (`lived`/`deceased`). Has no embodiment-facing field at all — a character can live here
+    fully developed with no in-game body. `/character` and `/enact` are the only writers.
+    `_lore/characters/lifespans.json` sits beside them, holding each character's secret total span
+    (see **Lifespan** in §2). `_lore/characters/hearsay.md` is the human-readable counterpart to
+    `encodings.json`'s `hearsay` array: what's been said, by whom, where, and whether it checked out
+    against the record. `_template.json` is the blank shape for a new character file.
+  - **Character identity.** Every character's `name` must be unique against every character file ever
+    created, living or deceased — checked by `scripts/lore/check_character_name.py`, the single shared
+    enforcement point `/character` and `/enact` both call before treating a name as new. A namesake is
+    still fine (`"Farlis Gorfalis"` alongside an existing `"Farlis"`) since the two slugify
+    differently; what's not allowed is two files slugifying to the same key.
+  - `_lore/tales/` — a third source of truth, populated by `/tell`: things told directly by the user,
+    the world's author — narrated as a story or stated plainly as a fact now known — one file per
+    entry (`<slug>.md`). Unlike hearsay, a tale **is** folded into the objective arrays above (via a
+    `tale:<id>` source tag), never overwriting an existing entry. See `_lore/tales/_index.md` and
+    `encodings.json`'s `tales` category. (Not to be confused with `_lore/facts/` below — a tale is
+    lore, and gets sampled like all lore.)
+  - `_lore/tales/_authors.md` — not itself a source of truth, and not lore at all: real-world
+    recordkeeping only, tracking which real user told the system each tale (`responsible`, mandatory)
+    and when. Distinct from a tale's `told_by` (in-world credit, optional, which *is* lore and lives in
+    `encodings.json`) — `responsible` answers who entered the record in the real world, has no
+    in-fiction meaning, and is walled off from `encodings.json` and `scripts/lore/sample_lore_knowledge.py`'s
+    pool on purpose, the same way `_lore/facts/` is. A plain markdown table, living beside the tales it
+    tracks.
+  - `_lore/facts/` — a fourth source of truth, and the only one that is **never sampled**. The handful
+    of things true of being a person in this world at all: that life ends, and that everyone wants
+    theirs to have been worthwhile. Every character knows every fact in full, from creation,
+    regardless of their education percentage — so facts live in their own `facts.json`, deliberately
+    outside `encodings.json`, and must never be folded into it (`sample_lore_knowledge.py` raises if
+    they are). Unlike every other category, a fact has no provenance, cannot be attributed, and
+    cannot be dismissed: it's the floor a character's contestable criterion stands on, not part of
+    the argument. Loaded unconditionally by `/enact` for every character in every scene. See
+    `_lore/facts/_index.md`.
+  - `_lore/facts/_authors.md` — the same real-world recordkeeping as `_lore/tales/_authors.md`, for
+    consistency, even though facts are added rarely: which real user added each fact, and when. Facts
+    have no in-world attribution at all, so unlike the tale version there's no `told_by` this file
+    needs to stay distinct from - `responsible` is simply the only provenance a fact ever has.
+
+### Simulating and evaluating the lore
+
+`/simulate` (above) is the mechanism; two more things sit alongside it, reading the lore engine's
+output rather than feeding it, and aren't part of the Tier 1–3 dependency stack at all:
+
+- **`LAB_REPORT.md`** — the persistent, cross-run record of whether the system's design actually
+  works, kept deliberately outside any worktree so it survives past any single run or conversation.
+  It states the standing objective (does drift over many interactions read as genuinely emergent,
+  with real material consequence, rather than a repeated pattern or a smooth model-biased
+  convergence?), the methodology for judging a run against that objective, and a dated run log. Read
+  it before any `/simulate` run meant to test or extend the design, not a casual one-off — and append
+  to it after one, per its own instructions. See also §4.
+- **`graphs/graphifyish/`** — `scripts/graphs/graphifyish.py`'s output: a standalone
+  `graphifyish.html` visualizing three graphs built from the repo's own live sources of truth (never
+  hand-maintained except the concept graph's shape) — the **lore** graph (NPCs, dialogues, locations,
+  concepts, characters, conflicts, routes, eras, tales, facts, wired by who lives where / says what /
+  knows what / disputes what), the **structure** graph (the repo on disk, sized by bytes), and the
+  **concept** graph (this section's own three-tier architecture, with live counts). Regenerate with
+  `python scripts/graphs/graphifyish.py` (`--json` also dumps `graph.json`); `scripts/hooks/post-commit`
+  does this automatically after every commit if installed.
+
+### Tier 2 — Handlers
+
+Skills and scripts: the process that reads Tier 1 content and shapes it into what Tier 3 ships.
+Skills are the orchestration sub-layer — repeatable procedures invoked as slash commands, each one
+answering to one shared rule stated once in `.claude/PRINCIPLES.md` rather than repeated per skill:
+nothing gets decided silently. Scripts (`scripts/lore/`, `scripts/minecraft/`, `scripts/graphs/`) are
+the mechanical sub-layer skills call into. Both split cleanly along the lore/Minecraft line that runs
+through the whole system: `/character` and `/enact` are lore-only and know nothing of Minecraft, with
+one narrow exception — `/enact` stages a scene's raw transcript at `_npcs/scenes/<id>.md`, purely so
+`/embody` has something to read later. That's staging content for the shipping tier, not lore itself,
+and `/enact` still never touches either registry or `data/`. `/embody` and `/spawn` only ever touch
+`_npcs/`/`data/` and know nothing of lore.
+
+- **Skills** (`.claude/skills/`):
   - **`/character`** (`character/SKILL.md`) — creates or maintains a character's file in
     `_lore/characters/<key>.json` on its own, without running a conversation: `name`, `city`,
     `backstory`, knowledge sample, **criterion**, and **lifespan**. It owns the criterion model —
@@ -230,126 +318,44 @@ the simulation/evaluation tooling described next.
     per pass, deferring the two things that genuinely need a model's judgment (a child's name, a
     fresh arc's content) into a single batched subagent pass at the very end. See
     `.claude/skills/generate/SKILL.md`.
-- **`_lore/`** — the raw material and its analysis, plus two further sources of truth: one told
-  directly by the user, and one (`facts/`) that is universal and never sampled:
-  - `_lore/material/` — source artifacts as uploaded: screenshots of in-game books, maps,
-    spreadsheets (`Luminacion Register [Code].xlsx`, `Catastro Milkaan y Platinhëa.xlsx`, ...),
-    documents. Treated as excavated primary sources — never edited, only read.
-  - `_lore/material/_context.md` — one section per material artifact, transcribing only what that
-    specific source says or shows, with no cross-source reconciliation. Contradictions between
-    sources are noted here, not resolved. Lives inside `material/` itself, the only analysis output
-    that's source-specific rather than cross-cutting.
-  - `_lore/encodings.json` — the central, structured, queryable form of the record: `time_systems`,
-    `locations`, `routes`, `characters`, `concepts`, `conflicts` (cross-source disagreements, each with
-    a `user_resolution` once settled), `tales`, and `hearsay` (claims made *in* dialogues — §3 Step 7).
-    This is what `scripts/lore/sample_lore_knowledge.py` draws an NPC's knowledge pool from. Sits at `_lore/`
-    root since every source type writes into it — it's the hub.
-  - `_lore/unknowns.md` — gaps and open questions that material, tale, and hearsay all feed (a claim can
-    surface a genuine gap the objective record has never addressed, distinct from `inconsistent_with_record`,
-    which flags a claim that actively contradicts something already on record), plus a log of which
-    have since been resolved by the user. Sits at `_lore/` root alongside `encodings.json` since it's
-    cross-cutting, not specific to any one source folder.
-  - `_lore/characters/` — one JSON file per character (`<key>.json`, key = lowercased, slugified
-    name), the complete lore record for who they are: `name` (canonical — the one place a character's
-    name is decided), `city`, `backstory`, `knowledge` (`education`/`experience`), `criterion`, and
-    `life` (`lived`/`deceased`). Has no embodiment-facing field at all — a character can live here
-    fully developed with no in-game body. `/character` and `/enact` are the only writers.
-    `_lore/characters/lifespans.json` sits beside them, holding each character's secret total span
-    (see **Lifespan** in §2). `_lore/characters/hearsay.md` is the human-readable counterpart to
-    `encodings.json`'s `hearsay` array: what's been said, by whom, where, and whether it checked out
-    against the record. `_template.json` is the blank shape for a new character file.
-  - **Character identity.** Every character's `name` must be unique against every character file ever
-    created, living or deceased — checked by `scripts/lore/check_character_name.py`, the single shared
-    enforcement point `/character` and `/enact` both call before treating a name as new. A namesake is
-    still fine (`"Farlis Gorfalis"` alongside an existing `"Farlis"`) since the two slugify
-    differently; what's not allowed is two files slugifying to the same key.
-  - `_lore/tales/` — a third source of truth, populated by `/tell`: things told directly by the user,
-    the world's author — narrated as a story or stated plainly as a fact now known — one file per
-    entry (`<slug>.md`). Unlike hearsay, a tale **is** folded into the objective arrays above (via a
-    `tale:<id>` source tag), never overwriting an existing entry. See `_lore/tales/_index.md` and
-    `encodings.json`'s `tales` category. (Not to be confused with `_lore/facts/` below — a tale is
-    lore, and gets sampled like all lore.)
-  - `_lore/tales/_authors.md` — not itself a source of truth, and not lore at all: real-world
-    recordkeeping only, tracking which real user told the system each tale (`responsible`, mandatory)
-    and when. Distinct from a tale's `told_by` (in-world credit, optional, which *is* lore and lives in
-    `encodings.json`) — `responsible` answers who entered the record in the real world, has no
-    in-fiction meaning, and is walled off from `encodings.json` and `scripts/lore/sample_lore_knowledge.py`'s
-    pool on purpose, the same way `_lore/facts/` is. A plain markdown table, living beside the tales it
-    tracks.
-  - `_lore/facts/` — a fourth source of truth, and the only one that is **never sampled**. The handful
-    of things true of being a person in this world at all: that life ends, and that everyone wants
-    theirs to have been worthwhile. Every character knows every fact in full, from creation,
-    regardless of their education percentage — so facts live in their own `facts.json`, deliberately
-    outside `encodings.json`, and must never be folded into it (`sample_lore_knowledge.py` raises if
-    they are). Unlike every other category, a fact has no provenance, cannot be attributed, and
-    cannot be dismissed: it's the floor a character's contestable criterion stands on, not part of
-    the argument. Loaded unconditionally by `/enact` for every character in every scene. See
-    `_lore/facts/_index.md`.
-  - `_lore/facts/_authors.md` — the same real-world recordkeeping as `_lore/tales/_authors.md`, for
-    consistency, even though facts are added rarely: which real user added each fact, and when. Facts
-    have no in-world attribution at all, so unlike the tale version there's no `told_by` this file
-    needs to stay distinct from - `responsible` is simply the only provenance a fact ever has.
+- **Supporting patterns** — reusable templates and registries every NPC/dialog is built from, so each
+  new one doesn't reinvent structure — the shared material skills and scripts read from and write into:
+  - `_npcs/templates/` — placeholder-filled `.mcfunction` patterns (`spawn.mcfunction`,
+    `resume_routine.mcfunction`, `check_proximity.mcfunction`, `end_with_gift.mcfunction`, plus
+    `paths/` and `states/` variants for roaming/multi-state NPCs) — copied per NPC, never called
+    directly. See §1.
+  - `data/luminacion/blabber/dialogues/_template_*.json` — the three dialog shapes (one-off, linear,
+    branching). See §1/§5.
+  - `_npcs/actions/registry.json`'s `_action_templates` — documents every right-click action pattern
+    (`movement`, `give_item`, `blabber_dialog`, `routine_pause_resume`, `scripted_path`,
+    `multi_state_npc`, `random_dialog`, `scoreboard_set`) with copy-paste command patterns and, for
+    several, hard-won in-game debugging notes (why `/random` never resolves in this environment, why
+    the pause/resume radii must differ).
+  - **Gesture dispatch** — `data/luminacion/functions/npcs/_shared/gesture_<name>.mcfunction` (wave,
+    point, bow, shrug, palms-up, scratch-head, laugh, jump, cross-arms, no, face-palm, flex-arm, plus
+    left-arm mirror variants `wave_left`, `point_left`, and `scratch_head_left`) plus `gesture_clear.mcfunction`
+    and the `nod_up_down`/`nod_left_right` family: datapack-side functions that trigger the
+    resource-pack animations below via a tag + per-entity scoreboard countdown, ticked every game tick
+    from `tick.mcfunction` via `gesture_tick.mcfunction`/`nod_tick.mcfunction` — each NPC's hold/beat
+    timing is independent of every other NPC's. (Replaced an earlier
+    `schedule function ... replace` design, which used one datapack-wide timer shared by every gesture
+    and every nod; see TODO.md "Multi-NPC gesture/nod scheduling collision" for why that broke once
+    more than one NPC could gesture/nod at a time.) They physically live under `data/luminacion/`
+    (Tier 3, shipping) but belong here conceptually — templated dispatch for content that's actually
+    defined one tier up.
 
-### Simulating and evaluating the lore
+### Tier 3 — Shipping
 
-`/simulate` (above) is the mechanism; two more things sit alongside it, reading the lore engine's
-output rather than feeding it, and aren't part of the Layer 1–4 dependency stack at all:
+What a run of the engine becomes, live, in the current embodiment backend — built *from* Tiers 1–2
+for a given NPC, and what a different or additional backend would replace wholesale. Split across two
+Minecraft-mandated folders that are really one export:
 
-- **`LAB_REPORT.md`** — the persistent, cross-run record of whether the system's design actually
-  works, kept deliberately outside any worktree so it survives past any single run or conversation.
-  It states the standing objective (does drift over many interactions read as genuinely emergent,
-  with real material consequence, rather than a repeated pattern or a smooth model-biased
-  convergence?), the methodology for judging a run against that objective, and a dated run log. Read
-  it before any `/simulate` run meant to test or extend the design, not a casual one-off — and append
-  to it after one, per its own instructions. See also §4.
-- **`graphs/graphifyish/`** — `scripts/graphs/graphifyish.py`'s output: a standalone
-  `graphifyish.html` visualizing three graphs built from the repo's own live sources of truth (never
-  hand-maintained except the concept graph's shape) — the **lore** graph (NPCs, dialogues, locations,
-  concepts, characters, conflicts, routes, eras, tales, facts, wired by who lives where / says what /
-  knows what / disputes what), the **structure** graph (the repo on disk, sized by bytes), and the
-  **concept** graph (this section's own four-layer architecture, with live counts). Regenerate with
-  `python scripts/graphs/graphifyish.py` (`--json` also dumps `graph.json`); `scripts/hooks/post-commit`
-  does this automatically after every commit if installed.
-
-### Layer 2 — Supporting functions
-
-Reusable patterns every NPC/dialog is built from, so each new one doesn't reinvent structure — part
-of the current Minecraft embodiment backend, not the lore engine:
-
-- `_npcs/templates/` — placeholder-filled `.mcfunction` patterns (`spawn.mcfunction`,
-  `resume_routine.mcfunction`, `check_proximity.mcfunction`, `end_with_gift.mcfunction`, plus
-  `paths/` and `states/` variants for roaming/multi-state NPCs) — copied per NPC, never called
-  directly. See §1.
-- `data/luminacion/blabber/dialogues/_template_*.json` — the three dialog shapes (one-off, linear,
-  branching). See §1/§5.
-- `_npcs/actions/registry.json`'s `_action_templates` — documents every right-click action pattern
-  (`movement`, `give_item`, `blabber_dialog`, `routine_pause_resume`, `scripted_path`,
-  `multi_state_npc`, `random_dialog`, `scoreboard_set`) with copy-paste command patterns and, for
-  several, hard-won in-game debugging notes (why `/random` never resolves in this environment, why
-  the pause/resume radii must differ).
-- **Gesture dispatch** — `data/luminacion/functions/npcs/_shared/gesture_<name>.mcfunction` (wave,
-  point, bow, shrug, palms-up, scratch-head, laugh, jump, cross-arms, no, face-palm, flex-arm, plus
-  left-arm mirror variants `wave_left`, `point_left`, and `scratch_head_left`) plus `gesture_clear.mcfunction`
-  and the `nod_up_down`/`nod_left_right` family: datapack-side functions that trigger the
-  resource-pack animations below via a tag + per-entity scoreboard countdown, ticked every game tick
-  from `tick.mcfunction` via `gesture_tick.mcfunction`/`nod_tick.mcfunction` — each NPC's hold/beat
-  timing is independent of every other NPC's. (Replaced an earlier
-  `schedule function ... replace` design, which used one datapack-wide timer shared by every gesture
-  and every nod; see TODO.md "Multi-NPC gesture/nod scheduling collision" for why that broke once
-  more than one NPC could gesture/nod at a time.) They physically live under `data/luminacion/`
-  (layer 3) but belong here conceptually — templated dispatch for content that's actually defined one
-  layer up.
-
-### Layer 3 — Datapack
-
-`data/luminacion/` — the pack Minecraft actually loads and calls: `functions/` (per-NPC and shared
+**Datapack.** `data/luminacion/` — the pack Minecraft actually loads and calls: `functions/` (per-NPC and shared
 `.mcfunction` files), `predicates/`, `tags/functions/` (load/tick hooks, the routine-tick registry),
-and `blabber/dialogues/` (the written dialogs). This is what gets built *from* layers 1–2 for a given
-NPC — see §1 for the full folder breakdown and §5 for the build sequence.
+and `blabber/dialogues/` (the written dialogs) — see §1 for the full folder breakdown and §5 for the
+build sequence.
 
-### Layer 4 — Resource pack
-
-Custom client-side content shipped alongside the datapack, version-controlled in this repo's
+**Resource pack.** Custom client-side content shipped alongside the datapack, version-controlled in this repo's
 `resourcepack/` folder (own `pack.mcmeta` + `assets/`, same idea as `data/` is to the datapack).
 Currently:
 
@@ -369,7 +375,6 @@ for local dev. The folder Minecraft actually reads, `resourcepacks/luminacion/`,
 directory junction pointing back at `resourcepack/` here, so edits apply instantly (reload with
 `F3+T`, or a full restart if that doesn't pick it up). The full wiring rationale — why a junction,
 and the separate not-yet-built distribution zip — is in `GESTURES.md`.
-
 ---
 
 ## 1. Folder structure
@@ -467,7 +472,7 @@ Provenance/
 │       └── states/
 │           ├── roaming_state.mcfunction
 │           └── stationary_state.mcfunction
-└── resourcepack/                      (the resource pack — §0 Layer 4; junctioned into
+└── resourcepack/                      (the resource pack — §0 Tier 3 Shipping; junctioned into
     │                                   resourcepacks/luminacion/ in the PrismLauncher instance)
     ├── pack.mcmeta
     └── assets/
@@ -485,7 +490,7 @@ string values, which parse fine either way. Anything named `_shared` is called d
 
 ## 2. Core concepts
 
-**Fact** — one of the handful of things true of being a person in this world at all, living in `_lore/facts/`. Every character knows every fact in full; facts are never sampled, never attributed, and never contestable. Currently two: life ends, and everyone wants theirs to have been worthwhile. Together they're the will to live. See §0 Layer 1 and `_lore/facts/_index.md`.
+**Fact** — one of the handful of things true of being a person in this world at all, living in `_lore/facts/`. Every character knows every fact in full; facts are never sampled, never attributed, and never contestable. Currently two: life ends, and everyone wants theirs to have been worthwhile. Together they're the will to live. See §0 Tier 1 and `_lore/facts/_index.md`.
 
 **Criterion** — what a character counts as a life well spent, in their character file (`_lore/characters/<key>.json`) as `criterion`. Derived once at creation from the collision of their knowledge sample with their backstory, stated negatively (what they'd count as a *wasted* life) and anchored to one concrete, refutable case. It's what makes two characters with the same knowledge in the same situation choose differently. Owned by `/character` (Step 4 derives, Step 6 is the reference for how it changes).
 
@@ -587,7 +592,7 @@ in from their `_lore/characters/<key>.json` file's canonical `name` the first ti
 
 If this character should also have lore depth — `backstory`, a knowledge sample, `criterion`, a
 lifespan — that's a separate, optional file at `_lore/characters/maren.json`, built by `/character`
-or by hand (see §0 Layer 1 and §2). A hand-built NPC like this one is free to skip it entirely and
+or by hand (see §0 Tier 1 and §2). A hand-built NPC like this one is free to skip it entirely and
 exist as pure embodiment data with no lore file at all.
 
 ### Step 2 — Create the spawn function

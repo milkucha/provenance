@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — Shared: Gesture — Point
+# Provenance — Shared: Gesture — Point
 # =============================================================================
 # Gives the NPC's own main hand an invisible marker item (CustomModelData
 # 102), which the gesture resource pack reads to extend the right arm

@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — Shared: Gesture — Jump
+# Provenance — Shared: Gesture — Jump
 # =============================================================================
 # Gives the NPC's own main hand an invisible marker item (CustomModelData
 # 110), which the gesture resource pack (player.jem/player_slim.jem override

@@ -1,6 +1,6 @@
 """
 Cold-start bootstrap for the whole lore system: creates whichever of five structural files don't
-exist yet, with empty/generic content - never with any of Luminacion's own categories, material,
+exist yet, with empty/generic content - never with any of Provenance's own categories, material,
 hearsay, or tales pre-filled in. Three belong to /integrate Pass 1 (`_lore/encodings.json`,
 `_lore/material/_context.md`, `_lore/unknowns.md`); two are companion manifests /enact and /tell write
 to (`_lore/characters/hearsay.md`, `_lore/tales/_index.md` + `_lore/tales/_authors.md`) that need the

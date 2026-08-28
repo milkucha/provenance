@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — Shared: Nod Left And Right ("no" gesture)
+# Provenance — Shared: Nod Left And Right ("no" gesture)
 # =============================================================================
 # Plays a short two-beat head shake (turn left, return to center, smaller
 # turn right, return to center) that decays back to whatever yaw the NPC

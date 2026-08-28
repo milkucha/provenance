@@ -1,4 +1,4 @@
-# Luminacion — tick
+# Provenance — tick
 # Runs every game tick (20/s).
 
 # Roaming NPCs: stop when a player gets within 2 blocks, resume when they leave.

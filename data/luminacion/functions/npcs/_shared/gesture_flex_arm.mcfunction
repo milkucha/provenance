@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — Shared: Gesture — Flex Arm
+# Provenance — Shared: Gesture — Flex Arm
 # =============================================================================
 # Gives the NPC's own main hand an invisible marker item (CustomModelData
 # 112), which the gesture resource pack (player.jem/player_slim.jem override

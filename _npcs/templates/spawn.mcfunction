@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — NPC Spawn Template
+# Provenance — NPC Spawn Template
 # =============================================================================
 # WORKFLOW:
 #   1. Fill in _npcs/npcs/registry.json for this NPC (all fields except UUID)
@@ -115,4 +115,4 @@ npc edit commands add minecraft scoreboard players set <variable> luminacion.boo
 #   4. python scripts/minecraft/update_uuids.py update --log "<path/to/logs/latest.log>"
 # This message appears in your chat when the function finishes.
 
-tellraw @s [{"text":"[Luminacion] ","color":"gold","bold":true},{"text":"<display_name> created. Run the UUID export pipeline (scripts/minecraft/update_uuids.py) to register its UUID — see workflow docs."}]
+tellraw @s [{"text":"[Provenance] ","color":"gold","bold":true},{"text":"<display_name> created. Run the UUID export pipeline (scripts/minecraft/update_uuids.py) to register its UUID — see workflow docs."}]

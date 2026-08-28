@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — Shared: Gesture — Scratch Head (Left)
+# Provenance — Shared: Gesture — Scratch Head (Left)
 # =============================================================================
 # Gives the NPC's own main hand an invisible marker item (CustomModelData
 # 206 — mirror-variant numbering is 100 + the base gesture's number, so

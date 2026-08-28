@@ -31,7 +31,7 @@ Confirm before starting, and stop to resolve any gap rather than guessing past i
 
 ## Step 1 — Verify the nod standard on every dialog involved
 
-Every non-`end_dialogue` state in every Luminacion dialog fires an action on entry — this is the
+Every non-`end_dialogue` state in every Provenance dialog fires an action on entry — this is the
 house style, not optional per-dialog flavor. The baseline is `nod_up_down`:
 
 ```json

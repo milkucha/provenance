@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — Shared: Enter Dialog
+# Provenance — Shared: Enter Dialog
 # =============================================================================
 # Called as the FIRST right-click command action, before "blabber dialogue start".
 # Pauses the NPC's routine and flags it as mid-conversation.

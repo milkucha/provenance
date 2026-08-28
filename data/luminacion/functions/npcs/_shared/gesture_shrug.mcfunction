@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — Shared: Gesture — Shrug
+# Provenance — Shared: Gesture — Shrug
 # =============================================================================
 # Gives the NPC's own main hand an invisible marker item (CustomModelData
 # 104), which the gesture resource pack reads to cycle both arms up to

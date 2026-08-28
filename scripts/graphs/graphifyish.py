@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the Luminacion graph views and render them into a standalone HTML page.
+"""Build the Provenance graph views and render them into a standalone HTML page.
 
 Three graphs come out of one run:
 
@@ -691,7 +691,7 @@ def classify(rel: str) -> str:
 
 def build_structure() -> Graph:
     g = Graph("structure")
-    g.node("dir:.", "Luminacion", "root", path=".")
+    g.node("dir:.", "Provenance", "root", path=".")
     # bytes owned by each directory, counting everything nested underneath it -
     # not just its immediate children - so a folder like _lore that fans out
     # through several subdirectories still reads as heavy, not just its own degree.
@@ -724,7 +724,7 @@ def build_structure() -> Graph:
 
 
 # --------------------------------------------------------------------------------------
-# Concept graph - the four layers, with live counts
+# Concept graph - the three tiers, with live counts
 # --------------------------------------------------------------------------------------
 
 def build_concept(lore: Graph, structure: Graph) -> Graph:
@@ -741,10 +741,9 @@ def build_concept(lore: Graph, structure: Graph) -> Graph:
 
     g = Graph("concept")
     layers = [
-        ("layer:1", "Layer 1 - Foundation", "skills + lore: the sources of truth", 1),
-        ("layer:2", "Layer 2 - Supporting", "templates, registries, gesture dispatch", 2),
-        ("layer:3", "Layer 3 - Datapack", "what Minecraft loads from data/", 3),
-        ("layer:4", "Layer 4 - Resource pack", "gestures, localization, sounds", 4),
+        ("layer:1", "Tier 1 - Content", "lore: the sources of truth", 1),
+        ("layer:2", "Tier 2 - Handlers", "skills + scripts + supporting patterns", 2),
+        ("layer:3", "Tier 3 - Shipping", "datapack + resource pack Minecraft loads", 3),
     ]
     for lid, label, note, tier in layers:
         g.node(lid, label, "layer", note=note, tier=tier)
@@ -757,7 +756,7 @@ def build_concept(lore: Graph, structure: Graph) -> Graph:
         return pid
 
     for s in skills:
-        piece(f"skill:{s}", f"/{s}", "skill", 1, "layer:1",
+        piece(f"skill:{s}", f"/{s}", "skill", 2, "layer:2",
               file=f".claude/skills/{s}/SKILL.md")
     piece("src:material", "_lore/material", "source", 1, "layer:1",
           note=f"{material} excavated artifacts, never edited")
@@ -785,7 +784,7 @@ def build_concept(lore: Graph, structure: Graph) -> Graph:
     piece("pack:functions", "functions", "datapack", 3, "layer:3",
           note=f"{functions} mcfunctions")
     piece("pack:meta", "pack.mcmeta", "datapack", 3, "layer:3", note="pack format 15")
-    piece("rp:assets", "resourcepack/assets", "resourcepack", 4, "layer:4",
+    piece("rp:assets", "resourcepack/assets", "resourcepack", 3, "layer:3",
           note=f"{resource} files")
 
     # the flows that actually matter, beyond mere containment

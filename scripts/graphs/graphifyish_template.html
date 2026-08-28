@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Luminacion — graph</title>
+<title>Provenance — graph</title>
 <style>
 :root{
   --bg:#faf9f7; --panel:#ffffff; --line:#e2ded7; --ink:#1c1a17; --dim:#6b6558;
@@ -148,7 +148,7 @@ canvas.grabbing{cursor:grabbing}
 <body>
 <div id="app">
   <header>
-    <h1>Luminacion <small id="gen"></small></h1>
+    <h1>Provenance <small id="gen"></small></h1>
     <div class="tabs" role="tablist">
       <button role="tab" data-view="lore" aria-selected="true">Lore</button>
       <button role="tab" data-view="family" aria-selected="false">Family</button>
@@ -365,11 +365,11 @@ function setView(v){
     const o={...n, x, y, vx:0, vy:0, pin:false};
     o.r=radius(o); byId.set(o.id,o); return o;
   });
-  // the architecture view reads as layers, so pin each tier to its own band
-  // README §0 draws layer 4 on top and layer 1 at the bottom; canvas y grows downward
+  // the architecture view reads as tiers, so pin each one to its own band
+  // README §0 draws tier 3 (shipping) on top and tier 1 (content) at the bottom; canvas y grows downward
   // the layer node itself sits a notch above its children's row, or the two blur together
   if(v==="concept") nodes.forEach(n=>{
-    if(n.tier) n.ty=(2.5-n.tier)*230 + (n.kind==="layer" ? -100 : 0);
+    if(n.tier) n.ty=(2-n.tier)*230 + (n.kind==="layer" ? -100 : 0);
   });
   // family reads top-to-bottom by generation, same banding trick as the architecture
   // view's layers - founders (generation 0) on top, each birth a row further down
@@ -423,7 +423,7 @@ function buildChips(){
     view==="lore" ? "every NPC, dialogue, place and claim, wired together"
     : view==="structure" ? "the repo on disk — node size follows file size"
     : view==="family" ? "descent by parents[] — colour blends by which parent's criterion the child kept"
-    : "the four layers of README §0, each authored from the one below";
+    : "the three tiers of README §0, each authored from the one below";
   stats();
 }
 

@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — NPC Resume Routine Template
+# Provenance — NPC Resume Routine Template
 # =============================================================================
 # WORKFLOW:
 #   1. Duplicate as: functions/npcs/<npc_key>/resume_routine.mcfunction

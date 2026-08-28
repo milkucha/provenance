@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — Shared: Gesture — Palms Up
+# Provenance — Shared: Gesture — Palms Up
 # =============================================================================
 # Gives the NPC's own main hand an invisible marker item (CustomModelData
 # 105), which the gesture resource pack reads to bring both arms in and open

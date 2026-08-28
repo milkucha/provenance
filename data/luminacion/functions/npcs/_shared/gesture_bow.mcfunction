@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — Shared: Gesture — Bow
+# Provenance — Shared: Gesture — Bow
 # =============================================================================
 # Gives the NPC's own main hand an invisible marker item (CustomModelData
 # 103), which the gesture resource pack reads to lean the torso forward.

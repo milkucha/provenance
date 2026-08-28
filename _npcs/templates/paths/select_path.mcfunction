@@ -1,5 +1,5 @@
 # =============================================================================
-# Luminacion — NPC Path Template
+# Provenance — NPC Path Template
 # =============================================================================
 # Defines ONE named path and makes it this NPC's active route. Replaces the
 # in-game "/npc edit path" left-click editor entirely — that editor is what
