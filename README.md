@@ -30,9 +30,13 @@ in token consumption — that budget work is ongoing, and it's not just about co
 means something if it can run at the scale a living culture requires, which is what makes the whole
 thing usable and testable at all. The project is currently in an experimentation phase, run and
 evaluated lab-report style (`LAB_REPORT.md`) against two standing questions: whether the result reads
-as immersive, and whether it reads as organic rather than mechanically repetitive — the standing fear
-behind most of the design choices here is producing *slop*: content that sounds plausible but isn't
-actually grounded in anything the record established.
+as immersive, and whether it reads as organic rather than mechanically repetitive. The longest pilot
+so far ran `/simulate` to 305 passes on six characters and got real material stakes out of it — arcs
+that stalled, reversed, and transformed on genuine dice rolls, four generations of births, deaths
+that actually broke a character's own convictions rather than just getting logged — not just
+repetition, which is the actual bar (see `conversation.md`'s Landmarks for the fuller account). The
+standing fear behind most of the design choices here is producing *slop*: content that sounds
+plausible but isn't actually grounded in anything the record established.
 
 The engine itself is embodiment-agnostic — it never assumes any particular place its generated
 characters and lore need to surface. This repo currently ships one optional embodiment backend on

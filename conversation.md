@@ -1,11 +1,19 @@
 # Project chronicle
 
-Not a run log — that's `LAB_REPORT.md`'s job, scoped to `/simulate` specifically. This is the wider
-thing: the journey of the *conversation* that built this project — landmarks, why a given turn got
-taken, and what's still genuinely open — kept so a session doesn't have to re-derive the arc of the
-whole project from chat history that's already gone by the time a new context window starts. Written
-in working voice (`.claude/VOICE.md`), not lore voice — this is project record-keeping, not in-world
-text.
+Not where a `/simulate` run gets logged — that's still `LAB_REPORT.md`'s job while a run is active.
+This is the wider thing: the journey of the *conversation* that built this project — landmarks, why a
+given turn got taken, and what's still genuinely open — kept so a session doesn't have to re-derive
+the arc of the whole project from chat history that's already gone by the time a new context window
+starts. Written in working voice (`.claude/VOICE.md`), not lore voice — this is project
+record-keeping, not in-world text.
+
+A run's *findings* do belong here too, once they're history rather than an active run — see
+Landmarks below for what `/simulate`'s Runs 1–3 actually found. **Why this branch's own
+`LAB_REPORT.md` looks empty:** `provenance-bare` deliberately strips authored lore and run history
+for a clean, shippable checkout (see the 2026-08-26/27 landmark below) — the full pass-by-pass logs
+survive on the `provenance-standalone` branch and in each run's own disposable worktree
+(`SIMULATION_LOG.md`), for whoever needs that level of detail. This file carries the substance
+forward regardless of which branch's `LAB_REPORT.md` currently holds it.
 
 **How to keep this current.** At the end of a substantive session — one that actually moved the
 project, not a one-off question — append a short, dated paragraph to **Landmarks**, in the same
@@ -63,21 +71,45 @@ shocks vs. drift — settling most of the shape it still has today. Also the fir
 enactments (Khan Icé, la Feria del Milenio, Gok, Bardaglis, Auroboro III) — the in-character register
 that `.claude/VOICE.md`'s "world voice" section is built from.
 
-**2026-08-05 to 09 — `/simulate` and the unattended-run problem.** `/simulate` was born to batch
-`/enact` across a population, run inside a disposable worktree so a stress-test run couldn't touch
-real files. What actually ate the most time in this stretch wasn't the simulation design — it was
-getting a run to survive *unattended*, overnight, with no permission prompts: worktree settings
-written before `EnterWorktree` instead of after, a relative-path leak that silently wrote real scene
-content into the main checkout, `cd`-in-Bash hard-blocked with no override. Each one got documented
-as its own fix rather than papered over, because the failure mode kept recurring in slightly
-different shape until it was actually root-caused.
+**2026-08-05 to 09 — `/simulate`, Run 1, and the unattended-run problem.** `/simulate` was born to
+batch `/enact` across a population, run inside a disposable worktree so a stress-test run couldn't
+touch real files. Run 1 (97 passes on 5 characters) delivered real, unchosen material consequence —
+4 natural deaths, a keeper network that structurally collapsed as the population shrank — but also
+the diagnosis that mattered most: nearly every scene still orbited the same one conflict
+(multiplicity vs. singular truth), because routines at that point were bare `{location: weight}`
+pairs with no authored practice behind them, and arcs were auto-derived from a character's existing
+criterion anchor instead of from what they actually did somewhere. Content converging like that was
+structural, not a prompting problem — it's what led straight into the extended-mode redesign below.
+Separately, what actually ate the most *time* in this stretch wasn't the simulation design at all —
+it was getting a run to survive *unattended*, overnight, with no permission prompts: worktree
+settings written before `EnterWorktree` instead of after, a relative-path leak that silently wrote
+real scene content into the main checkout, `cd`-in-Bash hard-blocked with no override. Each one got
+documented as its own fix rather than papered over, because the failure mode kept recurring in
+slightly different shape until it was actually root-caused.
 
-**2026-08-10 to 13 — Extended mode.** The base `/simulate` loop rendered correctly but converged too
-heavily on epistemological chat with no material stakes — diagnosed as structural (character
-composition, `/enact`'s trust mechanic being the only privileged dramatic payoff, small-pool
-collision bias), not a prompting problem. The redesign that followed added routines, arcs with real
-progressive state, reproduction, and death legacy — plus `/generate`, a separate scriptable fast-path
-for seeding a multi-generation starting population without writing scenes for every step of it.
+**2026-08-10 to 13 — Extended mode, Runs 2 and 3.** The redesign added routines tied to a real
+place-type archetype, arcs with progressive state (primacy, gate, outcome, transform), reproduction,
+and death legacy — the governing rule for the whole build: minimize the subagent's judgment, so
+almost every per-pass decision became a script, a dice roll, or arithmetic, leaving only scene-prose
+and a newborn's name-blend as genuine model calls. Run 2 piloted it on 6 characters, then got
+extended in place seven more times up to 305 passes on direct request ("let's do 30 more," "keeping
+fingers crossed") rather than as separate runs — and it delivered exactly the material stakes Run 1
+was missing: arcs that stalled, reversed, transformed, and resolved on real dice rather than smooth
+convergence; four generations of births; deaths that triggered genuine criterion shocks (reinterpret
+and break both fired, not just reject); and one arc that stayed open for 148 passes before resolving.
+It also surfaced a real string of bugs worth remembering because of what they say about the
+system's own blind spots, not just because they got fixed: an accent mismatch ("Ilaría" vs.
+"Ilaria") silently broke an entire character's death-notification circle for 115 passes before
+anyone noticed; hearsay was never actually folding back into the concepts it referenced, because
+`/simulate`'s own recurring arc topics had never been registered as real `encodings.json` entries in
+the first place — the corpus looked like it was accreting when 325 of 331 references were
+silently going nowhere; and a scene-transcript filename collision quietly overwrote earlier dialogue
+four separate times before a collision guard existed. Each was root-caused and fixed, not patched
+around. Run 3 then validated `/generate` (300 mechanical passes, zero scenes, one batched
+language-layer pass for names and arcs at the end) as a genuinely faster path to a starting
+population, at the cost of not testing drift itself — which is exactly why `/generate` and
+`/simulate` stayed two separate commands rather than one mode of the other, at this point in the
+project's history.
 
 **2026-08-16 to 17 — Provenance rework, genealogy bugs.** Criterion's trust/distrust derivation moved
 from a hardcoded per-category flag to resolving mechanically off an anchor's actual source
@@ -111,8 +143,12 @@ of where.
   yet implemented.
 - **Reflection.** A character-alone enactment type — a turn spent in dialogue with themselves,
   synthesizing new information — proposed as both randomly occurring and triggered by specific
-  circumstances (a shock, a death in the character's circle, a certain number of passages).
-  Discussed as the natural next build after grounding; not yet wired into `/simulate` or `/enact`.
+  circumstances (a shock, a death in the character's circle, a certain number of passages). Flagged
+  as the last major undesigned piece as far back as Run 3's own open questions (2026-08-13): it's the
+  only place a character's own interiority can recombine into something new with no external
+  trigger, and the natural home for actually dramatizing on-screen what right now happens invisibly
+  inside a dice roll. Discussed again, still not designed in detail, as the natural next build after
+  grounding on 2026-08-26; not yet wired into `/enact`.
 - **Synthesis, refined further.** The 2026-08-07 mechanism (a character combining something they
   already knew with something just heard into a new belief not reducible to either — e.g.
   "Sit Nalta" and "Sit:Nalta" might be the same place) needs to generalize past that one worked
