@@ -29,7 +29,7 @@
     "label": "Provenance",
     "kind": "root",
     "path": ".",
-    "size": 1181625,
+    "size": 1181144,
     "degree": 15
    },
    {
@@ -1076,7 +1076,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": "graphs",
-    "size": 214967,
+    "size": 214486,
     "degree": 2
    },
    {
@@ -1084,7 +1084,7 @@
     "label": "graphifyish",
     "kind": "dir",
     "path": "graphs/graphifyish",
-    "size": 214967,
+    "size": 214486,
     "degree": 3
    },
    {
@@ -1092,7 +1092,7 @@
     "label": "graph.json",
     "kind": "graph",
     "path": "graphs/graphifyish/graph.json",
-    "size": 101677,
+    "size": 101384,
     "degree": 1
    },
    {
@@ -1100,7 +1100,7 @@
     "label": "graphifyish.html",
     "kind": "graph",
     "path": "graphs/graphifyish/graphifyish.html",
-    "size": 113290,
+    "size": 113102,
     "degree": 1
    },
    {
