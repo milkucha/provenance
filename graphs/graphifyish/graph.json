@@ -20421,7 +20421,7 @@
     "label": "Provenance",
     "kind": "root",
     "path": ".",
-    "size": 58322679,
+    "size": 58324388,
     "degree": 17
    },
    {
@@ -20429,7 +20429,7 @@
     "label": ".git",
     "kind": "other",
     "path": ".git",
-    "size": 164,
+    "size": 162,
     "degree": 1
    },
    {
@@ -20445,7 +20445,7 @@
     "label": "CHRONICLE.md",
     "kind": "doc",
     "path": "CHRONICLE.md",
-    "size": 12485,
+    "size": 14168,
     "degree": 1
    },
    {
@@ -20501,7 +20501,7 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
-    "size": 204672,
+    "size": 204700,
     "degree": 6
    },
    {
@@ -20509,7 +20509,7 @@
     "label": "PRINCIPLES.md",
     "kind": "doc",
     "path": ".claude/PRINCIPLES.md",
-    "size": 1857,
+    "size": 1885,
     "degree": 1
    },
    {
