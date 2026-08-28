@@ -33,6 +33,16 @@ only where an already-written `about`/`touches` reference resolves to:
 Never touches `conflicts[].user_resolution`, never invents a claim/tale meaning, never edits
 `_lore/material/`. See .claude/skills/integrate/SKILL.md for where this runs as a pass.
 
+Also indexes `_lore/grounding/{mechanics,world_state}.json` as a third sourced category, `grounding`,
+alongside whatever `_categories` marks `has_sources: true` (added 2026-08-26). This can't reuse
+`load_categories()`'s data-driven path resolution, since that only ever reads paths inside
+`encodings.json` itself, and grounding deliberately lives outside it (never sampled, never folded in -
+see `_lore/grounding/_index.md`) - so `load_grounding()` below does a small, explicit parallel load
+instead, in the exact shape `build_index()` already expects, so every downstream resolution function
+(`find_exact`, `find_fuzzy`, `resolve_prefixed`, `resolve_bare`) works on it identically with no
+further changes. A `hearsay`/`tale` claim can now resolve `about: "grounding: <id>"` the same way it
+resolves `about: "location: <id>"`.
+
 Usage:
     py scripts/lore/build_source_index.py            # apply and write encodings.json
     py scripts/lore/build_source_index.py --dry-run  # report only, no write
@@ -47,6 +57,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 ENCODINGS_PATH = ROOT / "_lore" / "encodings.json"
+GROUNDING_MECHANICS_PATH = ROOT / "_lore" / "grounding" / "mechanics.json"
+GROUNDING_WORLD_STATE_PATH = ROOT / "_lore" / "grounding" / "world_state.json"
 
 FUZZY_THRESHOLD = 0.77
 
@@ -153,6 +165,26 @@ def build_other_known_ids(data: dict) -> set:
                 known.add(normalize(f"{name} ({locality})"))
                 known.add(normalize(name))
     return known
+
+
+def load_grounding() -> tuple[list, dict | None, dict | None]:
+    """Loads _lore/grounding/{mechanics,world_state}.json as one combined 'grounding' category. See
+    the module docstring's grounding paragraph for why this can't reuse load_categories(). Returns
+    (entries, mechanics_data, world_state_data) - the two data dicts are returned (not just entries)
+    so main() can write mutations (attach_source/add_name_if_new act on the entry dicts in place, and
+    `entries` holds the same object references, but the file needs its own dict to write back)."""
+    entries: list = []
+    mechanics_data = None
+    world_state_data = None
+    if GROUNDING_MECHANICS_PATH.exists():
+        with open(GROUNDING_MECHANICS_PATH, encoding="utf-8") as f:
+            mechanics_data = json.load(f)
+        entries.extend(mechanics_data.get("entries", []))
+    if GROUNDING_WORLD_STATE_PATH.exists():
+        with open(GROUNDING_WORLD_STATE_PATH, encoding="utf-8") as f:
+            world_state_data = json.load(f)
+        entries.extend(world_state_data.get("entries", []))
+    return entries, mechanics_data, world_state_data
 
 
 def build_index(categories: dict, specs: dict) -> list:
@@ -379,7 +411,13 @@ def main() -> None:
     hearsay_ids = {e["id"] for e in data["hearsay"]["entries"]}
     specs = data["_categories"]
     index = build_index(categories, specs)
-    sourced_keys = set(categories.keys())
+
+    grounding_entries, mechanics_data, world_state_data = load_grounding()
+    if grounding_entries:
+        migrate_sources({"grounding": grounding_entries}, report)
+        index += build_index({"grounding": grounding_entries}, specs)
+
+    sourced_keys = set(categories.keys()) | ({"grounding"} if grounding_entries else set())
     process_refs(data, index, other_known, hearsay_ids, sourced_keys, specs, report)
 
     print(f"Migrated source strings to {{category, origin}}: {report['migrated']}")
@@ -398,6 +436,15 @@ def main() -> None:
     with open(ENCODINGS_PATH, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
     print(f"\nWrote {ENCODINGS_PATH}")
+
+    if mechanics_data is not None:
+        with open(GROUNDING_MECHANICS_PATH, "w", encoding="utf-8") as f:
+            json.dump(mechanics_data, f, indent=2, ensure_ascii=False)
+        print(f"Wrote {GROUNDING_MECHANICS_PATH}")
+    if world_state_data is not None:
+        with open(GROUNDING_WORLD_STATE_PATH, "w", encoding="utf-8") as f:
+            json.dump(world_state_data, f, indent=2, ensure_ascii=False)
+        print(f"Wrote {GROUNDING_WORLD_STATE_PATH}")
 
 
 if __name__ == "__main__":

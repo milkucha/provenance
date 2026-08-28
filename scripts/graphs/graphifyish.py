@@ -129,7 +129,7 @@ class Graph:
 def build_lore() -> tuple[Graph, dict]:
     enc = load(ENCODINGS)
     npcs = load(NPCS)["npcs"]  # Minecraft-side only now: skin, taterzen_uuid, taterzen_name, spawn_position
-    characters = load_characters()  # lore-side: name, city, backstory, knowledge, criterion, life,
+    characters = load_characters()  # lore-side: name, origin, location, backstory, knowledge, criterion, life,
                                      # parents - the full character universe, since a character can
                                      # exist here with no Minecraft entry at all (never embodied)
     dialog_reg = load(DIALOGS)["npcs"]
@@ -377,7 +377,8 @@ def build_lore() -> tuple[Graph, dict]:
         developed = bool(character.get("backstory")) or edu.get("percent") is not None
         nid = g.node(
             f"npc:{key}", character.get("name") or key, "npc",
-            city=character.get("city", ""), skin=bool(npc.get("skin")),
+            origin=character.get("origin", ""), location=character.get("location", ""),
+            skin=bool(npc.get("skin")),
             uuid=bool(npc.get("taterzen_uuid")), backstory=character.get("backstory", ""),
             education=edu.get("percent"), mode=edu.get("mode", ""),
             known=len(items), experience=experience, developed=developed,
@@ -385,8 +386,8 @@ def build_lore() -> tuple[Graph, dict]:
             embodied=bool(npc), file="_lore/characters/",
         )
 
-        # where they live - the city field is a comma-separated list of place names
-        for place in [p.strip() for p in (character.get("city") or "").split(",") if p.strip()]:
+        # where they live now - the location field is a comma-separated list of place names
+        for place in [p.strip() for p in (character.get("location") or "").split(",") if p.strip()]:
             target = resolve_place(place)
             if target:
                 g.edge(nid, target, "lives_in")
@@ -648,7 +649,7 @@ def build_family() -> Graph:
                          f"(reconstructed from which parent's criterion field it matches)")
         g.node(
             f"npc:{key}", char.get("name") or key, "person",
-            city=char.get("city", ""), backstory=char.get("backstory", ""),
+            origin=char.get("origin", ""), location=char.get("location", ""), backstory=char.get("backstory", ""),
             criterion=(char.get("criterion") or {}).get("standard", ""),
             generation=generation[key], color=rgb_to_hex(ryb_to_rgb(*effective_ryb[key])),
             deceased=bool((char.get("life") or {}).get("deceased")),

@@ -16,9 +16,9 @@ Read it before drafting prose; it covers the working register (planning/docs) an
 register (lore/dialogue) separately, and what dictation artifacts not to imitate.
 
 **Keep the chronicle current.** At the end of a substantive session — one that actually moved the
-project, not a one-off question — append a short, dated paragraph to `conversation.md`'s
-**Landmarks** section: what got decided and why, not a file diff (git history already has that).
-Anything discussed but not yet built goes in that file's **Open threads** instead. This is a
+project, not a one-off question — append a short, dated entry to `CHRONICLE.md` at the repo root:
+what got decided and why, not a file diff (git history already has that). See that file's own
+header for what counts as landmark enough to log, and how much detail belongs there. This is a
 different record from `LAB_REPORT.md`, which is scoped to `/simulate` run results only — don't
 conflate the two.
 

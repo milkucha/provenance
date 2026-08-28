@@ -116,7 +116,7 @@ def run_pre_scene(p1: str, p2: str, pass_number: int, forced_visit: bool = False
             arc_authoring_needed = {
                 "character_slug": primacy, "reason": "first",
                 "band": lib.horizon(primacy)["band"],
-                "city": primary_char.get("city", ""), "backstory": primary_char.get("backstory", ""),
+                "origin": primary_char.get("origin", ""), "location": primary_char.get("location", ""), "backstory": primary_char.get("backstory", ""),
                 "criterion": primary_char.get("criterion", {}), "routines": primary_char.get("routines", []),
                 "prior_arc": None,
             }
@@ -136,7 +136,7 @@ def run_pre_scene(p1: str, p2: str, pass_number: int, forced_visit: bool = False
                 arc_authoring_needed = {
                     "character_slug": primacy, "reason": "reauthor_complete",
                     "band": lib.horizon(primacy)["band"],
-                    "city": primary_char.get("city", ""), "backstory": primary_char.get("backstory", ""),
+                    "origin": primary_char.get("origin", ""), "location": primary_char.get("location", ""), "backstory": primary_char.get("backstory", ""),
                     "criterion": primary_char.get("criterion", {}), "routines": primary_char.get("routines", []),
                     "prior_arc": arc,
                 }
@@ -154,7 +154,7 @@ def run_pre_scene(p1: str, p2: str, pass_number: int, forced_visit: bool = False
                     arc_authoring_needed = {
                         "character_slug": primacy, "reason": "reauthor_failed",
                         "band": lib.horizon(primacy)["band"],
-                        "city": primary_char.get("city", ""), "backstory": primary_char.get("backstory", ""),
+                        "origin": primary_char.get("origin", ""), "location": primary_char.get("location", ""), "backstory": primary_char.get("backstory", ""),
                         "criterion": primary_char.get("criterion", {}), "routines": primary_char.get("routines", []),
                         "prior_arc": arc,
                     }

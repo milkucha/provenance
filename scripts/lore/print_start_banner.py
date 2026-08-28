@@ -66,7 +66,7 @@ def build_banner() -> str:
         f"    {n_conflicts_open} open conflict(s), {n_material} material source(s)",
         "",
         "  Growing the record",
-        "    /character      hand-author a person: name, city, backstory",
+        "    /character      hand-author a person: name, origin, backstory",
         "    /tell           record a myth or legend with no material trace",
         "    material →     drop a file in _lore/material/, then run /integrate",
         "",
