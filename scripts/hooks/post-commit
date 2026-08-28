@@ -1,10 +1,21 @@
 #!/bin/sh
 # Refreshes the graphifyish knowledge graph after every commit, so it never
 # drifts stale from the repo it's supposed to describe. Regenerates the
-# output files in place; does not stage or commit them - that's a manual step.
+# output files in place, then auto-commits them as a small follow-up commit
+# if anything actually changed - so the refreshed graph never sits around as
+# uncommitted noise between sessions (2026-08-28: this used to be a manual
+# step, and manually redoing it after nearly every commit is exactly what
+# this change replaces - see git log for the many hand-made "Refresh
+# graphifyish output" commits before this).
 #
 # Not wired up by default: each clone must opt in once with
 #   git config core.hooksPath scripts/hooks
+
+# Guard against recursion: the commit below re-triggers this same hook.
+if [ -n "$GRAPHIFYISH_POST_COMMIT_RUNNING" ]; then
+  exit 0
+fi
+export GRAPHIFYISH_POST_COMMIT_RUNNING=1
 
 if command -v py >/dev/null 2>&1; then
   PYTHON="py"
@@ -14,4 +25,13 @@ fi
 
 "$PYTHON" scripts/graphs/graphifyish.py --json >/dev/null 2>&1 \
   && echo "[post-commit] graphifyish graph refreshed" \
-  || echo "[post-commit] graphifyish graph refresh failed (see scripts/graphs/graphifyish.py)"
+  || { echo "[post-commit] graphifyish graph refresh failed (see scripts/graphs/graphifyish.py)"; exit 0; }
+
+if ! git diff --quiet -- graphs/graphifyish/; then
+  git add graphs/graphifyish/
+  if git commit -m "Refresh graphifyish output (auto, post-commit)" >/dev/null 2>&1; then
+    echo "[post-commit] graphifyish output auto-committed"
+  else
+    echo "[post-commit] graphifyish output changed but auto-commit failed - left staged for a manual commit"
+  fi
+fi
