@@ -20421,7 +20421,7 @@
     "label": "Provenance",
     "kind": "root",
     "path": ".",
-    "size": 58324388,
+    "size": 58319701,
     "degree": 17
    },
    {
@@ -20429,7 +20429,7 @@
     "label": ".git",
     "kind": "other",
     "path": ".git",
-    "size": 162,
+    "size": 159,
     "degree": 1
    },
    {
@@ -20445,7 +20445,7 @@
     "label": "CHRONICLE.md",
     "kind": "doc",
     "path": "CHRONICLE.md",
-    "size": 14168,
+    "size": 14359,
     "degree": 1
    },
    {
@@ -20485,7 +20485,7 @@
     "label": "TODO.md",
     "kind": "doc",
     "path": "TODO.md",
-    "size": 158506,
+    "size": 153631,
     "degree": 1
    },
    {
