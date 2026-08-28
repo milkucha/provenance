@@ -29,8 +29,8 @@
     "label": "Provenance",
     "kind": "root",
     "path": ".",
-    "size": 1185897,
-    "degree": 15
+    "size": 1196129,
+    "degree": 16
    },
    {
     "id": "file:.gitignore",
@@ -38,6 +38,22 @@
     "kind": "other",
     "path": ".gitignore",
     "size": 45,
+    "degree": 1
+   },
+   {
+    "id": "file:CHRONICLE.md",
+    "label": "CHRONICLE.md",
+    "kind": "doc",
+    "path": "CHRONICLE.md",
+    "size": 12316,
+    "degree": 1
+   },
+   {
+    "id": "file:CLAUDE.md",
+    "label": "CLAUDE.md",
+    "kind": "doc",
+    "path": "CLAUDE.md",
+    "size": 1149,
     "degree": 1
    },
    {
@@ -73,14 +89,6 @@
     "degree": 1
    },
    {
-    "id": "file:conversation.md",
-    "label": "conversation.md",
-    "kind": "doc",
-    "path": "conversation.md",
-    "size": 13067,
-    "degree": 1
-   },
-   {
     "id": "file:pack.mcmeta",
     "label": "pack.mcmeta",
     "kind": "other",
@@ -93,15 +101,15 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
-    "size": 198450,
-    "degree": 6
+    "size": 203387,
+    "degree": 7
    },
    {
     "id": "file:.claude/PRINCIPLES.md",
     "label": "PRINCIPLES.md",
     "kind": "doc",
     "path": ".claude/PRINCIPLES.md",
-    "size": 1877,
+    "size": 1885,
     "degree": 1
    },
    {
@@ -117,7 +125,7 @@
     "label": "settings.json",
     "kind": "other",
     "path": ".claude/settings.json",
-    "size": 299,
+    "size": 599,
     "degree": 1
    },
    {
@@ -129,11 +137,27 @@
     "degree": 1
    },
    {
+    "id": "dir:.claude/hooks",
+    "label": "hooks",
+    "kind": "dir",
+    "path": ".claude/hooks",
+    "size": 2372,
+    "degree": 2
+   },
+   {
+    "id": "file:.claude/hooks/chronicle-nudge.sh",
+    "label": "chronicle-nudge.sh",
+    "kind": "other",
+    "path": ".claude/hooks/chronicle-nudge.sh",
+    "size": 2372,
+    "degree": 1
+   },
+   {
     "id": "dir:.claude/skills",
     "label": "skills",
     "kind": "dir",
     "path": ".claude/skills",
-    "size": 185030,
+    "size": 187287,
     "degree": 13
    },
    {
@@ -141,7 +165,7 @@
     "label": "character",
     "kind": "dir",
     "path": ".claude/skills/character",
-    "size": 31297,
+    "size": 33130,
     "degree": 2
    },
    {
@@ -149,7 +173,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/character/SKILL.md",
-    "size": 31297,
+    "size": 33130,
     "degree": 1
    },
    {
@@ -173,7 +197,7 @@
     "label": "enact",
     "kind": "dir",
     "path": ".claude/skills/enact",
-    "size": 49429,
+    "size": 49853,
     "degree": 2
    },
    {
@@ -181,7 +205,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/enact/SKILL.md",
-    "size": 49429,
+    "size": 49853,
     "degree": 1
    },
    {
@@ -1252,7 +1276,7 @@
     "label": "scripts",
     "kind": "dir",
     "path": "scripts",
-    "size": 400682,
+    "size": 405579,
     "degree": 5
    },
    {
@@ -1260,7 +1284,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": "scripts/graphs",
-    "size": 79997,
+    "size": 78468,
     "degree": 3
    },
    {
@@ -1268,7 +1292,7 @@
     "label": "graphifyish.py",
     "kind": "script",
     "path": "scripts/graphs/graphifyish.py",
-    "size": 41712,
+    "size": 40957,
     "degree": 1
    },
    {
@@ -1276,7 +1300,7 @@
     "label": "graphifyish_template.html",
     "kind": "script",
     "path": "scripts/graphs/graphifyish_template.html",
-    "size": 38285,
+    "size": 37511,
     "degree": 1
    },
    {
@@ -1300,8 +1324,8 @@
     "label": "lore",
     "kind": "dir",
     "path": "scripts/lore",
-    "size": 303895,
-    "degree": 46
+    "size": 310321,
+    "degree": 47
    },
    {
     "id": "file:scripts/lore/add_categories_schema.py",
@@ -1372,7 +1396,7 @@
     "label": "build_source_index.py",
     "kind": "script",
     "path": "scripts/lore/build_source_index.py",
-    "size": 20113,
+    "size": 22573,
     "degree": 1
    },
    {
@@ -1420,7 +1444,7 @@
     "label": "generate_offspring.py",
     "kind": "script",
     "path": "scripts/lore/generate_offspring.py",
-    "size": 39680,
+    "size": 39625,
     "degree": 1
    },
    {
@@ -1468,7 +1492,7 @@
     "label": "print_start_banner.py",
     "kind": "script",
     "path": "scripts/lore/print_start_banner.py",
-    "size": 3281,
+    "size": 3195,
     "degree": 1
    },
    {
@@ -1584,6 +1608,14 @@
     "degree": 1
    },
    {
+    "id": "file:scripts/lore/sample_grounding.py",
+    "label": "sample_grounding.py",
+    "kind": "script",
+    "path": "scripts/lore/sample_grounding.py",
+    "size": 4462,
+    "degree": 1
+   },
+   {
     "id": "file:scripts/lore/sample_lore_knowledge.py",
     "label": "sample_lore_knowledge.py",
     "kind": "script",
@@ -1596,7 +1628,7 @@
     "label": "simulate_generate_population.py",
     "kind": "script",
     "path": "scripts/lore/simulate_generate_population.py",
-    "size": 20680,
+    "size": 20432,
     "degree": 1
    },
    {
@@ -1604,7 +1636,7 @@
     "label": "simulate_pass_brief.py",
     "kind": "script",
     "path": "scripts/lore/simulate_pass_brief.py",
-    "size": 14710,
+    "size": 14603,
     "degree": 1
    },
    {
@@ -1705,6 +1737,18 @@
    },
    {
     "source": "dir:.",
+    "target": "file:CHRONICLE.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.",
+    "target": "file:CLAUDE.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.",
     "target": "file:GESTURES.md",
     "rel": "contains",
     "weight": 1
@@ -1724,12 +1768,6 @@
    {
     "source": "dir:.",
     "target": "file:TODO.md",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:.",
-    "target": "file:conversation.md",
     "rel": "contains",
     "weight": 1
    },
@@ -1766,6 +1804,18 @@
    {
     "source": "dir:.claude",
     "target": "file:.claude/settings.local.json",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude",
+    "target": "dir:.claude/hooks",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/hooks",
+    "target": "file:.claude/hooks/chronicle-nudge.sh",
     "rel": "contains",
     "weight": 1
    },
@@ -2863,6 +2913,12 @@
    },
    {
     "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/sample_grounding.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/sample_lore_knowledge.py",
     "rel": "contains",
     "weight": 1
@@ -2964,7 +3020,7 @@
     "kind": "layer",
     "note": "skills + scripts + supporting patterns",
     "tier": 2,
-    "degree": 67
+    "degree": 68
    },
    {
     "id": "layer:3",
@@ -3420,6 +3476,14 @@
     "kind": "script",
     "tier": 2,
     "file": "scripts/lore/roll_routine.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/sample_grounding.py",
+    "label": "sample_grounding.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/sample_grounding.py",
     "degree": 1
    },
    {
@@ -3905,6 +3969,12 @@
    {
     "source": "layer:2",
     "target": "script:lore/roll_routine.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/sample_grounding.py",
     "rel": "holds",
     "weight": 1
    },
