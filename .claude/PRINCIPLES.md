@@ -10,11 +10,19 @@ otherwise) or logged as an open item (`TODO.md`, `_lore/unknowns.md`, a `conflic
 `user_resolution` left unset) — never guessed, invented, or quietly resolved on the skill's own
 judgment.
 
-Every skill in this pack answers to this one rule. A skill's own `SKILL.md` states only how it
-applies in that skill's domain — what counts as a genuine open question there, and where the
-question or the log entry goes — not the rule itself; point back here instead of restating it.
+**Write in the author's voice.** Any text authored for this project — docs, lore prose, character
+sheets, in-character dialogue, narration — follows `.claude/VOICE.md`, not generic house style.
+Read it before drafting prose; it covers the working register (planning/docs) and the world
+register (lore/dialogue) separately, and what dictation artifacts not to imitate.
 
-**Project prose sounds like the author.** README, TODO, LAB_REPORT, commit messages, and any other
-documentation or first-person writing in this repo gets written in the author's own voice — see
-`VOICE.md` for the rule and the accumulating list of actual verbal patterns to imitate. (This is
-separate from lore/character content, which has its own author-primacy rule.)
+**Keep the chronicle current.** At the end of a substantive session — one that actually moved the
+project, not a one-off question — append a short, dated entry to `CHRONICLE.md` at the repo root:
+what got decided and why, not a file diff (git history already has that). See that file's own
+header for what counts as landmark enough to log, and how much detail belongs there. This is a
+different record from `LAB_REPORT.md`, which is scoped to `/simulate` run results only — don't
+conflate the two.
+
+Every skill in this pack answers to these rules. A skill's own `SKILL.md` states only how they
+apply in that skill's domain — what counts as a genuine open question there, where the question or
+log entry goes, which of its outputs are prose that VOICE.md governs — not the rules themselves;
+point back here instead of restating them.
