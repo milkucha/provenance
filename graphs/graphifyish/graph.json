@@ -29,7 +29,7 @@
     "label": "Provenance",
     "kind": "root",
     "path": ".",
-    "size": 1230582,
+    "size": 1236382,
     "degree": 16
    },
    {
@@ -101,7 +101,7 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
-    "size": 206263,
+    "size": 206645,
     "degree": 7
    },
    {
@@ -157,7 +157,7 @@
     "label": "skills",
     "kind": "dir",
     "path": ".claude/skills",
-    "size": 190163,
+    "size": 190545,
     "degree": 13
    },
    {
@@ -197,7 +197,7 @@
     "label": "enact",
     "kind": "dir",
     "path": ".claude/skills/enact",
-    "size": 52729,
+    "size": 53111,
     "degree": 2
    },
    {
@@ -205,7 +205,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/enact/SKILL.md",
-    "size": 52729,
+    "size": 53111,
     "degree": 1
    },
    {
@@ -357,7 +357,7 @@
     "label": "_lore",
     "kind": "dir",
     "path": "_lore",
-    "size": 43677,
+    "size": 43716,
     "degree": 8
    },
    {
@@ -381,7 +381,7 @@
     "label": "tuning.json",
     "kind": "lore",
     "path": "_lore/tuning.json",
-    "size": 2772,
+    "size": 2811,
     "degree": 1
    },
    {
@@ -1100,7 +1100,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": "graphs",
-    "size": 218544,
+    "size": 220916,
     "degree": 2
    },
    {
@@ -1108,7 +1108,7 @@
     "label": "graphifyish",
     "kind": "dir",
     "path": "graphs/graphifyish",
-    "size": 218544,
+    "size": 220916,
     "degree": 3
    },
    {
@@ -1116,7 +1116,7 @@
     "label": "graph.json",
     "kind": "graph",
     "path": "graphs/graphifyish/graph.json",
-    "size": 103704,
+    "size": 105070,
     "degree": 1
    },
    {
@@ -1124,7 +1124,7 @@
     "label": "graphifyish.html",
     "kind": "graph",
     "path": "graphs/graphifyish/graphifyish.html",
-    "size": 114840,
+    "size": 115846,
     "degree": 1
    },
    {
@@ -1276,7 +1276,7 @@
     "label": "scripts",
     "kind": "dir",
     "path": "scripts",
-    "size": 423595,
+    "size": 426602,
     "degree": 5
    },
    {
@@ -1324,7 +1324,7 @@
     "label": "lore",
     "kind": "dir",
     "path": "scripts/lore",
-    "size": 327456,
+    "size": 330463,
     "degree": 50
    },
    {
@@ -1564,7 +1564,7 @@
     "label": "roll_contested.py",
     "kind": "script",
     "path": "scripts/lore/roll_contested.py",
-    "size": 1998,
+    "size": 4276,
     "degree": 1
    },
    {
@@ -1636,7 +1636,7 @@
     "label": "simulate_generate_population.py",
     "kind": "script",
     "path": "scripts/lore/simulate_generate_population.py",
-    "size": 20677,
+    "size": 20973,
     "degree": 1
    },
    {
@@ -1644,7 +1644,7 @@
     "label": "simulate_pass_brief.py",
     "kind": "script",
     "path": "scripts/lore/simulate_pass_brief.py",
-    "size": 14476,
+    "size": 14803,
     "degree": 1
    },
    {
@@ -1652,7 +1652,7 @@
     "label": "simulate_pass_lib.py",
     "kind": "script",
     "path": "scripts/lore/simulate_pass_lib.py",
-    "size": 12668,
+    "size": 12774,
     "degree": 1
    },
    {
