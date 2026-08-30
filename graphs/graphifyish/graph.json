@@ -20421,23 +20421,15 @@
     "label": "Provenance",
     "kind": "root",
     "path": ".",
-    "size": 58362592,
-    "degree": 17
-   },
-   {
-    "id": "file:.git",
-    "label": ".git",
-    "kind": "other",
-    "path": ".git",
-    "size": 159,
-    "degree": 1
+    "size": 58385689,
+    "degree": 16
    },
    {
     "id": "file:.gitignore",
     "label": ".gitignore",
     "kind": "other",
     "path": ".gitignore",
-    "size": 49,
+    "size": 45,
     "degree": 1
    },
    {
@@ -20445,7 +20437,7 @@
     "label": "CHRONICLE.md",
     "kind": "doc",
     "path": "CHRONICLE.md",
-    "size": 20996,
+    "size": 22693,
     "degree": 1
    },
    {
@@ -20453,7 +20445,7 @@
     "label": "CLAUDE.md",
     "kind": "doc",
     "path": "CLAUDE.md",
-    "size": 1167,
+    "size": 1149,
     "degree": 1
    },
    {
@@ -20485,7 +20477,7 @@
     "label": "TODO.md",
     "kind": "doc",
     "path": "TODO.md",
-    "size": 158443,
+    "size": 158168,
     "degree": 1
    },
    {
@@ -20501,8 +20493,8 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
-    "size": 208001,
-    "degree": 6
+    "size": 209948,
+    "degree": 7
    },
    {
     "id": "file:.claude/PRINCIPLES.md",
@@ -20517,7 +20509,7 @@
     "label": "VOICE.md",
     "kind": "doc",
     "path": ".claude/VOICE.md",
-    "size": 10752,
+    "size": 10587,
     "degree": 1
    },
    {
@@ -20529,11 +20521,19 @@
     "degree": 1
    },
    {
+    "id": "file:.claude/settings.local.json",
+    "label": "settings.local.json",
+    "kind": "other",
+    "path": ".claude/settings.local.json",
+    "size": 657,
+    "degree": 1
+   },
+   {
     "id": "dir:.claude/hooks",
     "label": "hooks",
     "kind": "dir",
     "path": ".claude/hooks",
-    "size": 2427,
+    "size": 2372,
     "degree": 2
    },
    {
@@ -20541,7 +20541,7 @@
     "label": "chronicle-nudge.sh",
     "kind": "other",
     "path": ".claude/hooks/chronicle-nudge.sh",
-    "size": 2427,
+    "size": 2372,
     "degree": 1
    },
    {
@@ -20549,7 +20549,7 @@
     "label": "skills",
     "kind": "dir",
     "path": ".claude/skills",
-    "size": 192338,
+    "size": 193848,
     "degree": 13
    },
    {
@@ -20557,7 +20557,7 @@
     "label": "character",
     "kind": "dir",
     "path": ".claude/skills/character",
-    "size": 33604,
+    "size": 33130,
     "degree": 2
    },
    {
@@ -20565,7 +20565,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/character/SKILL.md",
-    "size": 33604,
+    "size": 33130,
     "degree": 1
    },
    {
@@ -20573,7 +20573,7 @@
     "label": "embody",
     "kind": "dir",
     "path": ".claude/skills/embody",
-    "size": 14503,
+    "size": 14316,
     "degree": 2
    },
    {
@@ -20581,7 +20581,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/embody/SKILL.md",
-    "size": 14503,
+    "size": 14316,
     "degree": 1
    },
    {
@@ -20589,7 +20589,7 @@
     "label": "enact",
     "kind": "dir",
     "path": ".claude/skills/enact",
-    "size": 53834,
+    "size": 56414,
     "degree": 2
    },
    {
@@ -20597,7 +20597,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/enact/SKILL.md",
-    "size": 53834,
+    "size": 56414,
     "degree": 1
    },
    {
@@ -20605,7 +20605,7 @@
     "label": "enact-embody",
     "kind": "dir",
     "path": ".claude/skills/enact-embody",
-    "size": 1396,
+    "size": 1381,
     "degree": 2
    },
    {
@@ -20613,7 +20613,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/enact-embody/SKILL.md",
-    "size": 1396,
+    "size": 1381,
     "degree": 1
    },
    {
@@ -20637,7 +20637,7 @@
     "label": "integrate",
     "kind": "dir",
     "path": ".claude/skills/integrate",
-    "size": 16196,
+    "size": 16006,
     "degree": 2
    },
    {
@@ -20645,7 +20645,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/integrate/SKILL.md",
-    "size": 16196,
+    "size": 16006,
     "degree": 1
    },
    {
@@ -20669,7 +20669,7 @@
     "label": "resolve",
     "kind": "dir",
     "path": ".claude/skills/resolve",
-    "size": 4931,
+    "size": 4866,
     "degree": 2
    },
    {
@@ -20677,7 +20677,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/resolve/SKILL.md",
-    "size": 4931,
+    "size": 4866,
     "degree": 1
    },
    {
@@ -20733,7 +20733,7 @@
     "label": "tell",
     "kind": "dir",
     "path": ".claude/skills/tell",
-    "size": 8155,
+    "size": 8016,
     "degree": 2
    },
    {
@@ -20741,7 +20741,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/tell/SKILL.md",
-    "size": 8155,
+    "size": 8016,
     "degree": 1
    },
    {
@@ -20749,7 +20749,7 @@
     "label": "_lore",
     "kind": "dir",
     "path": "_lore",
-    "size": 55570437,
+    "size": 55571682,
     "degree": 10
    },
    {
@@ -20773,7 +20773,7 @@
     "label": "tuning.json",
     "kind": "lore",
     "path": "_lore/tuning.json",
-    "size": 2811,
+    "size": 4217,
     "degree": 1
    },
    {
@@ -20789,7 +20789,7 @@
     "label": "characters",
     "kind": "dir",
     "path": "_lore/characters",
-    "size": 298498,
+    "size": 298495,
     "degree": 89
    },
    {
@@ -20797,7 +20797,7 @@
     "label": "_index.md",
     "kind": "lore",
     "path": "_lore/characters/_index.md",
-    "size": 1543,
+    "size": 1540,
     "degree": 1
    },
    {
@@ -21501,7 +21501,7 @@
     "label": "facts",
     "kind": "dir",
     "path": "_lore/facts",
-    "size": 14177,
+    "size": 14019,
     "degree": 6
    },
    {
@@ -21509,7 +21509,7 @@
     "label": "_authors.md",
     "kind": "lore",
     "path": "_lore/facts/_authors.md",
-    "size": 838,
+    "size": 822,
     "degree": 1
    },
    {
@@ -21517,7 +21517,7 @@
     "label": "_index.md",
     "kind": "lore",
     "path": "_lore/facts/_index.md",
-    "size": 3503,
+    "size": 3448,
     "degree": 1
    },
    {
@@ -21525,7 +21525,7 @@
     "label": "a_worthwhile_life.md",
     "kind": "lore",
     "path": "_lore/facts/a_worthwhile_life.md",
-    "size": 2621,
+    "size": 2575,
     "degree": 1
    },
    {
@@ -21533,7 +21533,7 @@
     "label": "facts.json",
     "kind": "lore",
     "path": "_lore/facts/facts.json",
-    "size": 3895,
+    "size": 3854,
     "degree": 1
    },
    {
@@ -21925,7 +21925,7 @@
     "label": "_npcs",
     "kind": "dir",
     "path": "_npcs",
-    "size": 74807,
+    "size": 74404,
     "degree": 6
    },
    {
@@ -21933,7 +21933,7 @@
     "label": "actions",
     "kind": "dir",
     "path": "_npcs/actions",
-    "size": 26825,
+    "size": 26435,
     "degree": 2
    },
    {
@@ -21941,7 +21941,7 @@
     "label": "registry.json",
     "kind": "registry",
     "path": "_npcs/actions/registry.json",
-    "size": 26825,
+    "size": 26435,
     "degree": 1
    },
    {
@@ -21981,7 +21981,7 @@
     "label": "scenes",
     "kind": "dir",
     "path": "_npcs/scenes",
-    "size": 206,
+    "size": 193,
     "degree": 2
    },
    {
@@ -21989,7 +21989,7 @@
     "label": "_template.md",
     "kind": "registry",
     "path": "_npcs/scenes/_template.md",
-    "size": 206,
+    "size": 193,
     "degree": 1
    },
    {
@@ -22093,7 +22093,7 @@
     "label": "data",
     "kind": "dir",
     "path": "data",
-    "size": 240880,
+    "size": 240677,
     "degree": 3
    },
    {
@@ -22101,15 +22101,15 @@
     "label": "luminacion",
     "kind": "dir",
     "path": "data/luminacion",
-    "size": 240802,
-    "degree": 4
+    "size": 240605,
+    "degree": 5
    },
    {
     "id": "dir:data/luminacion/blabber",
     "label": "blabber",
     "kind": "dir",
     "path": "data/luminacion/blabber",
-    "size": 122269,
+    "size": 122072,
     "degree": 2
    },
    {
@@ -22117,7 +22117,7 @@
     "label": "dialogues",
     "kind": "dir",
     "path": "data/luminacion/blabber/dialogues",
-    "size": 122269,
+    "size": 122072,
     "degree": 24
    },
    {
@@ -22125,7 +22125,7 @@
     "label": "_template_branching.json",
     "kind": "dialogue",
     "path": "data/luminacion/blabber/dialogues/_template_branching.json",
-    "size": 3164,
+    "size": 3077,
     "degree": 1
    },
    {
@@ -22133,7 +22133,7 @@
     "label": "_template_linear.json",
     "kind": "dialogue",
     "path": "data/luminacion/blabber/dialogues/_template_linear.json",
-    "size": 2580,
+    "size": 2512,
     "degree": 1
    },
    {
@@ -22141,7 +22141,7 @@
     "label": "_template_one_off.json",
     "kind": "dialogue",
     "path": "data/luminacion/blabber/dialogues/_template_one_off.json",
-    "size": 1785,
+    "size": 1743,
     "degree": 1
    },
    {
@@ -22953,6 +22953,13 @@
     "degree": 1
    },
    {
+    "id": "dir:data/luminacion/predicates",
+    "label": "predicates",
+    "kind": "dir",
+    "path": "data/luminacion/predicates",
+    "degree": 1
+   },
+   {
     "id": "dir:data/luminacion/tags",
     "label": "tags",
     "kind": "dir",
@@ -22981,7 +22988,7 @@
     "label": "minecraft",
     "kind": "dir",
     "path": "data/minecraft",
-    "size": 78,
+    "size": 72,
     "degree": 2
    },
    {
@@ -22989,7 +22996,7 @@
     "label": "tags",
     "kind": "dir",
     "path": "data/minecraft/tags",
-    "size": 78,
+    "size": 72,
     "degree": 2
    },
    {
@@ -22997,7 +23004,7 @@
     "label": "functions",
     "kind": "dir",
     "path": "data/minecraft/tags/functions",
-    "size": 78,
+    "size": 72,
     "degree": 3
    },
    {
@@ -23005,7 +23012,7 @@
     "label": "load.json",
     "kind": "datapack",
     "path": "data/minecraft/tags/functions/load.json",
-    "size": 39,
+    "size": 36,
     "degree": 1
    },
    {
@@ -23013,7 +23020,7 @@
     "label": "tick.json",
     "kind": "datapack",
     "path": "data/minecraft/tags/functions/tick.json",
-    "size": 39,
+    "size": 36,
     "degree": 1
    },
    {
@@ -23077,7 +23084,7 @@
     "label": "resourcepack",
     "kind": "dir",
     "path": "resourcepack",
-    "size": 38957,
+    "size": 38915,
     "degree": 3
    },
    {
@@ -23093,7 +23100,7 @@
     "label": "assets",
     "kind": "dir",
     "path": "resourcepack/assets",
-    "size": 38818,
+    "size": 38776,
     "degree": 3
    },
    {
@@ -23101,7 +23108,7 @@
     "label": "luminacion",
     "kind": "dir",
     "path": "resourcepack/assets/luminacion",
-    "size": 233,
+    "size": 227,
     "degree": 3
    },
    {
@@ -23109,7 +23116,7 @@
     "label": "models",
     "kind": "dir",
     "path": "resourcepack/assets/luminacion/models",
-    "size": 108,
+    "size": 102,
     "degree": 2
    },
    {
@@ -23117,7 +23124,7 @@
     "label": "item",
     "kind": "dir",
     "path": "resourcepack/assets/luminacion/models/item",
-    "size": 108,
+    "size": 102,
     "degree": 2
    },
    {
@@ -23125,7 +23132,7 @@
     "label": "gesture_marker_blank.json",
     "kind": "resourcepack",
     "path": "resourcepack/assets/luminacion/models/item/gesture_marker_blank.json",
-    "size": 108,
+    "size": 102,
     "degree": 1
    },
    {
@@ -23157,7 +23164,7 @@
     "label": "minecraft",
     "kind": "dir",
     "path": "resourcepack/assets/minecraft",
-    "size": 38585,
+    "size": 38549,
     "degree": 3
    },
    {
@@ -23197,7 +23204,7 @@
     "label": "models",
     "kind": "dir",
     "path": "resourcepack/assets/minecraft/models",
-    "size": 969,
+    "size": 933,
     "degree": 2
    },
    {
@@ -23205,7 +23212,7 @@
     "label": "item",
     "kind": "dir",
     "path": "resourcepack/assets/minecraft/models/item",
-    "size": 969,
+    "size": 933,
     "degree": 2
    },
    {
@@ -23213,7 +23220,7 @@
     "label": "stick.json",
     "kind": "resourcepack",
     "path": "resourcepack/assets/minecraft/models/item/stick.json",
-    "size": 969,
+    "size": 933,
     "degree": 1
    },
    {
@@ -23221,7 +23228,7 @@
     "label": "scripts",
     "kind": "dir",
     "path": "scripts",
-    "size": 433095,
+    "size": 452407,
     "degree": 5
    },
    {
@@ -23229,7 +23236,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": "scripts/graphs",
-    "size": 80165,
+    "size": 78468,
     "degree": 3
    },
    {
@@ -23237,7 +23244,7 @@
     "label": "graphifyish.py",
     "kind": "script",
     "path": "scripts/graphs/graphifyish.py",
-    "size": 41832,
+    "size": 40957,
     "degree": 1
    },
    {
@@ -23245,7 +23252,7 @@
     "label": "graphifyish_template.html",
     "kind": "script",
     "path": "scripts/graphs/graphifyish_template.html",
-    "size": 38333,
+    "size": 37511,
     "degree": 1
    },
    {
@@ -23253,7 +23260,7 @@
     "label": "hooks",
     "kind": "dir",
     "path": "scripts/hooks",
-    "size": 1559,
+    "size": 1522,
     "degree": 2
    },
    {
@@ -23261,7 +23268,7 @@
     "label": "post-commit",
     "kind": "script",
     "path": "scripts/hooks/post-commit",
-    "size": 1559,
+    "size": 1522,
     "degree": 1
    },
    {
@@ -23269,15 +23276,15 @@
     "label": "lore",
     "kind": "dir",
     "path": "scripts/lore",
-    "size": 335102,
-    "degree": 50
+    "size": 356268,
+    "degree": 54
    },
    {
     "id": "file:scripts/lore/add_categories_schema.py",
     "label": "add_categories_schema.py",
     "kind": "script",
     "path": "scripts/lore/add_categories_schema.py",
-    "size": 6612,
+    "size": 6475,
     "degree": 1
    },
    {
@@ -23285,7 +23292,7 @@
     "label": "anchor_epistemology.py",
     "kind": "script",
     "path": "scripts/lore/anchor_epistemology.py",
-    "size": 6622,
+    "size": 6487,
     "degree": 1
    },
    {
@@ -23293,7 +23300,7 @@
     "label": "apply_contested_lead.py",
     "kind": "script",
     "path": "scripts/lore/apply_contested_lead.py",
-    "size": 3689,
+    "size": 3614,
     "degree": 1
    },
    {
@@ -23313,11 +23320,27 @@
     "degree": 1
    },
    {
+    "id": "file:scripts/lore/apply_survival.py",
+    "label": "apply_survival.py",
+    "kind": "script",
+    "path": "scripts/lore/apply_survival.py",
+    "size": 3746,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/apply_upkeep.py",
+    "label": "apply_upkeep.py",
+    "kind": "script",
+    "path": "scripts/lore/apply_upkeep.py",
+    "size": 1770,
+    "degree": 1
+   },
+   {
     "id": "file:scripts/lore/backfill_lived.py",
     "label": "backfill_lived.py",
     "kind": "script",
     "path": "scripts/lore/backfill_lived.py",
-    "size": 2900,
+    "size": 2829,
     "degree": 1
    },
    {
@@ -23325,7 +23348,7 @@
     "label": "baseline_stats.py",
     "kind": "script",
     "path": "scripts/lore/baseline_stats.py",
-    "size": 4371,
+    "size": 4268,
     "degree": 1
    },
    {
@@ -23341,7 +23364,7 @@
     "label": "build_source_index.py",
     "kind": "script",
     "path": "scripts/lore/build_source_index.py",
-    "size": 23024,
+    "size": 22573,
     "degree": 1
    },
    {
@@ -23357,7 +23380,7 @@
     "label": "check_arc_alignment.py",
     "kind": "script",
     "path": "scripts/lore/check_arc_alignment.py",
-    "size": 4728,
+    "size": 4629,
     "degree": 1
    },
    {
@@ -23365,7 +23388,7 @@
     "label": "check_character_name.py",
     "kind": "script",
     "path": "scripts/lore/check_character_name.py",
-    "size": 2459,
+    "size": 2400,
     "degree": 1
    },
    {
@@ -23373,7 +23396,7 @@
     "label": "check_needs_provides.py",
     "kind": "script",
     "path": "scripts/lore/check_needs_provides.py",
-    "size": 2291,
+    "size": 2240,
     "degree": 1
    },
    {
@@ -23389,7 +23412,7 @@
     "label": "generate_offspring.py",
     "kind": "script",
     "path": "scripts/lore/generate_offspring.py",
-    "size": 43667,
+    "size": 42882,
     "degree": 1
    },
    {
@@ -23405,7 +23428,7 @@
     "label": "lineage_coin.py",
     "kind": "script",
     "path": "scripts/lore/lineage_coin.py",
-    "size": 1429,
+    "size": 1395,
     "degree": 1
    },
    {
@@ -23413,7 +23436,7 @@
     "label": "list_open_unknowns.py",
     "kind": "script",
     "path": "scripts/lore/list_open_unknowns.py",
-    "size": 2337,
+    "size": 2282,
     "degree": 1
    },
    {
@@ -23429,7 +23452,7 @@
     "label": "pick_pair.py",
     "kind": "script",
     "path": "scripts/lore/pick_pair.py",
-    "size": 1466,
+    "size": 1431,
     "degree": 1
    },
    {
@@ -23437,7 +23460,7 @@
     "label": "print_start_banner.py",
     "kind": "script",
     "path": "scripts/lore/print_start_banner.py",
-    "size": 3283,
+    "size": 3195,
     "degree": 1
    },
    {
@@ -23445,7 +23468,7 @@
     "label": "record_bond_quality.py",
     "kind": "script",
     "path": "scripts/lore/record_bond_quality.py",
-    "size": 2913,
+    "size": 2854,
     "degree": 1
    },
    {
@@ -23461,7 +23484,7 @@
     "label": "record_hearsay.py",
     "kind": "script",
     "path": "scripts/lore/record_hearsay.py",
-    "size": 7393,
+    "size": 7215,
     "degree": 1
    },
    {
@@ -23469,7 +23492,7 @@
     "label": "record_partner.py",
     "kind": "script",
     "path": "scripts/lore/record_partner.py",
-    "size": 1790,
+    "size": 1744,
     "degree": 1
    },
    {
@@ -23485,7 +23508,7 @@
     "label": "resolve_conflict.py",
     "kind": "script",
     "path": "scripts/lore/resolve_conflict.py",
-    "size": 6358,
+    "size": 6200,
     "degree": 1
    },
    {
@@ -23493,7 +23516,7 @@
     "label": "roll_arc_outcome.py",
     "kind": "script",
     "path": "scripts/lore/roll_arc_outcome.py",
-    "size": 3288,
+    "size": 3221,
     "degree": 1
    },
    {
@@ -23501,7 +23524,7 @@
     "label": "roll_arc_primacy.py",
     "kind": "script",
     "path": "scripts/lore/roll_arc_primacy.py",
-    "size": 968,
+    "size": 940,
     "degree": 1
    },
    {
@@ -23509,7 +23532,7 @@
     "label": "roll_contested.py",
     "kind": "script",
     "path": "scripts/lore/roll_contested.py",
-    "size": 4353,
+    "size": 4276,
     "degree": 1
    },
    {
@@ -23517,7 +23540,7 @@
     "label": "roll_death_legacy.py",
     "kind": "script",
     "path": "scripts/lore/roll_death_legacy.py",
-    "size": 2535,
+    "size": 2482,
     "degree": 1
    },
    {
@@ -23525,7 +23548,7 @@
     "label": "roll_home_visit.py",
     "kind": "script",
     "path": "scripts/lore/roll_home_visit.py",
-    "size": 2120,
+    "size": 3423,
     "degree": 1
    },
    {
@@ -23533,7 +23556,7 @@
     "label": "roll_lead_followup.py",
     "kind": "script",
     "path": "scripts/lore/roll_lead_followup.py",
-    "size": 2292,
+    "size": 2243,
     "degree": 1
    },
    {
@@ -23541,7 +23564,7 @@
     "label": "roll_lifespan.py",
     "kind": "script",
     "path": "scripts/lore/roll_lifespan.py",
-    "size": 3717,
+    "size": 3647,
     "degree": 1
    },
    {
@@ -23549,7 +23572,7 @@
     "label": "roll_reproduction.py",
     "kind": "script",
     "path": "scripts/lore/roll_reproduction.py",
-    "size": 2477,
+    "size": 2426,
     "degree": 1
    },
    {
@@ -23557,7 +23580,15 @@
     "label": "roll_routine.py",
     "kind": "script",
     "path": "scripts/lore/roll_routine.py",
-    "size": 1141,
+    "size": 1108,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/roll_survival.py",
+    "label": "roll_survival.py",
+    "kind": "script",
+    "path": "scripts/lore/roll_survival.py",
+    "size": 7659,
     "degree": 1
    },
    {
@@ -23565,7 +23596,7 @@
     "label": "sample_grounding.py",
     "kind": "script",
     "path": "scripts/lore/sample_grounding.py",
-    "size": 4559,
+    "size": 4462,
     "degree": 1
    },
    {
@@ -23573,7 +23604,7 @@
     "label": "sample_lore_knowledge.py",
     "kind": "script",
     "path": "scripts/lore/sample_lore_knowledge.py",
-    "size": 12547,
+    "size": 12287,
     "degree": 1
    },
    {
@@ -23581,7 +23612,7 @@
     "label": "simulate_generate_population.py",
     "kind": "script",
     "path": "scripts/lore/simulate_generate_population.py",
-    "size": 21372,
+    "size": 23877,
     "degree": 1
    },
    {
@@ -23589,7 +23620,7 @@
     "label": "simulate_pass_brief.py",
     "kind": "script",
     "path": "scripts/lore/simulate_pass_brief.py",
-    "size": 15053,
+    "size": 18418,
     "degree": 1
    },
    {
@@ -23597,7 +23628,7 @@
     "label": "simulate_pass_lib.py",
     "kind": "script",
     "path": "scripts/lore/simulate_pass_lib.py",
-    "size": 12774,
+    "size": 14100,
     "degree": 1
    },
    {
@@ -23605,7 +23636,7 @@
     "label": "simulate_pass_reproduction.py",
     "kind": "script",
     "path": "scripts/lore/simulate_pass_reproduction.py",
-    "size": 4312,
+    "size": 4223,
     "degree": 1
    },
    {
@@ -23621,7 +23652,7 @@
     "label": "simulate_setup_worktree.py",
     "kind": "script",
     "path": "scripts/lore/simulate_setup_worktree.py",
-    "size": 7520,
+    "size": 7392,
     "degree": 1
    },
    {
@@ -23629,7 +23660,7 @@
     "label": "simulate_tally.py",
     "kind": "script",
     "path": "scripts/lore/simulate_tally.py",
-    "size": 4734,
+    "size": 4619,
     "degree": 1
    },
    {
@@ -23637,7 +23668,7 @@
     "label": "social_circle.py",
     "kind": "script",
     "path": "scripts/lore/social_circle.py",
-    "size": 4352,
+    "size": 4257,
     "degree": 1
    },
    {
@@ -23645,7 +23676,7 @@
     "label": "tuning.py",
     "kind": "script",
     "path": "scripts/lore/tuning.py",
-    "size": 910,
+    "size": 885,
     "degree": 1
    },
    {
@@ -23657,11 +23688,19 @@
     "degree": 1
    },
    {
+    "id": "file:scripts/lore/wealth_lib.py",
+    "label": "wealth_lib.py",
+    "kind": "script",
+    "path": "scripts/lore/wealth_lib.py",
+    "size": 3440,
+    "degree": 1
+   },
+   {
     "id": "file:scripts/lore/write_arc.py",
     "label": "write_arc.py",
     "kind": "script",
     "path": "scripts/lore/write_arc.py",
-    "size": 5199,
+    "size": 5107,
     "degree": 1
    },
    {
@@ -23669,7 +23708,7 @@
     "label": "minecraft",
     "kind": "dir",
     "path": "scripts/minecraft",
-    "size": 16269,
+    "size": 16149,
     "degree": 4
    },
    {
@@ -23693,17 +23732,11 @@
     "label": "validate_dialog.py",
     "kind": "script",
     "path": "scripts/minecraft/validate_dialog.py",
-    "size": 4489,
+    "size": 4369,
     "degree": 1
    }
   ],
   "edges": [
-   {
-    "source": "dir:.",
-    "target": "file:.git",
-    "rel": "contains",
-    "weight": 1
-   },
    {
     "source": "dir:.",
     "target": "file:.gitignore",
@@ -23773,6 +23806,12 @@
    {
     "source": "dir:.claude",
     "target": "file:.claude/settings.json",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude",
+    "target": "file:.claude/settings.local.json",
     "rel": "contains",
     "weight": 1
    },
@@ -25596,6 +25635,12 @@
    },
    {
     "source": "dir:data/luminacion",
+    "target": "dir:data/luminacion/predicates",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:data/luminacion",
     "target": "dir:data/luminacion/tags",
     "rel": "contains",
     "weight": 1
@@ -25866,6 +25911,18 @@
    },
    {
     "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/apply_survival.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/apply_upkeep.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/backfill_lived.py",
     "rel": "contains",
     "weight": 1
@@ -26052,6 +26109,12 @@
    },
    {
     "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/roll_survival.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/sample_grounding.py",
     "rel": "contains",
     "weight": 1
@@ -26124,6 +26187,12 @@
    },
    {
     "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/wealth_lib.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/write_arc.py",
     "rel": "contains",
     "weight": 1
@@ -26171,7 +26240,7 @@
     "kind": "layer",
     "note": "skills + scripts + supporting patterns",
     "tier": 2,
-    "degree": 71
+    "degree": 75
    },
    {
     "id": "layer:3",
@@ -26387,6 +26456,22 @@
     "kind": "script",
     "tier": 2,
     "file": "scripts/lore/apply_language_layer.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/apply_survival.py",
+    "label": "apply_survival.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/apply_survival.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/apply_upkeep.py",
+    "label": "apply_upkeep.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/apply_upkeep.py",
     "degree": 1
    },
    {
@@ -26638,6 +26723,14 @@
     "degree": 1
    },
    {
+    "id": "script:lore/roll_survival.py",
+    "label": "roll_survival.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/roll_survival.py",
+    "degree": 1
+   },
+   {
     "id": "script:lore/sample_grounding.py",
     "label": "sample_grounding.py",
     "kind": "script",
@@ -26731,6 +26824,14 @@
     "kind": "script",
     "tier": 2,
     "file": "scripts/lore/update_character.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/wealth_lib.py",
+    "label": "wealth_lib.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/wealth_lib.py",
     "degree": 1
    },
    {
@@ -26969,6 +27070,18 @@
    },
    {
     "source": "layer:2",
+    "target": "script:lore/apply_survival.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/apply_upkeep.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
     "target": "script:lore/backfill_lived.py",
     "rel": "holds",
     "weight": 1
@@ -27155,6 +27268,12 @@
    },
    {
     "source": "layer:2",
+    "target": "script:lore/roll_survival.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
     "target": "script:lore/sample_grounding.py",
     "rel": "holds",
     "weight": 1
@@ -27222,6 +27341,12 @@
    {
     "source": "layer:2",
     "target": "script:lore/update_character.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/wealth_lib.py",
     "rel": "holds",
     "weight": 1
    },
@@ -28745,5 +28870,5 @@
   ],
   "edges": []
  },
- "generated": "2026-08-28"
+ "generated": "2026-08-30"
 }
