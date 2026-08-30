@@ -29,7 +29,7 @@
     "label": "Provenance",
     "kind": "root",
     "path": ".",
-    "size": 1425281,
+    "size": 1433205,
     "degree": 15
    },
    {
@@ -77,7 +77,7 @@
     "label": "TODO.md",
     "kind": "doc",
     "path": "TODO.md",
-    "size": 7289,
+    "size": 7374,
     "degree": 1
    },
    {
@@ -93,7 +93,7 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
-    "size": 222227,
+    "size": 223969,
     "degree": 8
    },
    {
@@ -157,7 +157,7 @@
     "label": "skills",
     "kind": "dir",
     "path": ".claude/skills",
-    "size": 204712,
+    "size": 206454,
     "degree": 14
    },
    {
@@ -293,7 +293,7 @@
     "label": "simulate",
     "kind": "dir",
     "path": ".claude/skills/simulate",
-    "size": 36233,
+    "size": 37975,
     "degree": 2
    },
    {
@@ -301,7 +301,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/simulate/SKILL.md",
-    "size": 36233,
+    "size": 37975,
     "degree": 1
    },
    {
@@ -1116,7 +1116,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": "graphs",
-    "size": 239002,
+    "size": 240794,
     "degree": 2
    },
    {
@@ -1124,7 +1124,7 @@
     "label": "graphifyish",
     "kind": "dir",
     "path": "graphs/graphifyish",
-    "size": 239002,
+    "size": 240794,
     "degree": 3
    },
    {
@@ -1132,7 +1132,7 @@
     "label": "graph.json",
     "kind": "graph",
     "path": "graphs/graphifyish/graph.json",
-    "size": 115553,
+    "size": 116584,
     "degree": 1
    },
    {
@@ -1140,7 +1140,7 @@
     "label": "graphifyish.html",
     "kind": "graph",
     "path": "graphs/graphifyish/graphifyish.html",
-    "size": 123449,
+    "size": 124210,
     "degree": 1
    },
    {
@@ -1292,7 +1292,7 @@
     "label": "scripts",
     "kind": "dir",
     "path": "scripts",
-    "size": 562642,
+    "size": 566947,
     "degree": 6
    },
    {
@@ -1860,8 +1860,8 @@
     "label": "test",
     "kind": "dir",
     "path": "scripts/test",
-    "size": 41070,
-    "degree": 6
+    "size": 45375,
+    "degree": 7
    },
    {
     "id": "file:scripts/test/conformance_report.py",
@@ -1901,6 +1901,14 @@
     "kind": "script",
     "path": "scripts/test/record_tasting.py",
     "size": 2912,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/test/simulate_token_usage.py",
+    "label": "simulate_token_usage.py",
+    "kind": "script",
+    "path": "scripts/test/simulate_token_usage.py",
+    "size": 4305,
     "degree": 1
    }
   ],
@@ -3308,6 +3316,12 @@
     "target": "file:scripts/test/record_tasting.py",
     "rel": "contains",
     "weight": 1
+   },
+   {
+    "source": "dir:scripts/test",
+    "target": "file:scripts/test/simulate_token_usage.py",
+    "rel": "contains",
+    "weight": 1
    }
   ]
  },
@@ -3328,7 +3342,7 @@
     "kind": "layer",
     "note": "skills + scripts + supporting patterns",
     "tier": 2,
-    "degree": 87
+    "degree": 88
    },
    {
     "id": "layer:3",
@@ -4051,6 +4065,14 @@
     "degree": 1
    },
    {
+    "id": "script:test/simulate_token_usage.py",
+    "label": "simulate_token_usage.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/test/simulate_token_usage.py",
+    "degree": 1
+   },
+   {
     "id": "pack:dialogues",
     "label": "blabber/dialogues",
     "kind": "datapack",
@@ -4627,6 +4649,12 @@
    {
     "source": "layer:2",
     "target": "script:test/record_tasting.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:test/simulate_token_usage.py",
     "rel": "holds",
     "weight": 1
    },
