@@ -19,16 +19,16 @@ open questions about the lore itself live in `_lore/unknowns.md`, not here.
   script was ever actually promoted from a worktree, per `LAB_REPORT.md`'s own account of it being
   "written ad-hoc... never promoted."
 
-- **Orchestrator token-cost tracking, not built (2026-08-30).** The user wants a way to compare a
-  `/simulate` run's actual token cost across dispatch models (Local/Ollama vs. the old
-  subagent-per-pass Claude design, remembered at ~20k tokens/pass) — confirmed feasible while
-  investigating the local-model integration: Claude Code's own session transcript
-  (`~/.claude/projects/<project>/<session-id>.jsonl`) logs per-turn `usage` (input/output/
-  cache_creation/cache_read tokens) with timestamps, and `isSidechain` distinguishes a subagent's own
-  turns from the orchestrator's. Deliberately not built now — the user asked to defer it rather than
-  spend more session budget on it. If revisited: a script summing usage between two timestamps
-  (start/end of a run's Step 2-4), split by sidechain vs. not, would give the comparison without
-  needing anything heavier.
+- **Orchestrator token-cost tracking — built 2026-08-30** (`scripts/test/simulate_token_usage.py`,
+  wired into `/simulate` Step 4 on a design-testing run). Sums Claude Code's own session-transcript
+  `usage` between two timestamps, split into orchestrator vs. subagent (`isSidechain`) turns. First
+  real reading, on this session's own test run (3 passes + Step 4, setup already done): 38.8k output
+  + 60.9k cache-creation (the real net-new cost) against 19.6M cache-read (the whole session's
+  accumulated context, re-read every turn, heavily discounted but not free) — confirms cost doesn't
+  scale N-times-a-fixed-per-pass-price the way the old fresh-subagent-per-pass design did; it scales
+  with how much the *session itself* has already accumulated. Still open: Ollama's own
+  `eval_count`/`prompt_eval_count` (the local model's actual generation cost) isn't captured anywhere
+  yet — `enact_via_ollama.py` discards it. Cheap to add if wanted later.
 
 ## Survival mechanism (built 2026-08-28, on `survival-arc-test` — first-playtested and retuned 2026-08-29)
 

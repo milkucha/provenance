@@ -206,6 +206,10 @@ Keep, in this conversation only (nothing written to disk until Step 4):
 - The **living pool** — participant slugs, minus anyone whose `life.deceased` turns `true` mid-run.
 - A **running log** of one-line-per-pass summaries returned by each pass's subagent.
 
+**Note the current UTC timestamp right now, before anything else in this step** (e.g. `date -u
++%Y-%m-%dT%H:%M:%S.000Z`) and keep it in this conversation only — Step 4's token-usage bullet needs it
+as the window's start. Cheap to note, easy to forget once passes start.
+
 Before pass 1, snapshot every participant's starting state from inside the worktree — this is what
 lets Step 4 report only what changed *this run*, not each character's whole history:
 
@@ -407,11 +411,29 @@ Once all passes are done (or the pool ran out early):
   next to the Test suite section. `/taste` still exists as a standalone command for scoring a run
   later, or for a second rater's independent tasting on this same run — this inline ask is the first
   tasting, not a replacement for the command.
+- **Also only on a design-testing/extending run — log the orchestrator's own token usage for this
+  run** (added 2026-08-30, so a run's real cost is comparable across dispatch models rather than only
+  guessed at). This reads Claude Code's own session transcript; it changes nothing and needs no
+  network access:
+  1. Find this session's own transcript: the session id is the folder-name segment of this session's
+     scratchpad path (given in the system prompt, right before `/scratchpad`) — Glob for
+     `~/.claude/projects/**/<session-id>.jsonl`; there is exactly one match, this session's own file.
+  2. Note the current UTC timestamp now, the same way Step 3 noted its own start timestamp.
+  3. Run the script with both timestamps:
+     ```bash
+     py "<worktree>/scripts/test/simulate_token_usage.py" --transcript "<path from step 1>" \
+         --since "<Step 3's start timestamp>" --until "<the timestamp just noted>" \
+         --label "<pass count> passes + Step 4, <Model from Step 1>"
+     ```
+  Include its output verbatim in `SIMULATION_LOG.md`, under a "Token usage" heading next to Test
+  suite/Tasting. Read `scripts/test/simulate_token_usage.py`'s own docstring before quoting its
+  numbers at face value — `cache_read` dominates the raw total and is not the same cost per token as
+  `output`/`cache_creation`; say so rather than reporting one bare "total tokens" figure.
 - Write `SIMULATION_LOG.md` at the worktree root: the Step 1 setup (participants, pass count,
   context, model), the pass-by-pass one-liners in order, and the tally script's output — always.
   **Only if the design-testing bullet above ran**, also include the test suite's two reports (under
-  "Test suite") and the tasting scores/notes (under "Tasting") as further sections. The Narrative
-  report (below) closes the file either way.
+  "Test suite"), the tasting scores/notes (under "Tasting"), and the token-usage output (under "Token
+  usage") as further sections. The Narrative report (below) closes the file either way.
 - Finalize the run manifest:
   ```bash
   py "<worktree>/scripts/lore/run_manifest.py" finalize --passes-run <actual N> --simulation-log SIMULATION_LOG.md
