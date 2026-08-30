@@ -72,6 +72,7 @@ LOG_PATH = ROOT / "GENERATION_LOG.md"
 sys.path.insert(0, str(SCRIPTS_DIR))
 import simulate_pass_lib as lib  # noqa: E402
 import simulate_pass_reproduction as repro_lib  # noqa: E402
+import wealth_lib  # noqa: E402
 
 PARTNER_THRESHOLD = lib.PARTNER_THRESHOLD
 PARENT_COOLDOWN_PASSES = lib.PARENT_COOLDOWN_PASSES
@@ -101,6 +102,10 @@ record_death = lib.record_death
 roll_death_legacy = lib.roll_death_legacy
 update_character_lived = lib.update_character_lived
 tally = lib.tally
+roll_survival = lib.roll_survival
+apply_survival = lib.apply_survival
+apply_upkeep = lib.apply_upkeep
+SURVIVAL = lib.SURVIVAL
 
 
 # --------------------------------------------------------------------------------------------
@@ -182,19 +187,35 @@ def run_pass(state: State, pass_number: int) -> str:
     record_partner(p2, p1)
     p1_char, p2_char = load_char(p1), load_char(p2)
 
+    # Survival - rolled BEFORE home/visiting, one per participant, against each one's own home
+    # location (not the pass's eventual one, which isn't known yet). See roll_survival.py.
+    p1_survival = roll_survival(p1, p1_char.get("location", ""))
+    p2_survival = roll_survival(p2, p2_char.get("location", ""))
+
     # Home/visiting, then (home only) routine, then location/context assembly - no script call
     # left for the location step itself (2026-08-28 reorder: decided BEFORE any routine is rolled,
     # not derived afterward by comparing two independently-rolled routines; only the home
-    # participant ever rolls one now).
+    # participant ever rolls one now). Skewed by the survival choices just rolled.
     if forced_visit:
         home, visiting = p2, p1
     else:
-        home, visiting = roll_home_visit(p1, p2)
+        home, visiting = roll_home_visit(p1, p2, p1_survival["choice"], p2_survival["choice"])
     home_char = p1_char if home == p1 else p2_char
     home_routine = roll_routine(home_char["routines"])
     loc = assemble_location(home, home_routine, visiting, home_char)
     location, home_frame, traveler = loc["location"], loc["home_frame"], loc["traveler"]
     context, provides = loc["context"], loc["provides"]
+
+    # Survival effects apply at the RESOLVED location, not each participant's home - upkeep once
+    # for the location (never once per participant), then each participant's own energy/pool delta
+    # from the choice already rolled above.
+    apply_upkeep(location)
+    p1_effect = apply_survival(p1, location, p1_survival["choice"])
+    p2_effect = apply_survival(p2, location, p2_survival["choice"])
+    if p1_survival["choice"] == "arc":
+        notes.append(f"{p1} spent this pass on their arc instead of working ({p1_effect['energy']} energy left)")
+    if p2_survival["choice"] == "arc":
+        notes.append(f"{p2} spent this pass on their arc instead of working ({p2_effect['energy']} energy left)")
 
     # Arc primacy - decided next, independently of who's home vs visiting (2026-08-28 reorder: the
     # visiting participant's arc can still be the one that leads the scene).
@@ -202,13 +223,20 @@ def run_pass(state: State, pass_number: int) -> str:
     primary_char = p1_char if primacy == p1 else p2_char
     other_char = p2_char if primacy == p1 else p1_char
     arc = primary_char.get("arc")
+    primacy_survival_choice = p1_survival["choice"] if primacy == p1 else p2_survival["choice"]
 
     # Needs/provides - keyed to the primacy winner's own arc, whichever participant that is
-    # (2026-08-28 reorder: not "the traveler's" as a fixed role).
+    # (2026-08-28 reorder: not "the traveler's" as a fixed role). Gated on the primacy winner
+    # having actually chosen "arc" this pass, and on the location being able to afford to provide
+    # at all (see simulate_pass_brief.py's matching gate).
     motivated, contested = False, False
-    if arc and arc.get("resolution") == "ongoing" and arc.get("needs"):
+    if (arc and arc.get("resolution") == "ongoing" and arc.get("needs")
+            and primacy_survival_choice == "arc"
+            and wealth_lib.wealth_per_capita(location) >= SURVIVAL["provides_wealth_threshold"]):
         np_res = check_needs_provides(arc["needs"], provides)
         motivated = np_res["match"] == "true"
+    elif arc and arc.get("resolution") == "ongoing" and primacy_survival_choice != "arc":
+        notes.append(f"{primacy} chose to work this pass - arc untouched regardless of primacy")
 
     # Contested (only if motivated). Relationship-aware 2026-08-28, same as the interactive path -
     # see roll_contested.py's docstring. Never names a rival (see module docstring point 3) - rolled
@@ -223,7 +251,7 @@ def run_pass(state: State, pass_number: int) -> str:
     if not arc:
         if primacy == home_frame and queue_arc(state, primacy, primary_char, "first", pass_number):
             notes.append(f"{primacy} queued for a first arc")
-    elif arc.get("resolution") == "ongoing":
+    elif arc.get("resolution") == "ongoing" and primacy_survival_choice == "arc":
         gate_res = check_arc_alignment(arc.get("about", []), arc.get("needs", []), other_char)
         gate_hit = gate_res["gate"] == "hit"
         if gate_hit:
@@ -289,14 +317,20 @@ def run_pass(state: State, pass_number: int) -> str:
         })
         notes.append(f"{p1}+{p2} had a child ({birth['slug']}, generation {state.generation[birth['slug']]})")
 
-    # Step 15/16 - life.lived, death, death-legacy
+    # Step 15/16 - life.lived, death, death-legacy. Two independent death vectors now: the existing
+    # rolled lifespan (horizon.py's "ending"), and energy hitting 0 (survival mechanism, checked
+    # second so a natural-lifespan death this same pass always takes priority if somehow both fire).
+    survival_effects = {p1: p1_effect, p2: p2_effect}
     for participant in (p1, p2):
         update_character_lived(participant, 1)
         h = horizon(participant)
-        if h["ending"] == "true":
-            death = record_death(participant)
+        natural = h["ending"] == "true"
+        starved = (not natural) and survival_effects[participant]["died"]
+        if natural or starved:
+            cause = "exhaustion/starvation - energy depleted" if starved else None
+            death = record_death(participant, cause=cause)
             state.living = [s for s in state.living if s != participant]
-            notes.append(f"{participant} died")
+            notes.append(f"{participant} died" + (" (starved)" if starved else ""))
             if h["band"] == "established" and death["notified"]:
                 legacy = roll_death_legacy(death["notified"])
                 if legacy["passes"] == "true":

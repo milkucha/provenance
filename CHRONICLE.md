@@ -21,6 +21,28 @@ and open questions that were live at a given point, even ones later settled else
 
 ---
 
+### 2026-08-28 — Survival mechanism built on `survival-arc-test`
+
+Implemented the mechanism designed earlier the same day (see the entry directly below) on the new
+`survival-arc-test` branch, off `provenance-standalone`. New: `wealth_lib.py` (shared pool I/O,
+`_lore/wealth.json`), `roll_survival.py`, `apply_survival.py`, `apply_upkeep.py`. Modified:
+`roll_home_visit.py` (now skewable by survival choice), both `simulate_pass_brief.py` and
+`simulate_generate_population.py` (survival rolled before home/visit, applied after location
+resolves, arc-outcome gated on the primacy winner having actually chosen "arc," needs/provides gated
+on location wealth), `simulate_pass_lib.py` (new wrappers), `_lore/tuning.json` (a new `survival`
+block, every value a first guess same as everything else in that file).
+
+One real change from the design conversation: swapped the sketched sigmoid for a percentage-point
+shift off a 50/50 base, clamped [2, 95] — matches `roll_contested.py`'s existing unit and idiom
+rather than introducing a new one, same math shape, simpler to read and tune.
+
+Verified end-to-end against the real Tyrnea cast, not template data — ran `simulate_pass_brief.py`
+and a short `simulate_generate_population.py` batch directly, watched a real starvation death fire
+correctly (tale written, `life.deceased` set, notified circle computed) and the arc-gating/wealth
+threshold both behave as designed, then reverted every test-mutated character/lore file before
+committing so the branch starts clean for the user's own first real run. Nothing tuned yet - weights,
+thresholds, and costs are all exactly what the design conversation guessed, untested at scale.
+
 ### 2026-08-28 — Survival mechanism designed end-to-end (not yet built); `provenance-bare`'s causal-reorder and social-relations work folded into `provenance-standalone`
 
 Long design conversation, working from the user's own rough sketch (locations have an energy pool,

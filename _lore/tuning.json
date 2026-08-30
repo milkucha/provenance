@@ -26,5 +26,28 @@
     "fraction_range": [0.1, 0.3],
     "strength_scale": 0.25,
     "quality_scale": 0.25
+  },
+  "survival": {
+    "_comment": "Design session 2026-08-28: whether a character spends a pass working (survive) or pursuing their arc, and what that costs them and their location's shared wealth pool. Every value here is a first guess from the design conversation, explicitly flagged as tunable there - none of it has been playtested yet. See TODO.md's 'Survival mechanism' entry for the full worked-through math this implements.",
+    "energy_cap": 5,
+    "base_cost": 1,
+    "arc_extra_cost": 1,
+    "survive_contribute": 2,
+    "survive_take": 1,
+    "arc_pool_draw": 2,
+    "upkeep_rate_per_capita": 0.5,
+    "provides_wealth_threshold": 2,
+    "starting_wealth_per_capita": 2,
+    "odds_percent": {"arc_base": 50, "min": 2, "max": 95},
+    "weights": {
+      "_comment": "Percentage-point shifts applied to the arc_base odds above - same 'skew, never decide' unit every other roll in this codebase already uses (see roll_contested.py). Each weight is multiplied by its input, which is itself normalized to roughly [-1, 1] before the multiply - see roll_survival.py.",
+      "energy": 20,
+      "arc_pressure": 25,
+      "pool_reliance": 20,
+      "affinity_obligation": 20
+    },
+    "arc_pressure_stage_weight": {"early": 0.2, "mid": 0.5, "late": 0.8},
+    "arc_pressure_urgency_bonus": {"early": 0.0, "established": 0.1, "late": 0.3},
+    "home_visit_survival_shift": 20
   }
 }

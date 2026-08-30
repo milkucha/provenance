@@ -62,6 +62,7 @@ BRIEF_PATH = ROOT / ".simulate_pass_brief.json"
 
 sys.path.insert(0, str(SCRIPTS_DIR))
 import simulate_pass_lib as lib  # noqa: E402
+import wealth_lib  # noqa: E402
 
 
 def run_pre_scene(p1: str, p2: str, pass_number: int, forced_visit: bool = False) -> dict:
@@ -87,33 +88,65 @@ def run_pre_scene(p1: str, p2: str, pass_number: int, forced_visit: bool = False
     lib.record_partner(p2, p1)
     p1_char, p2_char = lib.load_char(p1), lib.load_char(p2)
 
+    # Survival - rolled BEFORE home/visiting, one per participant, against each one's own home
+    # location (not the pass's eventual one, which isn't known yet). See roll_survival.py's own
+    # docstring for why the causal order runs this way.
+    p1_survival = lib.roll_survival(p1, p1_char.get("location", ""))
+    p2_survival = lib.roll_survival(p2, p2_char.get("location", ""))
+
     # Home/visiting, then (home only) routine, then location/context assembly - no script call left
     # for the location step itself, see simulate_pass_lib.assemble_location()'s own docstring.
+    # Skewed by the survival choices just rolled (design session 2026-08-28) - the hook
+    # roll_home_visit.py's original flat-coin version left for exactly this.
     if forced_visit:
         home, visiting = p2, p1
         notes.append(f"{p1} followed a lead to {p2}")
     else:
-        home, visiting = lib.roll_home_visit(p1, p2)
+        home, visiting = lib.roll_home_visit(p1, p2, p1_survival["choice"], p2_survival["choice"])
     home_char = p1_char if home == p1 else p2_char
     home_routine = lib.roll_routine(home_char["routines"])
     loc = lib.assemble_location(home, home_routine, visiting, home_char)
     location, home_frame, traveler = loc["location"], loc["home_frame"], loc["traveler"]
     context, texture, provides = loc["context"], loc["texture"], loc["provides"]
 
+    # Survival effects apply at the RESOLVED location, not each participant's home - upkeep once
+    # for the location (never once per participant, or it's double-charged), then each
+    # participant's own energy/pool delta from the choice already rolled above.
+    lib.apply_upkeep(location)
+    p1_effect = lib.apply_survival(p1, location, p1_survival["choice"])
+    p2_effect = lib.apply_survival(p2, location, p2_survival["choice"])
+    if p1_survival["choice"] == "arc":
+        notes.append(f"{p1} spent this pass on their arc instead of working ({p1_effect['energy']} energy left)")
+    if p2_survival["choice"] == "arc":
+        notes.append(f"{p2} spent this pass on their arc instead of working ({p2_effect['energy']} energy left)")
+    if p1_effect["died"]:
+        notes.append(f"{p1}'s energy hit 0 - exhaustion/starvation, not yet recorded (post-scene step)")
+    if p2_effect["died"]:
+        notes.append(f"{p2}'s energy hit 0 - exhaustion/starvation, not yet recorded (post-scene step)")
+
     # Arc primacy - decided next, independently of who's home vs visiting.
     primacy = lib.roll_arc_primacy(p1, p2)
     primary_char = p1_char if primacy == p1 else p2_char
     other_char = p2_char if primacy == p1 else p1_char
     arc = primary_char.get("arc")
+    primacy_survival_choice = p1_survival["choice"] if primacy == p1 else p2_survival["choice"]
 
-    # Needs/provides - keyed to the primacy winner's own arc, whichever participant that is.
+    # Needs/provides - keyed to the primacy winner's own arc, whichever participant that is. Gated
+    # two ways now: the primacy winner must have actually chosen "arc" this pass (choosing survive
+    # means nothing about their arc advances, win or lose the primacy coin flip), and the location
+    # must be able to afford to provide at all (wealth_per_capita >= provides_wealth_threshold) -
+    # a starved location can't support anyone's ambition, regardless of context match.
     motivated, matched_need, matched_provide = False, None, None
-    if arc and arc.get("resolution") == "ongoing" and arc.get("needs"):
+    if (arc and arc.get("resolution") == "ongoing" and arc.get("needs")
+            and primacy_survival_choice == "arc"
+            and wealth_lib.wealth_per_capita(location) >= lib.SURVIVAL["provides_wealth_threshold"]):
         np_res = lib.check_needs_provides(arc["needs"], provides)
         motivated = np_res["match"] == "true"
         if motivated:
             matched_need = np_res.get("matched_need")
             matched_provide = np_res.get("matched_provide")
+    elif arc and arc.get("resolution") == "ongoing" and primacy_survival_choice != "arc":
+        notes.append(f"{primacy} chose to work this pass - arc untouched regardless of primacy")
 
     # Contested - roll only if motivated, same as always. Relationship-aware 2026-08-28: the peer's
     # own established tie to the primacy winner skews the odds (see roll_contested.py's docstring).
@@ -135,7 +168,7 @@ def run_pre_scene(p1: str, p2: str, pass_number: int, forced_visit: bool = False
                 "prior_arc": None,
             }
             notes.append(f"{primacy} needs a first arc authored (home_frame, no arc yet)")
-    elif arc.get("resolution") == "ongoing":
+    elif arc.get("resolution") == "ongoing" and primacy_survival_choice == "arc":
         gate_res = lib.check_arc_alignment(arc.get("about", []), arc.get("needs", []), other_char)
         gate_hit = gate_res["gate"] == "hit"
         if gate_hit:
@@ -205,6 +238,10 @@ def run_pre_scene(p1: str, p2: str, pass_number: int, forced_visit: bool = False
         },
         "arc_authoring_needed": arc_authoring_needed,
         "contested_hinder_slot": contested_hinder_slot,
+        "survival": {
+            p1: {"choice": p1_survival["choice"], "energy": p1_effect["energy"], "died": p1_effect["died"]},
+            p2: {"choice": p2_survival["choice"], "energy": p2_effect["energy"], "died": p2_effect["died"]},
+        },
         "character_files": {
             p1: str(lib.CHAR_DIR / f"{p1}.json"), p2: str(lib.CHAR_DIR / f"{p2}.json"),
         },
@@ -231,6 +268,9 @@ def main() -> None:
         print(f"  forced visit (lead followup): {brief['participant_1']} sought out {brief['participant_2']}")
     print(f"  context: {brief['context']}  |  motivated: {brief['motivated']}" + (f" ({brief['matched_need']} <-> {brief['matched_provide']})" if brief["motivated"] else ""))
     print(f"  contested: {brief['contested']}")
+    surv = brief["survival"]
+    print(f"  survival: {brief['participant_1']}={surv[brief['participant_1']]['choice']} (energy {surv[brief['participant_1']]['energy']})"
+          f"  {brief['participant_2']}={surv[brief['participant_2']]['choice']} (energy {surv[brief['participant_2']]['energy']})")
     arc = brief["arc"]
     print(f"  arc: primacy={arc['primacy_winner']}  gate={arc['gate']}  inclined={arc['inclined']}  outcome={arc['outcome']}  tally={arc['tally_result']}")
     for n in brief["notes"]:
@@ -243,6 +283,9 @@ def main() -> None:
     if brief["contested_hinder_slot"]:
         c = brief["contested_hinder_slot"]
         print(f"JUDGMENT SLOT - contested hinder: may name an existing rival for {c['traveler']} (supplier: {c['supplier']}, provide: {c['matched_provide']}) - if named, run apply_contested_lead.py; otherwise leave ambient")
+    for k in (brief["participant_1"], brief["participant_2"]):
+        if surv[k]["died"]:
+            print(f"DEATH - {k}'s energy hit 0 this pass. Not yet recorded - run record_death.py {k} --cause \"exhaustion/starvation\" post-scene, same as a horizon-ending death.")
     print("(reproduction is no longer decided here - run simulate_pass_reproduction.py after the scene)")
 
 

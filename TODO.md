@@ -3,67 +3,57 @@
 Open implementation decisions and work, deferred for later. This is a build/production backlog —
 open questions about the lore itself live in `_lore/unknowns.md`, not here.
 
-## Survival mechanism (design agreed 2026-08-28, not yet built — see `survival-arc-test` branch)
+## Survival mechanism (designed and built 2026-08-28, on `survival-arc-test` — not yet merged/tested at scale)
 
-`scripts/lore/roll_home_visit.py` (added 2026-08-28) decides who's home vs. visiting each pass with
-a flat 50/50 coin flip, on purpose — see its own docstring. The intended end state is for the
-survival mechanism designed below to weight that roll instead: a character under survival pressure
-should skew toward staying home, while one whose arc genuinely needs them elsewhere should skew
-toward visiting. When that system exists, this is the one call site to change — `roll_home_visit.py`'s
-own `--p1`/`--p2` `random.choice`, plus whatever new inputs (energy, pool health, arc pressure,
-`net_affinity`) the weighting needs to read. Nothing else in the pipeline depends on this staying a
-flat coin flip.
+Every character now has personal `energy` (`_lore/tuning.json`'s `survival.energy_cap`, default 5;
+lazily defaulted on first touch, same as `routines`/`arc`/`partners` before it — not backfilled into
+every character file). Every location has a `wealth` pool in the new `_lore/wealth.json`, seeded at
+`starting_wealth_per_capita × population` the first time it's read. Full mechanism:
 
-**Design, agreed 2026-08-28 (not yet implemented):**
-
-- Each character has personal `energy` (start/cap 5, dies at 0). Every turn: −1, unconditional.
-- Each location has a `wealth` pool (a plain counter) and per-capita `upkeep` (`population × 0.5`,
-  drained every turn regardless of anyone's choice) — population is derived live from `location`
-  field counts, not separately tracked, since `location` already only changes when a character is
-  drawn and moved (same lazy-resolution precedent as `horizon.py`).
-- Each turn, a drawn character resolves **survive** or **arc** — only for characters actually drawn
-  that pass, never the whole population (matches the existing lazy per-character clock pattern; pool
-  upkeep is the only population-wide arithmetic, and it's O(1) per location).
-  - **Survive:** personal net 0 (−1 base, +1 taken from pool). Pool net +1 (contributes 2, taker
-    takes 1), before upkeep.
-  - **Arc:** personal net −2 (−1 base, −1 extra). Pool net −2 (drawn, uncontributed) — ties this
-    choice to the `needs`/`provides` gate below, so a starved location can't support ambition.
-  - Per-capita, folding in upkeep: survivors net the pool **+0.5**, arc-choosers net it **−2.5**.
-    Roughly 5 survivors' surplus per arc-chaser just to hold the pool steady — a real, steep
-    tradeoff, treat as tunable rather than locked.
-- **`provides` gate:** `wealth_per_capita = pool / population`. At or above a threshold (e.g. 2,
-  meaning real surplus above subsistence, not just break-even) the location provides for an arc's
-  `needs` (bonus on the arc-outcome roll, per the existing `needs`/`provides` mechanism); below it,
-  no bonus. Ties collective wealth directly to individual arc odds — a starved town doesn't just cost
-  individuals more, it makes everyone's ambition harder.
-- **The survive/arc choice is a weighted roll, not free choice** — same shape as `roll_arc_outcome.py`'s
-  existing `inclined` mechanism (weights skew odds, dice still decides):
-  ```
-  arc_score = w1·(energy / 5)
-            + w2·arc_pressure
-            + w3·pool_surplus · net_affinity
-            − w4·net_affinity
-  P(arc) = sigmoid(arc_score), roll against it
-  ```
-  - `arc_pressure = stage_weight[arc's current tally stage] + urgency_bonus[horizon band]` — both
-    free reads off existing mechanisms (`arc.history`'s tally, `horizon.py`'s band).
-  - `net_affinity = Σ(partners_quality[p]) / Σ(partners[p])`, established partners only
-    (`count ≥ partner_threshold`, same 5 already used in `roll_contested.py`) — reuses the just-built
-    bond-quality system directly, no new relationship data needed. Obligation (bonds pull toward
-    survive on their own) and reliance (a healthy pool only feels safe to lean on if you're actually
-    connected) share this one signed number in opposite roles, so a character with strong but
-    *negative* bonds gets pushed the correct direction on both terms, not just one.
-- **Choosing arc without winning that pass's primacy still costs the −2/−2** — a real gamble, not
-  wasted bookkeeping. Order: drawn characters roll survive/arc first → primacy resolves (existing
-  `contested` logic) → the loser who chose arc still paid for a bet that didn't pay off, same as any
-  other stalled/reversed arc outcome already in the system.
-- Energy-depletion death is a **second, independent death vector** alongside the existing rolled
-  lifespan — old age or starvation, whichever fires first. Not merged into `horizon.py`'s own clock.
-- **Open, not decided:** exact weights (`w1`–`w4`), the `provides` threshold value, and whether
-  `arc_pressure`'s two components should be additive or something else — all flagged as tunable
-  during design, not locked. First implementation target: `survival-arc-test` branch, off
-  `provenance-standalone`, so it can be tested against the real existing population rather than
-  template characters.
+- Each pass, only the two drawn participants resolve **survive** or **arc** (`roll_survival.py`,
+  rolled against each one's own home `location`, before `roll_home_visit.py` even runs — matches the
+  existing lazy per-character clock pattern; pool upkeep, `apply_upkeep.py`, is the only
+  population-wide arithmetic, O(1) per location, applied once per pass to the resolved location, not
+  once per participant). A character with no ongoing arc always survives, no roll needed.
+- **Survive:** personal net 0 (−1 base, +1 taken from pool). Pool net +1 (contributes 2, taker
+  takes 1), before upkeep. **Arc:** personal net −2. Pool net −2 (drawn, uncontributed) —
+  `apply_survival.py` applies both, at the pass's RESOLVED location (which may differ from either
+  participant's home), once `roll_home_visit.py` has decided where the scene actually happens.
+- **`provides` gate, live in `simulate_pass_brief.py`/`simulate_generate_population.py`:**
+  `wealth_per_capita ≥ provides_wealth_threshold` (2) before the needs/provides check even runs;
+  below it, no bonus regardless of context match.
+- **The survive/arc roll is a percentage-point shift off a 50/50 base** (`roll_survival.py`) — same
+  unit and clamp [2, 95] every other roll in this pipeline already uses (`roll_contested.py` is the
+  closest precedent), not the sigmoid the design conversation first sketched — kept it in-house-style
+  instead. Four weighted inputs, all in `tuning.json`'s `survival.weights`: `energy` (normalized
+  around the cap's midpoint), `arc_pressure` (`stage_weight[tally stage] + urgency_bonus[horizon
+  band]`), `pool_reliance` (`pool_surplus × net_affinity` — a healthy pool only feels safe to lean on
+  if actually connected), and `affinity_obligation` (`net_affinity` alone, pulling the other way).
+  `net_affinity = Σ(partners_quality[p]) / Σ(partners[p])` across established partners
+  (`count ≥ partner_threshold`) — one signed number, two roles, so strong-but-negative bonds push the
+  correct direction on both terms.
+- **`roll_home_visit.py` is now skewed by each participant's own survival choice**
+  (`home_visit_survival_shift`, 20 points) — a participant who chose survive leans toward staying
+  home; arc/no-arc contributes no skew.
+- **Choosing arc without winning that pass's primacy still costs the full price** — real, not wasted
+  bookkeeping. The arc-outcome gate (`simulate_pass_brief.py`/`simulate_generate_population.py`) now
+  requires the primacy winner to have specifically rolled "arc" this pass; a primacy winner who rolled
+  survive leaves the arc untouched regardless, and the OTHER participant's own "arc" roll (if they
+  made one) still cost them the energy/pool price for nothing.
+- **Energy hitting 0 is a second, independent death vector** alongside the existing rolled lifespan.
+  `/generate` mode (`simulate_generate_population.py`) records it automatically, same post-scene block
+  as the existing horizon-death check, with `--cause "exhaustion/starvation - energy depleted"`. The
+  interactive path (`/enact` Step 8 point 6b) checks `.simulate_pass_brief.json`'s `survival.<slug>.died`
+  and calls `record_death.py` the same way — deliberately NOT called automatically inside
+  `simulate_pass_brief.py` itself, matching the existing horizon.py/record_death.py split (a
+  mechanical fact stays separate from acting on it).
+- **Not yet exercised at any real scale** — verified end-to-end against a handful of manual
+  `simulate_pass_brief.py`/`simulate_generate_population.py` calls on the real Tyrnea cast (a
+  starvation death fired correctly, tale written, `life.deceased` set, arc-gating and the wealth
+  threshold both behaved as designed), then all test-mutated character/lore data was reverted before
+  committing. A real multi-hundred-pass run, and actual tuning of the weights/thresholds/costs
+  (everything above is a first guess, explicitly flagged as such throughout the design conversation),
+  is still ahead.
 
 ## Knowledge mutation system (2026-08-01)
 

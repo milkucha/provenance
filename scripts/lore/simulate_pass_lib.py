@@ -37,6 +37,7 @@ PARENT_COOLDOWN_PASSES = T["parent_cooldown_passes"]
 CHILD_COOLDOWN_PASSES = T["child_cooldown_passes"]
 LEAD_EXPIRY_PASSES = T["lead_expiry_passes"]
 ARC_RESOLUTION_THRESHOLD = T["arc_resolution_threshold"]
+SURVIVAL = T["survival"]
 
 CONTEXTS = json.loads((ROOT / "_lore" / "contexts.json").read_text(encoding="utf-8"))
 
@@ -111,13 +112,38 @@ def resolve_context_for_location(character: dict, location: str) -> str:
     raise RuntimeError(f"'{character.get('name')}' has no routine at location '{location}'.")
 
 
-def roll_home_visit(p1: str, p2: str) -> tuple:
+def roll_home_visit(p1: str, p2: str, p1_choice: str = "none", p2_choice: str = "none") -> tuple:
     """Design debrief 2026-08-28: decides who's home BEFORE any routine gets rolled, replacing the
-    old order (roll both routines independently, then compare to resolve home-turf-vs-visit). Flat
-    coin flip for now - see roll_home_visit.py's own docstring for the survival-mechanism hook this
-    is meant to eventually plug into."""
-    d = kv(call("roll_home_visit.py", ["--p1", p1, "--p2", p2]))
+    old order (roll both routines independently, then compare to resolve home-turf-vs-visit).
+    `p1_choice`/`p2_choice` are each participant's own roll_survival() result for this pass (see
+    below) - a "survive" lean skews the coin toward that participant staying home."""
+    d = kv(call("roll_home_visit.py", [
+        "--p1", p1, "--p2", p2, "--p1-choice", p1_choice, "--p2-choice", p2_choice,
+    ]))
     return d["home"], d["visiting"]
+
+
+# --------------------------------------------------------------------------------------------
+# Survival mechanism (design session 2026-08-28) - roll_survival() BEFORE roll_home_visit() (it
+# reads a character's own home location, not the pass's eventual one); apply_survival() and
+# apply_upkeep() AFTER, once the pass's actual location is resolved. See TODO.md's "Survival
+# mechanism" entry for the full math.
+# --------------------------------------------------------------------------------------------
+
+def roll_survival(key: str, home_location: str) -> dict:
+    out = kv(call("roll_survival.py", ["--key", key, "--location", home_location]))
+    return out
+
+
+def apply_survival(key: str, location: str, choice: str) -> dict:
+    out = kv(call("apply_survival.py", ["--key", key, "--location", location, "--choice", choice]))
+    out["died"] = out["died"] == "true"
+    out["energy"] = int(out["energy"])
+    return out
+
+
+def apply_upkeep(location: str) -> dict:
+    return kv(call("apply_upkeep.py", ["--location", location]))
 
 
 def assemble_location(home: str, home_routine: str, visiting: str, home_char: dict) -> dict:
@@ -266,8 +292,9 @@ def horizon(key: str) -> dict:
     return kv(call("horizon.py", [key]))
 
 
-def record_death(key: str) -> dict:
-    stdout = call("record_death.py", [key])
+def record_death(key: str, cause: str | None = None) -> dict:
+    argv = [key] + (["--cause", cause] if cause else [])
+    stdout = call("record_death.py", argv)
     return {"notified": notified_keys(stdout), "stdout": stdout}
 
 
