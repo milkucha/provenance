@@ -42,12 +42,20 @@ Ask as plain conversation, or AskUserQuestion where multiple-choice fits:
 3. **Context** — optional free text: a scenario/situation to feed into every scene (e.g. "these all
    happen during the Feria"). Leave blank for random — each pass then invents its own plausible
    situation, bounded by what both participants in it could actually know.
-4. **Model** — which model plays each pass (Haiku / Sonnet / Opus), default Sonnet if not asked.
-   Quality matters more here than in a one-off `/enact`, because a pass's Step 8 judgment calls
-   (criterion shock resolution, hearsay mutation) become the input the *next* pass reads — errors
-   compound across a run in a way they don't in a single scene. This only affects the per-pass
-   subagent below; the orchestration in this skill itself (pairing, logging) runs at whatever model
-   this conversation is already on.
+4. **Model** — which model plays each pass: **Haiku / Sonnet / Opus** (all via the Agent tool, a
+   Claude subagent), or **Local (Ollama, `qwen2.5:14b`)** — a plain script call instead of a
+   subagent, see Step 3 point 4. Default Sonnet if not asked. Quality matters more here than in a
+   one-off `/enact`, because a pass's Step 8 judgment calls (criterion shock resolution, hearsay
+   mutation) become the input the *next* pass reads — errors compound across a run in a way they
+   don't in a single scene. **The Local path is newer and less proven** — validated so far only on
+   two hand-built test passes outside a real run (see `CHRONICLE.md`'s 2026-08-30 entry): dialogue
+   quality and exact `about`-tag copying held up both times, but its harder judgment calls (which
+   claims are kernels worth recording, when a `criterion_move` is a genuine test of an anchor versus
+   just an affirmation of it) haven't been exercised at scale the way the Claude path has across
+   hundreds of prior passes. Worth reading the running log more closely than usual for the first
+   several passes of any run that picks it. This only affects the per-pass dispatch below; the
+   orchestration in this skill itself (pairing, logging) runs at whatever model this conversation is
+   already on.
 5. **Pregenerate first? (optional, `--pregenerate`)** — only ask if the user's request suggests
    wanting a bigger starting cast before the showcase trail begins (e.g. "grow the population a bit
    first", "I want more characters in the mix"). Default: no, skip straight to Step 2. If yes: which
@@ -241,15 +249,19 @@ For pass 1 through N:
    `arc_authoring_needed` is non-null, author that arc yourself (a name-blend-shaped judgment call, not
    a dice roll — same reasoning `generate_offspring.py`'s own docstring gives for why it can't script a
    child's name) and call `write_arc.py` directly before continuing this pass.
-4. **Dispatch the enacter** (Agent tool, `subagent_type: general-purpose`, the model chosen in Step 1,
-   `run_in_background: false`) — this is the ONE agent call per pass, and it does no tool-calling at
-   all. Redesigned 2026-08-29 (round-2 debrief) after auditing an actual run's token cost: the old
-   design had a single subagent both write the scene AND drive every mechanical script call itself,
-   which meant every pass re-sent a long, rule-heavy prompt from scratch and the subagent regularly
-   burned 3-6x the intended tool calls fumbling JSON schemas and retrying. Splitting content from
-   mechanism fixes both at once, and keeps the enacter's own prompt short and stable enough to
-   eventually run on a genuinely small/local model — it never needs script rules, path discipline, or
-   worktree-leak precautions, because it never touches a tool.
+4. **Dispatch the enacter.** How depends on Step 1's model choice — either way this is the ONE dispatch
+   per pass, it does no tool-calling of its own, and it never sees anything beyond point 3's JSON plus,
+   when relevant, a short director's note (below).
+
+   **Haiku/Sonnet/Opus** (Agent tool, `subagent_type: general-purpose`, the model chosen in Step 1,
+   `run_in_background: false`). Redesigned 2026-08-29 (round-2 debrief) after auditing an actual run's
+   token cost: the old design had a single subagent both write the scene AND drive every mechanical
+   script call itself, which meant every pass re-sent a long, rule-heavy prompt from scratch and the
+   subagent regularly burned 3-6x the intended tool calls fumbling JSON schemas and retrying. Splitting
+   content from mechanism fixes both at once, and keeps the enacter's own prompt short and stable
+   enough to run on a genuinely small/local model too — see the Local path below, which is exactly
+   that: it never needs script rules, path discipline, or worktree-leak precautions, because it never
+   touches a tool.
    - **Paste point 3's JSON output directly into the dispatch prompt. Never hand-paraphrase it into
      prose first.** Caught in the round-3 debrief: an earlier session was retyping the brief as
      sentences ("Pass 20. Location: the road between Tyrnea and the harvest fields...") before every
@@ -258,11 +270,6 @@ For pass 1 through N:
      governs this directly: if it's already data, hand it over as data. Trim only genuinely
      irrelevant bulk (e.g. `character_files`'s absolute paths, which the enacter has no use for since
      it never touches a file) — don't rewrite what's left.
-   - The one legitimate addition, and it should stay to 1-2 sentences: a **director's note**, only
-     when the gate hit and an outcome needs a concrete "what satisfies this" nudge the mechanical JSON
-     can't supply on its own (e.g. "'mixed' means the other participant's angle partially fits but
-     doesn't resolve anything — your call what"). This is real judgment, not restated fact, so prose is
-     the right tool for exactly this part and no more of it.
    - Prepend the fixed instruction preamble (same text every pass, never composed fresh): the standing
      writing rules (dialogue-only, no invented named people, criterion shows through behavior not
      recitation, finitude is pressure never topic, natural stop) and the required reply structure.
@@ -278,13 +285,50 @@ For pass 1 through N:
      character exercising or affirming their existing trust/distrust, not having it challenged, and the
      correct call was "none" every time). Tell it explicitly it has no tools to use and should never
      attempt one — just answer in its final message.
+
+   **Local (Ollama, `qwen2.5:14b`)** — no Agent tool at all, a plain script call in the orchestrating
+   session, absolute path, Bash only. Write point 3's JSON to a file first (there's no subagent
+   context to paste it into this time), then:
+   ```bash
+   py "<worktree>/scripts/lore/enact_via_ollama.py" --brief-file "<worktree>/.pass_<N>_brief.json" \
+       [--director-note "<1-2 sentences, same rule as the Claude path above>"] \
+       --out "<worktree>/.pass_<N>_reply.json"
+   ```
+   The script owns the fixed preamble itself (`scripts/lore/enact_preamble.md`, read fresh from disk
+   every call — the same standing writing rules as the Claude path, never edited here), forces the
+   model's output into strict JSON via Ollama's structured-output mode, and already runs its own
+   cleanup/validation/retry loop (empty-placeholder stripping, exact `about`-tag matching against the
+   brief) before ever printing a final reply — see its own docstring for the full contract. **If it
+   still exits non-zero after its own retries, that's a script failure like any other**: report the
+   exact error and stop this pass rather than switching model or method mid-run (same discipline as
+   point 5 below, just reached one step earlier here). On success, its `reply` field is already shaped
+   to drop into point 5's hearsay/decisions JSON almost as-is — see that point's Local note.
+
+   The **director's note** rule is the same for both paths, and it's the one legitimate addition to
+   either dispatch: 1-2 sentences, only when the gate hit and an outcome needs a concrete "what
+   satisfies this" nudge the mechanical JSON can't supply on its own (e.g. "'mixed' means the other
+   participant's angle partially fits but doesn't resolve anything — your call what"). This is real
+   judgment, not restated fact, so prose is the right tool for exactly this part and no more of it.
 5. **Do everything mechanical yourself, in the orchestrating session, from the enacter's reply:**
    - Write the scene file under `<worktree>/_npcs/scenes/` per `_npcs/scenes/_template.md`'s shape.
    - Build the hearsay JSON from its claims and run `pass_record.py` (absolute path, Bash only) —
      wraps `record_hearsay.py` plus anchor-reference/resonance checks for both participants.
    - Build the decisions JSON from its experience/grounded_experience/criterion_move fields and run
      `pass_apply.py` (absolute path, Bash only) — wraps every remaining mechanical write: `update_character.py`
-     calls, the energy-death check, post-lived-delta `horizon.py`, reproduction, death-legacy.
+     calls, the energy-death check, post-lived-delta `horizon.py`, reproduction, death-legacy. **Pass
+     `--scene-id <this pass's scene id>`** (found 2026-08-30, local-model integration test) — without
+     it, every `knowledge.experience` entry this pass writes goes untagged, and
+     `measure_derivation.py`'s provenance-coverage instrument (Step 4) reads 0% for the whole run
+     regardless of how the pass was actually dispatched.
+   - **Local path shortcut:** `enact_via_ollama.py`'s `reply.hearsay` and `reply.participants` are
+     already shaped to match `pass_record.py`/`pass_apply.py`'s own input contracts field-for-field
+     (`text`/`about`/`note`/`oral_lore` for claims; `experience`/`grounded_experience`/`cost_ledger`/
+     `criterion_move` per participant, `move`/`dialog`/`cause`/`note`/`trusts`/`distrusts` inside a
+     move) — this isn't composed from prose the way the Claude path's reply is, it's assembled
+     directly. All that's left to add: `participants` (the two characters' real `name` values, not
+     slugs) and this pass's scene id to `reply.hearsay` before it becomes the hearsay JSON, and
+     `lived_delta: 1` to each participant's block before it becomes the decisions JSON — `synthesis`
+     and `death_cause` stay absent/null, same as the Claude path (neither is the enacter's job).
    - Since you're the one making both calls with a schema you already know is correct, there's no
      retry loop to design around — a failure here means something is genuinely wrong (a malformed
      brief, a missing file), not a JSON-shape guess to fix and resubmit.
@@ -320,32 +364,58 @@ every concept registered this batch gets its accumulated hearsay claims folded i
 
 Once all passes are done (or the pool ran out early):
 
+- **Decide, once, right now: was this run testing or extending the system's design, or a casual
+  one-off/showcase trail?** This single judgment call (unchanged from its original, narrower use —
+  see the last bullet below) now also gates the test suite and the immersion tasting a few bullets
+  down, not only the `LAB_REPORT.md` entry. Two things always happen regardless of this call — the
+  tally and the Narrative report — everything else in this step is conditional on it. When in doubt,
+  ask the user (AskUserQuestion) rather than guess; this decides real, skippable compute below, so
+  it's worth a genuine check rather than a default.
 - Run the tally script against the snapshot Step 3 wrote, rather than hand-counting deaths and
-  criterion moves from the running log's one-liners:
+  criterion moves from the running log's one-liners — **always, regardless of the call above**, since
+  the Narrative report below draws on it:
   ```bash
   py scripts/lore/simulate_tally.py report .simulate_snapshot.json
   ```
   It diffs every participant's current `_lore/characters/<key>.json` against where they stood before
   pass 1, so the deaths, criterion-move counts, and final `life.lived` come straight from the record
   rather than being reconstructed from memory of up to N pass summaries.
-- **Run the test suite's automatic closing instruments** (machinery conformance + derivation
-  coverage — always, seeded or not; these read the draw-audit log and current character files, they
-  don't change anything):
+- **Only on a design-testing/extending run — run the test suite's closing instruments and the
+  immersion tasting.** Skip this whole bullet on a casual/showcase run; nothing below it depends on
+  it having run. (Reworked 2026-08-30 from "always, seeded or not" — these instruments are cheap,
+  read-only scripts, but the point stands on principle: not every run needs the full apparatus, and
+  running it unconditionally on every showcase trail was never actually a deliberate choice, just an
+  unexamined default.)
   ```bash
   py "<worktree>/scripts/test/conformance_report.py" --root "<worktree>"
   py "<worktree>/scripts/test/measure_derivation.py" --root "<worktree>"
   ```
   Both print a human-readable section — include them verbatim in `SIMULATION_LOG.md` below, under
-  their own "Test suite" heading.
+  their own "Test suite" heading. Immediately after, **ask the four immersion-tasting questions
+  inline** — this is `/taste`'s own Step 2/3 (read `.claude/skills/taste/SKILL.md` if it hasn't been
+  read yet this session), folded into this step rather than left for a separate later invocation:
+  read the run's own pass-by-pass log and the Narrative report you're about to write (draft that
+  section first if it makes the tasting more informed — order between the two is your call), then ask
+  a rater name (default: the current git `user.name`) and walk **legibility** / **aliveness** (incl.
+  felt contingency) / **curiosity** / **specificity**, 0–10 each, plus an optional per-dimension note,
+  exactly as `/taste` Step 3 documents. Record it the same way that skill does:
+  ```bash
+  py "<worktree>/scripts/test/record_tasting.py" --manifest "<worktree>/.simulate_run_manifest.json" --rater "<name>" \
+      --legibility <N> --aliveness <N> --curiosity <N> --specificity <N> --note "<note>" [--note "..."]
+  ```
+  Include the recorded scores (and any notes) in `SIMULATION_LOG.md` too, under a "Tasting" heading
+  next to the Test suite section. `/taste` still exists as a standalone command for scoring a run
+  later, or for a second rater's independent tasting on this same run — this inline ask is the first
+  tasting, not a replacement for the command.
 - Write `SIMULATION_LOG.md` at the worktree root: the Step 1 setup (participants, pass count,
-  context, model), the pass-by-pass one-liners in order, the tally script's output, and the test
-  suite's two reports above, as the closing sections.
+  context, model), the pass-by-pass one-liners in order, and the tally script's output — always.
+  **Only if the design-testing bullet above ran**, also include the test suite's two reports (under
+  "Test suite") and the tasting scores/notes (under "Tasting") as further sections. The Narrative
+  report (below) closes the file either way.
 - Finalize the run manifest:
   ```bash
   py "<worktree>/scripts/lore/run_manifest.py" finalize --passes-run <actual N> --simulation-log SIMULATION_LOG.md
   ```
-  If the user wants an immersion tasting on this run, that's `/taste`, separately (a subjective
-  instrument the agent never runs unprompted — see its own `SKILL.md`).
 - **Append a "Narrative report" section** (standing requirement, added 2026-08-10 on request) —
   prose, not another mechanical recap: for each participant's arc, how it actually developed across
   the run (the shape of it - steady, volatile, stalled, resolved), what changed in their
@@ -353,19 +423,22 @@ Once all passes are done (or the pool ran out early):
   what didn't happen (deaths, reproductions, resolutions) alongside what did. This is the section a
   person would actually want to read to know what this slice of the world's history was about: write
   it that way, grounded in the specific pass-by-pass facts already on record above it, not invented
-  beyond them. Required every time this step runs, not only when a run happens to feel eventful.
+  beyond them. **Required every time this step runs, unconditionally** — this is the one section that
+  never depends on the design-testing call above; a casual/showcase run still gets a real narrative
+  report, it just skips the test suite and tasting around it.
 - Tell the user: how many passes ran, headline events, the worktree's path and branch name, and that
   it stays on disk untouched by anything here — nothing in the original working directory changed.
   They can `/enact` a character from inside this worktree, read any file directly, ask questions
   about what changed, or run `/simulate` again (after exiting this worktree, or from a different
   session) for an independent second trial off the same starting state, to compare against this one.
-- **If this run was testing or extending the system's design** (not a casual one-off), append a dated
-  entry to `LAB_REPORT.md` at the **main repo root** — read that file's own header for the expected
-  entry shape first. **Do this only from the orchestrating session, using the file's absolute main-repo
-  path** (the same pattern as the Step 3 safety net's `git -C "<main repo root>"`), **never by writing
-  it from inside the active worktree.** This is a deliberate, single, explicit write to a known
-  meta-file at the very end of a run — unlike the accidental relative-path leaks Step 3's safety net
-  exists to catch and revert, this one is intentional, so it's fine for it to land in the main repo. If
-  the run surfaced a design gap or an open question rather than a settled answer, log it under that
-  file's "Open design questions" section rather than only leaving it in chat history.
+- **If this run was testing or extending the system's design** (the same call from the top of this
+  step — don't re-ask it), append a dated entry to `LAB_REPORT.md` at the **main repo root** — read
+  that file's own header for the expected entry shape first. **Do this only from the orchestrating
+  session, using the file's absolute main-repo path** (the same pattern as the Step 3 safety net's
+  `git -C "<main repo root>"`), **never by writing it from inside the active worktree.** This is a
+  deliberate, single, explicit write to a known meta-file at the very end of a run — unlike the
+  accidental relative-path leaks Step 3's safety net exists to catch and revert, this one is
+  intentional, so it's fine for it to land in the main repo. If the run surfaced a design gap or an
+  open question rather than a settled answer, log it under that file's "Open design questions"
+  section rather than only leaving it in chat history.
 - Don't call `ExitWorktree` — only on explicit request, same as Step 0.

@@ -21,7 +21,55 @@ and open questions that were live at a given point, even ones later settled else
 
 ---
 
-### 2026-08-30 — `survival-arc-test`'s uncommitted round-2/round-3 architecture work merged into `provenance-bare`
+### 2026-08-30 — Local-model enacter wired into `/simulate`; two real passes found and fixed three gaps; `/simulate` Step 4 reworked so the test suite/tasting are conditional, not automatic
+
+Follow-up to the same-day entry below. Wired the Local (Ollama, `qwen2.5:14b`) enacter into
+`/simulate` Step 1 (a fourth Model choice) and Step 3 (its own dispatch branch), then proved it
+end-to-end with two real passes — not synthetic JSON this time — on a hand-authored throwaway seed
+("Torvald"/"Senna" at "the Verdín Compound") run through the actual mechanism
+(`simulate_resolve_pair.py` → `pass_prep.py` → `enact_via_ollama.py` → `pass_record.py` →
+`pass_apply.py`) inside a disposable worktree. Found and fixed three real gaps this surfaced: (1) a
+preamble gap — the local model resolved an arc's own goal outright on an `arc.gate: "miss"` pass,
+which the preamble never told it not to do, now fixed with an explicit rule; (2) a pre-existing,
+model-independent bug — `pass_apply.py` never threaded `--scene-id`/`--pass-number` into
+`update_character.py`, so `knowledge.experience` provenance (`produced_by`) has been silently
+untagged on every `/simulate` run through this driver since it was built, not just the local-model
+path; fixed and verified with an isolated check; (3) confirmed `conformance_report.py`'s scene-id
+uniqueness check is a genuine, self-flagged known gap (no `next_scene_id.py` guard exists), already
+tracked in `TODO.md`.
+
+Separately, in the same session, reworked `/simulate` Step 4 on the user's request: the test suite's
+closing instruments (`conformance_report.py`/`measure_derivation.py`) and an inline immersion tasting
+(`/taste`'s own four questions, asked directly rather than left for a separate later command) are now
+gated on the same design-testing-vs-casual-run judgment call Step 4 already made for the
+`LAB_REPORT.md` entry — reused rather than adding a new setup question. The tally and the Narrative
+report stay unconditional on every run. Confirmed, while investigating this, that the test suite was
+already end-of-run-only (once, comparing the pre-run snapshot to final state) and never ran per-pass —
+the user's worry about per-pass overhead didn't apply, it was just undocumented as such until now.
+
+Also: confirmed (but explicitly declined to build, per the user's own call mid-session) that Claude
+Code's session transcripts carry real per-turn token usage, which would let a future session compare
+`/simulate`'s token cost across dispatch models without much new machinery — see `TODO.md`.
+
+### 2026-08-30 — Local-model enacter (Ollama/qwen2.5:14b) proven as standalone infra, not yet wired into `/simulate`
+
+Built `scripts/lore/enact_via_ollama.py` plus its fixed instruction preamble
+(`scripts/lore/enact_preamble.md`) as a drop-in alternative to `/simulate` Step 3 point 4's Claude
+subagent dispatch — same input (`pass_prep.py`'s combined brief JSON) and same downstream contract
+(feeds `record_hearsay.py`/`pass_apply.py` unchanged), but calling a locally-hosted Ollama model
+instead. Decided up front, since a 14B local model can't be trusted to produce parseable prose the
+way the Claude path currently does: force strict JSON via Ollama's structured-output mode against an
+explicit schema, rather than trying to parse free text. Ran two hand-built test passes (no real
+character files exist on `provenance-bare` yet to draw a genuine brief from) against `qwen2.5:14b` —
+first pass surfaced two real gaps (an empty placeholder padding a should-be-empty array; an `about` tag
+paraphrased instead of copied verbatim from the brief, which would silently break
+`check_anchor_reference.py`'s exact-string matching downstream) — both fixed mechanically (a
+`clean_reply()` pass stripping empty entries, a `validate_reply()` check requiring exact tag matches
+against a `known_tags()` set built from the brief, both wired into a retry loop). Rerun after the fix:
+both passes landed clean on the first attempt, dialogue-only, criterion shown through behavior not
+recited, exact tag-copying achieved even on the harder motivated/gate-hit case. Scoped deliberately to
+proving the standalone call works, not wiring a "Local" option into `/simulate` itself yet — that's a
+follow-up once this has more than two synthetic passes behind it.
 
 Following up on the same-day investigation below: the `survival-arc-test` worktree turned out to hold
 a real, never-committed 21-pass pilot of the survival mechanism plus genuine engine improvements

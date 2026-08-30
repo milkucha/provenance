@@ -19,6 +19,17 @@ open questions about the lore itself live in `_lore/unknowns.md`, not here.
   script was ever actually promoted from a worktree, per `LAB_REPORT.md`'s own account of it being
   "written ad-hoc... never promoted."
 
+- **Orchestrator token-cost tracking, not built (2026-08-30).** The user wants a way to compare a
+  `/simulate` run's actual token cost across dispatch models (Local/Ollama vs. the old
+  subagent-per-pass Claude design, remembered at ~20k tokens/pass) — confirmed feasible while
+  investigating the local-model integration: Claude Code's own session transcript
+  (`~/.claude/projects/<project>/<session-id>.jsonl`) logs per-turn `usage` (input/output/
+  cache_creation/cache_read tokens) with timestamps, and `isSidechain` distinguishes a subagent's own
+  turns from the orchestrator's. Deliberately not built now — the user asked to defer it rather than
+  spend more session budget on it. If revisited: a script summing usage between two timestamps
+  (start/end of a run's Step 2-4), split by sidechain vs. not, would give the comparison without
+  needing anything heavier.
+
 ## Survival mechanism (built 2026-08-28, on `survival-arc-test` — first-playtested and retuned 2026-08-29)
 
 Built: `wealth_lib.py`, `roll_survival.py`, `apply_survival.py`, `apply_upkeep.py` (all new), plus

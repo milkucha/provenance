@@ -124,7 +124,9 @@ def parse_record_death(output: str) -> dict:
     return {"notified_circle": notified, "shock_candidates": shock}
 
 
-def apply_participant(slug: str, decisions: dict) -> dict:
+def apply_participant(slug: str, decisions: dict, scene_id: str | None, pass_number: int) -> dict:
+    provenance = ["--scene-id", scene_id, "--pass-number", str(pass_number)] if scene_id else []
+
     cmd = [str(SCRIPTS_DIR / "update_character.py"), slug, "--lived-delta", str(decisions.get("lived_delta", 0))]
     for entry in decisions.get("experience", []):
         cmd += ["--add-experience", entry]
@@ -139,7 +141,7 @@ def apply_participant(slug: str, decisions: dict) -> dict:
             cmd += ["--trusts", move["trusts"]]
         if move.get("distrusts"):
             cmd += ["--distrusts", move["distrusts"]]
-    run(cmd)
+    run(cmd + provenance)
 
     for g in decisions.get("grounded_experience", []):
         gcmd = [str(SCRIPTS_DIR / "update_character.py"), slug, "--add-grounded-experience"]
@@ -147,13 +149,13 @@ def apply_participant(slug: str, decisions: dict) -> dict:
         for a in about:
             gcmd += ["--about", a]
         gcmd += ["--text", g["text"]]
-        run(gcmd)
+        run(gcmd + provenance)
 
     for s in decisions.get("synthesis", []):
         scmd = [
             str(SCRIPTS_DIR / "update_character.py"), slug, "--add-synthesis",
             "--about", s["about"][0], "--about", s["about"][1], "--text", s["text"],
-        ]
+        ] + provenance
         run(scmd)
 
     result = {"deceased": False, "cause": None, "notified_circle": [], "shock_candidates": []}
@@ -187,6 +189,7 @@ def main() -> None:
     parser.add_argument("--p1", required=True)
     parser.add_argument("--p2", required=True)
     parser.add_argument("--pass-number", type=int, required=True)
+    parser.add_argument("--scene-id", default=None, help="This pass's scene id (pass_record.py's hearsay_id) - threaded into update_character.py's --scene-id/--pass-number so knowledge.experience entries carry produced_by (measure_derivation.py's provenance-coverage instrument reads this). Optional; omitting it reproduces today's exact untagged output.")
     args = parser.parse_args()
 
     p1, p2 = args.p1.lower(), args.p2.lower()
@@ -195,7 +198,9 @@ def main() -> None:
 
     report = {"participants": {}}
     for slug in (p1, p2):
-        report["participants"][slug] = apply_participant(slug, participants.get(slug, {"lived_delta": 1}))
+        report["participants"][slug] = apply_participant(
+            slug, participants.get(slug, {"lived_delta": 1}), args.scene_id, args.pass_number,
+        )
 
     _, repro_out, _ = run([
         str(SCRIPTS_DIR / "simulate_pass_reproduction.py"),

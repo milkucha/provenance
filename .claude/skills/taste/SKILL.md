@@ -6,8 +6,14 @@ disable-model-invocation: true
 Read `TESTING_BRIEF.md` (vault-side `projects/provenance/`) first if it hasn't been read yet this
 session — §2(c) and §4.3 are this skill's own design contract, not restated here. This skill owns
 only the mechanical recording; `scripts/test/conformance_report.py`/`measure_derivation.py` (the
-objective instruments) are separate and already run automatically at the end of `/simulate`/
-`/generate` — this skill is the subjective one, always user-invoked.
+objective instruments) are separate. As of 2026-08-30, `/simulate` Step 4 asks this skill's own Step
+2/3 questions inline as the *first* tasting on a run, whenever that step judges the run to be
+testing/extending the design (not a casual one-off) — see its own Step 4 for the exact gate; a
+casual/showcase run gets no tasting at all unless invoked here afterward. This skill still exists,
+unchanged, as the way to add a second rater's tasting, retasting an old run, or scoring a
+casual/showcase run the user decides they want scored after all — always a deliberate, separately
+user-invoked call in those cases. `/generate` doesn't fold this in the way `/simulate` now does; its
+own `GENERATION_LOG.md` runs are still scored only via this standalone command.
 
 ## Step 1 — Locate the run
 
