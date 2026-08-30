@@ -459,7 +459,19 @@ def normalize_experience_entry(entry):
 
 def draw_inherited_experience(parent_a_exp: list, parent_b_exp: list, birth_pass: int | None = None) -> list:
     combined = [normalize_experience_entry(e) for e in (parent_a_exp or []) + (parent_b_exp or [])]
-    combined = list(dict.fromkeys(combined))  # de-duplicated by (text, about) pair
+    # De-duplicated by (text, about) pair - `about` can itself be a list (a grounded-experience
+    # entry with multiple --about refs), which isn't hashable on its own, so the dedup key coerces
+    # it to a tuple for hashing while the original list shape is kept in the returned entries.
+    seen = set()
+    deduped = []
+    for entry in combined:
+        text, about = entry
+        key = (text, tuple(about) if isinstance(about, list) else about)
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(entry)
+    combined = deduped
     if not combined:
         return []
     fraction = random.uniform(*PARENT_EXP_FRACTION_RANGE)

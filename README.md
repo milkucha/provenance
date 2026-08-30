@@ -29,8 +29,9 @@ this to run across different models and harnesses rather than depend on one vend
 in token consumption — that budget work is ongoing, and it's not just about cost: the simulation only
 means something if it can run at the scale a living culture requires, which is what makes the whole
 thing usable and testable at all. The project is currently in an experimentation phase, run and
-evaluated lab-report style (`LAB_REPORT.md`) against two standing questions: whether the result reads
-as immersive, and whether it reads as organic rather than mechanically repetitive. The longest pilot
+evaluated lab-report style (`LAB_REPORT.md`, vault-side — see §0's "Simulating and evaluating the
+lore") against two standing questions: whether the result reads as immersive, and whether it reads as
+organic rather than mechanically repetitive. The longest pilot
 so far ran `/simulate` to 305 passes on six characters and got real material stakes out of it — arcs
 that stalled, reversed, and transformed on genuine dice rolls, four generations of births, deaths
 that actually broke a character's own convictions rather than just getting logged — not just
@@ -218,12 +219,14 @@ the simulation/evaluation tooling described next.
 output rather than feeding it, and aren't part of the Tier 1–3 dependency stack at all:
 
 - **`LAB_REPORT.md`** — the persistent, cross-run record of whether the system's design actually
-  works, kept deliberately outside any worktree so it survives past any single run or conversation.
-  It states the standing objective (does drift over many interactions read as genuinely emergent,
-  with real material consequence, rather than a repeated pattern or a smooth model-biased
-  convergence?), the methodology for judging a run against that objective, and a dated run log. Read
-  it before any `/simulate` run meant to test or extend the design, not a casual one-off — and append
-  to it after one, per its own instructions. See also §4.
+  works: the standing objective (does drift over many interactions read as genuinely emergent, with
+  real material consequence, rather than a repeated pattern or a smooth model-biased convergence?),
+  the methodology for judging a run against that objective, and a dated run log. **Not present on
+  this branch** (`provenance-bare` ships the engine with no lore content, and a lab report with no
+  runs behind it is noise, not record) — it lives on `provenance-standalone` (repo root) and
+  vault-side (`projects/provenance/LAB_REPORT.md`), both carrying the actual run history. Read it
+  there before any `/simulate` run meant to test or extend the design, not a casual one-off — and
+  append to it after one, per its own instructions. See also §4.
 - **`scripts/test/`** — the test suite measuring whether `/simulate`/`/generate` output is actually
   organic and immersive, not just mechanically correct (see `TESTING_BRIEF.md`, vault-side
   `projects/provenance/`, for the full design). `conformance_report.py` (machinery: observed-vs-
@@ -399,8 +402,6 @@ and the separate not-yet-built distribution zip — is in `GESTURES.md`.
 
 ```
 Provenance/
-├── LAB_REPORT.md                      (the standing test of the whole system — read before a
-│                                       design-testing /simulate run; see §0)
 ├── _lore/                             (the lore engine's sources of truth)
 │   ├── encodings.json                 (the central record — every source type writes in here)
 │   ├── unknowns.md                    (gaps — fed by material and tales, not hearsay)
@@ -572,7 +573,7 @@ Same as §5 Step 1 below: add (or update) the NPC's entry in `_npcs/npcs/registr
 
 ## 4. Where design decisions live
 
-This README documents *how the system works*. Story content, character personalities, routes, and dialog writing are design decisions — they live in `_lore/` and the registries under `_npcs/`, not in this file. Whether the `/simulate` mechanism's design is actually working — as opposed to just running correctly — is tracked separately in `LAB_REPORT.md` at the repo root: a persistent, cross-run assessment log against the standing objective described in §0 (real emergent drift and material consequence, versus repetition or model-biased convergence), not this file either. The lore/structure/concept graphs under `graphs/graphifyish/` (§0) are a visualization of the record, not a design decision in themselves, but often the fastest way to spot one that needs making.
+This README documents *how the system works*. Story content, character personalities, routes, and dialog writing are design decisions — they live in `_lore/` and the registries under `_npcs/`, not in this file. Whether the `/simulate` mechanism's design is actually working — as opposed to just running correctly — is tracked separately in `LAB_REPORT.md` (see §0 — not on this branch, but on `provenance-standalone`/vault-side): a persistent, cross-run assessment log against the standing objective described in §0 (real emergent drift and material consequence, versus repetition or model-biased convergence), not this file either. The lore/structure/concept graphs under `graphs/graphifyish/` (§0) are a visualization of the record, not a design decision in themselves, but often the fastest way to spot one that needs making.
 
 ---
 

@@ -230,114 +230,86 @@ For pass 1 through N:
    — forces this pass to `participant_1` visiting that lead's target instead, consuming the lead).
    Prints `participant_1`, `participant_2`, and `forced_visit` — keep all three for point 3 below.
    Every pass is an independent draw; pairs can repeat, and should be expected to over a long run.
-3. Dispatch one subagent (Agent tool, `subagent_type: general-purpose`, the model chosen in Step 1,
-   `run_in_background: false` — the next pass needs this one's file writes to have landed first) to
-   run one full `/enact` scene between the two participants point 2 resolved. Brief it self-contained,
-   since it starts with no memory of this conversation:
-   - The worktree's absolute path — every file read/write and every `py scripts/lore/...` call must
-     use it explicitly, never an assumed working directory. This includes the rule-pointer file below:
-     give its full absolute path inside the worktree (`<worktree>/.claude/skills/enact/SKILL.md`),
-     never a bare relative one, and read it with the `Read` tool, never a shell `cat`/`Get-Content`
-     fallback. A subagent's actual working directory is not guaranteed to match the parent
-     conversation's; a relative path can silently resolve outside wherever its real cwd turns out to
-     be, and the `Read` tool is never gated for paths *inside* the working directory — only for paths
-     it resolves as outside it, which is what a permission prompt on a plain file read means when it
-     happens. Tell it explicitly to copy the worktree path string literally rather than re-deriving it
-     from memory on each call — a smaller model can silently substitute a lore-salient word for part of
-     the real path (observed once: "Lundria" for "Luminacion") when the path is long and the model's
-     context is full of in-world names; Step 2's broadened `Read`/`Write`/`Edit`/`Bash` allow entries
-     mean a typo like that now fails cleanly instead of blocking on a prompt, but it still wastes the
-     pass, so ask for care regardless.
-   - **Any scratch/temp file it needs (e.g. the JSON payload for `record_hearsay.py --json-file`)
-     goes at the worktree root, never inside `<worktree>/.claude/`.** `.claude/` is the harness's own
-     config/skills/permissions directory, not a data workspace — a stray write there can trigger its
-     own permission prompt even when ordinary `Write` calls elsewhere are working cleanly (observed
-     once). The worktree root already holds `.simulate_snapshot.json` for the same reason; scratch
-     files belong alongside it.
-   - **Use the Bash tool for every shell command — never the PowerShell tool, not even as a first
-     choice on this Windows environment.** Both tools are available, but this skill's whole discipline
-     (`py`, never `python`; absolute paths, never `cd`) is written and tested against Bash only, and
-     switching tools mid-run is separately banned below for good reason. Say this explicitly, since a
-     model can otherwise reach for PowerShell by default on Windows without ever having failed at
-     anything first.
-   - **Never use `cd`, under any circumstances — not even as its own standalone command.** A Bash
-     command combining `cd <path> && <command>` is hard-blocked by a security guardrail no permission
-     setting can override; it is never worth the risk of the model reaching for it.
-   - **`py scripts/lore/<name>.py` — call it ONLY by the full absolute worktree path, never a bare
-     relative one, not even once.** This is not just a style preference: a subagent's Bash cwd is not
-     guaranteed to be inside the worktree at all (it may default to the main repo checkout instead), and
-     `Path(__file__).resolve().parent.parent.parent` — the trick every `scripts/lore/*.py` file uses to
-     find its own project root — is exactly what makes a relative call dangerous rather than safe: if
-     the relative path resolves against the *main checkout's own copy* of the script (because that's
-     where cwd happened to be), that copy's `__file__` correctly-but-wrongly points at the *main
-     checkout's* `_lore/`, and the write lands there instead — silently, with no error, since the script
-     ran successfully by every measure it can see. **Confirmed the hard way:** one pass's
-     `record_hearsay.py`/`update_character.py` calls did exactly this, writing real scene content into
-     the user's actual `_lore/characters/*.json`, `hearsay.md`, and `encodings.json` — discovered only
-     because the pass's own after-the-fact verification checked the *worktree's* copy, found the entry
-     missing there, and reported a false "silent script failure" instead of the true cause. Always give
-     the full absolute path: `py "<worktree>\scripts\lore\record_hearsay.py" --json-file "<worktree>\...\file.json"`
-     — never `py scripts/lore/record_hearsay.py ...`.
-   - **Run `/enact` Step 2 onward for these two, exactly as that skill defines it** — both already
-     have character files, so skip Step 1's brand-new-character branch (the name-uniqueness check
-     and the creation questions), but still run its "Criterion and lifespan" checks. Pass point 2's
-     `forced_visit` through as `--forced-visit` on `/enact` Step 4's `simulate_pass_brief.py` call if
-     it read `true`; omit the flag otherwise. Follow every rule in `/enact`'s own file as written — the
-     mechanical block, the eligibility gate (already guaranteed to pass, since this skill's own Step 1
-     already filtered the pool to eligible participants, but the subagent should still trust
-     `/enact`'s own check rather than skip it), the judgment slots, hearsay, shock/drift, the record
-     update. This is the actual mechanism being exercised; nothing here gets shortened for speed.
-   - The scenario context from Step 1, if one was given; otherwise instruct it to invent a situation
-     grounded in what both characters could plausibly know.
-   - **Never call `AskUserQuestion` or wait on a live user** — there isn't one. Make the same calls
-     `/enact` would normally ask about (whether the scene has reached a natural stopping point, how a
-     shock resolves) autonomously, and note any non-obvious judgment call in its final report.
-   - **If any tool call fails for any reason — a `py scripts/lore/...` call, a file read, anything —
-     report the exact error and stop that pass. Never retry it via a different shell, tool, or method
-     (PowerShell instead of Bash, `cat`/`Get-Content` instead of `Read`, bare `python` instead of
-     `py`, etc.).** Confirmed the hard way: a `py` script failure that fell back to the PowerShell tool
-     is what surfaced a live permission prompt mid-run, even with `bypassPermissions` set — the exact
-     mechanism isn't fully pinned down, but switching tools/methods after a failure is the one thing
-     observed to break the "no prompts, ever" guarantee, so it's banned outright rather than trusted a
-     second time. Bare `python` is confirmed not on PATH in this environment — always use `py`.
-   - **After `record_hearsay.py` reports success, verify it actually landed** — read the tail of
-     `<worktree>/_lore/characters/hearsay.md` (or check the entry count) and confirm the new entry is
-     really there before trusting the script's own stdout. **If it's missing from the worktree's copy,
-     do not assume the write silently failed** — check whether it landed in the *main repo's* copy
-     instead (the relative-path leak explained above is exactly this symptom: the script succeeds, the
-     entry exists, just in the wrong repository). Either way, report the exact finding and stop the
-     pass per the rule below rather than retrying or guessing.
-   - Report back *only* a short summary, not the transcript: both participants, a one-line gist of
-     the scene, whether either's criterion changed (and how), whether an arc advanced/resolved,
-     whether a birth or death happened this pass.
-4. **Safety net — before trusting the pass's report, check it didn't leak into the real repo:** run
-   `git -C "<main repo root, NOT the worktree>" status --short -- _lore/ _npcs/` (no `cd` — `git -C`
-   targets a foreign path directly in one command and is not subject to the compound-cd block, and this
-   works from inside the worktree). Any output at all means this pass wrote into the user's real files
-   — confirmed possible via the relative-path leak explained in point 3 above, seen three times in one
-   run at roughly a 1-in-10 pass rate despite maximal prompt hardening: twice as a partial leak (only
-   some of the pass's script calls went to the wrong repo) and once as a total leak (the *entire* pass —
-   reads included — ran against the main checkout, leaving the worktree's own copy of both characters
-   completely untouched).
-   - **Revert automatically, every time, without asking — this is a standing rule, decided 2026-08-09
-     after the third occurrence.** `git checkout -- <the exact leaked paths only>` in the main repo
-     (list them explicitly; never a bare `git checkout .`), plus `rm` any newly-untracked leaked file
-     under `_npcs/scenes/`. Never touch any other file in that diff — a separate, unrelated concurrent
-     session may be editing the same shared checkout at the same time (confirmed happening during the
-     incident that established this rule). Log the revert in the running log for Step 4's summary, but
-     do not stop the run or ask the user — the fix is fully mechanical at this point.
-   - **Check whether the worktree itself actually received this pass's writes** (e.g. `life.lived` on
-     both participants' files under the worktree, or the scene transcript under
-     `<worktree>/_npcs/scenes/`) — a *partial* leak still leaves real progress in the worktree and this
-     pass counts as done; a *total* leak (worktree completely untouched, as in the incident above) means
-     this pass never actually happened from the simulation's point of view and must be run again with a
-     fresh subagent dispatch (same participants and context are fine to reuse) before moving on, rather
-     than being counted toward the pass total.
-5. Append that one-line summary to the running log — this is what keeps a long run affordable: the
-   main thread accumulates summaries, never the 50 full transcripts and record-keeping writeups.
-6. If either participant died this pass, drop them from the living pool before the next draw. If a
+3. **Run the mechanical prep yourself, in the orchestrating session, absolute paths, Bash only, never
+   `cd`:** `py "<worktree>/scripts/lore/pass_prep.py" --p1 <slug> --p2 <slug> --pass-number <N>
+   [--forced-visit]` — wraps `horizon.py` (both participants), the whole `simulate_pass_brief.py`
+   mechanical block (survival roll/apply, arc gate, criterion-move gate check, everything /enact Step
+   4 decides), AND (added 2026-08-29, round-3 debrief) each participant's own `criterion` and, if they
+   have one, their arc's `premise`/`about`/`needs` — into one call. Prints the pre-scene horizon, the
+   full brief, and this `characters` block as one JSON object. This is now the *complete* input the
+   enacter needs; nothing else has to be separately fetched, composed, or looked up. If the brief's
+   `arc_authoring_needed` is non-null, author that arc yourself (a name-blend-shaped judgment call, not
+   a dice roll — same reasoning `generate_offspring.py`'s own docstring gives for why it can't script a
+   child's name) and call `write_arc.py` directly before continuing this pass.
+4. **Dispatch the enacter** (Agent tool, `subagent_type: general-purpose`, the model chosen in Step 1,
+   `run_in_background: false`) — this is the ONE agent call per pass, and it does no tool-calling at
+   all. Redesigned 2026-08-29 (round-2 debrief) after auditing an actual run's token cost: the old
+   design had a single subagent both write the scene AND drive every mechanical script call itself,
+   which meant every pass re-sent a long, rule-heavy prompt from scratch and the subagent regularly
+   burned 3-6x the intended tool calls fumbling JSON schemas and retrying. Splitting content from
+   mechanism fixes both at once, and keeps the enacter's own prompt short and stable enough to
+   eventually run on a genuinely small/local model — it never needs script rules, path discipline, or
+   worktree-leak precautions, because it never touches a tool.
+   - **Paste point 3's JSON output directly into the dispatch prompt. Never hand-paraphrase it into
+     prose first.** Caught in the round-3 debrief: an earlier session was retyping the brief as
+     sentences ("Pass 20. Location: the road between Tyrnea and the harvest fields...") before every
+     single dispatch — pure overhead, spent in the *orchestrator's own* tokens, restating facts the
+     JSON already stated. `.claude/PRINCIPLES.md`'s "script everything that can be scripted" principle
+     governs this directly: if it's already data, hand it over as data. Trim only genuinely
+     irrelevant bulk (e.g. `character_files`'s absolute paths, which the enacter has no use for since
+     it never touches a file) — don't rewrite what's left.
+   - The one legitimate addition, and it should stay to 1-2 sentences: a **director's note**, only
+     when the gate hit and an outcome needs a concrete "what satisfies this" nudge the mechanical JSON
+     can't supply on its own (e.g. "'mixed' means the other participant's angle partially fits but
+     doesn't resolve anything — your call what"). This is real judgment, not restated fact, so prose is
+     the right tool for exactly this part and no more of it.
+   - Prepend the fixed instruction preamble (same text every pass, never composed fresh): the standing
+     writing rules (dialogue-only, no invented named people, criterion shows through behavior not
+     recitation, finitude is pressure never topic, natural stop) and the required reply structure.
+   - Ask for ONE structured text reply, nothing else: the scene transcript; a short list of hearsay
+     claims (text + `about` tag, `category: value` shaped — never a bare word or a character's own name
+     as the tag) grounded in what was actually said; each participant's `experience` (plain strings)
+     and any `grounded_experience` (text + `about` tag(s)) worth keeping; and, only if the brief's own
+     anchor-reference check flagged it as live this pass, a `criterion_move` verdict
+     (`reject`/`reinterpret`/`break`, with the dialogue line, cause, and any new trusts/distrusts text)
+     — see `.claude/skills/enact/SKILL.md` Step 6 for the authoring discipline behind that judgment;
+     reserve it for a genuine test of the anchor, not just a scene that happens to reference it (a gate
+     hit alone is not a move — confirmed empirically: 20 passes into round 3, most gate hits were the
+     character exercising or affirming their existing trust/distrust, not having it challenged, and the
+     correct call was "none" every time). Tell it explicitly it has no tools to use and should never
+     attempt one — just answer in its final message.
+5. **Do everything mechanical yourself, in the orchestrating session, from the enacter's reply:**
+   - Write the scene file under `<worktree>/_npcs/scenes/` per `_npcs/scenes/_template.md`'s shape.
+   - Build the hearsay JSON from its claims and run `pass_record.py` (absolute path, Bash only) —
+     wraps `record_hearsay.py` plus anchor-reference/resonance checks for both participants.
+   - Build the decisions JSON from its experience/grounded_experience/criterion_move fields and run
+     `pass_apply.py` (absolute path, Bash only) — wraps every remaining mechanical write: `update_character.py`
+     calls, the energy-death check, post-lived-delta `horizon.py`, reproduction, death-legacy.
+   - Since you're the one making both calls with a schema you already know is correct, there's no
+     retry loop to design around — a failure here means something is genuinely wrong (a malformed
+     brief, a missing file), not a JSON-shape guess to fix and resubmit.
+   - **If any script call fails for any reason, report the exact error and stop that pass rather than
+     switching tool/method** — same discipline as always, just now applied to your own calls instead
+     of a subagent's.
+   - **After `pass_record.py` reports success, verify it actually landed** — read the tail of
+     `<worktree>/_lore/characters/hearsay.md` and confirm the new entry is really there.
+   - If `pass_apply.py`'s output says `reproduces: true`, compose the child's name yourself (the one
+     other judgment call this whole pipeline can't script) and call `generate_offspring.py` directly.
+6. Append a one-line summary (both participants, gist, criterion change, birth/death) to the running
+   log — this is what keeps a long run affordable in the *orchestrator's own* context, same reasoning
+   as before, just no longer needing a subagent's self-report to summarize from.
+7. If either participant died this pass, drop them from the living pool before the next draw. If a
    birth happened this pass, add the child to the pool once the current pass number reaches
-   `birth_pass + child_cooldown_passes` (`generate_offspring.py` prints the exact threshold).
+   `birth_pass + child_cooldown_passes` (`generate_offspring.py` prints the exact threshold) — and
+   treat them as an ordinary adult participant from that pass on, no special handling: the cooldown
+   period itself already *is* their portrayed childhood (they exist, may be known of or talked about,
+   but never appear in a scene until the pool admits them) — see TODO.md's "childhood/age" open note.
+
+The relative-path-leak risk this section used to warn a subagent about (a bare `scripts/lore/...` call
+resolving against the main checkout's own copy instead of the worktree's, silently writing real files)
+still applies to the orchestrator's own calls in points 3 and 5 — the discipline (full absolute path,
+every single call, never a bare relative one) carries over unchanged; only the "who has to be told
+this" part of the old design goes away.
 
 At the natural end of a batch (the run's requested pass count is reached, or the session is otherwise
 wrapping up) — not after every single pass — run `py scripts/lore/build_source_index.py` once, so

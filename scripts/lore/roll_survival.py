@@ -7,7 +7,7 @@ particular is the closest precedent: a base percentage, shifted point-by-point b
 clamped, then rolled).
 
 Design session 2026-08-28 - see TODO.md's "Survival mechanism" entry for the full worked-through
-math and CHRONICLE.md's matching entry for how each input got settled. Four inputs, each contributing
+math and CHRONICLE.md's matching entry for how each input got settled. Five inputs, each contributing
 a percentage-point shift toward "arc" (or away from it, negative):
 
   - **energy** - more personal buffer, safer to gamble. Normalized around the cap's midpoint.
@@ -21,6 +21,12 @@ a percentage-point shift toward "arc" (or away from it, negative):
   - **affinity_obligation** - the SAME net_affinity number, independently, pulling the other way: the
     more bonded a character is, the more duty-bound to work for the collective, regardless of the
     pool's own health.
+  - **scarcity_pressure** (added 2026-08-29) - lets a character anticipate trouble ahead, not just
+    react to the pool's current level: how much the pool's own per-capita wealth has fallen since
+    apply_upkeep.py's last checkpoint for this location (wealth_lib.wealth_trend()). Deliberately
+    one-directional, same asymmetry pool_reliance/affinity_obligation already apply to net_affinity -
+    a declining trend pushes toward "survive" (contribute now, before it's worse), but a recovering
+    trend applies no extra pull toward "arc" at all.
 
 net_affinity itself is Sum(partners_quality[p]) / Sum(partners[p]) across ESTABLISHED partners only
 (count >= partner_threshold, same bar roll_contested.py already uses) - a character with many strong
@@ -126,6 +132,8 @@ def roll(character: dict, key: str, home_location: str, rng: Random | None = Non
     per_capita = wealth_lib.wealth_per_capita(home_location)
     threshold = _S["provides_wealth_threshold"]
     pool_surplus = max(-1.0, min(1.0, (per_capita - threshold) / threshold)) if threshold else 0.0
+    trend = wealth_lib.wealth_trend(home_location)
+    trend_normalized = max(-1.0, min(1.0, trend / threshold)) if threshold else 0.0
 
     w = _S["weights"]
     pct = _S["odds_percent"]["arc_base"]
@@ -133,6 +141,7 @@ def roll(character: dict, key: str, home_location: str, rng: Random | None = Non
     pct += w["arc_pressure"] * (pressure * 2 - 1)
     pct += w["pool_reliance"] * pool_surplus * affinity
     pct -= w["affinity_obligation"] * affinity
+    pct += w["scarcity_pressure"] * min(0.0, trend_normalized)
     pct = max(_S["odds_percent"]["min"], min(_S["odds_percent"]["max"], pct))
 
     choice = "arc" if rng.random() < (pct / 100.0) else "survive"
@@ -140,6 +149,7 @@ def roll(character: dict, key: str, home_location: str, rng: Random | None = Non
         "choice": choice, "reason": None, "odds_used": round(pct, 1),
         "energy": energy, "arc_pressure": round(pressure, 2),
         "pool_surplus": round(pool_surplus, 2), "net_affinity": round(affinity, 2),
+        "scarcity_trend": round(trend_normalized, 2),
     }
 
 
@@ -167,6 +177,7 @@ def main() -> None:
         print(f"arc_pressure: {result['arc_pressure']}")
         print(f"pool_surplus: {result['pool_surplus']}")
         print(f"net_affinity: {result['net_affinity']}")
+        print(f"scarcity_trend: {result['scarcity_trend']}")
 
 
 if __name__ == "__main__":

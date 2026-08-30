@@ -21,6 +21,38 @@ and open questions that were live at a given point, even ones later settled else
 
 ---
 
+### 2026-08-30 — `survival-arc-test`'s uncommitted round-2/round-3 architecture work merged into `provenance-bare`
+
+Following up on the same-day investigation below: the `survival-arc-test` worktree turned out to hold
+a real, never-committed 21-pass pilot of the survival mechanism plus genuine engine improvements
+discovered while running it — never merged anywhere. Per the user's direction, only the architecture
+was taken, not the pilot's own character/scene data: three new driver scripts (`pass_prep.py`,
+`pass_record.py`, `pass_apply.py` — the token-efficiency pattern `LAB_REPORT.md` describes as
+"written ad-hoc, never promoted," rebuilt for the current, larger mechanism), a real bug fix in
+`simulate_pass_brief.py` (the primacy winner's energy was silently getting reverted on every gate-hit
+pass — `apply_survival.py`'s own write to the character file was never re-read before a later save in
+the same function clobbered it), a pool-exhaustion fix in `apply_survival.py`/`wealth_lib.py`
+(`arc_extra_cost_scarce`, a wealth-trend input `scarcity_pressure` for `roll_survival.py`), a dedup
+bug fix in `generate_offspring.py` (list-shaped `about` values aren't hashable), the retuned
+`_lore/tuning.json` values a first 50-pass playtest surfaced, a house-wide principle in
+`PRINCIPLES.md` ("script everything that can be scripted; prose only where a judgment call genuinely
+needs it"), and a full redesign of `/simulate` Step 3: the orchestrator now runs every mechanical
+script itself and dispatches a subagent only to write scene text with no tool access at all —
+eliminating the entire relative-path-leak failure class this file's own `/simulate` sections had
+accumulated hard-won warnings about.
+
+One real integration point needed fixing, not just copying: `pass_apply.py` calls `record_death.py`/
+`roll_death_legacy.py` directly via its own bare `subprocess.run()`, bypassing the RNG-seeding/
+draw-audit wrapper the test suite (above) added to `simulate_pass_lib.call()` earlier today. Gave
+`pass_apply.py`'s own `run()` the same seed-injection/audit-logging treatment, reusing
+`rng_context.STOCHASTIC_SCRIPTS` as the shared registry — verified with a seeded round-trip before
+trusting it. Also caught and fixed a floating, disconnected fork's own unrequested LAB_REPORT.md/
+README edits (correct in substance, since they matched a change already in flight, but left one
+formatting artifact in the folder-structure diagram) — see the entry below for the fuller account.
+
+Not ported, on the user's own instruction: the pilot's actual character files, scene transcripts, and
+pass-by-pass decision/hearsay logs — that data stays in the `survival-arc-test` worktree, untouched.
+
 ### 2026-08-30 — Test suite built: RNG seeding, run manifests, draw audit log, three measurement instruments
 
 Implemented `TESTING_BRIEF.md` (vault-side `projects/provenance/`, condensing the `REFLECTIONS.md`

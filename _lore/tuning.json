@@ -1,7 +1,7 @@
 {
   "_comment": "Single source of truth for every tunable knob /enact's mechanical block uses (odds, thresholds, cooldowns, the lifespan range) - scripts read this via scripts/lore/tuning.py instead of hardcoding their own defaults, and .claude/skills/enact/SKILL.md's orchestration prose points here rather than restating numbers. Change a value here; no script needs editing to retune. Every value below is a first guess, untuned by any actual run yet - see LAB_REPORT.md's own note on this.",
   "lifespan_range": {"min": 30, "max": 60},
-  "partner_threshold": 5,
+  "partner_threshold": 3,
   "parent_cooldown_passes": 10,
   "child_cooldown_passes": 5,
   "lead_expiry_passes": 8,
@@ -28,23 +28,25 @@
     "quality_scale": 0.25
   },
   "survival": {
-    "_comment": "Design session 2026-08-28: whether a character spends a pass working (survive) or pursuing their arc, and what that costs them and their location's shared wealth pool. Every value here is a first guess from the design conversation, explicitly flagged as tunable there - none of it has been playtested yet. See TODO.md's 'Survival mechanism' entry for the full worked-through math this implements.",
-    "energy_cap": 5,
+    "_comment": "Design session 2026-08-28: whether a character spends a pass working (survive) or pursuing their arc, and what that costs them and their location's shared wealth pool. Every value here was a first guess, explicitly flagged as untuned, until a 44-pass /simulate run (2026-08-29, survival-arc-test worktree, first playtest) killed 7 of 8 starting characters to energy exhaustion before pass 90 - see LAB_REPORT.md's matching run-log entry. Retuned after that run: energy_cap 5->10 (more runway before the fragile low-energy floor) and survive_take 1->2 (so choosing survive nets +1/pass instead of breaking even at 0 - the prior value meant a character could never actually recover energy once spent, only stop losing more). See TODO.md's 'Survival mechanism' entry for the full worked-through math this implements. Retuned again 2026-08-29 (round-2 debrief, 50-pass run, 0 deaths but Tyrnea's pool at -350.5): survive_take's 1->2 bump above silently zeroed survive's own pool contribution (survive_contribute(2) - survive_take(2) = 0, when the design intent was +1) - bumped survive_contribute 2->3 to restore it without re-touching personal energy math. upkeep_rate_per_capita 0.5->0.15: at this run's population (13, since upkeep counts every living character registered at the location, not just the active cast - see wealth_lib.population_of()'s own docstring), 0.5/head drained ~6.5/pass against at most 2 active participants' worth of contribution - structurally guaranteed to bleed out regardless of anyone's choices. 0.15 keeps upkeep a real, felt cost without making it unbeatable by construction; still expected to need another look after a full run at the new numbers.",
+    "energy_cap": 10,
     "base_cost": 1,
     "arc_extra_cost": 1,
-    "survive_contribute": 2,
-    "survive_take": 1,
+    "arc_extra_cost_scarce": 2,
+    "survive_contribute": 3,
+    "survive_take": 2,
     "arc_pool_draw": 2,
-    "upkeep_rate_per_capita": 0.5,
+    "upkeep_rate_per_capita": 0.15,
     "provides_wealth_threshold": 2,
     "starting_wealth_per_capita": 2,
     "odds_percent": {"arc_base": 50, "min": 2, "max": 95},
     "weights": {
-      "_comment": "Percentage-point shifts applied to the arc_base odds above - same 'skew, never decide' unit every other roll in this codebase already uses (see roll_contested.py). Each weight is multiplied by its input, which is itself normalized to roughly [-1, 1] before the multiply - see roll_survival.py.",
+      "_comment": "Percentage-point shifts applied to the arc_base odds above - same 'skew, never decide' unit every other roll in this codebase already uses (see roll_contested.py). Each weight is multiplied by its input, which is itself normalized to roughly [-1, 1] before the multiply - see roll_survival.py. scarcity_pressure added 2026-08-29: only ever pushes toward 'survive' (a declining per-capita trend since apply_upkeep.py's last checkpoint for this location), never rewards a recovering trend by pushing further into 'arc' - deliberately asymmetric, same reasoning pool_reliance/affinity_obligation already apply to net_affinity.",
       "energy": 20,
       "arc_pressure": 25,
       "pool_reliance": 20,
-      "affinity_obligation": 20
+      "affinity_obligation": 20,
+      "scarcity_pressure": 15
     },
     "arc_pressure_stage_weight": {"early": 0.2, "mid": 0.5, "late": 0.8},
     "arc_pressure_urgency_bonus": {"early": 0.0, "established": 0.1, "late": 0.3},

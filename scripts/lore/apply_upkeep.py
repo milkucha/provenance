@@ -38,6 +38,7 @@ def main() -> None:
     upkeep = pop * _S["upkeep_rate_per_capita"]
     pool -= upkeep
     wealth_lib.set_wealth(args.location, pool)
+    wealth_lib.checkpoint_wealth_trend(args.location)
 
     print(f"population: {pop}")
     print(f"upkeep: {round(upkeep, 2)}")
