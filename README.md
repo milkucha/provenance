@@ -224,6 +224,16 @@ output rather than feeding it, and aren't part of the Tier 1–3 dependency stac
   convergence?), the methodology for judging a run against that objective, and a dated run log. Read
   it before any `/simulate` run meant to test or extend the design, not a casual one-off — and append
   to it after one, per its own instructions. See also §4.
+- **`scripts/test/`** — the test suite measuring whether `/simulate`/`/generate` output is actually
+  organic and immersive, not just mechanically correct (see `TESTING_BRIEF.md`, vault-side
+  `projects/provenance/`, for the full design). `conformance_report.py` (machinery: observed-vs-
+  expected odds, invariant checks) and `measure_derivation.py` (how much of a claim traces back to
+  the record) run automatically at the end of every `/simulate`/`/generate` run.
+  `measure_drift.py` (a claim's distance across retellings) and `measure_divergence.py` (comparing
+  two+ runs off the same starting commit, including the seeded-pair isolation experiment) are
+  user-invoked. `/taste` scores a run's immersion (legibility/aliveness/curiosity/specificity)
+  against its `.simulate_run_manifest.json`. RNG seeding (`scripts/lore/rng_context.py`) is off by
+  default — a run stays free/unseeded unless a seed is explicitly requested.
 - **`graphs/graphifyish/`** — `scripts/graphs/graphifyish.py`'s output: a standalone
   `graphifyish.html` visualizing three graphs built from the repo's own live sources of truth (never
   hand-maintained except the concept graph's shape) — the **lore** graph (NPCs, dialogues, locations,

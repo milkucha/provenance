@@ -31,6 +31,11 @@ routine-less character can never be paired into the reproduction mechanic, so in
 wastes a run). Ask only: participants, and how many passes to run. No context/model questions -
 there is no scene, so nothing for either to shape.
 
+**RNG seed (optional, test suite)** — same rule as `/simulate` Step 1 point 6: only ask if the
+request suggests a reproducible/comparable run (the isolation experiment, a divergence comparison).
+Default: none (free/unseeded, today's exact behavior). See `TESTING_BRIEF.md` (vault-side
+`projects/provenance/`).
+
 ## Step 2 — Create the worktree
 
 Identical to `.claude/skills/simulate/SKILL.md`'s own Step 2, unchanged. Still worth doing even
@@ -43,11 +48,14 @@ without prompting.
 One call, absolute path, same non-negotiable rule as every other script invocation this skill's
 sibling skills use:
 ```bash
-py "<worktree>/scripts/lore/simulate_generate_population.py" --pool <slug1> <slug2> ... --passes <N>
+py "<worktree>/scripts/lore/simulate_generate_population.py" --pool <slug1> <slug2> ... --passes <N> [--seed <N>] [--mode simple|divergence]
 ```
-Report its printed summary (passes run, living pool, births, arcs queued, max generation depth). It
-writes `.simulate_snapshot.json` (for Step 6) and `_pending_language.json` (for Step 4) at the
-worktree root, and `GENERATION_LOG.md` with a one-line-per-pass log.
+Pass `--seed` only if Step 1 asked for one. Report its printed summary (passes run, living pool,
+births, arcs queued, max generation depth, run manifest path). It writes `.simulate_snapshot.json`
+(for Step 6), `_pending_language.json` (for Step 4), `.simulate_run_manifest.json`, and
+`GENERATION_LOG.md` — a one-line-per-pass log **plus the test suite's machinery-conformance and
+derivation-coverage reports as a closing "Test suite" section**, run automatically by the script
+itself (see `TESTING_BRIEF.md`, vault-side `projects/provenance/`) - no separate call needed here.
 
 ## Step 4 — Language layer (the one subagent)
 
@@ -113,4 +121,5 @@ ready to serve as the starting cast for an ordinary `/simulate` run - either fro
 worktree in a later session, or by hand-copying `_lore/characters/` over
 once satisfied with it. Don't call `ExitWorktree` - only on explicit request, same as Step 0. If
 this run was testing or extending the mechanism itself, append a dated entry to `LAB_REPORT.md` at
-the main repo root, same discipline as `/simulate` Step 4's closing bullet.
+the main repo root, same discipline as `/simulate` Step 4's closing bullet. If the user wants an
+immersion tasting on this run, that's `/taste`, separately - never run unprompted.

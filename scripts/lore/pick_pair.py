@@ -14,19 +14,21 @@ Usage:
 """
 
 import argparse
-import random
+from random import Random
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("pool", nargs="+", help="Living pool: every participant slug still eligible this pass")
+    parser.add_argument("--seed", type=int, default=None, help="Optional seed, for a reproducible draw")
     args = parser.parse_args()
 
     pool = list(dict.fromkeys(args.pool))  # de-dup, keep order, in case a slug was passed twice
     if len(pool) < 2:
         raise SystemExit(f"Need at least 2 distinct participants in the pool; got {len(pool)}.")
 
-    a, b = random.sample(pool, 2)
+    rng = Random(args.seed)
+    a, b = rng.sample(pool, 2)
     print(f"participant_1: {a}")
     print(f"participant_2: {b}")
 

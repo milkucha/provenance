@@ -82,7 +82,7 @@ def build_id(participants: list, location, existing_ids: set) -> str:
     return candidate
 
 
-def validate_claims(claims: list) -> None:
+def validate_claims(claims: list, existing_claim_ids: set) -> None:
     if not claims:
         raise SystemExit("claims must be a non-empty list.")
     for i, c in enumerate(claims):
@@ -90,6 +90,15 @@ def validate_claims(claims: list) -> None:
             raise SystemExit(f"claim[{i}] is missing required 'text'.")
         if "about" not in c:
             raise SystemExit(f"claim[{i}] is missing required key 'about' (use null if there is none).")
+        derived_from = c.get("derived_from")
+        if derived_from and derived_from not in existing_claim_ids:
+            raise SystemExit(
+                f"claim[{i}]'s 'derived_from' ('{derived_from}') doesn't resolve to any existing "
+                f"hearsay claim id (<hearsay_entry_id>#<claim_index>) in encodings.json - this is the "
+                f"retelling-genealogy edge (see TESTING_BRIEF.md §3.2 / measure_drift.py), and a "
+                f"dangling one breaks the drift measure silently. Double-check the id against the "
+                f"sampled pool item (sample_lore_knowledge.py's own printed format)."
+            )
 
 
 def location_summary(location) -> str:
@@ -135,12 +144,13 @@ def main() -> None:
             raise SystemExit(f"Input is missing required key '{key}'.")
     if not isinstance(data["participants"], list) or len(data["participants"]) < 1:
         raise SystemExit("'participants' must be a non-empty list.")
-    validate_claims(data["claims"])
 
     with open(ENCODINGS_PATH, encoding="utf-8") as f:
         encodings = json.load(f)
     entries = encodings["hearsay"]["entries"]
     existing_ids = {e["id"] for e in entries}
+    existing_claim_ids = {f"{e['id']}#{i}" for e in entries for i in range(1, len(e["claims"]) + 1)}
+    validate_claims(data["claims"], existing_claim_ids)
 
     entry_id = data.get("id") or build_id(data["participants"], data["location"], existing_ids)
     if entry_id in existing_ids:

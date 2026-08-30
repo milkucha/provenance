@@ -25,9 +25,9 @@ Usage:
 """
 
 import argparse
-import random
 import sys
 from pathlib import Path
+from random import Random
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import tuning  # noqa: E402
@@ -39,10 +39,12 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--candidates", nargs="+", required=True, help="Notified-circle keys, from record_death.py's own output")
     parser.add_argument("--odds", type=float, default=_DEFAULT_ODDS, help=f"Percent chance the arc passes on at all (default {_DEFAULT_ODDS}, from _lore/tuning.json)")
+    parser.add_argument("--seed", type=int, default=None, help="Optional seed, for a reproducible roll")
     args = parser.parse_args()
 
-    if random.random() < (args.odds / 100.0):
-        recipient = random.choice(args.candidates)
+    rng = Random(args.seed)
+    if rng.random() < (args.odds / 100.0):
+        recipient = rng.choice(args.candidates)
         print("passes: true")
         print(f"recipient: {recipient}")
     else:

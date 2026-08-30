@@ -18,7 +18,6 @@ Usage (from a sibling script in this same directory):
 """
 
 import json
-import random
 import re
 import subprocess
 import sys
@@ -30,6 +29,7 @@ CHAR_DIR = ROOT / "_lore" / "characters"
 
 sys.path.insert(0, str(SCRIPTS_DIR))
 import tuning  # noqa: E402
+import rng_context  # noqa: E402
 
 T = tuning.load()
 PARTNER_THRESHOLD = T["partner_threshold"]
@@ -60,12 +60,23 @@ def save_char(key: str, character: dict) -> None:
 
 
 def call(script_name: str, argv: list) -> str:
+    stochastic = script_name in rng_context.STOCHASTIC_SCRIPTS and "--seed" not in argv
+    seed = draw_index = None
+    if stochastic:
+        seed, draw_index = rng_context.reserve_seed(ROOT)
+        if seed is not None:
+            argv = [*argv, "--seed", str(seed)]
+
     result = subprocess.run(
         [sys.executable, str(SCRIPTS_DIR / script_name), *argv],
         capture_output=True, text=True,
     )
     if result.returncode != 0:
         raise RuntimeError(f"{script_name} {argv} failed (exit {result.returncode}):\n{result.stderr}")
+
+    if stochastic:
+        rng_context.log_draw(ROOT, script_name, argv, kv(result.stdout), seed, draw_index)
+
     return result.stdout
 
 
@@ -226,7 +237,8 @@ def peer_knowledge_items(character: dict, cap: int = 15) -> list:
     edu_items = []
     if remaining > 0:
         pool = character.get("knowledge", {}).get("education", {}).get("items", [])
-        sample = random.sample(pool, min(remaining, len(pool))) if pool else []
+        rng = rng_context.local_random("peer_knowledge_items", ROOT)
+        sample = rng.sample(pool, min(remaining, len(pool))) if pool else []
         edu_items = [f"{item}::{item}" for item in sample]
 
     return exp_items + edu_items

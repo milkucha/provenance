@@ -58,6 +58,15 @@ Ask as plain conversation, or AskUserQuestion where multiple-choice fits:
    output — same mechanism, same scope differences (no scene prose, deferred name/arc-content
    authoring batched into one subagent pass), just run inline before Step 3 begins rather than as
    its own standalone command.
+6. **RNG seed (optional, test suite)** — only ask if the user's request suggests they want a
+   reproducible/comparable run (e.g. "run the isolation experiment," "seed this the same as last
+   time," building a divergence comparison). Default: none (a free/unseeded run — today's exact
+   behavior, unchanged). If given, this is the isolation experiment's seeded pair: identical world
+   seed (this same starting commit) + identical RNG seed reproduces identical mechanical records,
+   isolating whatever differs to the agent layer — see `TESTING_BRIEF.md` (vault-side
+   `projects/provenance/`) for why this matters and `scripts/test/measure_divergence.py` for how it
+   gets measured. Also ask for a **mode** label (`simple`/`divergence`, default `simple`) — recorded
+   on the manifest only, not a different code path here.
 
 ## Step 2 — Create the worktree
 
@@ -197,6 +206,15 @@ py scripts/lore/simulate_tally.py snapshot <slug1> <slug2> ... --out .simulate_s
 ```
 
 It writes `.simulate_snapshot.json` at the worktree root; Step 4 reads that same path back.
+
+Right alongside it, write the run manifest (test suite — see `TESTING_BRIEF.md`, vault-side
+`projects/provenance/`): the machine-readable record of this run's exact starting state, so "same
+world seed" is a well-defined, comparable object later. Pass `--seed` only if Step 1 point 6 asked
+for one — omitting it is a free/unseeded run, today's exact behavior:
+
+```bash
+py "<worktree>/scripts/lore/run_manifest.py" write --pool <slug1> <slug2> ... --passes <N> --mode <simple|divergence> [--seed <N>]
+```
 
 For pass 1 through N:
 
@@ -338,9 +356,24 @@ Once all passes are done (or the pool ran out early):
   It diffs every participant's current `_lore/characters/<key>.json` against where they stood before
   pass 1, so the deaths, criterion-move counts, and final `life.lived` come straight from the record
   rather than being reconstructed from memory of up to N pass summaries.
+- **Run the test suite's automatic closing instruments** (machinery conformance + derivation
+  coverage — always, seeded or not; these read the draw-audit log and current character files, they
+  don't change anything):
+  ```bash
+  py "<worktree>/scripts/test/conformance_report.py" --root "<worktree>"
+  py "<worktree>/scripts/test/measure_derivation.py" --root "<worktree>"
+  ```
+  Both print a human-readable section — include them verbatim in `SIMULATION_LOG.md` below, under
+  their own "Test suite" heading.
 - Write `SIMULATION_LOG.md` at the worktree root: the Step 1 setup (participants, pass count,
-  context, model), the pass-by-pass one-liners in order, and the tally script's output as the closing
-  section.
+  context, model), the pass-by-pass one-liners in order, the tally script's output, and the test
+  suite's two reports above, as the closing sections.
+- Finalize the run manifest:
+  ```bash
+  py "<worktree>/scripts/lore/run_manifest.py" finalize --passes-run <actual N> --simulation-log SIMULATION_LOG.md
+  ```
+  If the user wants an immersion tasting on this run, that's `/taste`, separately (a subjective
+  instrument the agent never runs unprompted — see its own `SKILL.md`).
 - **Append a "Narrative report" section** (standing requirement, added 2026-08-10 on request) —
   prose, not another mechanical recap: for each participant's arc, how it actually developed across
   the run (the shape of it - steady, volatile, stalled, resolved), what changed in their

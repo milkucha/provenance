@@ -59,11 +59,13 @@ Usage:
 
 import argparse
 import json
+import subprocess
 import sys
 from pathlib import Path
 
 SCRIPTS_DIR = Path(__file__).resolve().parent
 ROOT = SCRIPTS_DIR.parent.parent
+TEST_DIR = ROOT / "scripts" / "test"
 CHAR_DIR = ROOT / "_lore" / "characters"
 PENDING_PATH = ROOT / "_pending_language.json"
 SNAPSHOT_PATH = ROOT / ".simulate_snapshot.json"
@@ -73,6 +75,8 @@ sys.path.insert(0, str(SCRIPTS_DIR))
 import simulate_pass_lib as lib  # noqa: E402
 import simulate_pass_reproduction as repro_lib  # noqa: E402
 import wealth_lib  # noqa: E402
+import rng_context  # noqa: E402
+import run_manifest  # noqa: E402
 
 PARTNER_THRESHOLD = lib.PARTNER_THRESHOLD
 PARENT_COOLDOWN_PASSES = lib.PARENT_COOLDOWN_PASSES
@@ -106,6 +110,15 @@ roll_survival = lib.roll_survival
 apply_survival = lib.apply_survival
 apply_upkeep = lib.apply_upkeep
 SURVIVAL = lib.SURVIVAL
+
+
+def call_test(script_name: str, argv: list) -> str:
+    """scripts/test/ siblings are invoked the same absolute-path-always way as scripts/lore/ ones
+    (lib.call()) - never a relative one, never dependent on cwd."""
+    result = subprocess.run([sys.executable, str(TEST_DIR / script_name), *argv], capture_output=True, text=True)
+    if result.returncode != 0:
+        raise RuntimeError(f"{script_name} {argv} failed (exit {result.returncode}):\n{result.stderr}")
+    return result.stdout
 
 
 # --------------------------------------------------------------------------------------------
@@ -376,6 +389,8 @@ def main() -> None:
     parser.add_argument("--pool", nargs="+", required=True, help="Starting living participants (must all have routines)")
     parser.add_argument("--passes", type=int, required=True)
     parser.add_argument("--living-pool-out", default=None, help="Also write the ending living pool (JSON array of slugs) to this path - for a caller that wants to feed it straight into a subsequent showcase-trail run without retyping it (see SKILL.md's --pregenerate)")
+    parser.add_argument("--seed", type=int, default=None, help="RNG seed - if given, this is a seeded run (the isolation experiment: an identical --seed + identical starting commit reproduces identical mechanical records). Omit for a free/unseeded run (default, today's exact behavior).")
+    parser.add_argument("--mode", choices=["simple", "divergence"], default="simple", help="Recorded on the run manifest only - a per-run label, not a different code path.")
     args = parser.parse_args()
 
     lifespans = json.loads((CHAR_DIR / "lifespans.json").read_text(encoding="utf-8"))["lifespans"]
@@ -394,6 +409,9 @@ def main() -> None:
             raise SystemExit(f"'{slug}' has no entry in lifespans.json - run scripts/lore/roll_lifespan.py and record it there (/character Step 5) before including them in --pool.")
 
     call("simulate_tally.py", ["snapshot", *pool, "--out", str(SNAPSHOT_PATH)])
+    run_manifest.write(ROOT, args.mode, args.seed, pool, args.passes)
+    if args.seed is not None:
+        rng_context.start_seeded_run(ROOT, args.seed)
 
     state = State(pool)
     ran = 0
@@ -401,6 +419,7 @@ def main() -> None:
         if len(state.living) < 2:
             print(f"Stopping early after {ran} pass(es) - fewer than 2 living participants remain.")
             break
+        rng_context.set_current_pass(pass_number)
         summary = run_pass(state, pass_number)
         state.log.append(summary)
         print(summary)
@@ -410,10 +429,29 @@ def main() -> None:
         json.dumps({"generated_at_pass": ran, **state.pending}, indent=2, ensure_ascii=False) + "\n",
         encoding="utf-8",
     )
-    LOG_PATH.write_text("# Generation log\n\n" + "\n".join(f"- {line}" for line in state.log) + "\n", encoding="utf-8")
+
+    # Test-suite closing steps - automatic per TESTING_BRIEF.md §4.1/§4.2 ("wire into the run
+    # workflow so a run produces it automatically"). Both tools are lean (stdlib-only, read the
+    # draw-audit log + character files already on disk) and no-op cleanly if this run was unseeded/
+    # free (they still report machinery conformance and derivation coverage either way).
+    test_report_lines = []
+    conformance_out = call_test("conformance_report.py", ["--root", str(ROOT)])
+    test_report_lines.append(conformance_out)
+    derivation_out = call_test("measure_derivation.py", ["--root", str(ROOT)])
+    test_report_lines.append(derivation_out)
+    print(conformance_out)
+    print(derivation_out)
+
+    LOG_PATH.write_text(
+        "# Generation log\n\n" + "\n".join(f"- {line}" for line in state.log) + "\n\n"
+        + "## Test suite\n\n" + "\n\n".join(test_report_lines) + "\n",
+        encoding="utf-8",
+    )
 
     if args.living_pool_out:
         Path(args.living_pool_out).write_text(json.dumps(state.living, indent=2) + "\n", encoding="utf-8")
+
+    run_manifest.finalize(ROOT, outputs={"generation_log": str(LOG_PATH), "snapshot": str(SNAPSHOT_PATH)}, passes_actually_run=ran)
 
     max_gen = max(state.generation.values(), default=0)
     print()
@@ -425,6 +463,7 @@ def main() -> None:
     print(f"pending language manifest: {PENDING_PATH}")
     print(f"log: {LOG_PATH}")
     print(f"snapshot (for simulate_tally.py report): {SNAPSHOT_PATH}")
+    print(f"run manifest: {ROOT / run_manifest.MANIFEST_FILENAME}")
     if args.living_pool_out:
         print(f"living pool written: {args.living_pool_out}")
 

@@ -457,7 +457,7 @@ def normalize_experience_entry(entry):
     return str(entry), None
 
 
-def draw_inherited_experience(parent_a_exp: list, parent_b_exp: list) -> list:
+def draw_inherited_experience(parent_a_exp: list, parent_b_exp: list, birth_pass: int | None = None) -> list:
     combined = [normalize_experience_entry(e) for e in (parent_a_exp or []) + (parent_b_exp or [])]
     combined = list(dict.fromkeys(combined))  # de-duplicated by (text, about) pair
     if not combined:
@@ -467,10 +467,14 @@ def draw_inherited_experience(parent_a_exp: list, parent_b_exp: list) -> list:
     if k <= 0:
         return []
     chosen = random.sample(combined, min(k, len(combined)))
+    produced_by = {"scene_id": None, "pass_number": birth_pass} if birth_pass is not None else None
     result = []
     for text, about in chosen:
         wrapped = f"Grew up hearing: {text}"
-        result.append({"text": wrapped, "about": about} if about else wrapped)
+        entry = {"text": wrapped, "about": about} if about else {"text": wrapped}
+        if produced_by:
+            entry["produced_by"] = produced_by
+        result.append(entry if (about or produced_by) else wrapped)
     return result
 
 
@@ -655,6 +659,7 @@ def main() -> None:
     inherited_experience = draw_inherited_experience(
         parent_a.get("knowledge", {}).get("experience", []),
         parent_b.get("knowledge", {}).get("experience", []),
+        birth_pass=args.pass_number,
     )
 
     inherited_strength, inherited_quality = inherit_relationships(parent_a, parent_b, exclude={a_key, b_key})
@@ -719,7 +724,10 @@ def main() -> None:
     for parent_key, parent_char, other_name in ((a_key, parent_a, name_b), (b_key, parent_b, name_a)):
         parent_char["last_reproduced_pass"] = args.pass_number
         parent_char.setdefault("knowledge", {}).setdefault("experience", [])
-        parent_char["knowledge"]["experience"].append(f"Had a child with {other_name}, named {args.name}.")
+        parent_char["knowledge"]["experience"].append({
+            "text": f"Had a child with {other_name}, named {args.name}.",
+            "produced_by": {"scene_id": None, "pass_number": args.pass_number},
+        })
         save_char(parent_key, parent_char)
 
     # Circle: reuse notify_death.py's own logic, unioned across both parents. Excludes the new child's
@@ -758,9 +766,10 @@ def main() -> None:
     for k in notified:
         notified_char = load_char(k)
         notified_char.setdefault("knowledge", {}).setdefault("experience", [])
-        notified_char["knowledge"]["experience"].append(
-            f"Heard that {name_a} and {name_b} now have a child, {args.name}."
-        )
+        notified_char["knowledge"]["experience"].append({
+            "text": f"Heard that {name_a} and {name_b} now have a child, {args.name}.",
+            "produced_by": {"scene_id": None, "pass_number": args.pass_number},
+        })
         save_char(k, notified_char)
 
     print(f"born: {key} ({args.name})")

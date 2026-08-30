@@ -258,6 +258,7 @@ def main() -> None:
                          help="P1 is visiting P2 because of an already-resolved unexpired lead")
     args = parser.parse_args()
 
+    lib.rng_context.set_current_pass(args.pass_number)
     p1, p2 = args.pair[0].lower(), args.pair[1].lower()
     brief = run_pre_scene(p1, p2, args.pass_number, forced_visit=args.forced_visit)
 

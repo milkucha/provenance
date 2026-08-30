@@ -21,6 +21,49 @@ and open questions that were live at a given point, even ones later settled else
 
 ---
 
+### 2026-08-30 — Test suite built: RNG seeding, run manifests, draw audit log, three measurement instruments
+
+Implemented `TESTING_BRIEF.md` (vault-side `projects/provenance/`, condensing the `REFLECTIONS.md`
+design conversation) end-to-end in one session: RNG seeding (`scripts/lore/rng_context.py`, off by
+default — a run stays free/unseeded unless a seed is explicitly requested), a run manifest
+(`scripts/lore/run_manifest.py`) and append-only draw-audit log, `knowledge.experience` provenance
+(`produced_by`), and three measurement tools under a new `scripts/test/` (mirroring the existing
+`scripts/lore`/`scripts/minecraft` split): `conformance_report.py` + `measure_derivation.py` (wired
+automatically into `/simulate`/`/generate`'s closing step), and the user-invoked
+`measure_drift.py`/`measure_divergence.py`/`/taste`.
+
+Two design substitutions worth remembering, since they read against the letter of the brief:
+**retelling genealogy reuses the existing `derived_from` field** (already exactly the edge needed,
+just never validated) instead of adding a redundant `retold_from` field; **world-seed identity is the
+git commit a run's worktree branches from**, not a new content-hash scheme, since
+`simulate_setup_worktree.py` already always branches from `HEAD` under an uncommitted-changes guard.
+
+Two things found and fixed along the way, both pre-existing and unrelated to the brief itself:
+`build_source_index.py`'s `load_categories()` crashed on this branch's own stripped `encodings.json`
+(used `_get_path` instead of the file's own `_safe_get_path` helper for an optional nested path) —
+fixed, since it blocked `measure_derivation.py` outright. And this branch (`provenance-bare`) turns
+out to have **no lore content at all** — commit `0eb31ea` stripped every character/hearsay/tale for a
+"shippable bare-engine branch," which the brief's own acceptance criterion #3 (the 325/331-unlinked
+corpus) doesn't account for; verified instead against a scratch checkout of `4fe6767`, the last commit
+with the real corpus.
+
+Also resolved this session, unrelated to the test suite: a stashed `/enact` scene (Kulkilo × Medusan)
+turned out to reference a character pair and two concepts that exist on `survival-arc-test` but never
+made it into this branch's merge — see the entry below. Re-stashed rather than committed or
+backfilled, per the user's call.
+
+### 2026-08-30 — Orphaned stash surfaced from the `survival-arc-test` merge
+
+A stashed hearsay scene (Kulkilo × Medusan, at Tyrnea's university) turned out to reference a
+character pair and two concepts (`medusan_algae_archive`, `kulkilo_apprentice`) that exist on
+`survival-arc-test` but never made it into `provenance-bare` — the survival-mechanism merge (see the
+entry below) apparently carried the architecture over without this particular cast/scene. The scene
+itself doesn't exist on `survival-arc-test` either, so it's stash-only work, presumably from a
+worktree run against that branch's state. Flagged rather than silently committed or backfilled, per
+`PRINCIPLES.md`; the user's call was to drop it (re-stashed rather than deleted outright, so it's
+still recoverable) instead of pulling the missing characters/concepts over. Open: the test-suite
+implementation brief (vault-side `REFLECTIONS.md`) is queued next, pending the vault path.
+
 ### 2026-08-28 — Survival mechanism built (merged in from `survival-arc-test`)
 
 Characters now spend a pass surviving (work, replenish personal energy and the local wealth pool) or

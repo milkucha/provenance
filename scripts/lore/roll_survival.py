@@ -41,9 +41,9 @@ Usage:
 
 import argparse
 import json
-import random
 import sys
 from pathlib import Path
+from random import Random
 
 SCRIPTS_DIR = Path(__file__).resolve().parent
 ROOT = SCRIPTS_DIR.parent.parent
@@ -114,7 +114,8 @@ def arc_pressure(character: dict, key: str) -> float:
     return max(0.0, min(1.0, pressure))
 
 
-def roll(character: dict, key: str, home_location: str) -> dict:
+def roll(character: dict, key: str, home_location: str, rng: Random | None = None) -> dict:
+    rng = rng or Random()
     arc = character.get("arc") or {}
     if arc.get("resolution") != "ongoing":
         return {"choice": "survive", "reason": "no_ongoing_arc", "odds_used": None}
@@ -134,7 +135,7 @@ def roll(character: dict, key: str, home_location: str) -> dict:
     pct -= w["affinity_obligation"] * affinity
     pct = max(_S["odds_percent"]["min"], min(_S["odds_percent"]["max"], pct))
 
-    choice = "arc" if random.random() < (pct / 100.0) else "survive"
+    choice = "arc" if rng.random() < (pct / 100.0) else "survive"
     return {
         "choice": choice, "reason": None, "odds_used": round(pct, 1),
         "energy": energy, "arc_pressure": round(pressure, 2),
@@ -146,6 +147,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--key", required=True)
     parser.add_argument("--location", required=True, help="This character's own home location (their `location` field), not the pass's eventual resolved location")
+    parser.add_argument("--seed", type=int, default=None, help="Optional seed, for a reproducible roll")
     args = parser.parse_args()
 
     key = args.key.lower()
@@ -155,7 +157,7 @@ def main() -> None:
     with open(char_path, encoding="utf-8") as f:
         character = json.load(f)
 
-    result = roll(character, key, args.location)
+    result = roll(character, key, args.location, rng=Random(args.seed))
     print(f"choice: {result['choice']}")
     if result["reason"]:
         print(f"reason: {result['reason']}")

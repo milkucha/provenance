@@ -23,9 +23,9 @@ Usage:
 """
 
 import argparse
-import random
 import sys
 from pathlib import Path
+from random import Random
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import tuning  # noqa: E402
@@ -37,10 +37,12 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--leads", nargs="+", required=True, help="Open lead target key(s) on this character's file")
     parser.add_argument("--odds", type=float, default=_DEFAULT_ODDS, help=f"Percent chance the selected lead gets followed this pass (default {_DEFAULT_ODDS}, from _lore/tuning.json)")
+    parser.add_argument("--seed", type=int, default=None, help="Optional seed, for a reproducible roll")
     args = parser.parse_args()
 
-    lead = random.choice(args.leads)
-    followed = random.random() < (args.odds / 100.0)
+    rng = Random(args.seed)
+    lead = rng.choice(args.leads)
+    followed = rng.random() < (args.odds / 100.0)
     print(f"lead: {lead}")
     print(f"followed: {'true' if followed else 'false'}")
 

@@ -27,9 +27,9 @@ Usage:
 """
 
 import argparse
-import random
 import sys
 from pathlib import Path
+from random import Random
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import tuning  # noqa: E402
@@ -44,6 +44,7 @@ def main() -> None:
     parser.add_argument("--p2", required=True)
     parser.add_argument("--p1-choice", choices=["survive", "arc", "none"], default="none")
     parser.add_argument("--p2-choice", choices=["survive", "arc", "none"], default="none")
+    parser.add_argument("--seed", type=int, default=None, help="Optional seed, for a reproducible roll")
     args = parser.parse_args()
 
     # Odds that p1 is home, shifted toward whichever participant leaned "survive". If both (or
@@ -55,7 +56,8 @@ def main() -> None:
         odds_p1_home -= _SHIFT
     odds_p1_home = max(_MIN_ODDS, min(_MAX_ODDS, odds_p1_home))
 
-    home = args.p1 if random.random() < (odds_p1_home / 100.0) else args.p2
+    rng = Random(args.seed)
+    home = args.p1 if rng.random() < (odds_p1_home / 100.0) else args.p2
     visiting = args.p2 if home == args.p1 else args.p1
     print(f"home: {home}")
     print(f"visiting: {visiting}")
