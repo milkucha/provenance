@@ -21,6 +21,24 @@ and open questions that were live at a given point, even ones later settled else
 
 ---
 
+### 2026-08-28 — Survival mechanism built (merged in from `survival-arc-test`)
+
+Characters now spend a pass surviving (work, replenish personal energy and the local wealth pool) or
+pursuing their arc (extra personal cost, draws the pool instead) — a weighted roll, not free choice,
+same "skew, never decide" shape as `roll_contested.py`. New: `wealth_lib.py`, `roll_survival.py`,
+`apply_survival.py`, `apply_upkeep.py`. Wired into both `simulate_pass_brief.py` and
+`simulate_generate_population.py`: survival rolled before home/visit (and now skews it), applied
+after the pass's location resolves, arc advancement gated on the primacy winner having actually
+chosen "arc" this pass, needs/provides gated on the location's wealth. Energy hitting 0 is a second,
+independent death vector alongside the existing rolled lifespan.
+
+Designed and built on `survival-arc-test` (a branch off `provenance-standalone`, since it needed
+folding onto a real character cast to test against) — this entry carries the architecture over into
+`provenance-bare`; the design write-up and the branch's own test-run notes stay on `standalone`.
+Verified end-to-end against the real Tyrnea cast before merging (a starvation death fired correctly
+through the full death procedure). Nothing tuned yet — every weight, threshold, and cost is a first
+guess, flagged as such throughout `tuning.json`.
+
 ### 2026-08-28 — `/simulate` Step 4 causal reorder: primacy, location, and reproduction timing all shift (implemented)
 
 User hand-redrew the repo's own auto-generated `diagrams/simulate-pass.html` in Coggle, reordering it

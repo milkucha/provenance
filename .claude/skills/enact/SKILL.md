@@ -214,17 +214,30 @@ call, since there's no lead-tracking pool to have resolved one against.
 This one call runs, in order (causal order rewritten 2026-08-28 design debrief — see CHRONICLE.md's
 matching entry for the full reasoning): partner tracking (both directions, unconditional bookkeeping
 the moment the pair is fixed — moved to the front; has nothing to do with anything decided below),
-who's home vs visiting (`roll_home_visit.py`, a flat coin flip for now — **not yet weighted by
-anything**; a not-yet-built survival-pressure mechanism is meant to eventually pull this odds one way
-or another, see `TODO.md`'s "survival mechanism" entry — decided *before* any routine is rolled, not
-derived afterward by comparing two independently-rolled routines), the routine roll (**only for the
+**survival** (`roll_survival.py`, one independent roll per participant, against each one's own home
+`location` — survive (work, replenish personal energy, feed the local wealth pool) or pursue their
+arc (extra personal cost, draws the pool instead) — see `TODO.md`'s "Survival mechanism" entry for
+the full math; energy and pool effects are applied once the pass's actual location is known, a few
+steps below), who's home vs visiting (`roll_home_visit.py` — **skewed by the survival choice just
+rolled**: a participant who chose to survive leans toward staying home to do it, arc/no-ongoing-arc
+contributes no skew — decided *before* any routine is rolled, not derived afterward by comparing two
+independently-rolled routines), the routine roll (**only for the
 home participant** — the visiting participant simply enters whatever context the home participant's
 own roll produces; no more "coincidence" mode, since there's no second independent routine left for
 it to coincide with), the context/texture lookup (a plain `_lore/contexts.json` dict lookup, folded
-into the same call, no script of its own), arc primacy (whose arc leads this scene — decided *after*
+into the same call, no script of its own), **survival effects applied** (`apply_upkeep.py` once for
+the resolved location, then `apply_survival.py` once per participant — the roll already happened
+above, this just writes the energy/pool consequence to the location this pass actually landed on,
+which may not be either participant's home), arc primacy (whose arc leads this scene — decided *after*
 and *independently of* who's home vs visiting; the visiting participant's arc can still be the one
-that leads), the needs/provides motivation check (keyed to the **arc-primacy winner's** own arc,
-whichever participant that is — not "the traveler's" as a fixed role), the contested roll (only if
+that leads, though it only actually advances if the primacy winner chose "arc" in the survival roll
+above — choosing to survive means nothing about that character's arc moves this pass, win or lose the
+primacy coin flip; losing primacy despite having chosen "arc" still costs the full energy/pool price,
+deliberately — a real gamble, not wasted bookkeeping), the needs/provides motivation check (keyed to
+the **arc-primacy winner's** own arc, whichever participant that is — not "the traveler's" as a fixed
+role — and now also gated on the resolved location's wealth: `wealth_per_capita` must clear
+`provides_wealth_threshold`, or a starved location can't support anyone's ambition regardless of
+context match), the contested roll (only if
 motivated; base odds 15%, `_lore/tuning.json` `odds_percent.contested` — **relationship-aware as of
 2026-08-28**: once the peer's own established tie to the primacy winner crosses `partner_threshold`
 (5), its `partners_quality` sign shifts the odds by `contested_relationship_shift` (10) — positive
@@ -537,6 +550,25 @@ how they take it.
 find out later only the ordinary way: sampled into a new character's education, or told by someone
 from the circle in a future scene (subject to the usual `lineage_coin.py` traceable/untraceable
 rule on that retelling, same as any other claim).
+
+**6b. A SECOND, independent death check — energy, from the survival mechanism.** `.simulate_pass_brief.json`'s
+`survival` object (written by Step 4) already knows, pre-scene, whether either participant's energy
+hit 0 this pass (`survival.<slug>.died`) — check it for both participants here, even if point 6 just
+ran for one of them (both vectors can fire on different participants the same pass). For anyone it
+flags, run the exact same `record_death.py` procedure as point 6, just with the cause already known:
+
+```bash
+py scripts/lore/record_death.py <npc_key> --cause "exhaustion/starvation - energy depleted"
+```
+
+Same shock-candidate resolution afterward as point 6. `record_death.py` refuses to run twice on an
+already-`deceased` character, so if a character somehow qualifies through both vectors in the same
+pass, whichever check runs first wins and the second is a safe no-op — don't special-case that
+yourself. `/generate` mode (`simulate_generate_population.py`) already does both checks automatically
+in its own post-scene block; this point exists for the interactive/`/simulate` path specifically,
+since Step 4 deliberately only reports the fact and never acts on it itself (same split as horizon.py
+vs. record_death.py above — a mechanical fact stays separate from the judgment-adjacent act of
+recording it).
 
 **7. Death-legacy roll — only when a death was just recorded, this was a two-NPC scene (Step 4
 ran), and the death read structurally early.** "Early" means `horizon.py`'s band at the moment of
