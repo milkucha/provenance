@@ -29,7 +29,7 @@
     "label": "Provenance",
     "kind": "root",
     "path": ".",
-    "size": 1236382,
+    "size": 1271624,
     "degree": 16
    },
    {
@@ -45,7 +45,7 @@
     "label": "CHRONICLE.md",
     "kind": "doc",
     "path": "CHRONICLE.md",
-    "size": 17990,
+    "size": 19367,
     "degree": 1
    },
    {
@@ -85,7 +85,7 @@
     "label": "TODO.md",
     "kind": "doc",
     "path": "TODO.md",
-    "size": 1003,
+    "size": 996,
     "degree": 1
    },
    {
@@ -101,7 +101,7 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
-    "size": 206645,
+    "size": 209948,
     "degree": 7
    },
    {
@@ -157,7 +157,7 @@
     "label": "skills",
     "kind": "dir",
     "path": ".claude/skills",
-    "size": 190545,
+    "size": 193848,
     "degree": 13
    },
    {
@@ -197,7 +197,7 @@
     "label": "enact",
     "kind": "dir",
     "path": ".claude/skills/enact",
-    "size": 53111,
+    "size": 56414,
     "degree": 2
    },
    {
@@ -205,7 +205,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/enact/SKILL.md",
-    "size": 53111,
+    "size": 56414,
     "degree": 1
    },
    {
@@ -357,7 +357,7 @@
     "label": "_lore",
     "kind": "dir",
     "path": "_lore",
-    "size": 43716,
+    "size": 48480,
     "degree": 8
    },
    {
@@ -373,7 +373,7 @@
     "label": "encodings.json",
     "kind": "lore",
     "path": "_lore/encodings.json",
-    "size": 13685,
+    "size": 15816,
     "degree": 1
    },
    {
@@ -381,7 +381,7 @@
     "label": "tuning.json",
     "kind": "lore",
     "path": "_lore/tuning.json",
-    "size": 2811,
+    "size": 4217,
     "degree": 1
    },
    {
@@ -397,7 +397,7 @@
     "label": "characters",
     "kind": "dir",
     "path": "_lore/characters",
-    "size": 5197,
+    "size": 6424,
     "degree": 5
    },
    {
@@ -421,7 +421,7 @@
     "label": "hearsay.md",
     "kind": "lore",
     "path": "_lore/characters/hearsay.md",
-    "size": 2272,
+    "size": 3499,
     "degree": 1
    },
    {
@@ -1276,7 +1276,7 @@
     "label": "scripts",
     "kind": "dir",
     "path": "scripts",
-    "size": 426602,
+    "size": 452407,
     "degree": 5
    },
    {
@@ -1324,8 +1324,8 @@
     "label": "lore",
     "kind": "dir",
     "path": "scripts/lore",
-    "size": 330463,
-    "degree": 50
+    "size": 356268,
+    "degree": 54
    },
    {
     "id": "file:scripts/lore/add_categories_schema.py",
@@ -1365,6 +1365,22 @@
     "kind": "script",
     "path": "scripts/lore/apply_language_layer.py",
     "size": 10971,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/apply_survival.py",
+    "label": "apply_survival.py",
+    "kind": "script",
+    "path": "scripts/lore/apply_survival.py",
+    "size": 3746,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/apply_upkeep.py",
+    "label": "apply_upkeep.py",
+    "kind": "script",
+    "path": "scripts/lore/apply_upkeep.py",
+    "size": 1770,
     "degree": 1
    },
    {
@@ -1580,7 +1596,7 @@
     "label": "roll_home_visit.py",
     "kind": "script",
     "path": "scripts/lore/roll_home_visit.py",
-    "size": 2078,
+    "size": 3423,
     "degree": 1
    },
    {
@@ -1616,6 +1632,14 @@
     "degree": 1
    },
    {
+    "id": "file:scripts/lore/roll_survival.py",
+    "label": "roll_survival.py",
+    "kind": "script",
+    "path": "scripts/lore/roll_survival.py",
+    "size": 7659,
+    "degree": 1
+   },
+   {
     "id": "file:scripts/lore/sample_grounding.py",
     "label": "sample_grounding.py",
     "kind": "script",
@@ -1636,7 +1660,7 @@
     "label": "simulate_generate_population.py",
     "kind": "script",
     "path": "scripts/lore/simulate_generate_population.py",
-    "size": 20973,
+    "size": 23877,
     "degree": 1
    },
    {
@@ -1644,7 +1668,7 @@
     "label": "simulate_pass_brief.py",
     "kind": "script",
     "path": "scripts/lore/simulate_pass_brief.py",
-    "size": 14803,
+    "size": 18418,
     "degree": 1
    },
    {
@@ -1652,7 +1676,7 @@
     "label": "simulate_pass_lib.py",
     "kind": "script",
     "path": "scripts/lore/simulate_pass_lib.py",
-    "size": 12774,
+    "size": 14100,
     "degree": 1
    },
    {
@@ -1709,6 +1733,14 @@
     "kind": "script",
     "path": "scripts/lore/update_character.py",
     "size": 11348,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/wealth_lib.py",
+    "label": "wealth_lib.py",
+    "kind": "script",
+    "path": "scripts/lore/wealth_lib.py",
+    "size": 3440,
     "degree": 1
    },
    {
@@ -2757,6 +2789,18 @@
    },
    {
     "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/apply_survival.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/apply_upkeep.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/backfill_lived.py",
     "rel": "contains",
     "weight": 1
@@ -2943,6 +2987,12 @@
    },
    {
     "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/roll_survival.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/sample_grounding.py",
     "rel": "contains",
     "weight": 1
@@ -3015,6 +3065,12 @@
    },
    {
     "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/wealth_lib.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/write_arc.py",
     "rel": "contains",
     "weight": 1
@@ -3062,7 +3118,7 @@
     "kind": "layer",
     "note": "skills + scripts + supporting patterns",
     "tier": 2,
-    "degree": 71
+    "degree": 75
    },
    {
     "id": "layer:3",
@@ -3278,6 +3334,22 @@
     "kind": "script",
     "tier": 2,
     "file": "scripts/lore/apply_language_layer.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/apply_survival.py",
+    "label": "apply_survival.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/apply_survival.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/apply_upkeep.py",
+    "label": "apply_upkeep.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/apply_upkeep.py",
     "degree": 1
    },
    {
@@ -3529,6 +3601,14 @@
     "degree": 1
    },
    {
+    "id": "script:lore/roll_survival.py",
+    "label": "roll_survival.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/roll_survival.py",
+    "degree": 1
+   },
+   {
     "id": "script:lore/sample_grounding.py",
     "label": "sample_grounding.py",
     "kind": "script",
@@ -3622,6 +3702,14 @@
     "kind": "script",
     "tier": 2,
     "file": "scripts/lore/update_character.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/wealth_lib.py",
+    "label": "wealth_lib.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/wealth_lib.py",
     "degree": 1
    },
    {
@@ -3860,6 +3948,18 @@
    },
    {
     "source": "layer:2",
+    "target": "script:lore/apply_survival.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/apply_upkeep.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
     "target": "script:lore/backfill_lived.py",
     "rel": "holds",
     "weight": 1
@@ -4046,6 +4146,12 @@
    },
    {
     "source": "layer:2",
+    "target": "script:lore/roll_survival.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
     "target": "script:lore/sample_grounding.py",
     "rel": "holds",
     "weight": 1
@@ -4113,6 +4219,12 @@
    {
     "source": "layer:2",
     "target": "script:lore/update_character.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/wealth_lib.py",
     "rel": "holds",
     "weight": 1
    },
@@ -4291,5 +4403,5 @@
   "nodes": [],
   "edges": []
  },
- "generated": "2026-08-28"
+ "generated": "2026-08-30"
 }
