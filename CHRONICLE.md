@@ -21,6 +21,34 @@ and open questions that were live at a given point, even ones later settled else
 
 ---
 
+### 2026-08-30 — `survival-arc-test`'s round-2/round-3 architecture work merged in (this branch)
+
+`survival-arc-test` had a real, never-committed 21-pass pilot of the survival mechanism sitting
+uncommitted, plus genuine engine improvements found while running it. Ported the architecture only,
+not the pilot's own character/scene data (per the user's explicit instruction): three new driver
+scripts (`pass_prep.py`, `pass_record.py`, `pass_apply.py` — the token-efficiency pattern
+`LAB_REPORT.md` describes as "written ad-hoc, never promoted," rebuilt for the current, larger
+mechanism), a bug fix in `simulate_pass_brief.py` (the primacy winner's energy was silently getting
+reverted on every gate-hit pass), a pool-exhaustion fix in `apply_survival.py`/`wealth_lib.py`
+(`arc_extra_cost_scarce`, a wealth-trend input `scarcity_pressure` for `roll_survival.py`), a dedup
+bug fix in `generate_offspring.py`, the retuned `tuning.json` values a real 50-pass playtest
+surfaced, a house-wide principle in `PRINCIPLES.md` ("script everything that can be scripted; prose
+only where a judgment call genuinely needs it"), and a full redesign of `/simulate` Step 3: the
+orchestrator now runs every mechanical script itself and dispatches a subagent only to write scene
+text with no tool access at all, eliminating the relative-path-leak failure class entirely.
+
+This branch's own `simulate_pass_brief.py`/`roll_survival.py`/etc. turned out to be byte-identical to
+`survival-arc-test`'s own base commit (it branched directly off here, and nothing here had touched
+these particular files since) — so unlike the equivalent port to `provenance-bare` earlier today
+(which needed hand-merging against that branch's own test-suite work touching the same files), this
+was a clean, direct application of the worktree's own diffs, verified via `git diff` against
+`survival-arc-test`'s base commit coming back empty for every target file before copying. `TODO.md`'s
+matching debrief notes applied the same way, via `git apply` against the same clean base.
+
+Not ported: the pilot's actual character files, scene transcripts, and pass-by-pass decision/hearsay
+logs — that data stays in the `survival-arc-test` worktree, untouched. `LAB_REPORT.md` is unaffected
+here (this branch keeps the real one; only `provenance-bare` dropped it, being the engine-only line).
+
 ### 2026-08-28 — Survival mechanism built on `survival-arc-test`
 
 Implemented the mechanism designed earlier the same day (see the entry directly below) on the new

@@ -55,6 +55,71 @@ every character file). Every location has a `wealth` pool in the new `_lore/weal
   (everything above is a first guess, explicitly flagged as such throughout the design conversation),
   is still ahead.
 
+**Round-2 debrief (2026-08-29, 50 passes, 0 deaths, 2 births) — retuned and extended:**
+- **Wealth pool went deeply negative (-350.5) with zero mechanical consequence** — `apply_survival.py`
+  let `arc` draws take the pool arbitrarily negative, and `apply_upkeep.py`'s per-capita drain
+  (`population_of()` counts every living character registered at the location, not just the active
+  cast — 13 at Tyrnea, not 10) ran unconditionally every pass regardless of anyone's choices. Root
+  cause of the deficit's *rate*: `survive_take`'s earlier 1→2 retune silently zeroed survive's own
+  pool contribution (`survive_contribute(2) - survive_take(2) = 0`, when the intent was +1) — nobody
+  re-balanced the pool side after fixing the personal-energy side. Fixed: `survive_contribute` 2→3
+  (restores +1 pool/survive without touching personal energy), `upkeep_rate_per_capita` 0.5→0.15
+  (0.5 drained ~6.5/pass against at most 2 active participants' worth of contribution — structurally
+  unbeatable). Still expected to need another look after a full run at the new numbers.
+- **Arc draws on an empty pool now cost the character instead of driving the pool further negative**
+  (`arc_extra_cost_scarce`, 2, replaces `arc_extra_cost` when `pool < arc_pool_draw`; reported back as
+  `scarce: true` so the brief can hand it to the model as a real story fact, not a silent number
+  change) — the town having nothing left to give is now a real, felt, in-fiction consequence, per
+  the user's own framing: "if there's nothing in the town, they pay with their own life."
+- **New anticipation input, `scarcity_pressure`** (weight 15) — `roll_survival.py` now also skews on
+  whether the pool's per-capita wealth has been *declining* since `apply_upkeep.py`'s last checkpoint
+  for that location (`wealth_lib.wealth_trend()`/`checkpoint_wealth_trend()`), not just its current
+  level — lets characters anticipate trouble ahead instead of only reacting to it. Deliberately
+  one-directional: a worsening trend pushes toward "survive," a recovering one applies no extra pull
+  toward "arc."
+- **Bond quality (`record_bond_quality.py`, `partners_quality{}`) confirmed working as designed** —
+  briefly suspected broken (checked two characters whose interactions happened to be `mixed`/`neutral`
+  this run, which correctly produce no change) before verifying it against characters with an actual
+  `help`/`hinder` gate hit on file. It's fully automatic, wired inside `simulate_pass_brief.py` itself,
+  no orchestrator or subagent involvement needed — `BOND_QUALITY_DELTA = {"help": 1, "hinder": -1,
+  "mixed": 0, "neutral": 0}`, keyed off `check_arc_alignment.py`'s own `inclined` result.
+- **Childhood/age — resolved as a real open question, not a judgment call:** there was no design
+  decision anywhere for what a character "is" between birth and `child_cooldown_passes` clearing (a
+  newborn's inherited `routines` are literal, verbatim copies of a parent's own adult routine text —
+  "closes the stall," "lectures to students" — which reads as nonsense for a character who by any
+  reasonable pass-to-time mapping is an infant). Resolved by the user directly: **the cooldown period
+  *is* the childhood** — a character exists, may be known of or talked about, but never appears in a
+  scene during it. Once `child_cooldown_passes` clears and `pick_pair.py` admits them to the pool,
+  they are an ordinary adult participant from that pass on, full stop — no infant handling, no
+  parent-carries-them pattern. (One round-2 session had, before this was resolved, treated a
+  newly-eligible child as a nonverbal infant carried by a parent across three scenes past their own
+  cooldown — kept as a design note, not something retroactively rewritten.)
+- **Architecture: split content-generation from mechanism-execution.** The subagent-per-pass design
+  used through round 2 had one subagent both write the scene AND drive every `py scripts/lore/...`
+  call itself — auditing an actual run found this cost 3-6x the intended tool calls per pass (JSON
+  schema retries, unnecessary exploration) on top of re-sending a long, rule-heavy prompt from scratch
+  every single pass, with no cache reuse across passes. Redesigned 2026-08-29: the **enacter** gets
+  only the brief and standing writing rules, no tools at all, and returns one structured reply (scene
+  + hearsay claims + experience/grounded_experience/criterion_move) — this is the one genuine judgment
+  call in the whole pipeline (writing prose, and reading a scene closely enough to judge a criterion
+  move), and it's now the only thing left needing a language model, cheap enough in principle to
+  eventually run on something small/local. The **orchestrator** does everything else itself,
+  deterministically: `pass_prep.py`, writing the scene file, building both driver scripts' JSON
+  payloads from the enacter's reply, calling `pass_record.py`/`pass_apply.py`, composing a newborn's
+  name on `reproduces: true`. See `.claude/skills/simulate/SKILL.md` Step 3 for the full spec.
+- **Correction, same day, 20 passes into round 3's own first run under the new split:** the redesign
+  above was only half-finished in practice. The orchestrator was still hand-composing the enacter's
+  brief as prose paragraphs every pass ("Pass 20. Location: the road between Tyrnea and the harvest
+  fields...") instead of pasting `pass_prep.py`'s own JSON output directly — pure overhead, spent in
+  the orchestrator's own tokens, restating facts a script had already computed. Caught by the user,
+  who also pointed out the character-criterion/arc-premise fetch (a separate ad-hoc `py -c` call every
+  pass) was the same class of gap. Both fixed: `pass_prep.py` now also returns a `characters` block
+  (criterion + arc premise for both participants) in the same call, and the enacter dispatch is now a
+  direct paste of that JSON plus a fixed instruction preamble plus, only when genuinely needed, a
+  1-2 sentence director's note — never a prose retelling. Written up as a standing design principle in
+  `.claude/PRINCIPLES.md`: **script everything that can be scripted; prose only where a judgment call
+  genuinely needs it.** Round 2's own 50 passes, and round 3's first 20, predate this fix.
+
 ## Knowledge mutation system (2026-08-01)
 
 Implemented: Step 5 of `/enact` now records hearsay with mutations applied. Each character's

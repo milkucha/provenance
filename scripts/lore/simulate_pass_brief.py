@@ -212,6 +212,14 @@ def run_pre_scene(p1: str, p2: str, pass_number: int, forced_visit: bool = False
             else:
                 tally_result = "ongoing"
                 notes.append(f"{primacy}'s arc: {arc_outcome}")
+            # primary_char was loaded before apply_survival() ran its own separate read-modify-write
+            # on this same file (line ~116) - without re-syncing energy here first, this save would
+            # silently revert the primacy winner's energy back to its pre-pass value on every
+            # gate-hit pass, erasing the survival mechanism's whole cost exactly where it matters most
+            # (confirmed the hard way, round-3 debrief 2026-08-29: found via a brief/file mismatch -
+            # the brief reported energy 1, the file still showed 4, on a gate-hit pass).
+            primary_effect = p1_effect if primacy == p1 else p2_effect
+            primary_char["energy"] = primary_effect["energy"]
             lib.save_char(primacy, primary_char)
 
     # Consequence slot - only surfaced on a contested scene that resolved "hinder"

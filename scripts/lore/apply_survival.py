@@ -9,12 +9,14 @@ Costs (design session 2026-08-28, all in _lore/tuning.json's `survival` block):
   - Every pass: -1 energy, unconditional (`base_cost`).
   - **survive**: +1 energy taken back from the pool (`survive_take`), which the character also
     contributes +2 to (`survive_contribute`) - net personal 0, net pool +1 before upkeep.
-  - **arc**: -1 extra energy (`arc_extra_cost`, net personal -2), and draws 2 from the pool
-    uncontributed (`arc_pool_draw`) - ties arc-pursuit to the needs/provides wealth gate
-    (check_needs_provides.py's caller in simulate_pass_brief.py): a starved location can't support
-    it either way. This does NOT include per-capita upkeep - call apply_upkeep.py once per pass per
-    location separately, not once per participant, or the same location gets charged twice in a
-    two-participant pass.
+  - **arc**: draws `arc_pool_draw` (2) from the pool and costs `arc_extra_cost` (1) extra energy -
+    UNLESS the pool doesn't have `arc_pool_draw` to give (design session 2026-08-29), in which case
+    the pool is left untouched (never driven further negative by a draw it can't support) and the
+    character pays `arc_extra_cost_scarce` (2) instead of `arc_extra_cost` - the town has nothing to
+    give, so the cost comes out of the character's own energy instead. Reported back as `scarce:
+    true`, a real story fact the brief can hand the model, not a silent number change. This does NOT
+    include per-capita upkeep - call apply_upkeep.py once per pass per location separately, not once
+    per participant, or the same location gets charged twice in a two-participant pass.
 
 Energy hitting 0 or below is a death, independent of the existing rolled-lifespan clock (horizon.py)
 - a second, separate cause, not merged into it. This script does NOT call record_death.py itself
@@ -61,12 +63,21 @@ def main() -> None:
     pool = wealth_lib.get_wealth(args.location)
 
     energy -= _S["base_cost"]
+    scarce = False
     if args.choice == "survive":
         energy += _S["survive_take"]
         pool += _S["survive_contribute"] - _S["survive_take"]
     else:
-        energy -= _S["arc_extra_cost"]
-        pool -= _S["arc_pool_draw"]
+        if pool >= _S["arc_pool_draw"]:
+            pool -= _S["arc_pool_draw"]
+            energy -= _S["arc_extra_cost"]
+        else:
+            # Nothing left in the pool to draw on - the town has nothing to give, so the cost
+            # comes out of the character instead (arc_extra_cost_scarce replaces, not adds to,
+            # arc_extra_cost). Pool is left untouched, not driven further negative by a draw it
+            # can't actually support.
+            scarce = True
+            energy -= _S["arc_extra_cost_scarce"]
 
     energy = min(energy, _S["energy_cap"])
     character["energy"] = energy
@@ -79,6 +90,7 @@ def main() -> None:
     print(f"energy: {energy}")
     print(f"died: {'true' if died else 'false'}")
     print(f"pool: {round(pool, 2)}")
+    print(f"scarce: {'true' if scarce else 'false'}")
 
 
 if __name__ == "__main__":

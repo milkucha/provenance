@@ -90,3 +90,26 @@ def wealth_per_capita(location: str) -> float:
     if pop == 0:
         return 0.0
     return get_wealth(location) / pop
+
+
+def wealth_trend(location: str) -> float:
+    """Current per-capita wealth minus whatever it was the last time apply_upkeep.py checkpointed
+    this location (checkpoint_wealth_trend(), below) - positive means recovering, negative means
+    declining, 0.0 if no checkpoint exists yet (first time this location is ever touched). Read-only,
+    never advances the checkpoint itself - only apply_upkeep.py does that, once per pass per location,
+    same discipline population_of()'s own lazy-clock precedent already uses."""
+    data = _load()
+    previous = data.get("previous_per_capita", {}).get(location)
+    if previous is None:
+        return 0.0
+    return wealth_per_capita(location) - previous
+
+
+def checkpoint_wealth_trend(location: str) -> None:
+    """Record this location's current per-capita wealth as the new baseline the next
+    wealth_trend() call for it will compare against. Call exactly once per pass per location, from
+    apply_upkeep.py only (the same single once-per-pass-per-location site the upkeep drain itself
+    already uses) - never from roll_survival.py, which only ever reads the trend, not advances it."""
+    data = _load()
+    data.setdefault("previous_per_capita", {})[location] = wealth_per_capita(location)
+    _save(data)
