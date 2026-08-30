@@ -29,7 +29,7 @@
     "label": "Provenance",
     "kind": "root",
     "path": ".",
-    "size": 1386107,
+    "size": 1425281,
     "degree": 15
    },
    {
@@ -45,7 +45,7 @@
     "label": "CHRONICLE.md",
     "kind": "doc",
     "path": "CHRONICLE.md",
-    "size": 25728,
+    "size": 29970,
     "degree": 1
    },
    {
@@ -77,7 +77,7 @@
     "label": "TODO.md",
     "kind": "doc",
     "path": "TODO.md",
-    "size": 6398,
+    "size": 7289,
     "degree": 1
    },
    {
@@ -93,7 +93,7 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
-    "size": 215228,
+    "size": 222227,
     "degree": 8
    },
    {
@@ -157,7 +157,7 @@
     "label": "skills",
     "kind": "dir",
     "path": ".claude/skills",
-    "size": 197713,
+    "size": 204712,
     "degree": 14
    },
    {
@@ -293,7 +293,7 @@
     "label": "simulate",
     "kind": "dir",
     "path": ".claude/skills/simulate",
-    "size": 29893,
+    "size": 36233,
     "degree": 2
    },
    {
@@ -301,7 +301,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/simulate/SKILL.md",
-    "size": 29893,
+    "size": 36233,
     "degree": 1
    },
    {
@@ -341,7 +341,7 @@
     "label": "taste",
     "kind": "dir",
     "path": ".claude/skills/taste",
-    "size": 3621,
+    "size": 4280,
     "degree": 2
    },
    {
@@ -349,7 +349,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/taste/SKILL.md",
-    "size": 3621,
+    "size": 4280,
     "degree": 1
    },
    {
@@ -1116,7 +1116,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": "graphs",
-    "size": 235612,
+    "size": 239002,
     "degree": 2
    },
    {
@@ -1124,7 +1124,7 @@
     "label": "graphifyish",
     "kind": "dir",
     "path": "graphs/graphifyish",
-    "size": 235612,
+    "size": 239002,
     "degree": 3
    },
    {
@@ -1132,7 +1132,7 @@
     "label": "graph.json",
     "kind": "graph",
     "path": "graphs/graphifyish/graph.json",
-    "size": 113588,
+    "size": 115553,
     "degree": 1
    },
    {
@@ -1140,7 +1140,7 @@
     "label": "graphifyish.html",
     "kind": "graph",
     "path": "graphs/graphifyish/graphifyish.html",
-    "size": 122024,
+    "size": 123449,
     "degree": 1
    },
    {
@@ -1292,7 +1292,7 @@
     "label": "scripts",
     "kind": "dir",
     "path": "scripts",
-    "size": 538990,
+    "size": 562642,
     "degree": 6
    },
    {
@@ -1340,8 +1340,8 @@
     "label": "lore",
     "kind": "dir",
     "path": "scripts/lore",
-    "size": 402655,
-    "degree": 59
+    "size": 425433,
+    "degree": 61
    },
    {
     "id": "file:scripts/lore/add_categories_schema.py",
@@ -1428,7 +1428,7 @@
     "label": "build_source_index.py",
     "kind": "script",
     "path": "scripts/lore/build_source_index.py",
-    "size": 22582,
+    "size": 23033,
     "degree": 1
    },
    {
@@ -1472,11 +1472,27 @@
     "degree": 1
    },
    {
+    "id": "file:scripts/lore/enact_preamble.md",
+    "label": "enact_preamble.md",
+    "kind": "script",
+    "path": "scripts/lore/enact_preamble.md",
+    "size": 7333,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/enact_via_ollama.py",
+    "label": "enact_via_ollama.py",
+    "kind": "script",
+    "path": "scripts/lore/enact_via_ollama.py",
+    "size": 12403,
+    "degree": 1
+   },
+   {
     "id": "file:scripts/lore/generate_offspring.py",
     "label": "generate_offspring.py",
     "kind": "script",
     "path": "scripts/lore/generate_offspring.py",
-    "size": 43884,
+    "size": 44690,
     "degree": 1
    },
    {
@@ -1516,7 +1532,7 @@
     "label": "pass_apply.py",
     "kind": "script",
     "path": "scripts/lore/pass_apply.py",
-    "size": 10813,
+    "size": 11634,
     "degree": 1
    },
    {
@@ -1540,7 +1556,7 @@
     "label": "pick_pair.py",
     "kind": "script",
     "path": "scripts/lore/pick_pair.py",
-    "size": 1573,
+    "size": 1610,
     "degree": 1
    },
    {
@@ -1572,7 +1588,7 @@
     "label": "record_hearsay.py",
     "kind": "script",
     "path": "scripts/lore/record_hearsay.py",
-    "size": 8007,
+    "size": 8195,
     "degree": 1
    },
    {
@@ -1604,7 +1620,7 @@
     "label": "rng_context.py",
     "kind": "script",
     "path": "scripts/lore/rng_context.py",
-    "size": 7088,
+    "size": 7232,
     "degree": 1
    },
    {
@@ -1612,7 +1628,7 @@
     "label": "roll_arc_outcome.py",
     "kind": "script",
     "path": "scripts/lore/roll_arc_outcome.py",
-    "size": 3363,
+    "size": 3432,
     "degree": 1
    },
    {
@@ -1620,7 +1636,7 @@
     "label": "roll_arc_primacy.py",
     "kind": "script",
     "path": "scripts/lore/roll_arc_primacy.py",
-    "size": 1082,
+    "size": 1112,
     "degree": 1
    },
    {
@@ -1628,7 +1644,7 @@
     "label": "roll_contested.py",
     "kind": "script",
     "path": "scripts/lore/roll_contested.py",
-    "size": 4418,
+    "size": 4497,
     "degree": 1
    },
    {
@@ -1636,7 +1652,7 @@
     "label": "roll_death_legacy.py",
     "kind": "script",
     "path": "scripts/lore/roll_death_legacy.py",
-    "size": 2621,
+    "size": 2676,
     "degree": 1
    },
    {
@@ -1652,7 +1668,7 @@
     "label": "roll_lead_followup.py",
     "kind": "script",
     "path": "scripts/lore/roll_lead_followup.py",
-    "size": 2382,
+    "size": 2433,
     "degree": 1
    },
    {
@@ -1668,7 +1684,7 @@
     "label": "roll_reproduction.py",
     "kind": "script",
     "path": "scripts/lore/roll_reproduction.py",
-    "size": 2565,
+    "size": 2618,
     "degree": 1
    },
    {
@@ -1676,7 +1692,7 @@
     "label": "roll_routine.py",
     "kind": "script",
     "path": "scripts/lore/roll_routine.py",
-    "size": 1250,
+    "size": 1285,
     "degree": 1
    },
    {
@@ -1692,7 +1708,7 @@
     "label": "run_manifest.py",
     "kind": "script",
     "path": "scripts/lore/run_manifest.py",
-    "size": 5629,
+    "size": 5762,
     "degree": 1
    },
    {
@@ -1740,7 +1756,7 @@
     "label": "simulate_pass_reproduction.py",
     "kind": "script",
     "path": "scripts/lore/simulate_pass_reproduction.py",
-    "size": 4278,
+    "size": 4368,
     "degree": 1
    },
    {
@@ -1844,7 +1860,7 @@
     "label": "test",
     "kind": "dir",
     "path": "scripts/test",
-    "size": 40196,
+    "size": 41070,
     "degree": 6
    },
    {
@@ -1852,7 +1868,7 @@
     "label": "conformance_report.py",
     "kind": "script",
     "path": "scripts/test/conformance_report.py",
-    "size": 12089,
+    "size": 12353,
     "degree": 1
    },
    {
@@ -1860,7 +1876,7 @@
     "label": "measure_derivation.py",
     "kind": "script",
     "path": "scripts/test/measure_derivation.py",
-    "size": 6967,
+    "size": 7125,
     "degree": 1
    },
    {
@@ -1868,7 +1884,7 @@
     "label": "measure_divergence.py",
     "kind": "script",
     "path": "scripts/test/measure_divergence.py",
-    "size": 10974,
+    "size": 11208,
     "degree": 1
    },
    {
@@ -1876,7 +1892,7 @@
     "label": "measure_drift.py",
     "kind": "script",
     "path": "scripts/test/measure_drift.py",
-    "size": 7310,
+    "size": 7472,
     "degree": 1
    },
    {
@@ -1884,7 +1900,7 @@
     "label": "record_tasting.py",
     "kind": "script",
     "path": "scripts/test/record_tasting.py",
-    "size": 2856,
+    "size": 2912,
     "degree": 1
    }
   ],
@@ -2971,6 +2987,18 @@
    },
    {
     "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/enact_preamble.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/enact_via_ollama.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/generate_offspring.py",
     "rel": "contains",
     "weight": 1
@@ -3300,7 +3328,7 @@
     "kind": "layer",
     "note": "skills + scripts + supporting patterns",
     "tier": 2,
-    "degree": 86
+    "degree": 87
    },
    {
     "id": "layer:3",
@@ -3612,6 +3640,14 @@
     "kind": "script",
     "tier": 2,
     "file": "scripts/lore/check_resonance.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/enact_via_ollama.py",
+    "label": "enact_via_ollama.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/enact_via_ollama.py",
     "degree": 1
    },
    {
@@ -4285,6 +4321,12 @@
    {
     "source": "layer:2",
     "target": "script:lore/check_resonance.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/enact_via_ollama.py",
     "rel": "holds",
     "weight": 1
    },
