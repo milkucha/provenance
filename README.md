@@ -309,9 +309,17 @@ and `/enact` still never touches either registry or `data/`. `/embody` and `/spa
     `_lore/contexts.json`, tallied toward advance/stall/reverse/transform/resolve), and — beyond its
     own hearsay/criterion/death machinery — adds reproduction (`roll_reproduction.py`/
     `generate_offspring.py`, a new character file with inherited knowledge and a birth tale) and
-    death legacy (an ongoing arc transferring to someone in the deceased's notified circle).
-    Currently piloted on 6 seeded characters; whether the mechanism is actually producing good
-    results, as opposed to just running, is tracked in `LAB_REPORT.md` — see below. **`/generate`**
+    death legacy (an ongoing arc transferring to someone in the deceased's notified circle). Before
+    home/visit is decided, each drawn participant also rolls **survive** or pursue their **arc**
+    this pass (`roll_survival.py`) — a weighted roll, not free choice: surviving replenishes personal
+    energy and the location's shared `wealth` pool (`_lore/wealth.json`, via `wealth_lib.py`),
+    pursuing the arc costs both instead and skews `roll_home_visit.py` toward staying home.
+    `apply_survival.py`/`apply_upkeep.py` settle the pass's actual energy/wealth changes once the
+    location resolves, and the needs/provides bonus only fires when the location's wealth is
+    actually in surplus. Energy hitting 0 is a second, independent death vector alongside the rolled
+    lifespan. Currently piloted on 6 seeded characters; whether the
+    mechanism is actually producing good results, as opposed to just running, is tracked in
+    `LAB_REPORT.md` — see below. **`/generate`**
     is a separate command for pregenerating a large multi-generation starting population quickly
     rather than a showcase trail of scenes: the same underlying mechanics (routines, arcs,
     reproduction, death) run as one script-driven pass loop with no scene-writing and no subagent
