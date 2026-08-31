@@ -29,7 +29,7 @@
     "label": "Provenance",
     "kind": "root",
     "path": ".",
-    "size": 1457586,
+    "size": 1457999,
     "degree": 16
    },
    {
@@ -101,7 +101,7 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
-    "size": 226929,
+    "size": 227342,
     "degree": 6
    },
    {
@@ -149,7 +149,7 @@
     "label": "skills",
     "kind": "dir",
     "path": ".claude/skills",
-    "size": 209975,
+    "size": 210388,
     "degree": 14
    },
    {
@@ -285,7 +285,7 @@
     "label": "simulate",
     "kind": "dir",
     "path": ".claude/skills/simulate",
-    "size": 40230,
+    "size": 40643,
     "degree": 2
    },
    {
@@ -293,7 +293,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/simulate/SKILL.md",
-    "size": 40230,
+    "size": 40643,
     "degree": 1
    },
    {
