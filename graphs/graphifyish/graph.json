@@ -29,7 +29,7 @@
     "label": "Provenance",
     "kind": "root",
     "path": ".",
-    "size": 1467014,
+    "size": 1457155,
     "degree": 16
    },
    {
@@ -45,7 +45,7 @@
     "label": ".gitignore",
     "kind": "other",
     "path": ".gitignore",
-    "size": 49,
+    "size": 81,
     "degree": 1
    },
    {
@@ -77,7 +77,7 @@
     "label": "README.md",
     "kind": "doc",
     "path": "README.md",
-    "size": 66173,
+    "size": 62190,
     "degree": 1
    },
    {
@@ -93,7 +93,7 @@
     "label": "pack.mcmeta",
     "kind": "other",
     "path": "pack.mcmeta",
-    "size": 131,
+    "size": 116,
     "degree": 1
    },
    {
@@ -101,7 +101,7 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
-    "size": 227038,
+    "size": 226939,
     "degree": 6
    },
    {
@@ -149,7 +149,7 @@
     "label": "skills",
     "kind": "dir",
     "path": ".claude/skills",
-    "size": 210084,
+    "size": 209985,
     "degree": 14
    },
    {
@@ -285,7 +285,7 @@
     "label": "simulate",
     "kind": "dir",
     "path": ".claude/skills/simulate",
-    "size": 40535,
+    "size": 40435,
     "degree": 2
    },
    {
@@ -293,7 +293,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/simulate/SKILL.md",
-    "size": 40535,
+    "size": 40435,
     "degree": 1
    },
    {
@@ -349,7 +349,7 @@
     "label": "tell",
     "kind": "dir",
     "path": ".claude/skills/tell",
-    "size": 8155,
+    "size": 8156,
     "degree": 2
    },
    {
@@ -357,7 +357,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/tell/SKILL.md",
-    "size": 8155,
+    "size": 8156,
     "degree": 1
    },
    {
@@ -365,7 +365,7 @@
     "label": "_lore",
     "kind": "dir",
     "path": "_lore",
-    "size": 46887,
+    "size": 41183,
     "degree": 8
    },
    {
@@ -373,7 +373,7 @@
     "label": "contexts.json",
     "kind": "lore",
     "path": "_lore/contexts.json",
-    "size": 3543,
+    "size": 3257,
     "degree": 1
    },
    {
@@ -381,7 +381,7 @@
     "label": "encodings.json",
     "kind": "lore",
     "path": "_lore/encodings.json",
-    "size": 13685,
+    "size": 8979,
     "degree": 1
    },
    {
@@ -389,7 +389,7 @@
     "label": "tuning.json",
     "kind": "lore",
     "path": "_lore/tuning.json",
-    "size": 5221,
+    "size": 5093,
     "degree": 1
    },
    {
@@ -405,7 +405,7 @@
     "label": "characters",
     "kind": "dir",
     "path": "_lore/characters",
-    "size": 5200,
+    "size": 5201,
     "degree": 5
    },
    {
@@ -429,7 +429,7 @@
     "label": "hearsay.md",
     "kind": "lore",
     "path": "_lore/characters/hearsay.md",
-    "size": 2272,
+    "size": 2273,
     "degree": 1
    },
    {
@@ -445,7 +445,7 @@
     "label": "facts",
     "kind": "dir",
     "path": "_lore/facts",
-    "size": 14177,
+    "size": 14178,
     "degree": 6
    },
    {
@@ -461,7 +461,7 @@
     "label": "_index.md",
     "kind": "lore",
     "path": "_lore/facts/_index.md",
-    "size": 3503,
+    "size": 3504,
     "degree": 1
    },
    {
@@ -493,7 +493,7 @@
     "label": "tales",
     "kind": "dir",
     "path": "_lore/tales",
-    "size": 4292,
+    "size": 3706,
     "degree": 3
    },
    {
@@ -501,7 +501,7 @@
     "label": "_authors.md",
     "kind": "lore",
     "path": "_lore/tales/_authors.md",
-    "size": 1197,
+    "size": 1063,
     "degree": 1
    },
    {
@@ -509,7 +509,7 @@
     "label": "_index.md",
     "kind": "lore",
     "path": "_lore/tales/_index.md",
-    "size": 3095,
+    "size": 2643,
     "degree": 1
    },
    {
@@ -1133,7 +1133,7 @@
     "label": "resourcepack",
     "kind": "dir",
     "path": "resourcepack",
-    "size": 38957,
+    "size": 38945,
     "degree": 3
    },
    {
@@ -1141,7 +1141,7 @@
     "label": "pack.mcmeta",
     "kind": "resourcepack",
     "path": "resourcepack/pack.mcmeta",
-    "size": 139,
+    "size": 127,
     "degree": 1
    },
    {
@@ -1277,7 +1277,7 @@
     "label": "scripts",
     "kind": "dir",
     "path": "scripts",
-    "size": 591467,
+    "size": 591389,
     "degree": 6
    },
    {
@@ -1325,7 +1325,7 @@
     "label": "lore",
     "kind": "dir",
     "path": "scripts/lore",
-    "size": 447949,
+    "size": 447871,
     "degree": 63
    },
    {
@@ -1597,7 +1597,7 @@
     "label": "reset_reproduction_cooldown.py",
     "kind": "script",
     "path": "scripts/lore/reset_reproduction_cooldown.py",
-    "size": 3415,
+    "size": 3337,
     "degree": 1
    },
    {
