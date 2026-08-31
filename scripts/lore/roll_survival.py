@@ -42,7 +42,7 @@ applied later, at the resolved location, by apply_survival.py - this script only
 writes anything to disk.
 
 Usage:
-    py scripts/lore/roll_survival.py --key degustarios
+    py scripts/lore/roll_survival.py --key character_d
 """
 
 import argparse

@@ -10,7 +10,7 @@ pass has run; `report` re-reads the same participants' current files and diffs a
 to isolate what changed *this run* only.
 
 Usage:
-    py scripts/lore/simulate_tally.py snapshot khaoe gondarfolas auroboro_iii --out .simulate_snapshot.json
+    py scripts/lore/simulate_tally.py snapshot character_a character_b character_n_iii --out .simulate_snapshot.json
     py scripts/lore/simulate_tally.py report .simulate_snapshot.json
 """
 

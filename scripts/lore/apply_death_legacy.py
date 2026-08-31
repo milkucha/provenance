@@ -12,7 +12,7 @@ ongoing arc or a routine to derive one from; only when neither exists does the d
 context carry over as a last resort. `routine` is never touched - only the goal moves.
 
 Usage:
-    py scripts/lore/apply_death_legacy.py --deceased bardaglis --recipient farlis
+    py scripts/lore/apply_death_legacy.py --deceased bardaglis --recipient character_c
 """
 
 import argparse

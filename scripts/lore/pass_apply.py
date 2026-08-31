@@ -58,7 +58,7 @@ Prints one combined JSON block: per participant {deceased, cause, band_after, en
 shock_candidates}, plus reproduction's own result, plus any death-legacy application.
 
 Usage:
-    py scripts/lore/pass_apply.py --json-file decisions.json --p1 khaoe --p2 farlis --pass-number 12
+    py scripts/lore/pass_apply.py --json-file decisions.json --p1 character_a --p2 character_c --pass-number 12
 """
 
 import argparse

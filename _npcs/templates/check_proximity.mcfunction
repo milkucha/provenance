@@ -32,7 +32,7 @@ execute as @e[type=taterzens:npc,name=<display_name>,limit=1,tag=!luminacion.pau
 # range. Taterzens has no interact-range override (plain vanilla reach: 3 blocks
 # survival, 6 creative), so this MUST be wider than the 2-block pause trigger above,
 # or a click from beyond 2 blocks (easy in creative) undoes the pause on the very
-# next tick while the dialog is still open — confirmed in-game (Döran, 2026-07-25:
+# next tick while the dialog is still open — confirmed in-game (Character E, 2026-07-25:
 # he visibly wandered off mid-conversation, and the nod animation got swallowed by
 # the resulting movement fighting its own rotation writes). 6 blocks covers creative
 # reach with no margin to spare; don't shrink it back toward the pause trigger's 2.

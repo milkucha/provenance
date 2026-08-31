@@ -26,7 +26,7 @@ obviously know or have seen given where they actually spend their time:
   actually traveled to - not built yet, see TODO.md.)
 
 Usage:
-    python scripts/lore/sample_grounding.py --character khaoe
+    python scripts/lore/sample_grounding.py --character character_a
 """
 
 import argparse
@@ -47,7 +47,7 @@ def load_json(path: Path):
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--character", required=True, help="Character key, e.g. khaoe")
+    parser.add_argument("--character", required=True, help="Character key, e.g. character_a")
     args = parser.parse_args()
 
     char_path = CHARACTERS_DIR / f"{args.character}.json"

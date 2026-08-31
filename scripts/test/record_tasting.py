@@ -10,7 +10,7 @@ conversation (a 0-10 integer isn't a clean small discrete set for AskUserQuestio
 owns the mechanical append, same "the model decides, the script records" split as `record_hearsay.py`.
 
 Usage:
-    py scripts/test/record_tasting.py --manifest <path> --rater milkucha \\
+    py scripts/test/record_tasting.py --manifest <path> --rater yourname \\
         --legibility 7 --aliveness 8 --curiosity 9 --specificity 6 \\
         --note "aliveness: the archive collapse felt like a real structural surprise"
 """

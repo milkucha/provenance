@@ -7,7 +7,7 @@ update) with a fair coin flip between whoever's actually in the scene, so a visi
 a genuine, unbiased chance to be the one engaged - decided 2026-08-10.
 
 Usage:
-    py scripts/lore/roll_arc_primacy.py --p1 kristok_jakur --p2 nerkeli
+    py scripts/lore/roll_arc_primacy.py --p1 character_o --p2 character_m
 """
 
 import argparse

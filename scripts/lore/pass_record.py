@@ -28,8 +28,8 @@ clearly and the model needs to make judgment calls from prose, not from a rigid 
 would have to reverse-engineer their own output to build).
 
 Usage:
-    py scripts/lore/pass_record.py --json-file hearsay.json --p1 khaoe --p2 farlis --pass-number 12
-    py scripts/lore/pass_record.py --json-file hearsay.json --p1 khaoe --p2 farlis --pass-number 12 \\
+    py scripts/lore/pass_record.py --json-file hearsay.json --p1 character_a --p2 character_c --pass-number 12
+    py scripts/lore/pass_record.py --json-file hearsay.json --p1 character_a --p2 character_c --pass-number 12 \\
         --arc-authoring-json arc.json --contested-hinder-json hinder.json
 """
 

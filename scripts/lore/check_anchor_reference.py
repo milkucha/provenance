@@ -12,7 +12,7 @@ in play.
 
 Usage:
     py scripts/lore/check_anchor_reference.py <npc_key> --hearsay-id <entry_id>
-    py scripts/lore/check_anchor_reference.py <npc_key> --about "era_ensayo: Las Guerras de Gorff" --about "CONFLICT-01"
+    py scripts/lore/check_anchor_reference.py <npc_key> --about "era_ensayo: The Old War" --about "CONFLICT-01"
 """
 
 import argparse
@@ -58,7 +58,7 @@ def references(anchor: str, about) -> bool:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("npc_key", help="Character key, e.g. 'khaoe'")
+    parser.add_argument("npc_key", help="Character key, e.g. 'character_a'")
     parser.add_argument("--hearsay-id", default=None, help="A hearsay.entries id - checks all of that entry's claims")
     parser.add_argument("--about", action="append", default=[], help="An 'about' ref to check directly. Repeatable.")
     args = parser.parse_args()

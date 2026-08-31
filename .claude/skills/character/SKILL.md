@@ -24,7 +24,7 @@ If no such file exists, this is a brand-new character — **before proceeding, r
 single shared enforcement point for name uniqueness (`/enact` Step 1 calls the same script the same
 way) — every character ever created, living or deceased, must have a name that slugifies uniquely. If
 it reports `TAKEN`, tell the user and ask for a distinguishing variant (a surname or epithet — e.g.
-`"Farlis Gorfalis"` alongside an existing `"Farlis"` is fine, since they slugify differently). Skip
+`"Character C Gorfalis"` alongside an existing `"Character C"` is fine, since they slugify differently). Skip
 this check entirely when the file already exists — that's Step 2a, not a new name.
 
 ## Step 2a — Existing entry
@@ -185,7 +185,7 @@ computes the signal, same discipline as every other script in this pack. Four ca
    category. `sources[]` is append-only (`build_source_index.py` only ever adds hearsay/tale
    backlinks onto what's already there), so "recorded first" means "what actually established this
    in the record" — not an arbitrary pick among however many backlinks have since accumulated.
-   Checked against real mixed-provenance data: Görff carries 5 `material` sources (what actually put
+   Checked against real mixed-provenance data: City B carries 5 `material` sources (what actually put
    it on the map) plus 10 `hearsay` backlinks (later conversations that happened to mention it) — the
    script correctly reports `material`, ignoring the later backlinks regardless of their count.
    If `sources[]` is empty (a freshly arc-authored concept with no link yet), the script says so
@@ -269,7 +269,7 @@ clear later why one character got three scenes and another got fifty.
 **Backfilling `lived` for a character who already has a history.** `life.lived` starts at 0 only for
 a genuinely new character. For one who predates these fields, count the scenes they have actually
 been in: **one `encodings.json` `hearsay.entries[]` record is one scene**, so `lived` is the number
-of entries listing them in `participants`. (Match on the display name including diacritics — `Döran`
+of entries listing them in `participants`. (Match on the display name including diacritics — `Character E`
 and `Iläria` won't match an ASCII search.) Don't count `knowledge.experience` lines; several of those
 can come out of a single scene. Run `py scripts/lore/backfill_lived.py <npc_key>` to do this count
 instead of searching the array by hand — it also checks the count against the rolled `span` and tells
@@ -434,7 +434,7 @@ mechanism.
   `premise` is the arc's actual content — the one place its concrete project lives in prose. Without
   it, an arc is four bare tags and nothing else: the `concept:` entry `write_arc.py` registers only
   echoes those same tags back, it never restates what the project *is*. Two hard requirements for
-  `premise`, both diagnosed from a real failure, not hypothetical (an early draft of Zarkatraz's arc
+  `premise`, both diagnosed from a real failure, not hypothetical (an early draft of Character J's arc
   read as "find a legitimate source for his stones he could stand behind" — abstract, and nothing
   caught it until a human did):
   1. **The resolution-moment test.** `premise` must support one sentence describing the exact moment

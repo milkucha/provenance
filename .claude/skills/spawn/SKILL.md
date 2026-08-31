@@ -21,7 +21,7 @@ Confirm before starting, and stop to resolve any gap rather than guessing past i
    the canonical source now. If `_npcs/npcs/registry.json` has no entry yet for this key (the
    character has never been embodied before), create one here, copying `name` into both
    `display_name` and `taterzen_name`. If `skin` is blank, ask for a mineskin URL now or confirm the
-   user wants to leave it for later (matching the Nuvilo precedent — spawn.mcfunction can note the
+   user wants to leave it for later (matching the Character F precedent — spawn.mcfunction can note the
    skin line as a TODO and skip `heal_skin.mcfunction` until it's filled in).
 2. **At least one dialog exists** in `data/luminacion/blabber/dialogues/` for this NPC, or the
    user is fine with a spawn function that has no dialog wired yet (rare — most NPCs exist to
@@ -70,7 +70,7 @@ which NPC "needs" the machinery:
 - `FREE` — wanders within an enclosed area.
 
 If the NPC needs to switch between multiple movement modes at different times (e.g. a stationary
-"scene" state and a solo roaming state, like Nuvilo/Nerkeli), that's the `multi_state_npc` pattern
+"scene" state and a solo roaming state, like Character F/Character M), that's the `multi_state_npc` pattern
 — see `_npcs/actions/registry.json` → `_action_templates.multi_state_npc` — and uses
 `_npcs/templates/states/stationary_state.mcfunction` / `roaming_state.mcfunction` instead of a
 plain `spawn.mcfunction` right-click block. Ask which case this is before proceeding.
@@ -78,13 +78,13 @@ plain `spawn.mcfunction` right-click block. Ask which case this is before procee
 ## Step 3 — Position and waypoints (only if movement isn't a trivial NONE-forever case)
 
 Ask (AskUserQuestion): will the user position the NPC manually in-game after running
-`spawn.mcfunction` (leave `spawn_position` null, matching Gondarfolas/Sonoros), or provide exact
+`spawn.mcfunction` (leave `spawn_position` null, matching Character B/Character L), or provide exact
 coordinates now (fill `spawn_position` in the registry and uncomment the `npc tp` line)?
 
 If movement is `PATH`/`FORCED_PATH`/part of a roaming state: ask whether waypoints are known yet.
 If yes, build `functions/npcs/<npc_key>/paths/<path_name>.mcfunction` from
 `_npcs/templates/paths/select_path.mcfunction` now. If not, leave the NPC standing still in PATH
-mode (note this explicitly in the spawn function's comments, matching Gondarfolas) and log the gap
+mode (note this explicitly in the spawn function's comments, matching Character B) and log the gap
 in TODO.md — do not invent waypoints.
 
 ## Step 4 — Right-click actions
@@ -120,13 +120,13 @@ From `_npcs/templates/`, filling every `<placeholder>` using the registry entry 
 above:
 
 - `spawn.mcfunction` — always. Follow the exact structure of an existing one for this NPC's shape
-  (`data/luminacion/functions/npcs/gondarfolas/spawn.mcfunction` for a plain single-state roaming
-  NPC, `nuvilo/spawn.mcfunction` + `nuvilo/states/*.mcfunction` for multi-state).
+  (`data/luminacion/functions/npcs/character_b/spawn.mcfunction` for a plain single-state roaming
+  NPC, `character_f/spawn.mcfunction` + `character_f/states/*.mcfunction` for multi-state).
 - **Every NPC, regardless of movement mode (including `NONE`)**: `resume_routine.mcfunction`,
   `check_proximity.mcfunction`, `heal_skin.mcfunction` (skip only if skin is still blank),
-  `heal_path.mcfunction` (header-only stub if no path exists yet, per Gondarfolas's), and register
+  `heal_path.mcfunction` (header-only stub if no path exists yet, per Character B's), and register
   `luminacion:npcs/<npc_key>/check_proximity` in `data/luminacion/tags/functions/npc_routine_tick.json`.
-  This used to be gated on movement mode ("skip for `NONE`"), which was wrong — confirmed on Khaoe
+  This used to be gated on movement mode ("skip for `NONE`"), which was wrong — confirmed on Character A
   (2026-07-25, the pack's first `NONE`-movement NPC actually built): she shipped without this
   machinery under the old rule, and her skin never healed after Taterzens' async mineskin fetch lost
   the race. That race, and the mid-dialog pause/resume tagging, apply to a stationary NPC exactly as
@@ -142,7 +142,7 @@ above:
   ```
   **`check_proximity.mcfunction`'s two distance checks are NOT the same radius**: the pause trigger
   (`if entity @a[distance=..2] run pause_routine`) stays at 2 blocks, but the resume safety-net
-  (`unless entity @a[distance=..6] run resume_routine`) must be 6 — confirmed in-game (Döran,
+  (`unless entity @a[distance=..6] run resume_routine`) must be 6 — confirmed in-game (Character E,
   2026-07-25) that leaving it at 2 lets a click from beyond 2 blocks (trivial in creative — Taterzens
   has no interact-range override, so it's plain vanilla reach, 6 blocks in creative) undo the pause
   on the very next tick while the dialog is still open, visibly resuming the NPC's roaming mode
@@ -151,7 +151,7 @@ above:
   exactly here rather than copying an older already-built NPC's file verbatim.
 - If multi-state: one `states/<state_name>.mcfunction` per state instead of inlining movement/
   right-click setup directly in `spawn.mcfunction` (which should just call the default state at
-  the end — see `nuvilo/spawn.mcfunction`).
+  the end — see `character_f/spawn.mcfunction`).
 - If this NPC needs a path: `paths/<path_name>.mcfunction` per named route (Step 3).
 
 Match the comment-header style of the existing per-NPC files exactly (built-from-template note,
@@ -160,17 +160,17 @@ between NPCs; it's what makes each file readable in isolation.
 
 **Quote any `display_name` containing characters outside Brigadier's unquoted-string charset**
 (letters, digits, `_`, `-`, `.`, `+`) in every **vanilla `@e[...]` selector** referencing it — an
-umlaut/diaeresis included (`Döran`, `Dägna`). Confirmed in-game on Döran: an unquoted `ö` inside
-`@e[name=Döran,...]` breaks the selector parse (`Expected end of options`), failing the whole
-function's load. Fix is `@e[name="Döran",...]` — every selector occurrence, in every file
+umlaut/diaeresis included (`Character E`, `Dägna`). Confirmed in-game on Character E: an unquoted `ö` inside
+`@e[name=Character E,...]` breaks the selector parse (`Expected end of options`), failing the whole
+function's load. Fix is `@e[name="Character E",...]` — every selector occurrence, in every file
 (`spawn.mcfunction`, `check_proximity.mcfunction`, `heal_skin.mcfunction`, `heal_path.mcfunction`'s
 example line).
 
 **Do NOT quote `npc create <name>` itself** — confirmed in-game this is the opposite mistake and
 actively breaks the NPC: `npc create` is Taterzens' own argument, not a vanilla selector, and
-doesn't strip quote characters — `npc create "Döran"` creates an NPC whose real name literally
-contains the quote marks, silently mismatching every `@e[name="Döran",...]` selector elsewhere
-(they're looking for the name without quotes). Leave `npc create Döran` unquoted; this argument
+doesn't strip quote characters — `npc create "Character E"` creates an NPC whose real name literally
+contains the quote marks, silently mismatching every `@e[name="Character E",...]` selector elsewhere
+(they're looking for the name without quotes). Leave `npc create Character E` unquoted; this argument
 takes non-ASCII characters raw with no issue and was never the source of any parse error.
 
 ASCII-only names never need any of this, but check every name against the charset above rather
@@ -184,7 +184,7 @@ than assuming.
 2. Confirm every dialog used is registered under this NPC's key in `_npcs/dialogs/registry.json`
    (add entries if missing — `id`, `trigger: "right_click"`, `condition: null`, a short
    `description`). For a random-dialog NPC, list all N dialogs under the one key with a `_comment`
-   noting they're randomly picked (see the `doran` entry for the exact shape).
+   noting they're randomly picked (see the `character_e` entry for the exact shape).
 3. Update `TODO.md`'s section for this NPC (create one if it doesn't exist, matching the existing
    per-NPC sections' format): mark decided items `[x]` with what was decided and when, keep
    genuinely open items (in-game spawning, manual positioning, waypoint recording, UUID capture)
@@ -199,7 +199,7 @@ them to do in-game:
    luminacion:npcs/<npc_key>/...` before doing anything else. Minecraft rejects a whole
    `.mcfunction` file — not just the bad line — on a single syntax error, so a broken function is
    silently just absent (no error shown in-game), not partially working. This is how the `/random`
-   and unquoted-`ö` bugs on Döran were actually found — grep the log for the NPC's key rather than
+   and unquoted-`ö` bugs on Character E were actually found — grep the log for the NPC's key rather than
    assuming a clean load. If anything failed, read the reported line/position and fix it before
    continuing. Two confirmed standing risks, not npc-specific: **never use the vanilla `/random`
    command anywhere in this pack** (confirmed unavailable in this server environment entirely — not

@@ -20,7 +20,7 @@ Default odds come from _lore/tuning.json (odds_percent.death_legacy) - override 
 for a one-off test, not to retune the mechanism (change the JSON file for that).
 
 Usage:
-    py scripts/lore/roll_death_legacy.py --candidates bardaglis farlis nuvilo [--odds 40]
+    py scripts/lore/roll_death_legacy.py --candidates bardaglis character_c character_f [--odds 40]
     py scripts/lore/roll_death_legacy.py --candidates bardaglis   # single candidate is still a roll, not automatic
 """
 

@@ -20,7 +20,7 @@ separate gaps beyond what those two cover:
    resolves its own root via `Path(__file__).resolve().parent.parent.parent`, so `cd` is never actually
    needed to invoke them correctly regardless of shell cwd.
 3. A subagent (especially on a smaller/cheaper model) can mistype the long absolute worktree path when
-   re-deriving it from memory across many tool calls - observed once as a lore-salient word ("Lundria")
+   re-deriving it from memory across many tool calls - observed once as a lore-salient word ("City G")
    silently substituted for the real folder name ("Luminacion") in a Read call, which then prompted for
    a new, unrecognized path outside the worktree. Read is non-destructive (a bad path just errors
    cleanly), so it's safe to blanket-allow; broadening every other tool a subagent could plausibly reach

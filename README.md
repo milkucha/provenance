@@ -174,7 +174,7 @@ testing tooling described next.
   - **Character identity.** Every character's `name` must be unique against every character file ever
     created, living or deceased, checked by `scripts/lore/check_character_name.py`, the single shared
     enforcement point `/character` and `/enact` both call before treating a name as new. A namesake is
-    still fine (`"Farlis Gorfalis"` alongside an existing `"Farlis"`) since the two slugify
+    still fine (`"Character C Extended"` alongside an existing `"Character C"`) since the two slugify
     differently; what's not allowed is two files slugifying to the same key.
   - `_lore/tales/` - a third source of truth, populated by `/tell`: things told directly by the user,
     the world's author, narrated as a story or stated plainly as a fact now known, one file per entry
@@ -673,7 +673,7 @@ See §6 below.
 
 ## 6. Routine pause/resume (every NPC)
 
-Every NPC needs two more files, regardless of movement mode, including a stationary `NONE` NPC. This used to be scoped to "roaming NPCs only," which was wrong: the skin self-heal race (Taterzens fetches skins asynchronously from mineskin.org, and the fetch can lose the race against anything else touching the NPC) applies just as much to a `NONE` NPC as a roaming one, confirmed in-game (Khaoe shipped without this machinery first, under the old rule, and her skin never healed after a failed fetch). For a `NONE` NPC, `resume_routine.mcfunction`'s movement line is just `npc edit movement NONE` again (a no-op on behavior); it's the tag cleanup and the periodic heal calls that actually matter there.
+Every NPC needs two more files, regardless of movement mode, including a stationary `NONE` NPC. This used to be scoped to "roaming NPCs only," which was wrong: the skin self-heal race (Taterzens fetches skins asynchronously from mineskin.org, and the fetch can lose the race against anything else touching the NPC) applies just as much to a `NONE` NPC as a roaming one, confirmed in-game (Character A shipped without this machinery first, under the old rule, and her skin never healed after a failed fetch). For a `NONE` NPC, `resume_routine.mcfunction`'s movement line is just `npc edit movement NONE` again (a no-op on behavior); it's the tag cleanup and the periodic heal calls that actually matter there.
 
 1. Copy `_npcs/templates/resume_routine.mcfunction` to `data/luminacion/functions/npcs/<npc_key>/resume_routine.mcfunction`. Fill in `<MODE>` to match the movement mode you set in spawn.mcfunction (for `FOLLOW`, use the `FOLLOW <name>` / `FOLLOW UUID <uuid>` form shown in the comments).
 
@@ -691,7 +691,7 @@ That's it. From then on, the tick loop stops the NPC the moment a player gets wi
 
 **Why the tick check also handles resuming, not just the dialog ending?** Blabber does not run its end-of-dialog action if a player exits early (Escape key, disconnect, etc.), so a "resume when the dialog action fires" rule alone can leave an NPC stuck paused forever. The tick check is the safety net: it resumes any paused NPC the moment no player is within range, regardless of how the conversation ended.
 
-**Why the resume radius (6 blocks) is wider than the pause trigger (2 blocks); don't make these match.** Blabber freezes the player's movement while its screen is open, so distance from the NPC can't grow *during* a conversation, but that only guarantees the resume check stays quiet if the player was already inside its radius the moment they clicked. Taterzens has no interact-range override (`config/Taterzens/config.json` doesn't set one), so a click can land from plain vanilla reach: 3 blocks survival, 6 creative. A resume radius of 2 would read a click from 3+ blocks away as "nobody nearby" on the very next tick and undo the pause while the dialog is still open, confirmed in-game (Döran, 2026-07-25): he visibly wandered off mid-conversation, and the resulting movement swallowed his nod animations too (walking overwrites head rotation every tick, fighting the nod's own writes). 6 blocks covers creative reach with no margin to spare; see `_npcs/actions/registry.json` under `_action_templates.routine_pause_resume` for the full writeup.
+**Why the resume radius (6 blocks) is wider than the pause trigger (2 blocks); don't make these match.** Blabber freezes the player's movement while its screen is open, so distance from the NPC can't grow *during* a conversation, but that only guarantees the resume check stays quiet if the player was already inside its radius the moment they clicked. Taterzens has no interact-range override (`config/Taterzens/config.json` doesn't set one), so a click can land from plain vanilla reach: 3 blocks survival, 6 creative. A resume radius of 2 would read a click from 3+ blocks away as "nobody nearby" on the very next tick and undo the pause while the dialog is still open, confirmed in-game (Character E, 2026-07-25): he visibly wandered off mid-conversation, and the resulting movement swallowed his nod animations too (walking overwrites head rotation every tick, fighting the nod's own writes). 6 blocks covers creative reach with no margin to spare; see `_npcs/actions/registry.json` under `_action_templates.routine_pause_resume` for the full writeup.
 
 Full technical rationale (with source references) lives in `_npcs/actions/registry.json` under `_action_templates.routine_pause_resume`.
 

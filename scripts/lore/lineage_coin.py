@@ -6,7 +6,7 @@ sampled `hearsay` pool item (see README.md §8 Step 1 and scripts/lore/sample_lo
 50/50 chance, independent of how many retellings deep the claim already is:
 
     traceable   - the new hearsay entry's claim sets "derived_from" to the sampled item's id, and
-                  the dialog line may cite the source by name ("I heard Morkulo say...").
+                  the dialog line may cite the source by name ("I heard Character G say...").
     untraceable - "derived_from" stays unset, "oral_lore" is set true, and the dialog line uses
                   vague in-character framing instead ("they say...", "it's told that...") - no named
                   source, on purpose.

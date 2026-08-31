@@ -27,8 +27,8 @@ Three cases, in order:
    system (`origin: "uncollided"` for a criterion, `origin: "inherited"` for a child's).
 
 Usage:
-    py scripts/lore/anchor_epistemology.py "location: gorff"
-    py scripts/lore/anchor_epistemology.py "hearsay: khaoe_banco_colectivo#4"
+    py scripts/lore/anchor_epistemology.py "location: city_b"
+    py scripts/lore/anchor_epistemology.py "hearsay: character_a_shared_fund#4"
     py scripts/lore/anchor_epistemology.py "concept: la_lagrima_de_balahm"
 """
 
@@ -106,7 +106,7 @@ def resolve_epistemology(anchor: str, data: dict) -> dict:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("anchor", help='Anchor reference, e.g. "location: gorff" or "hearsay: khaoe_banco_colectivo#4"')
+    parser.add_argument("anchor", help='Anchor reference, e.g. "location: city_b" or "hearsay: character_a_shared_fund#4"')
     args = parser.parse_args()
 
     with open(ENCODINGS_PATH, encoding="utf-8") as f:

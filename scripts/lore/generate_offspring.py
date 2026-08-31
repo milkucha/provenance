@@ -111,8 +111,8 @@ leads the blend). The slug is derived from --name automatically (same convention
 record_death.py's own slugify), not a second thing the caller has to decide separately.
 
 Usage:
-    py scripts/lore/generate_offspring.py --parent-a khaoe --parent-b gondarfolas \\
-        --name "Khordarel" --pass-number 63
+    py scripts/lore/generate_offspring.py --parent-a character_a --parent-b character_b \\
+        --name "New Character" --pass-number 63
 """
 
 import argparse
@@ -343,8 +343,8 @@ def general_knowledge_pool(enc: dict) -> list:
     the largest single pool by far), concepts, locations, conflicts, tales.entries,
     characters.named_inhabitants, characters.in_world_or_legendary,
     characters.real_world_authors_and_players (this project's own established convention already
-    treats these as in-fiction-knowable - e.g. Khaoe's own recorded experience of walking the
-    gardens with Milkucha), routes.highways/trains/airports/named_but_unplotted, and
+    treats these as in-fiction-knowable - e.g. Character A's own recorded experience of walking the
+    gardens with a neighbor), routes.highways/trains/airports/named_but_unplotted, and
     time_systems.ensayo_i_eras (the one era-timeline sub-structure shaped as a plain flat list;
     the other three era systems are each a differently-shaped one-off nested structure cataloguing
     conflicting source material rather than atomic knowable facts, and are deliberately not parsed

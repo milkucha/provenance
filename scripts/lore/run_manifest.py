@@ -14,7 +14,7 @@ Written once at run start (`write()`), updated once at run end (`finalize()`). L
 root, alongside the existing `.simulate_snapshot.json`.
 
 Usage (CLI - for a skill-orchestrated shell context, e.g. /simulate's SKILL.md):
-    py scripts/lore/run_manifest.py write --pool khaoe farlis --passes 50 [--seed 7] [--mode simple]
+    py scripts/lore/run_manifest.py write --pool character_a character_c --passes 50 [--seed 7] [--mode simple]
     py scripts/lore/run_manifest.py finalize --passes-run 47 [--simulation-log SIMULATION_LOG.md] ...
 
 Usage (library - for an in-process driver, e.g. simulate_generate_population.py):

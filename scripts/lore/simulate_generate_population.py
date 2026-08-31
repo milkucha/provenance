@@ -52,9 +52,9 @@ subagent at all: State, queue_arc/maybe_admit_children (the deferred-authoring b
 alone needs), and run_pass() itself.
 
 Usage:
-    py scripts/lore/simulate_generate_population.py --pool khaoe farlis khaasan --passes 60
-    py scripts/lore/simulate_generate_population.py --pool khaoe farlis --passes 40 --seed 7
-    py scripts/lore/simulate_generate_population.py --pool khaoe farlis --passes 40 --living-pool-out .living_pool.json
+    py scripts/lore/simulate_generate_population.py --pool character_a character_c khaasan --passes 60
+    py scripts/lore/simulate_generate_population.py --pool character_a character_c --passes 40 --seed 7
+    py scripts/lore/simulate_generate_population.py --pool character_a character_c --passes 40 --living-pool-out .living_pool.json
 """
 
 import argparse

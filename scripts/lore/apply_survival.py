@@ -34,8 +34,8 @@ when to act on it, so a scene's own JUDGEMENT-level consequences aren't hidden i
 apply step).
 
 Usage:
-    py scripts/lore/apply_survival.py --key degustarios --location Tyrnea --choice survive
-    py scripts/lore/apply_survival.py --key degustarios --location Tyrnea --choice arc
+    py scripts/lore/apply_survival.py --key character_d --location City C --choice survive
+    py scripts/lore/apply_survival.py --key character_d --location City C --choice arc
 """
 
 import argparse

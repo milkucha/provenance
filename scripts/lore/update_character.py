@@ -11,15 +11,15 @@ or what a character's new trust reads as - it only records decisions already mad
 
 Typical call, once per character enacted this scene (life.lived always advances; the rest are optional):
 
-    py scripts/lore/update_character.py khaoe --lived-delta 1 \\
-        --add-experience "Met Gondarfolas at the Espiral de las Eras." \\
+    py scripts/lore/update_character.py character_a --lived-delta 1 \\
+        --add-experience "Met Character B at the Landmark A." \\
         --add-experience "He owns both the Ensayo and the Libro."
 
 Recording a shock resolution (only when check_anchor_reference.py's gate actually matched):
 
-    py scripts/lore/update_character.py auroboro_iii --lived-delta 1 \\
-        --criterion-move reject --dialog gondarfolas_auroboro_iii_espiral \\
-        --cause "gondarfolas_auroboro_iii_espiral#4: Gondarfolas's suggestion that the Guerras might be told differently in the Libro" \\
+    py scripts/lore/update_character.py character_n_iii --lived-delta 1 \\
+        --criterion-move reject --dialog character_b_character_n_iii_landmark_a \\
+        --cause "character_b_character_n_iii_landmark_a#4: Character B's suggestion that the Guerras might be told differently in the Libro" \\
         --note "Gate matched; claim was speculative and low-confidence. Rejected outright." \\
         --distrusts "people who suggest his story could fragment across sources"
 
@@ -29,22 +29,22 @@ or /character session to fill, per Step 6 move 3.
 
 Drift bookkeeping (Step 8 point 4, only when honoring the criterion cost something this scene):
 
-    py scripts/lore/update_character.py nerkeli --cost-ledger "Turned down Auroboro III's offer, staying with routes instead of stories (nerkeli_auroboro_iii_terfila_plaza)."
+    py scripts/lore/update_character.py character_m --cost-ledger "Turned down Character N's offer, staying with routes instead of stories (character_m_character_n_iii_city_a_plaza)."
 
 Recording a synthesis (Step 9 point 8, one call per synthesis - call again for a second one the
 same scene, since --add-synthesis only takes one --about pair and one --text per call):
 
-    py scripts/lore/update_character.py nerkeli \\
-        --add-synthesis --about "highway: M7" --about "character_legendary: navalius" \\
-        --text "If M7 always ends where Nuvilo's family says they're from, then all these years turning around at the airstrip, I've been skipping past the one place that might matter most to him."
+    py scripts/lore/update_character.py character_m \\
+        --add-synthesis --about "highway: M7" --about "character_legendary: concept_a" \\
+        --text "If M7 always ends where Character F's family says they're from, then all these years turning around at the airstrip, I've been skipping past the one place that might matter most to him."
 
 Recording a knowledge.experience entry that has a matching hearsay claim (Step 6 - reuse that
 claim's `about` ref rather than writing a plain string, so check_resonance.py can find it later; one
 call per grounded entry, --about repeatable for an entry that draws on more than one claim at once):
 
-    py scripts/lore/update_character.py aureobalo --add-grounded-experience \\
-        --about "Las Guerras de Gorff" \\
-        --text "Told Farlis, for the first time aloud, that his surname resembles the losing side of the Guerras de Gorff."
+    py scripts/lore/update_character.py character_i --add-grounded-experience \\
+        --about "The Old War" \\
+        --text "Told Character C, for the first time aloud, that his surname resembles the losing side of the the Old War."
 
 An experience entry with no matching claim (a narrated action nobody voiced - this happens, and is a
 legitimate outcome, not a recording failure) still uses plain --add-experience, unchanged.
@@ -65,7 +65,7 @@ _MOVE_LABELS = {"reject": "rejected", "reinterpret": "reinterpreted", "break": "
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("npc_key", help="Character key, e.g. 'khaoe'")
+    parser.add_argument("npc_key", help="Character key, e.g. 'character_a'")
     parser.add_argument("--lived-delta", type=int, default=0, help="Amount to add to life.lived (usually 1, once per scene)")
     parser.add_argument("--add-experience", action="append", default=[], dest="experience", help="Append one knowledge.experience entry. Repeatable.")
     parser.add_argument("--criterion-move", choices=["reject", "reinterpret", "break"], default=None, help="The resolved shock move, if the anchor gate matched")

@@ -43,13 +43,13 @@ Compress the transcript, don't add to it; rename states to short meaningful ids;
 - **Enforce the 300-character cap.** If a line's `text` (after stripping cues) is over 300 characters,
   split it at a natural sentence or clause boundary into two or more states, chained together with a
   single `"..."` choice that just advances to the next part — the same connector pattern already used
-  between full turns (see `nawom_morkulo_first_meeting.json`). The reader/player never sees a visible
+  between full turns (see `character_h_character_g_first_meeting.json`). The reader/player never sees a visible
   choice for these — it's a pure continuation, not a fork. Keep splitting until every piece is under
   the cap; don't try to cram a long line under the limit by trimming content, since the scene was
   already finalized by `/enact` and shouldn't be added to or subtracted from now.
 
 - **If the scene was against the player:** each state's `text` is the NPC's line; each
-  `choices[].text` is the player's actual line. (`sonoros_lost_traveler.json` is the reference shape.)
+  `choices[].text` is the player's actual line. (`character_l_lost_traveler.json` is the reference shape.)
 - **If the scene was between two enacted characters:** Blabber has **no per-state speaker field** —
   confirmed from the mod's own source (`DialogueState.java`: fields are `text`, `illustrations`,
   `choices`, `action`, `type`; the display name is fixed once for the whole file via
@@ -57,7 +57,7 @@ Compress the transcript, don't add to it; rename states to short meaningful ids;
   single `"..."` choice that just advances to the next state — no real options. Set the file's
   top-level `"name"` to something like `"<Char1> & <Char2>"` rather than let it default to
   `"Dialogue with <interlocutor>"`, which would be misleading with two speakers.
-  (`nawom_morkulo_first_meeting.json` is the reference shape.)
+  (`character_h_character_g_first_meeting.json` is the reference shape.)
 
 Save to `data/luminacion/blabber/dialogues/<descriptive_name>.json`, then validate it:
 
@@ -95,14 +95,14 @@ Then, for the dialog itself:
   under that NPC's key.
 - **If the scene was between two enacted characters:** do **not** guess how to register a dialog that
   belongs to two NPCs — the registry format assumes one dialog per NPC key. Ask the user how they want
-  it handled, or leave it open in TODO.md (see Step 4) exactly like the Nawom & Morkulo precedent.
+  it handled, or leave it open in TODO.md (see Step 4) exactly like the Character H & Character G precedent.
 
 ## Step 3 — Bake gestures
 
 Every dialog Step 1 just wrote starts uniform — `nod_up_down` on every non-`end` state, straight from
 the templates. This step replaces a minority of those with an emotionally-matched gesture wherever a
 line's own text supports it, so the conversation reads as staged rather than uniformly nodding through
-every line — the same judgment call Döran's dialogues and `nuvilo_nerkeli_feria_del_milenio.json` got
+every line — the same judgment call Character E's dialogues and `character_f_character_m_festival_a.json` got
 by hand. It runs on **every** dialog this skill produces — there is no path through `/embody` (or,
 transitively, `/enact-embody`) that leaves a fresh dialog on the uniform default.
 
@@ -149,8 +149,8 @@ specific than a neutral "I am currently talking" nod:
 | Playful bragging, showing off, a boastful tease | bragging, showing-off, playful-pride, confidence, teasing-boast | `gesture_flex_arm` |
 
 Everything else stays the default `nod_up_down` — most lines are informational connective tissue and
-should. Calibrate against dialogs that already have this treatment (`doran_four_castles.json`: 3 of
-7 states; `doran_eras_of_culture.json`: 2 of 8; `nuvilo_nerkeli_feria_del_milenio.json`: 6 of 15) —
+should. Calibrate against dialogs that already have this treatment (`character_e_four_castles.json`: 3 of
+7 states; `character_e_eras_of_culture.json`: 2 of 8; `character_f_character_m_festival_a.json`: 6 of 15) —
 roughly a quarter to two-fifths of eligible states, never a blanket rewrite. A state whose only
 choice is `"..."` (a pure continuation, no real player decision) is still eligible.
 
@@ -167,7 +167,7 @@ pack calls `playsound` or ships a `sounds.json`. Don't build one here to fill th
 
 **Confirm before writing.** Present the chosen upgrades as a short list (state id → gesture → the
 clause that justified it) and confirm (AskUserQuestion: proceed / let me adjust) before editing the
-file — the same lightweight checkpoint `nuvilo_nerkeli_feria_del_milenio.json` got. Content changes
+file — the same lightweight checkpoint `character_f_character_m_festival_a.json` got. Content changes
 inside a dialog file are easy to miss in a raw JSON diff, so this is worth the one extra round trip
 even though it's now part of the same skill run rather than a separate invocation.
 
@@ -182,6 +182,6 @@ activates dynamically the instant a dialogue action fires — no per-NPC registr
 
 Add or update a section in `TODO.md` for each newly-embodied character (and the dialog, if its
 registration was left unresolved in Step 2): skin, movement mode, `spawn_position`,
-`spawn.mcfunction`, UUID capture — the same shape as the existing Sonoros and Nawom & Morkulo
+`spawn.mcfunction`, UUID capture — the same shape as the existing Character L and Character H & Character G
 sections. Gesture-baking is no longer one of these open items — Step 3 already did it — so don't log
 it as pending. Don't silently resolve anything else here either.

@@ -296,7 +296,7 @@ def resolve_bare(value: str, index: list, other_known: set):
     if len(exact) > 1:
         # Default to "location" on a tie (added 2026-08-11, on user direction) - a bare,
         # unprefixed about-reference is overwhelmingly a place name in practice, and several
-        # locations double as an airport of the same name (Gorff, Salthos Cruzados, Khol
+        # locations double as an airport of the same name (City B, City F, City D
         # Moshin...), which is what actually produces these ties. Only ties involving exactly one
         # location candidate get resolved this way - a genuine ambiguity between two non-location
         # categories, or two location candidates, still goes unresolved rather than guessed.
@@ -328,7 +328,7 @@ def resolve_touches_path(value: str, index: list, other_known: set):
             return ("attach", exact[0][0], exact[0][1], "exact", 1.0, rest)
         return ("unresolved", None, None, None, None, None)
     if head == "characters":
-        # e.g. "named_inhabitants.by_locality.Terfila (Peregrin, Zarkapulos)" - no `sources` field
+        # e.g. "named_inhabitants.by_locality.City A (Census Role, Character K)" - no `sources` field
         # on named_inhabitants entries yet; recognize and skip rather than report as dangling.
         locality_field = rest.split(" (")[0].split(".")[-1]
         if normalize(locality_field) in other_known or normalize(rest) in other_known:

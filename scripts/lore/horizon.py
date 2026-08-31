@@ -31,8 +31,8 @@ point 6 and _lore/facts/life_is_finite.md. `ending` must never be consulted befo
 pre-scene value must never be treated as informative (it always says the same thing: not yet).
 
 Usage:
-    python scripts/lore/horizon.py khaoe
-    python scripts/lore/horizon.py khaoe --verbose   # includes the raw span; NEVER use during /enact
+    python scripts/lore/horizon.py character_a
+    python scripts/lore/horizon.py character_a --verbose   # includes the raw span; NEVER use during /enact
 """
 
 import argparse
@@ -59,7 +59,7 @@ def is_ending(lived: int, span: int) -> bool:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("npc_key", help="Character key, e.g. 'khaoe'")
+    parser.add_argument("npc_key", help="Character key, e.g. 'character_a'")
     parser.add_argument("--verbose", action="store_true", help="Also print the raw span. Never use this during an enactment.")
     args = parser.parse_args()
 

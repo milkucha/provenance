@@ -4,7 +4,7 @@ draw, not a model's guess at "which feels right this time" (same reasoning pick_
 gives for participant selection: a model asked to pick isn't a uniform/weighted random source).
 
 Usage:
-    py scripts/lore/roll_routine.py "Terfila:75" "Feria del Milenio:12.5" "Espiral de las Eras:12.5"
+    py scripts/lore/roll_routine.py "City A:75" "Festival A:12.5" "Landmark A:12.5"
 """
 
 import argparse

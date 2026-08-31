@@ -38,7 +38,7 @@ directly (repeatable) to check specific refs without a recorded entry.
 
 Usage:
     py scripts/lore/check_resonance.py <npc_key> --hearsay-id <entry_id>
-    py scripts/lore/check_resonance.py <npc_key> --about "highway: M7" --about "character_legendary: navalius"
+    py scripts/lore/check_resonance.py <npc_key> --about "highway: M7" --about "character_legendary: concept_a"
 """
 
 import argparse
@@ -199,7 +199,7 @@ def find_pattern_candidates(fresh_refs: list, standing: list) -> list:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("npc_key", help="Character key, e.g. 'khaoe'")
+    parser.add_argument("npc_key", help="Character key, e.g. 'character_a'")
     parser.add_argument("--hearsay-id", default=None, help="A hearsay.entries id - checks all of that entry's claims")
     parser.add_argument("--about", action="append", default=[], help="An 'about' ref to check directly. Repeatable.")
     args = parser.parse_args()

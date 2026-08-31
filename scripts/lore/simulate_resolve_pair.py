@@ -17,7 +17,7 @@ that lead entry from participant_1's file - the one piece of file mutation this 
 nothing else in this pack exposes "remove one lead entry" as its own call.
 
 Usage:
-    py scripts/lore/simulate_resolve_pair.py --pool khaoe farlis nerkeli --pass-number 12
+    py scripts/lore/simulate_resolve_pair.py --pool character_a character_c character_m --pass-number 12
 """
 
 import argparse

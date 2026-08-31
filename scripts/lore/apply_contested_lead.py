@@ -15,8 +15,8 @@ The note text is fixed, not composed - "never invented prose" per the original d
     "According to <supplier>, <rival> already claimed <matched_provide> before <traveler> arrived."
 
 Usage:
-    py scripts/lore/apply_contested_lead.py --traveler bardaglis --rival gondarfolas \\
-        --supplier khaoe --matched-provide "news" --pass-number 24
+    py scripts/lore/apply_contested_lead.py --traveler bardaglis --rival character_b \\
+        --supplier character_a --matched-provide "news" --pass-number 24
 """
 
 import argparse

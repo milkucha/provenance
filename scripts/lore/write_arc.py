@@ -28,9 +28,9 @@ character.arc - there is nothing to preserve from a prior arc (its history stays
 encodings.json via whatever it registered, not on the character file itself).
 
 Usage:
-    py scripts/lore/write_arc.py khaoe --about "concept: khaoe_banco_colectivo" --about "location: terfila" \\
+    py scripts/lore/write_arc.py character_a --about "concept: character_a_shared_fund" --about "location: city_a" \\
         --needs "materials" --needs "contacts" --context market \\
-        --premise "Khaoe wants the Collective hall roofed before the next rains - real timber, real crews, a real finish date."
+        --premise "Character A wants the Collective hall roofed before the next rains - real timber, real crews, a real finish date."
 """
 
 import argparse

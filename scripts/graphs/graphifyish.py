@@ -73,7 +73,7 @@ def load_characters() -> dict:
 
 
 def norm(text: str) -> str:
-    """Fold accents and punctuation so 'Görff' and 'Gorff' compare equal."""
+    """Fold accents and punctuation so 'City B' and 'City B' compare equal."""
     stripped = unicodedata.normalize("NFKD", text)
     stripped = "".join(c for c in stripped if not unicodedata.combining(c))
     return re.sub(r"[^a-z0-9]+", "", stripped.lower())
@@ -356,7 +356,7 @@ def build_lore() -> tuple[Graph, dict]:
             hit = name_to_loc.get(n) or name_to_concept.get(n)
             if hit:
                 return hit
-            # "Görff (Volcano)" is written "Volcano-Gorff" in the census
+            # "City B (Volcano)" is written "Volcano-City B" in the census
             for locality in enc["characters"]["named_inhabitants"]["by_locality"]:
                 if norm(locality) == n or set(norm(locality).split()) == {n}:
                     lh = name_to_loc.get(norm(locality))

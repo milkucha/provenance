@@ -20,7 +20,7 @@ for a one-off test, not to retune the mechanism (change the JSON file for that).
 
 Usage:
     py scripts/lore/roll_reproduction.py [--odds 40]
-    py scripts/lore/roll_reproduction.py --p1 khaoe --p2 gondarfolas
+    py scripts/lore/roll_reproduction.py --p1 character_a --p2 character_b
 """
 
 import argparse

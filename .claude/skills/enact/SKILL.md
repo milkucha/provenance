@@ -74,7 +74,7 @@ Ask, as plain conversation (not multiple-choice):
 3. **Location** — optional. Where this character is based/found — fills the `location` field in their
    character file later (their current whereabouts; distinct from `origin`, the fixed birthplace
    `/character` sets at creation and this skill never touches). Not necessarily their backstory's
-   stated origin (Sonoros's backstory has him "out of Görff way," but his registered `location` is
+   stated origin (Character L's backstory has him "out of City B way," but his registered `location` is
    Balehm, where the scene actually put him).
 4. **Knowledge corpus** — how much of the lore they know, and how it's chosen. **First, check
    `_lore/characters/<slug>.json` for an existing file under this character's key.** If one exists with
@@ -105,7 +105,7 @@ Some drawn items will be `category: "hearsay"` (a claim from an earlier dialog's
 the objective record). Play those as things the character heard, not settled
 fact. The moment one of these actually gets voiced in the scene (Step 5), roll
 `scripts/lore/lineage_coin.py` right then — the result decides how the line is phrased: a `traceable`
-roll lets the character cite the source by name ("I heard Morkulo say..."); an `untraceable` roll
+roll lets the character cite the source by name ("I heard Character G say..."); an `untraceable` roll
 means vague framing only ("they say...," "it's told that...") — no named source, on purpose. Keep
 the roll result; it determines `derived_from`/`oral_lore` in Step 7.
 
@@ -289,7 +289,7 @@ happens on the page.
 ## Step 5a — Enact against the player
 
 Play interlocutor 1 in character, turn by turn, waiting for the player's actual input each time —
-same shape as the Sonoros conversation. Keep responses to 2–3 sentences. Continue until the user
+same shape as the Character L conversation. Keep responses to 2–3 sentences. Continue until the user
 signals the scene is over.
 
 ## Step 5b — Enact both characters
@@ -314,7 +314,7 @@ open judgment slot Step 4 flagged, resolve it now, before or while writing the s
   stayed ambient.
 
 Then: write the full scene as one message, alternating clearly labeled turns, same shape as the
-Nawom/Morkulo conversation — you write one side, then respond to yourself as the other, honoring
+Character H/Character G conversation — you write one side, then respond to yourself as the other, honoring
 each character's own sample independently, dramatizing Step 4's already-fixed facts rather than
 re-deciding them. Bring it to a natural stopping point rather than running indefinitely, then check
 with the user before moving on: satisfied, or continue/adjust? (A subagent dispatched by `/simulate`
@@ -329,7 +329,7 @@ started one step earlier. Once Step 7 runs, only the mutated version survives; t
 where the verbatim scene still exists to be saved at all.
 
 **Choose the scene's id now** — the same slug this scene's eventual Blabber dialog file and hearsay
-entry will use (e.g. `khaoe_milkucha_jardin_de_los_parajes`): participant keys plus a short location
+entry will use (e.g. `character_a_character_p_landmark_c`): participant keys plus a short location
 slug, joined with underscores. Picking it here, once, means the transcript file, the hearsay entry
 (Step 7 below — pass this id explicitly rather than letting the script auto-generate one), and the
 dialog file `/embody` eventually writes all end up sharing one id by construction, not by coincidence.
@@ -355,8 +355,8 @@ covers already exist; it only creates what's actually missing.
 **Record what each character internalized and understood, not what was objectively said.** When a
 character hears, experiences, or learns something in a scene, the hearsay entry captures *their
 mutated interpretation* of it, filtered through their `criterion`, `trusts`, `distrusts`, and
-`wasted_life`. This is not error or noise — it's how knowledge actually travels: Farlis hears about
-the Guerras and understands them as oppressive hierarchy; Auroboro III hears the same wars and
+`wasted_life`. This is not error or noise — it's how knowledge actually travels: Character C hears about
+the Guerras and understands them as oppressive hierarchy; Character N hears the same wars and
 understands them as glorious sacrifice. Both understandings go into the hearsay pool. A future
 character sampling from the pool gets the already-mutated version verbatim (no re-mutation at
 sample time), and if *they* retell it later, their mutations compound.
@@ -701,7 +701,7 @@ here, since a fresh JSON write could clobber what those calls just did. What's l
   touches `location`).
 - `backstory` — the backstory from Step 1/2, or `""` if none was given. Experience-knowledge,
   conceptually (see the intro), but its own top-level field. For a returning character, only append
-  or amend this if the user gives *new* backstory in this run (as with Döran's added hologram/pedestal
+  or amend this if the user gives *new* backstory in this run (as with Character E's added hologram/pedestal
   detail) — don't touch it otherwise.
 - `knowledge.education` — `{percent, mode, topic, items}` exactly as drawn by the script in Step 1/2,
   for a first-time character. For a returning character reusing an existing sample (per the guard in
@@ -715,10 +715,10 @@ here, since a fresh JSON write could clobber what those calls just did. What's l
 
   **Cross-check against the hearsay entry's `claims` from Step 7, and when the experience entry
   describes the same fact as a claim, reuse that claim's `about` ref** rather than writing a plain
-  string — this is what lets `check_resonance.py` (Step 9) find it later. Real example: Aureobalo
-  voicing his own backstory ("Told Farlis, for the first time aloud, that his surname resembles the
-  losing side of the Guerras de Gorff...") is both his own experience entry *and* claim #6 of
-  `aureobalo_farlis_castillo_en_miniatura`, `about: "Las Guerras de Gorff"` — the experience entry
+  string — this is what lets `check_resonance.py` (Step 9) find it later. Real example: Character I
+  voicing his own backstory ("Told Character C, for the first time aloud, that his surname resembles the
+  losing side of the the Old War...") is both his own experience entry *and* claim #6 of
+  `character_i_character_c_landmark_b`, `about: "The Old War"` — the experience entry
   should carry that same ref:
 
   ```bash
@@ -727,7 +727,7 @@ here, since a fresh JSON write could clobber what those calls just did. What's l
   ```
 
   Some experience entries genuinely have no claim to point to — a narrated action nobody voiced (e.g.
-  Aureobalo "postponed his drive back to Khol Moshin by a day to stay a second day at the Feria," which
+  Character I "postponed his drive back to City D by a day to stay a second day at the Feria," which
   no hearsay claim anywhere records). That's a legitimate outcome, not a recording failure — write
   those with plain `--add-experience` instead, unchanged:
 

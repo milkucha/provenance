@@ -11,7 +11,7 @@ every location in the world every pass (locations nobody's touched this pass jus
 lazy-clock precedent horizon.py already uses for life.lived).
 
 Usage:
-    py scripts/lore/apply_upkeep.py --location Tyrnea
+    py scripts/lore/apply_upkeep.py --location City C
 """
 
 import argparse

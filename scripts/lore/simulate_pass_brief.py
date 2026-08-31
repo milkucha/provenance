@@ -48,7 +48,7 @@ reproduction) are `/enact` Step 8's own concern from there, working off the part
 directly, not this file - this script never touches life.lived.
 
 Usage:
-    py "<worktree>/scripts/lore/simulate_pass_brief.py" --pair khaoe farlis --pass-number 12
+    py "<worktree>/scripts/lore/simulate_pass_brief.py" --pair character_a character_c --pass-number 12
 """
 
 import argparse

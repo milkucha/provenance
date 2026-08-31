@@ -289,7 +289,7 @@ For pass 1 through N:
    touches a tool.
    - **Paste point 3's JSON output directly into the dispatch prompt. Never hand-paraphrase it into
      prose first.** Caught in the round-3 debrief: an earlier session was retyping the brief as
-     sentences ("Pass 20. Location: the road between Tyrnea and the harvest fields...") before every
+     sentences ("Pass 20. Location: the road between City C and the harvest fields...") before every
      single dispatch — pure overhead, spent in the *orchestrator's own* tokens, restating facts the
      JSON already stated. `.claude/PRINCIPLES.md`'s "script everything that can be scripted" principle
      governs this directly: if it's already data, hand it over as data. Trim only genuinely
@@ -477,16 +477,14 @@ Once all passes are done (or the pool ran out early):
 - **If this run was testing or extending the system's design** (the same call from the top of this
   step — don't re-ask it), append a dated entry to `LAB_REPORT.md` so no run's result is ever only in
   chat history. **`LAB_REPORT.md` is deliberately absent from `provenance-bare`** (this branch ships
-  the bare engine with no run history) — the persistent, branch-independent copy lives vault-side, at
-  the fixed absolute path
-  `C:\Users\milkucha\Desktop\DEV\REF\vault\everything\projects\provenance\LAB_REPORT.md`. **Always
-  append there**, regardless of which branch or worktree this run happened on — read that file's own
-  header for the expected entry shape first. **If the main repo root this session is actually checked
-  out on also has its own `LAB_REPORT.md`** (true on `provenance-standalone`, not on
-  `provenance-bare`), **append the identical entry there too**, so the two stay in sync exactly as
-  they are today — never let them drift apart by writing to only one. **Do this only from the
-  orchestrating session, using each file's absolute path** (the same pattern as the Step 3 safety
-  net's `git -C "<main repo root>"`), **never by writing it from inside the active worktree.** This is
+  the bare engine with no run history) — if a persistent, branch-independent copy is kept outside the
+  repo (e.g. in a personal notes vault), append there using its own configured absolute path; read
+  that file's own header for the expected entry shape first. **If the main repo root this session is
+  actually checked out on also has its own `LAB_REPORT.md`**, **append the identical entry there
+  too**, so the two stay in sync rather than drifting apart by writing to only one. **Do this only
+  from the orchestrating session, using each file's absolute path** (the same pattern as the Step 3
+  safety net's `git -C "<main repo root>"`), **never by writing it from inside the active worktree.**
+  This is
   a deliberate, single, explicit write to a known meta-file at the very end of a run — unlike the
   accidental relative-path leaks Step 3's safety net exists to catch and revert, this one is
   intentional, so it's fine for it to land outside the worktree. If the run surfaced a design gap or

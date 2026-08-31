@@ -22,8 +22,8 @@ lead is a stronger, already-resolved signal than this roll, and always makes the
 traveler outright (see simulate_pass_brief.py's own forced_visit branch).
 
 Usage:
-    py scripts/lore/roll_home_visit.py --p1 khaoe --p2 farlis
-    py scripts/lore/roll_home_visit.py --p1 khaoe --p2 farlis --p1-choice survive --p2-choice arc
+    py scripts/lore/roll_home_visit.py --p1 character_a --p2 character_c
+    py scripts/lore/roll_home_visit.py --p1 character_a --p2 character_c --p1-choice survive --p2-choice arc
 """
 
 import argparse

@@ -19,11 +19,11 @@ counts as a real collision (useful to a transform) but has no help/hinder valenc
 
 Usage:
     py scripts/lore/check_arc_alignment.py \
-        --arc-about "era_ensayo: Las Guerras de Gorff" --arc-about "concept: historiography" \
+        --arc-about "era_ensayo: The Old War" --arc-about "concept: historiography" \
         --arc-needs "rare ore" \
         --peer-standard "text" --peer-wasted-life "text" \
-        --peer-knowledge-item "Met a trader in Görff who deals in rare ore.::location: gorff,concept: trade" \
-        --peer-knowledge-item "Heard the calendar in Lundria has two versions.::location: lundria"
+        --peer-knowledge-item "Met a trader in City B who deals in rare ore.::location: city_b,concept: trade" \
+        --peer-knowledge-item "Heard the calendar in City G has two versions.::location: city_g"
 """
 
 import argparse

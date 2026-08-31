@@ -19,7 +19,7 @@ already use to mean "more than a passing acquaintance"), sorted by strength desc
 closest ties read first.
 
 Usage:
-    py scripts/lore/social_circle.py khaoe
+    py scripts/lore/social_circle.py character_a
 """
 
 import argparse

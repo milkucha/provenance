@@ -9,7 +9,7 @@ skill's own append-only rule around this array (see .claude/PRINCIPLES.md).
 Usage:
     py scripts/lore/resolve_conflict.py --list
     py scripts/lore/resolve_conflict.py CONFLICT-13
-    py scripts/lore/resolve_conflict.py CONFLICT-13 --set-resolution "Aerorea is ..."
+    py scripts/lore/resolve_conflict.py CONFLICT-13 --set-resolution "City E is ..."
     py scripts/lore/resolve_conflict.py CONFLICT-13 --set-resolution "..." --force   # amend an existing resolution
 """
 

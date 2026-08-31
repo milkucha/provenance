@@ -19,8 +19,8 @@ simulate_pass_brief.py's own site) - this script doesn't special-case it, but th
 spend a file write recording "nothing happened."
 
 Usage:
-    py scripts/lore/record_bond_quality.py kristok_jakur --with some_trader --delta 1
-    py scripts/lore/record_bond_quality.py some_trader --with kristok_jakur --delta -1
+    py scripts/lore/record_bond_quality.py character_o --with some_trader --delta 1
+    py scripts/lore/record_bond_quality.py some_trader --with character_o --delta -1
 """
 
 import argparse

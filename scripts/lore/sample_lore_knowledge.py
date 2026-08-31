@@ -13,7 +13,7 @@ part of a new character's knowledge exactly as if they'd heard it secondhand - w
 and half-remembered gossip actually spread, and how the lore is meant to accrete new, emergent
 "fact-shaped" material over time on top of the fixed objective record. A "hearsay" item is NOT
 upgraded to objective truth by being sampled - the character knows it only as something claimed by
-someone, in some dialogue, possibly wrong. Play it that way: attributed ("I heard Gondarfolas say
+someone, in some dialogue, possibly wrong. Play it that way: attributed ("I heard Character B say
 once that..."), not asserted as settled history.
 
 NOT sampled, ever: _lore/facts/facts.json. Facts are the handful of things true of being a person in

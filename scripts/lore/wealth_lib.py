@@ -3,7 +3,7 @@ Shared plumbing for the survival mechanism's location wealth pool - not a standa
 from a sibling driver (roll_survival.py, apply_survival.py, apply_upkeep.py, simulate_pass_lib.py).
 
 A location's wealth is a plain counter in _lore/wealth.json, keyed by the exact location string a
-routine/character uses (e.g. "Tyrnea") - the same string roll_home_visit.py/assemble_location()
+routine/character uses (e.g. "City C") - the same string roll_home_visit.py/assemble_location()
 already resolve a scene to, no separate location-id scheme invented. A location with no entry yet
 defaults to `starting_wealth_per_capita * population` the first time it's read (get_wealth), not to
 zero - a town nobody's touched yet isn't assumed to already be starving.
@@ -18,8 +18,8 @@ Usage (from a sibling script in this same directory):
     from pathlib import Path
     sys.path.insert(0, str(Path(__file__).resolve().parent))
     import wealth_lib
-    pop = wealth_lib.population_of("Tyrnea")
-    per_capita = wealth_lib.wealth_per_capita("Tyrnea")
+    pop = wealth_lib.population_of("City C")
+    per_capita = wealth_lib.wealth_per_capita("City C")
 """
 
 import json
@@ -53,7 +53,7 @@ def _save(data: dict) -> None:
 
 def population_of(location: str) -> int:
     """Living characters currently at exactly this location string. A transit-context route string
-    (e.g. "Tyrnea <-> the harvest fields") is its own bucket, same pre-existing gap TODO.md's
+    (e.g. "City C <-> the harvest fields") is its own bucket, same pre-existing gap TODO.md's
     "transit context" entry already flags - not resolved here."""
     count = 0
     for path in CHAR_DIR.glob("*.json"):

@@ -10,7 +10,7 @@ which is exactly the kind of thing /simulate is trying to measure honestly. rand
 no judgement and needs none - this script makes no decision beyond the draw itself.
 
 Usage:
-    py scripts/lore/pick_pair.py khaoe gondarfolas auroboro_iii nerkeli
+    py scripts/lore/pick_pair.py character_a character_b character_n_iii character_m
 """
 
 import argparse

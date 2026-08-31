@@ -7,8 +7,8 @@ Call once per character, per scene they shared with someone (so twice total for 
 once from each side), same as life.lived already gets bumped once per participant per pass.
 
 Usage:
-    py scripts/lore/record_partner.py kristok_jakur --with some_trader
-    py scripts/lore/record_partner.py some_trader --with kristok_jakur
+    py scripts/lore/record_partner.py character_o --with some_trader
+    py scripts/lore/record_partner.py some_trader --with character_o
 """
 
 import argparse

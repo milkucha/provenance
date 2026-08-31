@@ -2,7 +2,7 @@
 Count how many scenes a character has actually been in, for /character Step 5's backfill rule:
 "one encodings.json hearsay.entries[] record is one scene, so `lived` is the number of entries
 listing them in `participants`" - matched on display name, diacritics and all, since a plain ASCII
-search misses "Döran" or "Iläria".
+search misses "Character E" or "Iläria".
 
 This script only counts. It does not write life.lived, and does not reroll a lifespan even when the
 count meets or exceeds the rolled span - Step 5 is explicit that a reroll (with --min <lived+1>) is
@@ -25,7 +25,7 @@ LIFESPANS_PATH = CHAR_DIR / "lifespans.json"
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("npc_key", help="Character key, e.g. 'doran'")
+    parser.add_argument("npc_key", help="Character key, e.g. 'character_e'")
     args = parser.parse_args()
 
     key = args.npc_key.lower()

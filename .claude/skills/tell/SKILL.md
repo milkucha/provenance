@@ -37,7 +37,7 @@ one that wasn't given.
 
 Ask for a short title if one hasn't already come up naturally in the telling. Derive a `snake_case`
 slug from it (matching the convention already used for dialogue filenames, e.g.
-`sonoros_lost_traveler`) - short, descriptive, unique against every existing file in `_lore/tales/`.
+`character_l_lost_traveler`) - short, descriptive, unique against every existing file in `_lore/tales/`.
 
 ## Step 3 — Write the tale's own file
 
@@ -115,7 +115,7 @@ describes, or adds detail to.
   item) - never remove or rewrite what's already there, even if the tale describes the same thing
   differently. That's what conflicts are for, next bullet.
 - **Disagrees with an existing entry**: add a new entry to `conflicts` (next `CONFLICT-NN` id -
-  currently up to `CONFLICT-17`, so this would be `CONFLICT-18` unless the count has moved since),
+  the next unused `CONFLICT-NN` number, read from `encodings.json`'s current `conflicts` array),
   `topic` and `detail` describing the disagreement, `user_resolution` left unset. Never resolve it
   yourself, and never quietly prefer the tale's version over the existing one (or vice versa).
 

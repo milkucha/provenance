@@ -24,7 +24,7 @@ Wired into /simulate's own Step 1/2 setup (see SKILL.md) - call once, right afte
 is finalized, before Step 3's first pass.
 
 Usage:
-    py scripts/lore/reset_reproduction_cooldown.py --pool khaoe farlis gondarfolas
+    py scripts/lore/reset_reproduction_cooldown.py --pool character_a character_c character_b
 """
 
 import argparse

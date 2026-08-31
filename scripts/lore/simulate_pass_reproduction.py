@@ -18,7 +18,7 @@ name_lead's side - the one thing about a birth that can't be scripted, same as a
 generate_offspring.py itself.
 
 Usage:
-    py scripts/lore/simulate_pass_reproduction.py --p1 khaoe --p2 farlis --pass-number 12
+    py scripts/lore/simulate_pass_reproduction.py --p1 character_a --p2 character_c --pass-number 12
 """
 
 import argparse

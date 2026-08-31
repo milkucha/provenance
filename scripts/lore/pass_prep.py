@@ -29,7 +29,7 @@ when a gate hit needs one, a short one-sentence director's note) - never a hand-
 of it. See `.claude/PRINCIPLES.md`'s "script everything that can be scripted" principle.
 
 Usage:
-    py scripts/lore/pass_prep.py --p1 khaoe --p2 farlis --pass-number 12 [--forced-visit]
+    py scripts/lore/pass_prep.py --p1 character_a --p2 character_c --pass-number 12 [--forced-visit]
 """
 
 import argparse
