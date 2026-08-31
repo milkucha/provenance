@@ -1,47 +1,44 @@
 {
-  "_comment": "Hand-authored place-type templates for /simulate's routine/arc mechanism. A context is authored once here, not per character - texture and 'provides' are shared by every routine tagged with this context. A character's routine references one of these by name plus a one-line personal routine_actions entry (see character SKILL.md). Starter set below is a generic baseline (market, workshop, archive, waystation, and so on) - expand by hand as new routines need a place-type that isn't here yet, same discipline as everything else authored rather than generated in this system.",
+  "_comment": "Hand-authored place-type templates for /simulate's routine/arc mechanism. A context is authored once here, not per character - texture and 'provides' are shared by every routine tagged with this context. A character's routine references one of these by name plus a one-line personal routine_actions entry (see character SKILL.md). Starter set below is a generic baseline (market, workshop, archive, and so on) - expand by hand as new routines need a place-type that isn't here yet, same discipline as everything else authored rather than generated in this system. `waystation` was removed 2026-09-01 (user correction, ported from the Luminacion test population) - no character routine ever used it, and its texture (travelers passing through, brief unrepeated contact) is already covered by `transit_route`; route any future 'travelers passing through' routine there instead of reviving this entry.",
+  "_provides_note": "Expanded 2026-08-31/2026-09-01 (user correction, ported from the Luminacion test population): the original list (records/contacts/trade/news/expertise/goods/materials) skewed every context toward paperwork and information - a 'concrete' arc kept meaning 'build a ledger' rather than actually building or moving anything physical. 'labor', 'tools', 'coin', 'water', 'shelter', and 'provisions' added below are deliberately hands/materials-shaped: labor is bodies doing physical work (not a contract for it), tools are the physical equipment a job needs, coin is raw currency changing hands (distinct from 'trade', a relationship/deal), water and provisions are literal consumables, shelter is a physical structure. Pick these when an arc's own project is something you could point at when it's done - a wall, a full granary, a paid crew standing in the road - not just a paid-for promise.",
   "market": {
     "texture": "Buying and selling, price disputes, scarcity, trust in a trading partner or supplier, goods that come and go with the season or the ships.",
-    "provides": ["goods", "materials", "trade", "news"]
+    "provides": ["goods", "materials", "trade", "news", "labor", "coin"]
   },
   "workshop": {
     "texture": "Making things by hand, materials ordered or scavenged, apprentices, pride or shame in the work's quality, tools that need tending as much as the product does.",
-    "provides": ["crafted goods", "materials", "expertise"]
+    "provides": ["crafted goods", "materials", "expertise", "tools", "labor"]
   },
   "archive": {
     "texture": "Records, attribution, gaps in the record, the physical work of maintaining what's stored, contradictions between sources.",
-    "provides": ["records", "expertise"]
-  },
-  "waystation": {
-    "texture": "Travelers passing through, news carried in and out, brief contact that isn't expected to repeat, schedules and delays.",
-    "provides": ["news", "contacts"]
+    "provides": ["records", "expertise", "labor"]
   },
   "port": {
     "texture": "Ships arriving and departing, cargo manifests, customs, tides and sailing schedules, news and goods carried in fresh with every crew.",
-    "provides": ["goods", "materials", "news", "contacts"]
+    "provides": ["goods", "materials", "news", "contacts", "labor", "coin"]
   },
   "temple": {
     "texture": "Rites, quiet devotion, disputes over doctrine or upkeep, the material cost of keeping a sacred place running, pilgrims and mourners passing through.",
-    "provides": ["records", "expertise", "contacts"]
+    "provides": ["records", "expertise", "contacts", "labor", "materials"]
   },
   "gardens": {
     "texture": "Growing things, seasons and blight, water rights, quiet unglamorous labor, a green space the rest of the city treats as either a shared resource or an afterthought to fund.",
-    "provides": ["materials", "goods", "expertise"]
+    "provides": ["materials", "goods", "expertise", "labor", "water"]
   },
   "municipality": {
     "texture": "Permits, disputes referred upward, budgets, the paperwork that makes a city a city, favors owed and called in.",
-    "provides": ["records", "contacts", "expertise"]
+    "provides": ["records", "contacts", "expertise", "labor", "coin", "materials"]
   },
   "bank": {
     "texture": "Ledgers, loans, interest, a city's money moving or not moving, trust extended or withdrawn, disputes over debts.",
-    "provides": ["records", "contacts", "trade"]
+    "provides": ["records", "contacts", "trade", "coin"]
   },
   "transit_route": {
     "texture": "The road itself, not a place at either end of it - caravans, tolls, weather, bandits or the fear of them, the distance between cities measured in days rather than miles, news that's already stale by the time it arrives.",
-    "provides": ["news", "contacts", "trade"]
+    "provides": ["news", "contacts", "trade", "labor", "materials", "provisions"]
   },
   "main_square": {
     "texture": "The open center everyone crosses sooner or later - public notices read aloud, disputes aired in front of witnesses, festivals and executions on the same stones, gossip that outruns any official account.",
-    "provides": ["news", "contacts"]
+    "provides": ["news", "contacts", "labor", "materials", "trade", "coin"]
   }
 }

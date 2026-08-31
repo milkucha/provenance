@@ -29,7 +29,7 @@ scope-difference #3), so there is nothing to rename there.
 
 The literal text substitution itself is scoped to exactly the files
 `generate_offspring.py` is known to have written it into:
-  - the child's own `name` field
+  - the child's own `name` AND `backstory` fields
   - `_lore/tales/birth_of_<slug>.md`'s content
   - that birth's own `tales.entries` row in `_lore/encodings.json` (found by id, not a blanket
     file-wide replace - encodings.json is shared and must not be touched outside that one entry)
@@ -39,8 +39,25 @@ The literal text substitution itself is scoped to exactly the files
     (parents' "Had a child with X, named <placeholder>." and the notified circle's "Heard that X and
     Y now have a child, <placeholder>." - scanned rather than enumerated, since exactly who got
     notified isn't tracked outside those files themselves)
+  - every OTHER character's `backstory` field, wherever this child later becomes someone else's
+    PARENT while still placeholder-named (compose_backstory() bakes `parent.get("name", parent_key)`
+    verbatim into "Child of {a} and {b}...", so an unresolved parent's raw slug lands in a
+    grandchild's prose the exact same way it lands in knowledge.experience)
+  - every OTHER birth tale's own `.md` body and its `encodings.json` summary, for the same reason -
+    write_birth_tale()'s "{name} was born, child of {a} and {b}." interpolates the same raw name
+  - found and fixed retroactively 2026-08-31/2026-09-01 in the Luminacion test population (see
+    fix_placeholder_backstory_text.py and fix_encodings_summary_text.py, the one-off cleanup scripts
+    for population debt from before this fix existed): 90+ character files across three /generate
+    runs had this exact leftover, because the substitution used to be scoped ONLY to
+    knowledge.experience and this entry's own tale/summary, never to backstory or to any OTHER tale
+    mentioning the same raw slug as a parent.
 Any routine's `routine_actions` line the subagent rewrote is applied by matching `location` against
 the child's own `routines[]`.
+
+Separately, `rename_slug()` below also fixes up any OTHER character's `criterion.anchor`/`arc.about`/
+`knowledge.education.items` entry that references this tale by its OLD id in `tale: <id>`-tag form
+(exact string match only) - the same class of gap, but for the tale's *id* rather than its display
+name, since a criterion/arc can be derived from a tale before that tale's own child is named.
 
 For each resolved arc: writes `arc = {about, needs, context, premise, resolution: "ongoing",
 history: []}` onto that character's file, then runs `register_arc_concept.py` now that `premise` is
@@ -142,8 +159,10 @@ def rename_slug(old_slug: str, real_name: str) -> str:
         json.dump(encodings, f, indent=2, ensure_ascii=False)
         f.write("\n")
 
+    tag_map = {}
     for prefix in ("birth_of_", "death_of_"):
         old_id, new_id = f"{prefix}{old_slug}", f"{prefix}{new_slug}"
+        tag_map[f"tale: {old_id}"] = f"tale: {new_id}"
         if INDEX_PATH.exists():
             text = INDEX_PATH.read_text(encoding="utf-8")
             INDEX_PATH.write_text(text.replace(f"`{old_id}.md`", f"`{new_id}.md`"), encoding="utf-8")
@@ -151,7 +170,40 @@ def rename_slug(old_slug: str, real_name: str) -> str:
             text = AUTHORS_PATH.read_text(encoding="utf-8")
             AUTHORS_PATH.write_text(text.replace(f"`{old_id}`", f"`{new_id}`"), encoding="utf-8")
 
+    # Fix any OTHER character's criterion.anchor/arc.about/knowledge.education.items entry that
+    # references this tale by its OLD id in `tale: <id>`-tag form (exact match only - never a
+    # substring/prose replace, same discipline as the backstory substitution above).
+    for path in CHAR_DIR.glob("*.json"):
+        if path.stem in (new_slug, "_template", "lifespans"):
+            continue
+        other = json.loads(path.read_text(encoding="utf-8"))
+        changed = replace_exact_tags(other, tag_map)
+        if changed:
+            path.write_text(json.dumps(other, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
     return new_slug
+
+
+def replace_exact_tags(obj, tag_map: dict) -> bool:
+    """Recursively replaces any string value that exactly equals a key in tag_map with its mapped
+    value - used for `tale: <id>`-tag-shaped references (criterion.anchor, arc.about,
+    knowledge.education.items), never for free prose (that's safe_replace's job instead)."""
+    changed = False
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            if isinstance(v, str) and v in tag_map:
+                obj[k] = tag_map[v]
+                changed = True
+            elif isinstance(v, (dict, list)):
+                changed = replace_exact_tags(v, tag_map) or changed
+    elif isinstance(obj, list):
+        for i, v in enumerate(obj):
+            if isinstance(v, str) and v in tag_map:
+                obj[i] = tag_map[v]
+                changed = True
+            elif isinstance(v, (dict, list)):
+                changed = replace_exact_tags(v, tag_map) or changed
+    return changed
 
 
 def call(script_name: str, argv: list) -> str:
@@ -205,32 +257,50 @@ def replace_in_experience(character: dict, old: str, new: str, protect: list) ->
     return changed
 
 
+def replace_in_backstory(character: dict, old: str, new: str, protect: list) -> bool:
+    """A parent who was still placeholder-named when a later child's backstory was composed gets
+    their raw slug baked verbatim into that child's "Child of {a} and {b}..." prose (compose_backstory()
+    interpolates parent.get("name", parent_key) at write time) - fixed here the same way
+    knowledge.experience already was, so a rename never leaves this one field stale."""
+    backstory = character.get("backstory")
+    if isinstance(backstory, str) and old in backstory:
+        character["backstory"] = safe_replace(backstory, old, new, protect)
+        return True
+    return False
+
+
 def rename_child(placeholder_slug: str, placeholder_name: str, real_name: str, routine_updates: list) -> str:
-    protect = [f"birth_of_{placeholder_slug}"]
+    protect = [f"birth_of_{placeholder_slug}", f"death_of_{placeholder_slug}"]
 
     child = load_char(placeholder_slug)
     child["name"] = real_name
+    if isinstance(child.get("backstory"), str) and placeholder_name in child["backstory"]:
+        child["backstory"] = safe_replace(child["backstory"], placeholder_name, real_name, protect)
     for update in routine_updates or []:
         for r in child.get("routines", []):
             if r["location"] == update.get("location"):
                 r["routine_actions"] = update.get("routine_actions", r.get("routine_actions", ""))
     save_char(placeholder_slug, child)
 
-    tale_path = TALES_DIR / f"birth_of_{placeholder_slug}.md"
-    if tale_path.exists():
+    # Every birth OR death tale that might mention this placeholder slug: as a parent in another
+    # birth's "child of {a} and {b}." (write_birth_tale()), or as the subject of this child's own
+    # death tale if they died before ever being resolved ("{name} has died." - record_death.py's
+    # own equivalent template, same raw-name-at-write-time gap birth tales have).
+    for tale_path in list(TALES_DIR.glob("birth_of_*.md")) + list(TALES_DIR.glob("death_of_*.md")):
         text = tale_path.read_text(encoding="utf-8")
-        tale_path.write_text(safe_replace(text, placeholder_name, real_name, protect), encoding="utf-8")
+        if placeholder_name in text:
+            tale_path.write_text(safe_replace(text, placeholder_name, real_name, protect), encoding="utf-8")
 
     with open(ENCODINGS_PATH, encoding="utf-8") as f:
         encodings = json.load(f)
-    tale_id = f"birth_of_{placeholder_slug}"
     for entry in encodings["tales"]["entries"]:
-        if entry["id"] == tale_id and placeholder_name in (entry.get("summary") or ""):
+        if placeholder_name in (entry.get("summary") or ""):
             entry["summary"] = safe_replace(entry["summary"], placeholder_name, real_name, protect)
     with open(ENCODINGS_PATH, "w", encoding="utf-8") as f:
         json.dump(encodings, f, indent=2, ensure_ascii=False)
         f.write("\n")
 
+    tale_id = f"birth_of_{placeholder_slug}"
     if INDEX_PATH.exists():
         lines = INDEX_PATH.read_text(encoding="utf-8").splitlines(keepends=True)
         marker = f"`{tale_id}.md`"
@@ -245,7 +315,9 @@ def rename_child(placeholder_slug: str, placeholder_name: str, real_name: str, r
         if path.stem == placeholder_slug:
             continue
         other = json.loads(path.read_text(encoding="utf-8"))
-        if replace_in_experience(other, placeholder_name, real_name, protect):
+        exp_changed = replace_in_experience(other, placeholder_name, real_name, protect)
+        bs_changed = replace_in_backstory(other, placeholder_name, real_name, protect)
+        if exp_changed or bs_changed:
             with open(path, "w", encoding="utf-8") as f:
                 json.dump(other, f, indent=2, ensure_ascii=False)
                 f.write("\n")

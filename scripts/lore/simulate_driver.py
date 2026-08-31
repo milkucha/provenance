@@ -178,6 +178,12 @@ def do_one_pass(state, pass_number):
     if pending and pending["pass"] == pass_number and pending["kind"] == "resume":
         p1, p2, forced_visit = pending["p1"], pending["p2"], pending["forced_visit"]
         raw_brief = json.loads(BRIEF_PATH.read_text(encoding="utf-8"))
+        # The arc that triggered this resume is already written (write_arc.py just ran) - strip the
+        # now-stale arc_authoring_needed block before handing this to the enacter. Found 2026-09-01:
+        # left in place, it still carries the OLD arc's completion_tale_id (e.g. "arc_complete_x"),
+        # and the local model reliably latches onto that as a fake `about` tag for its own claims,
+        # since it reads as just another id-shaped string sitting in the brief.
+        raw_brief.pop("arc_authoring_needed", None)
         brief = {
             "horizon_pre": horizon_pre_block(p1, p2),
             "brief": raw_brief,

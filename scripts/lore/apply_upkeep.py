@@ -10,6 +10,18 @@ Call this ONCE per pass, for the pass's resolved location - not once per partici
 every location in the world every pass (locations nobody's touched this pass just don't tick; same
 lazy-clock precedent horizon.py already uses for life.lived).
 
+**Floored at 0, added 2026-09-01 (user correction, not a tuning change)** - upkeep used to have no
+floor at all, so a populous location's pool would free-fall arbitrarily negative (-430 observed on
+one city after ~340 combined passes in the Luminacion test population) with zero further mechanical
+effect once it dropped below `eat_amount`: the "can anyone eat here" check is a plain
+`pool >= eat_amount`, so -2 and -430 behave identically downstream. The deep negative number was pure
+noise, not a harsher penalty, and made recovery effectively impossible - `survive_contribute` (a flat
+per-choice amount) could never claw back out of a hole that deep. Clamping the drain at 0 keeps every
+existing downstream behavior unchanged (nothing reads the *magnitude* of a negative pool, only
+whether it's below `eat_amount`) while leaving recovery back to positive at least reachable. This is
+a floor, not a tuning change - `upkeep_rate_per_capita`, `survive_contribute`, and `eat_amount` are
+all untouched.
+
 Usage:
     py scripts/lore/apply_upkeep.py --location City C
 """
@@ -36,7 +48,7 @@ def main() -> None:
     pop = wealth_lib.population_of(args.location)
     pool = wealth_lib.get_wealth(args.location)
     upkeep = pop * _S["upkeep_rate_per_capita"]
-    pool -= upkeep
+    pool = max(0.0, pool - upkeep)
     wealth_lib.set_wealth(args.location, pool)
     wealth_lib.checkpoint_wealth_trend(args.location)
 
