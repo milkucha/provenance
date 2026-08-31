@@ -29,7 +29,7 @@
     "label": "Provenance",
     "kind": "root",
     "path": ".",
-    "size": 1457155,
+    "size": 1457586,
     "degree": 16
    },
    {
@@ -77,7 +77,7 @@
     "label": "README.md",
     "kind": "doc",
     "path": "README.md",
-    "size": 62190,
+    "size": 62211,
     "degree": 1
    },
    {
@@ -101,7 +101,7 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
-    "size": 226939,
+    "size": 226929,
     "degree": 6
    },
    {
@@ -149,7 +149,7 @@
     "label": "skills",
     "kind": "dir",
     "path": ".claude/skills",
-    "size": 209985,
+    "size": 209975,
     "degree": 14
    },
    {
@@ -157,7 +157,7 @@
     "label": "character",
     "kind": "dir",
     "path": ".claude/skills/character",
-    "size": 33604,
+    "size": 33621,
     "degree": 2
    },
    {
@@ -165,7 +165,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/character/SKILL.md",
-    "size": 33604,
+    "size": 33621,
     "degree": 1
    },
    {
@@ -173,7 +173,7 @@
     "label": "embody",
     "kind": "dir",
     "path": ".claude/skills/embody",
-    "size": 14503,
+    "size": 14574,
     "degree": 2
    },
    {
@@ -181,7 +181,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/embody/SKILL.md",
-    "size": 14503,
+    "size": 14574,
     "degree": 1
    },
    {
@@ -189,7 +189,7 @@
     "label": "enact",
     "kind": "dir",
     "path": ".claude/skills/enact",
-    "size": 56414,
+    "size": 56429,
     "degree": 2
    },
    {
@@ -197,7 +197,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/enact/SKILL.md",
-    "size": 56414,
+    "size": 56429,
     "degree": 1
    },
    {
@@ -285,7 +285,7 @@
     "label": "simulate",
     "kind": "dir",
     "path": ".claude/skills/simulate",
-    "size": 40435,
+    "size": 40230,
     "degree": 2
    },
    {
@@ -293,7 +293,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/simulate/SKILL.md",
-    "size": 40435,
+    "size": 40230,
     "degree": 1
    },
    {
@@ -301,7 +301,7 @@
     "label": "spawn",
     "kind": "dir",
     "path": ".claude/skills/spawn",
-    "size": 15840,
+    "size": 15930,
     "degree": 2
    },
    {
@@ -309,7 +309,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/spawn/SKILL.md",
-    "size": 15840,
+    "size": 15930,
     "degree": 1
    },
    {
@@ -349,7 +349,7 @@
     "label": "tell",
     "kind": "dir",
     "path": ".claude/skills/tell",
-    "size": 8156,
+    "size": 8158,
     "degree": 2
    },
    {
@@ -357,7 +357,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/tell/SKILL.md",
-    "size": 8156,
+    "size": 8158,
     "degree": 1
    },
    {
@@ -365,7 +365,7 @@
     "label": "_lore",
     "kind": "dir",
     "path": "_lore",
-    "size": 41183,
+    "size": 41193,
     "degree": 8
    },
    {
@@ -381,7 +381,7 @@
     "label": "encodings.json",
     "kind": "lore",
     "path": "_lore/encodings.json",
-    "size": 8979,
+    "size": 8989,
     "degree": 1
    },
    {
@@ -517,7 +517,7 @@
     "label": "_npcs",
     "kind": "dir",
     "path": "_npcs",
-    "size": 51715,
+    "size": 51801,
     "degree": 6
    },
    {
@@ -525,7 +525,7 @@
     "label": "actions",
     "kind": "dir",
     "path": "_npcs/actions",
-    "size": 26825,
+    "size": 26906,
     "degree": 2
    },
    {
@@ -533,7 +533,7 @@
     "label": "registry.json",
     "kind": "registry",
     "path": "_npcs/actions/registry.json",
-    "size": 26825,
+    "size": 26906,
     "degree": 1
    },
    {
@@ -589,7 +589,7 @@
     "label": "templates",
     "kind": "dir",
     "path": "_npcs/templates",
-    "size": 23129,
+    "size": 23134,
     "degree": 9
    },
    {
@@ -597,7 +597,7 @@
     "label": "check_proximity.mcfunction",
     "kind": "template",
     "path": "_npcs/templates/check_proximity.mcfunction",
-    "size": 3430,
+    "size": 3435,
     "degree": 1
    },
    {
@@ -1101,7 +1101,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": "graphs",
-    "size": 243313,
+    "size": 243311,
     "degree": 2
    },
    {
@@ -1109,7 +1109,7 @@
     "label": "graphifyish",
     "kind": "dir",
     "path": "graphs/graphifyish",
-    "size": 243313,
+    "size": 243311,
     "degree": 3
    },
    {
@@ -1117,7 +1117,7 @@
     "label": "graph.json",
     "kind": "graph",
     "path": "graphs/graphifyish/graph.json",
-    "size": 118027,
+    "size": 118026,
     "degree": 1
    },
    {
@@ -1125,7 +1125,7 @@
     "label": "graphifyish.html",
     "kind": "graph",
     "path": "graphs/graphifyish/graphifyish.html",
-    "size": 125286,
+    "size": 125285,
     "degree": 1
    },
    {
@@ -1277,7 +1277,7 @@
     "label": "scripts",
     "kind": "dir",
     "path": "scripts",
-    "size": 591389,
+    "size": 591715,
     "degree": 6
    },
    {
@@ -1285,7 +1285,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": "scripts/graphs",
-    "size": 80165,
+    "size": 80167,
     "degree": 3
    },
    {
@@ -1293,7 +1293,7 @@
     "label": "graphifyish.py",
     "kind": "script",
     "path": "scripts/graphs/graphifyish.py",
-    "size": 41832,
+    "size": 41834,
     "degree": 1
    },
    {
@@ -1325,7 +1325,7 @@
     "label": "lore",
     "kind": "dir",
     "path": "scripts/lore",
-    "size": 447871,
+    "size": 448195,
     "degree": 63
    },
    {
@@ -1341,7 +1341,7 @@
     "label": "anchor_epistemology.py",
     "kind": "script",
     "path": "scripts/lore/anchor_epistemology.py",
-    "size": 6622,
+    "size": 6628,
     "degree": 1
    },
    {
@@ -1349,7 +1349,7 @@
     "label": "apply_contested_lead.py",
     "kind": "script",
     "path": "scripts/lore/apply_contested_lead.py",
-    "size": 3689,
+    "size": 3695,
     "degree": 1
    },
    {
@@ -1357,7 +1357,7 @@
     "label": "apply_death_legacy.py",
     "kind": "script",
     "path": "scripts/lore/apply_death_legacy.py",
-    "size": 2477,
+    "size": 2482,
     "degree": 1
    },
    {
@@ -1389,7 +1389,7 @@
     "label": "backfill_lived.py",
     "kind": "script",
     "path": "scripts/lore/backfill_lived.py",
-    "size": 2900,
+    "size": 2911,
     "degree": 1
    },
    {
@@ -1397,7 +1397,7 @@
     "label": "baseline_stats.py",
     "kind": "script",
     "path": "scripts/lore/baseline_stats.py",
-    "size": 4371,
+    "size": 4373,
     "degree": 1
    },
    {
@@ -1413,7 +1413,7 @@
     "label": "build_source_index.py",
     "kind": "script",
     "path": "scripts/lore/build_source_index.py",
-    "size": 23033,
+    "size": 23029,
     "degree": 1
    },
    {
@@ -1421,7 +1421,7 @@
     "label": "check_anchor_reference.py",
     "kind": "script",
     "path": "scripts/lore/check_anchor_reference.py",
-    "size": 4888,
+    "size": 4885,
     "degree": 1
    },
    {
@@ -1429,7 +1429,7 @@
     "label": "check_arc_alignment.py",
     "kind": "script",
     "path": "scripts/lore/check_arc_alignment.py",
-    "size": 4728,
+    "size": 4718,
     "degree": 1
    },
    {
@@ -1437,7 +1437,7 @@
     "label": "check_character_name.py",
     "kind": "script",
     "path": "scripts/lore/check_character_name.py",
-    "size": 2459,
+    "size": 2491,
     "degree": 1
    },
    {
@@ -1453,7 +1453,7 @@
     "label": "check_resonance.py",
     "kind": "script",
     "path": "scripts/lore/check_resonance.py",
-    "size": 13176,
+    "size": 13183,
     "degree": 1
    },
    {
@@ -1477,7 +1477,7 @@
     "label": "generate_offspring.py",
     "kind": "script",
     "path": "scripts/lore/generate_offspring.py",
-    "size": 44690,
+    "size": 44708,
     "degree": 1
    },
    {
@@ -1485,7 +1485,7 @@
     "label": "horizon.py",
     "kind": "script",
     "path": "scripts/lore/horizon.py",
-    "size": 4365,
+    "size": 4383,
     "degree": 1
    },
    {
@@ -1493,7 +1493,7 @@
     "label": "lineage_coin.py",
     "kind": "script",
     "path": "scripts/lore/lineage_coin.py",
-    "size": 1429,
+    "size": 1433,
     "degree": 1
    },
    {
@@ -1517,7 +1517,7 @@
     "label": "pass_apply.py",
     "kind": "script",
     "path": "scripts/lore/pass_apply.py",
-    "size": 12611,
+    "size": 12622,
     "degree": 1
    },
    {
@@ -1525,7 +1525,7 @@
     "label": "pass_prep.py",
     "kind": "script",
     "path": "scripts/lore/pass_prep.py",
-    "size": 6405,
+    "size": 6416,
     "degree": 1
    },
    {
@@ -1533,7 +1533,7 @@
     "label": "pass_record.py",
     "kind": "script",
     "path": "scripts/lore/pass_record.py",
-    "size": 5285,
+    "size": 5307,
     "degree": 1
    },
    {
@@ -1541,7 +1541,7 @@
     "label": "pick_pair.py",
     "kind": "script",
     "path": "scripts/lore/pick_pair.py",
-    "size": 1610,
+    "size": 1623,
     "degree": 1
    },
    {
@@ -1557,7 +1557,7 @@
     "label": "record_bond_quality.py",
     "kind": "script",
     "path": "scripts/lore/record_bond_quality.py",
-    "size": 2913,
+    "size": 2909,
     "degree": 1
    },
    {
@@ -1581,7 +1581,7 @@
     "label": "record_partner.py",
     "kind": "script",
     "path": "scripts/lore/record_partner.py",
-    "size": 1790,
+    "size": 1786,
     "degree": 1
    },
    {
@@ -1597,7 +1597,7 @@
     "label": "reset_reproduction_cooldown.py",
     "kind": "script",
     "path": "scripts/lore/reset_reproduction_cooldown.py",
-    "size": 3337,
+    "size": 3348,
     "degree": 1
    },
    {
@@ -1605,7 +1605,7 @@
     "label": "resolve_conflict.py",
     "kind": "script",
     "path": "scripts/lore/resolve_conflict.py",
-    "size": 6358,
+    "size": 6357,
     "degree": 1
    },
    {
@@ -1629,7 +1629,7 @@
     "label": "roll_arc_primacy.py",
     "kind": "script",
     "path": "scripts/lore/roll_arc_primacy.py",
-    "size": 1112,
+    "size": 1114,
     "degree": 1
    },
    {
@@ -1645,7 +1645,7 @@
     "label": "roll_death_legacy.py",
     "kind": "script",
     "path": "scripts/lore/roll_death_legacy.py",
-    "size": 2676,
+    "size": 2686,
     "degree": 1
    },
    {
@@ -1653,7 +1653,7 @@
     "label": "roll_home_visit.py",
     "kind": "script",
     "path": "scripts/lore/roll_home_visit.py",
-    "size": 3567,
+    "size": 3589,
     "degree": 1
    },
    {
@@ -1677,7 +1677,7 @@
     "label": "roll_reproduction.py",
     "kind": "script",
     "path": "scripts/lore/roll_reproduction.py",
-    "size": 2618,
+    "size": 2624,
     "degree": 1
    },
    {
@@ -1685,7 +1685,7 @@
     "label": "roll_routine.py",
     "kind": "script",
     "path": "scripts/lore/roll_routine.py",
-    "size": 1285,
+    "size": 1268,
     "degree": 1
    },
    {
@@ -1701,7 +1701,7 @@
     "label": "run_manifest.py",
     "kind": "script",
     "path": "scripts/lore/run_manifest.py",
-    "size": 5762,
+    "size": 5773,
     "degree": 1
    },
    {
@@ -1709,7 +1709,7 @@
     "label": "sample_grounding.py",
     "kind": "script",
     "path": "scripts/lore/sample_grounding.py",
-    "size": 4559,
+    "size": 4571,
     "degree": 1
    },
    {
@@ -1725,7 +1725,7 @@
     "label": "simulate_generate_population.py",
     "kind": "script",
     "path": "scripts/lore/simulate_generate_population.py",
-    "size": 26208,
+    "size": 26241,
     "degree": 1
    },
    {
@@ -1733,7 +1733,7 @@
     "label": "simulate_pass_brief.py",
     "kind": "script",
     "path": "scripts/lore/simulate_pass_brief.py",
-    "size": 23870,
+    "size": 23881,
     "degree": 1
    },
    {
@@ -1749,7 +1749,7 @@
     "label": "simulate_pass_reproduction.py",
     "kind": "script",
     "path": "scripts/lore/simulate_pass_reproduction.py",
-    "size": 4368,
+    "size": 4379,
     "degree": 1
    },
    {
@@ -1757,7 +1757,7 @@
     "label": "simulate_resolve_pair.py",
     "kind": "script",
     "path": "scripts/lore/simulate_resolve_pair.py",
-    "size": 3444,
+    "size": 3459,
     "degree": 1
    },
    {
@@ -1765,7 +1765,7 @@
     "label": "simulate_setup_worktree.py",
     "kind": "script",
     "path": "scripts/lore/simulate_setup_worktree.py",
-    "size": 7520,
+    "size": 7519,
     "degree": 1
    },
    {
@@ -1773,7 +1773,7 @@
     "label": "simulate_tally.py",
     "kind": "script",
     "path": "scripts/lore/simulate_tally.py",
-    "size": 4734,
+    "size": 4743,
     "degree": 1
    },
    {
@@ -1781,7 +1781,7 @@
     "label": "social_circle.py",
     "kind": "script",
     "path": "scripts/lore/social_circle.py",
-    "size": 4352,
+    "size": 4358,
     "degree": 1
    },
    {
@@ -1805,7 +1805,7 @@
     "label": "update_character.py",
     "kind": "script",
     "path": "scripts/lore/update_character.py",
-    "size": 12362,
+    "size": 12392,
     "degree": 1
    },
    {
@@ -1821,7 +1821,7 @@
     "label": "write_arc.py",
     "kind": "script",
     "path": "scripts/lore/write_arc.py",
-    "size": 6641,
+    "size": 6654,
     "degree": 1
    },
    {
