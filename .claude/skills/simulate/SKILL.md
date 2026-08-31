@@ -477,14 +477,18 @@ Once all passes are done (or the pool ran out early):
 - **If this run was testing or extending the system's design** (the same call from the top of this
   step — don't re-ask it), append a dated entry to `LAB_REPORT.md` so no run's result is ever only in
   chat history. **`LAB_REPORT.md` is deliberately absent from `provenance-bare`** (this branch ships
-  the bare engine with no run history) — if a persistent, branch-independent copy is kept outside the
-  repo (e.g. in a personal notes vault), append there using its own configured absolute path; read
-  that file's own header for the expected entry shape first. **If the main repo root this session is
-  actually checked out on also has its own `LAB_REPORT.md`**, **append the identical entry there
-  too**, so the two stay in sync rather than drifting apart by writing to only one. **Do this only
-  from the orchestrating session, using each file's absolute path** (the same pattern as the Step 3
-  safety net's `git -C "<main repo root>"`), **never by writing it from inside the active worktree.**
-  This is
+  the bare engine with no run history). A persistent, branch-independent copy is optional and lives
+  outside this repo entirely (e.g. a personal notes vault) — resolving where that is works the same
+  way any other project-specific external path does: check `CLAUDE.md`/project settings for a
+  configured location first; if none is set, ask the user for the absolute path once and treat it as
+  standing for the rest of the session; if the user says there isn't one, skip the external copy and
+  only append to the main repo's own `LAB_REPORT.md` (next bullet) if that exists. Once resolved, read
+  that file's own header for the expected entry shape before appending. **If the main repo root this
+  session is actually checked out on also has its own `LAB_REPORT.md`**, **append the identical entry
+  there too**, so the two stay in sync rather than drifting apart by writing to only one. **Do this
+  only from the orchestrating session, using each file's absolute path** (the same pattern as the
+  Step 3 safety net's `git -C "<main repo root>"`), **never by writing it from inside the active
+  worktree.** This is
   a deliberate, single, explicit write to a known meta-file at the very end of a run — unlike the
   accidental relative-path leaks Step 3's safety net exists to catch and revert, this one is
   intentional, so it's fine for it to land outside the worktree. If the run surfaced a design gap or
