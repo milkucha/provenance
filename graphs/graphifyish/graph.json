@@ -29,7 +29,7 @@
     "label": "Provenance",
     "kind": "root",
     "path": ".",
-    "size": 1462966,
+    "size": 1465656,
     "degree": 16
    },
    {
@@ -77,7 +77,7 @@
     "label": "README.md",
     "kind": "doc",
     "path": "README.md",
-    "size": 63394,
+    "size": 64815,
     "degree": 1
    },
    {
@@ -1101,7 +1101,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": "graphs",
-    "size": 242044,
+    "size": 243313,
     "degree": 2
    },
    {
@@ -1109,7 +1109,7 @@
     "label": "graphifyish",
     "kind": "dir",
     "path": "graphs/graphifyish",
-    "size": 242044,
+    "size": 243313,
     "degree": 3
    },
    {
@@ -1117,7 +1117,7 @@
     "label": "graph.json",
     "kind": "graph",
     "path": "graphs/graphifyish/graph.json",
-    "size": 117299,
+    "size": 118027,
     "degree": 1
    },
    {
@@ -1125,7 +1125,7 @@
     "label": "graphifyish.html",
     "kind": "graph",
     "path": "graphs/graphifyish/graphifyish.html",
-    "size": 124745,
+    "size": 125286,
     "degree": 1
    },
    {
