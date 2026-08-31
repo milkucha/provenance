@@ -29,7 +29,7 @@
     "label": "Provenance",
     "kind": "root",
     "path": ".",
-    "size": 1457999,
+    "size": 1475975,
     "degree": 16
    },
    {
@@ -101,7 +101,7 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
-    "size": 227342,
+    "size": 228148,
     "degree": 6
    },
    {
@@ -149,7 +149,7 @@
     "label": "skills",
     "kind": "dir",
     "path": ".claude/skills",
-    "size": 210388,
+    "size": 211194,
     "degree": 14
    },
    {
@@ -285,7 +285,7 @@
     "label": "simulate",
     "kind": "dir",
     "path": ".claude/skills/simulate",
-    "size": 40643,
+    "size": 41449,
     "degree": 2
    },
    {
@@ -293,7 +293,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/simulate/SKILL.md",
-    "size": 40643,
+    "size": 41449,
     "degree": 1
    },
    {
@@ -1277,7 +1277,7 @@
     "label": "scripts",
     "kind": "dir",
     "path": "scripts",
-    "size": 591715,
+    "size": 608885,
     "degree": 6
    },
    {
@@ -1325,8 +1325,8 @@
     "label": "lore",
     "kind": "dir",
     "path": "scripts/lore",
-    "size": 448195,
-    "degree": 63
+    "size": 465365,
+    "degree": 64
    },
    {
     "id": "file:scripts/lore/add_categories_schema.py",
@@ -1718,6 +1718,14 @@
     "kind": "script",
     "path": "scripts/lore/sample_lore_knowledge.py",
     "size": 12547,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/simulate_driver.py",
+    "label": "simulate_driver.py",
+    "kind": "script",
+    "path": "scripts/lore/simulate_driver.py",
+    "size": 17170,
     "degree": 1
    },
    {
@@ -3182,6 +3190,12 @@
    },
    {
     "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/simulate_driver.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/simulate_generate_population.py",
     "rel": "contains",
     "weight": 1
@@ -3343,7 +3357,7 @@
     "kind": "layer",
     "note": "skills + scripts + supporting patterns",
     "tier": 2,
-    "degree": 90
+    "degree": 91
    },
    {
     "id": "layer:3",
@@ -3912,6 +3926,14 @@
     "tier": 2,
     "file": "scripts/lore/sample_lore_knowledge.py",
     "degree": 3
+   },
+   {
+    "id": "script:lore/simulate_driver.py",
+    "label": "simulate_driver.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/simulate_driver.py",
+    "degree": 1
    },
    {
     "id": "script:lore/simulate_generate_population.py",
@@ -4552,6 +4574,12 @@
    {
     "source": "layer:2",
     "target": "script:lore/sample_lore_knowledge.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/simulate_driver.py",
     "rel": "holds",
     "weight": 1
    },
