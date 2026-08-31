@@ -1,6 +1,6 @@
 # Facts — What Everyone Knows
 
-The fourth source of truth for Milkantis, and the only one that is **not sampled**.
+The fourth source of truth for this world, and the only one that is **not sampled**.
 
 `material/` and `tale/` both feed `_lore/encodings.json`, and everything in
 `encodings.json` goes into the pool that `scripts/lore/sample_lore_knowledge.py` draws from — which means

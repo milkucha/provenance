@@ -17,6 +17,4 @@ reads the same.
 
 | Id | Responsible | Recorded |
 |---|---|---|
-| `peregrins` | milkucha | 2026-07-30 |
-| `creepers_and_night_monsters` | milkucha | 2026-07-30 |
-| `redstone_and_basic_needs` | milkucha | 2026-07-30 |
+| _(none yet)_ | | |

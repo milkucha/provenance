@@ -14,7 +14,7 @@ bounded, personal, sometimes secondhand, and never guaranteed complete or correc
 real person's (see README §8 for how that bound is set). The two records will often agree, because
 the NPCs so far were built by sampling directly from the objective record. **They are not the same
 thing, and should not be read as the same thing.** Nothing in this file is evidence for what
-actually happened in Milkantis — it is evidence only for what a specific character, at a specific
+actually happened in this world — it is evidence only for what a specific character, at a specific
 moment, said they believed. When a claim here ever contradicts `context.md`, that is not an error to
 reconcile — it's the interesting part, and it should be logged as a divergence, not silently fixed.
 

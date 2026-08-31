@@ -1,6 +1,6 @@
 # Tale — Told Directly
 
-This is a third source of truth for Milkantis, alongside the **objective record**
+This is a third source of truth for this world, alongside the **objective record**
 (`_lore/material/_context.md` → `_lore/encodings.json`) and the **in-fiction subjective
 record** (`_lore/characters/hearsay.md` — what a *character* said inside a played dialogue, never
 merged into the objective arrays). A tale is told directly by the user, the world's author, outside
@@ -34,6 +34,4 @@ it doesn't answer, is not a defect; the gap is logged in `_lore/unknowns.md` lik
 
 | Told | Title | Told by | Responsible | File | Touches |
 |---|---|---|---|---|---|
-| 2026-07-30 | The Peregrins | — | milkucha | `peregrins.md` | new concept `peregrins`; annotated the existing bare "Peregrin"/"Peregrins" census role tags (Terfila, Gorff) |
-| 2026-07-30 | Creepers and Night Monsters | no one; simply now known | milkucha | `creepers_and_night_monsters.md` | new concept `world_hazards` |
-| 2026-07-30 | Redstone and Basic Needs | no one; simply now known | milkucha | `redstone_and_basic_needs.md` | new concepts `redstone`, `basic_needs` |
+| _(none yet)_ | | | | | |

@@ -1,6 +1,9 @@
 {
   "_comment": "Single source of truth for every tunable knob /enact's mechanical block uses (odds, thresholds, cooldowns, the lifespan range) - scripts read this via scripts/lore/tuning.py instead of hardcoding their own defaults, and .claude/skills/enact/SKILL.md's orchestration prose points here rather than restating numbers. Change a value here; no script needs editing to retune. Every value below is a first guess, untuned by any actual run yet - see LAB_REPORT.md's own note on this.",
-  "lifespan_range": {"min": 30, "max": 60},
+  "lifespan_range": {
+    "min": 30,
+    "max": 60
+  },
   "partner_threshold": 3,
   "parent_cooldown_passes": 10,
   "child_cooldown_passes": 5,
@@ -17,18 +20,27 @@
   "offspring_knowledge": {
     "_comment": "Design debrief 2026-08-11: a child's education.items used to be a random 1-to-100% subset of the union of both parents' items only - could be as thin as a single fact, and the population-wide knowledge pool could never grow past what the founding six started with. Retuned so parental knowledge reliably survives at least partially, some of each parent's own lived experience carries over as family lore (not as the child's own lived experience - see generate_offspring.py's own docstring), and every child also draws a small amount of genuinely new material from _lore/encodings.json's world-lore pools (concepts/locations/conflicts/named_inhabitants) - skewed toward whatever the child's own (independently inherited) criterion already cares about - so the population's total knowledge can expand generation over generation instead of only ever recombining what already existed.",
     "parent_education_min_fraction": 0.5,
-    "parent_experience_fraction_range": [0.1, 0.35],
-    "general_knowledge_fraction_range": [0.15, 0.45],
+    "parent_experience_fraction_range": [
+      0.1,
+      0.35
+    ],
+    "general_knowledge_fraction_range": [
+      0.15,
+      0.45
+    ],
     "criterion_skew_weight": 3
   },
   "inherited_relationships": {
     "_comment": "Design debrief 2026-08-28: a child starts with a faint version of a random slice of both parents' own partners{}/partners_quality{} - 'even if they have not interacted with those connections, they should be tracked as if they have some kind of relationship,' per the user's own framing. fraction_range sizes the random subset of the union of both parents' partner keys (excluding the parents and the child themselves) that gets inherited at all; strength_scale/quality_scale shrink the inherited numbers down from the parent's own accumulated values, since the child hasn't actually lived any of those scenes themselves - only heard of the people.",
-    "fraction_range": [0.1, 0.3],
+    "fraction_range": [
+      0.1,
+      0.3
+    ],
     "strength_scale": 0.25,
     "quality_scale": 0.25
   },
   "survival": {
-    "_comment": "Design session 2026-08-28: whether a character spends a pass working (survive) or pursuing their arc, and what that costs them and their location's shared wealth pool. History through 2026-08-31 (energy_cap 5->10->20, survive_take 1->2, survive_contribute 2->3, upkeep_rate_per_capita 0.5->0.15) preserved in git history. Redesigned 2026-08-31 (three-cities-baseline-20260831 pass-250 checkpoint, on user correction): the prior design let `survive` restore energy unconditionally regardless of the pool's own health, so a depleted pool never actually starved anyone directly - `survive_take`/`arc_pool_draw`/`arc_extra_cost_scarce` retired. Eating is now universal and pool-gated (`eat_amount`, taken by EVERY character each pass if the pool can afford it, independent of survive/arc choice) - `survive` now purely contributes to the pool, `arc` purely costs extra personal energy, and an arc-choosing character in a starved town feels it twice (failing to eat, then still paying the extra personal cost). See apply_survival.py's own docstring for the exact math.",
+    "_comment": "Design session 2026-08-28: whether a character spends a pass working (survive) or pursuing their arc, and what that costs them and their location's shared wealth pool. Redesigned 2026-08-31: eating is now universal and pool-gated (`eat_amount`, taken by every character each pass if the pool can afford it, independent of survive/arc choice) rather than bundled into the survive choice unconditionally, so a depleted pool now actually starves people directly instead of only skewing behavior indirectly. `survive` purely contributes to the pool; `arc` purely costs extra personal energy, and an arc-choosing character in a starved location feels it twice (failing to eat, then still paying the extra personal cost). See apply_survival.py's own docstring for the exact math.",
     "energy_cap": 20,
     "base_cost": 1,
     "arc_extra_cost": 1,
@@ -37,7 +49,11 @@
     "upkeep_rate_per_capita": 0.15,
     "provides_wealth_threshold": 2,
     "starting_wealth_per_capita": 2,
-    "odds_percent": {"arc_base": 50, "min": 2, "max": 95},
+    "odds_percent": {
+      "arc_base": 50,
+      "min": 2,
+      "max": 95
+    },
     "weights": {
       "_comment": "Percentage-point shifts applied to the arc_base odds above - same 'skew, never decide' unit every other roll in this codebase already uses (see roll_contested.py). Each weight is multiplied by its input, which is itself normalized to roughly [-1, 1] before the multiply - see roll_survival.py. scarcity_pressure added 2026-08-29: only ever pushes toward 'survive' (a declining per-capita trend since apply_upkeep.py's last checkpoint for this location), never rewards a recovering trend by pushing further into 'arc' - deliberately asymmetric, same reasoning pool_reliance/affinity_obligation already apply to net_affinity.",
       "energy": 20,
@@ -46,8 +62,16 @@
       "affinity_obligation": 20,
       "scarcity_pressure": 15
     },
-    "arc_pressure_stage_weight": {"early": 0.2, "mid": 0.5, "late": 0.8},
-    "arc_pressure_urgency_bonus": {"early": 0.0, "established": 0.1, "late": 0.3},
+    "arc_pressure_stage_weight": {
+      "early": 0.2,
+      "mid": 0.5,
+      "late": 0.8
+    },
+    "arc_pressure_urgency_bonus": {
+      "early": 0.0,
+      "established": 0.1,
+      "late": 0.3
+    },
     "home_visit_survival_shift": 20
   }
 }

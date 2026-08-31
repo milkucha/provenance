@@ -232,8 +232,7 @@ Also clear the reproduction cooldown's two absolute-pass-number scalars (`last_r
 `birth_pass`) for every participant, right here, before pass 1 — a fresh run's own pass counter always
 starts at 1 regardless of the branched-from commit's own history, so a stale value from whatever
 earlier run wrote it reads as "had a child hundreds of passes in the future," wrongly blocking
-reproduction until this run's own count coincidentally exceeds that old absolute number (found
-2026-08-31, `three-cities-baseline-20260831`'s pass-250 checkpoint — see `LAB_REPORT.md`):
+reproduction until this run's own count coincidentally exceeds that old absolute number:
 
 ```bash
 py "<worktree>/scripts/lore/reset_reproduction_cooldown.py" --pool <slug1> <slug2> ...

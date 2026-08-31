@@ -1,9 +1,8 @@
 """
 Clear `last_reproduced_pass` (and `birth_pass`, same reasoning) on every participant at a new
-/simulate run's own setup - fixes a real bug found running three-cities-baseline-20260831
-(2026-08-31): a `/simulate` run's pass counter always starts at 1 regardless of the branched-from
-commit's own history, but `last_reproduced_pass` is an absolute scalar carried over unreset from
-whatever earlier run wrote it. Reproduction eligibility checks `this_run_pass_number -
+/simulate run's own setup: a `/simulate` run's pass counter always starts at 1 regardless of the
+branched-from commit's own history, but `last_reproduced_pass` is an absolute scalar carried over
+unreset from whatever earlier run wrote it. Reproduction eligibility checks `this_run_pass_number -
 last_reproduced_pass >= parent_cooldown_passes` (simulate_pass_reproduction.py) - a character who had
 a child at old-run pass 362 reads, to a new run starting at pass 1, as having had a child 361 passes
 in the future, permanently blocking them (in practice: until this run's own pass count happens to
