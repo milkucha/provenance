@@ -324,20 +324,33 @@ and `/enact` still never touches either registry or `data/`. `/embody` and `/spa
     `generate_offspring.py`, a new character file with inherited knowledge and a birth tale) and
     death legacy (an ongoing arc transferring to someone in the deceased's notified circle). Before
     home/visit is decided, each drawn participant also rolls **survive** or pursue their **arc**
-    this pass (`roll_survival.py`) — a weighted roll, not free choice: surviving replenishes personal
-    energy and the location's shared `wealth` pool (`_lore/wealth.json`, via `wealth_lib.py`),
-    pursuing the arc costs both instead and skews `roll_home_visit.py` toward staying home.
-    `apply_survival.py`/`apply_upkeep.py` settle the pass's actual energy/wealth changes once the
-    location resolves, and the needs/provides bonus only fires when the location's wealth is
-    actually in surplus. Energy hitting 0 is a second, independent death vector alongside the rolled
-    lifespan. Currently piloted on 6 seeded characters; whether the
-    mechanism is actually producing good results, as opposed to just running, is tracked in
-    `LAB_REPORT.md` — see below. **`/generate`**
+    this pass (`roll_survival.py`) — a weighted roll, not free choice. Redesigned 2026-08-31 on the
+    realization that the earlier version let `survive` restore personal energy unconditionally, so a
+    starved location never actually starved anyone directly, only skewed behavior around the edges:
+    eating is now universal and pool-gated (`apply_survival.py`/`apply_upkeep.py`, `_lore/wealth.json`
+    via `wealth_lib.py`) — every drawn participant tries to eat from the location's shared pool
+    regardless of which choice they made that pass, and if the pool can't cover it, nobody eats,
+    survive-choosers included. `survive` on top of that purely contributes back to the pool; pursuing
+    the **arc** instead costs extra personal energy and skews `roll_home_visit.py` toward staying
+    home. Energy hitting 0 is a second, independent death vector alongside the rolled lifespan. An
+    arc's own `needs` — what it requires to advance — is mechanically constrained to
+    `_lore/contexts.json`'s registered `provides` vocabulary for that arc's `context`, not free-typed:
+    `write_arc.py` rejects anything outside it, and `suggest_arc_needs.py` ranks the valid options by
+    textual overlap with the character's own `routine_actions`, so the choice stays grounded in what
+    they actually do instead of whatever's easiest to reach for — a real gap, caught the hard way when
+    six consecutive arc re-authorings in one run, same author, all converged on the same need
+    regardless of topic. A completed arc gets filed as a real tale (same mechanism a birth or death
+    already uses) — a character's finished project becomes a fact the record can sample back later,
+    not a resolution flag that just evaporates. Whether the mechanism is actually producing good
+    results, as opposed to just running, is tracked in `LAB_REPORT.md` — see below. **`/generate`**
     is a separate command for pregenerating a large multi-generation starting population quickly
     rather than a showcase trail of scenes: the same underlying mechanics (routines, arcs,
     reproduction, death) run as one script-driven pass loop with no scene-writing and no subagent
     per pass, deferring the two things that genuinely need a model's judgment (a child's name, a
-    fresh arc's content) into a single batched subagent pass at the very end. See
+    fresh arc's content) into a single batched subagent pass at the very end. Renaming a resolved
+    child's slug to match their real name (not just the `name` field) is standing behavior here too,
+    walking every structural cross-reference — needed once merging populations grown in parallel
+    `/generate` worktrees made the mechanical placeholder counter collide across them. See
     `.claude/skills/generate/SKILL.md`.
 - **Supporting patterns** — reusable templates and registries every NPC/dialog is built from, so each
   new one doesn't reinvent structure — the shared material skills and scripts read from and write into:
