@@ -89,7 +89,10 @@ def draw_audit_summary(draws: list) -> dict:
 def check_fixed_odds(draws: list, t: dict) -> list:
     results = []
     for script, (outcome_key, true_value, odds_key, tuning_path) in FIXED_ODDS_CHECKS.items():
-        entries = [d for d in draws if d["script"] == script and d.get("result") and outcome_key in d["result"]]
+        entries = [
+            d for d in draws
+            if d["script"] == script and isinstance(d.get("result"), dict) and outcome_key in d["result"]
+        ]
         n = len(entries)
         if n == 0:
             continue

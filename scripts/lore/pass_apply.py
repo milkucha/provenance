@@ -76,6 +76,20 @@ sys.path.insert(0, str(SCRIPTS_DIR))
 import rng_context  # noqa: E402
 
 
+def _kv(stdout: str) -> dict:
+    """Parses top-level 'key: value' lines into a dict - same convention
+    simulate_pass_lib.kv() uses, duplicated here (not imported) for the same reason
+    roll_survival.py's own _tally() duplicates rather than pulling in the full lib."""
+    out = {}
+    for line in stdout.splitlines():
+        if not line or line[0] in " \t":
+            continue
+        key, sep, value = line.partition(":")
+        if sep:
+            out[key.strip()] = value.strip()
+    return out
+
+
 def run(args: list, allow_fail: bool = False) -> tuple:
     """This driver calls a couple of genuinely stochastic siblings directly (record_death.py's
     circle sample, roll_death_legacy.py's roll) rather than through simulate_pass_lib.call() - so,
@@ -92,7 +106,12 @@ def run(args: list, allow_fail: bool = False) -> tuple:
 
     result = subprocess.run([sys.executable, args[0], *argv], capture_output=True, text=True)
     if stochastic:
-        rng_context.log_draw(ROOT, script_name, argv, result.stdout.strip() or None, seed, draw_index)
+        # conformance_report.py's check_fixed_odds() indexes result[outcome_key] as a dict (it
+        # has roll_death_legacy.py registered) - a raw stdout string used to be logged here
+        # instead, which crashed that check the first time a real run reached it (TypeError:
+        # string indices must be integers). Parse to a dict, same shape simulate_pass_lib.call()
+        # already logs for every OTHER stochastic script in the pipeline.
+        rng_context.log_draw(ROOT, script_name, argv, _kv(result.stdout) or None, seed, draw_index)
     if result.returncode != 0 and not allow_fail:
         raise SystemExit(f"{' '.join(args)} failed (exit {result.returncode}):\n{result.stderr}")
     return result.returncode, result.stdout, result.stderr

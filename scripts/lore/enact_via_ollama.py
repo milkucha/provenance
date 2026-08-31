@@ -186,7 +186,7 @@ def clean_reply(reply: dict) -> dict:
         data["grounded_experience"] = [
             {**g, "about": g.get("about") or None}
             for g in data.get("grounded_experience", [])
-            if (g.get("text") or "").strip()
+            if (g.get("text") or "").strip() and (g.get("about") or "").strip()
         ]
     return reply
 

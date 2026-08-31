@@ -208,9 +208,14 @@ def main() -> None:
     character = load_character(key)
     standing = standing_refs(character)
 
+    if not args.hearsay_id and not args.about:
+        raise SystemExit("Nothing to check - pass --hearsay-id or one or more --about.")
+
     fresh_refs = load_fresh_refs(args)
     if not fresh_refs:
-        raise SystemExit("Nothing to check - pass --hearsay-id or one or more --about.")
+        print(f"character: {key}")
+        print("No fresh refs this scene (every claim's `about` was null) - no candidates possible.")
+        return
 
     print(f"character: {key}")
     print(f"fresh refs this scene: {len(fresh_refs)}")

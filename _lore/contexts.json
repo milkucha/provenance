@@ -35,5 +35,13 @@
   "bank": {
     "texture": "Ledgers, loans, interest, a city's money moving or not moving, trust extended or withdrawn, disputes over debts.",
     "provides": ["records", "contacts", "trade"]
+  },
+  "transit_route": {
+    "texture": "The road itself, not a place at either end of it - caravans, tolls, weather, bandits or the fear of them, the distance between cities measured in days rather than miles, news that's already stale by the time it arrives.",
+    "provides": ["news", "contacts", "trade"]
+  },
+  "main_square": {
+    "texture": "The open center everyone crosses sooner or later - public notices read aloud, disputes aired in front of witnesses, festivals and executions on the same stones, gossip that outruns any official account.",
+    "provides": ["news", "contacts"]
   }
 }

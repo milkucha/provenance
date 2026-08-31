@@ -53,16 +53,104 @@ Usage:
 
 import argparse
 import json
+import subprocess
 import sys
+from datetime import date
 from pathlib import Path
 
 SCRIPTS_DIR = Path(__file__).resolve().parent
 ROOT = SCRIPTS_DIR.parent.parent
 BRIEF_PATH = ROOT / ".simulate_pass_brief.json"
+CONTEXTS_PATH = ROOT / "_lore" / "contexts.json"
+ENCODINGS_PATH = ROOT / "_lore" / "encodings.json"
+TALES_DIR = ROOT / "_lore" / "tales"
 
 sys.path.insert(0, str(SCRIPTS_DIR))
 import simulate_pass_lib as lib  # noqa: E402
 import wealth_lib  # noqa: E402
+from check_needs_provides import significant_words  # noqa: E402
+
+
+def needs_candidates(routines: list) -> list:
+    """Mechanizes the routine-grounding discipline .claude/skills/character/SKILL.md Step 8
+    documents but never enforced (found 2026-08-31: six consecutive arc re-authorings in one
+    /simulate run, same author, converged on needs=["news"] regardless of the character's actual
+    routine). Ranks each of a routine's context's registered `provides` tags
+    (_lore/contexts.json - the same vocabulary write_arc.py now hard-requires `needs` to be drawn
+    from) by textual overlap with that routine's own `routine_actions` text - same word-overlap
+    check check_needs_provides.py itself uses to decide whether a scene satisfies an arc. Returns
+    one entry per routine: {"context", "routine_actions", "ranked": [{"tag", "overlap"}, ...]}."""
+    contexts = json.loads(CONTEXTS_PATH.read_text(encoding="utf-8"))
+    out = []
+    for routine in routines:
+        ctx = routine.get("context")
+        provides = contexts.get(ctx, {}).get("provides", [])
+        actions_words = significant_words(routine.get("routine_actions", ""))
+        ranked = sorted(
+            ({"tag": p, "overlap": len(actions_words & significant_words(p))} for p in provides),
+            key=lambda r: -r["overlap"],
+        )
+        out.append({"context": ctx, "routine_actions": routine.get("routine_actions", ""), "ranked": ranked})
+    return out
+
+
+def git_user_name() -> str:
+    try:
+        return subprocess.check_output(["git", "config", "user.name"], cwd=ROOT, text=True).strip() or "unknown"
+    except Exception:
+        return "unknown"
+
+
+def write_arc_completion_tale(key: str, name: str, arc: dict) -> str:
+    """Mechanical - files already-decided content, makes no judgment call, same discipline
+    write_arc.py itself follows. Added 2026-08-31 on user request: an arc's premise is already a
+    concrete, resolved fact the moment its resolution flips to "complete" - the same standing a
+    birth or death already has (generate_offspring.py's write_birth_tale() / record_death.py's
+    write_tale_file()), so it belongs in tales.entries too, not left to evaporate as a bare
+    resolution flag on the character's own arc field. Makes a character's completed project
+    tangible and sampleable (sample_lore_knowledge.py, generate_offspring.py's world-lore pools,
+    a future character's own knowledge.education.items) the same way any other tale already is."""
+    slug = f"arc_complete_{key}"
+    base_slug, n = slug, 2
+    while (TALES_DIR / f"{slug}.md").exists():
+        slug = f"{base_slug}_{n}"
+        n += 1
+
+    told_date = date.today().isoformat()
+    responsible = git_user_name()
+    telling = f"{name} achieved what they'd set out to do: {arc.get('premise', '').rstrip('.')}."
+
+    content = f"""# The Completion of {name}'s Arc
+
+**Responsible:** {responsible} - real-world provenance only, never an in-fiction detail (also recorded in `_lore/tales/_authors.md`)
+**Told by:** no one; simply now known
+**Told on:** {told_date}
+**Encodings id:** `tales.entries[].id = "{slug}"`
+
+## The tale
+
+{telling}
+
+## Where this lands in the record
+
+- Touches: {arc.get('about', [])}
+- Conflicts raised: none
+- Open questions logged: none
+"""
+    TALES_DIR.mkdir(parents=True, exist_ok=True)
+    (TALES_DIR / f"{slug}.md").write_text(content, encoding="utf-8")
+
+    encodings = json.loads(ENCODINGS_PATH.read_text(encoding="utf-8"))
+    encodings["tales"]["entries"].append({
+        "id": slug,
+        "source_file": f"_lore/tales/{slug}.md",
+        "told_date": told_date,
+        "told_by": None,
+        "summary": telling,
+        "touches": [],
+    })
+    ENCODINGS_PATH.write_text(json.dumps(encodings, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    return slug
 
 
 def run_pre_scene(p1: str, p2: str, pass_number: int, forced_visit: bool = False) -> dict:
@@ -165,6 +253,7 @@ def run_pre_scene(p1: str, p2: str, pass_number: int, forced_visit: bool = False
                 "band": lib.horizon(primacy)["band"],
                 "origin": primary_char.get("origin", ""), "location": primary_char.get("location", ""), "backstory": primary_char.get("backstory", ""),
                 "criterion": primary_char.get("criterion", {}), "routines": primary_char.get("routines", []),
+                "needs_candidates": needs_candidates(primary_char.get("routines", [])),
                 "prior_arc": None,
             }
             notes.append(f"{primacy} needs a first arc authored (home_frame, no arc yet)")
@@ -184,12 +273,16 @@ def run_pre_scene(p1: str, p2: str, pass_number: int, forced_visit: bool = False
                 arc["resolution"] = "complete"
                 tally_result = "complete"
                 notes.append(f"{primacy}'s arc completed")
+                tale_id = write_arc_completion_tale(primacy, primary_char.get("name", primacy), arc)
+                notes.append(f"{primacy}'s completed arc filed as tale '{tale_id}' - tag the completion-announcement hearsay claim 'about: \"tale: {tale_id}\"'")
                 arc_authoring_needed = {
                     "character_slug": primacy, "reason": "reauthor_complete",
                     "band": lib.horizon(primacy)["band"],
                     "origin": primary_char.get("origin", ""), "location": primary_char.get("location", ""), "backstory": primary_char.get("backstory", ""),
                     "criterion": primary_char.get("criterion", {}), "routines": primary_char.get("routines", []),
+                    "needs_candidates": needs_candidates(primary_char.get("routines", [])),
                     "prior_arc": arc,
+                    "completion_tale_id": tale_id,
                 }
             elif score <= -lib.ARC_RESOLUTION_THRESHOLD:
                 matched_about = gate_res.get("matched_about") or []
@@ -207,6 +300,7 @@ def run_pre_scene(p1: str, p2: str, pass_number: int, forced_visit: bool = False
                         "band": lib.horizon(primacy)["band"],
                         "origin": primary_char.get("origin", ""), "location": primary_char.get("location", ""), "backstory": primary_char.get("backstory", ""),
                         "criterion": primary_char.get("criterion", {}), "routines": primary_char.get("routines", []),
+                        "needs_candidates": needs_candidates(primary_char.get("routines", [])),
                         "prior_arc": arc,
                     }
             else:

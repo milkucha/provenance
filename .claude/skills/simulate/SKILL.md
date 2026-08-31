@@ -228,6 +228,17 @@ for one — omitting it is a free/unseeded run, today's exact behavior:
 py "<worktree>/scripts/lore/run_manifest.py" write --pool <slug1> <slug2> ... --passes <N> --mode <simple|divergence> [--seed <N>]
 ```
 
+Also clear the reproduction cooldown's two absolute-pass-number scalars (`last_reproduced_pass`,
+`birth_pass`) for every participant, right here, before pass 1 — a fresh run's own pass counter always
+starts at 1 regardless of the branched-from commit's own history, so a stale value from whatever
+earlier run wrote it reads as "had a child hundreds of passes in the future," wrongly blocking
+reproduction until this run's own count coincidentally exceeds that old absolute number (found
+2026-08-31, `three-cities-baseline-20260831`'s pass-250 checkpoint — see `LAB_REPORT.md`):
+
+```bash
+py "<worktree>/scripts/lore/reset_reproduction_cooldown.py" --pool <slug1> <slug2> ...
+```
+
 For pass 1 through N:
 
 1. If fewer than 2 living participants remain, stop early and say so, noting how many passes
@@ -250,9 +261,20 @@ For pass 1 through N:
    have one, their arc's `premise`/`about`/`needs` — into one call. Prints the pre-scene horizon, the
    full brief, and this `characters` block as one JSON object. This is now the *complete* input the
    enacter needs; nothing else has to be separately fetched, composed, or looked up. If the brief's
-   `arc_authoring_needed` is non-null, author that arc yourself (a name-blend-shaped judgment call, not
-   a dice roll — same reasoning `generate_offspring.py`'s own docstring gives for why it can't script a
-   child's name) and call `write_arc.py` directly before continuing this pass.
+   `arc_authoring_needed` is non-null, author that arc yourself (`premise`/`context`/`about` are a
+   name-blend-shaped judgment call, not a dice roll — same reasoning `generate_offspring.py`'s own
+   docstring gives for why it can't script a child's name) and call `write_arc.py` directly before
+   continuing this pass. **`needs` is different — mechanized 2026-08-31, on user correction after six
+   consecutive arc re-authorings in one run all converged on `needs: ["news"]` regardless of topic:
+   pick `needs` from `arc_authoring_needed.needs_candidates`, ranked by actual textual overlap with
+   this character's own `routine_actions` — the highest-scoring tag for the routine matching your
+   chosen `context`, not whichever tag was easiest to reach for.** `write_arc.py` also now hard-rejects
+   any `--needs` value outside that context's own `_lore/contexts.json` `provides` list, so this isn't
+   optional — but read the ranked list and actually use it, don't just satisfy the gate with the first
+   valid-but-ungrounded option. If `reason` is `"reauthor_complete"`, `write_arc_completion_tale()`
+   already ran inside `simulate_pass_brief.py` before this brief was even printed — the completed
+   arc's `completion_tale_id` is right there in the payload; nothing further to do for it (it's
+   mechanical, not a judgment call — the arc's own already-authored `premise` is what got filed).
 4. **Dispatch the enacter.** How depends on Step 1's model choice — either way this is the ONE dispatch
    per pass, it does no tool-calling of its own, and it never sees anything beyond point 3's JSON plus,
    when relevant, a short director's note (below).

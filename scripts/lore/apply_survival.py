@@ -5,18 +5,27 @@ exhaustion. Split from the roll itself because the roll runs against a character
 (before this pass's actual location is known), while the cost has to land on wherever the scene
 actually resolved to - see roll_survival.py's own docstring.
 
-Costs (design session 2026-08-28, all in _lore/tuning.json's `survival` block):
+Costs (redesigned 2026-08-31 - "eating" decoupled from the survive/arc choice, on user correction:
+the prior design let `survive` restore energy unconditionally regardless of the pool's own health,
+so a depleted pool never actually starved anyone directly, only skewed behavior indirectly. All in
+_lore/tuning.json's `survival` block):
   - Every pass: -1 energy, unconditional (`base_cost`).
-  - **survive**: +1 energy taken back from the pool (`survive_take`), which the character also
-    contributes +2 to (`survive_contribute`) - net personal 0, net pool +1 before upkeep.
-  - **arc**: draws `arc_pool_draw` (2) from the pool and costs `arc_extra_cost` (1) extra energy -
-    UNLESS the pool doesn't have `arc_pool_draw` to give (design session 2026-08-29), in which case
-    the pool is left untouched (never driven further negative by a draw it can't support) and the
-    character pays `arc_extra_cost_scarce` (2) instead of `arc_extra_cost` - the town has nothing to
-    give, so the cost comes out of the character's own energy instead. Reported back as `scarce:
-    true`, a real story fact the brief can hand the model, not a silent number change. This does NOT
-    include per-capita upkeep - call apply_upkeep.py once per pass per location separately, not once
-    per participant, or the same location gets charged twice in a two-participant pass.
+  - **Eating is now universal, gated on the pool alone, independent of choice.** If the location's
+    pool has at least `eat_amount` (2) to give, this character takes it: pool -= eat_amount,
+    energy += eat_amount (net personal: 0, same math the old `survive`-only path used). If the pool
+    can't cover it, nobody eats this pass regardless of what they chose - reported back as `ate:
+    false`, a real story fact (the town has nothing to give, and it costs YOU, not just whoever
+    happened to choose "arc").
+  - **survive**: contributes `survive_contribute` (3) to the pool - pure contribution, no longer
+    bundled with eating (that's step 1, above, and happens either way).
+  - **arc**: costs `arc_extra_cost` (1) extra personal energy, unconditionally - pursuing your own
+    project instead of working, on top of whatever step 1's eating did or didn't cover. No longer
+    draws anything extra from the pool itself (retired `arc_pool_draw`/`arc_extra_cost_scarce` -
+    the pool has exactly one interaction now, eating, so an arc-choosing character in a starved town
+    already feels it twice: failing to eat, then still paying the extra personal cost anyway).
+    This does NOT include per-capita upkeep - call apply_upkeep.py once per pass per location
+    separately, not once per participant, or the same location gets charged twice in a
+    two-participant pass.
 
 Energy hitting 0 or below is a death, independent of the existing rolled-lifespan clock (horizon.py)
 - a second, separate cause, not merged into it. This script does NOT call record_death.py itself
@@ -63,21 +72,19 @@ def main() -> None:
     pool = wealth_lib.get_wealth(args.location)
 
     energy -= _S["base_cost"]
-    scarce = False
+
+    # Step 1: eating - universal, pool-gated, independent of choice.
+    ate = pool >= _S["eat_amount"]
+    if ate:
+        pool -= _S["eat_amount"]
+        energy += _S["eat_amount"]
+
+    # Step 2: the choice - pool contribution (survive) or extra personal cost (arc). Eating
+    # above already happened either way; this no longer touches the pool for "arc" at all.
     if args.choice == "survive":
-        energy += _S["survive_take"]
-        pool += _S["survive_contribute"] - _S["survive_take"]
+        pool += _S["survive_contribute"]
     else:
-        if pool >= _S["arc_pool_draw"]:
-            pool -= _S["arc_pool_draw"]
-            energy -= _S["arc_extra_cost"]
-        else:
-            # Nothing left in the pool to draw on - the town has nothing to give, so the cost
-            # comes out of the character instead (arc_extra_cost_scarce replaces, not adds to,
-            # arc_extra_cost). Pool is left untouched, not driven further negative by a draw it
-            # can't actually support.
-            scarce = True
-            energy -= _S["arc_extra_cost_scarce"]
+        energy -= _S["arc_extra_cost"]
 
     energy = min(energy, _S["energy_cap"])
     character["energy"] = energy
@@ -90,7 +97,7 @@ def main() -> None:
     print(f"energy: {energy}")
     print(f"died: {'true' if died else 'false'}")
     print(f"pool: {round(pool, 2)}")
-    print(f"scarce: {'true' if scarce else 'false'}")
+    print(f"ate: {'true' if ate else 'false'}")
 
 
 if __name__ == "__main__":

@@ -13,11 +13,21 @@ Reads two files at the worktree root:
                    "routines": [{"location": "...", "routine_actions": "..."}]}],
      "arcs":     [{"character_slug": "...", "about": [...], "needs": [...], "context": "...", "premise": "..."}]}
 
-For each resolved child: the character's SLUG never changes (only ever the `name` field and prose
-that quotes it) - see `simulate_generate_population.py`'s docstring point 2 for why: renaming a slug
-would mean rewriting every cross-file reference (`parents`, `partners`, `leads`,
-`lifespans.json`, tale ids), for a change that's purely cosmetic. Instead this does a literal text
-substitution of the placeholder name string, scoped to exactly the files
+For each resolved child: does a literal text substitution of the placeholder name string first,
+scoped to exactly the files `generate_offspring.py` is known to have written it into, THEN (as of
+2026-08-31, design debrief - see CHRONICLE.md) renames the character's own SLUG/filename to match
+the resolved name too, walking every structural cross-reference (`parents`, `partners`,
+`partners_quality`, `lifespans.json`'s key, birth/death tale filenames and their `encodings.json`/
+`_index.md`/`_authors.md` entries). This used to be considered purely cosmetic and skipped on
+purpose - but once a population needs merging back together from multiple parallel `/generate`
+worktrees, the mechanical placeholder counter (`placeholder_child_0001`, reset to 0 per invocation)
+guarantees cross-worktree filename collisions between unrelated children, while a name-derived slug
+collides far less often. Since this script already has to walk every cross-reference for the NAME
+substitution below, doing the SLUG rename in the same pass costs nothing extra. `leads` is not
+handled here - `/generate` never writes a `leads` entry to a character file (see its own SKILL.md's
+scope-difference #3), so there is nothing to rename there.
+
+The literal text substitution itself is scoped to exactly the files
 `generate_offspring.py` is known to have written it into:
   - the child's own `name` field
   - `_lore/tales/birth_of_<slug>.md`'s content
@@ -47,9 +57,11 @@ Usage:
 """
 
 import json
+import re
 import shutil
 import subprocess
 import sys
+import unicodedata
 from datetime import datetime
 from pathlib import Path
 
@@ -59,9 +71,87 @@ CHAR_DIR = ROOT / "_lore" / "characters"
 TALES_DIR = ROOT / "_lore" / "tales"
 ENCODINGS_PATH = ROOT / "_lore" / "encodings.json"
 INDEX_PATH = TALES_DIR / "_index.md"
+AUTHORS_PATH = TALES_DIR / "_authors.md"
+LIFESPANS_PATH = CHAR_DIR / "lifespans.json"
 PENDING_PATH = ROOT / "_pending_language.json"
 RESOLVED_PATH = ROOT / "_pending_language_resolved.json"
 ARCHIVE_DIR = ROOT / "_generation_archive"
+
+
+def slugify(text: str) -> str:
+    text = unicodedata.normalize("NFKD", text).encode("ascii", "ignore").decode("ascii")
+    words = re.findall(r"[a-zA-Z0-9]+", text.lower())
+    return "_".join(words)
+
+
+def unique_slug(base: str) -> str:
+    if not (CHAR_DIR / f"{base}.json").exists():
+        return base
+    n = 2
+    while (CHAR_DIR / f"{base}_{n}.json").exists():
+        n += 1
+    return f"{base}_{n}"
+
+
+def rename_slug(old_slug: str, real_name: str) -> str:
+    """Renames the character's own slug/filename to match the resolved name, walking every
+    structural cross-reference. Returns the (possibly disambiguated) new slug, or old_slug unchanged
+    if the derived slug collides with itself."""
+    new_slug = unique_slug(slugify(real_name))
+    if new_slug == old_slug:
+        return old_slug
+
+    (CHAR_DIR / f"{old_slug}.json").rename(CHAR_DIR / f"{new_slug}.json")
+
+    if LIFESPANS_PATH.exists():
+        lifespans = json.loads(LIFESPANS_PATH.read_text(encoding="utf-8"))
+        if old_slug in lifespans.get("lifespans", {}):
+            lifespans["lifespans"][new_slug] = lifespans["lifespans"].pop(old_slug)
+            LIFESPANS_PATH.write_text(json.dumps(lifespans, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+    for path in CHAR_DIR.glob("*.json"):
+        if path.stem in (new_slug, "_template", "lifespans"):
+            continue
+        other = json.loads(path.read_text(encoding="utf-8"))
+        changed = False
+        parents = other.get("parents")
+        if parents and old_slug in parents:
+            other["parents"] = [new_slug if p == old_slug else p for p in parents]
+            changed = True
+        for field in ("partners", "partners_quality"):
+            d = other.get(field)
+            if d and old_slug in d:
+                d[new_slug] = d.pop(old_slug)
+                changed = True
+        if changed:
+            path.write_text(json.dumps(other, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+    for prefix in ("birth_of_", "death_of_"):
+        old_tale = TALES_DIR / f"{prefix}{old_slug}.md"
+        if old_tale.exists():
+            old_tale.rename(TALES_DIR / f"{prefix}{new_slug}.md")
+
+    with open(ENCODINGS_PATH, encoding="utf-8") as f:
+        encodings = json.load(f)
+    for entry in encodings["tales"]["entries"]:
+        for prefix in ("birth_of_", "death_of_"):
+            if entry["id"] == f"{prefix}{old_slug}":
+                entry["id"] = f"{prefix}{new_slug}"
+                entry["source_file"] = f"_lore/tales/{prefix}{new_slug}.md"
+    with open(ENCODINGS_PATH, "w", encoding="utf-8") as f:
+        json.dump(encodings, f, indent=2, ensure_ascii=False)
+        f.write("\n")
+
+    for prefix in ("birth_of_", "death_of_"):
+        old_id, new_id = f"{prefix}{old_slug}", f"{prefix}{new_slug}"
+        if INDEX_PATH.exists():
+            text = INDEX_PATH.read_text(encoding="utf-8")
+            INDEX_PATH.write_text(text.replace(f"`{old_id}.md`", f"`{new_id}.md`"), encoding="utf-8")
+        if AUTHORS_PATH.exists():
+            text = AUTHORS_PATH.read_text(encoding="utf-8")
+            AUTHORS_PATH.write_text(text.replace(f"`{old_id}`", f"`{new_id}`"), encoding="utf-8")
+
+    return new_slug
 
 
 def call(script_name: str, argv: list) -> str:
@@ -115,7 +205,7 @@ def replace_in_experience(character: dict, old: str, new: str, protect: list) ->
     return changed
 
 
-def rename_child(placeholder_slug: str, placeholder_name: str, real_name: str, routine_updates: list) -> None:
+def rename_child(placeholder_slug: str, placeholder_name: str, real_name: str, routine_updates: list) -> str:
     protect = [f"birth_of_{placeholder_slug}"]
 
     child = load_char(placeholder_slug)
@@ -161,7 +251,10 @@ def rename_child(placeholder_slug: str, placeholder_name: str, real_name: str, r
                 f.write("\n")
             renamed_elsewhere += 1
 
-    print(f"renamed: {placeholder_slug}  '{placeholder_name}' -> '{real_name}'  ({renamed_elsewhere} other file(s) updated)")
+    new_slug = rename_slug(placeholder_slug, real_name)
+    slug_note = f"  [slug: {placeholder_slug} -> {new_slug}]" if new_slug != placeholder_slug else ""
+    print(f"renamed: {placeholder_slug}  '{placeholder_name}' -> '{real_name}'  ({renamed_elsewhere} other file(s) updated){slug_note}")
+    return new_slug
 
 
 def apply_arc(character_slug: str, about: list, needs: list, context: str, premise: str) -> None:
@@ -198,15 +291,18 @@ def main() -> None:
     resolved = json.loads(RESOLVED_PATH.read_text(encoding="utf-8"))
 
     pending_children = {c["placeholder_slug"]: c for c in pending.get("children", [])}
+    slug_map = {}
     for entry in resolved.get("children", []):
         slug = entry["placeholder_slug"]
         if slug not in pending_children:
             print(f"WARNING: resolved child '{slug}' not found in pending manifest - skipping.")
             continue
-        rename_child(slug, pending_children[slug]["placeholder_name"], entry["name"], entry.get("routines"))
+        new_slug = rename_child(slug, pending_children[slug]["placeholder_name"], entry["name"], entry.get("routines"))
+        slug_map[slug] = new_slug
 
     for entry in resolved.get("arcs", []):
-        apply_arc(entry["character_slug"], entry.get("about", []), entry.get("needs", []), entry.get("context", ""), entry.get("premise", ""))
+        character_slug = slug_map.get(entry["character_slug"], entry["character_slug"])
+        apply_arc(character_slug, entry.get("about", []), entry.get("needs", []), entry.get("context", ""), entry.get("premise", ""))
 
     print(call("build_source_index.py", []).strip())
 
