@@ -29,15 +29,23 @@
     "label": "Provenance",
     "kind": "root",
     "path": ".",
-    "size": 1434888,
-    "degree": 15
+    "size": 1462966,
+    "degree": 16
+   },
+   {
+    "id": "file:.git",
+    "label": ".git",
+    "kind": "other",
+    "path": ".git",
+    "size": 166,
+    "degree": 1
    },
    {
     "id": "file:.gitignore",
     "label": ".gitignore",
     "kind": "other",
     "path": ".gitignore",
-    "size": 45,
+    "size": 49,
     "degree": 1
    },
    {
@@ -53,7 +61,7 @@
     "label": "CLAUDE.md",
     "kind": "doc",
     "path": "CLAUDE.md",
-    "size": 1149,
+    "size": 1167,
     "degree": 1
    },
    {
@@ -93,8 +101,8 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
-    "size": 224402,
-    "degree": 8
+    "size": 227038,
+    "degree": 6
    },
    {
     "id": "file:.claude/PRINCIPLES.md",
@@ -109,15 +117,7 @@
     "label": "VOICE.md",
     "kind": "doc",
     "path": ".claude/VOICE.md",
-    "size": 10587,
-    "degree": 1
-   },
-   {
-    "id": "file:.claude/scheduled_tasks.lock",
-    "label": "scheduled_tasks.lock",
-    "kind": "other",
-    "path": ".claude/scheduled_tasks.lock",
-    "size": 124,
+    "size": 10752,
     "degree": 1
    },
    {
@@ -125,15 +125,7 @@
     "label": "settings.json",
     "kind": "other",
     "path": ".claude/settings.json",
-    "size": 299,
-    "degree": 1
-   },
-   {
-    "id": "file:.claude/settings.local.json",
-    "label": "settings.local.json",
-    "kind": "other",
-    "path": ".claude/settings.local.json",
-    "size": 657,
+    "size": 599,
     "degree": 1
    },
    {
@@ -141,7 +133,7 @@
     "label": "hooks",
     "kind": "dir",
     "path": ".claude/hooks",
-    "size": 2372,
+    "size": 2427,
     "degree": 2
    },
    {
@@ -149,7 +141,7 @@
     "label": "chronicle-nudge.sh",
     "kind": "other",
     "path": ".claude/hooks/chronicle-nudge.sh",
-    "size": 2372,
+    "size": 2427,
     "degree": 1
    },
    {
@@ -157,7 +149,7 @@
     "label": "skills",
     "kind": "dir",
     "path": ".claude/skills",
-    "size": 207187,
+    "size": 210084,
     "degree": 14
    },
    {
@@ -165,7 +157,7 @@
     "label": "character",
     "kind": "dir",
     "path": ".claude/skills/character",
-    "size": 33130,
+    "size": 33604,
     "degree": 2
    },
    {
@@ -173,7 +165,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/character/SKILL.md",
-    "size": 33130,
+    "size": 33604,
     "degree": 1
    },
    {
@@ -181,7 +173,7 @@
     "label": "embody",
     "kind": "dir",
     "path": ".claude/skills/embody",
-    "size": 14316,
+    "size": 14503,
     "degree": 2
    },
    {
@@ -189,7 +181,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/embody/SKILL.md",
-    "size": 14316,
+    "size": 14503,
     "degree": 1
    },
    {
@@ -213,7 +205,7 @@
     "label": "enact-embody",
     "kind": "dir",
     "path": ".claude/skills/enact-embody",
-    "size": 1381,
+    "size": 1396,
     "degree": 2
    },
    {
@@ -221,7 +213,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/enact-embody/SKILL.md",
-    "size": 1381,
+    "size": 1396,
     "degree": 1
    },
    {
@@ -245,7 +237,7 @@
     "label": "integrate",
     "kind": "dir",
     "path": ".claude/skills/integrate",
-    "size": 16006,
+    "size": 16196,
     "degree": 2
    },
    {
@@ -253,7 +245,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/integrate/SKILL.md",
-    "size": 16006,
+    "size": 16196,
     "degree": 1
    },
    {
@@ -277,7 +269,7 @@
     "label": "resolve",
     "kind": "dir",
     "path": ".claude/skills/resolve",
-    "size": 4866,
+    "size": 4931,
     "degree": 2
    },
    {
@@ -285,7 +277,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/resolve/SKILL.md",
-    "size": 4866,
+    "size": 4931,
     "degree": 1
    },
    {
@@ -293,7 +285,7 @@
     "label": "simulate",
     "kind": "dir",
     "path": ".claude/skills/simulate",
-    "size": 38708,
+    "size": 40535,
     "degree": 2
    },
    {
@@ -301,7 +293,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/simulate/SKILL.md",
-    "size": 38708,
+    "size": 40535,
     "degree": 1
    },
    {
@@ -357,7 +349,7 @@
     "label": "tell",
     "kind": "dir",
     "path": ".claude/skills/tell",
-    "size": 8016,
+    "size": 8155,
     "degree": 2
    },
    {
@@ -365,7 +357,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/tell/SKILL.md",
-    "size": 8016,
+    "size": 8155,
     "degree": 1
    },
    {
@@ -373,7 +365,7 @@
     "label": "_lore",
     "kind": "dir",
     "path": "_lore",
-    "size": 46801,
+    "size": 46887,
     "degree": 8
    },
    {
@@ -381,7 +373,7 @@
     "label": "contexts.json",
     "kind": "lore",
     "path": "_lore/contexts.json",
-    "size": 2943,
+    "size": 3543,
     "degree": 1
    },
    {
@@ -397,7 +389,7 @@
     "label": "tuning.json",
     "kind": "lore",
     "path": "_lore/tuning.json",
-    "size": 5896,
+    "size": 5221,
     "degree": 1
    },
    {
@@ -413,7 +405,7 @@
     "label": "characters",
     "kind": "dir",
     "path": "_lore/characters",
-    "size": 5197,
+    "size": 5200,
     "degree": 5
    },
    {
@@ -421,7 +413,7 @@
     "label": "_index.md",
     "kind": "lore",
     "path": "_lore/characters/_index.md",
-    "size": 1540,
+    "size": 1543,
     "degree": 1
    },
    {
@@ -453,7 +445,7 @@
     "label": "facts",
     "kind": "dir",
     "path": "_lore/facts",
-    "size": 14019,
+    "size": 14177,
     "degree": 6
    },
    {
@@ -461,7 +453,7 @@
     "label": "_authors.md",
     "kind": "lore",
     "path": "_lore/facts/_authors.md",
-    "size": 822,
+    "size": 838,
     "degree": 1
    },
    {
@@ -469,7 +461,7 @@
     "label": "_index.md",
     "kind": "lore",
     "path": "_lore/facts/_index.md",
-    "size": 3448,
+    "size": 3503,
     "degree": 1
    },
    {
@@ -477,7 +469,7 @@
     "label": "a_worthwhile_life.md",
     "kind": "lore",
     "path": "_lore/facts/a_worthwhile_life.md",
-    "size": 2575,
+    "size": 2621,
     "degree": 1
    },
    {
@@ -485,7 +477,7 @@
     "label": "facts.json",
     "kind": "lore",
     "path": "_lore/facts/facts.json",
-    "size": 3854,
+    "size": 3895,
     "degree": 1
    },
    {
@@ -525,7 +517,7 @@
     "label": "_npcs",
     "kind": "dir",
     "path": "_npcs",
-    "size": 51312,
+    "size": 51715,
     "degree": 6
    },
    {
@@ -533,7 +525,7 @@
     "label": "actions",
     "kind": "dir",
     "path": "_npcs/actions",
-    "size": 26435,
+    "size": 26825,
     "degree": 2
    },
    {
@@ -541,7 +533,7 @@
     "label": "registry.json",
     "kind": "registry",
     "path": "_npcs/actions/registry.json",
-    "size": 26435,
+    "size": 26825,
     "degree": 1
    },
    {
@@ -581,7 +573,7 @@
     "label": "scenes",
     "kind": "dir",
     "path": "_npcs/scenes",
-    "size": 193,
+    "size": 206,
     "degree": 2
    },
    {
@@ -589,7 +581,7 @@
     "label": "_template.md",
     "kind": "registry",
     "path": "_npcs/scenes/_template.md",
-    "size": 193,
+    "size": 206,
     "degree": 1
    },
    {
@@ -693,7 +685,7 @@
     "label": "data",
     "kind": "dir",
     "path": "data",
-    "size": 52748,
+    "size": 52951,
     "degree": 3
    },
    {
@@ -701,15 +693,15 @@
     "label": "luminacion",
     "kind": "dir",
     "path": "data/luminacion",
-    "size": 52676,
-    "degree": 5
+    "size": 52873,
+    "degree": 4
    },
    {
     "id": "dir:data/luminacion/blabber",
     "label": "blabber",
     "kind": "dir",
     "path": "data/luminacion/blabber",
-    "size": 7332,
+    "size": 7529,
     "degree": 2
    },
    {
@@ -717,7 +709,7 @@
     "label": "dialogues",
     "kind": "dir",
     "path": "data/luminacion/blabber/dialogues",
-    "size": 7332,
+    "size": 7529,
     "degree": 4
    },
    {
@@ -725,7 +717,7 @@
     "label": "_template_branching.json",
     "kind": "dialogue",
     "path": "data/luminacion/blabber/dialogues/_template_branching.json",
-    "size": 3077,
+    "size": 3164,
     "degree": 1
    },
    {
@@ -733,7 +725,7 @@
     "label": "_template_linear.json",
     "kind": "dialogue",
     "path": "data/luminacion/blabber/dialogues/_template_linear.json",
-    "size": 2512,
+    "size": 2580,
     "degree": 1
    },
    {
@@ -741,7 +733,7 @@
     "label": "_template_one_off.json",
     "kind": "dialogue",
     "path": "data/luminacion/blabber/dialogues/_template_one_off.json",
-    "size": 1743,
+    "size": 1785,
     "degree": 1
    },
    {
@@ -1017,13 +1009,6 @@
     "degree": 1
    },
    {
-    "id": "dir:data/luminacion/predicates",
-    "label": "predicates",
-    "kind": "dir",
-    "path": "data/luminacion/predicates",
-    "degree": 1
-   },
-   {
     "id": "dir:data/luminacion/tags",
     "label": "tags",
     "kind": "dir",
@@ -1052,7 +1037,7 @@
     "label": "minecraft",
     "kind": "dir",
     "path": "data/minecraft",
-    "size": 72,
+    "size": 78,
     "degree": 2
    },
    {
@@ -1060,7 +1045,7 @@
     "label": "tags",
     "kind": "dir",
     "path": "data/minecraft/tags",
-    "size": 72,
+    "size": 78,
     "degree": 2
    },
    {
@@ -1068,7 +1053,7 @@
     "label": "functions",
     "kind": "dir",
     "path": "data/minecraft/tags/functions",
-    "size": 72,
+    "size": 78,
     "degree": 3
    },
    {
@@ -1076,7 +1061,7 @@
     "label": "load.json",
     "kind": "datapack",
     "path": "data/minecraft/tags/functions/load.json",
-    "size": 36,
+    "size": 39,
     "degree": 1
    },
    {
@@ -1084,7 +1069,7 @@
     "label": "tick.json",
     "kind": "datapack",
     "path": "data/minecraft/tags/functions/tick.json",
-    "size": 36,
+    "size": 39,
     "degree": 1
    },
    {
@@ -1148,7 +1133,7 @@
     "label": "resourcepack",
     "kind": "dir",
     "path": "resourcepack",
-    "size": 38915,
+    "size": 38957,
     "degree": 3
    },
    {
@@ -1164,7 +1149,7 @@
     "label": "assets",
     "kind": "dir",
     "path": "resourcepack/assets",
-    "size": 38776,
+    "size": 38818,
     "degree": 3
    },
    {
@@ -1172,7 +1157,7 @@
     "label": "luminacion",
     "kind": "dir",
     "path": "resourcepack/assets/luminacion",
-    "size": 227,
+    "size": 233,
     "degree": 3
    },
    {
@@ -1180,7 +1165,7 @@
     "label": "models",
     "kind": "dir",
     "path": "resourcepack/assets/luminacion/models",
-    "size": 102,
+    "size": 108,
     "degree": 2
    },
    {
@@ -1188,7 +1173,7 @@
     "label": "item",
     "kind": "dir",
     "path": "resourcepack/assets/luminacion/models/item",
-    "size": 102,
+    "size": 108,
     "degree": 2
    },
    {
@@ -1196,7 +1181,7 @@
     "label": "gesture_marker_blank.json",
     "kind": "resourcepack",
     "path": "resourcepack/assets/luminacion/models/item/gesture_marker_blank.json",
-    "size": 102,
+    "size": 108,
     "degree": 1
    },
    {
@@ -1228,7 +1213,7 @@
     "label": "minecraft",
     "kind": "dir",
     "path": "resourcepack/assets/minecraft",
-    "size": 38549,
+    "size": 38585,
     "degree": 3
    },
    {
@@ -1268,7 +1253,7 @@
     "label": "models",
     "kind": "dir",
     "path": "resourcepack/assets/minecraft/models",
-    "size": 933,
+    "size": 969,
     "degree": 2
    },
    {
@@ -1276,7 +1261,7 @@
     "label": "item",
     "kind": "dir",
     "path": "resourcepack/assets/minecraft/models/item",
-    "size": 933,
+    "size": 969,
     "degree": 2
    },
    {
@@ -1284,7 +1269,7 @@
     "label": "stick.json",
     "kind": "resourcepack",
     "path": "resourcepack/assets/minecraft/models/item/stick.json",
-    "size": 933,
+    "size": 969,
     "degree": 1
    },
    {
@@ -1292,7 +1277,7 @@
     "label": "scripts",
     "kind": "dir",
     "path": "scripts",
-    "size": 566947,
+    "size": 591467,
     "degree": 6
    },
    {
@@ -1300,7 +1285,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": "scripts/graphs",
-    "size": 78468,
+    "size": 80165,
     "degree": 3
    },
    {
@@ -1308,7 +1293,7 @@
     "label": "graphifyish.py",
     "kind": "script",
     "path": "scripts/graphs/graphifyish.py",
-    "size": 40957,
+    "size": 41832,
     "degree": 1
    },
    {
@@ -1316,7 +1301,7 @@
     "label": "graphifyish_template.html",
     "kind": "script",
     "path": "scripts/graphs/graphifyish_template.html",
-    "size": 37511,
+    "size": 38333,
     "degree": 1
    },
    {
@@ -1324,7 +1309,7 @@
     "label": "hooks",
     "kind": "dir",
     "path": "scripts/hooks",
-    "size": 1522,
+    "size": 1559,
     "degree": 2
    },
    {
@@ -1332,7 +1317,7 @@
     "label": "post-commit",
     "kind": "script",
     "path": "scripts/hooks/post-commit",
-    "size": 1522,
+    "size": 1559,
     "degree": 1
    },
    {
@@ -1340,15 +1325,15 @@
     "label": "lore",
     "kind": "dir",
     "path": "scripts/lore",
-    "size": 425433,
-    "degree": 61
+    "size": 447949,
+    "degree": 63
    },
    {
     "id": "file:scripts/lore/add_categories_schema.py",
     "label": "add_categories_schema.py",
     "kind": "script",
     "path": "scripts/lore/add_categories_schema.py",
-    "size": 6475,
+    "size": 6612,
     "degree": 1
    },
    {
@@ -1356,7 +1341,7 @@
     "label": "anchor_epistemology.py",
     "kind": "script",
     "path": "scripts/lore/anchor_epistemology.py",
-    "size": 6487,
+    "size": 6622,
     "degree": 1
    },
    {
@@ -1364,7 +1349,7 @@
     "label": "apply_contested_lead.py",
     "kind": "script",
     "path": "scripts/lore/apply_contested_lead.py",
-    "size": 3614,
+    "size": 3689,
     "degree": 1
    },
    {
@@ -1380,7 +1365,7 @@
     "label": "apply_language_layer.py",
     "kind": "script",
     "path": "scripts/lore/apply_language_layer.py",
-    "size": 10971,
+    "size": 15553,
     "degree": 1
    },
    {
@@ -1388,7 +1373,7 @@
     "label": "apply_survival.py",
     "kind": "script",
     "path": "scripts/lore/apply_survival.py",
-    "size": 4575,
+    "size": 5039,
     "degree": 1
    },
    {
@@ -1404,7 +1389,7 @@
     "label": "backfill_lived.py",
     "kind": "script",
     "path": "scripts/lore/backfill_lived.py",
-    "size": 2829,
+    "size": 2900,
     "degree": 1
    },
    {
@@ -1412,7 +1397,7 @@
     "label": "baseline_stats.py",
     "kind": "script",
     "path": "scripts/lore/baseline_stats.py",
-    "size": 4268,
+    "size": 4371,
     "degree": 1
    },
    {
@@ -1444,7 +1429,7 @@
     "label": "check_arc_alignment.py",
     "kind": "script",
     "path": "scripts/lore/check_arc_alignment.py",
-    "size": 4629,
+    "size": 4728,
     "degree": 1
    },
    {
@@ -1452,7 +1437,7 @@
     "label": "check_character_name.py",
     "kind": "script",
     "path": "scripts/lore/check_character_name.py",
-    "size": 2400,
+    "size": 2459,
     "degree": 1
    },
    {
@@ -1460,7 +1445,7 @@
     "label": "check_needs_provides.py",
     "kind": "script",
     "path": "scripts/lore/check_needs_provides.py",
-    "size": 2240,
+    "size": 2291,
     "degree": 1
    },
    {
@@ -1468,7 +1453,7 @@
     "label": "check_resonance.py",
     "kind": "script",
     "path": "scripts/lore/check_resonance.py",
-    "size": 12972,
+    "size": 13176,
     "degree": 1
    },
    {
@@ -1476,7 +1461,7 @@
     "label": "enact_preamble.md",
     "kind": "script",
     "path": "scripts/lore/enact_preamble.md",
-    "size": 7333,
+    "size": 7444,
     "degree": 1
    },
    {
@@ -1484,7 +1469,7 @@
     "label": "enact_via_ollama.py",
     "kind": "script",
     "path": "scripts/lore/enact_via_ollama.py",
-    "size": 12403,
+    "size": 12729,
     "degree": 1
    },
    {
@@ -1508,7 +1493,7 @@
     "label": "lineage_coin.py",
     "kind": "script",
     "path": "scripts/lore/lineage_coin.py",
-    "size": 1395,
+    "size": 1429,
     "degree": 1
    },
    {
@@ -1516,7 +1501,7 @@
     "label": "list_open_unknowns.py",
     "kind": "script",
     "path": "scripts/lore/list_open_unknowns.py",
-    "size": 2282,
+    "size": 2337,
     "degree": 1
    },
    {
@@ -1532,7 +1517,7 @@
     "label": "pass_apply.py",
     "kind": "script",
     "path": "scripts/lore/pass_apply.py",
-    "size": 11634,
+    "size": 12611,
     "degree": 1
    },
    {
@@ -1540,7 +1525,7 @@
     "label": "pass_prep.py",
     "kind": "script",
     "path": "scripts/lore/pass_prep.py",
-    "size": 6277,
+    "size": 6405,
     "degree": 1
    },
    {
@@ -1548,7 +1533,7 @@
     "label": "pass_record.py",
     "kind": "script",
     "path": "scripts/lore/pass_record.py",
-    "size": 5182,
+    "size": 5285,
     "degree": 1
    },
    {
@@ -1564,7 +1549,7 @@
     "label": "print_start_banner.py",
     "kind": "script",
     "path": "scripts/lore/print_start_banner.py",
-    "size": 3195,
+    "size": 3283,
     "degree": 1
    },
    {
@@ -1572,7 +1557,7 @@
     "label": "record_bond_quality.py",
     "kind": "script",
     "path": "scripts/lore/record_bond_quality.py",
-    "size": 2854,
+    "size": 2913,
     "degree": 1
    },
    {
@@ -1596,7 +1581,7 @@
     "label": "record_partner.py",
     "kind": "script",
     "path": "scripts/lore/record_partner.py",
-    "size": 1744,
+    "size": 1790,
     "degree": 1
    },
    {
@@ -1608,11 +1593,19 @@
     "degree": 1
    },
    {
+    "id": "file:scripts/lore/reset_reproduction_cooldown.py",
+    "label": "reset_reproduction_cooldown.py",
+    "kind": "script",
+    "path": "scripts/lore/reset_reproduction_cooldown.py",
+    "size": 3415,
+    "degree": 1
+   },
+   {
     "id": "file:scripts/lore/resolve_conflict.py",
     "label": "resolve_conflict.py",
     "kind": "script",
     "path": "scripts/lore/resolve_conflict.py",
-    "size": 6200,
+    "size": 6358,
     "degree": 1
    },
    {
@@ -1676,7 +1669,7 @@
     "label": "roll_lifespan.py",
     "kind": "script",
     "path": "scripts/lore/roll_lifespan.py",
-    "size": 3647,
+    "size": 3717,
     "degree": 1
    },
    {
@@ -1716,7 +1709,7 @@
     "label": "sample_grounding.py",
     "kind": "script",
     "path": "scripts/lore/sample_grounding.py",
-    "size": 4462,
+    "size": 4559,
     "degree": 1
    },
    {
@@ -1724,7 +1717,7 @@
     "label": "sample_lore_knowledge.py",
     "kind": "script",
     "path": "scripts/lore/sample_lore_knowledge.py",
-    "size": 12287,
+    "size": 12547,
     "degree": 1
    },
    {
@@ -1740,7 +1733,7 @@
     "label": "simulate_pass_brief.py",
     "kind": "script",
     "path": "scripts/lore/simulate_pass_brief.py",
-    "size": 19203,
+    "size": 23870,
     "degree": 1
    },
    {
@@ -1772,7 +1765,7 @@
     "label": "simulate_setup_worktree.py",
     "kind": "script",
     "path": "scripts/lore/simulate_setup_worktree.py",
-    "size": 7392,
+    "size": 7520,
     "degree": 1
    },
    {
@@ -1780,7 +1773,7 @@
     "label": "simulate_tally.py",
     "kind": "script",
     "path": "scripts/lore/simulate_tally.py",
-    "size": 4619,
+    "size": 4734,
     "degree": 1
    },
    {
@@ -1788,7 +1781,15 @@
     "label": "social_circle.py",
     "kind": "script",
     "path": "scripts/lore/social_circle.py",
-    "size": 4257,
+    "size": 4352,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/suggest_arc_needs.py",
+    "label": "suggest_arc_needs.py",
+    "kind": "script",
+    "path": "scripts/lore/suggest_arc_needs.py",
+    "size": 4045,
     "degree": 1
    },
    {
@@ -1796,7 +1797,7 @@
     "label": "tuning.py",
     "kind": "script",
     "path": "scripts/lore/tuning.py",
-    "size": 885,
+    "size": 910,
     "degree": 1
    },
    {
@@ -1820,7 +1821,7 @@
     "label": "write_arc.py",
     "kind": "script",
     "path": "scripts/lore/write_arc.py",
-    "size": 5107,
+    "size": 6641,
     "degree": 1
    },
    {
@@ -1828,7 +1829,7 @@
     "label": "minecraft",
     "kind": "dir",
     "path": "scripts/minecraft",
-    "size": 16149,
+    "size": 16269,
     "degree": 4
    },
    {
@@ -1852,7 +1853,7 @@
     "label": "validate_dialog.py",
     "kind": "script",
     "path": "scripts/minecraft/validate_dialog.py",
-    "size": 4369,
+    "size": 4489,
     "degree": 1
    },
    {
@@ -1860,7 +1861,7 @@
     "label": "test",
     "kind": "dir",
     "path": "scripts/test",
-    "size": 45375,
+    "size": 45525,
     "degree": 7
    },
    {
@@ -1868,7 +1869,7 @@
     "label": "conformance_report.py",
     "kind": "script",
     "path": "scripts/test/conformance_report.py",
-    "size": 12353,
+    "size": 12408,
     "degree": 1
    },
    {
@@ -1908,11 +1909,17 @@
     "label": "simulate_token_usage.py",
     "kind": "script",
     "path": "scripts/test/simulate_token_usage.py",
-    "size": 4305,
+    "size": 4400,
     "degree": 1
    }
   ],
   "edges": [
+   {
+    "source": "dir:.",
+    "target": "file:.git",
+    "rel": "contains",
+    "weight": 1
+   },
    {
     "source": "dir:.",
     "target": "file:.gitignore",
@@ -1975,19 +1982,7 @@
    },
    {
     "source": "dir:.claude",
-    "target": "file:.claude/scheduled_tasks.lock",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:.claude",
     "target": "file:.claude/settings.json",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:.claude",
-    "target": "file:.claude/settings.local.json",
     "rel": "contains",
     "weight": 1
    },
@@ -2653,12 +2648,6 @@
    },
    {
     "source": "dir:data/luminacion",
-    "target": "dir:data/luminacion/predicates",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:data/luminacion",
     "target": "dir:data/luminacion/tags",
     "rel": "contains",
     "weight": 1
@@ -3097,6 +3086,12 @@
    },
    {
     "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/reset_reproduction_cooldown.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/resolve_conflict.py",
     "rel": "contains",
     "weight": 1
@@ -3235,6 +3230,12 @@
    },
    {
     "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/suggest_arc_needs.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/tuning.py",
     "rel": "contains",
     "weight": 1
@@ -3342,7 +3343,7 @@
     "kind": "layer",
     "note": "skills + scripts + supporting patterns",
     "tier": 2,
-    "degree": 88
+    "degree": 90
    },
    {
     "id": "layer:3",
@@ -3785,6 +3786,14 @@
     "degree": 1
    },
    {
+    "id": "script:lore/reset_reproduction_cooldown.py",
+    "label": "reset_reproduction_cooldown.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/reset_reproduction_cooldown.py",
+    "degree": 1
+   },
+   {
     "id": "script:lore/resolve_conflict.py",
     "label": "resolve_conflict.py",
     "kind": "script",
@@ -3966,6 +3975,14 @@
     "kind": "script",
     "tier": 2,
     "file": "scripts/lore/social_circle.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/suggest_arc_needs.py",
+    "label": "suggest_arc_needs.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/suggest_arc_needs.py",
     "degree": 1
    },
    {
@@ -4444,6 +4461,12 @@
    },
    {
     "source": "layer:2",
+    "target": "script:lore/reset_reproduction_cooldown.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
     "target": "script:lore/resolve_conflict.py",
     "rel": "holds",
     "weight": 1
@@ -4577,6 +4600,12 @@
    {
     "source": "layer:2",
     "target": "script:lore/social_circle.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/suggest_arc_needs.py",
     "rel": "holds",
     "weight": 1
    },
@@ -4809,5 +4838,5 @@
   "nodes": [],
   "edges": []
  },
- "generated": "2026-08-30"
+ "generated": "2026-08-31"
 }
