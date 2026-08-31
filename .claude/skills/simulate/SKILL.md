@@ -329,6 +329,15 @@ For pass 1 through N:
    point 5 below, just reached one step earlier here). On success, its `reply` field is already shaped
    to drop into point 5's hearsay/decisions JSON almost as-is — see that point's Local note.
 
+   **For a many-pass run on the Local path, `scripts/lore/simulate_driver.py` collapses this whole
+   per-pass sequence (points 2-5 below, resolve pair through pass_apply) into one call** instead of
+   the ~5 separate round-trips a subagent-per-pass design costs — built 2026-08-31 on a token-cost
+   audit that found this cut real usage enough to run 250 passes where ~40 was the prior ceiling on
+   the same budget. It stops the batch automatically at either judgment slot (`needs_arc`/
+   `needs_name`) and resumes cleanly once the orchestrating session supplies the content via its own
+   `resolve-arc`/`resolve-birth` subcommands — read its own docstring before using it. Optional: the
+   manual per-pass sequence below still works and is the reference implementation this script wraps.
+
    The **director's note** rule is the same for both paths, and it's the one legitimate addition to
    either dispatch: 1-2 sentences, only when the gate hit and an outcome needs a concrete "what
    satisfies this" nudge the mechanical JSON can't supply on its own (e.g. "'mixed' means the other
