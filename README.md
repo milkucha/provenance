@@ -35,7 +35,7 @@ organic rather than mechanically repetitive. The longest pilot
 so far ran `/simulate` to 305 passes on six characters and got real material stakes out of it — arcs
 that stalled, reversed, and transformed on genuine dice rolls, four generations of births, deaths
 that actually broke a character's own convictions rather than just getting logged — not just
-repetition, which is the actual bar (see `conversation.md`'s Landmarks for the fuller account). The
+repetition, which is the actual bar (see `CHRONICLE.md` for the fuller account). The
 standing fear behind most of the design choices here is producing *slop*: content that sounds
 plausible but isn't actually grounded in anything the record established.
 
@@ -52,7 +52,7 @@ actual lore engine, usable entirely on its own with no Minecraft (or any embodim
 
 This document is a practical, step-by-step guide to working with the system, plus (§0) the
 architecture of the whole as it stands today — read that first in a new session to get oriented
-without having to re-read the whole codebase. `conversation.md` carries the narrative alongside it:
+without having to re-read the whole codebase. `CHRONICLE.md` carries the narrative alongside it:
 why a given design turn got taken, and what's still genuinely open — worth a read if the "why" behind
 something here isn't obvious from the "how." The rest of this file assumes you already know *what*
 character or story you want to add — it's about *how* to realize it, in lore and (currently) in
@@ -290,6 +290,11 @@ and `/enact` still never touches either registry or `data/`. `/embody` and `/spa
     one pass.
   - **`/spawn`** (`spawn/SKILL.md`) — builds a registered NPC's `spawn.mcfunction` (and every
     supporting function) from `_npcs/templates/`. See §5/§6.
+  - **`/package`** (`package/SKILL.md`) — zips the current datapack and resource pack into two
+    standalone release archives, stripped of every dev-only folder (`_lore/`, `_npcs/`, `scripts/`,
+    docs) and the placeholder dialogue templates, for dropping into a different world or server that
+    has no junctioned dev setup. `scripts/minecraft/package.py` does the actual zipping; the skill
+    just resolves the destination. Embodiment-specific — the lore engine itself has nothing to ship.
   - **`/integrate`** (`integrate/SKILL.md`) — three independent passes: analyse newly-added
     `_lore/material/` files into `context.md`/`encodings.json`/`unknowns.md` per the conventions those
     files already establish (below); audit every dialogue under `data/luminacion/blabber/dialogues/`
@@ -324,34 +329,38 @@ and `/enact` still never touches either registry or `data/`. `/embody` and `/spa
     `generate_offspring.py`, a new character file with inherited knowledge and a birth tale) and
     death legacy (an ongoing arc transferring to someone in the deceased's notified circle). Before
     home/visit is decided, each drawn participant also rolls **survive** or pursue their **arc**
-    this pass (`roll_survival.py`) — a weighted roll, not free choice. Redesigned 2026-08-31 on the
-    realization that the earlier version let `survive` restore personal energy unconditionally, so a
-    starved location never actually starved anyone directly, only skewed behavior around the edges:
-    eating is now universal and pool-gated (`apply_survival.py`/`apply_upkeep.py`, `_lore/wealth.json`
-    via `wealth_lib.py`) — every drawn participant tries to eat from the location's shared pool
-    regardless of which choice they made that pass, and if the pool can't cover it, nobody eats,
-    survive-choosers included. `survive` on top of that purely contributes back to the pool; pursuing
-    the **arc** instead costs extra personal energy and skews `roll_home_visit.py` toward staying
-    home. Energy hitting 0 is a second, independent death vector alongside the rolled lifespan. An
-    arc's own `needs` — what it requires to advance — is mechanically constrained to
-    `_lore/contexts.json`'s registered `provides` vocabulary for that arc's `context`, not free-typed:
-    `write_arc.py` rejects anything outside it, and `suggest_arc_needs.py` ranks the valid options by
-    textual overlap with the character's own `routine_actions`, so the choice stays grounded in what
-    they actually do instead of whatever's easiest to reach for — a real gap, caught the hard way when
-    six consecutive arc re-authorings in one run, same author, all converged on the same need
-    regardless of topic. A completed arc gets filed as a real tale (same mechanism a birth or death
-    already uses) — a character's finished project becomes a fact the record can sample back later,
-    not a resolution flag that just evaporates. Whether the mechanism is actually producing good
+    this pass (`roll_survival.py`) — a weighted roll, not free choice. Every drawn participant tries
+    to eat from the location's shared `wealth` pool (`_lore/wealth.json`, via `wealth_lib.py`) this
+    pass, regardless of which choice they made — if the pool can't cover it, nobody eats.
+    `survive` contributes back to the pool on top of that; pursuing the **arc** instead costs extra
+    personal energy and skews `roll_home_visit.py` toward staying home (`apply_survival.py`/
+    `apply_upkeep.py` settle the actual energy/pool changes once the location resolves). Energy
+    hitting 0 is a second, independent death vector alongside the rolled lifespan. An arc's own
+    `needs` — what it requires to advance — is mechanically constrained to `_lore/contexts.json`'s
+    registered `provides` vocabulary for that arc's `context`, never free-typed: `write_arc.py`
+    rejects anything outside it, and `suggest_arc_needs.py` ranks the valid options by textual
+    overlap with the character's own `routine_actions`, so the choice is grounded in what they
+    actually do rather than in whatever's easiest to reach for. A completed arc gets filed as a real
+    tale (same mechanism a birth or death already uses) — a character's finished project becomes a
+    fact the record can sample back later, not a resolution flag that just evaporates. A run's own
+    pass counter always starts at 1 regardless of the branched-from commit's own history, so
+    `reset_reproduction_cooldown.py` clears every participant's `last_reproduced_pass`/`birth_pass`
+    at setup — otherwise a stale absolute pass number from an earlier run reads as a cooldown
+    hundreds of passes in the future. Each pass's scene itself is dispatched to one of two enacter
+    paths, chosen at setup: a Claude subagent (Haiku/Sonnet/Opus, via the `Agent` tool) or a local
+    model through Ollama (`qwen2.5:14b` by default, `scripts/lore/enact_via_ollama.py` — no tool
+    access, structured-JSON output enforced by Ollama's own schema mode, retried against a fixed
+    validation pass rather than trusted blind). Whether the mechanism is actually producing good
     results, as opposed to just running, is tracked in `LAB_REPORT.md` — see below. **`/generate`**
     is a separate command for pregenerating a large multi-generation starting population quickly
     rather than a showcase trail of scenes: the same underlying mechanics (routines, arcs,
     reproduction, death) run as one script-driven pass loop with no scene-writing and no subagent
     per pass, deferring the two things that genuinely need a model's judgment (a child's name, a
-    fresh arc's content) into a single batched subagent pass at the very end. Renaming a resolved
-    child's slug to match their real name (not just the `name` field) is standing behavior here too,
-    walking every structural cross-reference — needed once merging populations grown in parallel
-    `/generate` worktrees made the mechanical placeholder counter collide across them. See
-    `.claude/skills/generate/SKILL.md`.
+    fresh arc's content) into a single batched subagent pass at the very end. Resolving a
+    placeholder child's real name also renames their slug/filename to match (not just the `name`
+    field), walking every structural cross-reference — this is what keeps mechanical
+    placeholder-counter slugs from colliding when merging populations grown in parallel `/generate`
+    worktrees. See `.claude/skills/generate/SKILL.md`.
 - **Supporting patterns** — reusable templates and registries every NPC/dialog is built from, so each
   new one doesn't reinvent structure — the shared material skills and scripts read from and write into:
   - `_npcs/templates/` — placeholder-filled `.mcfunction` patterns (`spawn.mcfunction`,
@@ -550,7 +559,7 @@ string values, which parse fine either way. Anything named `_shared` is called d
 
 ## 3. Writing lore through enactment
 
-One way to build a scene: play the character in a live conversation first, then convert the transcript into pack content. This is how `sonoros_lost_traveler.json` was written, following the steps below by hand before the skills existed. `/enact` (`.claude/skills/enact/SKILL.md`) now runs Steps 1–2 below, plus recording what the scene did to the character's lore (`_lore/characters/<key>.json` — hearsay, criterion, `life`). `/embody` (`.claude/skills/embody/SKILL.md`) then runs Steps 3–4 against that same scene, and — as part of the same run, not a separate follow-up — bakes the dialog's gestures itself, replacing a minority of its default `nod_up_down` states with an emotionally-matched gesture from the vocabulary in `GESTURES.md`. There is no longer a standalone baking skill — every dialog in the pack is produced through `/enact`/`/embody` (or their pre-split ancestor), so `/embody` baking inline covers every case; a handful of pre-existing dialogs left uniform before this step existed got a one-time manual pass instead (see `TODO.md`). `/enact-embody` (`.claude/skills/enact-embody/SKILL.md`) chains `/enact` and `/embody` back to back, for the common case of wanting the whole pipeline — gestures included — in one pass. Steps 1–2 are embodiment-agnostic — pure lore; Steps 3–4 are where the current embodiment backend enters, converting a scene into a Blabber dialog specifically. The steps below are still worth knowing, since the skills just automate them.
+One way to build a scene: play the character in a live conversation first, then convert the transcript into pack content. This is how the earliest dialogs in this project were written, following the steps below by hand before the skills existed — this branch ships no lore/dialog content of its own to point at as an example, but the manual steps are the same either way. `/enact` (`.claude/skills/enact/SKILL.md`) now runs Steps 1–2 below, plus recording what the scene did to the character's lore (`_lore/characters/<key>.json` — hearsay, criterion, `life`). `/embody` (`.claude/skills/embody/SKILL.md`) then runs Steps 3–4 against that same scene, and — as part of the same run, not a separate follow-up — bakes the dialog's gestures itself, replacing a minority of its default `nod_up_down` states with an emotionally-matched gesture from the vocabulary in `GESTURES.md`. There is no longer a standalone baking skill — every dialog in the pack is produced through `/enact`/`/embody` (or their pre-split ancestor), so `/embody` baking inline covers every case; a handful of pre-existing dialogs left uniform before this step existed got a one-time manual pass instead (see `TODO.md`). `/enact-embody` (`.claude/skills/enact-embody/SKILL.md`) chains `/enact` and `/embody` back to back, for the common case of wanting the whole pipeline — gestures included — in one pass. Steps 1–2 are embodiment-agnostic — pure lore; Steps 3–4 are where the current embodiment backend enters, converting a scene into a Blabber dialog specifically. The steps below are still worth knowing, since the skills just automate them.
 
 ### Step 1 — Bound the character's knowledge
 
@@ -586,7 +595,7 @@ Same as §5 Step 1 below: add (or update) the NPC's entry in `_npcs/npcs/registr
 
 ## 4. Where design decisions live
 
-This README documents *how the system works*. Story content, character personalities, routes, and dialog writing are design decisions — they live in `_lore/` and the registries under `_npcs/`, not in this file. Whether the `/simulate` mechanism's design is actually working — as opposed to just running correctly — is tracked separately in `LAB_REPORT.md` (see §0 — not on this branch, but on `provenance-standalone`/vault-side): a persistent, cross-run assessment log against the standing objective described in §0 (real emergent drift and material consequence, versus repetition or model-biased convergence), not this file either. The lore/structure/concept graphs under `graphs/graphifyish/` (§0) are a visualization of the record, not a design decision in themselves, but often the fastest way to spot one that needs making.
+This README documents *how the system works*. Story content, character personalities, routes, and dialog writing are design decisions — they live in `_lore/` and the registries under `_npcs/`, not in this file. Whether the `/simulate` mechanism's design is actually working — as opposed to just running correctly — is tracked separately in `LAB_REPORT.md` (see §0 — not on this branch, but on `provenance-standalone`/vault-side): a persistent, cross-run assessment log against the standing objective described in §0 (real emergent drift and material consequence, versus repetition or model-biased convergence), not this file either. `CHRONICLE.md` (repo root) is the project's own memory of *why* the architecture ended up this way — the reasoning behind a turn the design took, an argument that shifted it, something learned the hard way — kept durable across sessions rather than only living in chat history; read it when the "why" behind something here isn't obvious from the "how" this file gives. The lore/structure/concept graphs under `graphs/graphifyish/` (§0) are a visualization of the record, not a design decision in themselves, but often the fastest way to spot one that needs making.
 
 ---
 
