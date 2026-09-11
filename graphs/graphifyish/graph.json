@@ -20421,7 +20421,7 @@
     "label": "Provenance",
     "kind": "root",
     "path": ".",
-    "size": 58444102,
+    "size": 58437757,
     "degree": 18
    },
    {
@@ -20445,7 +20445,7 @@
     "label": "CLAUDE.md",
     "kind": "doc",
     "path": "CLAUDE.md",
-    "size": 2829,
+    "size": 1915,
     "degree": 1
    },
    {
@@ -20461,7 +20461,7 @@
     "label": "LAB_REPORT.md",
     "kind": "doc",
     "path": "LAB_REPORT.md",
-    "size": 59418,
+    "size": 54955,
     "degree": 1
    },
    {
@@ -20509,16 +20509,8 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
-    "size": 208257,
-    "degree": 8
-   },
-   {
-    "id": "file:.claude/PRINCIPLES.md",
-    "label": "PRINCIPLES.md",
-    "kind": "doc",
-    "path": ".claude/PRINCIPLES.md",
-    "size": 3176,
-    "degree": 1
+    "size": 205081,
+    "degree": 7
    },
    {
     "id": "file:.claude/VOICE.md",
@@ -23076,7 +23068,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": "graphs",
-    "size": 1375589,
+    "size": 1377797,
     "degree": 2
    },
    {
@@ -23084,7 +23076,7 @@
     "label": "graphifyish",
     "kind": "dir",
     "path": "graphs/graphifyish",
-    "size": 1375589,
+    "size": 1377797,
     "degree": 3
    },
    {
@@ -23092,7 +23084,7 @@
     "label": "graph.json",
     "kind": "graph",
     "path": "graphs/graphifyish/graph.json",
-    "size": 762774,
+    "size": 764058,
     "degree": 1
    },
    {
@@ -23100,7 +23092,7 @@
     "label": "graphifyish.html",
     "kind": "graph",
     "path": "graphs/graphifyish/graphifyish.html",
-    "size": 612815,
+    "size": 613739,
     "degree": 1
    },
    {
@@ -23863,12 +23855,6 @@
    {
     "source": "dir:.",
     "target": "dir:.claude",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:.claude",
-    "target": "file:.claude/PRINCIPLES.md",
     "rel": "contains",
     "weight": 1
    },
