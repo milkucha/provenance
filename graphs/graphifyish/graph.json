@@ -20421,8 +20421,8 @@
     "label": "Provenance",
     "kind": "root",
     "path": ".",
-    "size": 58427438,
-    "degree": 16
+    "size": 58444102,
+    "degree": 18
    },
    {
     "id": "file:.gitignore",
@@ -20445,7 +20445,7 @@
     "label": "CLAUDE.md",
     "kind": "doc",
     "path": "CLAUDE.md",
-    "size": 1149,
+    "size": 2829,
     "degree": 1
    },
    {
@@ -20461,7 +20461,15 @@
     "label": "LAB_REPORT.md",
     "kind": "doc",
     "path": "LAB_REPORT.md",
-    "size": 75619,
+    "size": 59418,
+    "degree": 1
+   },
+   {
+    "id": "file:OPEN_QUESTIONS.md",
+    "label": "OPEN_QUESTIONS.md",
+    "kind": "doc",
+    "path": "OPEN_QUESTIONS.md",
+    "size": 20183,
     "degree": 1
    },
    {
@@ -20470,6 +20478,14 @@
     "kind": "doc",
     "path": "README.md",
     "size": 64094,
+    "degree": 1
+   },
+   {
+    "id": "file:SESSION_LOG.md",
+    "label": "SESSION_LOG.md",
+    "kind": "doc",
+    "path": "SESSION_LOG.md",
+    "size": 455,
     "degree": 1
    },
    {
@@ -20493,7 +20509,7 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
-    "size": 208566,
+    "size": 208257,
     "degree": 8
    },
    {
@@ -20525,7 +20541,7 @@
     "label": "settings.json",
     "kind": "other",
     "path": ".claude/settings.json",
-    "size": 599,
+    "size": 299,
     "degree": 1
    },
    {
@@ -20557,7 +20573,7 @@
     "label": "skills",
     "kind": "dir",
     "path": ".claude/skills",
-    "size": 191051,
+    "size": 191042,
     "degree": 13
    },
    {
@@ -20693,7 +20709,7 @@
     "label": "simulate",
     "kind": "dir",
     "path": ".claude/skills/simulate",
-    "size": 27632,
+    "size": 27623,
     "degree": 2
    },
    {
@@ -20701,7 +20717,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/simulate/SKILL.md",
-    "size": 27632,
+    "size": 27623,
     "degree": 1
    },
    {
@@ -23060,7 +23076,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": "graphs",
-    "size": 1371316,
+    "size": 1375589,
     "degree": 2
    },
    {
@@ -23068,7 +23084,7 @@
     "label": "graphifyish",
     "kind": "dir",
     "path": "graphs/graphifyish",
-    "size": 1371316,
+    "size": 1375589,
     "degree": 3
    },
    {
@@ -23076,7 +23092,7 @@
     "label": "graph.json",
     "kind": "graph",
     "path": "graphs/graphifyish/graph.json",
-    "size": 760281,
+    "size": 762774,
     "degree": 1
    },
    {
@@ -23084,7 +23100,7 @@
     "label": "graphifyish.html",
     "kind": "graph",
     "path": "graphs/graphifyish/graphifyish.html",
-    "size": 611035,
+    "size": 612815,
     "degree": 1
    },
    {
@@ -23236,7 +23252,7 @@
     "label": "scripts",
     "kind": "dir",
     "path": "scripts",
-    "size": 479932,
+    "size": 486515,
     "degree": 6
    },
    {
@@ -23284,8 +23300,8 @@
     "label": "lore",
     "kind": "dir",
     "path": "scripts/lore",
-    "size": 383793,
-    "degree": 57
+    "size": 390376,
+    "degree": 58
    },
    {
     "id": "file:scripts/lore/add_categories_schema.py",
@@ -23460,7 +23476,7 @@
     "label": "pass_apply.py",
     "kind": "script",
     "path": "scripts/lore/pass_apply.py",
-    "size": 9898,
+    "size": 10106,
     "degree": 1
    },
    {
@@ -23672,6 +23688,14 @@
     "degree": 1
    },
    {
+    "id": "file:scripts/lore/simulate_record_run.py",
+    "label": "simulate_record_run.py",
+    "kind": "script",
+    "path": "scripts/lore/simulate_record_run.py",
+    "size": 6375,
+    "degree": 1
+   },
+   {
     "id": "file:scripts/lore/simulate_resolve_pair.py",
     "label": "simulate_resolve_pair.py",
     "kind": "script",
@@ -23808,7 +23832,19 @@
    },
    {
     "source": "dir:.",
+    "target": "file:OPEN_QUESTIONS.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.",
     "target": "file:README.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.",
+    "target": "file:SESSION_LOG.md",
     "rel": "contains",
     "weight": 1
    },
@@ -26214,6 +26250,12 @@
    },
    {
     "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/simulate_record_run.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/simulate_resolve_pair.py",
     "rel": "contains",
     "weight": 1
@@ -26309,7 +26351,7 @@
     "kind": "layer",
     "note": "skills + scripts + supporting patterns",
     "tier": 2,
-    "degree": 78
+    "degree": 79
    },
    {
     "id": "layer:3",
@@ -26872,6 +26914,14 @@
     "degree": 1
    },
    {
+    "id": "script:lore/simulate_record_run.py",
+    "label": "simulate_record_run.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/simulate_record_run.py",
+    "degree": 1
+   },
+   {
     "id": "script:lore/simulate_resolve_pair.py",
     "label": "simulate_resolve_pair.py",
     "kind": "script",
@@ -27416,6 +27466,12 @@
    {
     "source": "layer:2",
     "target": "script:lore/simulate_pass_reproduction.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/simulate_record_run.py",
     "rel": "holds",
     "weight": 1
    },
@@ -28981,5 +29037,5 @@
   ],
   "edges": []
  },
- "generated": "2026-08-30"
+ "generated": "2026-09-11"
 }
