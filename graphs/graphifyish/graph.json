@@ -20421,7 +20421,7 @@
     "label": "Provenance",
     "kind": "root",
     "path": ".",
-    "size": 58437757,
+    "size": 58438145,
     "degree": 18
    },
    {
@@ -20445,7 +20445,7 @@
     "label": "CLAUDE.md",
     "kind": "doc",
     "path": "CLAUDE.md",
-    "size": 1915,
+    "size": 2829,
     "degree": 1
    },
    {
@@ -23068,7 +23068,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": "graphs",
-    "size": 1377797,
+    "size": 1377271,
     "degree": 2
    },
    {
@@ -23076,7 +23076,7 @@
     "label": "graphifyish",
     "kind": "dir",
     "path": "graphs/graphifyish",
-    "size": 1377797,
+    "size": 1377271,
     "degree": 3
    },
    {
@@ -23084,7 +23084,7 @@
     "label": "graph.json",
     "kind": "graph",
     "path": "graphs/graphifyish/graph.json",
-    "size": 764058,
+    "size": 763750,
     "degree": 1
    },
    {
@@ -23092,7 +23092,7 @@
     "label": "graphifyish.html",
     "kind": "graph",
     "path": "graphs/graphifyish/graphifyish.html",
-    "size": 613739,
+    "size": 613521,
     "degree": 1
    },
    {
