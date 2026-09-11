@@ -326,13 +326,15 @@ Once all passes are done (or the pool ran out early):
   They can `/enact` a character from inside this worktree, read any file directly, ask questions
   about what changed, or run `/simulate` again (after exiting this worktree, or from a different
   session) for an independent second trial off the same starting state, to compare against this one.
-- **If this run was testing or extending the system's design** (not a casual one-off), append a dated
-  entry to `LAB_REPORT.md` at the **main repo root** — read that file's own header for the expected
-  entry shape first. **Do this only from the orchestrating session, using the file's absolute main-repo
-  path** (the same pattern as the Step 3 safety net's `git -C "<main repo root>"`), **never by writing
-  it from inside the active worktree.** This is a deliberate, single, explicit write to a known
-  meta-file at the very end of a run — unlike the accidental relative-path leaks Step 3's safety net
-  exists to catch and revert, this one is intentional, so it's fine for it to land in the main repo. If
-  the run surfaced a design gap or an open question rather than a settled answer, log it under that
-  file's "Open design questions" section rather than only leaving it in chat history.
+- **Record this run to LAB_REPORT.md** (every run, not just design-testing ones):
+  ```bash
+  py "<main_repo_root>/scripts/lore/simulate_record_run.py" "<main_repo_root>" "<worktree_path>"
+  ```
+  The script reads `SIMULATION_LOG.md` from the worktree, auto-determines the next run number,
+  and creates a template entry in `LAB_REPORT.md` with the setup facts and tally filled in. You then
+  fill in the qualitative sections manually (What worked, What didn't move, Implementation gaps, Open questions).
+  **Do this only from the orchestrating session, using absolute main-repo path** (the same pattern as
+  the Step 3 safety net's `git -C "<main repo root>"`), **never from inside the active worktree.**
+  If the run surfaced a design gap or an open question rather than a settled answer, log it in
+  [OPEN_QUESTIONS.md](../../OPEN_QUESTIONS.md) so it doesn't live only in chat history.
 - Don't call `ExitWorktree` — only on explicit request, same as Step 0.
