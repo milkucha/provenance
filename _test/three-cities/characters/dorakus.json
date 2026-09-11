@@ -1,0 +1,191 @@
+{
+  "name": "Dorakus",
+  "origin": "Salthos Cruzados",
+  "location": "Salthos Cruzados",
+  "backstory": "Child of Nakus and Prince Doran in Salthos Cruzados; raised alongside holds court at the square each morning, hears..., having heard about Gorff.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "salthos",
+      "items": [
+        "tale: toll_ledger_arrears",
+        "tale: salthos_cruzados",
+        "concept: temple_of_the_crossing",
+        "location: salthos_cruzados",
+        "concept: toll_ledger_arrears",
+        "tale: terfila",
+        "tale: forliamus_betrothal_offer",
+        "location: gorff",
+        "concept: forliamus_betrothal_offer",
+        "concept: crossing_market_roof",
+        "tale: gorff_ledger_crossing_war",
+        "conflict: CONFLICT-02",
+        "conflict: CONFLICT-03",
+        "tale: gorff",
+        "concept: crossing_toll_dispute",
+        "tale: death_of_darius"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Heard that Nakus and Darnus now have a child, Darnakus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 71
+        }
+      },
+      {
+        "text": "Heard that Nakus and Darnus now have a child, Darnukas.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 97
+        }
+      },
+      {
+        "text": "Heard that Prince Doran and Niemius now have a child, Niemoran.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 101
+        }
+      },
+      {
+        "text": "Heard that Nakus and Niemus now have a child, Niekus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 120
+        }
+      },
+      {
+        "text": "Heard that Nakus and Prince Doran now have a child, Dornakus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 131
+        }
+      },
+      {
+        "text": "Heard that Prince Doran and Nakus now have a child, Nakoran.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 144
+        }
+      },
+      {
+        "text": "Heard that Nakus and Prince Doran now have a child, Dorukus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 189
+        }
+      },
+      "Learned that Prince Doran has died.",
+      "Learned that Nakus has died.",
+      {
+        "text": "Heard that Darnus and Fenserika now have a child, Fenarnus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 262
+        }
+      },
+      {
+        "text": "Had a child with Darnus, named Doraknus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 294
+        }
+      },
+      {
+        "text": "Heard that Nakoran and Fenserika now have a child, Nakorika.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 337
+        }
+      },
+      "Learned that Darnus has died.",
+      {
+        "text": "Had a child with Nieragus, named Nieradus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 367
+        }
+      },
+      {
+        "text": "Heard that Fenserika and Niekus now have a child, Fenekus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 384
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only by making Toll Ledger Arrears their own concern",
+    "wasted_life": "treating Toll Ledger Arrears as someone else's concern",
+    "anchor": "concept: toll_ledger_arrears",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 35,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "context": "main_square",
+      "location": "Salthos Cruzados",
+      "routine_actions": "keeps the ledger at the square through petition days, cross-checks each new claim against what's already on file, and flags the ones that don't square with last year's",
+      "weight": 50.0
+    },
+    {
+      "context": "main_square",
+      "location": "Salthos Cruzados",
+      "routine_actions": "keeps the ledger at the square through petition days, cross-checks each new claim against what's already on file, and flags the ones that don't square with last year's",
+      "weight": 50.0
+    }
+  ],
+  "parents": [
+    "nakus",
+    "prince_doran"
+  ],
+  "partners": {
+    "niemus": 1,
+    "nakus": 3,
+    "prince_doran": 1,
+    "fenserika": 4,
+    "nierius": 1,
+    "darnus": 5,
+    "darika": 2,
+    "niemius": 1,
+    "darnakus": 2,
+    "fenrius": 3,
+    "darnukas": 2,
+    "niemoran": 2,
+    "niekus": 1,
+    "dornakus": 2,
+    "nieragus": 3,
+    "nakoran": 1,
+    "dorukus": 1,
+    "fenarnus": 1,
+    "dornarika": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 71,
+  "energy": 20,
+  "last_reproduced_pass": 367,
+  "arc": {
+    "about": [
+      "concept: toll_ledger_arrears"
+    ],
+    "needs": [
+      "records",
+      "trade"
+    ],
+    "context": "main_square",
+    "premise": "Dorakus wants the house to stop letting Gorff's toll shortfall quietly roll over year to year - he's pushing to have it raised formally at petition, audited on the record, and either paid up or explained, in front of witnesses instead of buried in his mother's files.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

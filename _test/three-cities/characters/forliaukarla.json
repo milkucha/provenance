@@ -1,0 +1,186 @@
+{
+  "name": "Forliaukarla",
+  "origin": "Terfila",
+  "location": "Terfila",
+  "backstory": "Child of Forliauken and Farliukar; grew up around unloads crates at the market stalls through the... in Terfila, and knows something of Birth Of Darnukas.",
+  "knowledge": {
+    "education": {
+      "percent": 50,
+      "mode": "skewed",
+      "topic": "tollhouse",
+      "items": [
+        "tale: death_of_darnukas",
+        "concept: salthos_mediator_line",
+        "tale: birth_of_niemoruk",
+        "tale: birth_of_nieradus",
+        "tale: death_of_darnus",
+        "location: salthos_cruzados",
+        "tale: birth_of_niemius",
+        "tale: birth_of_niergus",
+        "tale: birth_of_khaoboro",
+        "concept: forliamus_betrothal_offer",
+        "tale: birth_of_darnus",
+        "concept: toll_ledger_arrears",
+        "tale: birth_of_fenarnus",
+        "location: gorff",
+        "tale: birth_of_forliarlo",
+        "tale: birth_of_darnakus",
+        "tale: birth_of_dorakus",
+        "tale: death_of_darika",
+        "tale: crossing_market_roof",
+        "concept: crossing_toll_dispute",
+        "concept: temple_of_the_crossing",
+        "tale: death_of_darius",
+        "tale: birth_of_khaubestro",
+        "conflict: CONFLICT-03",
+        "tale: gorff",
+        "tale: salthos_cruzados",
+        "tale: gorff_ledger_crossing_war",
+        "tale: birth_of_darinak",
+        "tale: birth_of_farmuken",
+        "tale: birth_of_niekus",
+        "tale: birth_of_niemoran",
+        "tale: birth_of_dornarius",
+        "tale: birth_of_khaumestro",
+        "location: terfila",
+        "tale: forliamus_betrothal_offer",
+        "tale: forliamus_log_crossing_war",
+        "tale: terfila",
+        "conflict: CONFLICT-02",
+        "tale: birth_of_niemornak",
+        "conflict: CONFLICT-01",
+        "tale: birth_of_darnukas",
+        "tale: birth_of_farliazuzco",
+        "tale: birth_of_farliauzco",
+        "tale: birth_of_merkhaubo",
+        "tale: birth_of_mekobaluk",
+        "tale: death_of_niemus",
+        "tale: death_of_forliarlo",
+        "tale: birth_of_dornakus",
+        "tale: death_of_trezarlo",
+        "tale: birth_of_farliuzco"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Learned that Tamuzco has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 389
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Grew up hearing: Had a child with Tamuken, named Forliuken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 389
+        }
+      },
+      {
+        "text": "Grew up hearing: Had a child with Tamuzco, named Tamuzarlo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 389
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Trezarlo and Forliukar now have a child, Trezukar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 389
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Forliauzco and Farliazco now have a child, Farliauzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 389
+        }
+      },
+      {
+        "text": "Grew up hearing: Had a child with Tamuzaken, named Tamuzukar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 389
+        }
+      },
+      {
+        "text": "Grew up hearing: Learned that Forliamuk has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 389
+        }
+      },
+      {
+        "text": "Heard that Forliauzco and Farliukar now have a child, Forliaukarli.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 405
+        }
+      },
+      "Learned that Farliukar has died.",
+      {
+        "text": "Heard that Tamuzukar and Forliauken now have a child, Tamuzukauk.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 495
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only if it stayed close to Terfila",
+    "wasted_life": "a life spent never once engaging with Terfila",
+    "anchor": "tale: terfila",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 8,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "takes his turn unloading crates through the morning tide, bartering gossip for a cut rate at the tavern, and letting the tollhouse story drift a little further from however it started.",
+      "weight": 100.0
+    }
+  ],
+  "parents": [
+    "forliauken",
+    "farliukar"
+  ],
+  "partners": {
+    "trezarlo": 2,
+    "farliukar": 1,
+    "farliauzco": 1,
+    "forliauken": 1,
+    "trezukar": 1,
+    "farliuzco": 1,
+    "tamuzukar": 1,
+    "farliauzar": 1,
+    "tamuzakar": 1,
+    "farliazuzco": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 389,
+  "energy": 20,
+  "arc": {
+    "about": [
+      "concept: terfila_festival_revival"
+    ],
+    "needs": [
+      "contacts",
+      "goods"
+    ],
+    "context": "market",
+    "premise": "Forliaukarla wants the old market festival - lapsed these last few seasons since the tollhouse trouble started - actually held again, and means to line up enough stallholders willing to contribute goods to make it worth doing.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

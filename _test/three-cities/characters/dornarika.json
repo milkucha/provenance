@@ -1,0 +1,148 @@
+{
+  "name": "Dornarika",
+  "origin": "Salthos Cruzados",
+  "location": "Salthos Cruzados",
+  "backstory": "Child of Dornakus and Darika; raised in Salthos Cruzados on holds court at the square each morning, hears..., and carries some knowledge of Birth Of Darika.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "temple",
+      "items": [
+        "concept: crossing_toll_dispute",
+        "conflict: CONFLICT-02",
+        "tale: salthos_cruzados",
+        "concept: crossing_market_roof",
+        "concept: salthos_mediator_line",
+        "tale: death_of_darius",
+        "tale: gorff_ledger_crossing_war",
+        "concept: temple_of_the_crossing",
+        "tale: forliamus_betrothal_offer",
+        "tale: birth_of_dorakus",
+        "conflict: CONFLICT-01",
+        "location: salthos_cruzados",
+        "tale: toll_ledger_arrears",
+        "tale: gorff",
+        "conflict: CONFLICT-03",
+        "tale: birth_of_darnus",
+        "tale: birth_of_nierius",
+        "concept: toll_ledger_arrears",
+        "tale: birth_of_niemius",
+        "tale: birth_of_nakorika",
+        "tale: birth_of_darika",
+        "tale: birth_of_darnukas"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Heard that Nakus and Darnus now have a child, Darnukas.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 342
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Dorakus and Darnus now have a child, Doraknus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 342
+        }
+      },
+      {
+        "text": "Heard that Dornakus and Fenrius now have a child, Dornarius.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 362
+        }
+      },
+      {
+        "text": "Heard that Darika and Darnakus now have a child, Darinak.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 397
+        }
+      },
+      "Learned that Darika has died.",
+      {
+        "text": "Heard that Dornakus and Doraknus now have a child, Dornaknis.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 495
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only if it stayed close to Birth Of Dorakus",
+    "wasted_life": "a life spent never once engaging with Birth Of Dorakus",
+    "anchor": "tale: birth_of_dorakus",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 11,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "main_square",
+      "location": "Salthos Cruzados",
+      "routine_actions": "works the temple's walls from sunup, matching new stone to old without being told which is which anymore, and carts materials in himself by midday",
+      "weight": 25.0
+    },
+    {
+      "context": "main_square",
+      "location": "Salthos Cruzados",
+      "routine_actions": "works the temple's walls from sunup, matching new stone to old without being told which is which anymore, and carts materials in himself by midday",
+      "weight": 25.0
+    },
+    {
+      "context": "main_square",
+      "location": "Salthos Cruzados",
+      "routine_actions": "works the temple's walls from sunup, matching new stone to old without being told which is which anymore, and carts materials in himself by midday",
+      "weight": 25.0
+    },
+    {
+      "context": "temple",
+      "location": "Salthos Cruzados",
+      "routine_actions": "works the temple's walls from sunup, matching new stone to old without being told which is which anymore, and carts materials in himself by midday",
+      "weight": 25.0
+    }
+  ],
+  "parents": [
+    "dornakus",
+    "darika"
+  ],
+  "partners": {
+    "dorakus": 2,
+    "fenrius": 1,
+    "dornakus": 1,
+    "nieragus": 1,
+    "dorukus": 2,
+    "darnarika": 1,
+    "doraknus": 1,
+    "fenriukas": 1,
+    "dornarius": 1,
+    "fenekus": 1,
+    "niemornak": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 342,
+  "energy": 20,
+  "arc": {
+    "about": [
+      "concept: crossing_market_roof"
+    ],
+    "needs": [
+      "materials"
+    ],
+    "context": "main_square",
+    "premise": "Dornarika has stopped waiting on the paperwork to close and started clearing the roof project's own leftover scaffolding and unused stone herself - a cleared site is proof the project's actually done, not another filed report.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

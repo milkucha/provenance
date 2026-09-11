@@ -1,0 +1,1534 @@
+{
+  "_method_note": "Structured cross-references between locations, time periods, characters, and concepts found across the material set. Every entry lists its source file(s). Nothing here is asserted beyond what a source states; where sources disagree, both values are kept and a matching entry is added to 'conflicts'. Full prose per source lives in material/_context.md; this file is the associative index. Sources are abbreviated: atlax_i, atlax_ii, catastro, ensayo_i, libro, timelines_py (timelines.py), esquema (ESQUEMA.pdf), book_of_inventions, cartography_highways/cartography_trains/cartography_airports (Cartography (Map Markers) [Code].xlsx), luminacion_register (Luminacion Register [Code].xlsx), mapa_del_milenio (El Antiguo Continente de Milkan - Mapa del Milenio.png), plus 5 dated/named screenshots (Khan Ice WP, Sid Nalta WP, Milka General Map, Milka Oceans Plan and Continent Outline, Ruta Lundria-Salthos Cruzados) referenced inline by filename. Per the user (2026-07-24), 'Luminacion Register' and 'Terraforming Regions Purge Register.xlsx' ARE lore sources, split into a narrative layer (named characters/locations/actions - captured under characters.named_inhabitants) and a technical/'mysterious formula' layer (Clock-worldTime triggers, Taterzen movement logic, region-purge flags - left undeciphered, see unknowns.md) - not excluded, just not yet interpreted. Some conflict entries also carry a 'user_resolution' field: a design decision the user gave directly (not derived from any document), dated. These sit alongside the documentary facts rather than replacing them. IMPORTANT: everything above this line, and everything in 'locations'/'time_systems'/'routes'/'characters'/'concepts'/'conflicts' below, is the OBJECTIVE record - reconstructed from primary materials, per the archaeologist method. A second, SUBJECTIVE record sits alongside it: the top-level 'hearsay' array near the end of this file, mirroring _lore/hearsay/hearsay.md, logging what characters have actually said in played Blabber dialogues - never merged into the objective arrays above and never treated as corroborating them, even when they happen to agree; see 'hearsay._method_note' for the exact shape, including how a claim's consistency with the record and with facts is tracked. A third, OBJECTIVE-track array (not subjective like 'hearsay') is 'tales', fed by the /tell skill and mirrored in _lore/tales/: told/stated directly by the user, the world's author, folded into locations/characters/concepts/routes/time_systems via a 'tale:<id>' source tag, and into 'conflicts' on disagreement, by the same rules as any material source; see that array's own _method_note for the exact shape, including 'told_by' vs 'responsible'. Update (2026-07-26): 'ensayo_i_final' is a later, July 2026 edition of ensayo_i ('ENSAYO I (Final Version).pdf'), by the same credited author under an expanded byline ('Iläria Astraëa desde la lejana ciudad de Lündria'). Where the two editions disagree, both are kept, per the same disagreement rule as every other source pair - see CONFLICT-15, CONFLICT-16, CONFLICT-17.",
+  "_categories_method_note": "Describes how scripts/lore/sample_lore_knowledge.py flattens each category below into sample-able pool items, so the set of categories is read from this data rather than hardcoded per-path loops in the script. 'shape' selects a handler: 'list' (a flat list of dicts at 'path', identified by 'id_field', pool text built by joining 'text_fields') covers most categories and is the default shape for any new category with that structure; 'grouped_list' and 'claims' are special-cased for characters.named_inhabitants.by_locality and hearsay.entries respectively, since neither is a flat list. When /integrate approves a genuinely new category, it adds an entry here (and, if the shape isn't 'list', a new handler in SHAPE_HANDLERS) - no epistemology metadata needs authoring per category anymore (see next). 'has_sources' (bool) marks whether entries in this category carry a 'sources' list (provenance, see .claude/skills/integrate/SKILL.md Pass 1 step 3) - scripts/lore/build_source_index.py reads this to know which categories it should link hearsay/tale references into, instead of a hardcoded category list. Removed 2026-08-16: a per-category 'epistemology_group' field used to drive /character Step 4d's trusts/distrusts derivation. Replaced with per-ITEM provenance derivation (material/hearsay/tale, read from an anchor's own 'sources[0].category', or trivially 'hearsay'/'tale' when the anchor's own category already IS one of those, with 'conflict' kept as a fixed special case outside this system entirely) - see scripts/lore/anchor_epistemology.py and /character Step 4d for the current mechanism. A category-level classification never made sense here: two items in the same category (e.g. two locations) can have completely different provenance, which epistemology_group could never express.",
+  "_categories": {
+    "location": {
+      "path": "locations",
+      "shape": "list",
+      "id_field": "id",
+      "text_fields": [
+        "names",
+        "region",
+        "type_catastro",
+        "notes"
+      ],
+      "has_sources": true
+    },
+    "concept": {
+      "path": "concepts",
+      "shape": "list",
+      "id_field": "id",
+      "text_fields": [
+        "names",
+        "description",
+        "notes"
+      ],
+      "has_sources": true
+    },
+    "conflict": {
+      "path": "conflicts",
+      "shape": "list",
+      "id_field": "id",
+      "text_fields": [
+        "topic",
+        "detail"
+      ],
+      "has_sources": true
+    },
+    "character_legendary": {
+      "path": "characters.in_world_or_legendary",
+      "shape": "list",
+      "id_field": "id",
+      "text_fields": [
+        "names",
+        "role",
+        "notes"
+      ],
+      "has_sources": true
+    },
+    "character_real": {
+      "path": "characters.real_world_authors_and_players",
+      "shape": "list",
+      "id_field": "id",
+      "text_fields": [
+        "names",
+        "role"
+      ],
+      "has_sources": true
+    },
+    "inhabitant": {
+      "path": "characters.named_inhabitants.by_locality",
+      "shape": "grouped_list",
+      "has_sources": true
+    },
+    "highway": {
+      "path": "routes.highways",
+      "shape": "list",
+      "id_field": "code",
+      "text_fields": [
+        "name"
+      ],
+      "has_sources": true
+    },
+    "train_segment": {
+      "path": "routes.trains.segments",
+      "shape": "list",
+      "id_field": "name",
+      "text_fields": [
+        "name"
+      ],
+      "has_sources": true
+    },
+    "airport": {
+      "path": "routes.airports",
+      "shape": "list",
+      "id_field": "location",
+      "text_fields": [
+        "location"
+      ],
+      "has_sources": true
+    },
+    "route_named": {
+      "path": "routes.named_but_unplotted",
+      "shape": "list",
+      "id_field": "name",
+      "text_fields": [
+        "name"
+      ],
+      "has_sources": true
+    },
+    "era_ensayo": {
+      "path": "time_systems.ensayo_i_eras",
+      "shape": "list",
+      "id_field": "name",
+      "text_fields": [
+        "name"
+      ],
+      "has_sources": true
+    },
+    "era_esquema": {
+      "path": "time_systems.esquema_poster_eras.era_row",
+      "shape": "list",
+      "id_field": "name",
+      "text_fields": [
+        "name"
+      ],
+      "has_sources": true
+    },
+    "year_esquema": {
+      "path": "time_systems.esquema_poster_eras.year_by_year_foundations",
+      "shape": "list",
+      "id_field": "year",
+      "text_fields": [
+        "places"
+      ],
+      "has_sources": true
+    },
+    "era_libro": {
+      "path": "time_systems.libro_venidas_eras.list",
+      "shape": "list",
+      "id_field": "name",
+      "text_fields": [
+        "name"
+      ],
+      "has_sources": true
+    },
+    "hearsay": {
+      "path": "hearsay.entries",
+      "shape": "claims",
+      "has_sources": false
+    },
+    "tale": {
+      "path": "tales.entries",
+      "shape": "list",
+      "id_field": "id",
+      "text_fields": [
+        "summary"
+      ],
+      "has_sources": true
+    }
+  },
+  "time_systems": {
+    "ensayo_i_eras": [],
+    "esquema_poster_eras": {
+      "era_row": [],
+      "year_by_year_foundations": []
+    },
+    "libro_venidas_eras": {
+      "list": []
+    }
+  },
+  "locations": [
+    {
+      "id": "salthos_cruzados",
+      "names": [
+        "Salthos Cruzados"
+      ],
+      "region": "Milkäan",
+      "notes": "Built at the crossing of the Terfila and Gorff transit routes; seat of the Salthos house (Prince Doran); main square and temple. Both the temple's origin and the Salthos house's own legitimacy as mediator are disputed - see CONFLICT-02, CONFLICT-03.",
+      "sources": [
+        {
+          "category": "tale",
+          "origin": "salthos_cruzados"
+        },
+        {
+          "category": "tale",
+          "origin": "forliamus_log_crossing_war"
+        },
+        {
+          "category": "tale",
+          "origin": "gorff_ledger_crossing_war"
+        }
+      ]
+    },
+    {
+      "id": "terfila",
+      "names": [
+        "Terfila"
+      ],
+      "region": "Milkäan",
+      "notes": "Port/market town; the merchant-house of Forliamus is its largest trading house.",
+      "sources": [
+        {
+          "category": "tale",
+          "origin": "terfila"
+        },
+        {
+          "category": "tale",
+          "origin": "forliamus_log_crossing_war"
+        }
+      ]
+    },
+    {
+      "id": "gorff",
+      "names": [
+        "Gorff"
+      ],
+      "region": "Milkäan",
+      "notes": "Workshop/archive town; holds the transit route's tollhouse (see CONFLICT-01 for how).",
+      "sources": [
+        {
+          "category": "tale",
+          "origin": "gorff"
+        },
+        {
+          "category": "tale",
+          "origin": "gorff_ledger_crossing_war"
+        }
+      ]
+    }
+  ],
+  "routes": {
+    "_method_note": "From cartography (Cartography (Map Markers) [Code].xlsx). Individual waypoints are not reproduced here (hundreds per route) - only named endpoints/waypoints and total distances. All coordinates are X,Z pairs unless noted.",
+    "highways": [],
+    "trains": {
+      "segments": []
+    },
+    "named_but_unplotted": [],
+    "airports": []
+  },
+  "characters": {
+    "in_world_or_legendary": [],
+    "real_world_authors_and_players": [],
+    "named_inhabitants": {
+      "by_locality": {}
+    }
+  },
+  "concepts": [
+    {
+      "id": "crossing_toll_dispute",
+      "names": [
+        "the Crossing War",
+        "the toll dispute",
+        "the taking of the tollhouse"
+      ],
+      "description": "A conflict, roughly a generation past, that ended with Gorff in control of the transit route's tollhouse between Gorff and Terfila. Its cause and legitimacy are disputed - see CONFLICT-01.",
+      "sources": [
+        {
+          "category": "tale",
+          "origin": "gorff_ledger_crossing_war"
+        },
+        {
+          "category": "tale",
+          "origin": "forliamus_log_crossing_war"
+        }
+      ]
+    },
+    {
+      "id": "temple_of_the_crossing",
+      "names": [
+        "the temple at the crossing",
+        "the crossing temple"
+      ],
+      "description": "A temple standing at Salthos Cruzados' main square. Both its builder and its original purpose are disputed - see CONFLICT-02.",
+      "sources": [
+        {
+          "category": "tale",
+          "origin": "gorff_ledger_crossing_war"
+        },
+        {
+          "category": "tale",
+          "origin": "forliamus_log_crossing_war"
+        },
+        {
+          "category": "tale",
+          "origin": "salthos_cruzados"
+        }
+      ]
+    },
+    {
+      "id": "salthos_mediator_line",
+      "names": [
+        "the Salthos house",
+        "Prince Doran's house"
+      ],
+      "description": "The ruling house of Salthos Cruzados, which has held and governed the crossing for three generations and mediates disputes between Terfila and Gorff. Whether it was chosen for the role or simply never gave up the ground it already stood on is disputed - see CONFLICT-03.",
+      "sources": [
+        {
+          "category": "tale",
+          "origin": "gorff_ledger_crossing_war"
+        },
+        {
+          "category": "tale",
+          "origin": "forliamus_log_crossing_war"
+        },
+        {
+          "category": "tale",
+          "origin": "salthos_cruzados"
+        }
+      ]
+    },
+    {
+      "id": "crossing_market_roof",
+      "names": [
+        "the market roof",
+        "the crossing market's roof"
+      ],
+      "description": "A long-petitioned but unbuilt roof over Salthos Cruzados' open-air market row, competing with the temple's own repairs for the same limited coin and timber.",
+      "sources": [
+        {
+          "category": "tale",
+          "origin": "crossing_market_roof"
+        }
+      ]
+    },
+    {
+      "id": "toll_ledger_arrears",
+      "names": [
+        "the toll arrears",
+        "the ledger shortfall"
+      ],
+      "description": "Gorff's treaty-mandated toll-revenue share owed to Salthos Cruzados has come up short for three years running; unsettled whether it's clerical error or deliberate shorting.",
+      "sources": [
+        {
+          "category": "tale",
+          "origin": "toll_ledger_arrears"
+        }
+      ]
+    },
+    {
+      "id": "forliamus_betrothal_offer",
+      "names": [
+        "the new betrothal",
+        "the Forliamus offer"
+      ],
+      "description": "A fresh marriage alliance the Forliamus house of Terfila has proposed with the Salthos house this generation, meant to close the old grievance between the houses; not yet sealed or refused.",
+      "sources": [
+        {
+          "category": "tale",
+          "origin": "forliamus_betrothal_offer"
+        }
+      ]
+    },
+    {
+      "id": "dock_repair_terfila",
+      "names": [
+        "Dock Repair Terfila",
+        "dock_repair_terfila"
+      ],
+      "description": "Trezarlo wants the rotted dock planking at the Terfila stalls actually replaced before another crate of goods goes into the harbor - he's found the timber, now he needs someone who can lay it properly. (Resolution as of this record: ongoing.)",
+      "sources": [],
+      "notes": "Auto-registered by register_arc_concept.py at arc-authoring time. Sourced entirely from hearsay once build_source_index.py links it (see sources[]) - no material-source confirmation."
+    },
+    {
+      "id": "terfila_well_repair",
+      "names": [
+        "Terfila Well Repair",
+        "terfila_well_repair"
+      ],
+      "description": "Farliukar has noticed the stall-side well running low again and wants it actually dug deeper or replaced before the summer trade season, not just complained about at the market the way it has been for years. (Resolution as of this record: ongoing.)",
+      "sources": [],
+      "notes": "Auto-registered by register_arc_concept.py at arc-authoring time. Sourced entirely from hearsay once build_source_index.py links it (see sources[]) - no material-source confirmation."
+    },
+    {
+      "id": "terfila_market_watch",
+      "names": [
+        "Terfila Market Watch",
+        "terfila_market_watch"
+      ],
+      "description": "Tamuzarlo wants a proper watch rotation set up for the market stalls along the transit route after two seasons of goods going missing at the changeover - he has people willing, just no one willing to organize it first. (Resolution as of this record: ongoing.)",
+      "sources": [],
+      "notes": "Auto-registered by register_arc_concept.py at arc-authoring time. Sourced entirely from hearsay once build_source_index.py links it (see sources[]) - no material-source confirmation."
+    },
+    {
+      "id": "transit_route_waystop_shelter",
+      "names": [
+        "Transit Route Waystop Shelter",
+        "transit_route_waystop_shelter"
+      ],
+      "description": "Trezukaken wants a proper shelter built at the midpoint of the transit route, where travelers are stuck in the open when a crossing gets delayed - he's got the materials scavenged, just needs someone to help raise it before the next bad season. (Resolution as of this record: ongoing.)",
+      "sources": [],
+      "notes": "Auto-registered by register_arc_concept.py at arc-authoring time. Sourced entirely from hearsay once build_source_index.py links it (see sources[]) - no material-source confirmation."
+    },
+    {
+      "id": "terfila_festival_revival",
+      "names": [
+        "Terfila Festival Revival",
+        "terfila_festival_revival"
+      ],
+      "description": "Forliaukarla wants the old market festival - lapsed these last few seasons since the tollhouse trouble started - actually held again, and means to line up enough stallholders willing to contribute goods to make it worth doing. (Resolution as of this record: ongoing.)",
+      "sources": [],
+      "notes": "Auto-registered by register_arc_concept.py at arc-authoring time. Sourced entirely from hearsay once build_source_index.py links it (see sources[]) - no material-source confirmation."
+    },
+    {
+      "id": "transit_route_escort_rota",
+      "names": [
+        "Transit Route Escort Rota",
+        "transit_route_escort_rota"
+      ],
+      "description": "Aureboro wants to formalize a paid rotation of escorts for caravans along the transit route, using his standing at the tollhouse to line up drivers and guards willing to commit to a fixed schedule - fewer losses to bandits, and something concrete to show for the family's old claim on the road. (Resolution as of this record: ongoing.)",
+      "sources": [],
+      "notes": "Auto-registered by register_arc_concept.py at arc-authoring time. Sourced entirely from hearsay once build_source_index.py links it (see sources[]) - no material-source confirmation."
+    }
+  ],
+  "conflicts": [
+    {
+      "id": "CONFLICT-01",
+      "topic": "cause and legitimacy of Gorff's control of the transit-route tollhouse",
+      "detail": "Gorff's own ledger frames it as a defensive war: Terfila's toll blockade starved Gorff of materials, and Auroboro led a raid that took the tollhouse by force - a justified, decisive victory Gorff has held ever since. The Forliamus merchant-house log of Terfila frames it entirely differently: the conflict began as a personal feud after the Salthos house broke a marriage alliance with Forliamus, Terfila's own guards rode the road to press Salthos (not Gorff), and Gorff simply seized the undefended tollhouse amid the chaos - ending not in a clean victory but a truce Prince Doran brokered once the feud cooled. Both accounts agree only that Gorff ended up holding the tollhouse and that Salthos Cruzados (Prince Doran) was involved in how it ended.",
+      "user_resolution": null
+    },
+    {
+      "id": "CONFLICT-02",
+      "topic": "who built the temple at the crossing first",
+      "detail": "Gorff's ledger says its own masons raised the temple, stone carried up the transit route on Gorff carts, before the Salthos house held anything more than the ground it stood on - a gift marking the crossing as neutral. The Forliamus log says Terfila's own sailors raised the first stones, generations earlier, as a shrine to safe crossing built by people who actually risked it for a living - and that Gorff's masons only patched a roof, later, and claimed the whole building for it. Both agree the temple stands at Salthos Cruzados' main square and predates living memory; neither agrees on whose hands actually built it.",
+      "user_resolution": null
+    },
+    {
+      "id": "CONFLICT-03",
+      "topic": "whether the Salthos house was chosen as a neutral arbiter or simply never left",
+      "detail": "Gorff's ledger says Gorff and Terfila together asked the Salthos house to hold the crossing, generations back, precisely because it had no trade, fleet, or forge of its own to favor - a neutral hand deliberately chosen. The Forliamus log rejects this outright: nobody asked them anything: the house was already standing on the crossing when the roads were first cut, and three generations of calling themselves neutral hasn't made it a choice anyone else actually made. Both agree the Salthos house has held and governed the crossing for three generations and mediates disputes between the other two cities; they disagree on whether that role was ever actually granted.",
+      "user_resolution": null
+    }
+  ],
+  "hearsay": {
+    "_method_note": "SUBJECTIVE record, distinct from every array above. Mirrors _lore/characters/hearsay.md exactly - one entry per real (non-template) dialog file in data/luminacion/blabber/dialogues/. 'claims' are what a character asserted, not verified facts; 'about' cross-references an id in 'locations'/'concepts'/'conflicts' above ONLY to mark topical overlap, never as corroboration. Consistency is recorded INCONSISTENT-ONLY: a field is present on a claim only when a genuine contradiction was actually found; absence means either 'checked and matches' or 'nothing to check against yet' - recording the unremarkable case explicitly on every claim would just be noise. Two independent flags: (1) 'inconsistent_with_record', an array of {about, source_kind, note} objects - present only when the claim contradicts something in the objective arrays above ('about' names the contradicted entry/CONFLICT id, 'source_kind' is 'material'/'tale' naming which of the two kinds of objective source the contradicted entry rests on, since disbelieving a written map and disbelieving something someone was told directly are different in kind - a character might reasonably distrust one and not the other; 'note' explains the contradiction in one sentence). (2) 'inconsistent_with_facts', a plain string (present only when true, value = the explanation) - set when a claim contradicts one of the two universal facts in _lore/facts/facts.json. No 'fact_ref' id is needed: there are only two facts, they are baked into every character unconditionally, and checking against them means reading facts.json directly, not looking up an id. A claim can also surface a genuine gap rather than a contradiction - something the objective record has never addressed at all, not something it disagrees with; when that happens and it resonates with the existing corpus, log it in _lore/unknowns.md (cross-referencing the claim's id), matching the file's existing shape, the same way material and tale do. Not every claim produces one - skip rather than manufacturing a question that isn't genuinely there. Since scripts/lore/sample_lore_knowledge.py draws individual claims from this array into a character's knowledge pool at the same odds as any objective-record fact (see README §8 Step 1), a claim can now be retold by a new character and logged again as a fresh claim. Whenever that happens, scripts/lore/lineage_coin.py rolls a flat 50/50 to decide whether the origin survives the retelling: 'traceable' sets 'derived_from' (a claim id, e.g. 'nawom_morkulo_first_meeting#5') and the dialog line may cite the source by name; 'untraceable' leaves 'derived_from' unset and sets 'oral_lore': true instead - no origin recorded, dialog line uses vague framing ('they say...'), regardless of whether the content itself has drifted. 'oral_lore' can also be set true (paired with a 'note' explaining what grew) on a claim that traces back fine but has still accumulated specifics beyond what its 'about' grounding supports. Most claims have none of these fields - they're unremarkable, either freshly sampled from the objective record or a faithful, traceable retelling.",
+    "entries": []
+  },
+  "tales": {
+    "_method_note": "A THIRD kind of source, distinct from both the objective record above and 'hearsay' - see _lore/tales/_index.md. A tale is told directly by the user, the world's author, outside any character's mouth and outside any excavated document - whether framed as a narrated story or stated plainly as a fact now known. Deliberately not distinguishing those two framings with a fact/fiction label: a tale can be partly true, the way a real legend often is, and that ambiguity is the point. Unlike hearsay, a tale IS folded into the objective arrays above (locations/characters/concepts/routes/time_systems) wherever it overlaps an existing entry - via a 'tale:<id>' item added to that entry's 'sources' list, exactly like a material-file abbreviation - never by overwriting an existing entry. A genuine disagreement with something already on record gets a new 'conflicts' entry (next CONFLICT-NN id), 'user_resolution' left unset. Populated by the /tell skill (.claude/skills/tell/SKILL.md). Each entry here is a manifest of one tale, not a duplicate of its content: 'touches' lists every id (in any array above, including 'conflicts') this tale added or amended - the full text lives in _lore/tales/<id>.md. 'told_by' (nullable) names who is credited IN-FICTION with this tale, if it's framed that way (a character, an institution, a legend) - both a name and 'nobody' are genuine, deliberate answers; most tales leave it null since there's usually no in-world frame at all. Who (which real-world user) actually recorded the entry is a separate question, answered in _lore/tales/_authors.md, never here.",
+    "entries": [
+      {
+        "id": "salthos_cruzados",
+        "source_file": "_lore/tales/salthos_cruzados.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Salthos Cruzados is built where the roads from Terfila and Gorff cross; governed by Prince Doran's house from a main square over the junction itself.",
+        "touches": [
+          "salthos_cruzados"
+        ]
+      },
+      {
+        "id": "terfila",
+        "source_file": "_lore/tales/terfila.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Terfila is a port/market town whose wealth runs through merchant houses, the largest being Forliamus's.",
+        "touches": [
+          "terfila"
+        ]
+      },
+      {
+        "id": "gorff",
+        "source_file": "_lore/tales/gorff.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Gorff is workshop/archive territory that holds the transit route's tollhouse on its own side.",
+        "touches": [
+          "gorff"
+        ]
+      },
+      {
+        "id": "gorff_ledger_crossing_war",
+        "source_file": "_lore/tales/gorff_ledger_crossing_war.md",
+        "told_date": "2026-08-31",
+        "told_by": "Gorff's keepers of record",
+        "summary": "Gorff's account of three disputed matters: the tollhouse (a justified defensive raid led by Auroboro), the crossing temple (built by Gorff's own masons), and the Salthos house (chosen by mutual agreement as a neutral arbiter).",
+        "touches": [
+          "crossing_toll_dispute",
+          "temple_of_the_crossing",
+          "salthos_mediator_line",
+          "gorff",
+          "CONFLICT-01",
+          "CONFLICT-02",
+          "CONFLICT-03"
+        ]
+      },
+      {
+        "id": "forliamus_log_crossing_war",
+        "source_file": "_lore/tales/forliamus_log_crossing_war.md",
+        "told_date": "2026-08-31",
+        "told_by": "the merchant-house of Forliamus, Terfila",
+        "summary": "Forliamus's account of the same three matters: the tollhouse (a personal feud Gorff opportunistically exploited), the crossing temple (built first by Terfila's sailors), and the Salthos house (self-appointed, not chosen).",
+        "touches": [
+          "crossing_toll_dispute",
+          "temple_of_the_crossing",
+          "salthos_mediator_line",
+          "terfila",
+          "salthos_cruzados",
+          "CONFLICT-01",
+          "CONFLICT-02",
+          "CONFLICT-03"
+        ]
+      },
+      {
+        "id": "crossing_market_roof",
+        "source_file": "_lore/tales/crossing_market_roof.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Salthos Cruzados' market has stood open to the weather for years; merchants have petitioned for a roof, but it competes with the temple's own repairs for the same limited coin and timber.",
+        "touches": [
+          "crossing_market_roof"
+        ]
+      },
+      {
+        "id": "toll_ledger_arrears",
+        "source_file": "_lore/tales/toll_ledger_arrears.md",
+        "told_date": "2026-08-31",
+        "told_by": "the Salthos house's own toll tally",
+        "summary": "Gorff's treaty-mandated toll-revenue share to Salthos Cruzados has come up short for three years running; whether it's clerical error or deliberate shorting is unsettled.",
+        "touches": [
+          "toll_ledger_arrears"
+        ]
+      },
+      {
+        "id": "forliamus_betrothal_offer",
+        "source_file": "_lore/tales/forliamus_betrothal_offer.md",
+        "told_date": "2026-08-31",
+        "told_by": "the Forliamus house",
+        "summary": "The Forliamus house has proposed a fresh marriage alliance with the Salthos house this generation, distinct from the one that broke off before; unresolved whether it gets sealed.",
+        "touches": [
+          "forliamus_betrothal_offer"
+        ]
+      },
+      {
+        "id": "birth_of_nierius",
+        "source_file": "_lore/tales/birth_of_nierius.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Nierius was born, child of Niemus and Darius.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_darnus",
+        "source_file": "_lore/tales/birth_of_darnus.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Darnus was born, child of Darius and Niemus.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_darika",
+        "source_file": "_lore/tales/birth_of_darika.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Darika was born, child of Fenserika and Darius.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_niergus",
+        "source_file": "_lore/tales/birth_of_niergus.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Niergus was born, child of Magus and Nierius.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_niemius",
+        "source_file": "_lore/tales/birth_of_niemius.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Niemius was born, child of Niemus and Darius.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_darnakus",
+        "source_file": "_lore/tales/birth_of_darnakus.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Darnakus was born, child of Nakus and Darnus.",
+        "touches": []
+      },
+      {
+        "id": "death_of_darius",
+        "source_file": "_lore/tales/death_of_darius.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Darius has died.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_dorakus",
+        "source_file": "_lore/tales/birth_of_dorakus.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Dorakus was born, child of Nakus and Prince Doran.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_fenrius",
+        "source_file": "_lore/tales/birth_of_fenrius.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Fenrius was born, child of Fenserika and Nierius.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_darnukas",
+        "source_file": "_lore/tales/birth_of_darnukas.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Darnukas was born, child of Nakus and Darnus.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_niemoran",
+        "source_file": "_lore/tales/birth_of_niemoran.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Niemoran was born, child of Prince Doran and Niemius.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_niekus",
+        "source_file": "_lore/tales/birth_of_niekus.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Niekus was born, child of Nakus and Niemus.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_dornakus",
+        "source_file": "_lore/tales/birth_of_dornakus.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Dornakus was born, child of Nakus and Prince Doran.",
+        "touches": []
+      },
+      {
+        "id": "death_of_niemus",
+        "source_file": "_lore/tales/death_of_niemus.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Niemus has died.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_nieragus",
+        "source_file": "_lore/tales/birth_of_nieragus.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Nieragus was born, child of Nierius and Magus.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_nakoran",
+        "source_file": "_lore/tales/birth_of_nakoran.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Nakoran was born, child of Prince Doran and Nakus.",
+        "touches": []
+      },
+      {
+        "id": "death_of_magus",
+        "source_file": "_lore/tales/death_of_magus.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Magus has died.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_dorukus",
+        "source_file": "_lore/tales/birth_of_dorukus.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Dorukus was born, child of Nakus and Prince Doran.",
+        "touches": []
+      },
+      {
+        "id": "death_of_prince_doran",
+        "source_file": "_lore/tales/death_of_prince_doran.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Prince Doran has died.",
+        "touches": []
+      },
+      {
+        "id": "death_of_nakus",
+        "source_file": "_lore/tales/death_of_nakus.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Nakus has died.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_fenarnus",
+        "source_file": "_lore/tales/birth_of_fenarnus.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Fenarnus was born, child of Darnus and Fenserika.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_darnarika",
+        "source_file": "_lore/tales/birth_of_darnarika.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Darnarika was born, child of Darika and Darnakus.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_doraknus",
+        "source_file": "_lore/tales/birth_of_doraknus.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Doraknus was born, child of Dorakus and Darnus.",
+        "touches": []
+      },
+      {
+        "id": "death_of_niergus",
+        "source_file": "_lore/tales/death_of_niergus.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Niergus has died.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_fenriukas",
+        "source_file": "_lore/tales/birth_of_fenriukas.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Fenriukas was born, child of Dorukus and Fenrius.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_nieragan",
+        "source_file": "_lore/tales/birth_of_nieragan.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Nieragan was born, child of Niemoran and Nieragus.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_nakorika",
+        "source_file": "_lore/tales/birth_of_nakorika.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Nakorika was born, child of Nakoran and Fenserika.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_dornarika",
+        "source_file": "_lore/tales/birth_of_dornarika.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Dornarika was born, child of Dornakus and Darika.",
+        "touches": []
+      },
+      {
+        "id": "death_of_darnus",
+        "source_file": "_lore/tales/death_of_darnus.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Darnus has died.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_dornarius",
+        "source_file": "_lore/tales/birth_of_dornarius.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Dornarius was born, child of Dornakus and Fenrius.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_nieradus",
+        "source_file": "_lore/tales/birth_of_nieradus.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Nieradus was born, child of Nieragus and Dorakus.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_fenekus",
+        "source_file": "_lore/tales/birth_of_fenekus.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Fenekus was born, child of Fenserika and Niekus.",
+        "touches": []
+      },
+      {
+        "id": "death_of_dorakus",
+        "source_file": "_lore/tales/death_of_dorakus.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Dorakus has died.",
+        "touches": []
+      },
+      {
+        "id": "death_of_fenserika",
+        "source_file": "_lore/tales/death_of_fenserika.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Fenserika has died.",
+        "touches": []
+      },
+      {
+        "id": "death_of_niemius",
+        "source_file": "_lore/tales/death_of_niemius.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Niemius has died.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_darinak",
+        "source_file": "_lore/tales/birth_of_darinak.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Darinak was born, child of Darika and Darnakus.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_niemornak",
+        "source_file": "_lore/tales/birth_of_niemornak.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Niemornak was born, child of Darnakus and Niemoran.",
+        "touches": []
+      },
+      {
+        "id": "death_of_darnukas",
+        "source_file": "_lore/tales/death_of_darnukas.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Darnukas has died.",
+        "touches": []
+      },
+      {
+        "id": "death_of_darnakus",
+        "source_file": "_lore/tales/death_of_darnakus.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Darnakus has died.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_niemoruk",
+        "source_file": "_lore/tales/birth_of_niemoruk.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Niemoruk was born, child of Fenriukas and Niemornak.",
+        "touches": []
+      },
+      {
+        "id": "death_of_darika",
+        "source_file": "_lore/tales/death_of_darika.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Darika has died.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_nierakus",
+        "source_file": "_lore/tales/birth_of_nierakus.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Nierakus was born, child of Niekus and Nieragan.",
+        "touches": []
+      },
+      {
+        "id": "death_of_niemoran",
+        "source_file": "_lore/tales/death_of_niemoran.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Niemoran has died.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_dornaknis",
+        "source_file": "_lore/tales/birth_of_dornaknis.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Dornaknis was born, child of Dornakus and Doraknus.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_farmuken",
+        "source_file": "_lore/tales/birth_of_farmuken.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Farmuken was born, child of Farlo and Tamuken.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_forliazco",
+        "source_file": "_lore/tales/birth_of_forliazco.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Forliazco was born, child of Trezco and Forliamus.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_tamuzco",
+        "source_file": "_lore/tales/birth_of_tamuzco.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Tamuzco was born, child of Trezco and Tamuken.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_forliarlo",
+        "source_file": "_lore/tales/birth_of_forliarlo.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Forliarlo was born, child of Forliamus and Farlo.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_forliuken",
+        "source_file": "_lore/tales/birth_of_forliuken.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Forliuken was born, child of Tamuken and Forliazco.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_farliazco",
+        "source_file": "_lore/tales/birth_of_farliazco.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Farliazco was born, child of Forliazco and Farlo.",
+        "touches": []
+      },
+      {
+        "id": "death_of_tamuken",
+        "source_file": "_lore/tales/death_of_tamuken.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Tamuken has died.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_forliamuk",
+        "source_file": "_lore/tales/birth_of_forliamuk.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Forliamuk was born, child of Forliazco and Farmuken.",
+        "touches": []
+      },
+      {
+        "id": "death_of_forliamus",
+        "source_file": "_lore/tales/death_of_forliamus.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Forliamus has died.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_forliukar",
+        "source_file": "_lore/tales/birth_of_forliukar.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Forliukar was born, child of Forliarlo and Forliuken.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_trezarlo",
+        "source_file": "_lore/tales/birth_of_trezarlo.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Trezarlo was born, child of Farlo and Trezco.",
+        "touches": []
+      },
+      {
+        "id": "death_of_farlo",
+        "source_file": "_lore/tales/death_of_farlo.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Farlo has died.",
+        "touches": []
+      },
+      {
+        "id": "death_of_trezco",
+        "source_file": "_lore/tales/death_of_trezco.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Trezco has died.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_forliauzco",
+        "source_file": "_lore/tales/birth_of_forliauzco.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Forliauzco was born, child of Forliarlo and Tamuzco.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_farliukar",
+        "source_file": "_lore/tales/birth_of_farliukar.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Farliukar was born, child of Farliazco and Forliukar.",
+        "touches": []
+      },
+      {
+        "id": "death_of_forliuken",
+        "source_file": "_lore/tales/death_of_forliuken.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Forliuken has died.",
+        "touches": []
+      },
+      {
+        "id": "death_of_forliarlo",
+        "source_file": "_lore/tales/death_of_forliarlo.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Forliarlo has died.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_farliauzco",
+        "source_file": "_lore/tales/birth_of_farliauzco.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Farliauzco was born, child of Forliauzco and Farliazco.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_forliauken",
+        "source_file": "_lore/tales/birth_of_forliauken.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Forliauken was born, child of Forliauzco and Forliamuk.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_tamuzaken",
+        "source_file": "_lore/tales/birth_of_tamuzaken.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Tamuzaken was born, child of Tamuzco and Forliamuk.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_trezukar",
+        "source_file": "_lore/tales/birth_of_trezukar.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Trezukar was born, child of Trezarlo and Forliukar.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_forliuzazco",
+        "source_file": "_lore/tales/birth_of_forliuzazco.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Forliuzazco was born, child of Forliauzco and Farliazco.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_tamuzarlo",
+        "source_file": "_lore/tales/birth_of_tamuzarlo.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Tamuzarlo was born, child of Tamuzco and Farliukar.",
+        "touches": []
+      },
+      {
+        "id": "death_of_trezarlo",
+        "source_file": "_lore/tales/death_of_trezarlo.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Trezarlo has died.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_forliaukar",
+        "source_file": "_lore/tales/birth_of_forliaukar.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Forliaukar was born, child of Forliauken and Trezukar.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_farliuzco",
+        "source_file": "_lore/tales/birth_of_farliuzco.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Farliuzco was born, child of Tamuzco and Farliazco.",
+        "touches": []
+      },
+      {
+        "id": "death_of_forliazco",
+        "source_file": "_lore/tales/death_of_forliazco.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Forliazco has died.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_tamuzmuken",
+        "source_file": "_lore/tales/birth_of_tamuzmuken.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Tamuzmuken was born, child of Forliamuk and Tamuzco.",
+        "touches": []
+      },
+      {
+        "id": "death_of_forliamuk",
+        "source_file": "_lore/tales/death_of_forliamuk.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Forliamuk has died.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_trezukuzco",
+        "source_file": "_lore/tales/birth_of_trezukuzco.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Trezukuzco was born, child of Tamuzco and Trezukar.",
+        "touches": []
+      },
+      {
+        "id": "death_of_tamuzco",
+        "source_file": "_lore/tales/death_of_tamuzco.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Tamuzco has died.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_tamuzukar",
+        "source_file": "_lore/tales/birth_of_tamuzukar.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Tamuzukar was born, child of Tamuzaken and Farliukar.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_farliauzar",
+        "source_file": "_lore/tales/birth_of_farliauzar.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Farliauzar was born, child of Tamuzarlo and Farliauzco.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_tamuzakar",
+        "source_file": "_lore/tales/birth_of_tamuzakar.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Tamuzakar was born, child of Trezukar and Tamuzaken.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_farliazuzco",
+        "source_file": "_lore/tales/birth_of_farliazuzco.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Farliazuzco was born, child of Forliauzco and Farliazco.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_forliaukarla",
+        "source_file": "_lore/tales/birth_of_forliaukarla.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Forliaukarla was born, child of Forliauken and Farliukar.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_trezukaken",
+        "source_file": "_lore/tales/birth_of_trezukaken.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Trezukaken was born, child of Trezukar and Tamuzaken.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_forliaukarli",
+        "source_file": "_lore/tales/birth_of_forliaukarli.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Forliaukarli was born, child of Forliauzco and Farliukar.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_tamuzauzco",
+        "source_file": "_lore/tales/birth_of_tamuzauzco.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Tamuzauzco was born, child of Tamuzarlo and Farliauzco.",
+        "touches": []
+      },
+      {
+        "id": "death_of_farliazco",
+        "source_file": "_lore/tales/death_of_farliazco.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Farliazco has died.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_tamuzukauk",
+        "source_file": "_lore/tales/birth_of_tamuzukauk.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Tamuzukauk was born, child of Tamuzukar and Forliauken.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_aureluko",
+        "source_file": "_lore/tales/birth_of_aureluko.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Aureluko was born, child of Merluko and Aurebalo.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_mekoboro",
+        "source_file": "_lore/tales/birth_of_mekoboro.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Mekoboro was born, child of Auroboro and Mekestros.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_khaubalo",
+        "source_file": "_lore/tales/birth_of_khaubalo.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Khaubalo was born, child of Aurebalo and Khaus.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_aureboro",
+        "source_file": "_lore/tales/birth_of_aureboro.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Aureboro was born, child of Auroboro and Aurebalo.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_mekaluko",
+        "source_file": "_lore/tales/birth_of_mekaluko.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Mekaluko was born, child of Mekestros and Aureluko.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_khaoboro",
+        "source_file": "_lore/tales/birth_of_khaoboro.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Khaoboro was born, child of Khaus and Mekoboro.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_khaubestro",
+        "source_file": "_lore/tales/birth_of_khaubestro.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Khaubestro was born, child of Khaubalo and Mekestros.",
+        "touches": []
+      },
+      {
+        "id": "death_of_khaus",
+        "source_file": "_lore/tales/death_of_khaus.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Khaus has died.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_aurebako",
+        "source_file": "_lore/tales/birth_of_aurebako.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Aurebako was born, child of Aurebalo and Merluko.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_aurekobo",
+        "source_file": "_lore/tales/birth_of_aurekobo.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Aurekobo was born, child of Aurebalo and Mekoboro.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_khaumestro",
+        "source_file": "_lore/tales/birth_of_khaumestro.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Khaumestro was born, child of Mekestros and Khaubalo.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_mekhaubo",
+        "source_file": "_lore/tales/birth_of_mekhaubo.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Mekhaubo was born, child of Mekestros and Khaubalo.",
+        "touches": []
+      },
+      {
+        "id": "death_of_mekestros",
+        "source_file": "_lore/tales/death_of_mekestros.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Mekestros has died.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_aurekhobo",
+        "source_file": "_lore/tales/birth_of_aurekhobo.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Aurekhobo was born, child of Aurebalo and Khaoboro.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_merkhaubo",
+        "source_file": "_lore/tales/birth_of_merkhaubo.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Merkhaubo was born, child of Khaubalo and Merluko.",
+        "touches": []
+      },
+      {
+        "id": "death_of_auroboro",
+        "source_file": "_lore/tales/death_of_auroboro.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Auroboro has died.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_khaubaluk",
+        "source_file": "_lore/tales/birth_of_khaubaluk.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Khaubaluk was born, child of Merluko and Khaubalo.",
+        "touches": []
+      },
+      {
+        "id": "death_of_aurebalo",
+        "source_file": "_lore/tales/death_of_aurebalo.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Aurebalo has died.",
+        "touches": []
+      },
+      {
+        "id": "death_of_merluko",
+        "source_file": "_lore/tales/death_of_merluko.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Merluko has died.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_mekhaurel",
+        "source_file": "_lore/tales/birth_of_mekhaurel.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Mekhaurel was born, child of Aureluko and Mekhaubo.",
+        "touches": []
+      },
+      {
+        "id": "death_of_mekaluko",
+        "source_file": "_lore/tales/death_of_mekaluko.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Mekaluko has died.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_khaobako",
+        "source_file": "_lore/tales/birth_of_khaobako.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Khaobako was born, child of Aurebako and Khaoboro.",
+        "touches": []
+      },
+      {
+        "id": "death_of_khaubalo",
+        "source_file": "_lore/tales/death_of_khaubalo.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Khaubalo has died.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_aurelkhau",
+        "source_file": "_lore/tales/birth_of_aurelkhau.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Aurelkhau was born, child of Khaubestro and Aureluko.",
+        "touches": []
+      },
+      {
+        "id": "death_of_khaoboro",
+        "source_file": "_lore/tales/death_of_khaoboro.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Khaoboro has died.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_mekobaluk",
+        "source_file": "_lore/tales/birth_of_mekobaluk.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Mekobaluk was born, child of Mekoboro and Khaubaluk.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_aurekomest",
+        "source_file": "_lore/tales/birth_of_aurekomest.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Aurekomest was born, child of Khaumestro and Aurekobo.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_mekaurelo",
+        "source_file": "_lore/tales/birth_of_mekaurelo.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Mekaurelo was born, child of Aureluko and Mekhaubo.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_mekhaubest",
+        "source_file": "_lore/tales/birth_of_mekhaubest.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Mekhaubest was born, child of Khaubestro and Mekhaurel.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_mekhaobako",
+        "source_file": "_lore/tales/birth_of_mekhaobako.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Mekhaobako was born, child of Mekhaurel and Khaobako.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_aurelkomest",
+        "source_file": "_lore/tales/birth_of_aurelkomest.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Aurelkomest was born, child of Aurekomest and Aurelkhau.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_khaubomest",
+        "source_file": "_lore/tales/birth_of_khaubomest.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Khaubomest was born, child of Khaubaluk and Aurekomest.",
+        "touches": []
+      },
+      {
+        "id": "death_of_aureboro",
+        "source_file": "_lore/tales/death_of_aureboro.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Aureboro has died.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_aureskomest",
+        "source_file": "_lore/tales/birth_of_aureskomest.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Aureskomest was born, child of Aurekomest and Aurelkhau.",
+        "touches": []
+      },
+      {
+        "id": "death_of_mekoboro",
+        "source_file": "_lore/tales/death_of_mekoboro.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Mekoboro has died.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_khaubekho",
+        "source_file": "_lore/tales/birth_of_khaubekho.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Khaubekho was born, child of Khaubaluk and Aurekhobo.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_mekhaobera",
+        "source_file": "_lore/tales/birth_of_mekhaobera.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Mekhaobera was born, child of Khaobako and Mekhaurel.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_mekaurelu",
+        "source_file": "_lore/tales/birth_of_mekaurelu.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Mekaurelu was born, child of Mekhaubo and Aureluko.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_mekaurobal",
+        "source_file": "_lore/tales/birth_of_mekaurobal.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Mekaurobal was born, child of Mekobaluk and Mekaurelo.",
+        "touches": []
+      },
+      {
+        "id": "death_of_khaubestro",
+        "source_file": "_lore/tales/death_of_khaubestro.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Khaubestro has died.",
+        "touches": []
+      },
+      {
+        "id": "birth_of_khaubomako",
+        "source_file": "_lore/tales/birth_of_khaubomako.md",
+        "told_date": "2026-08-31",
+        "told_by": null,
+        "summary": "Khaubomako was born, child of Khaubaluk and Mekhaobako.",
+        "touches": []
+      }
+    ]
+  }
+}

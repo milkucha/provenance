@@ -1,0 +1,265 @@
+{
+  "name": "Mekoboro",
+  "origin": "Gorff",
+  "location": "Gorff",
+  "backstory": "Child of Auroboro and Mekestros; grew up around drives a caravan up and down the transit... in Gorff, and knows something of Birth Of Niemornak.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "tollhouse, gorff",
+      "items": [
+        "tale: birth_of_niergus",
+        "tale: birth_of_niemius",
+        "concept: toll_ledger_arrears",
+        "tale: gorff_ledger_crossing_war",
+        "concept: crossing_toll_dispute",
+        "tale: gorff",
+        "location: gorff",
+        "tale: forliamus_log_crossing_war",
+        "location: salthos_cruzados",
+        "tale: forliamus_betrothal_offer",
+        "tale: birth_of_darika",
+        "concept: salthos_mediator_line",
+        "tale: toll_ledger_arrears",
+        "concept: crossing_market_roof",
+        "conflict: CONFLICT-03",
+        "tale: salthos_cruzados",
+        "conflict: CONFLICT-02",
+        "tale: birth_of_dorakus",
+        "conflict: CONFLICT-01",
+        "location: terfila",
+        "tale: birth_of_darnukas",
+        "tale: death_of_dorakus",
+        "tale: birth_of_nieradus",
+        "tale: death_of_niemius",
+        "tale: birth_of_niemornak"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Learned that Niemus has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 27
+        }
+      },
+      {
+        "text": "Heard that Auroboro and Aurebalo now have a child, Aureboro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 53
+        }
+      },
+      {
+        "text": "Heard that Mekestros and Aureluko now have a child, Mekaluko.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 57
+        }
+      },
+      {
+        "text": "Had a child with Khaus, named Khaoboro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 60
+        }
+      },
+      {
+        "text": "Heard that Khaubalo and Mekestros now have a child, Khaubestro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 67
+        }
+      },
+      "Learned that Khaus has died.",
+      {
+        "text": "Heard that Aurebalo and Merluko now have a child, Aurebako.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 87
+        }
+      },
+      {
+        "text": "Had a child with Aurebalo, named Aurekobo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 97
+        }
+      },
+      {
+        "text": "Heard that Mekestros and Khaubalo now have a child, Khaumestro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 99
+        }
+      },
+      {
+        "text": "Heard that Mekestros and Khaubalo now have a child, Mekhaubo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 129
+        }
+      },
+      "Learned that Mekestros has died.",
+      {
+        "text": "Heard that Aurebalo and Khaoboro now have a child, Aurekhobo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 150
+        }
+      },
+      {
+        "text": "Heard that Khaubalo and Merluko now have a child, Merkhaubo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 162
+        }
+      },
+      "Learned that Auroboro has died.",
+      {
+        "text": "Heard that Merluko and Khaubalo now have a child, Khaubaluk.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 196
+        }
+      },
+      "Learned that Aurebalo has died.",
+      "Learned that Merluko has died.",
+      {
+        "text": "Heard that Aureluko and Mekhaubo now have a child, Mekhaurel.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 240
+        }
+      },
+      "Learned that Mekaluko has died.",
+      {
+        "text": "Heard that Aurebako and Khaoboro now have a child, Khaobako.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 279
+        }
+      },
+      {
+        "text": "Heard that Khaubestro and Aureluko now have a child, Aurelkhau.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 289
+        }
+      },
+      "Learned that Khaoboro has died.",
+      {
+        "text": "Had a child with Khaubaluk, named Mekobaluk.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 309
+        }
+      },
+      {
+        "text": "Heard that Khaumestro and Aurekobo now have a child, Aurekomest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 310
+        }
+      },
+      {
+        "text": "Heard that Aureluko and Mekhaubo now have a child, Mekaurelo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 315
+        }
+      },
+      {
+        "text": "Heard that Khaubestro and Mekhaurel now have a child, Mekhaubest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 319
+        }
+      },
+      "Learned that Khaumestro has died.",
+      {
+        "text": "Heard that Khaubaluk and Aurekomest now have a child, Khaubomest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 401
+        }
+      },
+      "Learned that Aureboro has died."
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only by making Salthos Mediator Line their own concern",
+    "wasted_life": "treating Salthos Mediator Line as someone else's concern",
+    "anchor": "concept: salthos_mediator_line",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 57,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "context": "transit_route",
+      "location": "Gorff",
+      "routine_actions": "walks the tollhouse's stretch some mornings at her mother's insistence, listens more than she corrects, still working out which parts of that night's story are worth repeating",
+      "weight": 50.0
+    },
+    {
+      "context": "transit_route",
+      "location": "Gorff",
+      "routine_actions": "walks the tollhouse's stretch some mornings at her mother's insistence, listens more than she corrects, still working out which parts of that night's story are worth repeating",
+      "weight": 50.0
+    }
+  ],
+  "parents": [
+    "auroboro",
+    "mekestros"
+  ],
+  "partners": {
+    "aurebalo": 5,
+    "merluko": 4,
+    "khaus": 7,
+    "mekestros": 3,
+    "auroboro": 4,
+    "aureluko": 3,
+    "khaubalo": 1,
+    "aureboro": 3,
+    "mekaluko": 3,
+    "khaoboro": 2,
+    "khaubestro": 5,
+    "aurebako": 1,
+    "aurekobo": 1,
+    "khaumestro": 2,
+    "mekhaubo": 1,
+    "aurekhobo": 2,
+    "merkhaubo": 3,
+    "khaubaluk": 5,
+    "mekhaurel": 1,
+    "aurelkhau": 1,
+    "mekobaluk": 1
+  },
+  "partners_quality": {
+    "aurebalo": 1
+  },
+  "birth_pass": 27,
+  "energy": 20,
+  "last_reproduced_pass": 309,
+  "arc": {
+    "about": [
+      "concept: salthos_mediator_line"
+    ],
+    "needs": [
+      "contacts"
+    ],
+    "context": "transit_route",
+    "premise": "Mekoboro wants to find out, by asking the travelers and drivers who actually pass the tollhouse each week, whether the Salthos house was ever really chosen to mediate the crossing or simply never left the ground it stood on - the question her own criterion won't let her set down.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

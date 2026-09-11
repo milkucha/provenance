@@ -1,0 +1,192 @@
+{
+  "name": "Niekus",
+  "origin": "Salthos Cruzados",
+  "location": "Salthos Cruzados",
+  "backstory": "Child of Nakus and Niemus; raised in Salthos Cruzados on walks the transit route's Salthos stretch at dawn..., and carries some knowledge of Birth Of Nierius.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "tollhouse, crossing",
+      "items": [
+        "tale: forliamus_log_crossing_war",
+        "conflict: CONFLICT-03",
+        "concept: toll_ledger_arrears",
+        "tale: crossing_market_roof",
+        "location: salthos_cruzados",
+        "concept: crossing_toll_dispute",
+        "concept: forliamus_betrothal_offer",
+        "concept: temple_of_the_crossing",
+        "conflict: CONFLICT-01",
+        "tale: gorff",
+        "location: gorff",
+        "conflict: CONFLICT-02",
+        "tale: gorff_ledger_crossing_war",
+        "tale: toll_ledger_arrears",
+        "concept: crossing_market_roof",
+        "tale: terfila",
+        "tale: birth_of_niemoran",
+        "tale: death_of_darius",
+        "tale: birth_of_nierius"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Heard that Nakus and Darnus now have a child, Darnukas.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 120
+        }
+      },
+      {
+        "text": "Grew up hearing: Had a child with Darius, named Darnus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 120
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Fenserika and Darius now have a child, Darika.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 120
+        }
+      },
+      {
+        "text": "Heard that Nakus and Prince Doran now have a child, Dornakus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 131
+        }
+      },
+      "Learned that Niemus has died.",
+      {
+        "text": "Heard that Prince Doran and Nakus now have a child, Nakoran.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 144
+        }
+      },
+      {
+        "text": "Heard that Nakus and Prince Doran now have a child, Dorukus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 189
+        }
+      },
+      "Learned that Nakus has died.",
+      {
+        "text": "Heard that Darika and Darnakus now have a child, Darnarika.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 281
+        }
+      },
+      {
+        "text": "Heard that Nieragus and Dorakus now have a child, Nieradus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 367
+        }
+      },
+      {
+        "text": "Had a child with Fenserika, named Fenekus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 384
+        }
+      },
+      {
+        "text": "Heard that Darika and Darnakus now have a child, Darinak.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 397
+        }
+      },
+      {
+        "text": "Heard that Darnakus and Niemoran now have a child, Niemornak.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 426
+        }
+      },
+      "Learned that Darnakus has died.",
+      {
+        "text": "Had a child with Nieragan, named Nierakus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 489
+        }
+      },
+      {
+        "text": "Heard that Dornakus and Doraknus now have a child, Dornaknis.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 495
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only by making Forliamus Log Crossing War their own concern",
+    "wasted_life": "treating Forliamus Log Crossing War as someone else's concern",
+    "anchor": "tale: forliamus_log_crossing_war",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 36,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "transit_route",
+      "location": "Salthos Cruzados",
+      "routine_actions": "picks up his father's watch along the Salthos stretch at dawn, waves familiar faces through without a second look, and is starting to spot the ones worth a second look",
+      "weight": 100.0
+    }
+  ],
+  "parents": [
+    "nakus",
+    "niemus"
+  ],
+  "partners": {
+    "fenserika": 3,
+    "nakus": 2,
+    "nierius": 3,
+    "darnus": 2,
+    "niergus": 1,
+    "darnakus": 7,
+    "dorakus": 1,
+    "fenrius": 2,
+    "dornakus": 3,
+    "nieragus": 3,
+    "nakoran": 1,
+    "fenarnus": 2,
+    "darnarika": 2,
+    "nieragan": 3,
+    "dornarius": 1,
+    "darinak": 1,
+    "niemornak": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 120,
+  "energy": 20,
+  "last_reproduced_pass": 489,
+  "arc": {
+    "about": [
+      "concept: toll_ledger_arrears"
+    ],
+    "needs": [
+      "trade"
+    ],
+    "context": "transit_route",
+    "premise": "Niekus has stopped keeping a private tally against the house's own count, and started building an actual lockbox and ledger stand at his post - a fixed place every toll gets recorded the moment it's paid, so there's nothing left to reconstruct after the fact.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

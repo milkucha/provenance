@@ -1,0 +1,131 @@
+{
+  "name": "Mekaurobal",
+  "origin": "Gorff",
+  "location": "Gorff",
+  "backstory": "Child of Mekobaluk and Mekaurelo; raised in Gorff on takes stonework commissions at the market each morning,..., and carries some knowledge of Death Of Darnus 2.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "tollhouse, gorff",
+      "items": [
+        "tale: birth_of_nakorika",
+        "tale: forliamus_betrothal_offer",
+        "tale: birth_of_fenriukas",
+        "tale: birth_of_darika",
+        "conflict: CONFLICT-01",
+        "tale: death_of_darius",
+        "location: terfila",
+        "tale: toll_ledger_arrears",
+        "tale: death_of_niemius",
+        "tale: forliamus_log_crossing_war",
+        "tale: birth_of_farmuken",
+        "tale: birth_of_tamuzarlo",
+        "concept: salthos_mediator_line",
+        "tale: death_of_darnukas",
+        "tale: birth_of_darnukas",
+        "conflict: CONFLICT-02",
+        "tale: birth_of_darinak",
+        "tale: birth_of_trezarlo",
+        "concept: crossing_market_roof",
+        "concept: toll_ledger_arrears",
+        "concept: forliamus_betrothal_offer",
+        "tale: birth_of_dorakus",
+        "tale: birth_of_darnus",
+        "tale: terfila",
+        "tale: salthos_cruzados",
+        "tale: birth_of_niekus",
+        "location: gorff",
+        "tale: birth_of_mekhaubo",
+        "tale: birth_of_dorukus",
+        "tale: death_of_mekoboro",
+        "tale: birth_of_tamuzakar",
+        "tale: birth_of_nierius",
+        "tale: birth_of_niemoran",
+        "tale: death_of_niergus",
+        "tale: death_of_khaoboro"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Grew up hearing: Learned that Merluko has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 460
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Learned that Mekaluko has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 460
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Learned that Aurebalo has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 460
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Grew up hearing: Learned that Auroboro has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 460
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only by making Death Of Niemius their own concern",
+    "wasted_life": "treating Death Of Niemius as someone else's concern",
+    "anchor": "tale: death_of_niemius",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 4,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Gorff",
+      "routine_actions": "takes stonework commissions at the market each morning, still building her own name apart from either side of the family",
+      "weight": 100.0
+    }
+  ],
+  "parents": [
+    "mekobaluk",
+    "mekaurelo"
+  ],
+  "partners": {
+    "aureluko": 1,
+    "mekhaubo": 1,
+    "mekhaurel": 1,
+    "mekhaobako": 1,
+    "aurelkomest": 1,
+    "khaubomest": 1,
+    "mekaurelu": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 460,
+  "energy": 20,
+  "arc": {
+    "about": [
+      "concept: crossing_market_roof"
+    ],
+    "needs": [
+      "materials"
+    ],
+    "context": "market",
+    "premise": "As the newest generation at the market stall, Mekaurobal wants to be the one who finally gets the roof raised - lining up her own first material pledges before she's even fully out from under her parents' names.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

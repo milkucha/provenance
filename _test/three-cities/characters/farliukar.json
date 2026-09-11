@@ -1,0 +1,239 @@
+{
+  "name": "Farliukar",
+  "origin": "Terfila",
+  "location": "Terfila",
+  "backstory": "Child of Farliazco and Forliukar, in Terfila; grew up around unloads crates at the market stalls through the..., and picked up a little of Birth Of Forliarlo along the way.",
+  "knowledge": {
+    "education": {
+      "percent": 50,
+      "mode": "skewed",
+      "topic": "tollhouse",
+      "items": [
+        "tale: terfila",
+        "tale: death_of_darius",
+        "tale: birth_of_dorakus",
+        "tale: forliamus_betrothal_offer",
+        "conflict: CONFLICT-03",
+        "tale: crossing_market_roof",
+        "tale: death_of_darnukas",
+        "concept: salthos_mediator_line",
+        "tale: forliamus_log_crossing_war",
+        "conflict: CONFLICT-02",
+        "location: gorff",
+        "tale: birth_of_fenarnus",
+        "conflict: CONFLICT-01",
+        "concept: crossing_toll_dispute",
+        "tale: gorff",
+        "tale: birth_of_farmuken",
+        "location: terfila",
+        "tale: birth_of_darinak",
+        "tale: birth_of_niergus",
+        "concept: forliamus_betrothal_offer",
+        "tale: gorff_ledger_crossing_war",
+        "tale: birth_of_forliarlo",
+        "tale: birth_of_niemius",
+        "tale: birth_of_khaubestro",
+        "tale: birth_of_khaumestro",
+        "tale: death_of_darika"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Grew up hearing: Heard that Trezco and Tamuken now have a child, Tamuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 176
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Had a child with Tamuken, named Forliuken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 176
+        }
+      },
+      {
+        "text": "Heard that Forliauzco and Farliazco now have a child, Farliauzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 205
+        }
+      },
+      {
+        "text": "Heard that Tamuzco and Forliamuk now have a child, Tamuzaken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 233
+        }
+      },
+      {
+        "text": "Heard that Trezarlo and Forliukar now have a child, Trezukar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 235
+        }
+      },
+      "Learned that Forliukar has died.",
+      {
+        "text": "Heard that Forliauzco and Farliazco now have a child, Forliuzazco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 254
+        }
+      },
+      {
+        "text": "Had a child with Tamuzco, named Tamuzarlo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 257
+        }
+      },
+      "Learned that Trezarlo has died.",
+      {
+        "text": "Heard that Tamuzco and Farliazco now have a child, Farliuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 306
+        }
+      },
+      {
+        "text": "Heard that Forliamuk and Tamuzco now have a child, Tamuzmuken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 346
+        }
+      },
+      {
+        "text": "Heard that Tamuzco and Trezukar now have a child, Trezukuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 364
+        }
+      },
+      "Learned that Tamuzco has died.",
+      {
+        "text": "Had a child with Tamuzaken, named Tamuzukar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 366
+        }
+      },
+      {
+        "text": "Heard that Tamuzarlo and Farliauzco now have a child, Farliauzar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 369
+        }
+      },
+      {
+        "text": "Heard that Trezukar and Tamuzaken now have a child, Tamuzakar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 382
+        }
+      },
+      {
+        "text": "Heard that Forliauzco and Farliazco now have a child, Farliazuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 388
+        }
+      },
+      {
+        "text": "Had a child with Forliauken, named Forliaukarla.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 389
+        }
+      },
+      {
+        "text": "Heard that Trezukar and Tamuzaken now have a child, Trezukaken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 393
+        }
+      },
+      {
+        "text": "Had a child with Forliauzco, named Forliaukarli.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 405
+        }
+      },
+      {
+        "text": "Heard that Tamuzarlo and Farliauzco now have a child, Tamuzauzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 428
+        }
+      },
+      "Learned that Farliauzco has died."
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts it worthwhile only by paying real attention to Terfila",
+    "wasted_life": "letting Terfila slip past unexamined, the way it's easiest to",
+    "anchor": "location: terfila",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 52,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "takes his turn unloading crates through the morning tide, bartering gossip for a cut rate at the tavern, and letting the tollhouse story drift a little further from however it started.",
+      "weight": 100.0
+    }
+  ],
+  "parents": [
+    "farliazco",
+    "forliukar"
+  ],
+  "partners": {
+    "forliazco": 1,
+    "tamuzco": 5,
+    "forliarlo": 1,
+    "farliazco": 4,
+    "forliamuk": 2,
+    "forliukar": 3,
+    "trezarlo": 7,
+    "forliauzco": 3,
+    "farliauzco": 4,
+    "forliauken": 3,
+    "tamuzaken": 5,
+    "trezukar": 2,
+    "forliuzazco": 1,
+    "tamuzarlo": 4,
+    "forliaukar": 2,
+    "farliuzco": 1,
+    "trezukuzco": 1,
+    "tamuzukar": 2,
+    "farliauzar": 1,
+    "farliazuzco": 1,
+    "forliaukarla": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 176,
+  "energy": 20,
+  "last_reproduced_pass": 405,
+  "arc": {
+    "about": [
+      "concept: terfila_well_repair"
+    ],
+    "needs": [
+      "materials"
+    ],
+    "context": "market",
+    "premise": "Farliukar has noticed the stall-side well running low again and wants it actually dug deeper or replaced before the summer trade season, not just complained about at the market the way it has been for years.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

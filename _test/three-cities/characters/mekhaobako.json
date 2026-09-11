@@ -1,0 +1,154 @@
+{
+  "name": "Mekhaobako",
+  "origin": "Gorff",
+  "location": "Gorff",
+  "backstory": "Child of Mekhaurel and Khaobako, in Gorff; grew up around takes stonework commissions at the market each morning,..., and picked up a little of CONFLICT-03 along the way.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "tollhouse, gorff",
+      "items": [
+        "tale: birth_of_niergus",
+        "tale: birth_of_doraknus",
+        "tale: death_of_nakus",
+        "tale: birth_of_fenriukas",
+        "tale: birth_of_mekoboro",
+        "tale: death_of_darius",
+        "tale: birth_of_niekus",
+        "tale: gorff_ledger_crossing_war",
+        "tale: salthos_cruzados",
+        "concept: salthos_mediator_line",
+        "tale: death_of_fenserika",
+        "conflict: CONFLICT-01",
+        "tale: birth_of_nakorika",
+        "concept: toll_ledger_arrears",
+        "tale: birth_of_niemoruk",
+        "tale: birth_of_trezarlo",
+        "tale: crossing_market_roof",
+        "tale: birth_of_nieragus",
+        "tale: birth_of_darnakus",
+        "tale: birth_of_nieragan",
+        "tale: birth_of_darika",
+        "location: gorff",
+        "tale: terfila",
+        "concept: forliamus_betrothal_offer",
+        "tale: death_of_dorakus",
+        "tale: birth_of_dornakus",
+        "tale: birth_of_nieradus",
+        "tale: birth_of_darinak",
+        "tale: birth_of_khaubestro",
+        "location: terfila",
+        "tale: birth_of_nakoran",
+        "tale: birth_of_khaumestro",
+        "tale: birth_of_darnus",
+        "tale: death_of_darnus",
+        "tale: toll_ledger_arrears",
+        "tale: birth_of_niemius",
+        "tale: forliamus_betrothal_offer",
+        "tale: birth_of_merkhaubo",
+        "tale: birth_of_mekaluko",
+        "concept: temple_of_the_crossing",
+        "tale: birth_of_darnarika",
+        "tale: forliamus_log_crossing_war",
+        "conflict: CONFLICT-03",
+        "tale: death_of_khaus",
+        "conflict: CONFLICT-02",
+        "tale: gorff",
+        "tale: death_of_niemius",
+        "tale: death_of_magus",
+        "location: salthos_cruzados",
+        "tale: birth_of_forliukar"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Grew up hearing: Heard that Khaubalo and Mekestros now have a child, Khaubestro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 334
+        }
+      },
+      {
+        "text": "Grew up hearing: Learned that Khaoboro has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 334
+        }
+      },
+      {
+        "text": "Heard that Khaobako and Mekhaurel now have a child, Mekhaobera.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 435
+        }
+      },
+      {
+        "text": "Had a child with Khaubaluk, named Khaubomako.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 476
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only if it stayed close to Birth Of Niergus",
+    "wasted_life": "a life spent never once engaging with Birth Of Niergus",
+    "anchor": "tale: birth_of_niergus",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 18,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Gorff",
+      "routine_actions": "takes stonework commissions at the market each morning, has started undercutting the older sellers just to build a name for herself",
+      "weight": 100.0
+    }
+  ],
+  "parents": [
+    "mekhaurel",
+    "khaobako"
+  ],
+  "partners": {
+    "khaubestro": 2,
+    "aurebako": 1,
+    "aurekobo": 2,
+    "khaumestro": 1,
+    "mekhaubo": 1,
+    "aurekhobo": 1,
+    "khaubaluk": 3,
+    "khaobako": 3,
+    "mekobaluk": 2,
+    "aurekomest": 1,
+    "mekaurelo": 1,
+    "khaubomest": 1,
+    "khaubekho": 1,
+    "mekaurobal": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 334,
+  "energy": 20,
+  "last_reproduced_pass": 476,
+  "arc": {
+    "about": [
+      "concept: crossing_market_roof"
+    ],
+    "needs": [
+      "materials"
+    ],
+    "context": "market",
+    "premise": "Mekhaobako wants the roof finally raised before another rainy season ruins someone's goods on her own stall row, and has started underbidding the older sellers just to get noticed enough that people listen when she pushes for it.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

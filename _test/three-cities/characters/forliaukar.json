@@ -1,0 +1,175 @@
+{
+  "name": "Forliaukar",
+  "origin": "Terfila",
+  "location": "Terfila",
+  "backstory": "Child of Forliauken and Trezukar; grew up around settles the house's accounts at the market stalls... in Terfila, and knows something of Gorff.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "tollhouse, forliamus",
+      "items": [
+        "tale: birth_of_niemoruk",
+        "tale: terfila",
+        "conflict: CONFLICT-01",
+        "location: salthos_cruzados",
+        "tale: birth_of_niekus",
+        "tale: death_of_niemius",
+        "tale: death_of_darnus",
+        "tale: birth_of_darinak",
+        "tale: forliamus_betrothal_offer",
+        "tale: birth_of_darnakus",
+        "tale: salthos_cruzados",
+        "concept: forliamus_betrothal_offer",
+        "tale: gorff_ledger_crossing_war",
+        "conflict: CONFLICT-03",
+        "tale: birth_of_niemoran",
+        "conflict: CONFLICT-02",
+        "tale: birth_of_merkhaubo",
+        "tale: birth_of_mekaluko",
+        "tale: birth_of_forliarlo",
+        "concept: temple_of_the_crossing",
+        "tale: death_of_darius",
+        "tale: birth_of_khaoboro",
+        "tale: birth_of_dornarius",
+        "tale: birth_of_darika",
+        "tale: birth_of_darnus",
+        "tale: death_of_farlo",
+        "concept: toll_ledger_arrears",
+        "tale: birth_of_nieradus",
+        "tale: birth_of_tamuzarlo",
+        "tale: birth_of_tamuzco",
+        "tale: birth_of_fenrius",
+        "tale: birth_of_farmuken",
+        "tale: death_of_darnakus",
+        "location: gorff",
+        "tale: death_of_magus",
+        "tale: birth_of_trezarlo"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Grew up hearing: Learned that Farlo has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 289
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Forliauzco and Farliazco now have a child, Forliuzazco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 289
+        }
+      },
+      {
+        "text": "Heard that Tamuzco and Trezukar now have a child, Trezukuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 364
+        }
+      },
+      {
+        "text": "Heard that Trezukar and Tamuzaken now have a child, Tamuzakar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 382
+        }
+      },
+      {
+        "text": "Heard that Forliauken and Farliukar now have a child, Forliaukarla.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 389
+        }
+      },
+      {
+        "text": "Heard that Trezukar and Tamuzaken now have a child, Trezukaken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 393
+        }
+      },
+      "Learned that Trezukar has died.",
+      {
+        "text": "Heard that Tamuzukar and Forliauken now have a child, Tamuzukauk.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 495
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts it worthwhile only by paying real attention to Birth Of Darnakus 2",
+    "wasted_life": "letting Birth Of Darnakus 2 slip past unexamined, the way it's easiest to",
+    "anchor": "tale: birth_of_khaoboro",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 21,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "makes the walk between Terfila and the crossing when there's nothing better to do at the docks, and lingers by the temple a beat longer than the walk requires.",
+      "weight": 33.33
+    },
+    {
+      "context": "transit_route",
+      "location": "Terfila",
+      "routine_actions": "makes the walk between Terfila and the crossing when there's nothing better to do at the docks, and lingers by the temple a beat longer than the walk requires.",
+      "weight": 33.33
+    },
+    {
+      "context": "transit_route",
+      "location": "Terfila",
+      "routine_actions": "makes the walk between Terfila and the crossing when there's nothing better to do at the docks, and lingers by the temple a beat longer than the walk requires.",
+      "weight": 33.33
+    }
+  ],
+  "parents": [
+    "forliauken",
+    "trezukar"
+  ],
+  "partners": {
+    "farliazco": 1,
+    "forliukar": 1,
+    "forliauzco": 2,
+    "farliukar": 2,
+    "farliauzco": 2,
+    "forliauken": 1,
+    "tamuzaken": 1,
+    "trezukar": 1,
+    "forliuzazco": 2,
+    "tamuzarlo": 1,
+    "farliuzco": 3,
+    "tamuzmuken": 1,
+    "trezukuzco": 1,
+    "farliauzar": 2,
+    "tamuzakar": 1,
+    "trezukaken": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 289,
+  "energy": 20,
+  "arc": {
+    "about": [
+      "tale: birth_of_khaoboro"
+    ],
+    "needs": [
+      "goods"
+    ],
+    "context": "market",
+    "premise": "Forliaukar has stopped waiting on the accounting to be updated and started commissioning a small carved token for the birth himself - something the family can actually hold, not just a line added to a ledger.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

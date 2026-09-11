@@ -1,0 +1,178 @@
+{
+  "name": "Khaubalo",
+  "origin": "Gorff",
+  "location": "Gorff",
+  "backstory": "Child of Aurebalo and Khaus; raised in Gorff on takes stonework commissions at the market each morning,..., and carries some knowledge of Birth Of Nakorika.",
+  "knowledge": {
+    "education": {
+      "percent": 50,
+      "mode": "skewed",
+      "topic": "salthos",
+      "items": [
+        "tale: toll_ledger_arrears",
+        "concept: toll_ledger_arrears",
+        "conflict: CONFLICT-03",
+        "location: salthos_cruzados",
+        "concept: crossing_toll_dispute",
+        "tale: salthos_cruzados",
+        "tale: forliamus_betrothal_offer",
+        "tale: gorff",
+        "tale: crossing_market_roof",
+        "tale: death_of_fenserika",
+        "tale: birth_of_nakorika",
+        "concept: salthos_mediator_line"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Heard that Auroboro and Aurebalo now have a child, Aureboro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 53
+        }
+      },
+      {
+        "text": "Heard that Khaus and Mekoboro now have a child, Khaoboro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 60
+        }
+      },
+      {
+        "text": "Had a child with Mekestros, named Khaubestro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 67
+        }
+      },
+      "Learned that Khaus has died.",
+      {
+        "text": "Heard that Aurebalo and Merluko now have a child, Aurebako.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 87
+        }
+      },
+      {
+        "text": "Heard that Aurebalo and Mekoboro now have a child, Aurekobo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 97
+        }
+      },
+      {
+        "text": "Had a child with Mekestros, named Khaumestro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 99
+        }
+      },
+      {
+        "text": "Had a child with Mekestros, named Mekhaubo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 129
+        }
+      },
+      "Learned that Mekestros has died.",
+      {
+        "text": "Heard that Aurebalo and Khaoboro now have a child, Aurekhobo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 150
+        }
+      },
+      {
+        "text": "Had a child with Merluko, named Merkhaubo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 162
+        }
+      },
+      {
+        "text": "Had a child with Merluko, named Khaubaluk.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 196
+        }
+      },
+      "Learned that Aurebalo has died.",
+      "Learned that Merluko has died.",
+      {
+        "text": "Heard that Aureluko and Mekhaubo now have a child, Mekhaurel.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 240
+        }
+      },
+      "Learned that Mekaluko has died."
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts it worthwhile only by paying real attention to Birth Of Nakorika",
+    "wasted_life": "letting Birth Of Nakorika slip past unexamined, the way it's easiest to",
+    "anchor": "tale: birth_of_nakorika",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 39,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Gorff",
+      "routine_actions": "spends her mornings shadowing the records annex, learning to spot which claims don't match the ledger before anyone has to tell her",
+      "weight": 50.0
+    },
+    {
+      "context": "temple",
+      "location": "Gorff",
+      "routine_actions": "spends her mornings shadowing the records annex, learning to spot which claims don't match the ledger before anyone has to tell her",
+      "weight": 50.0
+    }
+  ],
+  "parents": [
+    "aurebalo",
+    "khaus"
+  ],
+  "partners": {
+    "merluko": 4,
+    "mekestros": 5,
+    "khaus": 1,
+    "auroboro": 1,
+    "aurebalo": 2,
+    "aureluko": 5,
+    "mekoboro": 1,
+    "aureboro": 3,
+    "mekaluko": 2,
+    "khaoboro": 3,
+    "khaubestro": 1,
+    "aurebako": 2,
+    "khaumestro": 4,
+    "aurekhobo": 1,
+    "merkhaubo": 1,
+    "khaubaluk": 4
+  },
+  "partners_quality": {},
+  "birth_pass": 31,
+  "energy": 20,
+  "last_reproduced_pass": 196,
+  "arc": {
+    "about": [
+      "concept: crossing_market_roof"
+    ],
+    "needs": [
+      "materials"
+    ],
+    "context": "market",
+    "premise": "Splitting her mornings between the temple's ledger and the market's stalls, Khaubalo has noticed the roof project keeps losing out to the temple's own repair claims for the same timber - she wants a firm material pledge locked in for the market's side before the annex swallows another season's allotment.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

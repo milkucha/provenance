@@ -1,0 +1,179 @@
+{
+  "name": "Farliazuzco",
+  "origin": "Terfila",
+  "location": "Terfila",
+  "backstory": "Child of Forliauzco and Farliazco; grew up around unloads crates at the market stalls through the... in Terfila, and knows something of Birth Of Dorukus.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "tollhouse, forliamus",
+      "items": [
+        "tale: birth_of_dornarius",
+        "concept: salthos_mediator_line",
+        "tale: birth_of_fenrius",
+        "tale: terfila",
+        "tale: crossing_market_roof",
+        "concept: forliamus_betrothal_offer",
+        "tale: birth_of_fenarnus",
+        "conflict: CONFLICT-03",
+        "location: gorff",
+        "location: terfila",
+        "tale: gorff_ledger_crossing_war",
+        "tale: salthos_cruzados",
+        "tale: birth_of_darnakus",
+        "conflict: CONFLICT-02",
+        "tale: birth_of_tamuzco",
+        "tale: birth_of_forliarlo",
+        "location: salthos_cruzados",
+        "tale: death_of_mekoboro",
+        "tale: birth_of_khaoboro",
+        "tale: birth_of_forliukar",
+        "tale: birth_of_darnus",
+        "tale: birth_of_niemoruk",
+        "tale: birth_of_dorukus",
+        "tale: birth_of_trezukuzco"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Heard that Tamuzco and Farliukar now have a child, Tamuzarlo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 388
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Heard that Farlo and Trezco now have a child, Trezarlo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 388
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Had a child with Forliuken, named Forliukar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 388
+        }
+      },
+      {
+        "text": "Grew up hearing: Learned that Forliazco has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 388
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Forliamuk and Tamuzco now have a child, Tamuzmuken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 388
+        }
+      },
+      {
+        "text": "Grew up hearing: Had a child with Farliazco, named Farliauzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 388
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Tamuzco and Farliazco now have a child, Farliuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 388
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Heard that Trezco and Tamuken now have a child, Tamuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 388
+        }
+      },
+      {
+        "text": "Grew up hearing: Learned that Trezarlo has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 388
+        }
+      },
+      {
+        "text": "Grew up hearing: Learned that Farlo has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 388
+        }
+      },
+      {
+        "text": "Heard that Forliauzco and Farliukar now have a child, Forliaukarli.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 405
+        }
+      },
+      "Learned that Farliazco has died."
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only by making Salthos Mediator Line their own concern",
+    "wasted_life": "treating Salthos Mediator Line as someone else's concern",
+    "anchor": "concept: salthos_mediator_line",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 17,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "hauls crates at the market stalls through the morning tide same as his father did, trading gossip for a cheaper drink, and adding his own flourish to the tollhouse story each time he tells it.",
+      "weight": 100.0
+    }
+  ],
+  "parents": [
+    "forliauzco",
+    "farliazco"
+  ],
+  "partners": {
+    "farmuken": 1,
+    "farliazco": 1,
+    "forliauzco": 2,
+    "farliukar": 1,
+    "farliauzco": 1,
+    "tamuzaken": 1,
+    "forliuzazco": 1,
+    "tamuzarlo": 1,
+    "forliaukar": 1,
+    "farliuzco": 1,
+    "trezukuzco": 1,
+    "tamuzukar": 2,
+    "farliauzar": 1,
+    "tamuzakar": 2,
+    "forliaukarla": 1,
+    "trezukaken": 3
+  },
+  "partners_quality": {},
+  "birth_pass": 388,
+  "energy": 20,
+  "arc": {
+    "about": [
+      "concept: salthos_mediator_line"
+    ],
+    "needs": [
+      "contacts"
+    ],
+    "context": "market",
+    "premise": "Farliazuzco wants to press one of the old Salthos line's own descendants for a straight answer on whether the mediator role was actually offered or just taken - the family story at the stalls assumes one answer, and he wants to hear it from someone who'd know.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "name": "Khaubekho",
+  "origin": "Gorff",
+  "location": "Gorff",
+  "backstory": "Child of Khaubaluk and Aurekhobo in Gorff; raised alongside drives a caravan up and down the transit..., having heard about Birth Of Farmuken.",
+  "knowledge": {
+    "education": {
+      "percent": 50,
+      "mode": "skewed",
+      "topic": "salthos",
+      "items": [
+        "tale: forliamus_betrothal_offer",
+        "tale: birth_of_darnus",
+        "tale: death_of_dorakus",
+        "tale: death_of_fenserika",
+        "tale: birth_of_fenriukas",
+        "location: terfila",
+        "tale: birth_of_nakorika",
+        "concept: salthos_mediator_line",
+        "tale: toll_ledger_arrears",
+        "concept: forliamus_betrothal_offer",
+        "tale: birth_of_forliukar",
+        "concept: crossing_toll_dispute",
+        "tale: salthos_cruzados",
+        "tale: death_of_niemus",
+        "tale: gorff",
+        "concept: crossing_market_roof",
+        "tale: birth_of_niekus",
+        "tale: forliamus_log_crossing_war",
+        "conflict: CONFLICT-01",
+        "tale: birth_of_niemornak",
+        "location: salthos_cruzados",
+        "concept: toll_ledger_arrears",
+        "tale: birth_of_dorakus",
+        "conflict: CONFLICT-03",
+        "tale: birth_of_forliarlo",
+        "tale: birth_of_trezukar",
+        "tale: birth_of_tamuzakar",
+        "tale: birth_of_mekobaluk",
+        "tale: birth_of_nieradus",
+        "tale: birth_of_dornakus",
+        "tale: birth_of_darnukas",
+        "tale: birth_of_farliuzco",
+        "tale: birth_of_farmuken"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Heard that Aureluko and Mekhaubo now have a child, Mekaurelo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 434
+        }
+      },
+      {
+        "text": "Grew up hearing: Learned that Aurebalo has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 434
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Aurekomest and Aurelkhau now have a child, Aureskomest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 434
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Learned that Auroboro has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 434
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Aurebako and Khaoboro now have a child, Khaobako.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 434
+        }
+      },
+      {
+        "text": "Heard that Khaubaluk and Mekhaobako now have a child, Khaubomako.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 476
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts it worthwhile only by paying real attention to Birth Of Darnukas",
+    "wasted_life": "letting Birth Of Darnukas slip past unexamined, the way it's easiest to",
+    "anchor": "tale: birth_of_darnukas",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 7,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "transit_route",
+      "location": "Gorff",
+      "routine_actions": "takes the odd stonework commission too, whichever trade pays that week",
+      "weight": 25.0
+    },
+    {
+      "context": "market",
+      "location": "Gorff",
+      "routine_actions": "takes the odd stonework commission too, whichever trade pays that week",
+      "weight": 25.0
+    },
+    {
+      "context": "temple",
+      "location": "Gorff",
+      "routine_actions": "takes the odd stonework commission too, whichever trade pays that week",
+      "weight": 25.0
+    },
+    {
+      "context": "market",
+      "location": "Gorff",
+      "routine_actions": "takes the odd stonework commission too, whichever trade pays that week",
+      "weight": 25.0
+    }
+  ],
+  "parents": [
+    "khaubaluk",
+    "aurekhobo"
+  ],
+  "partners": {
+    "aureboro": 1,
+    "mekaluko": 1,
+    "khaoboro": 1,
+    "aurekobo": 1,
+    "khaumestro": 1,
+    "aurekhobo": 1,
+    "khaobako": 1,
+    "aurelkhau": 1,
+    "mekhaubest": 2,
+    "mekhaobako": 1,
+    "aureskomest": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 434,
+  "energy": 20,
+  "arc": {
+    "about": [
+      "concept: toll_ledger_arrears"
+    ],
+    "needs": [
+      "labor"
+    ],
+    "context": "transit_route",
+    "premise": "Khaubekho has stopped waiting for the arrears dispute to close on paper and started organizing a joint repair crew from his own family's trades - smiths, masons, drivers - to fix the tollhouse's own neglected upkeep the dispute has been used as an excuse to put off.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

@@ -1,0 +1,179 @@
+{
+  "name": "Forliamus",
+  "city": "Terfila",
+  "origin": "Terfila",
+  "location": "Terfila",
+  "backstory": "Head of the Forliamus merchant house, which has traded along the transit route for generations and keeps its own log of the tollhouse dispute.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "tollhouse, forliamus",
+      "items": [
+        "concept: crossing_market_roof",
+        "concept: crossing_toll_dispute",
+        "concept: forliamus_betrothal_offer",
+        "concept: toll_ledger_arrears",
+        "conflict: CONFLICT-01",
+        "conflict: CONFLICT-02",
+        "conflict: CONFLICT-03",
+        "location: gorff",
+        "location: terfila",
+        "tale: crossing_market_roof",
+        "tale: forliamus_betrothal_offer",
+        "tale: forliamus_log_crossing_war",
+        "tale: gorff",
+        "tale: gorff_ledger_crossing_war",
+        "tale: terfila"
+      ]
+    },
+    "experience": [
+      "Learned that Fenserika has died.",
+      "Learned that Forliuken has died.",
+      {
+        "text": "Heard that Farlo and Tamuken now have a child, Farmuken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 23
+        }
+      },
+      {
+        "text": "Had a child with Trezco, named Forliazco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 24
+        }
+      },
+      {
+        "text": "Heard that Trezco and Tamuken now have a child, Tamuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 34
+        }
+      },
+      {
+        "text": "Had a child with Farlo, named Forliarlo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 44
+        }
+      },
+      {
+        "text": "Heard that Tamuken and Forliazco now have a child, Forliuken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 67
+        }
+      },
+      {
+        "text": "Heard that Forliazco and Farlo now have a child, Farliazco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 78
+        }
+      },
+      "Learned that Tamuken has died.",
+      {
+        "text": "Heard that Forliazco and Farmuken now have a child, Forliamuk.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 104
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "standard": "counts an answer given openly above a match left to wither unspoken",
+    "wasted_life": "putting his own house's name on an offer and then letting it die quietly the same way the last one did, without ever saying so",
+    "anchor": "concept: forliamus_betrothal_offer",
+    "origin": "collision between his backstory (head of the Forliamus house) and the sample's own forliamus_betrothal_offer (his own house's marriage proposal to the Salthos house)",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed",
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [
+      {
+        "cause": "author correction",
+        "date": "2026-08-31",
+        "previous": {
+          "standard": "counts keeping the house's own record of what happened above letting Gorff's version go unchallenged",
+          "wasted_life": "letting Gorff's account of that year stand unanswered",
+          "anchor": "concept: crossing_toll_dispute",
+          "origin": "collision between his backstory (keeps the house's own log of the dispute) and crossing_toll_dispute itself",
+          "trusts": "a story that's been carried and retold and still holds together",
+          "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+        },
+        "note": "re-derived after encodings.json gained three new concrete concepts (crossing_market_roof, toll_ledger_arrears, forliamus_betrothal_offer) via /tell, at the author's explicit direction, to diversify arcs away from the epistemic-conflict default"
+      }
+    ]
+  },
+  "life": {
+    "lived": 34,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "location": "Terfila",
+      "context": "market",
+      "weight": 100,
+      "routine_actions": "settles the house's accounts at the market stalls each morning, presses new suppliers for terms, retells the family's own version of the tollhouse dispute whenever Gorff's comes up"
+    }
+  ],
+  "arc": {
+    "about": [
+      "concept: forliamus_betrothal_offer"
+    ],
+    "needs": [
+      "contacts"
+    ],
+    "context": "market",
+    "premise": "Forliamus wants his own house's betrothal offer answered plainly, sealed or refused, rather than let drift the way the last one did - his own name is on this one, and he'd rather have a clean refusal than another silence nobody ever accounts for.",
+    "resolution": "ongoing",
+    "history": [
+      {
+        "pass": 10,
+        "outcome": "advance"
+      },
+      {
+        "pass": 15,
+        "outcome": "reverse"
+      },
+      {
+        "pass": 31,
+        "outcome": "reverse"
+      },
+      {
+        "pass": 64,
+        "outcome": "advance"
+      },
+      {
+        "pass": 69,
+        "outcome": "advance"
+      },
+      {
+        "pass": 73,
+        "outcome": "reverse"
+      },
+      {
+        "pass": 107,
+        "outcome": "advance"
+      },
+      {
+        "pass": 110,
+        "outcome": "advance"
+      }
+    ]
+  },
+  "partners": {
+    "trezco": 10,
+    "farlo": 6,
+    "tamuken": 8,
+    "farmuken": 2,
+    "forliazco": 2,
+    "forliarlo": 3,
+    "forliuken": 2,
+    "farliazco": 1
+  },
+  "energy": 15,
+  "last_reproduced_pass": 44
+}

@@ -1,0 +1,206 @@
+{
+  "name": "Darnakus",
+  "origin": "Salthos Cruzados",
+  "location": "Salthos Cruzados",
+  "backstory": "Child of Nakus and Darnus; grew up around walks the transit route's Salthos stretch at dawn... in Salthos Cruzados, and knows something of Terfila.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "tollhouse, crossing",
+      "items": [
+        "concept: forliamus_betrothal_offer",
+        "conflict: CONFLICT-02",
+        "location: salthos_cruzados",
+        "location: terfila",
+        "concept: crossing_market_roof",
+        "tale: forliamus_betrothal_offer",
+        "conflict: CONFLICT-03",
+        "concept: toll_ledger_arrears",
+        "tale: gorff",
+        "tale: salthos_cruzados",
+        "tale: crossing_market_roof",
+        "tale: toll_ledger_arrears",
+        "concept: crossing_toll_dispute",
+        "concept: temple_of_the_crossing",
+        "tale: terfila",
+        "conflict: CONFLICT-01",
+        "tale: gorff_ledger_crossing_war",
+        "concept: salthos_mediator_line",
+        "tale: birth_of_nierius",
+        "tale: forliamus_log_crossing_war"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Heard that Nakus and Prince Doran now have a child, Dorakus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 71
+        }
+      },
+      {
+        "text": "Heard that Nakus and Darnus now have a child, Darnukas.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 97
+        }
+      },
+      {
+        "text": "Heard that Nakus and Niemus now have a child, Niekus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 120
+        }
+      },
+      {
+        "text": "Heard that Nakus and Prince Doran now have a child, Dornakus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 131
+        }
+      },
+      {
+        "text": "Heard that Prince Doran and Nakus now have a child, Nakoran.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 144
+        }
+      },
+      {
+        "text": "Heard that Nakus and Prince Doran now have a child, Dorukus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 189
+        }
+      },
+      "Learned that Nakus has died.",
+      {
+        "text": "Heard that Darnus and Fenserika now have a child, Fenarnus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 262
+        }
+      },
+      {
+        "text": "Had a child with Darika, named Darnarika.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 281
+        }
+      },
+      {
+        "text": "Heard that Dorakus and Darnus now have a child, Doraknus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 294
+        }
+      },
+      "Learned that Niergus has died.",
+      {
+        "text": "Heard that Dornakus and Darika now have a child, Dornarika.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 342
+        }
+      },
+      "Learned that Darnus has died.",
+      {
+        "text": "Heard that Dornakus and Fenrius now have a child, Dornarius.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 362
+        }
+      },
+      {
+        "text": "Heard that Fenserika and Niekus now have a child, Fenekus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 384
+        }
+      },
+      "Learned that Niemius has died.",
+      {
+        "text": "Had a child with Darika, named Darinak.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 397
+        }
+      },
+      {
+        "text": "Had a child with Niemoran, named Niemornak.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 426
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "holds themself accountable to Birth Of Nierius, whatever it costs",
+    "wasted_life": "one that never had to answer for Birth Of Nierius",
+    "anchor": "tale: birth_of_nierius",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 49,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "context": "transit_route",
+      "location": "Salthos Cruzados",
+      "routine_actions": "takes the dawn shift at the crossing alone now, checks papers quickly, and saves the real listening for the travelers who look like they're hiding something",
+      "weight": 100.0
+    }
+  ],
+  "parents": [
+    "nakus",
+    "darnus"
+  ],
+  "partners": {
+    "niemus": 2,
+    "fenserika": 1,
+    "magus": 1,
+    "prince_doran": 1,
+    "nierius": 2,
+    "darnus": 2,
+    "darika": 5,
+    "niergus": 3,
+    "niemius": 4,
+    "dorakus": 2,
+    "fenrius": 3,
+    "darnukas": 2,
+    "niemoran": 3,
+    "niekus": 6,
+    "dornakus": 4,
+    "nieragus": 1,
+    "nakoran": 1,
+    "dorukus": 3,
+    "darnarika": 2,
+    "fenriukas": 1,
+    "nakorika": 1,
+    "fenekus": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 56,
+  "energy": 20,
+  "last_reproduced_pass": 426,
+  "arc": {
+    "about": [
+      "concept: toll_ledger_arrears"
+    ],
+    "needs": [
+      "news"
+    ],
+    "context": "transit_route",
+    "premise": "Darnakus has started asking every trader who crosses his post what toll they actually paid at the Gorff side, quietly building his own count to set against the house's official one.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

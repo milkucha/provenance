@@ -1,0 +1,192 @@
+{
+  "name": "Auroboro",
+  "city": "Gorff",
+  "origin": "Gorff",
+  "location": "Gorff",
+  "backstory": "Led the raid that took the tollhouse from Terfila's blockade in a single night, years ago; still counted the decisive hand behind Gorff's hold on the crossing road.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "tollhouse, gorff",
+      "items": [
+        "concept: crossing_market_roof",
+        "concept: crossing_toll_dispute",
+        "concept: salthos_mediator_line",
+        "concept: toll_ledger_arrears",
+        "conflict: CONFLICT-01",
+        "conflict: CONFLICT-02",
+        "conflict: CONFLICT-03",
+        "location: gorff",
+        "location: salthos_cruzados",
+        "tale: birth_of_darika",
+        "tale: forliamus_log_crossing_war",
+        "tale: gorff",
+        "tale: gorff_ledger_crossing_war",
+        "tale: salthos_cruzados",
+        "tale: toll_ledger_arrears"
+      ]
+    },
+    "experience": [
+      "Learned that Niemus has died.",
+      {
+        "text": "Had a child with Mekestros, named Mekoboro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 27
+        }
+      },
+      {
+        "text": "Had a child with Aurebalo, named Aureboro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 53
+        }
+      },
+      {
+        "text": "Heard that Mekestros and Aureluko now have a child, Mekaluko.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 57
+        }
+      },
+      {
+        "text": "Heard that Khaus and Mekoboro now have a child, Khaoboro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 60
+        }
+      },
+      {
+        "text": "Heard that Khaubalo and Mekestros now have a child, Khaubestro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 67
+        }
+      },
+      {
+        "text": "Heard that Aurebalo and Merluko now have a child, Aurebako.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 87
+        }
+      },
+      {
+        "text": "Heard that Aurebalo and Mekoboro now have a child, Aurekobo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 97
+        }
+      },
+      {
+        "text": "Heard that Mekestros and Khaubalo now have a child, Khaumestro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 99
+        }
+      },
+      {
+        "text": "Heard that Mekestros and Khaubalo now have a child, Mekhaubo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 129
+        }
+      },
+      "Learned that Mekestros has died.",
+      {
+        "text": "Heard that Aurebalo and Khaoboro now have a child, Aurekhobo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 150
+        }
+      },
+      {
+        "text": "Heard that Khaubalo and Merluko now have a child, Merkhaubo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 162
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "standard": "counts what the tollhouse cost to take above what it's worth having now",
+    "wasted_life": "letting the night he broke that blockade get told as something smaller than it was",
+    "anchor": "concept: crossing_toll_dispute",
+    "origin": "collision between his backstory (led the raid himself) and crossing_toll_dispute itself",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed",
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": []
+  },
+  "life": {
+    "lived": 33,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "location": "Gorff",
+      "context": "transit_route",
+      "weight": 100,
+      "routine_actions": "still walks the tollhouse's own stretch of the transit route most mornings, checks the crews on duty, corrects any traveler who gets the story of that night wrong"
+    }
+  ],
+  "arc": {
+    "about": [
+      "concept: crossing_toll_dispute"
+    ],
+    "needs": [
+      "a way to be formally credited for the raid in something more permanent than a ledger entry"
+    ],
+    "context": "transit_route",
+    "premise": "Auroboro wants the tollhouse itself to carry some permanent mark of the raid that took it - a plaque, a stone, something a traveler passing through has to see - not just a line in Gorff's own ledger that Terfila keeps insisting isn't the whole story.",
+    "resolution": "ongoing",
+    "history": [
+      {
+        "pass": 3,
+        "outcome": "advance"
+      },
+      {
+        "pass": 16,
+        "outcome": "reverse"
+      },
+      {
+        "pass": 53,
+        "outcome": "stall"
+      },
+      {
+        "pass": 80,
+        "outcome": "advance"
+      },
+      {
+        "pass": 90,
+        "outcome": "reverse"
+      },
+      {
+        "pass": 94,
+        "outcome": "advance"
+      }
+    ]
+  },
+  "partners": {
+    "aurebalo": 4,
+    "merluko": 4,
+    "mekestros": 8,
+    "khaus": 1,
+    "aureluko": 1,
+    "mekoboro": 4,
+    "khaubalo": 1,
+    "aureboro": 1,
+    "mekaluko": 2,
+    "khaoboro": 1,
+    "khaubestro": 1,
+    "aurebako": 1,
+    "aurekobo": 1,
+    "khaumestro": 1,
+    "aurekhobo": 1,
+    "merkhaubo": 1
+  },
+  "energy": 3,
+  "last_reproduced_pass": 53
+}

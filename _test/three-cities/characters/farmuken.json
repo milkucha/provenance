@@ -1,0 +1,148 @@
+{
+  "name": "Farmuken",
+  "origin": "Terfila",
+  "location": "Terfila",
+  "backstory": "Child of Farlo and Tamuken, in Terfila; grew up around haggles for cart space at the market before..., and picked up a little of Toll Ledger Arrears along the way.",
+  "knowledge": {
+    "education": {
+      "percent": 50,
+      "mode": "skewed",
+      "topic": "tollhouse",
+      "items": [
+        "tale: gorff_ledger_crossing_war",
+        "location: gorff",
+        "tale: forliamus_betrothal_offer",
+        "conflict: CONFLICT-01",
+        "conflict: CONFLICT-03",
+        "tale: gorff",
+        "concept: crossing_toll_dispute",
+        "tale: terfila",
+        "tale: birth_of_darnus",
+        "tale: death_of_darius",
+        "tale: birth_of_niemius",
+        "tale: birth_of_niergus",
+        "tale: forliamus_log_crossing_war",
+        "tale: birth_of_darnakus",
+        "tale: crossing_market_roof",
+        "concept: toll_ledger_arrears",
+        "tale: death_of_magus"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Heard that Trezco and Tamuken now have a child, Tamuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 34
+        }
+      },
+      {
+        "text": "Heard that Forliamus and Farlo now have a child, Forliarlo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 44
+        }
+      },
+      {
+        "text": "Heard that Tamuken and Forliazco now have a child, Forliuken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 67
+        }
+      },
+      {
+        "text": "Heard that Forliazco and Farlo now have a child, Farliazco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 78
+        }
+      },
+      "Learned that Tamuken has died.",
+      {
+        "text": "Had a child with Forliazco, named Forliamuk.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 104
+        }
+      },
+      {
+        "text": "Heard that Forliarlo and Forliuken now have a child, Forliukar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 111
+        }
+      },
+      {
+        "text": "Heard that Farlo and Trezco now have a child, Trezarlo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 114
+        }
+      },
+      "Learned that Farlo has died.",
+      {
+        "text": "Heard that Forliarlo and Tamuzco now have a child, Forliauzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 156
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "measures a life by whether Birth Of Darnus is still remembered rightly",
+    "wasted_life": "forgetting what Birth Of Darnus actually meant, the way most people already have",
+    "anchor": "tale: birth_of_darnus",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 36,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "trails the market stalls before first light, starting to haggle for cart space on his own now, and keeping a rougher copy of the family's toll tally.",
+      "weight": 100.0
+    }
+  ],
+  "parents": [
+    "farlo",
+    "tamuken"
+  ],
+  "partners": {
+    "farlo": 4,
+    "forliamus": 2,
+    "tamuken": 3,
+    "trezco": 1,
+    "forliazco": 9,
+    "tamuzco": 3,
+    "forliarlo": 4,
+    "forliuken": 4,
+    "farliazco": 1,
+    "forliukar": 3,
+    "trezarlo": 2
+  },
+  "partners_quality": {},
+  "birth_pass": 23,
+  "energy": 20,
+  "last_reproduced_pass": 104,
+  "arc": {
+    "about": [
+      "tale: birth_of_darnus"
+    ],
+    "needs": [
+      "news"
+    ],
+    "context": "market",
+    "premise": "Farmuken keeps hearing that birth told a little differently every week at the stalls; he wants to track down whoever was actually there and get one telling right before it flattens into something nobody can correct anymore.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

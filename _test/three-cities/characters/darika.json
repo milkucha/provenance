@@ -1,0 +1,214 @@
+{
+  "name": "Darika",
+  "origin": "Salthos Cruzados",
+  "location": "Salthos Cruzados",
+  "backstory": "Child of Fenserika and Darius; grew up around waits near the Salthos house's own square on... in Salthos Cruzados, and knows something of Salthos Mediator Line.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "temple",
+      "items": [
+        "tale: salthos_cruzados",
+        "conflict: CONFLICT-02",
+        "concept: forliamus_betrothal_offer",
+        "concept: crossing_toll_dispute",
+        "tale: gorff",
+        "location: gorff",
+        "tale: crossing_market_roof",
+        "concept: temple_of_the_crossing",
+        "concept: crossing_market_roof",
+        "tale: terfila",
+        "concept: salthos_mediator_line",
+        "conflict: CONFLICT-03",
+        "conflict: CONFLICT-01"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Had a child with Niemus, named Nierius.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 31
+        }
+      },
+      {
+        "text": "Heard that Niemus and Darius now have a child, Niemius.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 55
+        }
+      },
+      "Learned that Darius has died.",
+      {
+        "text": "Heard that Fenserika and Nierius now have a child, Fenrius.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 95
+        }
+      },
+      {
+        "text": "Heard that Nakus and Darnus now have a child, Darnukas.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 97
+        }
+      },
+      {
+        "text": "Heard that Nierius and Magus now have a child, Nieragus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 142
+        }
+      },
+      "Learned that Magus has died.",
+      {
+        "text": "Heard that Darnus and Fenserika now have a child, Fenarnus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 262
+        }
+      },
+      {
+        "text": "Had a child with Darnakus, named Darnarika.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 281
+        }
+      },
+      {
+        "text": "Heard that Dorakus and Darnus now have a child, Doraknus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 294
+        }
+      },
+      {
+        "text": "Heard that Niemoran and Nieragus now have a child, Nieragan.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 325
+        }
+      },
+      {
+        "text": "Heard that Nakoran and Fenserika now have a child, Nakorika.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 337
+        }
+      },
+      {
+        "text": "Had a child with Dornakus, named Dornarika.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 342
+        }
+      },
+      "Learned that Darnus has died.",
+      {
+        "text": "Heard that Dornakus and Fenrius now have a child, Dornarius.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 362
+        }
+      },
+      {
+        "text": "Heard that Fenserika and Niekus now have a child, Fenekus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 384
+        }
+      },
+      "Learned that Fenserika has died.",
+      "Learned that Niemius has died.",
+      {
+        "text": "Had a child with Darnakus, named Darinak.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 397
+        }
+      },
+      {
+        "text": "Heard that Darnakus and Niemoran now have a child, Niemornak.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 426
+        }
+      },
+      "Learned that Darnukas has died.",
+      "Learned that Darnakus has died."
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts it worthwhile only by paying real attention to CONFLICT-01",
+    "wasted_life": "letting CONFLICT-01 slip past unexamined, the way it's easiest to",
+    "anchor": "conflict: CONFLICT-01",
+    "origin": "derived",
+    "trusts": "verification",
+    "distrusts": "anyone who sounds certain"
+  },
+  "life": {
+    "lived": 53,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "context": "main_square",
+      "location": "Salthos Cruzados",
+      "routine_actions": "takes over the roof repairs his family's always done, learning which stones came from which generation's fix, hauling in fresh ones when the old mortar finally gives",
+      "weight": 50.0
+    },
+    {
+      "context": "temple",
+      "location": "Salthos Cruzados",
+      "routine_actions": "takes over the roof repairs his family's always done, learning which stones came from which generation's fix, hauling in fresh ones when the old mortar finally gives",
+      "weight": 50.0
+    }
+  ],
+  "parents": [
+    "fenserika",
+    "darius"
+  ],
+  "partners": {
+    "magus": 3,
+    "niemus": 2,
+    "prince_doran": 1,
+    "fenserika": 2,
+    "nakus": 1,
+    "nierius": 4,
+    "darnus": 4,
+    "niergus": 1,
+    "niemius": 5,
+    "darnakus": 5,
+    "dorakus": 2,
+    "fenrius": 3,
+    "darnukas": 4,
+    "niemoran": 2,
+    "dornakus": 4,
+    "nakoran": 1,
+    "dorukus": 2,
+    "fenarnus": 4,
+    "doraknus": 1,
+    "nieragan": 2,
+    "fenekus": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 31,
+  "energy": 17,
+  "last_reproduced_pass": 397,
+  "arc": {
+    "about": [
+      "concept: crossing_market_roof"
+    ],
+    "needs": [
+      "materials"
+    ],
+    "context": "temple",
+    "premise": "Darika keeps arguing, quietly and stubbornly, that the family's stone should go to the market's roof this season instead of another round of temple patchwork - the merchants have waited long enough, and the temple's walls will hold one more year.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

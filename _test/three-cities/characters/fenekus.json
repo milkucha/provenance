@@ -1,0 +1,114 @@
+{
+  "name": "Fenekus",
+  "origin": "Salthos Cruzados",
+  "location": "Salthos Cruzados",
+  "backstory": "Child of Fenserika and Niekus; raised in Salthos Cruzados on waits near the Salthos house's own square on..., and carries some knowledge of CONFLICT-01.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "tollhouse, crossing",
+      "items": [
+        "concept: crossing_toll_dispute",
+        "tale: birth_of_niemoran",
+        "tale: death_of_darius",
+        "concept: forliamus_betrothal_offer",
+        "concept: toll_ledger_arrears",
+        "concept: crossing_market_roof",
+        "tale: toll_ledger_arrears",
+        "tale: gorff_ledger_crossing_war",
+        "tale: crossing_market_roof",
+        "tale: salthos_cruzados",
+        "conflict: CONFLICT-02",
+        "location: gorff",
+        "conflict: CONFLICT-03",
+        "tale: birth_of_dorakus",
+        "conflict: CONFLICT-01",
+        "tale: birth_of_darnakus",
+        "tale: birth_of_dornarius"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Learned that Darnus has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 384
+        }
+      },
+      {
+        "text": "Grew up hearing: Learned that Nakus has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 384
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Dorakus and Darnus now have a child, Doraknus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 384
+        }
+      },
+      "Learned that Fenserika has died.",
+      {
+        "text": "Heard that Niekus and Nieragan now have a child, Nierakus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 489
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "measures a life by whether CONFLICT-01 is still remembered rightly",
+    "wasted_life": "forgetting what CONFLICT-01 actually meant, the way most people already have",
+    "anchor": "conflict: CONFLICT-01",
+    "origin": "derived",
+    "trusts": "verification",
+    "distrusts": "anyone who sounds certain"
+  },
+  "life": {
+    "lived": 5,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "main_square",
+      "location": "Salthos Cruzados",
+      "routine_actions": "stands at the square's edge on petition days, has stopped expecting an answer about the old match, and instead keeps track of who else the house has left waiting",
+      "weight": 100.0
+    }
+  ],
+  "parents": [
+    "fenserika",
+    "niekus"
+  ],
+  "partners": {
+    "darika": 2,
+    "niergus": 1,
+    "darnakus": 1,
+    "dorakus": 1,
+    "nakoran": 1,
+    "nakorika": 1,
+    "dornarika": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 384,
+  "energy": 20,
+  "arc": {
+    "about": [
+      "conflict: CONFLICT-01"
+    ],
+    "needs": [
+      "contacts"
+    ],
+    "context": "main_square",
+    "premise": "Fenekus has inherited her mother's old question about the broken match, but instead of chasing the true account further back, she's started organizing a formal reconciliation reading at the square - both houses' versions spoken aloud together, once, so the argument has somewhere to end rather than just repeat.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

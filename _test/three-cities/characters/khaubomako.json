@@ -1,0 +1,137 @@
+{
+  "name": "Khaubomako",
+  "origin": "Gorff",
+  "location": "Gorff",
+  "backstory": "Child of Khaubaluk and Mekhaobako; raised in Gorff on takes stonework commissions at the market each morning,..., and carries some knowledge of Birth Of Mekaurelu.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "tollhouse, gorff",
+      "items": [
+        "conflict: CONFLICT-01",
+        "tale: death_of_fenserika",
+        "location: salthos_cruzados",
+        "tale: forliamus_log_crossing_war",
+        "tale: birth_of_darnus",
+        "tale: death_of_dorakus",
+        "tale: birth_of_darnarika",
+        "conflict: CONFLICT-03",
+        "tale: birth_of_fenriukas",
+        "tale: birth_of_niemius",
+        "tale: birth_of_nakoran",
+        "tale: birth_of_darnakus",
+        "tale: terfila",
+        "tale: birth_of_forliukar",
+        "tale: birth_of_khaubestro",
+        "location: gorff",
+        "tale: birth_of_darika",
+        "tale: birth_of_niekus",
+        "tale: birth_of_mekaluko",
+        "concept: forliamus_betrothal_offer",
+        "tale: birth_of_niemornak",
+        "tale: birth_of_nieragan",
+        "tale: birth_of_khaumestro",
+        "tale: birth_of_merkhaubo",
+        "tale: death_of_darius",
+        "tale: death_of_nakus",
+        "tale: birth_of_dornakus",
+        "tale: toll_ledger_arrears",
+        "concept: temple_of_the_crossing",
+        "tale: death_of_darnus",
+        "tale: gorff",
+        "location: terfila",
+        "concept: salthos_mediator_line",
+        "tale: birth_of_nieradus",
+        "tale: birth_of_mekoboro",
+        "tale: birth_of_niergus",
+        "tale: death_of_magus",
+        "conflict: CONFLICT-02",
+        "tale: birth_of_nieragus",
+        "tale: gorff_ledger_crossing_war",
+        "tale: crossing_market_roof",
+        "tale: birth_of_darinak",
+        "tale: salthos_cruzados",
+        "tale: birth_of_doraknus",
+        "concept: crossing_toll_dispute",
+        "tale: birth_of_dorukus",
+        "tale: birth_of_dorakus",
+        "tale: birth_of_fenarnus",
+        "tale: birth_of_nierius",
+        "tale: birth_of_mekobaluk",
+        "tale: birth_of_khaubekho",
+        "tale: birth_of_mekaurelu",
+        "tale: birth_of_forliarlo",
+        "tale: birth_of_trezukar",
+        "tale: birth_of_fenrius",
+        "tale: birth_of_farmuken",
+        "concept: crossing_market_roof",
+        "tale: death_of_niemius",
+        "tale: birth_of_tamuzco",
+        "tale: death_of_mekoboro",
+        "tale: birth_of_trezarlo"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Heard that Mekobaluk and Mekaurelo now have a child, Mekaurobal.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 476
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Heard that Mekestros and Aureluko now have a child, Mekaluko.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 476
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only if it stayed close to Toll Ledger Arrears",
+    "wasted_life": "a life spent never once engaging with Toll Ledger Arrears",
+    "anchor": "tale: toll_ledger_arrears",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 1,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Gorff",
+      "routine_actions": "also sells iron work through the day, counting deliveries against seasons she's only heard described",
+      "weight": 50.0
+    },
+    {
+      "context": "market",
+      "location": "Gorff",
+      "routine_actions": "also sells iron work through the day, counting deliveries against seasons she's only heard described",
+      "weight": 50.0
+    }
+  ],
+  "parents": [
+    "khaubaluk",
+    "mekhaobako"
+  ],
+  "partners": {
+    "khaubalo": 1,
+    "aurebako": 1,
+    "mekhaubo": 1,
+    "khaobako": 1,
+    "aurekomest": 1,
+    "khaubomest": 1,
+    "aureskomest": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 476,
+  "energy": 20
+}

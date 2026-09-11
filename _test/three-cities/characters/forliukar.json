@@ -1,0 +1,156 @@
+{
+  "name": "Forliukar",
+  "origin": "Terfila",
+  "location": "Terfila",
+  "backstory": "Child of Forliarlo and Forliuken in Terfila; raised alongside settles the house's accounts at the market stalls..., having heard about Birth Of Dorakus.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "tollhouse, forliamus",
+      "items": [
+        "tale: forliamus_log_crossing_war",
+        "tale: death_of_darius",
+        "concept: crossing_toll_dispute",
+        "tale: gorff_ledger_crossing_war",
+        "tale: birth_of_darnakus",
+        "conflict: CONFLICT-03",
+        "concept: temple_of_the_crossing",
+        "tale: forliamus_betrothal_offer",
+        "tale: birth_of_niergus",
+        "tale: birth_of_darnus",
+        "conflict: CONFLICT-01",
+        "tale: crossing_market_roof",
+        "tale: terfila",
+        "tale: death_of_darnukas",
+        "tale: birth_of_mekaluko",
+        "tale: birth_of_dorakus",
+        "tale: birth_of_darinak",
+        "tale: birth_of_farmuken"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Heard that Forliazco and Farlo now have a child, Farliazco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 111
+        }
+      },
+      {
+        "text": "Heard that Forliarlo and Tamuzco now have a child, Forliauzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 156
+        }
+      },
+      "Learned that Farmuken has died.",
+      {
+        "text": "Had a child with Farliazco, named Farliukar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 176
+        }
+      },
+      "Learned that Forliuken has died.",
+      "Learned that Forliarlo has died.",
+      {
+        "text": "Heard that Forliauzco and Farliazco now have a child, Farliauzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 205
+        }
+      },
+      {
+        "text": "Heard that Forliauzco and Forliamuk now have a child, Forliauken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 216
+        }
+      },
+      {
+        "text": "Heard that Tamuzco and Forliamuk now have a child, Tamuzaken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 233
+        }
+      },
+      {
+        "text": "Had a child with Trezarlo, named Trezukar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 235
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only if it stayed close to Death Of Darnukas",
+    "wasted_life": "a life spent never once engaging with Death Of Darnukas",
+    "anchor": "tale: death_of_darnukas",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 34,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "makes the walk between Terfila and the crossing when there's nothing better to do at the docks, and lingers by the temple a beat longer than the walk requires.",
+      "weight": 33.33
+    },
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "makes the walk between Terfila and the crossing when there's nothing better to do at the docks, and lingers by the temple a beat longer than the walk requires.",
+      "weight": 33.33
+    },
+    {
+      "context": "transit_route",
+      "location": "Terfila",
+      "routine_actions": "makes the walk between Terfila and the crossing when there's nothing better to do at the docks, and lingers by the temple a beat longer than the walk requires.",
+      "weight": 33.33
+    }
+  ],
+  "parents": [
+    "forliarlo",
+    "forliuken"
+  ],
+  "partners": {
+    "farmuken": 3,
+    "forliazco": 4,
+    "tamuzco": 4,
+    "forliarlo": 1,
+    "forliuken": 3,
+    "farliazco": 5,
+    "forliamuk": 5,
+    "trezarlo": 3,
+    "forliauzco": 2,
+    "farliukar": 3,
+    "farliauzco": 1,
+    "forliauken": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 111,
+  "energy": 20,
+  "last_reproduced_pass": 235,
+  "arc": {
+    "about": [
+      "tale: death_of_darnukas"
+    ],
+    "needs": [
+      "news"
+    ],
+    "context": "market",
+    "premise": "Forliukar wants that death remembered the way it actually happened in the house's own accounting, not folded quietly into the tollhouse dispute the way every loss on this road eventually gets.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

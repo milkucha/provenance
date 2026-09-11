@@ -1,0 +1,210 @@
+{
+  "name": "Mekhaubo",
+  "origin": "Gorff",
+  "location": "Gorff",
+  "backstory": "Child of Mekestros and Khaubalo; grew up around takes stonework commissions at the market each morning,... in Gorff, and knows something of Birth Of Darika.",
+  "knowledge": {
+    "education": {
+      "percent": 50,
+      "mode": "skewed",
+      "topic": "salthos",
+      "items": [
+        "tale: salthos_cruzados",
+        "tale: forliamus_betrothal_offer",
+        "location: gorff",
+        "tale: birth_of_nakorika",
+        "tale: birth_of_niemius",
+        "tale: gorff_ledger_crossing_war",
+        "tale: forliamus_log_crossing_war",
+        "concept: salthos_mediator_line",
+        "conflict: CONFLICT-01",
+        "conflict: CONFLICT-03",
+        "tale: birth_of_niergus",
+        "conflict: CONFLICT-02",
+        "concept: toll_ledger_arrears",
+        "tale: death_of_fenserika",
+        "tale: birth_of_trezarlo",
+        "tale: birth_of_nakoran",
+        "location: salthos_cruzados",
+        "tale: birth_of_darika"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Heard that Auroboro and Aurebalo now have a child, Aureboro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 129
+        }
+      },
+      {
+        "text": "Grew up hearing: Had a child with Khaubalo, named Khaumestro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 129
+        }
+      },
+      {
+        "text": "Grew up hearing: Had a child with Auroboro, named Mekoboro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 129
+        }
+      },
+      {
+        "text": "Grew up hearing: Had a child with Mekestros, named Khaubestro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 129
+        }
+      },
+      "Learned that Mekestros has died.",
+      {
+        "text": "Heard that Khaubalo and Merluko now have a child, Merkhaubo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 162
+        }
+      },
+      {
+        "text": "Heard that Merluko and Khaubalo now have a child, Khaubaluk.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 196
+        }
+      },
+      {
+        "text": "Had a child with Aureluko, named Mekhaurel.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 240
+        }
+      },
+      {
+        "text": "Heard that Aurebako and Khaoboro now have a child, Khaobako.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 279
+        }
+      },
+      "Learned that Khaubalo has died.",
+      {
+        "text": "Had a child with Aureluko, named Mekaurelo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 315
+        }
+      },
+      {
+        "text": "Heard that Khaubestro and Mekhaurel now have a child, Mekhaubest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 319
+        }
+      },
+      {
+        "text": "Heard that Mekhaurel and Khaobako now have a child, Mekhaobako.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 334
+        }
+      },
+      {
+        "text": "Heard that Khaubaluk and Aurekhobo now have a child, Khaubekho.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 434
+        }
+      },
+      {
+        "text": "Heard that Khaobako and Mekhaurel now have a child, Mekhaobera.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 435
+        }
+      },
+      {
+        "text": "Had a child with Aureluko, named Mekaurelu.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 454
+        }
+      },
+      "Learned that Aureluko has died.",
+      {
+        "text": "Heard that Mekobaluk and Mekaurelo now have a child, Mekaurobal.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 460
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only if it stayed close to Salthos Mediator Line",
+    "wasted_life": "a life spent never once engaging with Salthos Mediator Line",
+    "anchor": "concept: salthos_mediator_line",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 35,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Gorff",
+      "routine_actions": "helps in the records annex some mornings, cross-checking his own commissions against what's entered as settled",
+      "weight": 50.0
+    },
+    {
+      "context": "temple",
+      "location": "Gorff",
+      "routine_actions": "helps in the records annex some mornings, cross-checking his own commissions against what's entered as settled",
+      "weight": 50.0
+    }
+  ],
+  "parents": [
+    "mekestros",
+    "khaubalo"
+  ],
+  "partners": {
+    "auroboro": 2,
+    "aureluko": 7,
+    "mekoboro": 1,
+    "mekaluko": 2,
+    "khaubestro": 2,
+    "aurebako": 4,
+    "aurekobo": 2,
+    "aurekhobo": 4,
+    "merkhaubo": 4,
+    "khaubaluk": 2,
+    "mekhaurel": 1,
+    "khaobako": 1,
+    "mekobaluk": 1,
+    "aurekomest": 3,
+    "mekaurelo": 1,
+    "aurelkomest": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 129,
+  "energy": 20,
+  "last_reproduced_pass": 454,
+  "arc": {
+    "about": [
+      "concept: salthos_mediator_line"
+    ],
+    "needs": [
+      "contacts"
+    ],
+    "context": "temple",
+    "premise": "Mekhaubo has stopped cross-referencing the temple's records against market gossip, and started pushing for a formal proclamation - read at the temple, witnessed by both houses - settling the Salthos line's mediator claim outright, whatever the archive does or doesn't say.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

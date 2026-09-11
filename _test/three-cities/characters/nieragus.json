@@ -1,0 +1,170 @@
+{
+  "name": "Nieragus",
+  "origin": "Salthos Cruzados",
+  "location": "Salthos Cruzados",
+  "backstory": "Child of Nierius and Magus in Salthos Cruzados; raised alongside walks the transit route's Salthos stretch at dawn..., having heard about Birth Of Darnakus.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "temple, salthos",
+      "items": [
+        "location: terfila",
+        "location: salthos_cruzados",
+        "conflict: CONFLICT-02",
+        "tale: forliamus_log_crossing_war",
+        "concept: forliamus_betrothal_offer",
+        "concept: toll_ledger_arrears",
+        "tale: salthos_cruzados",
+        "tale: toll_ledger_arrears",
+        "concept: crossing_market_roof",
+        "concept: temple_of_the_crossing",
+        "concept: crossing_toll_dispute",
+        "tale: gorff",
+        "conflict: CONFLICT-01",
+        "location: gorff",
+        "concept: salthos_mediator_line",
+        "tale: terfila",
+        "tale: gorff_ledger_crossing_war",
+        "tale: birth_of_darnukas",
+        "tale: birth_of_niemoran",
+        "conflict: CONFLICT-03",
+        "tale: birth_of_darnakus"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Heard that Darius and Niemus now have a child, Darnus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 142
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Nakus and Prince Doran now have a child, Dorakus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 142
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Fenserika and Darius now have a child, Darika.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 142
+        }
+      },
+      "Learned that Magus has died.",
+      {
+        "text": "Had a child with Niemoran, named Nieragan.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 325
+        }
+      },
+      {
+        "text": "Had a child with Dorakus, named Nieradus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 367
+        }
+      },
+      {
+        "text": "Heard that Fenserika and Niekus now have a child, Fenekus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 384
+        }
+      },
+      "Learned that Dorakus has died.",
+      "Learned that Fenserika has died.",
+      "Learned that Niemius has died.",
+      {
+        "text": "Heard that Darnakus and Niemoran now have a child, Niemornak.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 426
+        }
+      },
+      {
+        "text": "Heard that Niekus and Nieragan now have a child, Nierakus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 489
+        }
+      },
+      "Learned that Niemoran has died."
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "measures a life by whether CONFLICT-03 is still remembered rightly",
+    "wasted_life": "forgetting what CONFLICT-03 actually meant, the way most people already have",
+    "anchor": "conflict: CONFLICT-03",
+    "origin": "derived",
+    "trusts": "verification",
+    "distrusts": "anyone who sounds certain"
+  },
+  "life": {
+    "lived": 33,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "transit_route",
+      "location": "Salthos Cruzados",
+      "routine_actions": "opens the temple each dawn, keeps the old rites going out of duty more than certainty, and quietly notes down which pilgrim stories don't match",
+      "weight": 50.0
+    },
+    {
+      "context": "temple",
+      "location": "Salthos Cruzados",
+      "routine_actions": "opens the temple each dawn, keeps the old rites going out of duty more than certainty, and quietly notes down which pilgrim stories don't match",
+      "weight": 50.0
+    }
+  ],
+  "parents": [
+    "nierius",
+    "magus"
+  ],
+  "partners": {
+    "fenserika": 3,
+    "nierius": 2,
+    "darnus": 1,
+    "darika": 1,
+    "niergus": 1,
+    "niemius": 3,
+    "darnakus": 1,
+    "dorakus": 3,
+    "fenrius": 2,
+    "darnukas": 1,
+    "niemoran": 4,
+    "niekus": 3,
+    "dornakus": 2,
+    "nakoran": 1,
+    "dorukus": 1,
+    "darnarika": 2,
+    "nakorika": 2,
+    "dornarika": 1,
+    "dornarius": 1,
+    "nieradus": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 142,
+  "energy": 20,
+  "last_reproduced_pass": 367,
+  "arc": {
+    "about": [
+      "conflict: CONFLICT-03"
+    ],
+    "needs": [
+      "expertise"
+    ],
+    "context": "temple",
+    "premise": "Nieragus has stopped trying to work out from pilgrims' scattered questions whether CONFLICT-03 really happened the way either house tells it, and started raising a joint marker at the temple - both houses' accounts carved side by side, settled by standing together rather than by proof.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

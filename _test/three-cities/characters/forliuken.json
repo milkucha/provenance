@@ -1,0 +1,154 @@
+{
+  "name": "Forliuken",
+  "origin": "Terfila",
+  "location": "Terfila",
+  "backstory": "Child of Tamuken and Forliazco; raised in Terfila on settles the house's accounts at the market stalls..., and carries some knowledge of Gorff.",
+  "knowledge": {
+    "education": {
+      "percent": 45,
+      "mode": "random",
+      "topic": null,
+      "items": [
+        "tale: birth_of_darnus",
+        "concept: crossing_toll_dispute",
+        "tale: forliamus_betrothal_offer",
+        "tale: gorff_ledger_crossing_war",
+        "location: terfila",
+        "concept: temple_of_the_crossing",
+        "tale: forliamus_log_crossing_war",
+        "tale: death_of_darius",
+        "location: gorff",
+        "tale: crossing_market_roof",
+        "tale: terfila",
+        "concept: forliamus_betrothal_offer",
+        "concept: salthos_mediator_line",
+        "concept: crossing_market_roof",
+        "tale: birth_of_darika",
+        "conflict: CONFLICT-02",
+        "tale: gorff",
+        "tale: birth_of_forliarlo"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Heard that Trezco and Tamuken now have a child, Tamuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 67
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Trezco and Forliamus now have a child, Forliazco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 67
+        }
+      },
+      {
+        "text": "Heard that Forliazco and Farlo now have a child, Farliazco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 78
+        }
+      },
+      "Learned that Tamuken has died.",
+      {
+        "text": "Heard that Forliazco and Farmuken now have a child, Forliamuk.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 104
+        }
+      },
+      {
+        "text": "Had a child with Forliarlo, named Forliukar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 111
+        }
+      },
+      "Learned that Trezco has died.",
+      {
+        "text": "Heard that Forliarlo and Tamuzco now have a child, Forliauzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 156
+        }
+      },
+      "Learned that Farmuken has died.",
+      {
+        "text": "Heard that Farliazco and Forliukar now have a child, Farliukar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 176
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts it worthwhile only by paying real attention to Birth Of Darika",
+    "wasted_life": "letting Birth Of Darika slip past unexamined, the way it's easiest to",
+    "anchor": "tale: birth_of_darika",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 30,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "makes the walk between Terfila and the crossing when there's nothing better to do at the docks, and lingers by the temple a beat longer than the walk requires.",
+      "weight": 33.33
+    },
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "makes the walk between Terfila and the crossing when there's nothing better to do at the docks, and lingers by the temple a beat longer than the walk requires.",
+      "weight": 33.33
+    },
+    {
+      "context": "transit_route",
+      "location": "Terfila",
+      "routine_actions": "makes the walk between Terfila and the crossing when there's nothing better to do at the docks, and lingers by the temple a beat longer than the walk requires.",
+      "weight": 33.33
+    }
+  ],
+  "parents": [
+    "tamuken",
+    "forliazco"
+  ],
+  "partners": {
+    "forliamus": 2,
+    "trezco": 3,
+    "farlo": 2,
+    "farmuken": 5,
+    "forliazco": 4,
+    "tamuzco": 3,
+    "forliarlo": 5,
+    "farliazco": 1,
+    "forliukar": 3,
+    "trezarlo": 3
+  },
+  "partners_quality": {},
+  "birth_pass": 67,
+  "energy": 20,
+  "last_reproduced_pass": 111,
+  "arc": {
+    "about": [
+      "tale: birth_of_darika"
+    ],
+    "needs": [
+      "news"
+    ],
+    "context": "market",
+    "premise": "Forliuken wants the story of that birth told straight at the market stalls, where it's already been garbled twice over - not settled for all time, just gotten right the next time someone tells it.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

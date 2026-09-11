@@ -1,0 +1,160 @@
+{
+  "name": "Mekhaubest",
+  "origin": "Gorff",
+  "location": "Gorff",
+  "backstory": "Child of Khaubestro and Mekhaurel; grew up around takes stonework commissions at the market each morning,... in Gorff, and knows something of Birth Of Fenarnus 2.",
+  "knowledge": {
+    "education": {
+      "percent": 50,
+      "mode": "skewed",
+      "topic": "tollhouse, transit",
+      "items": [
+        "tale: birth_of_niergus",
+        "tale: crossing_market_roof",
+        "tale: gorff",
+        "concept: crossing_market_roof",
+        "tale: forliamus_betrothal_offer",
+        "tale: death_of_prince_doran",
+        "tale: birth_of_khaumestro",
+        "tale: death_of_nakus",
+        "location: salthos_cruzados",
+        "tale: birth_of_nakoran",
+        "tale: birth_of_merkhaubo",
+        "tale: birth_of_nieragus",
+        "conflict: CONFLICT-01",
+        "tale: gorff_ledger_crossing_war",
+        "tale: toll_ledger_arrears",
+        "tale: birth_of_nierius",
+        "tale: birth_of_niemoruk",
+        "concept: forliamus_betrothal_offer",
+        "tale: birth_of_tamuzco",
+        "conflict: CONFLICT-02",
+        "tale: death_of_niergus",
+        "tale: birth_of_darnakus",
+        "concept: toll_ledger_arrears",
+        "concept: salthos_mediator_line",
+        "tale: birth_of_darika",
+        "conflict: CONFLICT-03",
+        "tale: death_of_darius",
+        "concept: crossing_toll_dispute",
+        "location: gorff",
+        "tale: birth_of_farmuken",
+        "tale: birth_of_mekhaubo",
+        "tale: death_of_mekaluko",
+        "tale: birth_of_doraknus",
+        "tale: birth_of_trezarlo",
+        "tale: birth_of_nieradus",
+        "tale: birth_of_dornarika",
+        "tale: birth_of_khaobako",
+        "tale: birth_of_mekoboro"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Heard that Mekoboro and Khaubaluk now have a child, Mekobaluk.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 319
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Heard that Merluko and Khaubalo now have a child, Khaubaluk.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 319
+        }
+      },
+      {
+        "text": "Grew up hearing: Learned that Khaubalo has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 319
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Grew up hearing: Had a child with Khaubalo, named Khaumestro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 319
+        }
+      },
+      {
+        "text": "Heard that Mekhaurel and Khaobako now have a child, Mekhaobako.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 334
+        }
+      },
+      "Learned that Aureboro has died.",
+      {
+        "text": "Heard that Khaobako and Mekhaurel now have a child, Mekhaobera.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 435
+        }
+      },
+      "Learned that Khaubestro has died."
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only by making Birth Of Trezarlo their own concern",
+    "wasted_life": "treating Birth Of Trezarlo as someone else's concern",
+    "anchor": "tale: birth_of_trezarlo",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 13,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Gorff",
+      "routine_actions": "spends mornings in the records annex, still working out which claims are worth cross-checking twice",
+      "weight": 50.0
+    },
+    {
+      "context": "temple",
+      "location": "Gorff",
+      "routine_actions": "spends mornings in the records annex, still working out which claims are worth cross-checking twice",
+      "weight": 50.0
+    }
+  ],
+  "parents": [
+    "khaubestro",
+    "mekhaurel"
+  ],
+  "partners": {
+    "auroboro": 1,
+    "aureboro": 3,
+    "khaubestro": 1,
+    "aurekobo": 1,
+    "khaumestro": 1,
+    "aurekhobo": 3,
+    "khaubaluk": 2,
+    "mekhaurel": 1,
+    "mekaurelo": 1,
+    "aureskomest": 1,
+    "khaubekho": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 319,
+  "energy": 20,
+  "arc": {
+    "about": [
+      "conflict: CONFLICT-03"
+    ],
+    "needs": [
+      "expertise"
+    ],
+    "context": "temple",
+    "premise": "Mekhaubest has stopped searching the temple's own archive for a record of the Salthos house's mediator role, and started actually reorganizing the archive itself - shelves rebuilt, patch-records re-filed - so whatever answer does exist won't stay buried by the mess around it.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

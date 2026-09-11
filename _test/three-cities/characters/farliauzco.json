@@ -1,0 +1,215 @@
+{
+  "name": "Farliauzco",
+  "origin": "Terfila",
+  "location": "Terfila",
+  "backstory": "Child of Forliauzco and Farliazco; raised in Terfila on unloads crates at the market stalls through the..., and carries some knowledge of Birth Of Dornarius.",
+  "knowledge": {
+    "education": {
+      "percent": 50,
+      "mode": "skewed",
+      "topic": "tollhouse",
+      "items": [
+        "location: terfila",
+        "location: salthos_cruzados",
+        "concept: salthos_mediator_line",
+        "tale: forliamus_betrothal_offer",
+        "tale: birth_of_niemoruk",
+        "tale: salthos_cruzados",
+        "tale: birth_of_darnakus",
+        "tale: birth_of_niergus",
+        "concept: forliamus_betrothal_offer",
+        "tale: crossing_market_roof",
+        "concept: temple_of_the_crossing",
+        "conflict: CONFLICT-03",
+        "concept: crossing_toll_dispute",
+        "tale: terfila",
+        "tale: birth_of_fenarnus",
+        "tale: gorff_ledger_crossing_war",
+        "concept: toll_ledger_arrears",
+        "tale: birth_of_fenrius",
+        "tale: birth_of_nierius",
+        "tale: forliamus_log_crossing_war",
+        "tale: birth_of_tamuzco",
+        "tale: birth_of_nieradus",
+        "tale: death_of_forliarlo",
+        "tale: birth_of_dornarius",
+        "tale: death_of_dorakus",
+        "tale: birth_of_darinak",
+        "tale: death_of_darnukas",
+        "tale: gorff",
+        "conflict: CONFLICT-01"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Grew up hearing: Had a child with Tamuken, named Forliuken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 205
+        }
+      },
+      {
+        "text": "Grew up hearing: Had a child with Forliukar, named Farliukar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 205
+        }
+      },
+      {
+        "text": "Heard that Forliauzco and Forliamuk now have a child, Forliauken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 216
+        }
+      },
+      {
+        "text": "Heard that Forliauzco and Farliazco now have a child, Forliuzazco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 254
+        }
+      },
+      {
+        "text": "Heard that Tamuzco and Farliazco now have a child, Farliuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 306
+        }
+      },
+      {
+        "text": "Heard that Forliamuk and Tamuzco now have a child, Tamuzmuken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 346
+        }
+      },
+      "Learned that Forliamuk has died.",
+      {
+        "text": "Heard that Tamuzaken and Farliukar now have a child, Tamuzukar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 366
+        }
+      },
+      {
+        "text": "Had a child with Tamuzarlo, named Farliauzar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 369
+        }
+      },
+      {
+        "text": "Heard that Forliauzco and Farliazco now have a child, Farliazuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 388
+        }
+      },
+      {
+        "text": "Heard that Forliauken and Farliukar now have a child, Forliaukarla.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 389
+        }
+      },
+      {
+        "text": "Heard that Forliauzco and Farliukar now have a child, Forliaukarli.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 405
+        }
+      },
+      {
+        "text": "Had a child with Tamuzarlo, named Tamuzauzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 428
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only by making Death Of Forliarlo their own concern",
+    "wasted_life": "treating Death Of Forliarlo as someone else's concern",
+    "anchor": "tale: death_of_forliarlo",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 33,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "works the morning tide unloading crates at the stalls, swapping gossip for cheap drink, and picking up the knack of telling the tollhouse story differently to whoever's listening.",
+      "weight": 20.0
+    },
+    {
+      "context": "transit_route",
+      "location": "Terfila",
+      "routine_actions": "works the morning tide unloading crates at the stalls, swapping gossip for cheap drink, and picking up the knack of telling the tollhouse story differently to whoever's listening.",
+      "weight": 20.0
+    },
+    {
+      "context": "transit_route",
+      "location": "Terfila",
+      "routine_actions": "works the morning tide unloading crates at the stalls, swapping gossip for cheap drink, and picking up the knack of telling the tollhouse story differently to whoever's listening.",
+      "weight": 20.0
+    },
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "works the morning tide unloading crates at the stalls, swapping gossip for cheap drink, and picking up the knack of telling the tollhouse story differently to whoever's listening.",
+      "weight": 20.0
+    },
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "works the morning tide unloading crates at the stalls, swapping gossip for cheap drink, and picking up the knack of telling the tollhouse story differently to whoever's listening.",
+      "weight": 20.0
+    }
+  ],
+  "parents": [
+    "forliauzco",
+    "farliazco"
+  ],
+  "partners": {
+    "forliazco": 1,
+    "tamuzco": 1,
+    "forliuken": 1,
+    "farliazco": 4,
+    "forliamuk": 3,
+    "forliukar": 1,
+    "forliauzco": 1,
+    "farliukar": 4,
+    "forliauken": 2,
+    "tamuzaken": 2,
+    "trezukar": 3,
+    "forliuzazco": 5,
+    "tamuzarlo": 4,
+    "forliaukar": 1,
+    "forliaukarla": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 205,
+  "energy": 20,
+  "last_reproduced_pass": 428,
+  "arc": {
+    "about": [
+      "tale: death_of_forliarlo"
+    ],
+    "needs": [
+      "news"
+    ],
+    "context": "market",
+    "premise": "Farliauzco wants that death properly marked in the family's own accounting rather than left as a rumor traded along with the goods.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

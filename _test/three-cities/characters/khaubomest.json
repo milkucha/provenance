@@ -1,0 +1,149 @@
+{
+  "name": "Khaubomest",
+  "origin": "Gorff",
+  "location": "Gorff",
+  "backstory": "Child of Khaubaluk and Aurekomest; grew up around takes stonework commissions at the market each morning,... in Gorff, and knows something of Birth Of Darnarika.",
+  "knowledge": {
+    "education": {
+      "percent": 50,
+      "mode": "skewed",
+      "topic": "salthos",
+      "items": [
+        "concept: toll_ledger_arrears",
+        "tale: death_of_niemius",
+        "location: gorff",
+        "tale: birth_of_darnus",
+        "tale: forliamus_log_crossing_war",
+        "tale: death_of_darnakus",
+        "tale: birth_of_niergus",
+        "concept: forliamus_betrothal_offer",
+        "tale: birth_of_nieragan",
+        "tale: birth_of_nakorika",
+        "tale: birth_of_niekus",
+        "conflict: CONFLICT-02",
+        "tale: forliamus_betrothal_offer",
+        "concept: crossing_market_roof",
+        "tale: toll_ledger_arrears",
+        "concept: crossing_toll_dispute",
+        "tale: death_of_fenserika",
+        "conflict: CONFLICT-01",
+        "tale: salthos_cruzados",
+        "tale: birth_of_darika",
+        "tale: birth_of_mekoboro",
+        "tale: crossing_market_roof",
+        "tale: terfila",
+        "location: terfila",
+        "tale: birth_of_niemornak",
+        "tale: birth_of_merkhaubo",
+        "tale: birth_of_fenarnus",
+        "tale: birth_of_nieradus",
+        "tale: birth_of_tamuzco",
+        "tale: gorff",
+        "conflict: CONFLICT-03",
+        "tale: birth_of_farliauzco",
+        "location: salthos_cruzados",
+        "concept: salthos_mediator_line",
+        "tale: birth_of_dornarika",
+        "tale: birth_of_darnarika",
+        "tale: birth_of_fenriukas",
+        "tale: death_of_mekaluko",
+        "tale: birth_of_dornarius",
+        "tale: death_of_auroboro",
+        "tale: birth_of_dorukus",
+        "tale: birth_of_niemius",
+        "tale: birth_of_trezukuzco",
+        "tale: birth_of_doraknus"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Had a child with Aurelkhau, named Aurelkomest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 401
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Heard that Aurebalo and Mekoboro now have a child, Aurekobo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 401
+        }
+      },
+      {
+        "text": "Heard that Aurekomest and Aurelkhau now have a child, Aureskomest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 412
+        }
+      },
+      {
+        "text": "Heard that Khaubaluk and Aurekhobo now have a child, Khaubekho.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 434
+        }
+      },
+      {
+        "text": "Heard that Khaubaluk and Mekhaobako now have a child, Khaubomako.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 476
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "measures a life by whether Salthos Cruzados is still remembered rightly",
+    "wasted_life": "forgetting what Salthos Cruzados actually meant, the way most people already have",
+    "anchor": "tale: salthos_cruzados",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 3,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Gorff",
+      "routine_actions": "drives the caravan route some weeks, pays the toll, listens for news along the way",
+      "weight": 33.33
+    },
+    {
+      "context": "temple",
+      "location": "Gorff",
+      "routine_actions": "drives the caravan route some weeks, pays the toll, listens for news along the way",
+      "weight": 33.33
+    },
+    {
+      "context": "transit_route",
+      "location": "Gorff",
+      "routine_actions": "drives the caravan route some weeks, pays the toll, listens for news along the way",
+      "weight": 33.33
+    }
+  ],
+  "parents": [
+    "khaubaluk",
+    "aurekomest"
+  ],
+  "partners": {
+    "mekoboro": 1,
+    "khaoboro": 1,
+    "khaumestro": 1,
+    "merkhaubo": 1,
+    "khaubaluk": 1,
+    "mekhaurel": 1,
+    "mekhaubest": 1,
+    "mekhaobako": 1,
+    "mekaurobal": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 401,
+  "energy": 20
+}

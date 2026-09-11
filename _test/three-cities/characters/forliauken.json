@@ -1,0 +1,195 @@
+{
+  "name": "Forliauken",
+  "origin": "Terfila",
+  "location": "Terfila",
+  "backstory": "Child of Forliauzco and Forliamuk, in Terfila; grew up around walks the transit route between Terfila and the..., and picked up a little of CONFLICT-01 along the way.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "tollhouse, forliamus",
+      "items": [
+        "location: salthos_cruzados",
+        "conflict: CONFLICT-02",
+        "concept: salthos_mediator_line",
+        "tale: birth_of_niemoruk",
+        "tale: death_of_darius",
+        "tale: birth_of_niemoran",
+        "concept: toll_ledger_arrears",
+        "tale: forliamus_betrothal_offer",
+        "tale: salthos_cruzados",
+        "concept: forliamus_betrothal_offer",
+        "tale: birth_of_dornarius",
+        "tale: birth_of_darnus",
+        "tale: birth_of_forliarlo",
+        "tale: birth_of_darnakus",
+        "tale: death_of_darnus",
+        "tale: terfila",
+        "concept: temple_of_the_crossing",
+        "tale: birth_of_khaoboro",
+        "conflict: CONFLICT-01",
+        "tale: birth_of_nieradus",
+        "tale: birth_of_niekus"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Heard that Forliauzco and Farliazco now have a child, Farliauzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 216
+        }
+      },
+      {
+        "text": "Grew up hearing: Learned that Forliarlo has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 216
+        }
+      },
+      {
+        "text": "Heard that Tamuzco and Forliamuk now have a child, Tamuzaken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 233
+        }
+      },
+      {
+        "text": "Heard that Forliauzco and Farliazco now have a child, Forliuzazco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 254
+        }
+      },
+      {
+        "text": "Had a child with Trezukar, named Forliaukar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 289
+        }
+      },
+      {
+        "text": "Heard that Forliamuk and Tamuzco now have a child, Tamuzmuken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 346
+        }
+      },
+      "Learned that Forliamuk has died.",
+      {
+        "text": "Heard that Tamuzco and Trezukar now have a child, Trezukuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 364
+        }
+      },
+      {
+        "text": "Heard that Trezukar and Tamuzaken now have a child, Tamuzakar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 382
+        }
+      },
+      {
+        "text": "Heard that Forliauzco and Farliazco now have a child, Farliazuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 388
+        }
+      },
+      {
+        "text": "Had a child with Farliukar, named Forliaukarla.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 389
+        }
+      },
+      {
+        "text": "Heard that Trezukar and Tamuzaken now have a child, Trezukaken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 393
+        }
+      },
+      {
+        "text": "Heard that Forliauzco and Farliukar now have a child, Forliaukarli.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 405
+        }
+      },
+      "Learned that Farliukar has died.",
+      "Learned that Trezukar has died.",
+      {
+        "text": "Had a child with Tamuzukar, named Tamuzukauk.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 495
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "measures a life by whether Death Of Darnus is still remembered rightly",
+    "wasted_life": "forgetting what Death Of Darnus actually meant, the way most people already have",
+    "anchor": "tale: death_of_darnus",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 32,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "transit_route",
+      "location": "Terfila",
+      "routine_actions": "makes the walk between Terfila and the crossing when there's nothing better to do at the docks, and lingers by the temple a beat longer than the walk requires.",
+      "weight": 100.0
+    }
+  ],
+  "parents": [
+    "forliauzco",
+    "forliamuk"
+  ],
+  "partners": {
+    "forliazco": 2,
+    "farliazco": 2,
+    "forliamuk": 1,
+    "forliukar": 2,
+    "trezarlo": 2,
+    "forliauzco": 3,
+    "farliukar": 3,
+    "farliauzco": 2,
+    "tamuzaken": 3,
+    "trezukar": 3,
+    "tamuzarlo": 1,
+    "forliaukar": 1,
+    "farliuzco": 1,
+    "trezukuzco": 1,
+    "tamuzukar": 3,
+    "farliauzar": 1,
+    "forliaukarla": 1,
+    "tamuzauzco": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 216,
+  "energy": 20,
+  "last_reproduced_pass": 495,
+  "arc": {
+    "about": [
+      "concept: temple_of_the_crossing"
+    ],
+    "needs": [
+      "contacts"
+    ],
+    "context": "transit_route",
+    "premise": "Forliauken wants to track down someone old enough to say plainly whether the temple's first stones really were sailors' work or masons' work, rather than let the transit-route version - whichever it happens to be that week - stand unquestioned.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

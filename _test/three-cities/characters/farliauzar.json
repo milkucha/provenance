@@ -1,0 +1,161 @@
+{
+  "name": "Farliauzar",
+  "origin": "Terfila",
+  "location": "Terfila",
+  "backstory": "Child of Tamuzarlo and Farliauzco; grew up around unloads crates at the market stalls through the... in Terfila, and knows something of Birth Of Dorakus 2.",
+  "knowledge": {
+    "education": {
+      "percent": 50,
+      "mode": "skewed",
+      "topic": "tollhouse",
+      "items": [
+        "tale: birth_of_darinak",
+        "tale: forliamus_betrothal_offer",
+        "tale: birth_of_nieradus",
+        "tale: birth_of_darnakus",
+        "tale: forliamus_log_crossing_war",
+        "tale: birth_of_nakorika",
+        "location: gorff",
+        "tale: birth_of_khaumestro",
+        "tale: terfila",
+        "conflict: CONFLICT-02",
+        "tale: death_of_forliarlo",
+        "tale: birth_of_fenrius",
+        "tale: gorff",
+        "tale: salthos_cruzados",
+        "tale: death_of_darius",
+        "concept: temple_of_the_crossing",
+        "conflict: CONFLICT-03",
+        "tale: birth_of_dorakus",
+        "tale: birth_of_darnus",
+        "tale: birth_of_niemoruk",
+        "tale: birth_of_forliukar",
+        "tale: birth_of_nieragan",
+        "concept: crossing_market_roof",
+        "tale: birth_of_dorukus",
+        "conflict: CONFLICT-01",
+        "tale: birth_of_forliarlo",
+        "tale: death_of_dorakus",
+        "tale: gorff_ledger_crossing_war",
+        "tale: birth_of_dornarius",
+        "location: salthos_cruzados",
+        "concept: toll_ledger_arrears",
+        "tale: death_of_darnukas",
+        "tale: birth_of_niemius",
+        "concept: forliamus_betrothal_offer",
+        "tale: birth_of_niergus",
+        "tale: death_of_niemius",
+        "location: terfila",
+        "tale: death_of_farlo",
+        "tale: death_of_forliamus",
+        "tale: birth_of_nierius",
+        "tale: birth_of_fenarnus",
+        "tale: birth_of_darika",
+        "tale: birth_of_niekus",
+        "tale: birth_of_fenekus",
+        "concept: salthos_mediator_line",
+        "tale: birth_of_nakoran",
+        "concept: crossing_toll_dispute",
+        "tale: birth_of_farmuken",
+        "tale: death_of_tamuken",
+        "tale: death_of_trezarlo",
+        "tale: birth_of_tamuzmuken",
+        "tale: birth_of_nieragus",
+        "tale: death_of_niergus",
+        "tale: death_of_khaubestro",
+        "tale: death_of_trezco",
+        "tale: birth_of_khaobako",
+        "tale: birth_of_khaubestro",
+        "tale: toll_ledger_arrears"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Learned that Forliamuk has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 369
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Forliauzco and Forliamuk now have a child, Forliauken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 369
+        }
+      },
+      {
+        "text": "Heard that Tamuzarlo and Farliauzco now have a child, Tamuzauzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 428
+        }
+      },
+      "Learned that Farliauzco has died."
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only by making Birth Of Darnakus their own concern",
+    "wasted_life": "treating Birth Of Darnakus as someone else's concern",
+    "anchor": "tale: birth_of_darnakus",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 17,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "tags along on the house's morning accounts at the market stalls, starting to press suppliers for terms himself, and picking up the family's version of the tollhouse story along with the ledger.",
+      "weight": 50.0
+    },
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "tags along on the house's morning accounts at the market stalls, starting to press suppliers for terms himself, and picking up the family's version of the tollhouse story along with the ledger.",
+      "weight": 50.0
+    }
+  ],
+  "parents": [
+    "tamuzarlo",
+    "farliauzco"
+  ],
+  "partners": {
+    "forliukar": 1,
+    "forliauzco": 1,
+    "farliukar": 1,
+    "forliauken": 2,
+    "tamuzaken": 2,
+    "forliuzazco": 1,
+    "tamuzarlo": 2,
+    "forliaukar": 2,
+    "farliuzco": 1,
+    "trezukuzco": 2,
+    "tamuzukar": 1,
+    "tamuzakar": 2,
+    "farliazuzco": 1,
+    "forliaukarla": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 369,
+  "energy": 20,
+  "arc": {
+    "about": [
+      "conflict: CONFLICT-01"
+    ],
+    "needs": [
+      "contacts"
+    ],
+    "context": "market",
+    "premise": "Farliauzar wants to find someone who actually remembers how Gorff first took charge of the tollhouse, rather than accept the market's assumption that it's simply always been that way.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

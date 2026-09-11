@@ -1,0 +1,142 @@
+{
+  "name": "Tamuzukauk",
+  "origin": "Terfila",
+  "location": "Terfila",
+  "backstory": "Child of Tamuzukar and Forliauken; raised in Terfila on walks the transit route between Terfila and the..., and carries some knowledge of Death Of Darnakus 2.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "tollhouse, forliamus",
+      "items": [
+        "tale: death_of_magus",
+        "tale: birth_of_trezarlo",
+        "concept: forliamus_betrothal_offer",
+        "tale: birth_of_merkhaubo",
+        "tale: birth_of_darinak",
+        "tale: birth_of_dornarika",
+        "tale: birth_of_darnakus",
+        "tale: forliamus_betrothal_offer",
+        "location: gorff",
+        "tale: birth_of_nierius",
+        "location: salthos_cruzados",
+        "tale: birth_of_mekaluko",
+        "tale: birth_of_khaumestro",
+        "tale: death_of_trezco",
+        "tale: birth_of_dorakus",
+        "concept: crossing_toll_dispute",
+        "tale: birth_of_fenarnus",
+        "conflict: CONFLICT-03",
+        "tale: birth_of_farmuken",
+        "tale: terfila",
+        "tale: gorff_ledger_crossing_war",
+        "tale: birth_of_niemoruk",
+        "conflict: CONFLICT-01",
+        "tale: death_of_darnus",
+        "tale: birth_of_darika",
+        "tale: birth_of_mekobaluk",
+        "tale: birth_of_mekoboro",
+        "tale: gorff",
+        "tale: death_of_trezarlo",
+        "tale: birth_of_niemoran",
+        "location: terfila",
+        "tale: birth_of_nieradus",
+        "tale: death_of_darius",
+        "tale: birth_of_dornakus",
+        "tale: birth_of_tamuzmuken",
+        "tale: birth_of_dornarius",
+        "tale: birth_of_khaubestro",
+        "concept: salthos_mediator_line",
+        "tale: birth_of_khaoboro",
+        "tale: birth_of_darnus",
+        "tale: birth_of_niemius",
+        "tale: birth_of_niergus",
+        "tale: death_of_niemius",
+        "tale: birth_of_darnukas",
+        "tale: death_of_khaubestro",
+        "tale: birth_of_trezukuzco",
+        "tale: birth_of_trezukaken",
+        "tale: death_of_dorakus",
+        "tale: birth_of_tamuzco",
+        "tale: birth_of_forliukar",
+        "tale: birth_of_mekaurelu",
+        "tale: birth_of_mekhaubo",
+        "tale: birth_of_farliuzco",
+        "tale: birth_of_tamuzakar",
+        "tale: birth_of_nakorika",
+        "tale: death_of_khaoboro",
+        "tale: birth_of_tamuzauzco",
+        "tale: birth_of_farliauzar",
+        "tale: birth_of_fenriukas",
+        "tale: birth_of_niekus",
+        "concept: temple_of_the_crossing"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Heard that Forliauken and Farliukar now have a child, Forliaukarla.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 495
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Heard that Forliamuk and Tamuzco now have a child, Tamuzmuken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 495
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Grew up hearing: Grew up hearing: Heard that Trezco and Tamuken now have a child, Tamuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 495
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Forliauzco and Farliukar now have a child, Forliaukarli.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 495
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "holds themself accountable to Gorff, whatever it costs",
+    "wasted_life": "one that never had to answer for Gorff",
+    "anchor": "tale: gorff",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 0,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "transit_route",
+      "location": "Terfila",
+      "routine_actions": "makes the walk between Terfila and the crossing when there's nothing better to do at the docks, and lingers by the temple a beat longer than the walk requires.",
+      "weight": 100.0
+    }
+  ],
+  "parents": [
+    "tamuzukar",
+    "forliauken"
+  ],
+  "partners": {
+    "tamuzco": 1,
+    "trezukar": 1,
+    "farliuzco": 1,
+    "tamuzakar": 1,
+    "tamuzauzco": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 495
+}

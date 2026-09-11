@@ -1,0 +1,216 @@
+{
+  "name": "Tamuzukar",
+  "origin": "Terfila",
+  "location": "Terfila",
+  "backstory": "Child of Tamuzaken and Farliukar in Terfila; raised alongside walks the transit route between Terfila and the..., having heard about Death Of Magus.",
+  "knowledge": {
+    "education": {
+      "percent": 50,
+      "mode": "skewed",
+      "topic": "tollhouse",
+      "items": [
+        "conflict: CONFLICT-03",
+        "concept: forliamus_betrothal_offer",
+        "tale: birth_of_trezarlo",
+        "tale: birth_of_fenarnus",
+        "tale: death_of_niemus",
+        "location: gorff",
+        "conflict: CONFLICT-01",
+        "tale: birth_of_dornarika",
+        "concept: crossing_toll_dispute",
+        "tale: birth_of_fenrius",
+        "tale: birth_of_nierius",
+        "tale: birth_of_dorakus",
+        "tale: gorff",
+        "location: terfila",
+        "tale: birth_of_forliarlo",
+        "tale: birth_of_khaubestro",
+        "conflict: CONFLICT-02",
+        "concept: temple_of_the_crossing",
+        "tale: death_of_darika",
+        "tale: birth_of_darika",
+        "tale: birth_of_farliauzco",
+        "concept: salthos_mediator_line",
+        "tale: birth_of_darinak",
+        "tale: birth_of_niergus",
+        "tale: death_of_darnakus",
+        "tale: birth_of_darnakus",
+        "tale: forliamus_betrothal_offer",
+        "tale: birth_of_farmuken",
+        "tale: birth_of_dornakus",
+        "tale: birth_of_niemoruk",
+        "concept: crossing_market_roof",
+        "tale: birth_of_niemornak",
+        "tale: terfila",
+        "tale: birth_of_dornarius",
+        "tale: death_of_darius",
+        "concept: toll_ledger_arrears",
+        "tale: crossing_market_roof",
+        "tale: gorff_ledger_crossing_war",
+        "tale: birth_of_niemoran",
+        "tale: birth_of_niemius",
+        "tale: forliamus_log_crossing_war",
+        "tale: birth_of_khaumestro",
+        "tale: birth_of_darnus",
+        "tale: birth_of_mekoboro",
+        "tale: birth_of_tamuzarlo",
+        "tale: birth_of_darnarika",
+        "tale: death_of_trezco",
+        "tale: salthos_cruzados",
+        "tale: birth_of_tamuzmuken",
+        "tale: birth_of_mekaluko",
+        "tale: death_of_niergus",
+        "tale: birth_of_farliuzco",
+        "tale: death_of_trezarlo",
+        "tale: death_of_darnus",
+        "tale: birth_of_merkhaubo",
+        "tale: death_of_magus",
+        "tale: birth_of_trezukar",
+        "tale: death_of_tamuzco",
+        "tale: birth_of_mekobaluk",
+        "tale: death_of_niemius"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Grew up hearing: Had a child with Forliarlo, named Forliauzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 366
+        }
+      },
+      {
+        "text": "Grew up hearing: Learned that Trezarlo has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 366
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Grew up hearing: Heard that Trezco and Tamuken now have a child, Tamuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 366
+        }
+      },
+      {
+        "text": "Grew up hearing: Learned that Forliukar has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 366
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Forliamuk and Tamuzco now have a child, Tamuzmuken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 366
+        }
+      },
+      {
+        "text": "Grew up hearing: Learned that Tamuzco has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 366
+        }
+      },
+      {
+        "text": "Heard that Trezukar and Tamuzaken now have a child, Tamuzakar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 382
+        }
+      },
+      {
+        "text": "Heard that Forliauken and Farliukar now have a child, Forliaukarla.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 389
+        }
+      },
+      {
+        "text": "Heard that Trezukar and Tamuzaken now have a child, Trezukaken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 393
+        }
+      },
+      {
+        "text": "Heard that Forliauzco and Farliukar now have a child, Forliaukarli.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 405
+        }
+      },
+      "Learned that Farliukar has died.",
+      {
+        "text": "Had a child with Forliauken, named Tamuzukauk.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 495
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only by making Birth Of Khaumestro their own concern",
+    "wasted_life": "treating Birth Of Khaumestro as someone else's concern",
+    "anchor": "tale: birth_of_khaumestro",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 24,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "transit_route",
+      "location": "Terfila",
+      "routine_actions": "takes to the transit route himself now when a ship idles too long in port, and finds he still slows near the temple without quite meaning to.",
+      "weight": 100.0
+    }
+  ],
+  "parents": [
+    "tamuzaken",
+    "farliukar"
+  ],
+  "partners": {
+    "tamuzco": 1,
+    "forliarlo": 1,
+    "forliauzco": 1,
+    "farliukar": 2,
+    "forliauken": 4,
+    "tamuzaken": 2,
+    "trezukar": 2,
+    "tamuzarlo": 3,
+    "tamuzmuken": 1,
+    "trezukuzco": 2,
+    "farliauzar": 1,
+    "tamuzakar": 1,
+    "farliazuzco": 2,
+    "forliaukarla": 1,
+    "trezukaken": 2,
+    "tamuzauzco": 2
+  },
+  "partners_quality": {},
+  "birth_pass": 366,
+  "energy": 20,
+  "last_reproduced_pass": 495,
+  "arc": {
+    "about": [
+      "tale: birth_of_khaumestro"
+    ],
+    "needs": [
+      "news"
+    ],
+    "context": "transit_route",
+    "premise": "Tamuzukar wants that birth's account set right along the transit route before the version that's spreading hardens into the only one anyone remembers.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

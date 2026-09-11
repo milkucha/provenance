@@ -1,0 +1,150 @@
+{
+  "name": "Tamuzmuken",
+  "origin": "Terfila",
+  "location": "Terfila",
+  "backstory": "Child of Forliamuk and Tamuzco, in Terfila; grew up around haggles for cart space at the market before..., and picked up a little of Death Of Darnus 2 along the way.",
+  "knowledge": {
+    "education": {
+      "percent": 45,
+      "mode": "random",
+      "topic": null,
+      "items": [
+        "tale: birth_of_darnukas",
+        "tale: birth_of_niemoruk",
+        "concept: crossing_toll_dispute",
+        "conflict: CONFLICT-02",
+        "tale: birth_of_fenrius",
+        "conflict: CONFLICT-03",
+        "tale: birth_of_nierius",
+        "tale: crossing_market_roof",
+        "concept: forliamus_betrothal_offer",
+        "tale: birth_of_darnakus",
+        "concept: crossing_market_roof",
+        "tale: death_of_dorakus",
+        "tale: gorff",
+        "tale: death_of_darnus",
+        "tale: birth_of_dornarius",
+        "tale: birth_of_niemius",
+        "location: salthos_cruzados",
+        "concept: salthos_mediator_line",
+        "tale: birth_of_darnus",
+        "tale: birth_of_niergus",
+        "tale: terfila",
+        "concept: toll_ledger_arrears",
+        "tale: death_of_darius",
+        "tale: forliamus_log_crossing_war",
+        "tale: birth_of_fenarnus",
+        "tale: forliamus_betrothal_offer",
+        "tale: birth_of_mekoboro",
+        "tale: death_of_mekoboro",
+        "tale: birth_of_dorakus",
+        "tale: birth_of_niekus",
+        "tale: birth_of_forliarlo",
+        "tale: toll_ledger_arrears",
+        "tale: birth_of_niemoran",
+        "tale: birth_of_niemornak"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Learned that Trezco has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 346
+        }
+      },
+      {
+        "text": "Grew up hearing: Had a child with Farliukar, named Tamuzarlo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 346
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Forliauzco and Farliazco now have a child, Forliuzazco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 346
+        }
+      },
+      "Learned that Forliamuk has died.",
+      {
+        "text": "Heard that Tamuzco and Trezukar now have a child, Trezukuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 364
+        }
+      },
+      "Learned that Tamuzco has died."
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts it worthwhile only by paying real attention to Birth Of Nierius",
+    "wasted_life": "letting Birth Of Nierius slip past unexamined, the way it's easiest to",
+    "anchor": "tale: birth_of_nierius",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 11,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "makes the walk between Terfila and the crossing when there's nothing better to do at the docks, and lingers by the temple a beat longer than the walk requires.",
+      "weight": 33.33
+    },
+    {
+      "context": "transit_route",
+      "location": "Terfila",
+      "routine_actions": "makes the walk between Terfila and the crossing when there's nothing better to do at the docks, and lingers by the temple a beat longer than the walk requires.",
+      "weight": 33.33
+    },
+    {
+      "context": "transit_route",
+      "location": "Terfila",
+      "routine_actions": "makes the walk between Terfila and the crossing when there's nothing better to do at the docks, and lingers by the temple a beat longer than the walk requires.",
+      "weight": 33.33
+    }
+  ],
+  "parents": [
+    "forliamuk",
+    "tamuzco"
+  ],
+  "partners": {
+    "trezco": 1,
+    "tamuzco": 1,
+    "forliamuk": 1,
+    "forliauzco": 1,
+    "forliauken": 1,
+    "tamuzaken": 1,
+    "trezukar": 1,
+    "tamuzarlo": 1,
+    "forliaukar": 1,
+    "trezukuzco": 2,
+    "tamuzukar": 1,
+    "tamuzakar": 1,
+    "forliaukarli": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 346,
+  "energy": 20,
+  "arc": {
+    "about": [
+      "tale: birth_of_nierius"
+    ],
+    "needs": [
+      "contacts"
+    ],
+    "context": "transit_route",
+    "premise": "Tamuzmuken wants that birth carried properly to relations further down the transit route who've only heard it in passing.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

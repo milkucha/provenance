@@ -1,0 +1,167 @@
+{
+  "name": "Trezukar",
+  "origin": "Terfila",
+  "location": "Terfila",
+  "backstory": "Child of Trezarlo and Forliukar; grew up around settles the house's accounts at the market stalls... in Terfila, and knows something of Birth Of Merkhaubo.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "tollhouse, forliamus",
+      "items": [
+        "tale: birth_of_darnus",
+        "tale: death_of_niemius",
+        "tale: birth_of_mekaluko",
+        "concept: forliamus_betrothal_offer",
+        "tale: gorff_ledger_crossing_war",
+        "conflict: CONFLICT-02",
+        "tale: death_of_darius",
+        "tale: birth_of_darika",
+        "location: salthos_cruzados",
+        "concept: salthos_mediator_line",
+        "tale: birth_of_darinak",
+        "conflict: CONFLICT-03",
+        "tale: birth_of_darnakus",
+        "conflict: CONFLICT-01",
+        "tale: birth_of_merkhaubo",
+        "tale: death_of_farlo"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Learned that Farmuken has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 235
+        }
+      },
+      {
+        "text": "Grew up hearing: Learned that Farlo has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 235
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Tamuzco and Forliamuk now have a child, Tamuzaken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 235
+        }
+      },
+      "Learned that Forliukar has died.",
+      "Learned that Trezarlo has died.",
+      {
+        "text": "Had a child with Forliauken, named Forliaukar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 289
+        }
+      },
+      {
+        "text": "Had a child with Tamuzco, named Trezukuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 364
+        }
+      },
+      "Learned that Tamuzco has died.",
+      {
+        "text": "Had a child with Tamuzaken, named Tamuzakar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 382
+        }
+      },
+      {
+        "text": "Heard that Forliauken and Farliukar now have a child, Forliaukarla.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 389
+        }
+      },
+      {
+        "text": "Had a child with Tamuzaken, named Trezukaken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 393
+        }
+      },
+      {
+        "text": "Heard that Tamuzarlo and Farliauzco now have a child, Tamuzauzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 428
+        }
+      },
+      "Learned that Farliauzco has died."
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "holds themself accountable to Birth Of Darinak, whatever it costs",
+    "wasted_life": "one that never had to answer for Birth Of Darinak",
+    "anchor": "tale: birth_of_darinak",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 33,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "walks the transit route on his own errands when the harbor's dead time drags on, and can't pass the temple without pausing, the way the family always has.",
+      "weight": 50.0
+    },
+    {
+      "context": "transit_route",
+      "location": "Terfila",
+      "routine_actions": "walks the transit route on his own errands when the harbor's dead time drags on, and can't pass the temple without pausing, the way the family always has.",
+      "weight": 50.0
+    }
+  ],
+  "parents": [
+    "trezarlo",
+    "forliukar"
+  ],
+  "partners": {
+    "forliazco": 1,
+    "tamuzco": 3,
+    "forliuken": 1,
+    "forliamuk": 2,
+    "trezarlo": 1,
+    "forliauzco": 3,
+    "farliukar": 2,
+    "farliauzco": 3,
+    "forliauken": 3,
+    "tamuzaken": 4,
+    "forliuzazco": 4,
+    "tamuzarlo": 2,
+    "forliaukar": 1,
+    "farliuzco": 1,
+    "tamuzmuken": 1,
+    "tamuzukar": 2
+  },
+  "partners_quality": {},
+  "birth_pass": 235,
+  "energy": 20,
+  "last_reproduced_pass": 393,
+  "arc": {
+    "about": [
+      "tale: birth_of_darinak"
+    ],
+    "needs": [
+      "contacts"
+    ],
+    "context": "market",
+    "premise": "Trezukar wants word of that birth carried properly to the relations who haven't heard yet, rather than let it reach them secondhand and thin.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

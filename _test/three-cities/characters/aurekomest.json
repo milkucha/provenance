@@ -1,0 +1,163 @@
+{
+  "name": "Aurekomest",
+  "origin": "Gorff",
+  "location": "Gorff",
+  "backstory": "Child of Khaumestro and Aurekobo, in Gorff; grew up around drives a caravan up and down the transit..., and picked up a little of Birth Of Farliauzco along the way.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "tollhouse, gorff",
+      "items": [
+        "tale: forliamus_betrothal_offer",
+        "concept: salthos_mediator_line",
+        "tale: birth_of_tamuzco",
+        "tale: birth_of_darika",
+        "tale: forliamus_log_crossing_war",
+        "tale: death_of_fenserika",
+        "tale: birth_of_nieradus",
+        "tale: birth_of_nieragus",
+        "conflict: CONFLICT-03",
+        "tale: death_of_niemius",
+        "tale: salthos_cruzados",
+        "tale: birth_of_fenarnus",
+        "concept: temple_of_the_crossing",
+        "conflict: CONFLICT-02",
+        "tale: birth_of_nakorika",
+        "tale: crossing_market_roof",
+        "location: terfila",
+        "concept: crossing_market_roof",
+        "tale: birth_of_niergus",
+        "concept: toll_ledger_arrears",
+        "tale: birth_of_merkhaubo",
+        "tale: birth_of_nieragan",
+        "tale: death_of_darnakus",
+        "tale: death_of_darius",
+        "tale: birth_of_farliauzco"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Heard that Khaubalo and Merluko now have a child, Merkhaubo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 310
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Learned that Khaus has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 310
+        }
+      },
+      {
+        "text": "Had a child with Aurelkhau, named Aurelkomest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 363
+        }
+      },
+      "Learned that Khaumestro has died.",
+      {
+        "text": "Had a child with Khaubaluk, named Khaubomest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 401
+        }
+      },
+      {
+        "text": "Had a child with Aurelkhau, named Aureskomest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 412
+        }
+      },
+      {
+        "text": "Heard that Khaubaluk and Aurekhobo now have a child, Khaubekho.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 434
+        }
+      },
+      {
+        "text": "Heard that Khaubaluk and Mekhaobako now have a child, Khaubomako.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 476
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "holds themself accountable to Birth Of Merkhaubo, whatever it costs",
+    "wasted_life": "one that never had to answer for Birth Of Merkhaubo",
+    "anchor": "tale: birth_of_merkhaubo",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 23,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "transit_route",
+      "location": "Gorff",
+      "routine_actions": "walks the tollhouse's own stretch some mornings, listens for whatever news the road carries in",
+      "weight": 33.33
+    },
+    {
+      "context": "market",
+      "location": "Gorff",
+      "routine_actions": "walks the tollhouse's own stretch some mornings, listens for whatever news the road carries in",
+      "weight": 33.33
+    },
+    {
+      "context": "transit_route",
+      "location": "Gorff",
+      "routine_actions": "walks the tollhouse's own stretch some mornings, listens for whatever news the road carries in",
+      "weight": 33.33
+    }
+  ],
+  "parents": [
+    "khaumestro",
+    "aurekobo"
+  ],
+  "partners": {
+    "merluko": 1,
+    "aureboro": 2,
+    "khaoboro": 1,
+    "aurekobo": 1,
+    "khaumestro": 2,
+    "mekhaubo": 3,
+    "merkhaubo": 1,
+    "khaubaluk": 3,
+    "mekhaurel": 2,
+    "aurelkhau": 5,
+    "mekobaluk": 1,
+    "mekaurelo": 1,
+    "mekhaobako": 1,
+    "aurelkomest": 2
+  },
+  "partners_quality": {},
+  "birth_pass": 310,
+  "energy": 20,
+  "last_reproduced_pass": 412,
+  "arc": {
+    "about": [
+      "concept: forliamus_betrothal_offer"
+    ],
+    "needs": [
+      "news"
+    ],
+    "context": "transit_route",
+    "premise": "Aurekomest wants to be first on his own route to confirm whether the betrothal is actually sealed, since the answer decides whether the toll politics that shaped his whole family finally settle or keep dragging on.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

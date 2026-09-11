@@ -1,0 +1,192 @@
+{
+  "name": "Khaubaluk",
+  "origin": "Gorff",
+  "location": "Gorff",
+  "backstory": "Child of Merluko and Khaubalo; grew up around works out of the temple's own records annex... in Gorff, and knows something of Birth Of Niemornak.",
+  "knowledge": {
+    "education": {
+      "percent": 50,
+      "mode": "skewed",
+      "topic": "salthos",
+      "items": [
+        "concept: salthos_mediator_line",
+        "concept: crossing_toll_dispute",
+        "tale: birth_of_dorakus",
+        "tale: crossing_market_roof",
+        "conflict: CONFLICT-03",
+        "tale: gorff",
+        "tale: birth_of_niergus",
+        "tale: terfila",
+        "tale: death_of_darius",
+        "tale: birth_of_nakorika",
+        "tale: forliamus_betrothal_offer",
+        "tale: death_of_fenserika",
+        "tale: forliamus_log_crossing_war",
+        "concept: forliamus_betrothal_offer",
+        "location: salthos_cruzados",
+        "conflict: CONFLICT-01",
+        "tale: salthos_cruzados",
+        "location: gorff",
+        "tale: toll_ledger_arrears",
+        "tale: birth_of_darnus",
+        "concept: toll_ledger_arrears",
+        "tale: birth_of_niekus",
+        "tale: birth_of_darnakus",
+        "tale: birth_of_niemornak",
+        "tale: birth_of_mekoboro"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Learned that Auroboro has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 196
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Aurebalo and Mekoboro now have a child, Aurekobo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 196
+        }
+      },
+      {
+        "text": "Grew up hearing: Had a child with Merluko, named Merkhaubo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 196
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Mekestros and Aureluko now have a child, Mekaluko.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 196
+        }
+      },
+      "Learned that Merluko has died.",
+      "Learned that Khaubalo has died.",
+      {
+        "text": "Had a child with Mekoboro, named Mekobaluk.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 309
+        }
+      },
+      {
+        "text": "Had a child with Aurekomest, named Khaubomest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 401
+        }
+      },
+      "Learned that Aureboro has died.",
+      {
+        "text": "Heard that Aurekomest and Aurelkhau now have a child, Aureskomest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 412
+        }
+      },
+      "Learned that Mekoboro has died.",
+      {
+        "text": "Had a child with Aurekhobo, named Khaubekho.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 434
+        }
+      },
+      {
+        "text": "Heard that Mekobaluk and Mekaurelo now have a child, Mekaurobal.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 460
+        }
+      },
+      "Learned that Khaubestro has died.",
+      {
+        "text": "Had a child with Mekhaobako, named Khaubomako.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 476
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only by making Birth Of Dorakus their own concern",
+    "wasted_life": "treating Birth Of Dorakus as someone else's concern",
+    "anchor": "tale: birth_of_dorakus",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 42,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "temple",
+      "location": "Gorff",
+      "routine_actions": "sells iron work in the afternoons, still counting deliveries against the lean seasons she's only ever heard about secondhand",
+      "weight": 50.0
+    },
+    {
+      "context": "market",
+      "location": "Gorff",
+      "routine_actions": "sells iron work in the afternoons, still counting deliveries against the lean seasons she's only ever heard about secondhand",
+      "weight": 50.0
+    }
+  ],
+  "parents": [
+    "merluko",
+    "khaubalo"
+  ],
+  "partners": {
+    "khaus": 2,
+    "mekestros": 1,
+    "aureluko": 1,
+    "mekoboro": 5,
+    "khaubalo": 4,
+    "aureboro": 4,
+    "mekaluko": 2,
+    "khaoboro": 2,
+    "khaubestro": 4,
+    "aurebako": 1,
+    "aurekobo": 1,
+    "mekhaubo": 2,
+    "aurekhobo": 4,
+    "khaobako": 2,
+    "aurelkhau": 1,
+    "aurekomest": 3,
+    "mekhaubest": 1,
+    "mekhaobako": 2,
+    "aurelkomest": 1,
+    "khaubomest": 1,
+    "mekhaobera": 1,
+    "mekaurelu": 1
+  },
+  "partners_quality": {
+    "khaus": 0
+  },
+  "birth_pass": 196,
+  "energy": 20,
+  "last_reproduced_pass": 476,
+  "arc": {
+    "about": [
+      "concept: crossing_market_roof"
+    ],
+    "needs": [
+      "materials"
+    ],
+    "context": "market",
+    "premise": "Between her ledger work and her ironmongering, Khaubaluk wants her own family's ironwork - brackets, fittings, the frame hardware - commissioned for the market roof, making sure the project that keeps losing to the temple's repairs finally has her trade's stake in it too.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

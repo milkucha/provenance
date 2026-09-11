@@ -1,0 +1,175 @@
+{
+  "name": "Mekaurelo",
+  "origin": "Gorff",
+  "location": "Gorff",
+  "backstory": "Child of Aureluko and Mekhaubo, in Gorff; grew up around takes stonework commissions at the market each morning,..., and picked up a little of Birth Of Nieragus along the way.",
+  "knowledge": {
+    "education": {
+      "percent": 50,
+      "mode": "skewed",
+      "topic": "salthos",
+      "items": [
+        "tale: birth_of_niekus",
+        "tale: crossing_market_roof",
+        "concept: salthos_mediator_line",
+        "tale: death_of_darius",
+        "tale: birth_of_darika",
+        "tale: forliamus_log_crossing_war",
+        "tale: salthos_cruzados",
+        "tale: birth_of_trezarlo",
+        "tale: death_of_fenserika",
+        "tale: birth_of_nakorika",
+        "tale: birth_of_darinak",
+        "tale: birth_of_dorakus",
+        "location: gorff",
+        "tale: birth_of_niergus",
+        "tale: birth_of_forliarlo",
+        "tale: birth_of_nieragus",
+        "tale: birth_of_tamuzarlo"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Learned that Mekaluko has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 315
+        }
+      },
+      {
+        "text": "Grew up hearing: Learned that Aurebalo has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 315
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Heard that Auroboro and Aurebalo now have a child, Aureboro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 315
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Had a child with Mekestros, named Khaubestro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 315
+        }
+      },
+      {
+        "text": "Grew up hearing: Learned that Khaoboro has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 315
+        }
+      },
+      {
+        "text": "Grew up hearing: Had a child with Khaubestro, named Aurelkhau.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 315
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Mekestros and Khaubalo now have a child, Khaumestro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 315
+        }
+      },
+      {
+        "text": "Heard that Mekhaubo and Aureluko now have a child, Mekaurelu.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 454
+        }
+      },
+      "Learned that Aureluko has died.",
+      {
+        "text": "Had a child with Mekobaluk, named Mekaurobal.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 460
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "measures a life by whether Birth Of Nieragus is still remembered rightly",
+    "wasted_life": "forgetting what Birth Of Nieragus actually meant, the way most people already have",
+    "anchor": "tale: birth_of_nieragus",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 19,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Gorff",
+      "routine_actions": "helps cross-check entries in the records annex when the market's slow",
+      "weight": 33.33
+    },
+    {
+      "context": "market",
+      "location": "Gorff",
+      "routine_actions": "helps cross-check entries in the records annex when the market's slow",
+      "weight": 33.33
+    },
+    {
+      "context": "temple",
+      "location": "Gorff",
+      "routine_actions": "helps cross-check entries in the records annex when the market's slow",
+      "weight": 33.33
+    }
+  ],
+  "parents": [
+    "aureluko",
+    "mekhaubo"
+  ],
+  "partners": {
+    "aurebalo": 2,
+    "khaus": 1,
+    "aureluko": 2,
+    "aureboro": 1,
+    "mekaluko": 1,
+    "khaubestro": 2,
+    "aurekobo": 2,
+    "mekhaubo": 1,
+    "aurekhobo": 1,
+    "merkhaubo": 1,
+    "mekhaurel": 1,
+    "khaobako": 1,
+    "aurelkhau": 1,
+    "mekobaluk": 3,
+    "aurekomest": 1,
+    "mekhaubest": 1,
+    "mekhaobako": 1,
+    "aurelkomest": 1
+  },
+  "partners_quality": {
+    "aureboro": -1
+  },
+  "birth_pass": 315,
+  "energy": 20,
+  "last_reproduced_pass": 460,
+  "arc": {
+    "about": [
+      "concept: forliamus_betrothal_offer"
+    ],
+    "needs": [
+      "goods"
+    ],
+    "context": "market",
+    "premise": "If the betrothal is sealed, Mekaurelo wants to be the one supplying the ceremonial stonework or gift-goods for it, and has started using her market connections to put in the first claim before any other stall thinks to ask.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

@@ -1,0 +1,151 @@
+{
+  "name": "Darnarika",
+  "origin": "Salthos Cruzados",
+  "location": "Salthos Cruzados",
+  "backstory": "Child of Darika and Darnakus in Salthos Cruzados; raised alongside spends mornings up on the temple's roof and..., having heard about Birth Of Niemius.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "temple",
+      "items": [
+        "concept: temple_of_the_crossing",
+        "tale: toll_ledger_arrears",
+        "tale: salthos_cruzados",
+        "conflict: CONFLICT-02",
+        "concept: crossing_market_roof",
+        "tale: terfila",
+        "location: terfila",
+        "tale: crossing_market_roof",
+        "concept: crossing_toll_dispute",
+        "concept: toll_ledger_arrears",
+        "tale: gorff",
+        "concept: forliamus_betrothal_offer",
+        "tale: forliamus_log_crossing_war",
+        "location: gorff",
+        "conflict: CONFLICT-01",
+        "location: salthos_cruzados",
+        "tale: forliamus_betrothal_offer",
+        "tale: gorff_ledger_crossing_war",
+        "tale: birth_of_dornakus",
+        "tale: birth_of_nakoran",
+        "tale: birth_of_niemius"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Grew up hearing: Had a child with Niemus, named Nierius.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 281
+        }
+      },
+      {
+        "text": "Grew up hearing: Learned that Magus has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 281
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Prince Doran and Nakus now have a child, Nakoran.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 281
+        }
+      },
+      {
+        "text": "Heard that Dornakus and Darika now have a child, Dornarika.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 342
+        }
+      },
+      {
+        "text": "Heard that Darika and Darnakus now have a child, Darinak.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 397
+        }
+      },
+      {
+        "text": "Heard that Darnakus and Niemoran now have a child, Niemornak.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 426
+        }
+      },
+      "Learned that Darnakus has died.",
+      "Learned that Darika has died.",
+      "Learned that Niemoran has died."
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only by making Forliamus Log Crossing War their own concern",
+    "wasted_life": "treating Forliamus Log Crossing War as someone else's concern",
+    "anchor": "tale: forliamus_log_crossing_war",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 24,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "temple",
+      "location": "Salthos Cruzados",
+      "routine_actions": "shows up at the square on petition days same as his mother before him, asks after the old broken match less than she did, and listens more for whatever's brewing new",
+      "weight": 50.0
+    },
+    {
+      "context": "main_square",
+      "location": "Salthos Cruzados",
+      "routine_actions": "shows up at the square on petition days same as his mother before him, asks after the old broken match less than she did, and listens more for whatever's brewing new",
+      "weight": 50.0
+    }
+  ],
+  "parents": [
+    "darika",
+    "darnakus"
+  ],
+  "partners": {
+    "nakus": 1,
+    "magus": 1,
+    "niemus": 1,
+    "nierius": 1,
+    "darnus": 1,
+    "darnakus": 2,
+    "darnukas": 1,
+    "niemoran": 6,
+    "niekus": 2,
+    "dornakus": 2,
+    "nieragus": 2,
+    "dorukus": 1,
+    "fenarnus": 2,
+    "doraknus": 1,
+    "fenriukas": 1,
+    "nakorika": 1,
+    "dornarika": 1,
+    "dornarius": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 281,
+  "energy": 20,
+  "arc": {
+    "about": [
+      "tale: forliamus_log_crossing_war"
+    ],
+    "needs": [
+      "records"
+    ],
+    "context": "temple",
+    "premise": "Darnarika's been quietly cross-referencing the temple's own patch-records against the old Forliamus Log Crossing War, trying to work out if the repairs her family's done over the years actually match when the fighting's supposed to have happened.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

@@ -1,0 +1,147 @@
+{
+  "name": "Aurelkomest",
+  "origin": "Gorff",
+  "location": "Gorff",
+  "backstory": "Child of Aurekomest and Aurelkhau; grew up around takes stonework commissions at the market each morning,... in Gorff, and knows something of Birth Of Doraknus 2.",
+  "knowledge": {
+    "education": {
+      "percent": 50,
+      "mode": "skewed",
+      "topic": "tollhouse, transit",
+      "items": [
+        "conflict: CONFLICT-03",
+        "conflict: CONFLICT-02",
+        "tale: birth_of_fenarnus",
+        "tale: birth_of_niemornak",
+        "tale: birth_of_nieradus",
+        "tale: birth_of_dorakus",
+        "tale: birth_of_farliauzco",
+        "tale: death_of_fenserika",
+        "tale: birth_of_niergus",
+        "tale: death_of_darnakus",
+        "tale: birth_of_nieragus",
+        "tale: death_of_niergus",
+        "tale: birth_of_darinak",
+        "tale: birth_of_nieragan",
+        "tale: death_of_darius",
+        "tale: forliamus_betrothal_offer",
+        "concept: crossing_toll_dispute",
+        "concept: crossing_market_roof",
+        "tale: gorff_ledger_crossing_war",
+        "tale: death_of_darnukas",
+        "tale: death_of_prince_doran",
+        "tale: death_of_niemius",
+        "tale: birth_of_niekus",
+        "tale: birth_of_tamuzco",
+        "tale: birth_of_darika",
+        "tale: birth_of_merkhaubo",
+        "tale: salthos_cruzados",
+        "location: terfila",
+        "concept: toll_ledger_arrears",
+        "location: salthos_cruzados",
+        "tale: toll_ledger_arrears",
+        "tale: forliamus_log_crossing_war",
+        "tale: birth_of_niemoran",
+        "tale: birth_of_mekobaluk",
+        "tale: birth_of_forliukar",
+        "conflict: CONFLICT-01",
+        "tale: birth_of_khaumestro",
+        "tale: death_of_darnus",
+        "tale: birth_of_nakoran",
+        "tale: birth_of_mekaluko",
+        "tale: birth_of_trezukuzco",
+        "tale: birth_of_doraknus"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Grew up hearing: Heard that Mekestros and Khaubalo now have a child, Mekhaubo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 363
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Grew up hearing: Learned that Khaus has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 363
+        }
+      },
+      {
+        "text": "Heard that Khaubaluk and Aurekomest now have a child, Khaubomest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 401
+        }
+      },
+      {
+        "text": "Heard that Aurekomest and Aurelkhau now have a child, Aureskomest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 412
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts it worthwhile only by paying real attention to Gorff Ledger Crossing War",
+    "wasted_life": "letting Gorff Ledger Crossing War slip past unexamined, the way it's easiest to",
+    "anchor": "tale: gorff_ledger_crossing_war",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 11,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Gorff",
+      "routine_actions": "picks up small repair work on the side between commissions, whatever nobody else wants to bother with",
+      "weight": 50.0
+    },
+    {
+      "context": "market",
+      "location": "Gorff",
+      "routine_actions": "picks up small repair work on the side between commissions, whatever nobody else wants to bother with",
+      "weight": 50.0
+    }
+  ],
+  "parents": [
+    "aurekomest",
+    "aurelkhau"
+  ],
+  "partners": {
+    "mekaluko": 1,
+    "mekhaubo": 1,
+    "khaubaluk": 2,
+    "mekhaurel": 2,
+    "aurelkhau": 1,
+    "mekobaluk": 1,
+    "aurekomest": 2,
+    "mekaurelo": 2,
+    "mekhaobera": 1,
+    "mekaurobal": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 363,
+  "energy": 20,
+  "arc": {
+    "about": [
+      "tale: gorff_ledger_crossing_war"
+    ],
+    "needs": [
+      "news"
+    ],
+    "context": "market",
+    "premise": "Aurelkomest has heard the Gorff Ledger Crossing War told two clashing ways by each side of her own family, and wants to actually run down which account holds up before she has to pick a side for her own children.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

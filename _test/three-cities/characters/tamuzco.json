@@ -1,0 +1,219 @@
+{
+  "name": "Tamuzco",
+  "origin": "Terfila",
+  "location": "Terfila",
+  "backstory": "Child of Trezco and Tamuken in Terfila; raised alongside haggles for cart space at the market before..., having heard about Death Of Dorakus.",
+  "knowledge": {
+    "education": {
+      "percent": 45,
+      "mode": "random",
+      "topic": null,
+      "items": [
+        "conflict: CONFLICT-03",
+        "tale: crossing_market_roof",
+        "tale: terfila",
+        "tale: forliamus_log_crossing_war",
+        "concept: crossing_toll_dispute",
+        "tale: birth_of_darnus",
+        "tale: gorff_ledger_crossing_war",
+        "tale: salthos_cruzados",
+        "concept: forliamus_betrothal_offer",
+        "tale: birth_of_nierius",
+        "concept: crossing_market_roof",
+        "concept: temple_of_the_crossing",
+        "concept: salthos_mediator_line",
+        "location: gorff",
+        "location: salthos_cruzados",
+        "tale: death_of_darius",
+        "location: terfila",
+        "conflict: CONFLICT-02",
+        "tale: birth_of_niemius",
+        "tale: death_of_dorakus",
+        "conflict: CONFLICT-01",
+        "tale: birth_of_niemoruk",
+        "tale: gorff",
+        "tale: birth_of_fenrius",
+        "tale: birth_of_fenarnus",
+        "tale: birth_of_dornarius"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Had a child with Farlo, named Farmuken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 34
+        }
+      },
+      {
+        "text": "Heard that Tamuken and Forliazco now have a child, Forliuken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 67
+        }
+      },
+      "Learned that Tamuken has died.",
+      {
+        "text": "Heard that Farlo and Trezco now have a child, Trezarlo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 114
+        }
+      },
+      "Learned that Trezco has died.",
+      {
+        "text": "Had a child with Forliarlo, named Forliauzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 156
+        }
+      },
+      "Learned that Farmuken has died.",
+      {
+        "text": "Heard that Farliazco and Forliukar now have a child, Farliukar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 176
+        }
+      },
+      "Learned that Forliuken has died.",
+      "Learned that Forliarlo has died.",
+      {
+        "text": "Heard that Forliauzco and Farliazco now have a child, Farliauzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 205
+        }
+      },
+      {
+        "text": "Heard that Forliauzco and Forliamuk now have a child, Forliauken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 216
+        }
+      },
+      {
+        "text": "Had a child with Forliamuk, named Tamuzaken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 233
+        }
+      },
+      {
+        "text": "Heard that Trezarlo and Forliukar now have a child, Trezukar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 235
+        }
+      },
+      "Learned that Forliukar has died.",
+      {
+        "text": "Heard that Forliauzco and Farliazco now have a child, Forliuzazco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 254
+        }
+      },
+      {
+        "text": "Had a child with Farliukar, named Tamuzarlo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 257
+        }
+      },
+      "Learned that Trezarlo has died.",
+      {
+        "text": "Had a child with Farliazco, named Farliuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 306
+        }
+      },
+      "Learned that Forliazco has died.",
+      {
+        "text": "Had a child with Forliamuk, named Tamuzmuken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 346
+        }
+      },
+      "Learned that Forliamuk has died.",
+      {
+        "text": "Had a child with Trezukar, named Trezukuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 364
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts it worthwhile only by paying real attention to CONFLICT-02",
+    "wasted_life": "letting CONFLICT-02 slip past unexamined, the way it's easiest to",
+    "anchor": "conflict: CONFLICT-02",
+    "origin": "derived",
+    "trusts": "verification",
+    "distrusts": "anyone who sounds certain"
+  },
+  "life": {
+    "lived": 60,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "walks the transit route on his own errands when the harbor's dead time drags on, and can't pass the temple without pausing, the way the family always has.",
+      "weight": 50.0
+    },
+    {
+      "context": "transit_route",
+      "location": "Terfila",
+      "routine_actions": "walks the transit route on his own errands when the harbor's dead time drags on, and can't pass the temple without pausing, the way the family always has.",
+      "weight": 50.0
+    }
+  ],
+  "parents": [
+    "trezco",
+    "tamuken"
+  ],
+  "partners": {
+    "tamuken": 2,
+    "farlo": 1,
+    "trezco": 1,
+    "farmuken": 3,
+    "forliazco": 3,
+    "forliarlo": 8,
+    "forliuken": 3,
+    "farliazco": 5,
+    "forliamuk": 6,
+    "forliukar": 4,
+    "trezarlo": 5,
+    "forliauzco": 4,
+    "farliukar": 5,
+    "farliauzco": 1,
+    "tamuzaken": 1,
+    "trezukar": 3,
+    "tamuzarlo": 4,
+    "tamuzmuken": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 34,
+  "energy": 20,
+  "last_reproduced_pass": 364,
+  "arc": {
+    "about": [
+      "conflict: CONFLICT-02"
+    ],
+    "needs": [
+      "records"
+    ],
+    "context": "transit_route",
+    "premise": "Tamuzco wants to know who actually built the temple at the crossing first - not to win the argument at the tavern, but to find one piece of record, however small, that would settle it instead of another round of stories.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

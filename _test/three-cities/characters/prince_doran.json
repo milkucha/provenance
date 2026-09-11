@@ -1,0 +1,201 @@
+{
+  "name": "Prince Doran",
+  "city": "Salthos Cruzados",
+  "origin": "Salthos Cruzados",
+  "location": "Salthos Cruzados",
+  "backstory": "Head of the Salthos house, which has governed the crossing for three generations; personally talked both houses down once the tollhouse dispute cooled.",
+  "knowledge": {
+    "education": {
+      "percent": 60,
+      "mode": "random",
+      "topic": null,
+      "items": [
+        "concept: temple_of_the_crossing",
+        "concept: toll_ledger_arrears",
+        "conflict: CONFLICT-01",
+        "conflict: CONFLICT-03",
+        "location: gorff",
+        "location: salthos_cruzados",
+        "tale: crossing_market_roof",
+        "tale: gorff",
+        "tale: gorff_ledger_crossing_war",
+        "tale: salthos_cruzados",
+        "tale: terfila",
+        "tale: toll_ledger_arrears"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Heard that Niemus and Darius now have a child, Niemius.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 55
+        }
+      },
+      {
+        "text": "Heard that Nakus and Darnus now have a child, Darnakus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 56
+        }
+      },
+      "Learned that Darius has died.",
+      {
+        "text": "Had a child with Nakus, named Dorakus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 71
+        }
+      },
+      {
+        "text": "Heard that Nakus and Darnus now have a child, Darnukas.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 97
+        }
+      },
+      {
+        "text": "Had a child with Niemius, named Niemoran.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 101
+        }
+      },
+      {
+        "text": "Heard that Nakus and Niemus now have a child, Niekus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 120
+        }
+      },
+      {
+        "text": "Had a child with Nakus, named Dornakus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 131
+        }
+      },
+      {
+        "text": "Had a child with Nakus, named Nakoran.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 144
+        }
+      },
+      {
+        "text": "Had a child with Nakus, named Dorukus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 189
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "standard": "counts the arrears settled plainly above another dispute merely kept quiet a while longer",
+    "wasted_life": "letting a shortfall everyone can already see go unaddressed until it curdles into exactly the kind of open grievance his house exists to prevent",
+    "anchor": "concept: toll_ledger_arrears",
+    "origin": "collision between his backstory (head of the house that talked both cities down from war once already) and the sample's own toll_ledger_arrears (a live financial dispute with Gorff)",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed",
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [
+      {
+        "cause": "author correction",
+        "date": "2026-08-31",
+        "previous": {
+          "standard": "counts keeping Terfila and Gorff from open war above anything else the house does",
+          "wasted_life": "a life spent letting the crossing's peace slip for want of holding it personally",
+          "anchor": "concept: salthos_mediator_line",
+          "origin": "collision between his backstory (head of the mediating house) and the sample's own CONFLICT-03 (whether that house was ever actually chosen)",
+          "trusts": "a story that's been carried and retold and still holds together",
+          "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+        },
+        "note": "re-derived after encodings.json gained three new concrete concepts (crossing_market_roof, toll_ledger_arrears, forliamus_betrothal_offer) via /tell, at the author's explicit direction, to diversify arcs away from the epistemic-conflict default"
+      }
+    ]
+  },
+  "life": {
+    "lived": 30,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "location": "Salthos Cruzados",
+      "context": "main_square",
+      "weight": 100,
+      "routine_actions": "holds court at the square each morning, hears disputes referred up from Terfila or Gorff, walks the crossing's edge at dusk to see it's quiet"
+    }
+  ],
+  "arc": {
+    "about": [
+      "concept: toll_ledger_arrears"
+    ],
+    "needs": [
+      "expertise"
+    ],
+    "context": "main_square",
+    "premise": "Doran wants the toll arrears settled in the open - an actual accounting, agreed by both sides, of what's owed and why it's short - before it curdles into exactly the kind of grievance his own house exists to keep from becoming a war.",
+    "resolution": "ongoing",
+    "history": [
+      {
+        "pass": 8,
+        "outcome": "stall"
+      },
+      {
+        "pass": 22,
+        "outcome": "stall"
+      },
+      {
+        "pass": 24,
+        "outcome": "advance"
+      },
+      {
+        "pass": 34,
+        "outcome": "advance"
+      },
+      {
+        "pass": 36,
+        "outcome": "reverse"
+      },
+      {
+        "pass": 89,
+        "outcome": "stall"
+      },
+      {
+        "pass": 105,
+        "outcome": "stall"
+      },
+      {
+        "pass": 114,
+        "outcome": "stall"
+      },
+      {
+        "pass": 189,
+        "outcome": "advance"
+      }
+    ]
+  },
+  "partners": {
+    "magus": 2,
+    "darius": 4,
+    "nakus": 8,
+    "niemus": 2,
+    "fenserika": 1,
+    "nierius": 1,
+    "darika": 1,
+    "niergus": 3,
+    "niemius": 3,
+    "darnakus": 1,
+    "dorakus": 1,
+    "fenrius": 1,
+    "darnukas": 1,
+    "niemoran": 1
+  },
+  "energy": 11,
+  "partners_quality": {
+    "nakus": 2
+  },
+  "last_reproduced_pass": 189
+}

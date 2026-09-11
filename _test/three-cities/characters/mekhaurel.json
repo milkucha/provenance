@@ -1,0 +1,206 @@
+{
+  "name": "Mekhaurel",
+  "origin": "Gorff",
+  "location": "Gorff",
+  "backstory": "Child of Aureluko and Mekhaubo; grew up around takes stonework commissions at the market each morning,... in Gorff, and knows something of Birth Of Nierius.",
+  "knowledge": {
+    "education": {
+      "percent": 50,
+      "mode": "skewed",
+      "topic": "salthos",
+      "items": [
+        "tale: terfila",
+        "tale: birth_of_nakorika",
+        "tale: death_of_darius",
+        "tale: crossing_market_roof",
+        "conflict: CONFLICT-03",
+        "concept: temple_of_the_crossing",
+        "tale: birth_of_dorakus",
+        "tale: birth_of_niergus",
+        "concept: salthos_mediator_line",
+        "concept: crossing_toll_dispute",
+        "conflict: CONFLICT-02",
+        "tale: birth_of_nakoran",
+        "tale: forliamus_log_crossing_war",
+        "tale: death_of_fenserika",
+        "tale: forliamus_betrothal_offer",
+        "conflict: CONFLICT-01",
+        "tale: birth_of_trezarlo",
+        "tale: birth_of_darinak",
+        "tale: birth_of_darika",
+        "tale: death_of_prince_doran",
+        "tale: salthos_cruzados",
+        "tale: birth_of_niekus",
+        "location: gorff",
+        "concept: crossing_market_roof",
+        "tale: birth_of_niemius",
+        "location: salthos_cruzados",
+        "tale: gorff_ledger_crossing_war",
+        "concept: toll_ledger_arrears",
+        "tale: birth_of_farmuken",
+        "tale: birth_of_darnakus",
+        "tale: toll_ledger_arrears",
+        "tale: death_of_nakus",
+        "tale: birth_of_nierius",
+        "tale: birth_of_fenrius",
+        "tale: birth_of_merkhaubo",
+        "tale: birth_of_niemoruk",
+        "tale: birth_of_nieragus",
+        "tale: birth_of_darnukas",
+        "concept: forliamus_betrothal_offer",
+        "tale: birth_of_khaumestro"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Heard that Aurebalo and Merluko now have a child, Aurebako.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 240
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Khaubalo and Mekestros now have a child, Khaubestro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 240
+        }
+      },
+      {
+        "text": "Grew up hearing: Learned that Mekestros has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 240
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Had a child with Khaubalo, named Khaumestro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 240
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Merluko and Khaubalo now have a child, Khaubaluk.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 240
+        }
+      },
+      {
+        "text": "Heard that Khaubestro and Aureluko now have a child, Aurelkhau.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 289
+        }
+      },
+      {
+        "text": "Heard that Aureluko and Mekhaubo now have a child, Mekaurelo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 315
+        }
+      },
+      {
+        "text": "Had a child with Khaubestro, named Mekhaubest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 319
+        }
+      },
+      {
+        "text": "Had a child with Khaobako, named Mekhaobako.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 334
+        }
+      },
+      {
+        "text": "Had a child with Khaobako, named Mekhaobera.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 435
+        }
+      },
+      {
+        "text": "Heard that Mekhaubo and Aureluko now have a child, Mekaurelu.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 454
+        }
+      },
+      "Learned that Aureluko has died.",
+      "Learned that Khaubestro has died.",
+      {
+        "text": "Heard that Khaubaluk and Mekhaobako now have a child, Khaubomako.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 476
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "holds themself accountable to Forliamus Log Crossing War, whatever it costs",
+    "wasted_life": "one that never had to answer for Forliamus Log Crossing War",
+    "anchor": "tale: forliamus_log_crossing_war",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 29,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Gorff",
+      "routine_actions": "runs the family stonework stall on his own now, keeps prices fair, has started training the next apprentice himself",
+      "weight": 100.0
+    }
+  ],
+  "parents": [
+    "aureluko",
+    "mekhaubo"
+  ],
+  "partners": {
+    "khaus": 1,
+    "merluko": 1,
+    "aureluko": 2,
+    "mekoboro": 2,
+    "aureboro": 1,
+    "khaubestro": 3,
+    "aurebako": 3,
+    "aurekobo": 3,
+    "mekhaubo": 1,
+    "merkhaubo": 1,
+    "khaobako": 5,
+    "aurelkhau": 1,
+    "mekobaluk": 2,
+    "aurekomest": 2,
+    "mekaurelo": 1,
+    "mekhaubest": 1,
+    "aurelkomest": 2,
+    "aureskomest": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 240,
+  "energy": 20,
+  "last_reproduced_pass": 435,
+  "arc": {
+    "about": [
+      "tale: forliamus_log_crossing_war"
+    ],
+    "needs": [
+      "news"
+    ],
+    "context": "market",
+    "premise": "Mekhaurel keeps hearing the Forliamus Log Crossing War told two different ways at the market stall, and wants to actually track down which telling holds up, since it's the one story his own criterion won't let him treat as settled either way.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

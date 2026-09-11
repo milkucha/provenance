@@ -1,0 +1,238 @@
+{
+  "name": "Forliuzazco",
+  "origin": "Terfila",
+  "location": "Terfila",
+  "backstory": "Child of Forliauzco and Farliazco in Terfila; raised alongside walks the transit route between Terfila and the..., having heard only a half-remembered story about an old family death, long since thinned to gossip.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "tollhouse, forliamus",
+      "items": [
+        "tale: birth_of_darnus",
+        "tale: forliamus_betrothal_offer",
+        "tale: birth_of_niemoruk",
+        "conflict: CONFLICT-03",
+        "conflict: CONFLICT-01",
+        "location: terfila",
+        "concept: temple_of_the_crossing",
+        "concept: toll_ledger_arrears",
+        "tale: crossing_market_roof",
+        "tale: gorff",
+        "tale: birth_of_forliarlo",
+        "tale: gorff_ledger_crossing_war",
+        "tale: birth_of_darnakus",
+        "tale: death_of_dorakus",
+        "concept: crossing_toll_dispute",
+        "tale: terfila",
+        "tale: birth_of_niergus",
+        "location: gorff",
+        "tale: forliamus_log_crossing_war",
+        "conflict: CONFLICT-02",
+        "tale: birth_of_nierius",
+        "concept: salthos_mediator_line",
+        "tale: birth_of_tamuzaken",
+        "tale: birth_of_mekhaubo",
+        "tale: birth_of_darika",
+        "tale: birth_of_nakoran",
+        "tale: birth_of_tamuzco",
+        "tale: toll_ledger_arrears",
+        "tale: death_of_niergus",
+        "tale: birth_of_dorakus",
+        "tale: birth_of_doraknus"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Learned that Forliarlo has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 254
+        }
+      },
+      {
+        "text": "Grew up hearing: Had a child with Forliauzco, named Farliauzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 254
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Tamuzco and Forliamuk now have a child, Tamuzaken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 254
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Farlo and Trezco now have a child, Trezarlo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 254
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Heard that Trezco and Tamuken now have a child, Tamuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 254
+        }
+      },
+      {
+        "text": "Grew up hearing: Learned that Forliukar has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 254
+        }
+      },
+      {
+        "text": "Heard that Tamuzco and Farliazco now have a child, Farliuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 306
+        }
+      },
+      "Learned that Forliazco has died.",
+      {
+        "text": "Heard that Tamuzco and Trezukar now have a child, Trezukuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 364
+        }
+      },
+      {
+        "text": "Heard that Tamuzarlo and Farliauzco now have a child, Farliauzar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 369
+        }
+      },
+      {
+        "text": "Heard that Trezukar and Tamuzaken now have a child, Tamuzakar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 382
+        }
+      },
+      {
+        "text": "Heard that Forliauzco and Farliazco now have a child, Farliazuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 388
+        }
+      },
+      {
+        "text": "Heard that Trezukar and Tamuzaken now have a child, Trezukaken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 393
+        }
+      },
+      {
+        "text": "Heard that Forliauzco and Farliukar now have a child, Forliaukarli.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 405
+        }
+      },
+      {
+        "text": "Heard that Tamuzarlo and Farliauzco now have a child, Tamuzauzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 428
+        }
+      },
+      "Learned that Farliauzco has died.",
+      "Learned that Trezukar has died.",
+      "Learned that Farliazco has died."
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "holds themself accountable to Birth Of Niergus, whatever it costs",
+    "wasted_life": "one that never had to answer for Birth Of Niergus",
+    "anchor": "tale: birth_of_niergus",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 37,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "transit_route",
+      "location": "Terfila",
+      "routine_actions": "takes his turn unloading crates through the morning tide, bartering gossip for a cut rate at the tavern, and letting the tollhouse story drift a little further from however it started.",
+      "weight": 20.0
+    },
+    {
+      "context": "transit_route",
+      "location": "Terfila",
+      "routine_actions": "takes his turn unloading crates through the morning tide, bartering gossip for a cut rate at the tavern, and letting the tollhouse story drift a little further from however it started.",
+      "weight": 20.0
+    },
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "takes his turn unloading crates through the morning tide, bartering gossip for a cut rate at the tavern, and letting the tollhouse story drift a little further from however it started.",
+      "weight": 20.0
+    },
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "takes his turn unloading crates through the morning tide, bartering gossip for a cut rate at the tavern, and letting the tollhouse story drift a little further from however it started.",
+      "weight": 20.0
+    },
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "takes his turn unloading crates through the morning tide, bartering gossip for a cut rate at the tavern, and letting the tollhouse story drift a little further from however it started.",
+      "weight": 20.0
+    }
+  ],
+  "parents": [
+    "forliauzco",
+    "farliazco"
+  ],
+  "partners": {
+    "forliazco": 3,
+    "forliarlo": 2,
+    "forliuken": 1,
+    "farliazco": 4,
+    "trezarlo": 1,
+    "forliauzco": 3,
+    "farliukar": 1,
+    "farliauzco": 5,
+    "tamuzaken": 1,
+    "trezukar": 4,
+    "tamuzarlo": 1,
+    "forliaukar": 2,
+    "farliuzco": 3,
+    "trezukuzco": 1,
+    "farliauzar": 1,
+    "tamuzakar": 3,
+    "farliazuzco": 1,
+    "trezukaken": 1,
+    "forliaukarli": 1,
+    "tamuzauzco": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 254,
+  "energy": 20,
+  "arc": {
+    "about": [
+      "concept: crossing_toll_dispute"
+    ],
+    "needs": [
+      "news"
+    ],
+    "context": "transit_route",
+    "premise": "Forliuzazco wants one straight account of how the tollhouse dispute actually started, carried along the transit route instead of the different version every crew seems to tell.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

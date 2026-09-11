@@ -1,31 +1,31 @@
-# /simulate Lab Report
+﻿# /simulate Lab Report
 
 **Purpose.** `/simulate` batch-runs `/enact` scenes to test whether this system's design actually
 produces what it's meant to: emergent, materially-grounded lore-drift, not just mechanically-correct
 but dramatically repetitive record-keeping. This file is the persistent, core-repo record of that
-test across runs — deliberately *not* inside any worktree, so it survives past any single run, any
+test across runs â€” deliberately *not* inside any worktree, so it survives past any single run, any
 single conversation's context window, and any single agent. A fresh session or a different agent
 should be able to read this file alone and pick up the thread: the standing hypothesis, what's been
-tried, what worked, what didn't, and what's still genuinely undecided — without re-deriving any of it
+tried, what worked, what didn't, and what's still genuinely undecided â€” without re-deriving any of it
 from chat history.
 
 **How to use this file.**
 - Before starting a `/simulate` run intended to test or extend the system's design (not a casual
   one-off), read this whole file first.
-- After a run's Step 4 tally completes, append a new dated entry under **Run log** — from the
+- After a run's Step 4 tally completes, append a new dated entry under **Run log** â€” from the
   orchestrating session, using this file's absolute main-repo path. Never write it from inside the
   active worktree itself; see the note in `.claude/skills/simulate/SKILL.md` Step 4 for why.
 - Keep entries factual and specific: cite the worktree name, pass counts, concrete outcomes (deaths,
   arc resolutions, emergent structures), not just impressions.
 - When a run surfaces a design gap or an open question, log it under **Open design questions** so it
   doesn't live only in chat history and get lost at the next compaction.
-- Update **Open design questions** in place as questions get resolved — move a resolved question's
+- Update **Open design questions** in place as questions get resolved â€” move a resolved question's
   answer into the relevant run-log entry or into the design itself (`TODO.md`), and remove it from the
   open list rather than leaving stale unresolved-looking questions that were actually settled later.
 
 ## Standing objective
 
-Does `/simulate`'s design render its own stated intent — characters whose criteria, knowledge, and
+Does `/simulate`'s design render its own stated intent â€” characters whose criteria, knowledge, and
 relationships drift over many interactions in a way that's genuinely emergent (organically branched out
 of initial conditions) rather than a repeated pattern regurgitated by the model, or a smooth convergence
 produced by the model's own bias toward agreement? The mechanism should produce real material
@@ -35,18 +35,18 @@ criterion drift) it already reliably produces.
 A second, standing methodological concern runs alongside the first: anywhere the system needs a
 "random" or "which one matters" decision, that decision must come from a genuine mechanical draw
 (`pick_pair.py`'s `random.sample()`, `roll_routine.py`'s `random.choices()`, etc.), never from a model
-guessing at what feels salient — the same reasoning that motivated building `pick_pair.py` in the first
+guessing at what feels salient â€” the same reasoning that motivated building `pick_pair.py` in the first
 place applies to every subsequent mechanic layered on top.
 
 ## Methodology
 
 After each run that's testing the design (as opposed to a routine content-generation run):
-1. Compare what actually happened against the standing objective above — not against whether the
+1. Compare what actually happened against the standing objective above â€” not against whether the
    *mechanism* ran correctly (that's `simulate_tally.py`'s job and is usually fine), but against
    whether the *content* it produced reflects real emergence and material stakes.
 2. Distinguish a mechanism working as designed but producing the wrong content, from a mechanism that
-   itself didn't work — these need different fixes.
-3. Log concrete evidence for both — what if anything broke narrative-content symmetry (deaths, failed
+   itself didn't work â€” these need different fixes.
+3. Log concrete evidence for both â€” what if anything broke narrative-content symmetry (deaths, failed
    arcs, contradictory secondhand accounts, structural collapse), and what stayed suspiciously
    convergent or safe.
 4. Carry forward anything left genuinely undecided into **Open design questions** rather than silently
@@ -54,24 +54,76 @@ After each run that's testing the design (as opposed to a routine content-genera
 
 ## Run log
 
-### Run 1 — 2026-08-08 to 2026-08-10 — worktree `simulate-20260808-181023`
+**Complete chronological record (latest first).**
 
-- **Setup:** Auroboro III, Iläria, Khaoe, Nerkeli, Gondarfolas. Phase 1: 50 passes, 30% Terfila-weighted
+### Isolation Experiment — Run 1 of 2 — 2026-09-01 — worktree simulate-20260901-000826
+
+- **Objective:** seed-isolation experiment (same world seed + RNG seed 42, separate worktree) to test repeatability and distinguish mechanism patterns from RNG variance. Run 2 will repeat exact setup.
+- **Setup:** 57-character population (three-cities-baseline-fixed), 250 passes, local Ollama, mode divergence.
+- **Starting lore:** established population with concrete arcs, baseline snapshot.
+- **Ending lore:** 11 deaths, 9 births, 3 arc completions, 4 first-child arcs, pool 46 living.
+- **Bugs found:** two critical bugs in simulate_driver.py (stale pending discarded, pending unlinked too early).
+- **Insights:** Mechanical drift small vs. Run 5 (9 births vs. 5); zero criterion moves despite gate hits. Three completed arcs on "remembered right" theme.
+- **Full record:** .claude/worktrees/simulate-20260901-000826/SIMULATION_LOG.md
+
+### Three-City Cast — Run 5 — 2026-08-31 — worktree simulate-20260831-172200
+
+- **Objective:** first 250-pass run against merged three-city cast with corrected mechanism.
+- **Setup:** 57 characters, 250 passes, local Ollama. Pre-run: 13 epistemic arcs to concrete, 13 admin arcs to physical (66.7% concrete).
+- **Starting lore:** 57-character population with concrete-grounded arcs.
+- **Ending lore:** 11 deaths, 5 births, 4 arc completions, pool 51 living.
+- **Bugs found & fixed mid-run:** wealth-pool drain had no floor (floored at 0); simulate_driver stale arc block; enact_via_ollama crash on matched_about list; one empty cause field (corrected manually).
+- **Insights:** completion-tale pipeline works automatically. One criterion move (Nieragan). Arc completion ≠ scene content (completing scenes disconnected from subjects).
+- **Full record:** .claude/worktrees/simulate-20260831-172200/SIMULATION_LOG.md
+
+### Local-Model Pilot — 2026-08-30 — worktree simulate-20260830-224921
+
+- **Objective:** pilot local-model (Ollama, Qwen 2.5 14b) enactment; verify pass loop runs clean without subagent-per-pass.
+- **Setup:** 2 test characters (Torvald, Senna), 5 passes, local Ollama dispatch.
+- **Starting lore:** two throwaway characters, two concrete threads (wall repair, herb supply).
+- **Ending lore:** 1 birth (Torsen, pass 3), no deaths, 1 arc advance, Senna's arc never gated.
+- **Bugs found:** scene-id collision (best-effort): 5 scenes got numeric suffix (expected for small pool).
+- **Insights:** mechanical pass loop solid. Birth lands mechanically. Local model produces plausible situations. Only one real beat (pass 3).
+- **Full record:** .claude/worktrees/simulate-20260830-224921/SIMULATION_LOG.md
+
+### Survival Mechanism — Round 2 — experimental, survival-arc-test branch
+
+- **Objective:** second round after Round 1 revealed lethal tuning; retuned and tested recovery.
+- **Setup:** 8 Tyrnea characters, 50 passes, retuned (energy_cap 5→10, survive_take 1→2, partner_threshold 5→3).
+- **Starting lore:** 8 characters reverted to pre-Round-1 baseline.
+- **Ending lore:** 0 deaths (retuning worked), 2 births (Gustodor, Gustelnos), 0 criterion moves persisted.
+- **Bugs found & fixed:** generate_offspring crash on unhashable multi-ref about field (fixed in-place); wealth drain bug diagnosed.
+- **Insights:** retuning eliminated deaths. Wealth mechanism broken by scaling issues. Token efficiency driving architecture redesign.
+- **Full record:** .claude/worktrees/survival-arc-test/run2_archive/
+
+### Survival Mechanism — Round 1 — experimental, survival-arc-test branch
+
+- **Objective:** stress-test survival/exhaustion mechanism; intended 20 passes, extended to 90 on request, stopped at 44.
+- **Setup:** 8 Tyrnea characters, Haiku per scene, three driver scripts built mid-run (pass_prep, pass_record, pass_apply).
+- **Starting lore:** 8 characters with no arc history.
+- **Ending lore:** 7 of 8 dead (all exhaustion), 1 survivor (Folkorlo), 1 arc completion (Doxolites, reauthored), 16 reinterprets + 1 break, zero reproduction.
+- **Bugs found (not fixed):** Haiku invented names despite instruction ("Seriath", "Ansa"); one criterion break on vindication (not true break).
+- **Insights:** **survival mechanism lethal at first-guess tuning** — ~one death per six passes. Four deaths on best arc moments (completion, breakthrough, first connection). Cast homogeneity produced 15 reinterprets vs. 1 break vs. 0 rejects.
+- **Full record:** .claude/worktrees/survival-arc-test/run1_archive/SIMULATION_LOG.md
+
+### Run 1 â€” 2026-08-08 to 2026-08-10 â€” worktree `simulate-20260808-181023`
+
+- **Setup:** Auroboro III, IlÃ¤ria, Khaoe, Nerkeli, Gondarfolas. Phase 1: 50 passes, 30% Terfila-weighted
   context, one seeded scene (a rumor about a Peregrin from Puerto Varilla and a vision at Eurasori).
-  Phase 2: 47 more passes on the same population (97 total, short of the planned 100 — population ran
+  Phase 2: 47 more passes on the same population (97 total, short of the planned 100 â€” population ran
   out), introducing routines, mechanical location resolution (coincidence/visit), arcs with a
   `resolution` field, and an inclined-to-help/hinder mechanic gating a separately-rolled outcome.
-- **What worked:** real, unchosen material consequence — 4 deaths (all natural lifespan completions:
-  Auroboro III pass 79, Iläria pass 81, Khaoe pass 85, Nerkeli pass 97), a distributed archive network
+- **What worked:** real, unchosen material consequence â€” 4 deaths (all natural lifespan completions:
+  Auroboro III pass 79, IlÃ¤ria pass 81, Khaoe pass 85, Nerkeli pass 97), a distributed archive network
   that collapsed for a structural reason (built for ~10 keepers, the population only ever had 5, then
   fewer), and only one clean arc resolution across the whole cast (Gondarfolas, twice). The run stopping
   short of 100 passes because the living pool dropped to 1 is itself direct empirical confirmation of
-  the debrief's own diagnosis that the world has no reproduction/autopoiesis mechanism — the population
+  the debrief's own diagnosis that the world has no reproduction/autopoiesis mechanism â€” the population
   can only ever shrink.
 - **What didn't move:** the underlying epistemology-bias diagnosed after phase 1 (nearly every scene's
   actual subject matter is still CONFLICT-01 / multiplicity-vs-singular-truth) persisted through phase
-  2 — the new mechanics added *stakes* to that same content rather than diversifying the content itself.
-  This is traced to an implementation shortcut, not a flaw in the design as originally scoped — see
+  2 â€” the new mechanics added *stakes* to that same content rather than diversifying the content itself.
+  This is traced to an implementation shortcut, not a flaw in the design as originally scoped â€” see
   below.
 - **Implementation gap identified (2026-08-10, in debrief following the run):** the original design
   (`TODO.md`'s "Proposed next phase," points 1 and 6) specified routines as a small, *hand-authored* set
@@ -81,100 +133,100 @@ After each run that's testing the design (as opposed to a routine content-genera
   `{location: weight}` pairs with no authored practice attached (the dominant 75%-weighted Terfila slot
   in particular has no defined content for any character), and `arc.about` was auto-derived from each
   character's existing `criterion.anchor` instead of from a place-type template. This is very likely the
-  proximate cause of the persisted epistemology bias above — the arcs inherited the same anchor content
+  proximate cause of the persisted epistemology bias above â€” the arcs inherited the same anchor content
   everything else already gravitated to, instead of introducing new, place-grounded material. Not yet
   fixed; see open questions.
 - **Unverified:** whether the inclined-to-hinder branch (`check_arc_alignment.py`'s `hinder` output) was
-  ever actually triggered this run. The computed `inclined:` value was never persisted to disk — only
-  the resulting `advance`/`stall`/`reverse` outcome survives in `arc.history` — so this run can't
+  ever actually triggered this run. The computed `inclined:` value was never persisted to disk â€” only
+  the resulting `advance`/`stall`/`reverse` outcome survives in `arc.history` â€” so this run can't
   distinguish "reverses came from genuine peer antagonism" from "reverses came from neutral-odds bad
   rolls or from structural causes (the network's own population shortage)." If this needs to be
   verified specifically, log the `inclined:` value to `arc.history` in a future run rather than
   discarding it.
 - **Full record:** `.claude/worktrees/simulate-20260808-181023/SIMULATION_LOG.md` (pass-by-pass log,
   full machinery-incident record, tally output). That worktree is disposable and not guaranteed to
-  survive indefinitely — anything worth keeping long-term belongs here or in `TODO.md`, not only there.
+  survive indefinitely â€” anything worth keeping long-term belongs here or in `TODO.md`, not only there.
 
-### Run 2 — 2026-08-10 — worktree `simulate-20260810-164704`
+### Run 2 â€” 2026-08-10 â€” worktree `simulate-20260810-164704`
 
-- **Setup:** Khaasan, Doran, Ilaria, Bardaglis, Aureobalo, Khaoe — freshly seeded with hand-authored
+- **Setup:** Khaasan, Doran, Ilaria, Bardaglis, Aureobalo, Khaoe â€” freshly seeded with hand-authored
   `routines` and a seed `arc` each (this run's own prep), specifically to pilot the extended-mode
   design described in the "Built, 2026-08-10" section, per its own "Next step". 10 passes, no context
   given. First-ever run of extended mode.
 - **Arc topics chosen deliberately distinct from each character's `criterion.anchor`**, directly
   applying Run 1's diagnosed fix (arc content must come from archetype+specialization, not the
-  anchor) — checked programmatically before writing (a script asserted none of the six `arc.about`
+  anchor) â€” checked programmatically before writing (a script asserted none of the six `arc.about`
   values equaled that character's own anchor string) rather than trusted by eye.
 - **Process deviation:** pass 1's subagent dispatch hit a hard permission denial on its first `Write`
   (the scene transcript to `_npcs/scenes/`), despite the worktree's `settings.json` carrying
-  `defaultMode: bypassPermissions` and an explicit `Write` allow entry — this is a genuine, correct
+  `defaultMode: bypassPermissions` and an explicit `Write` allow entry â€” this is a genuine, correct
   file (`/enact` Step 4 requires it; `/simulate`'s own one-line "never touches `_npcs/`" summary is
   imprecise here, since `/enact` itself always writes `_npcs/scenes/`). Root cause not diagnosed. The
   rest of the run (passes 1-10 in full) was carried out by the orchestrating session directly instead
-  of via subagent dispatch, with no further permission friction at all — every script call,
+  of via subagent dispatch, with no further permission friction at all â€” every script call,
   transcript, and hearsay record for the whole run went through cleanly. Logged as an open question
   below rather than assumed fixed.
 - **What worked:** real, unforced material consequence from the arc mechanism, on the very first
-  pilot. Across 10 passes: 4 primacy+gate-hit combinations, producing **3 stalls and 1 reverse** —
+  pilot. Across 10 passes: 4 primacy+gate-hit combinations, producing **3 stalls and 1 reverse** â€”
   zero advances, zero completions. Khaoe's Collective-hall arc stalled twice in a row (pass 7, 8) for
   a *structural* reason dramatized both times: the two places she looked (a travelers' crowd, a
   written archive) don't actually contain the kind of person she needs (someone still working with
   their hands), which she herself recognized as a pattern via a genuine Step 5c synthesis ("she should
   be asking who's still working, not who's still talking") rather than the mechanism just repeating
   itself. Bardaglis's untraceable-ballad arc got its first roll on pass 10 and immediately **reversed**
-  — a crew member present at the song's first test in Görff had been retelling it with his name
+  â€” a crew member present at the song's first test in GÃ¶rff had been retelling it with his name
   attached, undoing the anonymity the whole project is built on. This produced a second real
   synthesis, connecting an earlier positive belief (the song reaching two other towns, pass 7) to this
   setback into one insight: spread and exposure are the same mechanism, not two unrelated risks.
   `roll_contested.py` also fired twice (passes 3, 4), both resolving as neutral-inclined
   split/deferred outcomes exactly per the fixed lookup table, with no named rival either time (no
-  qualifying existing character file was a natural fit) — the ambient/unnamed default path got real
+  qualifying existing character file was a natural fit) â€” the ambient/unnamed default path got real
   exercise, not just the named-rival path.
 - **What didn't fire, and why (useful, not a failure):** zero criterion **breaks** (one reinterpret,
-  one reject, both Khaoe — see below); zero reproduction (no pair crossed the 5-shared-scene
-  threshold — Bardaglis, drawn in 7 of 10 passes, topped out around 2-3 shared scenes with any single
+  one reject, both Khaoe â€” see below); zero reproduction (no pair crossed the 5-shared-scene
+  threshold â€” Bardaglis, drawn in 7 of 10 passes, topped out around 2-3 shared scenes with any single
   partner); zero deaths, so death-legacy never applicable; Doran was never drawn at all by
-  `pick_pair.py` in 10 passes (plain variance over a small pool, not a bug — confirmed by the
+  `pick_pair.py` in 10 passes (plain variance over a small pool, not a bug â€” confirmed by the
   script's own genuine `random.sample()`). Most primacy+gate checks (6 of 10) came back a clean
   **miss**, not because the mechanism is broken but because the cast started this run with **zero**
-  tagged/grounded knowledge anywhere — the gate can only match against knowledge items that already
+  tagged/grounded knowledge anywhere â€” the gate can only match against knowledge items that already
   carry `about` tags, and this six-character cast had none until this run itself started generating
   them. Gate-hit rate visibly climbed over the run's own second half as each pass's grounded
-  experience entries accumulated (0 hits in passes 1-6, then 4 hits in passes 7-10) — this looks like
+  experience entries accumulated (0 hits in passes 1-6, then 4 hits in passes 7-10) â€” this looks like
   a cold-start property of the mechanism itself, worth confirming on a longer run rather than an early
   finding to fix.
 - **Mechanism note, worth flagging precisely because it wasn't obvious from the docstring alone:**
   `check_arc_alignment.py`'s Layer 1 gate is a coarse word-overlap check between the arc's
-  about/needs tag *words* and the peer knowledge item's free *text* (not tag-to-tag matching) — so a
+  about/needs tag *words* and the peer knowledge item's free *text* (not tag-to-tag matching) â€” so a
   gate hit can and did fire purely because a character's own name, or a word like "collective,"
   appeared literally in a peer's prose, not because the peer's tags matched the arc's tags exactly.
   This is more permissive than the tag-exact-match reading a first pass through the docstring
   suggests, and worth knowing going in rather than re-deriving mid-run.
-- **Two real criterion moves, both Khaoe, both from her own anchor (`location: gorff`) — her home
+- **Two real criterion moves, both Khaoe, both from her own anchor (`location: gorff`) â€” her home
   turf comes up constantly given her routine's weighting, so this isn't surprising:** a **reinterpret**
-  (pass 2, tempered 0→1: her own observation that an unattributed song "standing" on its own is the
-  same test she holds a building to — a genuine widening of the standard's scope) and a **reject**
+  (pass 2, tempered 0â†’1: her own observation that an unattributed song "standing" on its own is the
+  same test she holds a building to â€” a genuine widening of the standard's scope) and a **reject**
   (pass 5: her own uncontested testimony to Ilaria, which didn't actually challenge anything and was
-  judged a non-event rather than a survived refutation). Distinguishing these two cases — a real
-  widening versus a same-anchor hit that isn't actually a challenge — was a judgment call the
+  judged a non-event rather than a survived refutation). Distinguishing these two cases â€” a real
+  widening versus a same-anchor hit that isn't actually a challenge â€” was a judgment call the
   mechanism's gate can't make on its own; it only flags that the anchor was *referenced*, never
   whether the reference is adversarial.
 - **Full record:** `.claude/worktrees/simulate-20260810-164704/SIMULATION_LOG.md` (pass-by-pass log,
   full mechanical-decision record, tally output).
 - **Extended same-session, same-worktree, to 25 passes total (2026-08-10), on request: "will
   characters be born?"** Answer: no, but precisely, not as a shrug. Two pairs (Khaasan-Bardaglis,
-  Khaasan-Ilaria) each reached 4 of the 5 shared-scene threshold and stopped there — `pick_pair.py`'s
+  Khaasan-Ilaria) each reached 4 of the 5 shared-scene threshold and stopped there â€” `pick_pair.py`'s
   own uniform draw across 15 possible pairs simply didn't land a 5th time on either in 15 extension
   passes, which is the mechanism working as designed on a fixed pass budget, not a gap. The extension
   is also where **advances first appeared at all** (0 in the first 10 passes, 4 more gate-hits in
-  passes 11-25 producing 4 advances/5 stalls/1 reverse combined across all 25) — Khaasan's way-post
+  passes 11-25 producing 4 advances/5 stalls/1 reverse combined across all 25) â€” Khaasan's way-post
   arc got two advances and sits one good roll short of `"complete"`; Bardaglis's ballad arc swung
-  reverse→advance→stall→advance, a real demonstration the mechanism can carry a project through a
+  reverseâ†’advanceâ†’stallâ†’advance, a real demonstration the mechanism can carry a project through a
   genuine setback-and-recovery cycle rather than only trending one direction. 2 more syntheses fired
   (5 total across the full run), same discipline as before (tied to a real hit or multi-source
   pattern, never bare coincidence). **Recurring process gap found and fixed twice:**
   `record_partner.py` was silently skipped in 4 of the first 10 passes and 3 more of the extension
-  passes (7 of 25 total) — unlike the arc-outcome roll, which `SKILL.md` explicitly flags as
+  passes (7 of 25 total) â€” unlike the arc-outcome roll, which `SKILL.md` explicitly flags as
   "must run before the scene," partner tracking has no equivalent forcing function in the 17-point
   sequence, so it's the step most likely to get dropped when moving quickly. Backfilled both times by
   replaying the missing `record_partner.py` calls once caught; final counts confirmed against the
@@ -185,11 +237,11 @@ After each run that's testing the design (as opposed to a routine content-genera
   "if a character is born, after their cooldown period they become eligible for conversations."**
   Confirmed `_lore/tuning.json` values first (`partner_threshold: 5`, `odds_percent.reproduction:
   40`, `child_cooldown_passes: 5`) and had the plan ready (exclude the child from `pick_pair.py`
-  until `birth_pass + 5`, then add them) — never needed, because no birth occurred. What changed
+  until `birth_pass + 5`, then add them) â€” never needed, because no birth occurred. What changed
   from the first extension: **reproduction eligibility fired four separate times** in these 15
   passes (Bardaglis-Khaasan, Aureobalo-Bardaglis, Khaoe-Bardaglis, Khaasan-Doran, each reaching 5/5
   shared scenes), and `roll_reproduction.py`'s genuine 40%-odds draw came back false all four times
-  - combined probability of that ≈13%, unlucky but not a mechanism problem; the script's own
+  - combined probability of that â‰ˆ13%, unlucky but not a mechanism problem; the script's own
   docstring already frames "false" as the expected common outcome. This is a materially different,
   more informative null result than the first extension's "never even became eligible." Bardaglis
   was the common parent in three of the four eligible pairs, simply from being drawn in the majority
@@ -329,7 +381,7 @@ After each run that's testing the design (as opposed to a routine content-genera
 - **Two real design bugs found and fixed, 2026-08-10, on user report (before the seventh extension
   below): the "circle" that death/birth notifications draw from was both silently broken and
   structurally incomplete.** (1) Name matching for co-participation was an exact case-insensitive
-  string comparison against a character's canonical `name` field, which can carry accents ("Ilaría")
+  string comparison against a character's canonical `name` field, which can carry accents ("IlarÃ­a")
   that hand-typed scene dialogue doesn't always reproduce ("Ilaria"). This silently broke matching for
   Ilaria across her *entire* 115-pass run - every single one of the 32 hearsay entries she appeared
   in this run used the unaccented spelling and matched nothing, so her death-notification circle at
@@ -393,7 +445,42 @@ After each run that's testing the design (as opposed to a routine content-genera
   section.
 
 
-## Built, 2026-08-10 — piloted 2026-08-10 (Run 2, above)
+
+### Early Pilot Series — Runs 1-3 (Haiku/Sonnet experiments, scripted record-keeping built mid-run)
+
+#### Run 3 — 2026-08-07 — worktree simulate-20260807-100139
+
+- **Objective:** longer run (50 passes) to stress-test scripts and observe criterion drift at scale.
+- **Setup:** Same 5 participants (Auroboro III, Khaoe, Ilaria, Gondarfolas, Nerkeli), 50 passes, ~30% Terfila/70% random, Haiku scenes, all scripted record-keeping (hardened from earlier fixes).
+- **Starting lore:** 5 characters, identical state to Runs 1-2.
+- **Ending lore:** 0 deaths, 16 criterion reinterpretations (Auroboro III x9, Khaoe x3, Gondarfolas x2, Nerkeli x2), 0 breaks, 0 rejects, 50 hearsay entries, Khaoe entered established band (30 scenes).
+- **Bugs found:** none new (earlier fixes held across 50 passes). Minor: stray id suffixes (#1, _pass40) cosmetically inconsistent but functionally fine.
+- **Insights:** Criterion drift measurable at scale — Auroboro's reinterpretations built toward "synthesis of asking and telling" by pass 16. Khaoe and Nerkeli first-ever moves across all runs.
+- **Full record:** .claude/worktrees/simulate-20260807-100139/SIMULATION_LOG.md (50-pass log, comparison matrix)
+
+#### Run 2 — 2026-08-06/07 — worktree simulate-20260806-194328
+
+- **Objective:** Run 1 comparison trial (identical setup, 21 passes) using scripted record-keeping throughout.
+- **Setup:** Same 5 participants, 21 passes, ~30% Terfila/70% random, Haiku scenes, all scripted from start.
+- **Starting lore:** 5 characters, identical state to Run 1.
+- **Ending lore:** 2 rejections (Khaoe's pragmatism x2), 1 reinterpret (Auroboro tempered 1→2), 21 hearsay entries, 0 deaths.
+- **Bugs found & fixed:** check_anchor_reference format-drift (about as list, spacing "highway:M7"); record_hearsay called twice per scene with lowercase slugs (removed duplicate, corrected names); pass 5 hearsay never recorded (backfilled).
+- **Insights:** Format-drift at Haiku tier requires defensive parsing. Subagent self-reports can be imprecise or wrong — file-read verification mandatory.
+- **Full record:** .claude/worktrees/simulate-20260806-194328/SIMULATION_LOG.md (comparison incidents, format-drift fixes)
+
+#### Run 1 — 2026-08-06 — worktree simulate-20260806-091256
+
+- **Objective:** foundational pilot of /enact/simulate on cheap model (Haiku); stress-test, tolerate errors. Where scripted record-keeping was built and integrated mid-run.
+- **Setup:** 5 characters (Auroboro III, Khaoe, Ilaria, Gondarfolas, Nerkeli), 21 passes, ~30% Terfila/70% random-location context (grounded in locations + lived experience). Haiku scenes, Sonnet orchestration. Passes 1-7 hand-edited JSON, passes 8-21 scripted after mid-run merge.
+- **Starting lore:** 5 characters with no arc history.
+- **Ending lore:** 4 criterion reinterpretations (Auroboro III x4, tempered 0→5), 1 rejection (pass 4), 21 hearsay entries, 0 deaths, 0 arcs.
+- **Bugs found:** pass-8 incident — subagent did not cd into worktree, wrote to *production* _lore/ (caught, reverted); pass-19 hallucination (claimed lived 0→1, actually 11). Scripted and hand-JSON outputs matched perfectly once scripts ran.
+- **Repairs:** mandatory cd+pwd first step, absolute paths for all calls, subsequent passes briefed to verify own numbers.
+- **Insights:** Cheap model works cleanly on mechanical scripting. Hand-JSON and scripted outputs identical (validates automation). Criterion drift emerges at 21 passes.
+- **Full record:** .claude/worktrees/simulate-20260806-091256/SIMULATION_LOG.md (21-pass log, mid-run script-build, incidents)
+
+
+## Built, 2026-08-10 â€” piloted 2026-08-10 (Run 2, above)
 
 The full second-phase design, worked out collaboratively across the same debrief conversation that
 produced Run 1's entry above, is now implemented as actual scripts and orchestration, and has now run
@@ -401,87 +488,87 @@ once in full (Run 2, above, 10 passes). Treat the mechanism descriptions below a
 designed; treat any specific numeric prediction as still only lightly tested at n=10.
 
 **Governing principle established during this build:** minimize the subagent's judgment. Every
-per-pass decision that can be mechanical now is — a script, a dice roll, or arithmetic over numbers
+per-pass decision that can be mechanical now is â€” a script, a dice roll, or arithmetic over numbers
 already on record. Exactly two exceptions remain, both flagged explicitly where they occur: writing
 the actual words of a scene (dramatizing an already-fully-decided sequence of facts, never deciding
 them), and composing a plausible name-blend for a newborn character at a reproduction event.
 
-- **Hand-authored routine archetypes** — `_lore/archetypes.json` (market, workshop, archive,
+- **Hand-authored routine archetypes** â€” `_lore/archetypes.json` (market, workshop, archive,
   waystation as a starter set), each carrying prose texture plus a `provides` tag list. Routines
   become `{location, archetype, weight, specialization}` (`.claude/skills/character/SKILL.md` Step
   8) instead of a bare location name.
 - **Arcs derived from archetype + specialization + criterion**, not the raw anchor alone, and
-  scoped against `horizon.py`'s coarse band (never a literal remaining count) — mirrors how
+  scoped against `horizon.py`'s coarse band (never a literal remaining count) â€” mirrors how
   criterion ripeness already works.
-- **Visit motivation** — `check_needs_provides.py` mechanically checks a visit destination's
+- **Visit motivation** â€” `check_needs_provides.py` mechanically checks a visit destination's
   archetype `provides` against the traveler's arc `needs`, after pairing/location are already
   independently decided; only then does a visit get framed as purposeful.
 - **Arc primacy is now a 50/50 roll** (`roll_arc_primacy.py`) between whichever two characters are
-  in the scene, replacing the old host-only rule outright — resolves the "host vs. traveler" open
+  in the scene, replacing the old host-only rule outright â€” resolves the "host vs. traveler" open
   question by making it unnecessary rather than picking a side.
 - **Help/hinder is now sequential**: `check_arc_alignment.py` gates on the peer's *knowledge*
   first (idiosyncratic, small-sampled, doesn't converge the way this cast's criteria did in Run 1),
-  and only asks the peer's *criteria* to decide direction if something real was already found —
+  and only asks the peer's *criteria* to decide direction if something real was already found â€”
   addresses the "will it always tend toward help" risk flagged after Run 1's 0-rejections tally.
   Also now reports back *which specific knowledge item* matched, so a transform (below) can copy a
   new arc topic mechanically instead of a model composing one.
 - **Arc outcome rolls (`roll_arc_outcome.py`) now must run and be known *before* the scene is
-  written** — the sequencing fix that resolves the "can the dice produce results that read as
+  written** â€” the sequencing fix that resolves the "can the dice produce results that read as
   incoherent" concern: the roll decides the fact, the subagent dramatizes it, never the reverse.
-- **Contested friction** (`roll_contested.py`) — a rare roll on top of an already-motivated visit;
+- **Contested friction** (`roll_contested.py`) â€” a rare roll on top of an already-motivated visit;
   resolves through a fixed lookup over the already-computed `inclined` value (help/hinder/mixed),
-  never a separate judgment call. No persistent stock or ledger anywhere — a fresh narrative fact
+  never a separate judgment call. No persistent stock or ledger anywhere â€” a fresh narrative fact
   each time, same as hearsay is never reconciled against a source of truth. A rival only gets named
   if they already have an existing character file; otherwise stays ambient.
-- **Leads and deliberate visits** (`roll_lead_followup.py`) — a named rival from a contested scene
+- **Leads and deliberate visits** (`roll_lead_followup.py`) â€” a named rival from a contested scene
   becomes a lead; only checked when the leading character is independently drawn by `pick_pair.py`
   *and* lands specifically as participant_1 (reuses that existing assignment rather than adding a
   new "who initiates" die). Some leads will simply never get followed before they expire (~8
-  passes) — expected, not a bug, especially as the living pool shrinks.
-- **Transform** — an arc that would resolve `failed` (net ≤ −3) instead pivots if the exact
+  passes) â€” expected, not a bug, especially as the living pool shrinks.
+- **Transform** â€” an arc that would resolve `failed` (net â‰¤ âˆ’3) instead pivots if the exact
   failing scene also gate-matched an alternative: `about` is copied mechanically from the matched
   knowledge item's own tags, `resolution` stays `"ongoing"`, the tally resets from that point.
-  `archetype`/routine stay fixed — only the goal changes.
-- **Reproduction** (`record_partner.py`, `roll_reproduction.py`, `generate_offspring.py`) —
-  eligibility is ≥5 shared scenes between a pair (tracked via a new `partners` count) with neither
+  `archetype`/routine stay fixed â€” only the goal changes.
+- **Reproduction** (`record_partner.py`, `roll_reproduction.py`, `generate_offspring.py`) â€”
+  eligibility is â‰¥5 shared scenes between a pair (tracked via a new `partners` count) with neither
   parent on a 10-pass cooldown; crossing the threshold only makes a birth *possible*, a roll
   decides whether it happens. The child is a genuine mutation, not an average: each criterion field
   independently coin-flipped to one parent's exact value, knowledge a random-sized random subset of
   the union of both parents' education items, routines likewise. `knowledge.experience` starts
   empty (a newborn hasn't lived either parent's history) and `arc` is unseeded until they first win
   a primacy roll. The child is pool-ineligible for 10 passes after birth. Life.span is freshly
-  rolled, not inherited — an explicit choice, not settled by the original design sketch's own
+  rolled, not inherited â€” an explicit choice, not settled by the original design sketch's own
   "open" note; worth revisiting if it turns out to matter. **Both parents get a direct
   `knowledge.experience` line recording the birth, and their combined circle gets the same
   30%-sampled immediate-notification treatment `record_death.py` gives a death** (added
-  2026-08-10, after the first version of this script shipped a birth as a completely silent event —
+  2026-08-10, after the first version of this script shipped a birth as a completely silent event â€”
   a real gap against the original design intent, "so others know them before they know them," not a
   deliberate choice). The one remaining model judgment call (composing the name-blend) is now
   narrowed further: `roll_reproduction.py` mechanically decides which parent's name leads the
   blend via `name_lead`, so the model isn't even choosing that.
 - **All tunable numbers now live in one place, `_lore/tuning.json`** (odds, thresholds, cooldowns,
   the lifespan range), read via a shared `scripts/lore/tuning.py` loader rather than each script
-  hardcoding its own default (added 2026-08-10, on request — the numbers were scattered across
+  hardcoding its own default (added 2026-08-10, on request â€” the numbers were scattered across
   script defaults and `SKILL.md` prose before this, an easy way for them to drift out of sync). The
   child's own pool-eligibility cooldown was set to **5** passes here (down from an initial 10),
-  deliberately kept **distinct** from the unrelated parent-reproduction cooldown, which stays 10 —
+  deliberately kept **distinct** from the unrelated parent-reproduction cooldown, which stays 10 â€”
   retune either independently by editing the JSON file, no code or doc changes needed.
-- **Death legacy** — reuses `record_death.py`'s existing notified-circle output rather than a new
+- **Death legacy** â€” reuses `record_death.py`'s existing notified-circle output rather than a new
   "close" definition. "Died early" = `horizon.py`'s band read `established` rather than `late` at
   the exact death-triggering pass (structurally the earliest a rolled span can ever land, so no new
   threshold was needed). On an early death, `roll_death_legacy.py` decides whether the arc passes to
   one circle member, applying the same mechanical about/needs copy a transform uses. The
-  criterion-vs-close-ones shock check this was meant to add turned out to already exist —
+  criterion-vs-close-ones shock check this was meant to add turned out to already exist â€”
   `record_death.py`'s `shock_candidates` output already flags exactly this; nothing new was needed
   there beyond confirming it's actually wired into a `/simulate` pass.
 
-**Next step:** everything above builds only on existing structure plus these additions — nothing
+**Next step:** everything above builds only on existing structure plus these additions â€” nothing
 here has been run once. Per the original suggested order (`TODO.md`'s "Proposed next phase"), run a
 genuinely small pilot (10-15 passes) before trusting any of this at scale, and before layering
 anything further (the reflection mechanism, still entirely undesigned) on top.
 
 **Permission review (2026-08-10, on request):** `scripts/lore/simulate_setup_worktree.py`'s blanket
-tool-allow list is untouched by this build and already covers every new script — they all follow
+tool-allow list is untouched by this build and already covers every new script â€” they all follow
 the identical `Bash -> py script -> internal file I/O` pattern as the originals, correctly anchor
 root via `Path(__file__).resolve().parent.parent.parent`, and introduce no new Claude-tool-level
 interaction. What the review actually found and fixed: extended mode can call on the order of 15+
@@ -491,36 +578,36 @@ the extended-mode section only pointed backward at base mode's absolute-path/nev
 rules rather than restating them where they're actually needed first, and never explicitly required
 the safety-net check to run at all. Both fixed directly in `SKILL.md`'s extended-mode section.
 
-### Run 3 — 2026-08-13 — worktree `generate-run2` (`/simulate -generate` first real run)
+### Run 3 â€” 2026-08-13 â€” worktree `generate-run2` (`/simulate -generate` first real run)
 
 **Different objective from Runs 1-2.** This wasn't testing the standing hypothesis above (emergent
-criterion/hearsay drift) — `-generate` mode explicitly skips criterion shocks and hearsay mutation by
+criterion/hearsay drift) â€” `-generate` mode explicitly skips criterion shocks and hearsay mutation by
 design (see `scripts/lore/simulate_generate_population.py`'s own docstring). What this run tested:
 does the mechanical pass loop actually run clean at scale with no subagent per pass, and does
 deferring name/arc-authoring judgment into one batched subagent pass at the very end produce content
 as good as the interactive per-pass version would.
 
-**Setup.** 12 participants: the original 6 piloted characters (Aureobalo, Bardaglis, Döran, Iläria,
+**Setup.** 12 participants: the original 6 piloted characters (Aureobalo, Bardaglis, DÃ¶ran, IlÃ¤ria,
 Khaasan, Khaoe) plus 6 newly-routined ones authored specifically for this run (Farlis, Gondarfolas,
-Nerkeli, Nawom, Saltamontabiras, Gok — 5 Terfila-tied, 1 Khan Ice-tied, picked for depth of existing
+Nerkeli, Nawom, Saltamontabiras, Gok â€” 5 Terfila-tied, 1 Khan Ice-tied, picked for depth of existing
 backstory/knowledge). 300 mechanical passes, no scene prose, one batched language-layer subagent
 (Sonnet) at the end for 7 child names + 12 fresh arcs.
 
 **Outcomes.**
 - All 300 passes ran with zero crashes or leaks (this mode has no subagent-per-pass, so the
-  relative-path-leak failure mode Runs 1-2 had to guard against structurally doesn't apply here —
+  relative-path-leak failure mode Runs 1-2 had to guard against structurally doesn't apply here â€”
   every sibling-script call resolves from this script's own `__file__`, never a subagent's
   possibly-wrong cwd).
-- 7 births, 8 deaths (Döran, Iläria, Khaasan, Khaoe, Farlis, Gondarfolas, Nerkeli, Gok — every
+- 7 births, 8 deaths (DÃ¶ran, IlÃ¤ria, Khaasan, Khaoe, Farlis, Gondarfolas, Nerkeli, Gok â€” every
   deceased character's final `life.lived` landed exactly on their secretly-rolled span, confirming
-  `horizon.py`'s `ending` check fired correctly every time), 0 criterion moves (expected — this mode
-  never triggers a shock), 12 arcs queued (all `reason: "first"`, none `"reauthor_failed"` — no
+  `horizon.py`'s `ending` check fired correctly every time), 0 criterion moves (expected â€” this mode
+  never triggers a shock), 12 arcs queued (all `reason: "first"`, none `"reauthor_failed"` â€” no
   active arc happened to cross the failure threshold this run), max generation depth 1 (no
-  grandchildren — 300 passes across 12 starting slots wasn't enough for a child to itself clear
+  grandchildren â€” 300 passes across 12 starting slots wasn't enough for a child to itself clear
   `partner_threshold`/cooldowns and reproduce, though the mechanism for it to happen is confirmed
   working via `generate_offspring.py`'s own routine inheritance).
 - No death-legacy transfers fired (`roll_death_legacy.py`'s 40% odds simply didn't hit across however
-  many "died early" checks ran) — untested this run whether the arc-copy itself is correct; that's
+  many "died early" checks ran) â€” untested this run whether the arc-copy itself is correct; that's
   still only exercised by Runs 1-2's interactive mode so far.
 - The one real bug this run caught: `simulate_generate_population.py` didn't precondition-check
   `_lore/characters/lifespans.json` coverage, so a pool member with routines but no rolled lifespan
@@ -528,26 +615,26 @@ backstory/knowledge). 300 mechanical passes, no scene prose, one batched languag
   result) instead of failing fast at startup like the routines/deceased checks already did. Fixed by
   adding the same upfront check for lifespans; also exposed a real data-prep gap (`/character` Step
   8's own "routines only" framing makes it easy to forget Step 5's lifespan roll when adding routines
-  to an *existing* character rather than a brand-new one — worth a `/character` Step 8 note if this
+  to an *existing* character rather than a brand-new one â€” worth a `/character` Step 8 note if this
   recurs).
 - **Language-layer quality, one batched subagent for 19 items (7 names + 12 arcs) vs. the interactive
   mode's one subagent per event:** names read as genuine blends (`Nerkaglis` from Nerkeli+Bardaglis,
-  `Khaoran` from Khaoe+Döran, `Aureobaloe` from Aureobalo+Khaoe), all mutually distinct, correctly
+  `Khaoran` from Khaoe+DÃ¶ran, `Aureobaloe` from Aureobalo+Khaoe), all mutually distinct, correctly
   led from `name_lead`'s side. Arcs all used a valid archetype matching one of that character's own
   routines, included a `concept:` tag, and read as grounded in that character's specific
   criterion/backstory rather than generic (e.g. Nawom's `road_to_puerto_tortuga` arc picks up directly
   on his backstory's unresolved search; Gok's `hotel_kholi_grandes_juegos_archive` extends his existing
   criterion about keeping Khan Ice facing its past). No obvious quality drop from batching 19 items in
-  one pass versus one-at-a-time — worth watching on a larger run (a much bigger manifest might strain
+  one pass versus one-at-a-time â€” worth watching on a larger run (a much bigger manifest might strain
   a single context window or start producing more generic content toward the end of a long list).
 
 **Assessment against `-generate` mode's own goal** (not the standing objective): confirmed viable as
 a way to produce a larger starting population fast. The real open question this run couldn't test is
 whether the resulting population, once handed to an ordinary interactive `/simulate` run, produces
-material/narrative drift as convincing as a population that was interactively generated throughout —
+material/narrative drift as convincing as a population that was interactively generated throughout â€”
 that requires a follow-up interactive run using this worktree's population as its starting pool.
 
-### Run 4 — 2026-08-17 — worktree `simulate-20260817-012440`
+### Run 4 â€” 2026-08-17 â€” worktree `simulate-20260817-012440`
 
 **Objective.** Stress-test `-generate` mode at an order of magnitude past Run 3's scale (2000 passes
 vs. 300), specifically to answer the two things Run 3 flagged as untested: whether deep generational
@@ -556,7 +643,7 @@ holds up past ~20 items.
 
 **Setup.** 8 brand-new characters authored specifically for this run (Farkolus, Forlisen - Dome Market
 shopkeepers; Farlan - harbor; Auroben - gardens; Aurora - temple; Krastomus - bank; Terniko, Muli -
-municipality, Muli originally from Görff), all Terfila-based, routines deliberately cross-linked so
+municipality, Muli originally from GÃ¶rff), all Terfila-based, routines deliberately cross-linked so
 every character shares at least one location with another (Dome Market/Terfila Harbor/Municipal
 Office each tie 3-4 of them together). Five new contexts added (port, temple, gardens, municipality,
 bank). 2000 requested passes.
@@ -608,7 +695,7 @@ hundred passes, independent of whether this particular kill cause recurs.
   answering Run 3's other open question:** completed cleanly (881s, ~181k tokens, all 230 entries
   resolved, zero skipped). But the failure mode Run 3 predicted ("more generic content toward the end
   of a long list") didn't manifest the way expected - instead, the subagent discovered the 146 queued
-  arcs collapsed to only **25 distinct (criterion × primary-routine-context × horizon-band)
+  arcs collapsed to only **25 distinct (criterion Ã— primary-routine-context Ã— horizon-band)
   signatures**, because `-generate` mode never runs a criterion shock, so a criterion inherited at
   birth stays byte-identical for that whole lineage's descendants. It authored each signature once and
   reused that content across its instances (still one real, separately-registered arc per character -
@@ -627,4 +714,4 @@ branch `worktree-simulate-20260817-012440` (not merged into this branch).
 
 ## Open design questions
 
-→ See [OPEN_QUESTIONS.md](OPEN_QUESTIONS.md) for the full list. When a question is resolved, move the answer into this file's run logs or into [TODO.md](TODO.md), then delete it from OPEN_QUESTIONS.md rather than leaving stale entries.
+â†’ See [OPEN_QUESTIONS.md](OPEN_QUESTIONS.md) for the full list. When a question is resolved, move the answer into this file's run logs or into [TODO.md](TODO.md), then delete it from OPEN_QUESTIONS.md rather than leaving stale entries.

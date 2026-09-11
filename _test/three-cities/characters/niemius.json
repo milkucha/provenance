@@ -1,0 +1,199 @@
+{
+  "name": "Niemius",
+  "origin": "Salthos Cruzados",
+  "location": "Salthos Cruzados",
+  "backstory": "Child of Niemus and Darius, in Salthos Cruzados; grew up around spends mornings up on the temple's roof and..., and picked up a little of Forliamus Log Crossing War along the way.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "tollhouse, crossing",
+      "items": [
+        "tale: gorff",
+        "concept: salthos_mediator_line",
+        "concept: crossing_toll_dispute",
+        "location: terfila",
+        "tale: salthos_cruzados",
+        "location: salthos_cruzados",
+        "tale: crossing_market_roof",
+        "conflict: CONFLICT-02",
+        "conflict: CONFLICT-01",
+        "conflict: CONFLICT-03",
+        "tale: gorff_ledger_crossing_war",
+        "concept: crossing_market_roof",
+        "tale: birth_of_niergus",
+        "tale: forliamus_log_crossing_war",
+        "location: gorff",
+        "concept: temple_of_the_crossing",
+        "tale: birth_of_nierius"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Had a child with Darius, named Nierius.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 55
+        }
+      },
+      "Learned that Darius has died.",
+      {
+        "text": "Had a child with Prince Doran, named Niemoran.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 101
+        }
+      },
+      {
+        "text": "Heard that Nakus and Niemus now have a child, Niekus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 120
+        }
+      },
+      {
+        "text": "Heard that Nakus and Prince Doran now have a child, Dornakus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 131
+        }
+      },
+      "Learned that Niemus has died.",
+      {
+        "text": "Heard that Prince Doran and Nakus now have a child, Nakoran.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 144
+        }
+      },
+      {
+        "text": "Heard that Nakus and Prince Doran now have a child, Dorukus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 189
+        }
+      },
+      "Learned that Prince Doran has died.",
+      {
+        "text": "Heard that Darnus and Fenserika now have a child, Fenarnus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 262
+        }
+      },
+      {
+        "text": "Heard that Darika and Darnakus now have a child, Darnarika.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 281
+        }
+      },
+      "Learned that Niergus has died.",
+      {
+        "text": "Heard that Niemoran and Nieragus now have a child, Nieragan.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 325
+        }
+      },
+      {
+        "text": "Heard that Nakoran and Fenserika now have a child, Nakorika.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 337
+        }
+      },
+      {
+        "text": "Heard that Dornakus and Darika now have a child, Dornarika.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 342
+        }
+      },
+      {
+        "text": "Heard that Dornakus and Fenrius now have a child, Dornarius.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 362
+        }
+      },
+      {
+        "text": "Heard that Nieragus and Dorakus now have a child, Nieradus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 367
+        }
+      },
+      {
+        "text": "Heard that Fenserika and Niekus now have a child, Fenekus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 384
+        }
+      },
+      "Learned that Fenserika has died."
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "holds themself accountable to CONFLICT-01, whatever it costs",
+    "wasted_life": "one that never had to answer for CONFLICT-01",
+    "anchor": "conflict: CONFLICT-01",
+    "origin": "derived",
+    "trusts": "verification",
+    "distrusts": "anyone who sounds certain"
+  },
+  "life": {
+    "lived": 39,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "context": "temple",
+      "location": "Salthos Cruzados",
+      "routine_actions": "works the temple's walls from sunup, matching new stone to old without being told which is which anymore, and carts materials in himself by midday",
+      "weight": 100.0
+    }
+  ],
+  "parents": [
+    "niemus",
+    "darius"
+  ],
+  "partners": {
+    "prince_doran": 4,
+    "fenserika": 3,
+    "magus": 2,
+    "niemus": 2,
+    "nierius": 1,
+    "darnus": 2,
+    "darika": 5,
+    "niergus": 3,
+    "darnakus": 4,
+    "dorakus": 1,
+    "fenrius": 2,
+    "darnukas": 2,
+    "niemoran": 2,
+    "dornakus": 4,
+    "nieragus": 3,
+    "nakoran": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 55,
+  "arc": {
+    "about": [
+      "concept: temple_of_the_crossing"
+    ],
+    "needs": [
+      "expertise",
+      "records"
+    ],
+    "context": "temple",
+    "premise": "With the market roof finally built, Niemius has started wondering, uneasily, whether two generations of his family's own repairs have quietly patched over whatever evidence there ever was of who actually built the crossing temple.",
+    "resolution": "ongoing",
+    "history": []
+  },
+  "energy": 20,
+  "last_reproduced_pass": 101
+}

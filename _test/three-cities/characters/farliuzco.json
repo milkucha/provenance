@@ -1,0 +1,222 @@
+{
+  "name": "Farliuzco",
+  "origin": "Terfila",
+  "location": "Terfila",
+  "backstory": "Child of Tamuzco and Farliazco, in Terfila; grew up around haggles for cart space at the market before..., and picked up a little of Birth Of Nakoran along the way.",
+  "knowledge": {
+    "education": {
+      "percent": 45,
+      "mode": "random",
+      "topic": null,
+      "items": [
+        "conflict: CONFLICT-01",
+        "tale: birth_of_darnakus",
+        "concept: crossing_market_roof",
+        "tale: forliamus_log_crossing_war",
+        "location: salthos_cruzados",
+        "location: terfila",
+        "tale: birth_of_fenrius",
+        "concept: temple_of_the_crossing",
+        "conflict: CONFLICT-03",
+        "tale: birth_of_niemoruk",
+        "tale: salthos_cruzados",
+        "concept: crossing_toll_dispute",
+        "tale: birth_of_dornarius",
+        "tale: birth_of_fenarnus",
+        "tale: death_of_darius",
+        "conflict: CONFLICT-02",
+        "location: gorff",
+        "concept: forliamus_betrothal_offer",
+        "tale: crossing_market_roof",
+        "tale: birth_of_niemius",
+        "tale: birth_of_nierius",
+        "tale: birth_of_darnus",
+        "tale: death_of_trezco",
+        "tale: birth_of_darika",
+        "tale: birth_of_nakoran",
+        "tale: birth_of_niemoran",
+        "tale: birth_of_nieragus",
+        "tale: death_of_darnakus"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Learned that Forliukar has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 306
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Had a child with Farlo, named Farmuken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 306
+        }
+      },
+      {
+        "text": "Grew up hearing: Learned that Trezco has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 306
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Tamuken and Forliazco now have a child, Forliuken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 306
+        }
+      },
+      {
+        "text": "Grew up hearing: Had a child with Forliauzco, named Forliuzazco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 306
+        }
+      },
+      {
+        "text": "Grew up hearing: Learned that Farlo has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 306
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Forliauzco and Forliamuk now have a child, Forliauken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 306
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Trezarlo and Forliukar now have a child, Trezukar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 306
+        }
+      },
+      {
+        "text": "Grew up hearing: Had a child with Forliamuk, named Tamuzaken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 306
+        }
+      },
+      {
+        "text": "Heard that Forliamuk and Tamuzco now have a child, Tamuzmuken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 346
+        }
+      },
+      {
+        "text": "Heard that Tamuzco and Trezukar now have a child, Trezukuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 364
+        }
+      },
+      "Learned that Tamuzco has died.",
+      {
+        "text": "Heard that Forliauzco and Farliazco now have a child, Farliazuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 388
+        }
+      },
+      {
+        "text": "Heard that Forliauzco and Farliukar now have a child, Forliaukarli.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 405
+        }
+      },
+      "Learned that Farliazco has died."
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "measures a life by whether Birth Of Nierius is still remembered rightly",
+    "wasted_life": "forgetting what Birth Of Nierius actually meant, the way most people already have",
+    "anchor": "tale: birth_of_nierius",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 18,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "makes the walk between Terfila and the crossing when there's nothing better to do at the docks, and lingers by the temple a beat longer than the walk requires.",
+      "weight": 20.0
+    },
+    {
+      "context": "transit_route",
+      "location": "Terfila",
+      "routine_actions": "makes the walk between Terfila and the crossing when there's nothing better to do at the docks, and lingers by the temple a beat longer than the walk requires.",
+      "weight": 20.0
+    },
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "makes the walk between Terfila and the crossing when there's nothing better to do at the docks, and lingers by the temple a beat longer than the walk requires.",
+      "weight": 20.0
+    },
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "makes the walk between Terfila and the crossing when there's nothing better to do at the docks, and lingers by the temple a beat longer than the walk requires.",
+      "weight": 20.0
+    },
+    {
+      "context": "transit_route",
+      "location": "Terfila",
+      "routine_actions": "makes the walk between Terfila and the crossing when there's nothing better to do at the docks, and lingers by the temple a beat longer than the walk requires.",
+      "weight": 20.0
+    }
+  ],
+  "parents": [
+    "tamuzco",
+    "farliazco"
+  ],
+  "partners": {
+    "forliamus": 1,
+    "forliazco": 1,
+    "forliuken": 1,
+    "forliauzco": 3,
+    "farliukar": 1,
+    "forliauken": 1,
+    "tamuzaken": 1,
+    "trezukar": 1,
+    "forliuzazco": 3,
+    "tamuzarlo": 1,
+    "forliaukar": 3,
+    "trezukuzco": 1,
+    "farliauzar": 1,
+    "farliazuzco": 1,
+    "forliaukarla": 1,
+    "forliaukarli": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 306,
+  "energy": 20,
+  "arc": {
+    "about": [
+      "conflict: CONFLICT-01"
+    ],
+    "needs": [
+      "records"
+    ],
+    "context": "market",
+    "premise": "Farliuzco wants to know whether Gorff's control of the tollhouse was ever actually legitimate or just never challenged - he means to find whatever record exists of how it was first granted, if any does.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

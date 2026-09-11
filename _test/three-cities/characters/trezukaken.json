@@ -1,0 +1,128 @@
+{
+  "name": "Trezukaken",
+  "origin": "Terfila",
+  "location": "Terfila",
+  "backstory": "Child of Trezukar and Tamuzaken; raised in Terfila on settles the house's accounts at the market stalls..., and carries some knowledge of Birth Of Trezukuzco.",
+  "knowledge": {
+    "education": {
+      "percent": 50,
+      "mode": "skewed",
+      "topic": "tollhouse",
+      "items": [
+        "tale: birth_of_fenrius",
+        "tale: birth_of_niemoran",
+        "concept: forliamus_betrothal_offer",
+        "conflict: CONFLICT-02",
+        "tale: birth_of_mekaluko",
+        "tale: death_of_niemus",
+        "conflict: CONFLICT-01",
+        "tale: death_of_farlo",
+        "tale: birth_of_dornakus",
+        "tale: death_of_niemius",
+        "location: terfila",
+        "tale: birth_of_dornarius",
+        "tale: crossing_market_roof",
+        "tale: birth_of_merkhaubo",
+        "concept: crossing_toll_dispute",
+        "tale: birth_of_niemoruk",
+        "tale: birth_of_niemius",
+        "tale: birth_of_trezarlo",
+        "tale: birth_of_fenarnus",
+        "tale: terfila",
+        "tale: birth_of_darnakus",
+        "concept: crossing_market_roof",
+        "tale: birth_of_niemornak",
+        "tale: birth_of_mekoboro",
+        "tale: death_of_tamuzco",
+        "conflict: CONFLICT-03",
+        "tale: birth_of_mekobaluk",
+        "tale: birth_of_dorukus",
+        "tale: birth_of_nakorika",
+        "tale: birth_of_niergus",
+        "tale: birth_of_nakoran",
+        "tale: death_of_darika",
+        "tale: birth_of_trezukuzco",
+        "concept: salthos_mediator_line"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Had a child with Tamuzaken, named Tamuzakar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 393
+        }
+      },
+      {
+        "text": "Grew up hearing: Had a child with Trezukar, named Tamuzakar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 393
+        }
+      },
+      "Learned that Trezukar has died."
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts it worthwhile only by paying real attention to Birth Of Darnakus",
+    "wasted_life": "letting Birth Of Darnakus slip past unexamined, the way it's easiest to",
+    "anchor": "tale: birth_of_darnakus",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 11,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "takes to the transit route himself now when a ship idles too long in port, and finds he still slows near the temple without quite meaning to.",
+      "weight": 50.0
+    },
+    {
+      "context": "transit_route",
+      "location": "Terfila",
+      "routine_actions": "takes to the transit route himself now when a ship idles too long in port, and finds he still slows near the temple without quite meaning to.",
+      "weight": 50.0
+    }
+  ],
+  "parents": [
+    "trezukar",
+    "tamuzaken"
+  ],
+  "partners": {
+    "farliazco": 2,
+    "forliamuk": 1,
+    "forliukar": 1,
+    "farliukar": 1,
+    "tamuzaken": 1,
+    "forliuzazco": 1,
+    "tamuzarlo": 1,
+    "forliaukar": 1,
+    "farliuzco": 1,
+    "tamuzukar": 2,
+    "farliazuzco": 3,
+    "forliaukarli": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 393,
+  "energy": 20,
+  "arc": {
+    "about": [
+      "concept: transit_route_waystop_shelter"
+    ],
+    "needs": [
+      "materials"
+    ],
+    "context": "transit_route",
+    "premise": "Trezukaken wants a proper shelter built at the midpoint of the transit route, where travelers are stuck in the open when a crossing gets delayed - he's got the materials scavenged, just needs someone to help raise it before the next bad season.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

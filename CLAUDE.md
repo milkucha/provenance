@@ -2,16 +2,6 @@
 
 Agent-driven world-building system: takes a seed (sociocultural parameters, a handful of authored facts) and grows a fictional society organically through procedural and semantic generation — not hand-written end to end. Designed to produce emergent, materially-grounded lore drift, not just mechanically-correct record-keeping.
 
-## Index
-
-**Starting a new session? Read [README.md](README.md)'s intro plus §0–§2 first — that's the compulsory orientation minimum.** Then, task-specific sections as needed:
-
-- **Compulsory:** [Getting started](README.md#getting-started), [§0 System architecture](README.md#0-system-architecture), [§1 Folder structure](README.md#1-folder-structure), [§2 Core concepts](README.md#2-core-concepts)
-- **Growing the record:** [§3 Writing lore through enactment](README.md#3-writing-lore-through-enactment)
-- **Putting it in motion:** `/enact`, `/simulate`, `/generate` (skills, same docs)
-- **Minecraft embodiment:** [§5–§8](README.md#5-building-a-new-npc-start-to-finish) (optional; lore engine is embodiment-agnostic)
-- **Design tracking:** [LAB_REPORT.md](LAB_REPORT.md), [OPEN_QUESTIONS.md](OPEN_QUESTIONS.md), [TODO.md](TODO.md)
-- **This session's starting point:** [CHRONICLE.md](CHRONICLE.md)
 
 ## Four core principles
 

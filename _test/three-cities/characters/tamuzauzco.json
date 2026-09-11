@@ -1,0 +1,139 @@
+{
+  "name": "Tamuzauzco",
+  "origin": "Terfila",
+  "location": "Terfila",
+  "backstory": "Child of Tamuzarlo and Farliauzco, in Terfila; grew up around walks the transit route between Terfila and the..., and picked up a little of Birth Of Tamuzaken along the way.",
+  "knowledge": {
+    "education": {
+      "percent": 50,
+      "mode": "skewed",
+      "topic": "tollhouse",
+      "items": [
+        "tale: death_of_darika",
+        "tale: birth_of_dorakus",
+        "tale: forliamus_betrothal_offer",
+        "tale: birth_of_darika",
+        "location: gorff",
+        "tale: birth_of_fenrius",
+        "tale: birth_of_niemoruk",
+        "tale: birth_of_darinak",
+        "tale: birth_of_nieragan",
+        "concept: salthos_mediator_line",
+        "tale: birth_of_niemius",
+        "tale: birth_of_forliarlo",
+        "tale: birth_of_nieradus",
+        "tale: death_of_farlo",
+        "concept: crossing_toll_dispute",
+        "tale: birth_of_darnus",
+        "tale: gorff",
+        "tale: salthos_cruzados",
+        "tale: death_of_dorakus",
+        "tale: crossing_market_roof",
+        "tale: birth_of_nakorika",
+        "concept: forliamus_betrothal_offer",
+        "location: salthos_cruzados",
+        "tale: birth_of_fenarnus",
+        "tale: birth_of_dornarius",
+        "tale: birth_of_khaumestro",
+        "tale: death_of_darnukas",
+        "tale: terfila",
+        "tale: birth_of_tamuzaken",
+        "conflict: CONFLICT-01",
+        "conflict: CONFLICT-02",
+        "conflict: CONFLICT-03",
+        "tale: birth_of_tamuzakar",
+        "tale: birth_of_mekobaluk",
+        "tale: birth_of_khaoboro",
+        "tale: birth_of_dorukus"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Had a child with Farliauzco, named Farliauzar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 428
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Heard that Forliauzco and Farliazco now have a child, Forliuzazco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 428
+        }
+      },
+      "Learned that Farliauzco has died."
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "measures a life by whether Birth Of Doraknus 2 is still remembered rightly",
+    "wasted_life": "forgetting what Birth Of Doraknus 2 actually meant, the way most people already have",
+    "anchor": "tale: birth_of_mekobaluk",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 9,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "transit_route",
+      "location": "Terfila",
+      "routine_actions": "tags along on the house's morning accounts at the market stalls, starting to press suppliers for terms himself, and picking up the family's version of the tollhouse story along with the ledger.",
+      "weight": 25.0
+    },
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "tags along on the house's morning accounts at the market stalls, starting to press suppliers for terms himself, and picking up the family's version of the tollhouse story along with the ledger.",
+      "weight": 25.0
+    },
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "tags along on the house's morning accounts at the market stalls, starting to press suppliers for terms himself, and picking up the family's version of the tollhouse story along with the ledger.",
+      "weight": 25.0
+    },
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "tags along on the house's morning accounts at the market stalls, starting to press suppliers for terms himself, and picking up the family's version of the tollhouse story along with the ledger.",
+      "weight": 25.0
+    }
+  ],
+  "parents": [
+    "tamuzarlo",
+    "farliauzco"
+  ],
+  "partners": {
+    "tamuzco": 1,
+    "forliuken": 1,
+    "forliauzco": 1,
+    "forliauken": 1,
+    "forliuzazco": 1,
+    "tamuzarlo": 1,
+    "tamuzukar": 2,
+    "tamuzakar": 1,
+    "forliaukarli": 2
+  },
+  "partners_quality": {},
+  "birth_pass": 428,
+  "energy": 20,
+  "arc": {
+    "about": [
+      "tale: birth_of_mekobaluk"
+    ],
+    "needs": [
+      "news"
+    ],
+    "context": "transit_route",
+    "premise": "Tamuzauzco wants that birth's account corrected along the transit route before the thinned-out version is the only one left.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

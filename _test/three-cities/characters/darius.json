@@ -1,0 +1,161 @@
+{
+  "name": "Darius",
+  "city": "Salthos Cruzados",
+  "origin": "Salthos Cruzados",
+  "location": "Salthos Cruzados",
+  "backstory": "A mason whose family has patched and maintained the crossing temple for two generations, without ever being sure whose original work they're repairing.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "temple",
+      "items": [
+        "concept: crossing_market_roof",
+        "concept: temple_of_the_crossing",
+        "conflict: CONFLICT-02",
+        "location: gorff",
+        "location: salthos_cruzados",
+        "location: terfila",
+        "tale: crossing_market_roof",
+        "tale: forliamus_log_crossing_war",
+        "tale: gorff",
+        "tale: gorff_ledger_crossing_war",
+        "tale: salthos_cruzados"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Had a child with Niemus, named Nierius.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 10
+        }
+      },
+      {
+        "text": "Had a child with Niemus, named Darnus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 20
+        }
+      },
+      {
+        "text": "Had a child with Fenserika, named Darika.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 31
+        }
+      },
+      {
+        "text": "Heard that Magus and Nierius now have a child, Niergus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 44
+        }
+      },
+      {
+        "text": "Had a child with Niemus, named Niemius.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 55
+        }
+      },
+      {
+        "text": "Heard that Nakus and Darnus now have a child, Darnakus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 56
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "standard": "counts a roof actually standing above one more season of patched stalls and stalled petitions",
+    "wasted_life": "letting the temple work absorb every scrap of coin and timber while the market stalls rot under the same rain, season after season",
+    "anchor": "concept: crossing_market_roof",
+    "origin": "collision between his backstory (a mason patching the crossing temple) and the sample's own crossing_market_roof (a second, competing structural project at the same crossing)",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed",
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [
+      {
+        "cause": "author correction",
+        "date": "2026-08-31",
+        "previous": {
+          "standard": "counts keeping the temple standing above ever settling who gets credit for it",
+          "wasted_life": "patching stone he was never sure whose hands laid first",
+          "anchor": "concept: temple_of_the_crossing",
+          "origin": "collision between his backstory (his family has patched the temple two generations) and CONFLICT-02",
+          "trusts": "a story that's been carried and retold and still holds together",
+          "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+        },
+        "note": "re-derived after encodings.json gained three new concrete concepts (crossing_market_roof, toll_ledger_arrears, forliamus_betrothal_offer) via /tell, at the author's explicit direction, to diversify arcs away from the epistemic-conflict default"
+      }
+    ]
+  },
+  "life": {
+    "lived": 27,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "location": "Salthos Cruzados",
+      "context": "temple",
+      "weight": 100,
+      "routine_actions": "spends mornings up on the temple's roof and walls patching what the seasons wear down, afternoons hauling stone in from the transit route"
+    }
+  ],
+  "arc": {
+    "about": [
+      "concept: crossing_market_roof"
+    ],
+    "needs": [
+      "materials"
+    ],
+    "context": "temple",
+    "premise": "Darius wants to see the crossing market finally get its roof - the timber and coin the merchants have petitioned for, year after year, actually spent rather than swallowed by the temple's own repairs again. He knows the market's need is real, not for lack of asking, but he's less sure the house will ever choose stalls over stone.",
+    "resolution": "ongoing",
+    "history": [
+      {
+        "pass": 4,
+        "outcome": "reverse"
+      },
+      {
+        "pass": 10,
+        "outcome": "reverse"
+      },
+      {
+        "pass": 12,
+        "outcome": "stall"
+      },
+      {
+        "pass": 31,
+        "outcome": "stall"
+      },
+      {
+        "pass": 35,
+        "outcome": "advance"
+      },
+      {
+        "pass": 60,
+        "outcome": "advance"
+      },
+      {
+        "pass": 63,
+        "outcome": "advance"
+      }
+    ]
+  },
+  "partners": {
+    "niemus": 7,
+    "fenserika": 4,
+    "prince_doran": 4,
+    "nakus": 2,
+    "magus": 2,
+    "nierius": 2,
+    "darnus": 4,
+    "niergus": 2
+  },
+  "energy": 9,
+  "last_reproduced_pass": 55
+}

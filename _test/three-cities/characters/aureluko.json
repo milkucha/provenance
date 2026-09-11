@@ -1,0 +1,263 @@
+{
+  "name": "Aureluko",
+  "origin": "Gorff",
+  "location": "Gorff",
+  "backstory": "Child of Merluko and Aurebalo; grew up around takes stonework commissions at the market each morning,... in Gorff, and knows something of Birth Of Darinak.",
+  "knowledge": {
+    "education": {
+      "percent": 50,
+      "mode": "skewed",
+      "topic": "temple, gorff",
+      "items": [
+        "tale: terfila",
+        "concept: crossing_toll_dispute",
+        "tale: death_of_darius",
+        "tale: forliamus_log_crossing_war",
+        "tale: birth_of_dorakus",
+        "tale: birth_of_niergus",
+        "concept: temple_of_the_crossing",
+        "concept: crossing_market_roof",
+        "tale: crossing_market_roof",
+        "conflict: CONFLICT-03",
+        "concept: toll_ledger_arrears",
+        "conflict: CONFLICT-02",
+        "location: gorff",
+        "tale: gorff_ledger_crossing_war",
+        "tale: death_of_prince_doran",
+        "tale: birth_of_niekus",
+        "tale: birth_of_darinak"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Heard that Aurebalo and Khaus now have a child, Khaubalo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 31
+        }
+      },
+      {
+        "text": "Heard that Auroboro and Aurebalo now have a child, Aureboro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 53
+        }
+      },
+      {
+        "text": "Had a child with Mekestros, named Mekaluko.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 57
+        }
+      },
+      {
+        "text": "Heard that Khaubalo and Mekestros now have a child, Khaubestro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 67
+        }
+      },
+      {
+        "text": "Heard that Aurebalo and Merluko now have a child, Aurebako.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 87
+        }
+      },
+      {
+        "text": "Heard that Aurebalo and Mekoboro now have a child, Aurekobo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 97
+        }
+      },
+      {
+        "text": "Heard that Mekestros and Khaubalo now have a child, Khaumestro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 99
+        }
+      },
+      {
+        "text": "Heard that Mekestros and Khaubalo now have a child, Mekhaubo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 129
+        }
+      },
+      "Learned that Mekestros has died.",
+      {
+        "text": "Heard that Aurebalo and Khaoboro now have a child, Aurekhobo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 150
+        }
+      },
+      {
+        "text": "Heard that Khaubalo and Merluko now have a child, Merkhaubo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 162
+        }
+      },
+      {
+        "text": "Heard that Merluko and Khaubalo now have a child, Khaubaluk.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 196
+        }
+      },
+      "Learned that Aurebalo has died.",
+      "Learned that Merluko has died.",
+      {
+        "text": "Had a child with Mekhaubo, named Mekhaurel.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 240
+        }
+      },
+      "Learned that Mekaluko has died.",
+      {
+        "text": "Heard that Aurebako and Khaoboro now have a child, Khaobako.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 279
+        }
+      },
+      "Learned that Khaubalo has died.",
+      {
+        "text": "Had a child with Khaubestro, named Aurelkhau.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 289
+        }
+      },
+      "Learned that Khaoboro has died.",
+      {
+        "text": "Heard that Mekoboro and Khaubaluk now have a child, Mekobaluk.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 309
+        }
+      },
+      {
+        "text": "Had a child with Mekhaubo, named Mekaurelo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 315
+        }
+      },
+      {
+        "text": "Heard that Khaubestro and Mekhaurel now have a child, Mekhaubest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 319
+        }
+      },
+      {
+        "text": "Heard that Mekhaurel and Khaobako now have a child, Mekhaobako.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 334
+        }
+      },
+      {
+        "text": "Heard that Aurekomest and Aurelkhau now have a child, Aurelkomest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 363
+        }
+      },
+      "Learned that Aureboro has died.",
+      {
+        "text": "Heard that Aurekomest and Aurelkhau now have a child, Aureskomest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 412
+        }
+      },
+      "Learned that Mekoboro has died.",
+      {
+        "text": "Heard that Khaobako and Mekhaurel now have a child, Mekhaobera.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 435
+        }
+      },
+      {
+        "text": "Had a child with Mekhaubo, named Mekaurelu.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 454
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "measures a life by whether Birth Of Niergus is still remembered rightly",
+    "wasted_life": "forgetting what Birth Of Niergus actually meant, the way most people already have",
+    "anchor": "tale: birth_of_niergus",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 60,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Gorff",
+      "routine_actions": "trails his father's stonework stall through the morning, sorts the offcuts nobody wants into a pile he's slowly building a trade from himself",
+      "weight": 100.0
+    }
+  ],
+  "parents": [
+    "merluko",
+    "aurebalo"
+  ],
+  "partners": {
+    "auroboro": 2,
+    "aurebalo": 6,
+    "mekestros": 5,
+    "khaus": 2,
+    "merluko": 1,
+    "mekoboro": 3,
+    "khaubalo": 5,
+    "aureboro": 5,
+    "mekaluko": 3,
+    "khaoboro": 3,
+    "khaubestro": 4,
+    "aurebako": 4,
+    "aurekobo": 1,
+    "mekhaubo": 6,
+    "merkhaubo": 3,
+    "khaubaluk": 1,
+    "mekhaurel": 2,
+    "aurelkhau": 2,
+    "mekobaluk": 1,
+    "mekaurelo": 2
+  },
+  "partners_quality": {
+    "auroboro": -1
+  },
+  "birth_pass": 19,
+  "energy": 20,
+  "last_reproduced_pass": 454,
+  "arc": {
+    "about": [
+      "concept: crossing_market_roof"
+    ],
+    "needs": [
+      "materials"
+    ],
+    "context": "market",
+    "premise": "Aureluko wants to see the long-petitioned market roof actually go up before another season of open-air stalls, and he's started lining up stone and timber pledges from the market's own sellers before the temple's competing repairs claim the same coin and timber first.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

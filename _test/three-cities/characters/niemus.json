@@ -1,0 +1,183 @@
+{
+  "name": "Niemus",
+  "city": "Salthos Cruzados",
+  "origin": "Salthos Cruzados",
+  "location": "Salthos Cruzados",
+  "backstory": "One of the Salthos house's guards, posted at the crossing before the tollhouse fell; wasn't there himself the night Auroboro's raid took it, and has only ever had the story as everyone else does.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "tollhouse, crossing",
+      "items": [
+        "concept: crossing_toll_dispute",
+        "concept: salthos_mediator_line",
+        "concept: temple_of_the_crossing",
+        "conflict: CONFLICT-01",
+        "conflict: CONFLICT-02",
+        "conflict: CONFLICT-03",
+        "location: gorff",
+        "location: salthos_cruzados",
+        "tale: crossing_market_roof",
+        "tale: forliamus_log_crossing_war",
+        "tale: gorff"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Had a child with Darius, named Nierius.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 10
+        }
+      },
+      {
+        "text": "Had a child with Darius, named Darnus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 20
+        }
+      },
+      {
+        "text": "Heard that Fenserika and Darius now have a child, Darika.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 31
+        }
+      },
+      {
+        "text": "Heard that Magus and Nierius now have a child, Niergus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 44
+        }
+      },
+      {
+        "text": "Had a child with Darius, named Niemius.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 55
+        }
+      },
+      {
+        "text": "Heard that Nakus and Darnus now have a child, Darnakus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 56
+        }
+      },
+      "Learned that Darius has died.",
+      {
+        "text": "Heard that Fenserika and Nierius now have a child, Fenrius.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 95
+        }
+      },
+      {
+        "text": "Heard that Nakus and Darnus now have a child, Darnukas.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 97
+        }
+      },
+      {
+        "text": "Heard that Prince Doran and Niemius now have a child, Niemoran.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 101
+        }
+      },
+      {
+        "text": "Had a child with Nakus, named Niekus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 120
+        }
+      },
+      {
+        "text": "Heard that Nakus and Prince Doran now have a child, Dornakus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 131
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "standard": "counts holding his post steady regardless of whose version of that night is true",
+    "wasted_life": "guarding a crossing whose own history he only ever knew secondhand",
+    "anchor": "concept: crossing_toll_dispute",
+    "origin": "collision between his backstory (posted at the crossing, but not present for the raid itself) and the sample's crossing_toll_dispute",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed",
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": []
+  },
+  "life": {
+    "lived": 30,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "location": "Salthos Cruzados",
+      "context": "transit_route",
+      "weight": 100,
+      "routine_actions": "walks the transit route's Salthos stretch at dawn and dusk, checks travelers' papers at the crossing, listens more than he talks"
+    }
+  ],
+  "arc": {
+    "about": [
+      "concept: crossing_toll_dispute"
+    ],
+    "needs": [
+      "a surviving witness who was physically at the tollhouse the night it fell"
+    ],
+    "context": "transit_route",
+    "premise": "Niemus wants to find someone who was actually posted at the tollhouse itself the night Auroboro's raid took it - not another telling, someone who was there - and hear it once, plainly, from them.",
+    "resolution": "ongoing",
+    "history": [
+      {
+        "pass": 2,
+        "outcome": "advance"
+      },
+      {
+        "pass": 13,
+        "outcome": "stall"
+      },
+      {
+        "pass": 19,
+        "outcome": "stall"
+      },
+      {
+        "pass": 27,
+        "outcome": "stall"
+      },
+      {
+        "pass": 53,
+        "outcome": "stall"
+      }
+    ]
+  },
+  "partners": {
+    "darius": 7,
+    "nakus": 3,
+    "fenserika": 3,
+    "magus": 3,
+    "prince_doran": 2,
+    "nierius": 1,
+    "darnus": 3,
+    "darika": 2,
+    "niemius": 2,
+    "darnakus": 1,
+    "darnukas": 2,
+    "niemoran": 1
+  },
+  "energy": 4,
+  "partners_quality": {
+    "darius": -2,
+    "magus": -1
+  },
+  "last_reproduced_pass": 120
+}

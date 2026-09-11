@@ -1,0 +1,208 @@
+{
+  "name": "Tamuzaken",
+  "origin": "Terfila",
+  "location": "Terfila",
+  "backstory": "Child of Tamuzco and Forliamuk; raised in Terfila on walks the transit route between Terfila and the..., and carries some knowledge of Birth Of Dornakus.",
+  "knowledge": {
+    "education": {
+      "percent": 50,
+      "mode": "skewed",
+      "topic": "tollhouse",
+      "items": [
+        "concept: toll_ledger_arrears",
+        "tale: birth_of_nierius",
+        "tale: birth_of_darnus",
+        "conflict: CONFLICT-02",
+        "tale: birth_of_mekoboro",
+        "tale: birth_of_niemoruk",
+        "location: terfila",
+        "concept: crossing_toll_dispute",
+        "conflict: CONFLICT-03",
+        "concept: crossing_market_roof",
+        "tale: forliamus_betrothal_offer",
+        "tale: birth_of_dornarius",
+        "tale: crossing_market_roof",
+        "tale: death_of_darius",
+        "tale: birth_of_niergus",
+        "tale: birth_of_darnakus",
+        "conflict: CONFLICT-01",
+        "tale: birth_of_fenarnus",
+        "tale: birth_of_niemius",
+        "tale: birth_of_niemoran",
+        "tale: terfila",
+        "concept: salthos_mediator_line",
+        "location: gorff",
+        "tale: death_of_darnakus",
+        "tale: death_of_niemus",
+        "tale: birth_of_fenrius",
+        "tale: birth_of_niemornak",
+        "tale: birth_of_dornarika",
+        "concept: temple_of_the_crossing",
+        "tale: birth_of_darika",
+        "tale: birth_of_farliauzco",
+        "tale: birth_of_trezarlo",
+        "tale: birth_of_dornakus"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Grew up hearing: Had a child with Farlo, named Farmuken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 233
+        }
+      },
+      {
+        "text": "Grew up hearing: Had a child with Forliarlo, named Forliauzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 233
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Heard that Trezco and Tamuken now have a child, Tamuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 233
+        }
+      },
+      {
+        "text": "Heard that Tamuzco and Farliukar now have a child, Tamuzarlo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 257
+        }
+      },
+      {
+        "text": "Heard that Tamuzco and Farliazco now have a child, Farliuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 306
+        }
+      },
+      {
+        "text": "Heard that Forliamuk and Tamuzco now have a child, Tamuzmuken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 346
+        }
+      },
+      "Learned that Forliamuk has died.",
+      {
+        "text": "Heard that Tamuzco and Trezukar now have a child, Trezukuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 364
+        }
+      },
+      "Learned that Tamuzco has died.",
+      {
+        "text": "Had a child with Farliukar, named Tamuzukar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 366
+        }
+      },
+      {
+        "text": "Had a child with Trezukar, named Tamuzakar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 382
+        }
+      },
+      {
+        "text": "Heard that Forliauken and Farliukar now have a child, Forliaukarla.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 389
+        }
+      },
+      {
+        "text": "Had a child with Trezukar, named Trezukaken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 393
+        }
+      },
+      {
+        "text": "Heard that Forliauzco and Farliukar now have a child, Forliaukarli.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 405
+        }
+      },
+      "Learned that Farliukar has died.",
+      "Learned that Trezukar has died.",
+      {
+        "text": "Heard that Tamuzukar and Forliauken now have a child, Tamuzukauk.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 495
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only if it stayed close to Birth Of Dornarika",
+    "wasted_life": "a life spent never once engaging with Birth Of Dornarika",
+    "anchor": "tale: birth_of_dornarika",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 30,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "transit_route",
+      "location": "Terfila",
+      "routine_actions": "takes to the transit route himself now when a ship idles too long in port, and finds he still slows near the temple without quite meaning to.",
+      "weight": 100.0
+    }
+  ],
+  "parents": [
+    "tamuzco",
+    "forliamuk"
+  ],
+  "partners": {
+    "forliazco": 2,
+    "tamuzco": 1,
+    "farliazco": 1,
+    "forliamuk": 1,
+    "forliukar": 1,
+    "forliauzco": 3,
+    "farliukar": 5,
+    "farliauzco": 2,
+    "forliauken": 3,
+    "trezukar": 4,
+    "forliuzazco": 1,
+    "forliaukar": 1,
+    "farliuzco": 1,
+    "tamuzmuken": 1,
+    "trezukuzco": 1,
+    "tamuzukar": 2,
+    "farliauzar": 1,
+    "trezukaken": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 233,
+  "energy": 20,
+  "last_reproduced_pass": 393,
+  "arc": {
+    "about": [
+      "tale: birth_of_dornarika"
+    ],
+    "needs": [
+      "news"
+    ],
+    "context": "transit_route",
+    "premise": "Tamuzaken wants that birth properly known among the travelers on the transit route, not just among the family who already knew.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

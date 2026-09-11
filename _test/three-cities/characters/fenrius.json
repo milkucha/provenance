@@ -1,0 +1,207 @@
+{
+  "name": "Fenrius",
+  "origin": "Salthos Cruzados",
+  "location": "Salthos Cruzados",
+  "backstory": "Child of Fenserika and Nierius; raised in Salthos Cruzados on waits near the Salthos house's own square on..., and carries some knowledge of Toll Ledger Arrears.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "tollhouse, crossing",
+      "items": [
+        "location: gorff",
+        "tale: terfila",
+        "tale: crossing_market_roof",
+        "conflict: CONFLICT-03",
+        "tale: salthos_cruzados",
+        "concept: forliamus_betrothal_offer",
+        "concept: salthos_mediator_line",
+        "location: terfila",
+        "conflict: CONFLICT-02",
+        "tale: forliamus_log_crossing_war",
+        "concept: temple_of_the_crossing",
+        "tale: gorff_ledger_crossing_war",
+        "tale: gorff",
+        "tale: toll_ledger_arrears",
+        "tale: forliamus_betrothal_offer",
+        "conflict: CONFLICT-01",
+        "concept: toll_ledger_arrears",
+        "tale: birth_of_dorakus"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Learned that Darius has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 95
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Nakus and Darnus now have a child, Darnakus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 95
+        }
+      },
+      {
+        "text": "Grew up hearing: Had a child with Darius, named Darika.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 95
+        }
+      },
+      {
+        "text": "Heard that Nierius and Magus now have a child, Nieragus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 142
+        }
+      },
+      {
+        "text": "Heard that Darnus and Fenserika now have a child, Fenarnus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 262
+        }
+      },
+      {
+        "text": "Had a child with Dorukus, named Fenriukas.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 316
+        }
+      },
+      {
+        "text": "Heard that Nakoran and Fenserika now have a child, Nakorika.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 337
+        }
+      },
+      {
+        "text": "Heard that Dornakus and Darika now have a child, Dornarika.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 342
+        }
+      },
+      {
+        "text": "Had a child with Dornakus, named Dornarius.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 362
+        }
+      },
+      {
+        "text": "Heard that Nieragus and Dorakus now have a child, Nieradus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 367
+        }
+      },
+      {
+        "text": "Heard that Fenserika and Niekus now have a child, Fenekus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 384
+        }
+      },
+      "Learned that Dorakus has died.",
+      "Learned that Fenserika has died.",
+      {
+        "text": "Heard that Darika and Darnakus now have a child, Darinak.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 397
+        }
+      },
+      "Learned that Darnakus has died.",
+      {
+        "text": "Heard that Fenriukas and Niemornak now have a child, Niemoruk.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 482
+        }
+      },
+      "Learned that Darika has died.",
+      {
+        "text": "Heard that Dornakus and Doraknus now have a child, Dornaknis.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 495
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only by making Forliamus Betrothal Offer their own concern",
+    "wasted_life": "treating Forliamus Betrothal Offer as someone else's concern",
+    "anchor": "tale: forliamus_betrothal_offer",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 42,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "main_square",
+      "location": "Salthos Cruzados",
+      "routine_actions": "stands at the square's edge on petition days, has stopped expecting an answer about the old match, and instead keeps track of who else the house has left waiting",
+      "weight": 100.0
+    }
+  ],
+  "parents": [
+    "fenserika",
+    "nierius"
+  ],
+  "partners": {
+    "niemus": 1,
+    "nakus": 2,
+    "magus": 2,
+    "prince_doran": 1,
+    "fenserika": 1,
+    "nierius": 1,
+    "darnus": 2,
+    "darika": 3,
+    "niergus": 1,
+    "niemius": 2,
+    "darnakus": 3,
+    "dorakus": 3,
+    "darnukas": 2,
+    "niemoran": 1,
+    "niekus": 2,
+    "dornakus": 3,
+    "nieragus": 1,
+    "nakoran": 3,
+    "dorukus": 3,
+    "fenarnus": 1,
+    "doraknus": 2,
+    "dornarika": 1,
+    "dornarius": 1,
+    "darinak": 1,
+    "niemornak": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 95,
+  "energy": 20,
+  "last_reproduced_pass": 362,
+  "arc": {
+    "about": [
+      "concept: forliamus_betrothal_offer"
+    ],
+    "needs": [
+      "materials"
+    ],
+    "context": "main_square",
+    "premise": "Fenrius wants a permanent board raised at the square itself - every betrothal, sealed or refused, nailed up in plain sight - rather than trusting it to a book someone can misplace or an official can quietly bury.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

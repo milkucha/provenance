@@ -1,0 +1,425 @@
+{
+  "_comment": "SECRET. A character's lifespan - how many scenes they have in them in total. Kept out of _lore/characters/<key>.json on purpose: that file is what /enact loads in order to PLAY a character, so a span sitting there would put the number in context at exactly the moment it must not be. /enact must never open this file. Ask scripts/lore/horizon.py instead, which answers with a coarse band (early/established/late) plus a separate post-scene-only 'ending: true/false' check, never the number. Rolled once by scripts/lore/roll_lifespan.py and never rerolled - the sole exception is backfilling a character whose recorded history already exceeds the roll (see /character Step 5). The matching 'lived' counter stays in the character's own file, because how many scenes someone has had is just their history and no secret at all. See _lore/facts/life_is_finite.md.",
+  "lifespans": {
+    "prince_doran": {
+      "span": 30,
+      "range": "25-45"
+    },
+    "magus": {
+      "span": 34,
+      "range": "25-45"
+    },
+    "nakus": {
+      "span": 38,
+      "range": "25-45"
+    },
+    "niemus": {
+      "span": 30,
+      "range": "25-45"
+    },
+    "darius": {
+      "span": 27,
+      "range": "25-45"
+    },
+    "forliamus": {
+      "span": 34,
+      "range": "25-45"
+    },
+    "fenserika": {
+      "span": 45,
+      "range": "25-45"
+    },
+    "farlo": {
+      "span": 37,
+      "range": "25-45"
+    },
+    "trezco": {
+      "span": 35,
+      "range": "25-45"
+    },
+    "tamuken": {
+      "span": 31,
+      "range": "25-45"
+    },
+    "auroboro": {
+      "span": 33,
+      "range": "25-45"
+    },
+    "aurebalo": {
+      "span": 42,
+      "range": "25-45"
+    },
+    "khaus": {
+      "span": 26,
+      "range": "25-45"
+    },
+    "merluko": {
+      "span": 36,
+      "range": "25-45"
+    },
+    "mekestros": {
+      "span": 35,
+      "range": "25-45"
+    },
+    "nierius": {
+      "span": 60,
+      "range": "30-60"
+    },
+    "darnus": {
+      "span": 51,
+      "range": "30-60"
+    },
+    "darika": {
+      "span": 53,
+      "range": "30-60"
+    },
+    "niergus": {
+      "span": 32,
+      "range": "30-60"
+    },
+    "niemius": {
+      "span": 39,
+      "range": "30-60"
+    },
+    "darnakus": {
+      "span": 49,
+      "range": "30-60"
+    },
+    "dorakus": {
+      "span": 35,
+      "range": "30-60"
+    },
+    "fenrius": {
+      "span": 53,
+      "range": "30-60"
+    },
+    "darnukas": {
+      "span": 41,
+      "range": "30-60"
+    },
+    "niemoran": {
+      "span": 51,
+      "range": "30-60"
+    },
+    "niekus": {
+      "span": 40,
+      "range": "30-60"
+    },
+    "dornakus": {
+      "span": 60,
+      "range": "30-60"
+    },
+    "nieragus": {
+      "span": 41,
+      "range": "30-60"
+    },
+    "nakoran": {
+      "span": 60,
+      "range": "30-60"
+    },
+    "dorukus": {
+      "span": 39,
+      "range": "30-60"
+    },
+    "fenarnus": {
+      "span": 42,
+      "range": "30-60"
+    },
+    "darnarika": {
+      "span": 52,
+      "range": "30-60"
+    },
+    "doraknus": {
+      "span": 53,
+      "range": "30-60"
+    },
+    "fenriukas": {
+      "span": 56,
+      "range": "30-60"
+    },
+    "nieragan": {
+      "span": 54,
+      "range": "30-60"
+    },
+    "nakorika": {
+      "span": 38,
+      "range": "30-60"
+    },
+    "dornarika": {
+      "span": 52,
+      "range": "30-60"
+    },
+    "dornarius": {
+      "span": 48,
+      "range": "30-60"
+    },
+    "nieradus": {
+      "span": 40,
+      "range": "30-60"
+    },
+    "fenekus": {
+      "span": 45,
+      "range": "30-60"
+    },
+    "darinak": {
+      "span": 53,
+      "range": "30-60"
+    },
+    "niemornak": {
+      "span": 37,
+      "range": "30-60"
+    },
+    "niemoruk": {
+      "span": 44,
+      "range": "30-60"
+    },
+    "nierakus": {
+      "span": 36,
+      "range": "30-60"
+    },
+    "dornaknis": {
+      "span": 35,
+      "range": "30-60"
+    },
+    "farliauzar": {
+      "span": 43,
+      "range": "30-60"
+    },
+    "farliauzco": {
+      "span": 33,
+      "range": "30-60"
+    },
+    "farliazco": {
+      "span": 59,
+      "range": "30-60"
+    },
+    "farliazuzco": {
+      "span": 56,
+      "range": "30-60"
+    },
+    "farliukar": {
+      "span": 52,
+      "range": "30-60"
+    },
+    "farliuzco": {
+      "span": 60,
+      "range": "30-60"
+    },
+    "farmuken": {
+      "span": 36,
+      "range": "30-60"
+    },
+    "forliamuk": {
+      "span": 42,
+      "range": "30-60"
+    },
+    "forliarlo": {
+      "span": 37,
+      "range": "30-60"
+    },
+    "forliaukar": {
+      "span": 44,
+      "range": "30-60"
+    },
+    "forliaukarla": {
+      "span": 30,
+      "range": "30-60"
+    },
+    "forliaukarli": {
+      "span": 53,
+      "range": "30-60"
+    },
+    "forliauken": {
+      "span": 56,
+      "range": "30-60"
+    },
+    "forliauzco": {
+      "span": 54,
+      "range": "30-60"
+    },
+    "forliazco": {
+      "span": 60,
+      "range": "30-60"
+    },
+    "forliukar": {
+      "span": 34,
+      "range": "30-60"
+    },
+    "forliuken": {
+      "span": 30,
+      "range": "30-60"
+    },
+    "forliuzazco": {
+      "span": 38,
+      "range": "30-60"
+    },
+    "tamuzakar": {
+      "span": 56,
+      "range": "30-60"
+    },
+    "tamuzaken": {
+      "span": 59,
+      "range": "30-60"
+    },
+    "tamuzarlo": {
+      "span": 60,
+      "range": "30-60"
+    },
+    "tamuzauzco": {
+      "span": 36,
+      "range": "30-60"
+    },
+    "tamuzco": {
+      "span": 60,
+      "range": "30-60"
+    },
+    "tamuzmuken": {
+      "span": 30,
+      "range": "30-60"
+    },
+    "tamuzukar": {
+      "span": 38,
+      "range": "30-60"
+    },
+    "tamuzukauk": {
+      "span": 47,
+      "range": "30-60"
+    },
+    "trezarlo": {
+      "span": 39,
+      "range": "30-60"
+    },
+    "trezukaken": {
+      "span": 45,
+      "range": "30-60"
+    },
+    "trezukar": {
+      "span": 33,
+      "range": "30-60"
+    },
+    "trezukuzco": {
+      "span": 45,
+      "range": "30-60"
+    },
+    "aurebako": {
+      "span": 56,
+      "range": "30-60"
+    },
+    "aureboro": {
+      "span": 48,
+      "range": "30-60"
+    },
+    "aurekhobo": {
+      "span": 51,
+      "range": "30-60"
+    },
+    "aurekobo": {
+      "span": 45,
+      "range": "30-60"
+    },
+    "aurekomest": {
+      "span": 53,
+      "range": "30-60"
+    },
+    "aurelkhau": {
+      "span": 35,
+      "range": "30-60"
+    },
+    "aurelkomest": {
+      "span": 46,
+      "range": "30-60"
+    },
+    "aureluko": {
+      "span": 60,
+      "range": "30-60"
+    },
+    "aureskomest": {
+      "span": 51,
+      "range": "30-60"
+    },
+    "khaobako": {
+      "span": 36,
+      "range": "30-60"
+    },
+    "khaoboro": {
+      "span": 37,
+      "range": "30-60"
+    },
+    "khaubalo": {
+      "span": 39,
+      "range": "30-60"
+    },
+    "khaubaluk": {
+      "span": 45,
+      "range": "30-60"
+    },
+    "khaubekho": {
+      "span": 43,
+      "range": "30-60"
+    },
+    "khaubestro": {
+      "span": 58,
+      "range": "30-60"
+    },
+    "khaubomako": {
+      "span": 33,
+      "range": "30-60"
+    },
+    "khaubomest": {
+      "span": 36,
+      "range": "30-60"
+    },
+    "khaumestro": {
+      "span": 41,
+      "range": "30-60"
+    },
+    "mekaluko": {
+      "span": 34,
+      "range": "30-60"
+    },
+    "mekaurelo": {
+      "span": 52,
+      "range": "30-60"
+    },
+    "mekaurelu": {
+      "span": 45,
+      "range": "30-60"
+    },
+    "mekaurobal": {
+      "span": 36,
+      "range": "30-60"
+    },
+    "mekhaobako": {
+      "span": 49,
+      "range": "30-60"
+    },
+    "mekhaobera": {
+      "span": 52,
+      "range": "30-60"
+    },
+    "mekhaubest": {
+      "span": 41,
+      "range": "30-60"
+    },
+    "mekhaubo": {
+      "span": 41,
+      "range": "30-60"
+    },
+    "mekhaurel": {
+      "span": 35,
+      "range": "30-60"
+    },
+    "mekobaluk": {
+      "span": 48,
+      "range": "30-60"
+    },
+    "mekoboro": {
+      "span": 57,
+      "range": "30-60"
+    },
+    "merkhaubo": {
+      "span": 54,
+      "range": "30-60"
+    }
+  }
+}

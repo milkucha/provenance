@@ -1,0 +1,135 @@
+{
+  "name": "Nakorika",
+  "origin": "Salthos Cruzados",
+  "location": "Salthos Cruzados",
+  "backstory": "Child of Nakoran and Fenserika; raised in Salthos Cruzados on waits near the Salthos house's own square on..., and carries some knowledge of Gorff.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "salthos",
+      "items": [
+        "tale: salthos_cruzados",
+        "conflict: CONFLICT-02",
+        "concept: toll_ledger_arrears",
+        "tale: forliamus_log_crossing_war",
+        "concept: temple_of_the_crossing",
+        "tale: terfila",
+        "tale: crossing_market_roof",
+        "tale: birth_of_niergus",
+        "concept: crossing_toll_dispute",
+        "concept: crossing_market_roof",
+        "tale: gorff_ledger_crossing_war",
+        "location: salthos_cruzados",
+        "conflict: CONFLICT-03",
+        "concept: forliamus_betrothal_offer",
+        "tale: birth_of_fenriukas",
+        "conflict: CONFLICT-01",
+        "tale: gorff"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Learned that Darius has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 337
+        }
+      },
+      {
+        "text": "Grew up hearing: Had a child with Nierius, named Fenrius.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 337
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Had a child with Prince Doran, named Dorakus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 337
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Dorakus and Darnus now have a child, Doraknus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 337
+        }
+      },
+      {
+        "text": "Heard that Fenserika and Niekus now have a child, Fenekus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 384
+        }
+      },
+      "Learned that Fenserika has died."
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "holds themself accountable to Toll Ledger Arrears, whatever it costs",
+    "wasted_life": "one that never had to answer for Toll Ledger Arrears",
+    "anchor": "concept: toll_ledger_arrears",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 16,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "main_square",
+      "location": "Salthos Cruzados",
+      "routine_actions": "sits in judgment at the square when it's his turn, leans on the clerks' records more than his own memory, and walks the crossing at dusk out of old habit",
+      "weight": 50.0
+    },
+    {
+      "context": "main_square",
+      "location": "Salthos Cruzados",
+      "routine_actions": "sits in judgment at the square when it's his turn, leans on the clerks' records more than his own memory, and walks the crossing at dusk out of old habit",
+      "weight": 50.0
+    }
+  ],
+  "parents": [
+    "nakoran",
+    "fenserika"
+  ],
+  "partners": {
+    "nakus": 1,
+    "magus": 1,
+    "nierius": 1,
+    "darnus": 2,
+    "darnakus": 1,
+    "darnukas": 1,
+    "nieragus": 2,
+    "nakoran": 3,
+    "dorukus": 1,
+    "fenarnus": 2,
+    "darnarika": 1,
+    "doraknus": 1,
+    "nieragan": 1,
+    "dornarius": 1,
+    "fenekus": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 337,
+  "energy": 20,
+  "arc": {
+    "about": [
+      "concept: toll_ledger_arrears"
+    ],
+    "needs": [
+      "records"
+    ],
+    "context": "main_square",
+    "premise": "Nakorika wants the toll arrears named outright at the next petition day rather than referred up and quietly shelved again - a plain number, read aloud, that Gorff has to answer to.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

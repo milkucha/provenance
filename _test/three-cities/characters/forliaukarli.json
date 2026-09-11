@@ -1,0 +1,177 @@
+{
+  "name": "Forliaukarli",
+  "origin": "Terfila",
+  "location": "Terfila",
+  "backstory": "Child of Forliauzco and Farliukar in Terfila; raised alongside unloads crates at the market stalls through the..., having heard about Toll Ledger Arrears.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "tollhouse, forliamus",
+      "items": [
+        "tale: crossing_market_roof",
+        "concept: crossing_toll_dispute",
+        "tale: death_of_darius",
+        "tale: forliamus_betrothal_offer",
+        "tale: gorff",
+        "tale: birth_of_niergus",
+        "tale: forliamus_log_crossing_war",
+        "tale: birth_of_tamuzco",
+        "tale: birth_of_niemoruk",
+        "concept: salthos_mediator_line",
+        "tale: death_of_dorakus",
+        "tale: death_of_darika",
+        "tale: birth_of_khaumestro",
+        "tale: salthos_cruzados",
+        "tale: birth_of_darnus",
+        "tale: gorff_ledger_crossing_war",
+        "tale: terfila",
+        "location: terfila",
+        "location: gorff",
+        "tale: death_of_darnukas",
+        "concept: forliamus_betrothal_offer",
+        "concept: temple_of_the_crossing",
+        "tale: birth_of_forliarlo",
+        "tale: toll_ledger_arrears",
+        "conflict: CONFLICT-01",
+        "tale: birth_of_tamuzarlo",
+        "tale: death_of_forliamus",
+        "tale: death_of_farlo"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Learned that Forliarlo has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 405
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Heard that Tamuken and Forliazco now have a child, Forliuken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 405
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Forliamuk and Tamuzco now have a child, Tamuzmuken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 405
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Tamuzco and Farliukar now have a child, Tamuzarlo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 405
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Trezukar and Tamuzaken now have a child, Tamuzakar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 405
+        }
+      },
+      {
+        "text": "Grew up hearing: Had a child with Farliazco, named Forliuzazco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 405
+        }
+      },
+      {
+        "text": "Grew up hearing: Had a child with Forliamuk, named Forliauken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 405
+        }
+      },
+      {
+        "text": "Grew up hearing: Had a child with Farliazco, named Farliauzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 405
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Had a child with Forliuken, named Forliukar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 405
+        }
+      },
+      "Learned that Farliukar has died."
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only by making Birth Of Tamuzarlo their own concern",
+    "wasted_life": "treating Birth Of Tamuzarlo as someone else's concern",
+    "anchor": "tale: birth_of_tamuzarlo",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 7,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "walks the transit route on his own errands when the harbor's dead time drags on, and can't pass the temple without pausing, the way the family always has.",
+      "weight": 33.33
+    },
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "walks the transit route on his own errands when the harbor's dead time drags on, and can't pass the temple without pausing, the way the family always has.",
+      "weight": 33.33
+    },
+    {
+      "context": "transit_route",
+      "location": "Terfila",
+      "routine_actions": "walks the transit route on his own errands when the harbor's dead time drags on, and can't pass the temple without pausing, the way the family always has.",
+      "weight": 33.33
+    }
+  ],
+  "parents": [
+    "forliauzco",
+    "farliukar"
+  ],
+  "partners": {
+    "forliarlo": 1,
+    "forliamuk": 1,
+    "tamuzaken": 1,
+    "trezukar": 1,
+    "forliuzazco": 1,
+    "tamuzarlo": 1,
+    "farliuzco": 1,
+    "tamuzmuken": 1,
+    "trezukuzco": 1,
+    "farliazuzco": 1,
+    "trezukaken": 1,
+    "tamuzauzco": 2
+  },
+  "partners_quality": {},
+  "birth_pass": 405,
+  "energy": 20,
+  "arc": {
+    "about": [
+      "concept: salthos_mediator_line"
+    ],
+    "needs": [
+      "materials"
+    ],
+    "context": "market",
+    "premise": "Forliaukarli has stopped waiting on the Salthos house to answer whether their mediating role was ever formally offered, and started commissioning a charter stone for the market entrance naming it outright - settled by declaration, if not by record.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

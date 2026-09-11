@@ -1,0 +1,175 @@
+{
+  "name": "Forliamuk",
+  "origin": "Terfila",
+  "location": "Terfila",
+  "backstory": "Child of Forliazco and Farmuken, in Terfila; grew up around walks the transit route between Terfila and the..., and picked up a little of Birth Of Niergus along the way.",
+  "knowledge": {
+    "education": {
+      "percent": 50,
+      "mode": "skewed",
+      "topic": "tollhouse",
+      "items": [
+        "concept: crossing_toll_dispute",
+        "tale: birth_of_niemoran",
+        "tale: birth_of_darnakus",
+        "concept: crossing_market_roof",
+        "tale: forliamus_betrothal_offer",
+        "location: gorff",
+        "concept: salthos_mediator_line",
+        "concept: temple_of_the_crossing",
+        "tale: gorff_ledger_crossing_war",
+        "concept: toll_ledger_arrears",
+        "conflict: CONFLICT-02",
+        "tale: forliamus_log_crossing_war",
+        "concept: forliamus_betrothal_offer",
+        "tale: gorff",
+        "tale: birth_of_darnus",
+        "tale: death_of_darius",
+        "conflict: CONFLICT-03",
+        "tale: birth_of_darnukas",
+        "tale: death_of_dorakus",
+        "tale: death_of_darnus",
+        "tale: birth_of_mekoboro",
+        "tale: birth_of_niergus",
+        "tale: birth_of_forliarlo"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Heard that Trezco and Tamuken now have a child, Tamuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 104
+        }
+      },
+      "Learned that Farmuken has died.",
+      {
+        "text": "Heard that Forliauzco and Farliazco now have a child, Farliauzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 205
+        }
+      },
+      {
+        "text": "Had a child with Forliauzco, named Forliauken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 216
+        }
+      },
+      {
+        "text": "Had a child with Tamuzco, named Tamuzaken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 233
+        }
+      },
+      {
+        "text": "Heard that Trezarlo and Forliukar now have a child, Trezukar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 235
+        }
+      },
+      "Learned that Forliukar has died.",
+      {
+        "text": "Heard that Forliauzco and Farliazco now have a child, Forliuzazco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 254
+        }
+      },
+      {
+        "text": "Heard that Tamuzco and Farliukar now have a child, Tamuzarlo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 257
+        }
+      },
+      {
+        "text": "Heard that Forliauken and Trezukar now have a child, Forliaukar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 289
+        }
+      },
+      {
+        "text": "Heard that Tamuzco and Farliazco now have a child, Farliuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 306
+        }
+      },
+      "Learned that Forliazco has died.",
+      {
+        "text": "Had a child with Tamuzco, named Tamuzmuken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 346
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "measures a life by whether Death Of Dorakus is still remembered rightly",
+    "wasted_life": "forgetting what Death Of Dorakus actually meant, the way most people already have",
+    "anchor": "tale: death_of_dorakus",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 42,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "context": "transit_route",
+      "location": "Terfila",
+      "routine_actions": "walks the transit route on his own errands when the harbor's dead time drags on, and can't pass the temple without pausing, the way the family always has.",
+      "weight": 100.0
+    }
+  ],
+  "parents": [
+    "forliazco",
+    "farmuken"
+  ],
+  "partners": {
+    "forliamus": 1,
+    "trezco": 1,
+    "farlo": 1,
+    "forliazco": 5,
+    "tamuzco": 6,
+    "forliarlo": 2,
+    "farliazco": 4,
+    "forliukar": 5,
+    "trezarlo": 2,
+    "forliauzco": 4,
+    "farliukar": 2,
+    "farliauzco": 3,
+    "forliauken": 1,
+    "tamuzaken": 1,
+    "trezukar": 2,
+    "tamuzarlo": 2,
+    "tamuzmuken": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 104,
+  "energy": 20,
+  "last_reproduced_pass": 346,
+  "arc": {
+    "about": [
+      "tale: birth_of_niergus"
+    ],
+    "needs": [
+      "contacts"
+    ],
+    "context": "transit_route",
+    "premise": "Forliamuk wants to find whoever actually witnessed that birth and get their account carried properly along the transit route, before the secondhand version is all that's left.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

@@ -1,0 +1,200 @@
+{
+  "name": "Darnukas",
+  "origin": "Salthos Cruzados",
+  "location": "Salthos Cruzados",
+  "backstory": "Child of Nakus and Darnus; grew up around walks the transit route's Salthos stretch at dawn... in Salthos Cruzados, and knows something of Crossing Toll Dispute.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "salthos",
+      "items": [
+        "location: salthos_cruzados",
+        "concept: salthos_mediator_line",
+        "tale: salthos_cruzados",
+        "conflict: CONFLICT-03",
+        "location: gorff",
+        "concept: toll_ledger_arrears",
+        "conflict: CONFLICT-01",
+        "tale: gorff",
+        "tale: crossing_market_roof",
+        "tale: forliamus_log_crossing_war",
+        "tale: gorff_ledger_crossing_war",
+        "location: terfila",
+        "tale: toll_ledger_arrears",
+        "conflict: CONFLICT-02",
+        "concept: crossing_market_roof",
+        "tale: birth_of_nierius",
+        "concept: forliamus_betrothal_offer",
+        "tale: death_of_darius",
+        "concept: temple_of_the_crossing",
+        "concept: crossing_toll_dispute"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Heard that Fenserika and Darius now have a child, Darika.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 97
+        }
+      },
+      {
+        "text": "Grew up hearing: Had a child with Prince Doran, named Dorakus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 97
+        }
+      },
+      {
+        "text": "Heard that Nakus and Niemus now have a child, Niekus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 120
+        }
+      },
+      {
+        "text": "Heard that Nakus and Prince Doran now have a child, Dornakus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 131
+        }
+      },
+      {
+        "text": "Heard that Prince Doran and Nakus now have a child, Nakoran.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 144
+        }
+      },
+      {
+        "text": "Heard that Nakus and Prince Doran now have a child, Dorukus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 189
+        }
+      },
+      "Learned that Nakus has died.",
+      {
+        "text": "Heard that Darnus and Fenserika now have a child, Fenarnus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 262
+        }
+      },
+      {
+        "text": "Heard that Dorakus and Darnus now have a child, Doraknus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 294
+        }
+      },
+      "Learned that Niergus has died.",
+      {
+        "text": "Heard that Dorukus and Fenrius now have a child, Fenriukas.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 316
+        }
+      },
+      {
+        "text": "Heard that Dornakus and Darika now have a child, Dornarika.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 342
+        }
+      },
+      "Learned that Darnus has died.",
+      {
+        "text": "Heard that Dornakus and Fenrius now have a child, Dornarius.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 362
+        }
+      },
+      {
+        "text": "Heard that Darika and Darnakus now have a child, Darinak.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 397
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only by making Forliamus Log Crossing War their own concern",
+    "wasted_life": "treating Forliamus Log Crossing War as someone else's concern",
+    "anchor": "tale: forliamus_log_crossing_war",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 41,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "context": "transit_route",
+      "location": "Salthos Cruzados",
+      "routine_actions": "writes down every claim brought before the house same as her mother taught her, but reads back further into the old files than anyone thinks to ask her to",
+      "weight": 33.33
+    },
+    {
+      "context": "temple",
+      "location": "Salthos Cruzados",
+      "routine_actions": "writes down every claim brought before the house same as her mother taught her, but reads back further into the old files than anyone thinks to ask her to",
+      "weight": 33.33
+    },
+    {
+      "context": "main_square",
+      "location": "Salthos Cruzados",
+      "routine_actions": "writes down every claim brought before the house same as her mother taught her, but reads back further into the old files than anyone thinks to ask her to",
+      "weight": 33.33
+    }
+  ],
+  "parents": [
+    "nakus",
+    "darnus"
+  ],
+  "partners": {
+    "prince_doran": 1,
+    "niemus": 2,
+    "fenserika": 1,
+    "nierius": 2,
+    "darnus": 3,
+    "darika": 4,
+    "niergus": 6,
+    "niemius": 2,
+    "darnakus": 2,
+    "dorakus": 3,
+    "fenrius": 2,
+    "niemoran": 2,
+    "dornakus": 3,
+    "nieragus": 1,
+    "nakoran": 2,
+    "dorukus": 3,
+    "darnarika": 1,
+    "nakorika": 1,
+    "nieradus": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 97,
+  "energy": 20,
+  "arc": {
+    "about": [
+      "tale: forliamus_log_crossing_war",
+      "conflict: CONFLICT-02"
+    ],
+    "needs": [
+      "records"
+    ],
+    "context": "temple",
+    "premise": "Darnukas has taken to comparing every version of the old Forliamus Log Crossing War he's ever heard - guardhouse, temple, and clerk's ledger alike - hoping to find the one detail all three tellings actually agree on.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "name": "Khaus",
+  "city": "Gorff",
+  "origin": "Gorff",
+  "location": "Gorff",
+  "backstory": "One of Gorff's keepers of record, maintains the city's own written account of the tollhouse, the temple, and the Salthos house's claim to the crossing.",
+  "knowledge": {
+    "education": {
+      "percent": 50,
+      "mode": "skewed",
+      "topic": "salthos",
+      "items": [
+        "concept: crossing_market_roof",
+        "concept: forliamus_betrothal_offer",
+        "concept: salthos_mediator_line",
+        "concept: temple_of_the_crossing",
+        "concept: toll_ledger_arrears",
+        "conflict: CONFLICT-02",
+        "conflict: CONFLICT-03",
+        "location: salthos_cruzados",
+        "tale: crossing_market_roof",
+        "tale: forliamus_betrothal_offer",
+        "tale: forliamus_log_crossing_war",
+        "tale: gorff_ledger_crossing_war",
+        "tale: salthos_cruzados",
+        "tale: toll_ledger_arrears"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Heard that Auroboro and Mekestros now have a child, Mekoboro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 27
+        }
+      },
+      {
+        "text": "Had a child with Aurebalo, named Khaubalo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 31
+        }
+      },
+      {
+        "text": "Heard that Auroboro and Aurebalo now have a child, Aureboro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 53
+        }
+      },
+      {
+        "text": "Heard that Mekestros and Aureluko now have a child, Mekaluko.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 57
+        }
+      },
+      {
+        "text": "Had a child with Mekoboro, named Khaoboro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 60
+        }
+      },
+      {
+        "text": "Heard that Khaubalo and Mekestros now have a child, Khaubestro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 67
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "standard": "counts his own city's account reconciled above one more year of an unexplained gap nobody in Gorff has to answer for",
+    "wasted_life": "keeping a record honest enough to embarrass his own city, then letting the one figure that would actually prove it go unchecked for three years",
+    "anchor": "concept: toll_ledger_arrears",
+    "origin": "collision between his backstory (Gorff's own keeper of record) and the sample's own toll_ledger_arrears (a live, unreconciled discrepancy in the exact accounts he maintains)",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed",
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [
+      {
+        "cause": "author correction",
+        "date": "2026-08-31",
+        "previous": {
+          "standard": "counts an account that could embarrass his own city above one that only flatters it",
+          "wasted_life": "keeping a record that only ever confirms what Gorff already believed",
+          "anchor": "conflict: CONFLICT-03",
+          "origin": "collision between his backstory (keeps Gorff's own written account) and CONFLICT-03 itself",
+          "trusts": "verification",
+          "distrusts": "anyone who sounds certain"
+        },
+        "note": "re-derived after encodings.json gained three new concrete concepts (crossing_market_roof, toll_ledger_arrears, forliamus_betrothal_offer) via /tell, at the author's explicit direction, to diversify arcs away from the epistemic-conflict default"
+      }
+    ]
+  },
+  "life": {
+    "lived": 26,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "location": "Gorff",
+      "context": "temple",
+      "weight": 100,
+      "routine_actions": "works out of the temple's own records annex through the morning, cross-checks new claims against the ledger before entering anything as settled, avoids being drawn into the square's arguments"
+    }
+  ],
+  "arc": {
+    "about": [
+      "concept: toll_ledger_arrears"
+    ],
+    "needs": [
+      "records"
+    ],
+    "context": "temple",
+    "premise": "With the reconciled toll figure finally agreed in principle, Khaus wants it entered as a formally cross-signed record in Gorff's own ledger - both sides' clerks putting their names to the same number - so it can't quietly come undone the moment either city needs it to. A record only he vouches for isn't the kind that survives being checked.",
+    "resolution": "ongoing",
+    "history": []
+  },
+  "partners": {
+    "merluko": 6,
+    "mekestros": 5,
+    "aurebalo": 4,
+    "auroboro": 1,
+    "aureluko": 2,
+    "mekoboro": 7,
+    "khaubalo": 1
+  },
+  "energy": 20,
+  "last_reproduced_pass": 60
+}

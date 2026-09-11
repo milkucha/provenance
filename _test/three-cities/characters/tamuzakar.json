@@ -1,0 +1,151 @@
+{
+  "name": "Tamuzakar",
+  "origin": "Terfila",
+  "location": "Terfila",
+  "backstory": "Child of Trezukar and Tamuzaken, in Terfila; grew up around walks the transit route between Terfila and the..., and picked up a little of Gorff along the way.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "tollhouse, forliamus",
+      "items": [
+        "concept: temple_of_the_crossing",
+        "tale: terfila",
+        "concept: crossing_market_roof",
+        "location: terfila",
+        "tale: birth_of_darinak",
+        "tale: birth_of_dornarius",
+        "tale: death_of_farlo",
+        "tale: birth_of_merkhaubo",
+        "tale: death_of_darnakus",
+        "conflict: CONFLICT-02",
+        "tale: birth_of_fenrius",
+        "concept: toll_ledger_arrears",
+        "tale: gorff_ledger_crossing_war",
+        "tale: forliamus_betrothal_offer",
+        "tale: birth_of_dornakus",
+        "tale: death_of_darius",
+        "tale: birth_of_niemoran",
+        "tale: birth_of_niemornak",
+        "location: salthos_cruzados",
+        "tale: birth_of_niemoruk",
+        "tale: birth_of_niemius",
+        "tale: death_of_niemius",
+        "conflict: CONFLICT-01",
+        "tale: birth_of_darnakus",
+        "conflict: CONFLICT-03",
+        "concept: crossing_toll_dispute",
+        "tale: birth_of_darika",
+        "concept: forliamus_betrothal_offer",
+        "tale: death_of_darika",
+        "tale: death_of_dorakus",
+        "tale: birth_of_tamuzco",
+        "tale: birth_of_mekaluko",
+        "location: gorff",
+        "tale: birth_of_farmuken",
+        "tale: birth_of_trezukar",
+        "tale: death_of_tamuzco",
+        "tale: death_of_darnus",
+        "tale: birth_of_farliuzco"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Had a child with Tamuzco, named Trezukuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 382
+        }
+      },
+      {
+        "text": "Grew up hearing: Had a child with Farliukar, named Tamuzukar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 382
+        }
+      },
+      {
+        "text": "Grew up hearing: Learned that Tamuzco has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 382
+        }
+      },
+      {
+        "text": "Heard that Trezukar and Tamuzaken now have a child, Trezukaken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 393
+        }
+      },
+      "Learned that Trezukar has died."
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only by making Death Of Dorakus their own concern",
+    "wasted_life": "treating Death Of Dorakus as someone else's concern",
+    "anchor": "tale: death_of_dorakus",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 13,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "transit_route",
+      "location": "Terfila",
+      "routine_actions": "takes over more of the house's morning bookkeeping at the stalls, testing his own hand at pressing suppliers for better terms, and repeating the family's account of the dispute a little more confidently each time.",
+      "weight": 33.33
+    },
+    {
+      "context": "transit_route",
+      "location": "Terfila",
+      "routine_actions": "takes over more of the house's morning bookkeeping at the stalls, testing his own hand at pressing suppliers for better terms, and repeating the family's account of the dispute a little more confidently each time.",
+      "weight": 33.33
+    },
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "takes over more of the house's morning bookkeeping at the stalls, testing his own hand at pressing suppliers for better terms, and repeating the family's account of the dispute a little more confidently each time.",
+      "weight": 33.33
+    }
+  ],
+  "parents": [
+    "trezukar",
+    "tamuzaken"
+  ],
+  "partners": {
+    "farliazco": 1,
+    "farliauzco": 1,
+    "forliuzazco": 3,
+    "forliaukar": 1,
+    "tamuzmuken": 1,
+    "trezukuzco": 1,
+    "tamuzukar": 1,
+    "farliauzar": 2,
+    "farliazuzco": 2,
+    "forliaukarla": 1,
+    "tamuzauzco": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 382,
+  "energy": 20,
+  "arc": {
+    "about": [
+      "tale: death_of_dorakus"
+    ],
+    "needs": [
+      "contacts"
+    ],
+    "context": "transit_route",
+    "premise": "Tamuzakar has stopped chasing down the shortened version already circulating among travelers, and started raising a waystone along the transit route marking the death properly - carved, dated, impossible to thin out the way the retellings already have.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

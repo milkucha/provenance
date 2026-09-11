@@ -1,0 +1,168 @@
+{
+  "name": "Mekhaobera",
+  "origin": "Gorff",
+  "location": "Gorff",
+  "backstory": "Child of Khaobako and Mekhaurel, in Gorff; grew up around sells iron work at the market through the..., and picked up a little of Birth Of Fenekus along the way.",
+  "knowledge": {
+    "education": {
+      "percent": 50,
+      "mode": "skewed",
+      "topic": "salthos",
+      "items": [
+        "tale: birth_of_nieradus",
+        "location: gorff",
+        "location: terfila",
+        "tale: birth_of_nieragan",
+        "concept: salthos_mediator_line",
+        "tale: birth_of_dorakus",
+        "conflict: CONFLICT-01",
+        "concept: forliamus_betrothal_offer",
+        "tale: birth_of_nakorika",
+        "tale: birth_of_nierius",
+        "tale: birth_of_fenrius",
+        "tale: salthos_cruzados",
+        "tale: birth_of_darnakus",
+        "tale: birth_of_khaubestro",
+        "tale: birth_of_niekus",
+        "tale: birth_of_doraknus",
+        "tale: death_of_nakus",
+        "tale: birth_of_fenriukas",
+        "tale: birth_of_niemius",
+        "tale: birth_of_fenarnus",
+        "tale: birth_of_darnukas",
+        "tale: birth_of_darika",
+        "tale: death_of_dorakus",
+        "location: salthos_cruzados",
+        "tale: birth_of_khaumestro",
+        "tale: forliamus_betrothal_offer",
+        "tale: crossing_market_roof",
+        "tale: forliamus_log_crossing_war",
+        "tale: birth_of_tamuzco",
+        "tale: death_of_niemus",
+        "tale: birth_of_niergus",
+        "tale: toll_ledger_arrears",
+        "tale: birth_of_merkhaubo",
+        "tale: death_of_darius",
+        "tale: birth_of_dornakus",
+        "tale: death_of_niemius",
+        "conflict: CONFLICT-02",
+        "tale: death_of_fenserika",
+        "tale: death_of_darnus",
+        "conflict: CONFLICT-03",
+        "concept: crossing_market_roof",
+        "tale: birth_of_nieragus",
+        "tale: birth_of_darnus",
+        "tale: birth_of_trezarlo",
+        "tale: gorff",
+        "tale: birth_of_darinak",
+        "tale: birth_of_niemornak",
+        "tale: birth_of_farmuken",
+        "tale: gorff_ledger_crossing_war",
+        "concept: temple_of_the_crossing",
+        "tale: terfila",
+        "tale: death_of_prince_doran",
+        "concept: toll_ledger_arrears",
+        "concept: crossing_toll_dispute",
+        "tale: birth_of_mekoboro",
+        "tale: birth_of_tamuzmuken",
+        "tale: death_of_niemoran",
+        "tale: birth_of_khaoboro",
+        "tale: birth_of_fenekus",
+        "tale: birth_of_forliukar",
+        "tale: birth_of_dornarius",
+        "tale: death_of_mekoboro",
+        "tale: birth_of_farliauzco",
+        "tale: birth_of_darnarika",
+        "tale: death_of_niergus",
+        "tale: birth_of_khaobako",
+        "tale: birth_of_khaubekho",
+        "tale: birth_of_farliauzar",
+        "tale: death_of_magus",
+        "tale: birth_of_niemoruk",
+        "tale: death_of_khaus",
+        "tale: birth_of_dornarika",
+        "tale: birth_of_mekaluko",
+        "tale: death_of_darnukas",
+        "tale: birth_of_trezukuzco",
+        "tale: birth_of_niemoran",
+        "tale: birth_of_mekobaluk",
+        "tale: birth_of_forliarlo",
+        "tale: birth_of_mekhaubo"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Grew up hearing: Heard that Khaubalo and Mekestros now have a child, Khaubestro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 435
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Khaubestro and Aureluko now have a child, Aurelkhau.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 435
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "measures a life by whether Birth Of Dornakus is still remembered rightly",
+    "wasted_life": "forgetting what Birth Of Dornakus actually meant, the way most people already have",
+    "anchor": "tale: birth_of_dornakus",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 7,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Gorff",
+      "routine_actions": "takes stonework commissions on the side, prices them fairly, keeps his tools sharp",
+      "weight": 50.0
+    },
+    {
+      "context": "market",
+      "location": "Gorff",
+      "routine_actions": "takes stonework commissions on the side, prices them fairly, keeps his tools sharp",
+      "weight": 50.0
+    }
+  ],
+  "parents": [
+    "khaobako",
+    "mekhaurel"
+  ],
+  "partners": {
+    "merluko": 1,
+    "merkhaubo": 3,
+    "khaubaluk": 1,
+    "aurelkhau": 1,
+    "mekobaluk": 2,
+    "aurekomest": 1,
+    "aurelkomest": 1,
+    "aureskomest": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 435,
+  "energy": 20,
+  "arc": {
+    "about": [
+      "concept: crossing_market_roof"
+    ],
+    "needs": [
+      "materials"
+    ],
+    "context": "market",
+    "premise": "Mekhaobera has pooled his family's two trades - iron fittings and cut stone - into one delivery for the market roof's frame and walls, hauling both trades' stock to the site at once rather than waiting on the bidding to pick a winner.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

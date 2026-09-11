@@ -1,0 +1,200 @@
+{
+  "name": "Aureboro",
+  "origin": "Gorff",
+  "location": "Gorff",
+  "backstory": "Child of Auroboro and Aurebalo; raised in Gorff on takes stonework commissions at the market each morning,..., and carries some knowledge of Birth Of Fenrius.",
+  "knowledge": {
+    "education": {
+      "percent": 50,
+      "mode": "skewed",
+      "topic": "temple, gorff",
+      "items": [
+        "tale: forliamus_log_crossing_war",
+        "conflict: CONFLICT-03",
+        "concept: toll_ledger_arrears",
+        "tale: gorff",
+        "location: salthos_cruzados",
+        "location: gorff",
+        "tale: birth_of_darika",
+        "conflict: CONFLICT-02",
+        "concept: temple_of_the_crossing",
+        "tale: salthos_cruzados",
+        "tale: gorff_ledger_crossing_war",
+        "concept: crossing_market_roof",
+        "concept: crossing_toll_dispute",
+        "conflict: CONFLICT-01",
+        "concept: salthos_mediator_line",
+        "tale: death_of_fenserika",
+        "tale: birth_of_fenrius",
+        "tale: birth_of_niemius"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Heard that Auroboro and Mekestros now have a child, Mekoboro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 53
+        }
+      },
+      {
+        "text": "Heard that Aurebalo and Merluko now have a child, Aurebako.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 87
+        }
+      },
+      {
+        "text": "Heard that Aurebalo and Mekoboro now have a child, Aurekobo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 97
+        }
+      },
+      {
+        "text": "Heard that Aurebalo and Khaoboro now have a child, Aurekhobo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 150
+        }
+      },
+      {
+        "text": "Heard that Khaubalo and Merluko now have a child, Merkhaubo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 162
+        }
+      },
+      "Learned that Auroboro has died.",
+      {
+        "text": "Heard that Merluko and Khaubalo now have a child, Khaubaluk.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 196
+        }
+      },
+      "Learned that Aurebalo has died.",
+      {
+        "text": "Heard that Aureluko and Mekhaubo now have a child, Mekhaurel.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 240
+        }
+      },
+      "Learned that Mekaluko has died.",
+      "Learned that Khaubalo has died.",
+      {
+        "text": "Heard that Khaubestro and Aureluko now have a child, Aurelkhau.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 289
+        }
+      },
+      {
+        "text": "Heard that Mekoboro and Khaubaluk now have a child, Mekobaluk.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 309
+        }
+      },
+      {
+        "text": "Heard that Khaumestro and Aurekobo now have a child, Aurekomest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 310
+        }
+      },
+      {
+        "text": "Heard that Aureluko and Mekhaubo now have a child, Mekaurelo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 315
+        }
+      },
+      {
+        "text": "Heard that Khaubestro and Mekhaurel now have a child, Mekhaubest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 319
+        }
+      },
+      "Learned that Khaumestro has died.",
+      {
+        "text": "Heard that Khaubaluk and Aurekomest now have a child, Khaubomest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 401
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "measures a life by whether Gorff is still remembered rightly",
+    "wasted_life": "forgetting what Gorff actually meant, the way most people already have",
+    "anchor": "tale: gorff",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 48,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Gorff",
+      "routine_actions": "walks the tollhouse route once or twice a week, more curious about the old raid than either of his parents ever let on being",
+      "weight": 50.0
+    },
+    {
+      "context": "transit_route",
+      "location": "Gorff",
+      "routine_actions": "walks the tollhouse route once or twice a week, more curious about the old raid than either of his parents ever let on being",
+      "weight": 50.0
+    }
+  ],
+  "parents": [
+    "auroboro",
+    "aurebalo"
+  ],
+  "partners": {
+    "merluko": 2,
+    "auroboro": 1,
+    "aureluko": 6,
+    "mekoboro": 3,
+    "khaubalo": 3,
+    "mekaluko": 5,
+    "khaoboro": 2,
+    "khaubestro": 3,
+    "aurebako": 5,
+    "aurekobo": 2,
+    "khaumestro": 4,
+    "aurekhobo": 1,
+    "khaubaluk": 3,
+    "mekhaurel": 1,
+    "khaobako": 2,
+    "aurelkhau": 1,
+    "aurekomest": 1,
+    "mekaurelo": 1,
+    "mekhaubest": 3
+  },
+  "partners_quality": {},
+  "birth_pass": 53,
+  "energy": 7,
+  "arc": {
+    "about": [
+      "concept: transit_route_escort_rota"
+    ],
+    "needs": [
+      "contacts"
+    ],
+    "context": "transit_route",
+    "premise": "Aureboro wants to formalize a paid rotation of escorts for caravans along the transit route, using his standing at the tollhouse to line up drivers and guards willing to commit to a fixed schedule - fewer losses to bandits, and something concrete to show for the family's old claim on the road.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "name": "Nierakus",
+  "origin": "Salthos Cruzados",
+  "location": "Salthos Cruzados",
+  "backstory": "Child of Niekus and Nieragan in Salthos Cruzados; raised alongside walks the transit route's Salthos stretch at dawn..., having heard about Gorff Ledger Crossing War.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "tollhouse, crossing",
+      "items": [
+        "tale: crossing_market_roof",
+        "tale: birth_of_niemoran",
+        "concept: crossing_toll_dispute",
+        "tale: forliamus_log_crossing_war",
+        "concept: temple_of_the_crossing",
+        "tale: salthos_cruzados",
+        "conflict: CONFLICT-02",
+        "tale: gorff",
+        "tale: birth_of_nieragus",
+        "tale: birth_of_dorakus",
+        "concept: forliamus_betrothal_offer",
+        "tale: birth_of_nierius",
+        "location: salthos_cruzados",
+        "concept: crossing_market_roof",
+        "tale: death_of_darius",
+        "conflict: CONFLICT-01",
+        "concept: toll_ledger_arrears",
+        "location: gorff",
+        "tale: toll_ledger_arrears",
+        "tale: terfila",
+        "conflict: CONFLICT-03",
+        "concept: salthos_mediator_line",
+        "tale: forliamus_betrothal_offer",
+        "tale: birth_of_fenriukas",
+        "tale: death_of_fenserika",
+        "tale: birth_of_fenekus",
+        "tale: birth_of_niekus",
+        "tale: gorff_ledger_crossing_war",
+        "tale: death_of_niemus",
+        "tale: birth_of_doraknus"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Heard that Darnakus and Niemoran now have a child, Niemornak.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 489
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Heard that Nakus and Prince Doran now have a child, Dornakus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 489
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Heard that Fenserika and Darius now have a child, Darika.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 489
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Darika and Darnakus now have a child, Darinak.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 489
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Heard that Nakus and Darnus now have a child, Darnukas.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 489
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Nieragus and Dorakus now have a child, Nieradus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 489
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only by making Birth Of Doraknus their own concern",
+    "wasted_life": "treating Birth Of Doraknus as someone else's concern",
+    "anchor": "tale: birth_of_doraknus",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 1,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "transit_route",
+      "location": "Salthos Cruzados",
+      "routine_actions": "minds the crossing's morning traffic, checks papers out of habit more than suspicion, and trades gossip with the regulars before they're waved on",
+      "weight": 100.0
+    }
+  ],
+  "parents": [
+    "niekus",
+    "nieragan"
+  ],
+  "partners": {
+    "dorakus": 1,
+    "fenarnus": 1,
+    "darnarika": 1,
+    "fenriukas": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 489,
+  "energy": 20
+}

@@ -1,0 +1,141 @@
+{
+  "name": "Trezco",
+  "city": "Terfila",
+  "origin": "Terfila",
+  "location": "Terfila",
+  "backstory": "Comes from a line of Terfila sailors who claim an ancestor helped raise the first stones of the crossing temple, long before Gorff's masons patched a single roof tile.",
+  "knowledge": {
+    "education": {
+      "percent": 50,
+      "mode": "skewed",
+      "topic": "temple, terfila",
+      "items": [
+        "concept: crossing_market_roof",
+        "concept: crossing_toll_dispute",
+        "concept: forliamus_betrothal_offer",
+        "concept: salthos_mediator_line",
+        "concept: temple_of_the_crossing",
+        "conflict: CONFLICT-02",
+        "conflict: CONFLICT-03",
+        "location: salthos_cruzados",
+        "location: terfila",
+        "tale: crossing_market_roof",
+        "tale: forliamus_log_crossing_war",
+        "tale: gorff_ledger_crossing_war",
+        "tale: salthos_cruzados",
+        "tale: terfila"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Heard that Farlo and Tamuken now have a child, Farmuken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 23
+        }
+      },
+      {
+        "text": "Had a child with Forliamus, named Forliazco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 24
+        }
+      },
+      {
+        "text": "Had a child with Tamuken, named Tamuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 34
+        }
+      },
+      {
+        "text": "Heard that Forliamus and Farlo now have a child, Forliarlo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 44
+        }
+      },
+      {
+        "text": "Heard that Tamuken and Forliazco now have a child, Forliuken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 67
+        }
+      },
+      {
+        "text": "Heard that Forliazco and Farlo now have a child, Farliazco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 78
+        }
+      },
+      "Learned that Tamuken has died.",
+      {
+        "text": "Heard that Forliazco and Farmuken now have a child, Forliamuk.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 104
+        }
+      },
+      "Learned that Forliamus has died.",
+      {
+        "text": "Had a child with Farlo, named Trezarlo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 114
+        }
+      },
+      "Learned that Farlo has died."
+    ]
+  },
+  "criterion": {
+    "standard": "counts keeping the sailors' side of the temple's story alive above staying quiet about it",
+    "wasted_life": "letting his own family's claim on the temple's first stones go unspoken",
+    "anchor": "concept: temple_of_the_crossing",
+    "origin": "collision between his backstory (family claims to have helped raise the temple) and temple_of_the_crossing itself",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed",
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": []
+  },
+  "life": {
+    "lived": 35,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "location": "Terfila",
+      "context": "transit_route",
+      "weight": 100,
+      "routine_actions": "walks the transit route between Terfila and the crossing whenever a ship's in port too long to be worth waiting on, always finds a reason to pass by the temple on the way"
+    }
+  ],
+  "arc": {
+    "about": [
+      "concept: temple_of_the_crossing"
+    ],
+    "needs": [
+      "materials",
+      "expertise"
+    ],
+    "context": "transit_route",
+    "premise": "With the crossing temple already granting that his family's ancestor helped raise it, Trezco wants an actual marker cut and set into the temple's own stone - a mason willing to do the work and a plain word that it's earned, not just a line in some ledger no visitor ever reads.",
+    "resolution": "ongoing",
+    "history": []
+  },
+  "partners": {
+    "farlo": 9,
+    "forliamus": 10,
+    "tamuken": 5,
+    "farmuken": 1,
+    "forliazco": 2,
+    "tamuzco": 1,
+    "forliarlo": 1,
+    "forliuken": 3,
+    "forliamuk": 1,
+    "trezarlo": 2
+  },
+  "energy": 20,
+  "last_reproduced_pass": 114
+}

@@ -1,0 +1,192 @@
+{
+  "name": "Aurebako",
+  "origin": "Gorff",
+  "location": "Gorff",
+  "backstory": "Child of Aurebalo and Merluko in Gorff; raised alongside sells iron work at the market through the..., having heard about CONFLICT-02.",
+  "knowledge": {
+    "education": {
+      "percent": 50,
+      "mode": "skewed",
+      "topic": "tollhouse",
+      "items": [
+        "location: salthos_cruzados",
+        "location: gorff",
+        "tale: crossing_market_roof",
+        "concept: toll_ledger_arrears",
+        "concept: crossing_market_roof",
+        "concept: forliamus_betrothal_offer",
+        "concept: temple_of_the_crossing",
+        "tale: terfila",
+        "concept: crossing_toll_dispute",
+        "tale: birth_of_niergus",
+        "tale: toll_ledger_arrears",
+        "tale: birth_of_dorakus",
+        "tale: forliamus_log_crossing_war",
+        "tale: gorff_ledger_crossing_war",
+        "conflict: CONFLICT-02",
+        "conflict: CONFLICT-03"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Learned that Khaus has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 87
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Khaubalo and Mekestros now have a child, Khaubestro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 87
+        }
+      },
+      {
+        "text": "Heard that Aurebalo and Mekoboro now have a child, Aurekobo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 97
+        }
+      },
+      {
+        "text": "Heard that Aurebalo and Khaoboro now have a child, Aurekhobo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 150
+        }
+      },
+      {
+        "text": "Heard that Khaubalo and Merluko now have a child, Merkhaubo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 162
+        }
+      },
+      {
+        "text": "Heard that Merluko and Khaubalo now have a child, Khaubaluk.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 196
+        }
+      },
+      "Learned that Aurebalo has died.",
+      "Learned that Merluko has died.",
+      {
+        "text": "Heard that Aureluko and Mekhaubo now have a child, Mekhaurel.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 240
+        }
+      },
+      {
+        "text": "Had a child with Khaoboro, named Khaobako.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 279
+        }
+      },
+      "Learned that Khaoboro has died.",
+      {
+        "text": "Heard that Khaumestro and Aurekobo now have a child, Aurekomest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 310
+        }
+      },
+      {
+        "text": "Heard that Aureluko and Mekhaubo now have a child, Mekaurelo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 315
+        }
+      },
+      {
+        "text": "Heard that Mekhaurel and Khaobako now have a child, Mekhaobako.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 334
+        }
+      },
+      "Learned that Khaumestro has died.",
+      "Learned that Aureboro has died.",
+      {
+        "text": "Heard that Khaobako and Mekhaurel now have a child, Mekhaobera.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 435
+        }
+      },
+      {
+        "text": "Heard that Mekhaubo and Aureluko now have a child, Mekaurelu.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 454
+        }
+      },
+      "Learned that Aureluko has died."
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only if it stayed close to Birth Of Niergus",
+    "wasted_life": "a life spent never once engaging with Birth Of Niergus",
+    "anchor": "tale: birth_of_niergus",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 45,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Gorff",
+      "routine_actions": "minds the iron stall through the day, counts every delivery twice the way his father counts his own commissions, hasn't yet decided which trade he wants to keep",
+      "weight": 100.0
+    }
+  ],
+  "parents": [
+    "aurebalo",
+    "merluko"
+  ],
+  "partners": {
+    "auroboro": 1,
+    "aurebalo": 1,
+    "aureluko": 4,
+    "mekoboro": 2,
+    "khaubalo": 2,
+    "aureboro": 6,
+    "khaoboro": 4,
+    "khaubestro": 2,
+    "aurekobo": 4,
+    "khaumestro": 4,
+    "mekhaubo": 4,
+    "aurekhobo": 2,
+    "merkhaubo": 2,
+    "khaubaluk": 1,
+    "mekhaurel": 3,
+    "khaobako": 3,
+    "aureskomest": 2
+  },
+  "partners_quality": {},
+  "birth_pass": 87,
+  "energy": 20,
+  "last_reproduced_pass": 279,
+  "arc": {
+    "about": [
+      "concept: toll_ledger_arrears"
+    ],
+    "needs": [
+      "materials"
+    ],
+    "context": "market",
+    "premise": "Aurebako has started stockpiling raw iron at his own stall - buying up ingots now, while supply is still steady - so the arrears dispute can't leave his forge sitting empty the way it once starved his father's for three seasons running.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

@@ -1,0 +1,151 @@
+{
+  "name": "Khaoboro",
+  "origin": "Gorff",
+  "location": "Gorff",
+  "backstory": "Child of Khaus and Mekoboro in Gorff; raised alongside drives a caravan up and down the transit..., having heard about Death Of Niemus.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "tollhouse, gorff",
+      "items": [
+        "tale: birth_of_niergus",
+        "tale: birth_of_niemornak",
+        "tale: salthos_cruzados",
+        "tale: gorff",
+        "tale: forliamus_betrothal_offer",
+        "tale: crossing_market_roof",
+        "tale: birth_of_darnukas",
+        "tale: birth_of_dorakus",
+        "tale: forliamus_log_crossing_war",
+        "concept: crossing_market_roof",
+        "conflict: CONFLICT-03",
+        "tale: death_of_dorakus",
+        "conflict: CONFLICT-02",
+        "tale: birth_of_nieradus",
+        "tale: toll_ledger_arrears",
+        "concept: forliamus_betrothal_offer",
+        "location: salthos_cruzados",
+        "concept: toll_ledger_arrears",
+        "tale: birth_of_darika",
+        "tale: birth_of_niemius",
+        "location: terfila",
+        "conflict: CONFLICT-01",
+        "concept: salthos_mediator_line",
+        "location: gorff",
+        "concept: crossing_toll_dispute",
+        "tale: gorff_ledger_crossing_war",
+        "tale: death_of_niemius",
+        "tale: birth_of_darnakus",
+        "tale: birth_of_fenriukas",
+        "tale: birth_of_fenarnus",
+        "tale: death_of_darnus",
+        "tale: birth_of_niekus",
+        "tale: death_of_niemus",
+        "tale: birth_of_darnus",
+        "tale: birth_of_tamuzco"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Had a child with Aurebalo, named Khaubalo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 60
+        }
+      },
+      "Learned that Khaus has died.",
+      {
+        "text": "Heard that Aurebalo and Mekoboro now have a child, Aurekobo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 97
+        }
+      },
+      {
+        "text": "Had a child with Aurebalo, named Aurekhobo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 150
+        }
+      },
+      "Learned that Aurebalo has died.",
+      {
+        "text": "Had a child with Aurebako, named Khaobako.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 279
+        }
+      },
+      "Learned that Khaubalo has died.",
+      {
+        "text": "Heard that Khaubestro and Aureluko now have a child, Aurelkhau.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 289
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only if it stayed close to Salthos Mediator Line",
+    "wasted_life": "a life spent never once engaging with Salthos Mediator Line",
+    "anchor": "concept: salthos_mediator_line",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 37,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "context": "transit_route",
+      "location": "Gorff",
+      "routine_actions": "took over a stretch of the caravan run from her mother's side of the family, minds the manifest closely, asks more questions about the tollhouse than she ever did",
+      "weight": 100.0
+    }
+  ],
+  "parents": [
+    "khaus",
+    "mekoboro"
+  ],
+  "partners": {
+    "mekestros": 2,
+    "auroboro": 1,
+    "merluko": 1,
+    "aurebalo": 3,
+    "aureluko": 4,
+    "mekoboro": 2,
+    "khaubalo": 3,
+    "aureboro": 2,
+    "mekaluko": 2,
+    "khaubestro": 1,
+    "aurebako": 4,
+    "aurekobo": 4,
+    "khaumestro": 4,
+    "aurekhobo": 3,
+    "merkhaubo": 1,
+    "khaubaluk": 2
+  },
+  "partners_quality": {},
+  "birth_pass": 60,
+  "energy": 20,
+  "last_reproduced_pass": 279,
+  "arc": {
+    "about": [
+      "concept: salthos_mediator_line"
+    ],
+    "needs": [
+      "contacts"
+    ],
+    "context": "transit_route",
+    "premise": "Every week on her run past the tollhouse, Khaoboro asks a few more travelers whether the Salthos house was ever actually granted the mediator's role or just never asked to give up the ground - the same question her own criterion anchors her to, worked at one traveler at a time.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

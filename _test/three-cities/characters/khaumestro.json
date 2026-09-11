@@ -1,0 +1,177 @@
+{
+  "name": "Khaumestro",
+  "origin": "Gorff",
+  "location": "Gorff",
+  "backstory": "Child of Mekestros and Khaubalo; grew up around works out of the temple's own records annex... in Gorff, and knows something of Birth Of Fenarnus.",
+  "knowledge": {
+    "education": {
+      "percent": 50,
+      "mode": "skewed",
+      "topic": "tollhouse, transit",
+      "items": [
+        "tale: gorff_ledger_crossing_war",
+        "conflict: CONFLICT-01",
+        "tale: birth_of_dorakus",
+        "location: salthos_cruzados",
+        "tale: death_of_fenserika",
+        "tale: forliamus_log_crossing_war",
+        "tale: crossing_market_roof",
+        "tale: salthos_cruzados",
+        "concept: salthos_mediator_line",
+        "tale: forliamus_betrothal_offer",
+        "tale: birth_of_niemius",
+        "tale: birth_of_nakorika",
+        "concept: toll_ledger_arrears",
+        "conflict: CONFLICT-03",
+        "tale: gorff",
+        "tale: birth_of_fenriukas",
+        "tale: birth_of_tamuzco",
+        "tale: birth_of_nieragus",
+        "tale: birth_of_darika",
+        "tale: birth_of_fenarnus"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Had a child with Auroboro, named Mekoboro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 99
+        }
+      },
+      {
+        "text": "Grew up hearing: Learned that Khaus has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 99
+        }
+      },
+      {
+        "text": "Heard that Mekestros and Khaubalo now have a child, Mekhaubo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 129
+        }
+      },
+      "Learned that Mekestros has died.",
+      {
+        "text": "Heard that Khaubalo and Merluko now have a child, Merkhaubo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 162
+        }
+      },
+      {
+        "text": "Heard that Merluko and Khaubalo now have a child, Khaubaluk.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 196
+        }
+      },
+      "Learned that Khaubalo has died.",
+      {
+        "text": "Heard that Khaubestro and Aureluko now have a child, Aurelkhau.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 289
+        }
+      },
+      "Learned that Khaoboro has died.",
+      {
+        "text": "Had a child with Aurekobo, named Aurekomest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 310
+        }
+      },
+      {
+        "text": "Heard that Khaubestro and Mekhaurel now have a child, Mekhaubest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 319
+        }
+      },
+      {
+        "text": "Heard that Aurekomest and Aurelkhau now have a child, Aurelkomest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 363
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only by making Birth Of Nakorika their own concern",
+    "wasted_life": "treating Birth Of Nakorika as someone else's concern",
+    "anchor": "tale: birth_of_nakorika",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 41,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "context": "temple",
+      "location": "Gorff",
+      "routine_actions": "rides the caravan route on his father's schedule some weeks, mostly to listen rather than to drive",
+      "weight": 33.33
+    },
+    {
+      "context": "market",
+      "location": "Gorff",
+      "routine_actions": "rides the caravan route on his father's schedule some weeks, mostly to listen rather than to drive",
+      "weight": 33.33
+    },
+    {
+      "context": "transit_route",
+      "location": "Gorff",
+      "routine_actions": "rides the caravan route on his father's schedule some weeks, mostly to listen rather than to drive",
+      "weight": 33.33
+    }
+  ],
+  "parents": [
+    "mekestros",
+    "khaubalo"
+  ],
+  "partners": {
+    "merluko": 1,
+    "auroboro": 1,
+    "aurebalo": 1,
+    "mekoboro": 3,
+    "khaubalo": 4,
+    "aureboro": 4,
+    "mekaluko": 1,
+    "khaoboro": 5,
+    "khaubestro": 5,
+    "aurebako": 4,
+    "aurekobo": 3,
+    "aurekhobo": 2,
+    "merkhaubo": 3,
+    "aurelkhau": 2,
+    "aurekomest": 2,
+    "mekhaubest": 1,
+    "mekhaobako": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 99,
+  "energy": 20,
+  "last_reproduced_pass": 310,
+  "arc": {
+    "about": [
+      "concept: crossing_toll_dispute"
+    ],
+    "needs": [
+      "records"
+    ],
+    "context": "temple",
+    "premise": "Khaumestro keeps hearing two different versions of the night the tollhouse changed hands - one from his caravan-driving side of the family, one from his temple-schooled side - and wants to check both against the actual records before he repeats either one as settled.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

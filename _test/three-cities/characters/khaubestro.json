@@ -1,0 +1,231 @@
+{
+  "name": "Khaubestro",
+  "origin": "Gorff",
+  "location": "Gorff",
+  "backstory": "Child of Khaubalo and Mekestros in Gorff; raised alongside works out of the temple's own records annex..., having heard about Birth Of Darika 2.",
+  "knowledge": {
+    "education": {
+      "percent": 50,
+      "mode": "skewed",
+      "topic": "tollhouse, transit",
+      "items": [
+        "tale: crossing_market_roof",
+        "conflict: CONFLICT-02",
+        "conflict: CONFLICT-01",
+        "concept: toll_ledger_arrears",
+        "tale: birth_of_niergus",
+        "tale: toll_ledger_arrears",
+        "tale: birth_of_niemius",
+        "concept: crossing_toll_dispute",
+        "tale: gorff_ledger_crossing_war",
+        "concept: salthos_mediator_line",
+        "tale: gorff",
+        "tale: death_of_fenserika",
+        "location: salthos_cruzados",
+        "tale: birth_of_nakorika",
+        "tale: forliamus_betrothal_offer",
+        "tale: salthos_cruzados",
+        "tale: birth_of_dorakus",
+        "tale: birth_of_nierius",
+        "tale: birth_of_tamuzco",
+        "tale: death_of_niergus"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Heard that Aurebalo and Khaus now have a child, Khaubalo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 67
+        }
+      },
+      {
+        "text": "Heard that Mekestros and Khaubalo now have a child, Khaumestro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 99
+        }
+      },
+      {
+        "text": "Heard that Mekestros and Khaubalo now have a child, Mekhaubo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 129
+        }
+      },
+      "Learned that Mekestros has died.",
+      {
+        "text": "Heard that Khaubalo and Merluko now have a child, Merkhaubo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 162
+        }
+      },
+      {
+        "text": "Heard that Merluko and Khaubalo now have a child, Khaubaluk.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 196
+        }
+      },
+      "Learned that Mekaluko has died.",
+      "Learned that Khaubalo has died.",
+      {
+        "text": "Had a child with Aureluko, named Aurelkhau.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 289
+        }
+      },
+      {
+        "text": "Heard that Mekoboro and Khaubaluk now have a child, Mekobaluk.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 309
+        }
+      },
+      {
+        "text": "Heard that Khaumestro and Aurekobo now have a child, Aurekomest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 310
+        }
+      },
+      {
+        "text": "Heard that Aureluko and Mekhaubo now have a child, Mekaurelo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 315
+        }
+      },
+      {
+        "text": "Had a child with Mekhaurel, named Mekhaubest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 319
+        }
+      },
+      {
+        "text": "Heard that Mekhaurel and Khaobako now have a child, Mekhaobako.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 334
+        }
+      },
+      {
+        "text": "Heard that Aurekomest and Aurelkhau now have a child, Aurelkomest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 363
+        }
+      },
+      "Learned that Khaumestro has died.",
+      {
+        "text": "Heard that Khaubaluk and Aurekomest now have a child, Khaubomest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 401
+        }
+      },
+      "Learned that Aureboro has died.",
+      {
+        "text": "Heard that Aurekomest and Aurelkhau now have a child, Aureskomest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 412
+        }
+      },
+      "Learned that Mekoboro has died.",
+      {
+        "text": "Heard that Khaubaluk and Aurekhobo now have a child, Khaubekho.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 434
+        }
+      },
+      {
+        "text": "Heard that Khaobako and Mekhaurel now have a child, Mekhaobera.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 435
+        }
+      },
+      {
+        "text": "Heard that Mekhaubo and Aureluko now have a child, Mekaurelu.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 454
+        }
+      },
+      "Learned that Aureluko has died."
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "holds themself accountable to CONFLICT-02, whatever it costs",
+    "wasted_life": "one that never had to answer for CONFLICT-02",
+    "anchor": "conflict: CONFLICT-02",
+    "origin": "derived",
+    "trusts": "verification",
+    "distrusts": "anyone who sounds certain"
+  },
+  "life": {
+    "lived": 58,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "context": "temple",
+      "location": "Gorff",
+      "routine_actions": "works the records annex most mornings, cross-checking entries the way his mother taught him, still gets pulled into the square's arguments more than he'd like",
+      "weight": 100.0
+    }
+  ],
+  "parents": [
+    "khaubalo",
+    "mekestros"
+  ],
+  "partners": {
+    "merluko": 3,
+    "auroboro": 1,
+    "aurebalo": 1,
+    "aureluko": 4,
+    "mekoboro": 5,
+    "khaubalo": 1,
+    "aureboro": 4,
+    "mekaluko": 4,
+    "khaoboro": 1,
+    "aurebako": 2,
+    "aurekobo": 2,
+    "khaumestro": 5,
+    "mekhaubo": 2,
+    "aurekhobo": 5,
+    "merkhaubo": 4,
+    "khaubaluk": 4,
+    "mekhaurel": 3,
+    "khaobako": 2,
+    "aurelkhau": 1,
+    "mekobaluk": 1,
+    "mekaurelo": 2,
+    "mekhaubest": 1,
+    "mekhaobako": 2
+  },
+  "partners_quality": {},
+  "birth_pass": 67,
+  "energy": 20,
+  "last_reproduced_pass": 319,
+  "arc": {
+    "about": [
+      "conflict: CONFLICT-02"
+    ],
+    "needs": [
+      "records"
+    ],
+    "context": "temple",
+    "premise": "Khaubestro wants to settle, from the records annex itself, whether the temple's builder claim his mother's family still repeats is actually backed by anything in the ledger, or just by being repeated long enough.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

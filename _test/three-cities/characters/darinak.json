@@ -1,0 +1,157 @@
+{
+  "name": "Darinak",
+  "origin": "Salthos Cruzados",
+  "location": "Salthos Cruzados",
+  "backstory": "Child of Darika and Darnakus in Salthos Cruzados; raised alongside walks the transit route's Salthos stretch at dawn..., having heard about Birth Of Dorakus.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "temple",
+      "items": [
+        "location: gorff",
+        "conflict: CONFLICT-01",
+        "tale: gorff",
+        "conflict: CONFLICT-03",
+        "concept: crossing_market_roof",
+        "conflict: CONFLICT-02",
+        "tale: forliamus_betrothal_offer",
+        "tale: crossing_market_roof",
+        "tale: terfila",
+        "tale: salthos_cruzados",
+        "location: terfila",
+        "concept: forliamus_betrothal_offer",
+        "tale: gorff_ledger_crossing_war",
+        "concept: temple_of_the_crossing",
+        "concept: salthos_mediator_line",
+        "location: salthos_cruzados",
+        "tale: birth_of_nierius",
+        "tale: toll_ledger_arrears",
+        "concept: crossing_toll_dispute",
+        "tale: forliamus_log_crossing_war",
+        "concept: toll_ledger_arrears",
+        "tale: birth_of_dorakus",
+        "tale: birth_of_nakorika",
+        "tale: birth_of_fenriukas",
+        "tale: birth_of_nieradus",
+        "tale: birth_of_dornakus",
+        "tale: birth_of_nakoran",
+        "tale: death_of_niergus",
+        "tale: birth_of_fenrius",
+        "tale: birth_of_darika"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Had a child with Dornakus, named Dornarika.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 397
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Darnus and Fenserika now have a child, Fenarnus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 397
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Nierius and Magus now have a child, Nieragus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 397
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Nakus and Darnus now have a child, Darnukas.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 397
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Niemus and Darius now have a child, Niemius.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 397
+        }
+      },
+      {
+        "text": "Heard that Darnakus and Niemoran now have a child, Niemornak.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 426
+        }
+      },
+      "Learned that Darnakus has died.",
+      "Learned that Darika has died."
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only by making Birth Of Nakorika their own concern",
+    "wasted_life": "treating Birth Of Nakorika as someone else's concern",
+    "anchor": "tale: birth_of_nakorika",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 6,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "transit_route",
+      "location": "Salthos Cruzados",
+      "routine_actions": "spends mornings finishing whatever patch job was left half-done, afternoons out on the transit route bargaining for stone at a fairer price than last season's",
+      "weight": 33.33
+    },
+    {
+      "context": "main_square",
+      "location": "Salthos Cruzados",
+      "routine_actions": "spends mornings finishing whatever patch job was left half-done, afternoons out on the transit route bargaining for stone at a fairer price than last season's",
+      "weight": 33.33
+    },
+    {
+      "context": "temple",
+      "location": "Salthos Cruzados",
+      "routine_actions": "spends mornings finishing whatever patch job was left half-done, afternoons out on the transit route bargaining for stone at a fairer price than last season's",
+      "weight": 33.33
+    }
+  ],
+  "parents": [
+    "darika",
+    "darnakus"
+  ],
+  "partners": {
+    "niemus": 1,
+    "prince_doran": 1,
+    "nierius": 1,
+    "darnus": 1,
+    "niergus": 1,
+    "fenrius": 1,
+    "darnukas": 1,
+    "niemoran": 3,
+    "niekus": 1,
+    "dornakus": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 397,
+  "energy": 20,
+  "arc": {
+    "about": [
+      "concept: toll_ledger_arrears"
+    ],
+    "needs": [
+      "trade"
+    ],
+    "context": "transit_route",
+    "premise": "Darinak's picked up where his elders left off, and instead of chasing one agreed number across every office, he's started building an actual toll-recording booth at his own post along the transit route - a fixed ledger stand everyone has to use, so the dispute over totals has somewhere real to be settled.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

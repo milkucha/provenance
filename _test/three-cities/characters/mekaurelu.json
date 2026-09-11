@@ -1,0 +1,194 @@
+{
+  "name": "Mekaurelu",
+  "origin": "Gorff",
+  "location": "Gorff",
+  "backstory": "Child of Mekhaubo and Aureluko, in Gorff; grew up around takes stonework commissions at the market each morning,..., and picked up a little of Death Of Darnus 2 along the way.",
+  "knowledge": {
+    "education": {
+      "percent": 50,
+      "mode": "skewed",
+      "topic": "salthos",
+      "items": [
+        "tale: birth_of_darinak",
+        "tale: birth_of_niekus",
+        "concept: temple_of_the_crossing",
+        "tale: birth_of_nakorika",
+        "tale: birth_of_darika",
+        "conflict: CONFLICT-02",
+        "tale: forliamus_betrothal_offer",
+        "concept: toll_ledger_arrears",
+        "tale: birth_of_niergus",
+        "concept: salthos_mediator_line",
+        "concept: crossing_toll_dispute",
+        "tale: terfila",
+        "conflict: CONFLICT-03",
+        "tale: gorff_ledger_crossing_war",
+        "location: salthos_cruzados",
+        "tale: birth_of_dorakus",
+        "conflict: CONFLICT-01",
+        "location: gorff",
+        "tale: salthos_cruzados",
+        "tale: crossing_market_roof",
+        "tale: death_of_prince_doran",
+        "tale: birth_of_niemius",
+        "tale: forliamus_log_crossing_war",
+        "concept: crossing_market_roof",
+        "tale: birth_of_trezarlo",
+        "tale: death_of_darius",
+        "tale: birth_of_nakoran",
+        "tale: death_of_fenserika",
+        "tale: death_of_mekoboro",
+        "tale: birth_of_niemoran",
+        "tale: birth_of_farmuken",
+        "tale: death_of_forliarlo",
+        "tale: birth_of_darnus",
+        "tale: birth_of_merkhaubo",
+        "tale: death_of_dorakus",
+        "location: terfila"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Learned that Khaoboro has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 454
+        }
+      },
+      {
+        "text": "Grew up hearing: Learned that Mekestros has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 454
+        }
+      },
+      {
+        "text": "Grew up hearing: Learned that Mekoboro has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 454
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Khaubalo and Merluko now have a child, Merkhaubo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 454
+        }
+      },
+      {
+        "text": "Grew up hearing: Learned that Khaubalo has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 454
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Aurebalo and Khaoboro now have a child, Aurekhobo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 454
+        }
+      },
+      {
+        "text": "Grew up hearing: Learned that Aureboro has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 454
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Had a child with Mekestros, named Khaubestro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 454
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Khaobako and Mekhaurel now have a child, Mekhaobera.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 454
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Heard that Auroboro and Aurebalo now have a child, Aureboro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 454
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Aurekomest and Aurelkhau now have a child, Aureskomest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 454
+        }
+      },
+      "Learned that Aureluko has died."
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only by making CONFLICT-01 their own concern",
+    "wasted_life": "treating CONFLICT-01 as someone else's concern",
+    "anchor": "conflict: CONFLICT-01",
+    "origin": "derived",
+    "trusts": "verification",
+    "distrusts": "anyone who sounds certain"
+  },
+  "life": {
+    "lived": 4,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Gorff",
+      "routine_actions": "also takes smaller repair jobs nobody else wants",
+      "weight": 33.33
+    },
+    {
+      "context": "temple",
+      "location": "Gorff",
+      "routine_actions": "also takes smaller repair jobs nobody else wants",
+      "weight": 33.33
+    },
+    {
+      "context": "market",
+      "location": "Gorff",
+      "routine_actions": "also takes smaller repair jobs nobody else wants",
+      "weight": 33.33
+    }
+  ],
+  "parents": [
+    "mekhaubo",
+    "aureluko"
+  ],
+  "partners": {
+    "merluko": 1,
+    "mekestros": 1,
+    "khaoboro": 1,
+    "aurekhobo": 1,
+    "khaubaluk": 1,
+    "khaobako": 1,
+    "mekaurobal": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 454,
+  "energy": 20,
+  "arc": {
+    "about": [
+      "conflict: CONFLICT-01"
+    ],
+    "needs": [
+      "contacts"
+    ],
+    "context": "temple",
+    "premise": "Mekaurelu has stopped weighing the temple's record against the market's telling, and started commissioning a plaque at the crossing gate inscribing the temple's own account of how Gorff came to hold the tollhouse - carved and mounted, regardless of which version people keep repeating at the stalls.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

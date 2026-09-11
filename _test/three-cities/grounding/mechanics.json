@@ -1,0 +1,446 @@
+{
+  "_comment": "The fifth source of truth, and the second half of grounding (see _index.md and the world_state.json sibling): objective rules of the current embodiment (Minecraft) - true regardless of whether any character knows them, distinct from _lore/facts/ (true of being a person in this world at all, embodiment-independent). Every entry is tagged `embodiment` so a future non-Minecraft embodiment backend only has to swap the entries carrying that tag, never the mechanism. `distribution` decides access: `universal` entries are known by every character unconditionally, same shape as _lore/facts/ but embodiment-scoped rather than personhood-scoped; `contextual` entries are known only if the character's own routine contexts (see _lore/contexts.json's `grounding_provides`) provide a matching tag - computed live by scripts/lore/sample_grounding.py, never cached into a character file. Never folded into encodings.json and never sampled by sample_lore_knowledge.py, same isolation as facts.json - but unlike facts, grounding CAN be attributed (a character knows it because they've seen/used it themselves, first-hand - see build_source_index.py's grounding index) and CAN grow, hand-curated over time the same way _lore/tales/ does. Populated 2026-08-26/27 as an exhaustive-but-lean pass over vanilla Minecraft 1.20.1 specifically (verified against the wiki - nothing here postdates 1.20.1; no Trial Chambers/Breeze/Mace/Crafter/Vault, all 1.21+): one entry per mechanically distinct thing (a mob's real behavior, a genuine crafting/survival pattern), never one per individual item/recipe/mob-skin variant. Mod-sourced mechanics are deferred until a mod is actually added to the datapack - see TODO.md's 'Grounding: mod-sourced mechanics' entry for the tagging scheme still to be decided then.",
+  "entries": [
+    {
+      "id": "creepers_are_dangerous",
+      "text": "Creepers are silent, green, roughly human-sized creatures that sneak up and explode when they get close to a person, destroying nearby blocks and hurting or killing anyone caught in the blast.",
+      "distribution": "universal",
+      "tags": [],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "hunger_requires_food",
+      "text": "A person needs to eat regularly to stay strong. Going without food for too long leaves someone weak, and eventually starts to actually hurt them.",
+      "distribution": "universal",
+      "tags": [],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "sword_crafting_recipe",
+      "text": "A sword is made by combining two sticks and one ingot of a hard material - iron, gold, or something rarer - shaped at a crafting table. There is no other way to make one, and no substitute for the ingot.",
+      "distribution": "contextual",
+      "tags": ["crafting"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "crop_growing_conditions",
+      "text": "Crops need to be planted on tilled soil near water and need daylight to grow. Planted too far from water or left in the dark, they stall instead of ripening.",
+      "distribution": "contextual",
+      "tags": ["farming"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "item_durability_and_repair",
+      "text": "Tools, weapons, and armor wear down with use and eventually break outright. A worn item can be repaired by combining it with another matching item, or with the right raw material, at an anvil or crafting table.",
+      "distribution": "contextual",
+      "tags": ["crafting", "trade_goods"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "zombies_attack_by_melee_and_burn_in_sun",
+      "text": "Zombies attack by rushing in close and hitting; standard zombies catch fire in direct sunlight, but their husk and drowned cousins don't - husks are found in dry, sandy places, drowned live underwater.",
+      "distribution": "universal",
+      "tags": [],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "skeletons_shoot_arrows",
+      "text": "Skeletons keep their distance and shoot arrows; getting in close fast, or taking solid cover, matters more against them than a straight fight at range does.",
+      "distribution": "universal",
+      "tags": [],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "endermen_teleport_and_provoke_on_stare",
+      "text": "Endermen are tall, dark, easily startled creatures that mind their own business unless looked at directly - meet their eyes and they turn hostile and teleport to close the distance almost instantly.",
+      "distribution": "universal",
+      "tags": [],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "spiders_climb_and_see_in_dark",
+      "text": "Spiders can climb straight up walls and see better in the dark than a person can; the smaller cave spiders found in old abandoned shafts are faster still, and their bite leaves a lingering weakness.",
+      "distribution": "universal",
+      "tags": [],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "witches_throw_harmful_potions",
+      "text": "Witches fight from a distance by throwing potions - poison, weakness, slowness - and can drink their own potions mid-fight to heal or protect themselves.",
+      "distribution": "universal",
+      "tags": [],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "slimes_split_when_struck",
+      "text": "Slimes, and their swamp-dwelling cousins, split into several smaller copies of themselves when struck hard enough, only stopping once they're too small to split any further.",
+      "distribution": "universal",
+      "tags": [],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "phantoms_appear_after_sleepless_nights",
+      "text": "Going more than a few nights without sleeping in a bed summons phantoms - flying creatures that swoop at a person's head from above, appearing more often the longer the sleepless stretch runs.",
+      "distribution": "universal",
+      "tags": [],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "piglins_and_hoglins_are_nether_natives",
+      "text": "Piglins live in the Nether and calm down around anyone wearing gold; they'll trade for certain items offered at their feet. Hoglins are large, aggressive tusked beasts piglins hunt for food; both flee from open fire.",
+      "distribution": "universal",
+      "tags": [],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "the_warden_hunts_by_sound_and_vibration",
+      "text": "Deep underground, in the darkest places, something called a warden hunts blind, by sound and the shake of footsteps through the ground - staying low and quiet is close to the only real defense, since it hits harder than almost anything else alive.",
+      "distribution": "universal",
+      "tags": [],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "wolves_can_be_tamed_with_bones",
+      "text": "A wild wolf can be won over by feeding it bones until it's tamed, after which it fights alongside whoever tamed it and follows them wherever they go.",
+      "distribution": "universal",
+      "tags": [],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "horses_and_similar_mounts_can_be_ridden_once_tamed",
+      "text": "Horses, donkeys, and camels can be ridden once tamed - mounting and staying on repeatedly until they stop resisting - and can be outfitted with a saddle; some can also wear armor of their own.",
+      "distribution": "universal",
+      "tags": [],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "bees_sting_when_provoked_but_make_honey",
+      "text": "Bees live in hives or nests, pollinate crops as they pass, and produce honey - but robbing a hive carelessly angers the whole swarm at once, and the sting hurts.",
+      "distribution": "universal",
+      "tags": [],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "drowning_and_needing_air",
+      "text": "A person can only hold their breath so long underwater before they start drowning; air runs out faster than it seems like it should, with little warning beyond the growing urgency of it.",
+      "distribution": "universal",
+      "tags": [],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "fall_damage_from_height",
+      "text": "Falling from high enough hurts, and from far enough it kills outright. Landing in water, on hay, or on certain other soft surfaces breaks the fall; a safe landing is never guaranteed otherwise.",
+      "distribution": "universal",
+      "tags": [],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "fire_spreads_and_burns",
+      "text": "Fire spreads to anything flammable nearby and keeps burning a person even after they've stepped clear of where it started, until it's doused with water or burns itself out.",
+      "distribution": "universal",
+      "tags": [],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "health_regenerates_with_enough_food",
+      "text": "A person's own wounds close on their own over time, but only while they're well-fed; running low on food stops natural healing entirely, on top of everything else hunger does.",
+      "distribution": "universal",
+      "tags": [],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "sleeping_at_night_skips_to_morning",
+      "text": "Sleeping in a bed at night skips straight to morning - but a bed only works with no danger nearby, and won't work at all in the Nether or the End.",
+      "distribution": "universal",
+      "tags": [],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "nighttime_and_darkness_breed_monsters",
+      "text": "Hostile creatures spawn far more freely at night, or anywhere dark enough during the day - deep caves, unlit rooms, dense tree cover especially - so a well-lit place is the difference between safe and not.",
+      "distribution": "universal",
+      "tags": [],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "weather_includes_storms_and_snow",
+      "text": "Weather shifts between clear, rain, and thunderstorms in most places (snow instead of rain somewhere cold enough), and a thunderstorm can strike something with lightning outright, occasionally leaving it visibly changed.",
+      "distribution": "universal",
+      "tags": [],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "extreme_cold_and_heat_are_dangerous_in_certain_places",
+      "text": "Standing too long in deep powder snow without the right protection numbs a person badly enough to eventually hurt them, and getting too close to open lava or fire without care does the same the other way.",
+      "distribution": "universal",
+      "tags": [],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "death_drops_everything_and_sends_the_spirit_back_to_start",
+      "text": "Dying scatters everything a person was carrying where they fell, and brings them back somewhere far off - usually near wherever they first arrived, unless they'd set a bed or a similar anchor somewhere closer since.",
+      "distribution": "universal",
+      "tags": [],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "experience_is_earned_and_can_be_spent_on_enchanting",
+      "text": "Certain acts - defeating a dangerous creature, mining something valuable, tending crops through to completion - leave a person with accrued expertise that can be spent, at the right table, to enchant a tool, weapon, or piece of armor with a lasting improvement.",
+      "distribution": "universal",
+      "tags": [],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "the_ender_dragon_guards_the_end",
+      "text": "The End is watched over by an enormous dragon that flies and breathes a corrosive purple fire; the fight against it is famous enough that almost everyone's heard some account of it, true or not.",
+      "distribution": "universal",
+      "tags": [],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "the_wither_can_be_summoned_and_is_devastating",
+      "text": "A skeletal, three-headed horror called the wither can be deliberately built and woken from certain rare bones and a particular ash-grey block - once loosed it explodes on the ground behind it and shoots skulls that rot flesh from the inside, and almost nothing else alive is as dangerous once it's up and moving.",
+      "distribution": "universal",
+      "tags": [],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "pillagers_and_raids_target_settlements",
+      "text": "Pillagers - crossbow-armed raiders - sometimes organize into full raids against a settled place, especially one under a certain ill-omened influence, arriving in waves that get worse the longer the raid holds.",
+      "distribution": "universal",
+      "tags": [],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "allays_carry_items_where_directed",
+      "text": "A small, floating, blue creature called an allay, once befriended with a single item, will fetch more of that same kind of item and carry it back to wherever a particular note-block sound is played - a strange but real little helper, when one turns up.",
+      "distribution": "universal",
+      "tags": [],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "tool_and_weapon_tier_progression",
+      "text": "Tools and weapons run in a rough hierarchy of hardness and effectiveness - wood, then stone, then iron, then a rarer gold, then diamond, then a Nether-forged material past diamond - each tier needs its own material plus sticks shaped at a crafting table, and each holds an edge and lasts longer than the one before it.",
+      "distribution": "contextual",
+      "tags": ["crafting"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "armor_sets_and_their_materials",
+      "text": "A full set of armor - helmet, chestplate, leggings, boots - can be made from leather or the same metals used for tools; each piece needs its material shaped at a crafting table, and a full matching set protects far better than mismatched pieces.",
+      "distribution": "contextual",
+      "tags": ["crafting"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "smelting_ore_into_usable_metal",
+      "text": "Raw ore dug from the ground isn't usable on its own - it has to be smelted in a furnace, fueled by something that burns, before it becomes a workable ingot.",
+      "distribution": "contextual",
+      "tags": ["crafting"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "anvils_repair_and_rename_and_combine",
+      "text": "An anvil lets a worn item be repaired, renamed, or combined with an enchanted book to pick up a new enchantment - each use costs more than the last, and enough uses in a row wears the anvil itself down until it can't be used for a while.",
+      "distribution": "contextual",
+      "tags": ["crafting"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "building_materials_and_their_properties",
+      "text": "Some materials burn easily - most wood, wool - and some don't - stone, brick, most metals; some hold up under an explosion far better than others (obsidian and a few reinforced blocks especially) - knowing which is which matters for anything meant to last.",
+      "distribution": "contextual",
+      "tags": ["crafting"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "bamboo_and_its_own_wood_set",
+      "text": "Bamboo grows fast in the right climate and, cut and worked, makes its own distinct set of building material and furniture, including small rafts for crossing water - lighter and quicker to grow than proper timber, if not as sturdy.",
+      "distribution": "contextual",
+      "tags": ["crafting"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "hanging_signs_and_chiseled_shelves",
+      "text": "A sign can be hung from the underside of a beam or ledge instead of only standing upright on the ground, and a chiseled shelf can hold books stored in individual, visible slots rather than sealed away in an ordinary container.",
+      "distribution": "contextual",
+      "tags": ["crafting"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "deep_caves_hold_rarer_ore_the_lower_you_go",
+      "text": "Certain ores only turn up the deeper a shaft is dug - the most valuable materials cluster near the very bottom of the world, alongside the greatest danger, and that's no accident.",
+      "distribution": "contextual",
+      "tags": ["crafting"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "mining_certain_ores_needs_the_right_tool_tier",
+      "text": "Some ore won't yield anything useful at all if it's mined with too soft a tool - the harder or rarer the material, the better a pickaxe has to be before it can even be broken correctly, let alone efficiently.",
+      "distribution": "contextual",
+      "tags": ["crafting"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "beacons_project_a_visible_beam_and_grant_boons",
+      "text": "A beacon, built high atop a small pyramid of a rare mined material, projects a beam of light visible from very far away and grants a standing boon to anyone nearby - speed, strength, and the like - for as long as its pyramid stays intact beneath it.",
+      "distribution": "contextual",
+      "tags": ["crafting"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "redstone_carries_signal_like_wire",
+      "text": "Redstone dust, laid on the ground, carries a kind of signal outward from whatever's powering it - a lever, a button, a pressure plate - and can trigger doors, pistons, dispensers, and any other mechanism wired into the same line.",
+      "distribution": "contextual",
+      "tags": ["redstone"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "pistons_push_and_retract_blocks",
+      "text": "Pistons push a block one space when powered and pull back when the power's cut; a sticky-faced piston drags the block back with it instead of leaving it behind.",
+      "distribution": "contextual",
+      "tags": ["redstone"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "redstone_signal_needs_repeating_over_distance",
+      "text": "A redstone signal weakens and dies out after enough distance - a repeater block set into the line refreshes it (and can add a short, deliberate delay too) so a mechanism further away still fires reliably.",
+      "distribution": "contextual",
+      "tags": ["redstone"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "hoppers_and_droppers_move_items_automatically",
+      "text": "A hopper pulls items from whatever's above or feeds them into whatever's below without anyone touching them by hand - useful for anything that needs to move goods on its own, mechanically, chest to chest.",
+      "distribution": "contextual",
+      "tags": ["redstone"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "villagers_trade_by_profession",
+      "text": "Villagers each settle into one trade depending on the workstation nearest their home, and their price for a given good improves with repeated fair trading and worsens if they're wronged or a trade goes badly for them.",
+      "distribution": "contextual",
+      "tags": ["trade_goods"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "emeralds_are_the_common_medium_of_trade",
+      "text": "Villagers price everything in a particular green gem rather than any coin - most goods have to be traded toward or away from that gem first before they can be traded again for something else.",
+      "distribution": "contextual",
+      "tags": ["trade_goods"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "armor_trims_and_decorated_pots_as_goods",
+      "text": "A smith's decorative pattern - a trim - can be added to any piece of armor at a smithing table without changing what it protects against, purely for how it looks; and broken pottery, pieced back together from dug-up sherds, becomes a decorated pot worth trading in its own right, no two ever looking quite the same.",
+      "distribution": "contextual",
+      "tags": ["trade_goods", "crafting"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "animals_can_be_bred_with_the_right_feed",
+      "text": "Most tame-able animals can be bred by feeding two of the same kind their preferred food at the same time, close together - producing a young one that grows to full size over time if it survives that long.",
+      "distribution": "contextual",
+      "tags": ["farming"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "bone_meal_forces_a_plant_to_grow",
+      "text": "Ground bone, worked into soil or dusted straight onto a young plant, forces it to leap ahead in its growth right away instead of waiting out the ordinary pace.",
+      "distribution": "contextual",
+      "tags": ["farming"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "the_sniffer_digs_up_lost_seeds",
+      "text": "A sniffer - a large, gentle, long-extinct creature brought back from a buried egg - can be led to dig up ancient seeds nobody plants anymore, including one for a flower that isn't found growing wild anywhere else.",
+      "distribution": "contextual",
+      "tags": ["farming"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "farmland_needs_tilling_and_can_revert",
+      "text": "Ordinary ground has to be tilled with a hoe before most crops will take root in it at all, and if it dries out or gets trampled by something heavy walking over it, it reverts straight back to plain dirt, crop and all.",
+      "distribution": "contextual",
+      "tags": ["farming"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "certain_animals_are_raised_for_food_and_wool",
+      "text": "Sheep can be sheared for wool without harming them, regrowing it over time if left to graze; cows, pigs, chickens, and rabbits are raised mainly for meat and, in the cow and chicken's case, milk and eggs as well.",
+      "distribution": "contextual",
+      "tags": ["farming"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "brewing_stands_make_potions",
+      "text": "A brewing stand turns a base ingredient - most often a water bottle - into a potion, one added effect at a time, by adding the right substance and letting it work; a splash or lingering version can be thrown to affect someone else instead of drinking it.",
+      "distribution": "contextual",
+      "tags": ["alchemy"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "potion_effects_can_help_or_harm",
+      "text": "Potions and their effects run in matched pairs where one exists - healing and harming, speed and slowness, strength and weakness, poison alongside regeneration - and a strong enough effect of one kind can be openly countered with a strong enough dose of its opposite.",
+      "distribution": "contextual",
+      "tags": ["alchemy"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "status_effects_wear_off_over_time",
+      "text": "Whatever a potion, an enchantment, or something in the world has done to a person - good or bad - fades on its own after a while unless something renews it; nothing lasts forever off a single dose.",
+      "distribution": "contextual",
+      "tags": ["alchemy"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "milk_clears_every_status_effect_at_once",
+      "text": "Drinking milk strips away every status effect a person is currently under, all at once, good and bad alike - useful for getting clear of something harmful, costly if it also wipes out something helpful they wanted to keep.",
+      "distribution": "contextual",
+      "tags": ["alchemy"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "nether_portals_connect_the_two_worlds",
+      "text": "A frame of a certain dark volcanic glass, lit at its base, opens a passage to the Nether - and because that other place is built at a different scale, a short distance walked there can cover a much longer distance back in the ordinary world, and vice versa.",
+      "distribution": "contextual",
+      "tags": ["navigation"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "the_end_is_reached_through_a_different_portal",
+      "text": "A separate, ring-shaped portal - found only in one particular fortress deep underground, and needing a rare set of eyes to activate - opens onto the End, a place unlike anywhere else, guarded by something enormous.",
+      "distribution": "contextual",
+      "tags": ["navigation"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "compasses_and_maps_help_with_bearings",
+      "text": "A compass needle always points back toward wherever a person first arrived (or toward a place it's been specially bound to), and a map, carried and filled in as someone explores, gradually reveals the shape of the land they've actually walked.",
+      "distribution": "contextual",
+      "tags": ["navigation"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "biomes_shape_what_a_traveler_finds",
+      "text": "The land changes character from place to place - desert, snow, jungle, swamp, cherry-blossom grove, and many others - each with its own weather, growing things, and creatures, so what's true of the road in one stretch often isn't true a day's travel further on.",
+      "distribution": "contextual",
+      "tags": ["navigation"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "certain_ruins_and_structures_recur_across_the_land",
+      "text": "Certain kinds of structure turn up again and again in different places, built the same underlying way wherever they're found - villages, buried temples, abandoned mineshafts, sunken ships, ruined portals, ancient buried camps worth digging into carefully with a brush - recognizable on sight to anyone who's traveled enough to have seen one before.",
+      "distribution": "contextual",
+      "tags": ["navigation"],
+      "embodiment": "minecraft"
+    },
+    {
+      "id": "boats_and_minecarts_carry_people_over_water_and_rail",
+      "text": "A boat crosses open water faster than swimming or walking the shore, and a minecart, set on a track, carries someone - or goods - far faster still, though laying and maintaining a rail line takes real, ongoing work.",
+      "distribution": "contextual",
+      "tags": ["navigation"],
+      "embodiment": "minecraft"
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "name": "Tamuken",
+  "city": "Terfila",
+  "origin": "Terfila",
+  "location": "Terfila",
+  "backstory": "An independent trader in Terfila, not of any great house, who's paid tolls and delays from the crossing dispute for years no matter which side is telling the truth about it.",
+  "knowledge": {
+    "education": {
+      "percent": 45,
+      "mode": "random",
+      "topic": null,
+      "items": [
+        "concept: crossing_toll_dispute",
+        "concept: salthos_mediator_line",
+        "conflict: CONFLICT-01",
+        "conflict: CONFLICT-03",
+        "location: gorff",
+        "location: terfila",
+        "tale: birth_of_nierius",
+        "tale: birth_of_darnus",
+        "tale: birth_of_niemius",
+        "tale: crossing_market_roof",
+        "tale: death_of_darius",
+        "tale: forliamus_betrothal_offer",
+        "tale: salthos_cruzados"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Had a child with Farlo, named Farmuken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 23
+        }
+      },
+      {
+        "text": "Heard that Trezco and Forliamus now have a child, Forliazco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 24
+        }
+      },
+      {
+        "text": "Had a child with Trezco, named Tamuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 34
+        }
+      },
+      {
+        "text": "Heard that Forliamus and Farlo now have a child, Forliarlo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 44
+        }
+      },
+      {
+        "text": "Had a child with Forliazco, named Forliuken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 67
+        }
+      },
+      {
+        "text": "Heard that Forliazco and Farlo now have a child, Farliazco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 78
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "standard": "counts a roof over the stalls above one more year of the temple eating whatever's left in the treasury",
+    "wasted_life": "watching another season's coin go to arguing over old stones while the market he actually trades under stays open to the rain",
+    "anchor": "tale: crossing_market_roof",
+    "origin": "collision between his backstory (an independent trader who's paid the crossing's costs for years no matter who's right) and the sample's own tale: crossing_market_roof (a competing, practical use for the same limited coin)",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed",
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [
+      {
+        "cause": "author correction",
+        "date": "2026-08-31",
+        "previous": {
+          "standard": "counts staying out of a fight that costs him money either way he leans",
+          "wasted_life": "a life spent paying tolls and delays for a fight that isn't his, and picking a side anyway",
+          "anchor": "conflict: CONFLICT-01",
+          "origin": "collision between his backstory (pays the dispute's cost regardless of who's right) and the conflict itself",
+          "trusts": "verification",
+          "distrusts": "anyone who sounds certain"
+        },
+        "note": "re-derived after encodings.json gained three new concrete concepts (crossing_market_roof, toll_ledger_arrears, forliamus_betrothal_offer) via /tell, at the author's explicit direction, to diversify arcs away from the epistemic-conflict default"
+      }
+    ]
+  },
+  "life": {
+    "lived": 31,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "location": "Terfila",
+      "context": "market",
+      "weight": 100,
+      "routine_actions": "haggles for cart space at the market before dawn, keeps his own ledger of every toll he's paid and to whom, avoids the tavern talk about who started it"
+    }
+  ],
+  "arc": {
+    "about": [
+      "concept: toll_ledger_arrears"
+    ],
+    "needs": [
+      "records"
+    ],
+    "context": "market",
+    "premise": "Tamuken wants his own toll ledger reconciled against whatever the tollhouse keeps on its side - if the arrears run his way for once, he wants the coin counted and returned, not waved off the way every dispute on this road usually is.",
+    "resolution": "ongoing",
+    "history": []
+  },
+  "partners": {
+    "farlo": 7,
+    "trezco": 5,
+    "forliamus": 8,
+    "farmuken": 3,
+    "forliazco": 5,
+    "tamuzco": 2,
+    "forliarlo": 1
+  },
+  "energy": 20,
+  "partners_quality": {
+    "farlo": -2
+  },
+  "last_reproduced_pass": 67
+}

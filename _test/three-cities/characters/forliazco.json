@@ -1,0 +1,220 @@
+{
+  "name": "Forliazco",
+  "origin": "Terfila",
+  "location": "Terfila",
+  "backstory": "Child of Trezco and Forliamus; grew up around settles the house's accounts at the market stalls... in Terfila, and knows something of Salthos Mediator Line.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "tollhouse, forliamus",
+      "items": [
+        "concept: crossing_toll_dispute",
+        "concept: crossing_market_roof",
+        "tale: gorff_ledger_crossing_war",
+        "concept: forliamus_betrothal_offer",
+        "tale: crossing_market_roof",
+        "location: salthos_cruzados",
+        "location: terfila",
+        "tale: forliamus_betrothal_offer",
+        "tale: terfila",
+        "conflict: CONFLICT-03",
+        "location: gorff",
+        "concept: temple_of_the_crossing",
+        "conflict: CONFLICT-02",
+        "conflict: CONFLICT-01",
+        "tale: forliamus_log_crossing_war",
+        "tale: death_of_darius",
+        "tale: toll_ledger_arrears",
+        "concept: salthos_mediator_line",
+        "tale: birth_of_niemoran"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Heard that Farlo and Tamuken now have a child, Farmuken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 24
+        }
+      },
+      {
+        "text": "Heard that Trezco and Tamuken now have a child, Tamuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 34
+        }
+      },
+      {
+        "text": "Heard that Forliamus and Farlo now have a child, Forliarlo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 44
+        }
+      },
+      {
+        "text": "Had a child with Tamuken, named Forliuken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 67
+        }
+      },
+      {
+        "text": "Had a child with Farlo, named Farliazco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 78
+        }
+      },
+      "Learned that Tamuken has died.",
+      {
+        "text": "Had a child with Farmuken, named Forliamuk.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 104
+        }
+      },
+      "Learned that Forliamus has died.",
+      {
+        "text": "Heard that Forliarlo and Forliuken now have a child, Forliukar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 111
+        }
+      },
+      {
+        "text": "Heard that Farlo and Trezco now have a child, Trezarlo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 114
+        }
+      },
+      "Learned that Farlo has died.",
+      "Learned that Trezco has died.",
+      "Learned that Farmuken has died.",
+      {
+        "text": "Heard that Farliazco and Forliukar now have a child, Farliukar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 176
+        }
+      },
+      "Learned that Forliuken has died.",
+      {
+        "text": "Heard that Forliauzco and Farliazco now have a child, Farliauzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 205
+        }
+      },
+      {
+        "text": "Heard that Forliauzco and Forliamuk now have a child, Forliauken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 216
+        }
+      },
+      {
+        "text": "Heard that Tamuzco and Forliamuk now have a child, Tamuzaken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 233
+        }
+      },
+      {
+        "text": "Heard that Trezarlo and Forliukar now have a child, Trezukar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 235
+        }
+      },
+      "Learned that Forliukar has died.",
+      {
+        "text": "Heard that Forliauzco and Farliazco now have a child, Forliuzazco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 254
+        }
+      },
+      "Learned that Trezarlo has died.",
+      {
+        "text": "Heard that Tamuzco and Farliazco now have a child, Farliuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 306
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only if it stayed close to Forliamus Betrothal Offer",
+    "wasted_life": "a life spent never once engaging with Forliamus Betrothal Offer",
+    "anchor": "tale: forliamus_betrothal_offer",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 60,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "takes to the transit route himself now when a ship idles too long in port, and finds he still slows near the temple without quite meaning to.",
+      "weight": 50.0
+    },
+    {
+      "context": "transit_route",
+      "location": "Terfila",
+      "routine_actions": "takes to the transit route himself now when a ship idles too long in port, and finds he still slows near the temple without quite meaning to.",
+      "weight": 50.0
+    }
+  ],
+  "parents": [
+    "trezco",
+    "forliamus"
+  ],
+  "partners": {
+    "farlo": 5,
+    "tamuken": 5,
+    "forliamus": 2,
+    "trezco": 2,
+    "farmuken": 9,
+    "tamuzco": 3,
+    "forliarlo": 1,
+    "forliuken": 4,
+    "farliazco": 3,
+    "forliamuk": 5,
+    "forliukar": 4,
+    "trezarlo": 3,
+    "forliauzco": 3,
+    "farliukar": 1,
+    "farliauzco": 1,
+    "forliauken": 2,
+    "tamuzaken": 2,
+    "trezukar": 1,
+    "forliuzazco": 3,
+    "tamuzarlo": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 24,
+  "energy": 20,
+  "last_reproduced_pass": 104,
+  "arc": {
+    "about": [
+      "concept: forliamus_betrothal_offer"
+    ],
+    "needs": [
+      "contacts"
+    ],
+    "context": "market",
+    "premise": "Forliazco, Forliamus's own child, wants the house's betrothal offer answered outright - sealed or refused - and means to find whichever go-between will actually carry a reply back instead of letting it drift the way the family's last one did.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

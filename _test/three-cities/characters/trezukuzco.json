@@ -1,0 +1,167 @@
+{
+  "name": "Trezukuzco",
+  "origin": "Terfila",
+  "location": "Terfila",
+  "backstory": "Child of Tamuzco and Trezukar in Terfila; raised alongside settles the house's accounts at the market stalls..., having heard about CONFLICT-01.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "tollhouse, forliamus",
+      "items": [
+        "tale: birth_of_fenarnus",
+        "conflict: CONFLICT-03",
+        "tale: birth_of_niemius",
+        "tale: birth_of_niemoruk",
+        "location: salthos_cruzados",
+        "tale: gorff_ledger_crossing_war",
+        "tale: birth_of_mekaluko",
+        "location: gorff",
+        "tale: gorff",
+        "tale: birth_of_dornarius",
+        "tale: birth_of_darika",
+        "concept: crossing_market_roof",
+        "concept: crossing_toll_dispute",
+        "tale: salthos_cruzados",
+        "tale: birth_of_darnus",
+        "concept: temple_of_the_crossing",
+        "tale: death_of_darius",
+        "location: terfila",
+        "concept: salthos_mediator_line",
+        "tale: crossing_market_roof",
+        "tale: birth_of_merkhaubo",
+        "tale: death_of_mekoboro",
+        "tale: death_of_darnakus",
+        "tale: birth_of_dornakus",
+        "tale: birth_of_niekus",
+        "tale: birth_of_tamuzco",
+        "conflict: CONFLICT-01",
+        "tale: death_of_trezarlo",
+        "tale: birth_of_khaumestro",
+        "tale: death_of_mekaluko"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Had a child with Farliazco, named Farliuzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 364
+        }
+      },
+      {
+        "text": "Grew up hearing: Learned that Forliazco has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 364
+        }
+      },
+      {
+        "text": "Grew up hearing: Grew up hearing: Learned that Farmuken has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 364
+        }
+      },
+      {
+        "text": "Grew up hearing: Learned that Farmuken has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 364
+        }
+      },
+      {
+        "text": "Grew up hearing: Had a child with Forliamuk, named Tamuzmuken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 364
+        }
+      },
+      "Learned that Tamuzco has died.",
+      {
+        "text": "Heard that Trezukar and Tamuzaken now have a child, Tamuzakar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 382
+        }
+      },
+      {
+        "text": "Heard that Trezukar and Tamuzaken now have a child, Trezukaken.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 393
+        }
+      },
+      "Learned that Trezukar has died."
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only if it stayed close to Birth Of Darika 2",
+    "wasted_life": "a life spent never once engaging with Birth Of Darika 2",
+    "anchor": "tale: birth_of_tamuzco",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 15,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "works the pre-dawn market crowd for a spot to set a cart, quietly starting his own version of the toll ledger, and keeping his opinion on the old dispute to himself.",
+      "weight": 33.33
+    },
+    {
+      "context": "transit_route",
+      "location": "Terfila",
+      "routine_actions": "works the pre-dawn market crowd for a spot to set a cart, quietly starting his own version of the toll ledger, and keeping his opinion on the old dispute to himself.",
+      "weight": 33.33
+    },
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "works the pre-dawn market crowd for a spot to set a cart, quietly starting his own version of the toll ledger, and keeping his opinion on the old dispute to himself.",
+      "weight": 33.33
+    }
+  ],
+  "parents": [
+    "tamuzco",
+    "trezukar"
+  ],
+  "partners": {
+    "tamuken": 1,
+    "forliauzco": 2,
+    "farliukar": 2,
+    "forliauken": 1,
+    "tamuzaken": 1,
+    "forliuzazco": 1,
+    "forliaukar": 1,
+    "farliuzco": 1,
+    "tamuzmuken": 2,
+    "tamuzukar": 2,
+    "farliauzar": 2,
+    "tamuzakar": 1,
+    "farliazuzco": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 364,
+  "energy": 20,
+  "arc": {
+    "about": [
+      "tale: birth_of_tamuzco"
+    ],
+    "needs": [
+      "goods"
+    ],
+    "context": "market",
+    "premise": "Trezukuzco has stopped just spreading word of the birth at market, and started commissioning a small token - cast in the family's own mark - to send along with the news, so the announcement carries something the relations can actually keep.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

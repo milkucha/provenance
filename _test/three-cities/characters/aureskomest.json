@@ -1,0 +1,136 @@
+{
+  "name": "Aureskomest",
+  "origin": "Gorff",
+  "location": "Gorff",
+  "backstory": "Child of Aurekomest and Aurelkhau; raised in Gorff on works out of the temple's own records annex..., and carries some knowledge of Birth Of Forliukar.",
+  "knowledge": {
+    "education": {
+      "percent": 50,
+      "mode": "skewed",
+      "topic": "tollhouse, transit",
+      "items": [
+        "concept: crossing_market_roof",
+        "tale: death_of_darnakus",
+        "tale: birth_of_merkhaubo",
+        "tale: birth_of_dorakus",
+        "tale: toll_ledger_arrears",
+        "concept: toll_ledger_arrears",
+        "tale: death_of_darika",
+        "tale: birth_of_darinak",
+        "tale: birth_of_nieragus",
+        "concept: temple_of_the_crossing",
+        "tale: birth_of_darika",
+        "concept: crossing_toll_dispute",
+        "tale: birth_of_nakorika",
+        "location: salthos_cruzados",
+        "conflict: CONFLICT-03",
+        "concept: salthos_mediator_line",
+        "tale: death_of_niergus",
+        "tale: birth_of_darnarika",
+        "tale: gorff_ledger_crossing_war",
+        "tale: forliamus_log_crossing_war",
+        "tale: birth_of_fenarnus",
+        "tale: death_of_prince_doran",
+        "tale: death_of_darnukas",
+        "location: terfila",
+        "tale: salthos_cruzados",
+        "conflict: CONFLICT-02",
+        "tale: birth_of_forliukar",
+        "tale: birth_of_dornarika",
+        "tale: birth_of_niergus",
+        "tale: birth_of_khaubestro",
+        "tale: death_of_tamuzco",
+        "tale: birth_of_farliauzar",
+        "tale: death_of_mekaluko",
+        "tale: birth_of_niemoruk"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Grew up hearing: Learned that Khaubalo has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 412
+        }
+      },
+      {
+        "text": "Grew up hearing: Had a child with Aurekomest, named Aurelkomest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 412
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "measures a life by whether Temple Of The Crossing is still remembered rightly",
+    "wasted_life": "forgetting what Temple Of The Crossing actually meant, the way most people already have",
+    "anchor": "concept: temple_of_the_crossing",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 8,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "temple",
+      "location": "Gorff",
+      "routine_actions": "drives the caravan route occasionally, mostly to see the road for herself rather than just hear about it",
+      "weight": 25.0
+    },
+    {
+      "context": "market",
+      "location": "Gorff",
+      "routine_actions": "drives the caravan route occasionally, mostly to see the road for herself rather than just hear about it",
+      "weight": 25.0
+    },
+    {
+      "context": "market",
+      "location": "Gorff",
+      "routine_actions": "drives the caravan route occasionally, mostly to see the road for herself rather than just hear about it",
+      "weight": 25.0
+    },
+    {
+      "context": "transit_route",
+      "location": "Gorff",
+      "routine_actions": "drives the caravan route occasionally, mostly to see the road for herself rather than just hear about it",
+      "weight": 25.0
+    }
+  ],
+  "parents": [
+    "aurekomest",
+    "aurelkhau"
+  ],
+  "partners": {
+    "khaubalo": 1,
+    "aurebako": 2,
+    "mekhaubo": 1,
+    "merkhaubo": 2,
+    "mekhaurel": 1,
+    "mekhaubest": 1,
+    "aurelkomest": 1,
+    "khaubekho": 1,
+    "khaubomako": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 412,
+  "energy": 20,
+  "arc": {
+    "about": [
+      "concept: temple_of_the_crossing"
+    ],
+    "needs": [
+      "records"
+    ],
+    "context": "temple",
+    "premise": "Aureskomest wants to settle, from the annex's own oldest entries, who actually built the temple first - the question her own criterion already measures her life against, and one she's better placed than most to actually check.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

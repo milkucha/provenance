@@ -1,0 +1,146 @@
+{
+  "name": "Nakoran",
+  "origin": "Salthos Cruzados",
+  "location": "Salthos Cruzados",
+  "backstory": "Child of Prince Doran and Nakus, in Salthos Cruzados; grew up around holds court at the square each morning, hears..., and picked up a little of CONFLICT-02 along the way.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "salthos",
+      "items": [
+        "tale: terfila",
+        "tale: gorff",
+        "tale: forliamus_betrothal_offer",
+        "concept: toll_ledger_arrears",
+        "tale: crossing_market_roof",
+        "tale: salthos_cruzados",
+        "concept: salthos_mediator_line",
+        "concept: forliamus_betrothal_offer",
+        "concept: crossing_market_roof",
+        "tale: toll_ledger_arrears",
+        "location: salthos_cruzados",
+        "conflict: CONFLICT-03",
+        "tale: gorff_ledger_crossing_war",
+        "concept: temple_of_the_crossing",
+        "conflict: CONFLICT-01",
+        "tale: forliamus_log_crossing_war",
+        "location: gorff",
+        "tale: birth_of_niergus",
+        "conflict: CONFLICT-02"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Learned that Darius has died.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 144
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Fenserika and Nierius now have a child, Fenrius.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 144
+        }
+      },
+      {
+        "text": "Grew up hearing: Had a child with Prince Doran, named Dorakus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 144
+        }
+      },
+      {
+        "text": "Grew up hearing: Had a child with Niemius, named Niemoran.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 144
+        }
+      },
+      {
+        "text": "Heard that Nakus and Prince Doran now have a child, Dorukus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 189
+        }
+      },
+      "Learned that Prince Doran has died.",
+      "Learned that Nakus has died.",
+      {
+        "text": "Had a child with Fenserika, named Nakorika.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 337
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only if it stayed close to CONFLICT-03",
+    "wasted_life": "a life spent never once engaging with CONFLICT-03",
+    "anchor": "conflict: CONFLICT-03",
+    "origin": "derived",
+    "trusts": "verification",
+    "distrusts": "anyone who sounds certain"
+  },
+  "life": {
+    "lived": 33,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "main_square",
+      "location": "Salthos Cruzados",
+      "routine_actions": "takes his turn hearing petitions each morning, refers the harder disputes upward same as his father did, and checks the crossing's quiet himself before dark",
+      "weight": 100.0
+    }
+  ],
+  "parents": [
+    "prince_doran",
+    "nakus"
+  ],
+  "partners": {
+    "fenserika": 3,
+    "nierius": 2,
+    "darnus": 2,
+    "darika": 2,
+    "niemius": 1,
+    "darnakus": 1,
+    "dorakus": 1,
+    "fenrius": 3,
+    "darnukas": 2,
+    "niemoran": 2,
+    "niekus": 1,
+    "dornakus": 2,
+    "nieragus": 1,
+    "dorukus": 3,
+    "fenarnus": 1,
+    "nieragan": 1,
+    "nakorika": 3,
+    "nieradus": 1,
+    "fenekus": 1,
+    "niemornak": 2
+  },
+  "partners_quality": {},
+  "birth_pass": 144,
+  "energy": 20,
+  "last_reproduced_pass": 337,
+  "arc": {
+    "about": [
+      "concept: crossing_market_roof"
+    ],
+    "needs": [
+      "coin",
+      "materials"
+    ],
+    "context": "main_square",
+    "premise": "Nakoran has stopped just checking the books and started counting what's actually left - leftover timber, unspent coin - laid out and weighed in front of witnesses, so the roof's final cost is settled by what's physically there, not by whoever's arithmetic wins the argument.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

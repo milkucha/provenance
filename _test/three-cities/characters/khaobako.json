@@ -1,0 +1,157 @@
+{
+  "name": "Khaobako",
+  "origin": "Gorff",
+  "location": "Gorff",
+  "backstory": "Child of Aurebako and Khaoboro; grew up around sells iron work at the market through the... in Gorff, and knows something of Birth Of Merkhaubo.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "tollhouse, gorff",
+      "items": [
+        "tale: terfila",
+        "concept: toll_ledger_arrears",
+        "tale: salthos_cruzados",
+        "location: gorff",
+        "tale: death_of_niemius",
+        "tale: birth_of_niekus",
+        "location: salthos_cruzados",
+        "tale: crossing_market_roof",
+        "tale: birth_of_tamuzco",
+        "tale: birth_of_fenarnus",
+        "tale: death_of_dorakus",
+        "tale: birth_of_darnus",
+        "tale: birth_of_darika",
+        "tale: birth_of_niergus",
+        "tale: toll_ledger_arrears",
+        "tale: birth_of_niemius",
+        "concept: temple_of_the_crossing",
+        "concept: forliamus_betrothal_offer",
+        "conflict: CONFLICT-02",
+        "concept: crossing_market_roof",
+        "tale: birth_of_darnukas",
+        "tale: forliamus_log_crossing_war",
+        "tale: birth_of_fenriukas",
+        "tale: birth_of_nieradus",
+        "tale: birth_of_niemornak",
+        "tale: birth_of_darnakus",
+        "location: terfila",
+        "tale: death_of_niemus",
+        "concept: crossing_toll_dispute",
+        "conflict: CONFLICT-01",
+        "concept: salthos_mediator_line",
+        "conflict: CONFLICT-03",
+        "tale: gorff",
+        "tale: gorff_ledger_crossing_war",
+        "tale: death_of_darnus",
+        "tale: birth_of_merkhaubo",
+        "tale: birth_of_nieragan",
+        "tale: birth_of_dornakus",
+        "tale: birth_of_doraknus",
+        "tale: birth_of_mekoboro",
+        "tale: birth_of_darinak",
+        "tale: birth_of_khaubestro"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Had a child with Aurebalo, named Aurekhobo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 279
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Aurebalo and Khaoboro now have a child, Aurekhobo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 279
+        }
+      },
+      "Learned that Khaoboro has died.",
+      {
+        "text": "Had a child with Mekhaurel, named Mekhaobako.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 334
+        }
+      },
+      {
+        "text": "Had a child with Mekhaurel, named Mekhaobera.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 435
+        }
+      },
+      {
+        "text": "Heard that Khaubaluk and Mekhaobako now have a child, Khaubomako.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 476
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "measures a life by whether Salthos Cruzados is still remembered rightly",
+    "wasted_life": "forgetting what Salthos Cruzados actually meant, the way most people already have",
+    "anchor": "tale: salthos_cruzados",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 26,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Gorff",
+      "routine_actions": "sells iron work at the market through the day, still weighing every delivery twice, hasn't decided if he trusts the supply line any more than his elders did",
+      "weight": 100.0
+    }
+  ],
+  "parents": [
+    "aurebako",
+    "khaoboro"
+  ],
+  "partners": {
+    "merluko": 1,
+    "aureboro": 2,
+    "khaubestro": 2,
+    "aurebako": 3,
+    "khaumestro": 1,
+    "mekhaubo": 1,
+    "merkhaubo": 1,
+    "khaubaluk": 2,
+    "mekhaurel": 5,
+    "aurelkhau": 3,
+    "mekobaluk": 1,
+    "mekaurelo": 1,
+    "mekhaobako": 3,
+    "khaubekho": 1,
+    "mekaurelu": 1
+  },
+  "partners_quality": {
+    "aureboro": -2
+  },
+  "birth_pass": 279,
+  "energy": 20,
+  "last_reproduced_pass": 435,
+  "arc": {
+    "about": [
+      "concept: crossing_market_roof"
+    ],
+    "needs": [
+      "materials"
+    ],
+    "context": "market",
+    "premise": "Khaobako wants to put his own spare iron fittings toward the market roof's frame, cutting the project's cost enough that it might finally beat the temple's repairs for the season's timber allotment.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

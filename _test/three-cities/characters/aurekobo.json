@@ -1,0 +1,183 @@
+{
+  "name": "Aurekobo",
+  "origin": "Gorff",
+  "location": "Gorff",
+  "backstory": "Child of Aurebalo and Mekoboro; raised in Gorff on drives a caravan up and down the transit..., and carries some knowledge of Forliamus Betrothal Offer.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "tollhouse, gorff",
+      "items": [
+        "concept: temple_of_the_crossing",
+        "tale: birth_of_niemornak",
+        "conflict: CONFLICT-01",
+        "tale: forliamus_betrothal_offer",
+        "tale: death_of_niemius",
+        "concept: toll_ledger_arrears",
+        "location: terfila",
+        "tale: crossing_market_roof",
+        "tale: gorff",
+        "tale: birth_of_darika",
+        "location: gorff",
+        "tale: birth_of_niergus",
+        "concept: salthos_mediator_line",
+        "tale: gorff_ledger_crossing_war",
+        "tale: death_of_dorakus",
+        "tale: birth_of_niemius",
+        "tale: forliamus_log_crossing_war",
+        "tale: birth_of_nieradus",
+        "tale: salthos_cruzados",
+        "concept: forliamus_betrothal_offer",
+        "conflict: CONFLICT-03",
+        "conflict: CONFLICT-02",
+        "concept: crossing_market_roof"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Heard that Khaus and Mekoboro now have a child, Khaoboro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 97
+        }
+      },
+      {
+        "text": "Grew up hearing: Heard that Auroboro and Aurebalo now have a child, Aureboro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 97
+        }
+      },
+      {
+        "text": "Grew up hearing: Had a child with Merluko, named Aurebako.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 97
+        }
+      },
+      {
+        "text": "Heard that Aurebalo and Khaoboro now have a child, Aurekhobo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 150
+        }
+      },
+      "Learned that Aurebalo has died.",
+      "Learned that Mekaluko has died.",
+      {
+        "text": "Heard that Aurebako and Khaoboro now have a child, Khaobako.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 279
+        }
+      },
+      "Learned that Khaoboro has died.",
+      {
+        "text": "Heard that Mekoboro and Khaubaluk now have a child, Mekobaluk.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 309
+        }
+      },
+      {
+        "text": "Had a child with Khaumestro, named Aurekomest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 310
+        }
+      },
+      {
+        "text": "Heard that Aurekomest and Aurelkhau now have a child, Aurelkomest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 363
+        }
+      },
+      "Learned that Khaumestro has died.",
+      {
+        "text": "Heard that Khaubaluk and Aurekomest now have a child, Khaubomest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 401
+        }
+      },
+      {
+        "text": "Heard that Aurekomest and Aurelkhau now have a child, Aureskomest.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 412
+        }
+      },
+      "Learned that Mekoboro has died."
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only if it stayed close to Death Of Dorakus",
+    "wasted_life": "a life spent never once engaging with Death Of Dorakus",
+    "anchor": "tale: death_of_dorakus",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 42,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "transit_route",
+      "location": "Gorff",
+      "routine_actions": "drives the family's caravan route now, pays the toll without a word, has started asking travelers for news instead of just letting it pass him by",
+      "weight": 100.0
+    }
+  ],
+  "parents": [
+    "aurebalo",
+    "mekoboro"
+  ],
+  "partners": {
+    "merluko": 3,
+    "auroboro": 1,
+    "aurebalo": 1,
+    "aureluko": 1,
+    "mekoboro": 1,
+    "aureboro": 2,
+    "mekaluko": 3,
+    "khaoboro": 4,
+    "khaubestro": 2,
+    "aurebako": 4,
+    "khaumestro": 3,
+    "mekhaubo": 2,
+    "aurekhobo": 2,
+    "merkhaubo": 2,
+    "khaubaluk": 1,
+    "mekhaurel": 2,
+    "aurelkhau": 2,
+    "mekobaluk": 2,
+    "aurekomest": 1,
+    "mekaurelo": 1,
+    "mekhaubest": 1,
+    "mekhaobako": 2,
+    "khaubekho": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 97,
+  "energy": 20,
+  "last_reproduced_pass": 310,
+  "arc": {
+    "about": [
+      "concept: forliamus_betrothal_offer"
+    ],
+    "needs": [
+      "labor"
+    ],
+    "context": "transit_route",
+    "premise": "Aurekobo has begun lining up his own drivers and wagons for the wedding-goods escort, provisioning them now so the caravan can leave the moment the betrothal is sealed instead of scrambling to find hands at the last minute.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

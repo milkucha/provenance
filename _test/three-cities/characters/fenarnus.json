@@ -1,0 +1,140 @@
+{
+  "name": "Fenarnus",
+  "origin": "Salthos Cruzados",
+  "location": "Salthos Cruzados",
+  "backstory": "Child of Darnus and Fenserika; raised in Salthos Cruzados on waits near the Salthos house's own square on..., and carries some knowledge of Birth Of Nierius.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "tollhouse, crossing",
+      "items": [
+        "conflict: CONFLICT-01",
+        "location: gorff",
+        "tale: crossing_market_roof",
+        "concept: forliamus_betrothal_offer",
+        "tale: gorff",
+        "concept: crossing_toll_dispute",
+        "location: terfila",
+        "tale: forliamus_log_crossing_war",
+        "tale: gorff_ledger_crossing_war",
+        "tale: toll_ledger_arrears",
+        "location: salthos_cruzados",
+        "concept: salthos_mediator_line",
+        "concept: crossing_market_roof",
+        "conflict: CONFLICT-03",
+        "tale: salthos_cruzados",
+        "tale: terfila",
+        "conflict: CONFLICT-02",
+        "tale: forliamus_betrothal_offer",
+        "tale: birth_of_nierius",
+        "tale: birth_of_dorakus"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Heard that Prince Doran and Nakus now have a child, Nakoran.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 262
+        }
+      },
+      {
+        "text": "Heard that Dorakus and Darnus now have a child, Doraknus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 294
+        }
+      },
+      {
+        "text": "Heard that Nakoran and Fenserika now have a child, Nakorika.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 337
+        }
+      },
+      {
+        "text": "Heard that Dornakus and Darika now have a child, Dornarika.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 342
+        }
+      },
+      "Learned that Darnus has died.",
+      {
+        "text": "Heard that Fenserika and Niekus now have a child, Fenekus.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 384
+        }
+      },
+      "Learned that Fenserika has died.",
+      {
+        "text": "Heard that Darika and Darnakus now have a child, Darinak.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 397
+        }
+      },
+      "Learned that Darika has died."
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only by making Crossing Market Roof their own concern",
+    "wasted_life": "treating Crossing Market Roof as someone else's concern",
+    "anchor": "concept: crossing_market_roof",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 19,
+    "deceased": false
+  },
+  "routines": [
+    {
+      "context": "main_square",
+      "location": "Salthos Cruzados",
+      "routine_actions": "waits near the square on petition days out of habit passed down to her, no longer asking the old question herself, but ready to speak up if anyone else tries to",
+      "weight": 100.0
+    }
+  ],
+  "parents": [
+    "darnus",
+    "fenserika"
+  ],
+  "partners": {
+    "niemus": 1,
+    "nierius": 1,
+    "darnus": 2,
+    "darika": 4,
+    "dorakus": 2,
+    "fenrius": 1,
+    "niemoran": 1,
+    "niekus": 2,
+    "nakoran": 2,
+    "dorukus": 1,
+    "darnarika": 2,
+    "doraknus": 2,
+    "fenriukas": 1,
+    "nakorika": 2
+  },
+  "partners_quality": {},
+  "birth_pass": 262,
+  "energy": 20,
+  "arc": {
+    "about": [
+      "concept: crossing_market_roof"
+    ],
+    "needs": [
+      "materials"
+    ],
+    "context": "main_square",
+    "premise": "Fenarnus petitions the square the way her grandmother once did, but her ask is plainer - she wants the last of the market roof's timber actually delivered, not promised again.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "name": "Forliarlo",
+  "origin": "Terfila",
+  "location": "Terfila",
+  "backstory": "Child of Forliamus and Farlo; grew up around unloads crates at the market stalls through the... in Terfila, and knows something of Temple Of The Crossing.",
+  "knowledge": {
+    "education": {
+      "percent": 55,
+      "mode": "skewed",
+      "topic": "tollhouse, forliamus",
+      "items": [
+        "tale: birth_of_nierius",
+        "location: terfila",
+        "tale: birth_of_darnakus",
+        "tale: gorff_ledger_crossing_war",
+        "conflict: CONFLICT-01",
+        "conflict: CONFLICT-02",
+        "concept: crossing_toll_dispute",
+        "tale: birth_of_niergus",
+        "conflict: CONFLICT-03",
+        "tale: forliamus_log_crossing_war",
+        "tale: terfila",
+        "tale: birth_of_darnus",
+        "concept: forliamus_betrothal_offer",
+        "concept: temple_of_the_crossing",
+        "location: salthos_cruzados",
+        "concept: salthos_mediator_line"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Had a child with Trezco, named Forliazco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 44
+        }
+      },
+      {
+        "text": "Heard that Forliazco and Farlo now have a child, Farliazco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 78
+        }
+      },
+      {
+        "text": "Heard that Forliazco and Farmuken now have a child, Forliamuk.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 104
+        }
+      },
+      "Learned that Forliamus has died.",
+      {
+        "text": "Had a child with Forliuken, named Forliukar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 111
+        }
+      },
+      {
+        "text": "Heard that Farlo and Trezco now have a child, Trezarlo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 114
+        }
+      },
+      "Learned that Farlo has died.",
+      {
+        "text": "Had a child with Tamuzco, named Forliauzco.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 156
+        }
+      },
+      "Learned that Farmuken has died.",
+      {
+        "text": "Heard that Farliazco and Forliukar now have a child, Farliukar.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 176
+        }
+      },
+      "Learned that Forliuken has died."
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "measures a life by whether Salthos Mediator Line is still remembered rightly",
+    "wasted_life": "forgetting what Salthos Mediator Line actually meant, the way most people already have",
+    "anchor": "concept: salthos_mediator_line",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 37,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "takes over more of the house's morning bookkeeping at the stalls, testing his own hand at pressing suppliers for better terms, and repeating the family's account of the dispute a little more confidently each time.",
+      "weight": 50.0
+    },
+    {
+      "context": "market",
+      "location": "Terfila",
+      "routine_actions": "takes over more of the house's morning bookkeeping at the stalls, testing his own hand at pressing suppliers for better terms, and repeating the family's account of the dispute a little more confidently each time.",
+      "weight": 50.0
+    }
+  ],
+  "parents": [
+    "forliamus",
+    "farlo"
+  ],
+  "partners": {
+    "trezco": 1,
+    "forliamus": 3,
+    "tamuken": 1,
+    "farlo": 2,
+    "farmuken": 4,
+    "forliazco": 2,
+    "tamuzco": 8,
+    "forliuken": 5,
+    "farliazco": 7,
+    "forliamuk": 2,
+    "forliukar": 1,
+    "trezarlo": 1,
+    "forliauzco": 1
+  },
+  "partners_quality": {},
+  "birth_pass": 44,
+  "energy": 20,
+  "arc": {
+    "about": [
+      "concept: salthos_mediator_line"
+    ],
+    "needs": [
+      "contacts"
+    ],
+    "context": "market",
+    "premise": "Forliarlo wants to know whether the Salthos house was truly chosen to mediate the crossing dispute or simply never left once it arrived - he means to find someone old enough to have seen the actual choosing, before that generation is gone.",
+    "resolution": "ongoing",
+    "history": []
+  },
+  "last_reproduced_pass": 156
+}

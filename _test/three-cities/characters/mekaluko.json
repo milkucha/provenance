@@ -1,0 +1,130 @@
+{
+  "name": "Mekaluko",
+  "origin": "Gorff",
+  "location": "Gorff",
+  "backstory": "Child of Mekestros and Aureluko in Gorff; raised alongside drives a caravan up and down the transit..., having heard about Birth Of Darnarika.",
+  "knowledge": {
+    "education": {
+      "percent": 50,
+      "mode": "skewed",
+      "topic": "tollhouse, transit",
+      "items": [
+        "conflict: CONFLICT-02",
+        "tale: gorff",
+        "concept: crossing_toll_dispute",
+        "tale: forliamus_betrothal_offer",
+        "tale: birth_of_niergus",
+        "tale: gorff_ledger_crossing_war",
+        "tale: birth_of_dorakus",
+        "tale: death_of_darius",
+        "conflict: CONFLICT-01",
+        "concept: crossing_market_roof",
+        "concept: temple_of_the_crossing",
+        "tale: birth_of_darinak",
+        "location: salthos_cruzados",
+        "concept: toll_ledger_arrears",
+        "tale: birth_of_darnarika",
+        "tale: birth_of_niekus",
+        "tale: birth_of_nieragan",
+        "tale: birth_of_dornakus"
+      ]
+    },
+    "experience": [
+      {
+        "text": "Grew up hearing: Heard that Auroboro and Aurebalo now have a child, Aureboro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 57
+        }
+      },
+      {
+        "text": "Heard that Khaubalo and Mekestros now have a child, Khaubestro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 67
+        }
+      },
+      {
+        "text": "Heard that Mekestros and Khaubalo now have a child, Khaumestro.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 99
+        }
+      },
+      {
+        "text": "Heard that Mekestros and Khaubalo now have a child, Mekhaubo.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 129
+        }
+      },
+      "Learned that Mekestros has died.",
+      {
+        "text": "Heard that Aureluko and Mekhaubo now have a child, Mekhaurel.",
+        "produced_by": {
+          "scene_id": null,
+          "pass_number": 240
+        }
+      }
+    ]
+  },
+  "criterion": {
+    "tempered": 0,
+    "cost_ledger": [],
+    "history": [],
+    "standard": "counts a life well spent only if it stayed close to Birth Of Dorakus",
+    "wasted_life": "a life spent never once engaging with Birth Of Dorakus",
+    "anchor": "tale: birth_of_dorakus",
+    "origin": "derived",
+    "trusts": "a story that's been carried and retold and still holds together",
+    "distrusts": "a record that insists on a precision no one who was actually there ever needed"
+  },
+  "life": {
+    "lived": 34,
+    "deceased": true
+  },
+  "routines": [
+    {
+      "context": "transit_route",
+      "location": "Gorff",
+      "routine_actions": "drives the caravan route on his own schedule now, pays the toll the same way his father always did, has started keeping his own tally of who's overcharged",
+      "weight": 100.0
+    }
+  ],
+  "parents": [
+    "mekestros",
+    "aureluko"
+  ],
+  "partners": {
+    "mekestros": 1,
+    "auroboro": 2,
+    "aurebalo": 2,
+    "merluko": 1,
+    "aureluko": 3,
+    "mekoboro": 3,
+    "khaubalo": 3,
+    "aureboro": 5,
+    "khaoboro": 2,
+    "khaubestro": 4,
+    "aurekobo": 3,
+    "khaumestro": 1,
+    "mekhaubo": 2,
+    "merkhaubo": 1,
+    "khaubaluk": 2
+  },
+  "partners_quality": {},
+  "birth_pass": 57,
+  "energy": 20,
+  "arc": {
+    "about": [
+      "concept: forliamus_betrothal_offer"
+    ],
+    "needs": [
+      "news"
+    ],
+    "context": "transit_route",
+    "premise": "Word of the new Forliamus betrothal offer travels the road before it reaches Gorff's own square, and Mekaluko wants to be the one who actually confirms whether it's sealed - a settled marriage alliance might finally take the old toll politics off his route for good.",
+    "resolution": "ongoing",
+    "history": []
+  }
+}
