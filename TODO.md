@@ -3,6 +3,36 @@
 Open implementation decisions and work, deferred for later. This is a build/production backlog —
 open questions about the lore itself live in `_lore/unknowns.md`, not here.
 
+## Machine-generated seeds, as a control for isolating engine quality from seed quality (raised 2026-09-12, not built)
+
+Every seed the engine has grown from so far is hand-authored — twelve years of the user's own
+material, or a hand-built test corpus (three-cities-baseline, etc.). That's a confound: when a run's
+drift reads as organic and the tasting scores hold up, there's no way yet to tell how much of that is
+the mechanism actually working versus the seed material already being unusually rich, since a
+sufficiently good hand-authored corpus could make almost any downstream mechanism look decent.
+
+The fix isn't "let the machine invent a world by algorithm" the way Dwarf Fortress or Talk of the Town
+generate their towns from a rule-set - see `CHRONICLE.md`'s 2026-09-12 entry for the fuller
+distinction. **The seed still has to be made of the same kind of thing either way: semantic content -
+facts, sociocultural parameters, character fragments - not a generative rule-set that unfolds into
+content on its own.** What'd change is only the seed's *source*, not its *nature*: a machine producing
+that same shape of content unprompted by real source material, the way `/tell`/`/character`/`/integrate`
+produce it now from a human, rather than DF-style world-gen producing history as a side effect of
+simulating physics forward.
+
+Not scoped yet - open questions before this is buildable:
+- What does "the machine invents a seed" actually call, mechanically? Probably a new skill/script
+  that prompts for the same handful of parameters `/start`'s door already implies a seed needs
+  (sociocultural parameters + a handful of grounding facts), then has a model author plausible-but-
+  synthetic answers instead of eliciting them from the user.
+- How would a run against a synthetic seed even be compared fairly to a run against the real
+  corpus - same test-suite instruments (`measure_derivation.py`/`measure_drift.py`/tasting), but
+  probably needs its own LAB_REPORT.md-style bucket so the two populations of runs (real-seed vs.
+  synthetic-seed) don't get averaged together and hide the comparison being made.
+- Sequencing: likely worth building only after the playability-horizon question above has enough
+  offline evidence behind it that this specific confound (mechanism vs. seed quality) becomes the
+  actual bottleneck on trusting that evidence, rather than before.
+
 ## Open question: what signals "stop testing offline, start building the live/standing world" (raised 2026-09-12, not decided)
 
 The project has two use cases in view that share one mechanism, not two: `/simulate` as an offline
