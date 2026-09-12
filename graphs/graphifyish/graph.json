@@ -289,7 +289,7 @@
     "label": "Provenance",
     "kind": "root",
     "path": ".",
-    "size": 2982548,
+    "size": 2988549,
     "degree": 20
    },
    {
@@ -337,7 +337,7 @@
     "label": "OPEN_QUESTIONS.md",
     "kind": "doc",
     "path": "OPEN_QUESTIONS.md",
-    "size": 20183,
+    "size": 20187,
     "degree": 1
    },
    {
@@ -361,7 +361,7 @@
     "label": "TODO.md",
     "kind": "doc",
     "path": "TODO.md",
-    "size": 174250,
+    "size": 177961,
     "degree": 1
    },
    {
@@ -385,7 +385,7 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
-    "size": 225234,
+    "size": 226625,
     "degree": 7
    },
    {
@@ -441,7 +441,7 @@
     "label": "skills",
     "kind": "dir",
     "path": ".claude/skills",
-    "size": 210945,
+    "size": 212336,
     "degree": 14
    },
    {
@@ -449,7 +449,7 @@
     "label": "character",
     "kind": "dir",
     "path": ".claude/skills/character",
-    "size": 33621,
+    "size": 35000,
     "degree": 2
    },
    {
@@ -457,7 +457,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/character/SKILL.md",
-    "size": 33621,
+    "size": 35000,
     "degree": 1
    },
    {
@@ -481,7 +481,7 @@
     "label": "enact",
     "kind": "dir",
     "path": ".claude/skills/enact",
-    "size": 57023,
+    "size": 57047,
     "degree": 2
    },
    {
@@ -489,7 +489,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/enact/SKILL.md",
-    "size": 57023,
+    "size": 57047,
     "degree": 1
    },
    {
@@ -641,7 +641,7 @@
     "label": "tell",
     "kind": "dir",
     "path": ".claude/skills/tell",
-    "size": 8016,
+    "size": 8004,
     "degree": 2
    },
    {
@@ -649,7 +649,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/tell/SKILL.md",
-    "size": 8016,
+    "size": 8004,
     "degree": 1
    },
    {
@@ -657,7 +657,7 @@
     "label": "_lore",
     "kind": "dir",
     "path": "_lore",
-    "size": 37823,
+    "size": 38106,
     "degree": 10
    },
    {
@@ -681,7 +681,7 @@
     "label": "tuning.json",
     "kind": "lore",
     "path": "_lore/tuning.json",
-    "size": 5221,
+    "size": 5233,
     "degree": 1
    },
    {
@@ -697,7 +697,7 @@
     "label": "characters",
     "kind": "dir",
     "path": "_lore/characters",
-    "size": 2099,
+    "size": 2370,
     "degree": 5
    },
    {
@@ -713,7 +713,7 @@
     "label": "_template.json",
     "kind": "lore",
     "path": "_lore/characters/_template.json",
-    "size": 529,
+    "size": 800,
     "degree": 1
    },
    {
@@ -1017,7 +1017,7 @@
     "label": "_test",
     "kind": "dir",
     "path": "_test",
-    "size": 791814,
+    "size": 792238,
     "degree": 2
    },
    {
@@ -1025,7 +1025,7 @@
     "label": "three-cities",
     "kind": "dir",
     "path": "_test/three-cities",
-    "size": 791814,
+    "size": 792238,
     "degree": 10
    },
    {
@@ -1073,7 +1073,7 @@
     "label": "characters",
     "kind": "dir",
     "path": "_test/three-cities/characters",
-    "size": 582591,
+    "size": 583015,
     "degree": 110
    },
    {
@@ -1089,7 +1089,7 @@
     "label": "_template.json",
     "kind": "other",
     "path": "_test/three-cities/characters/_template.json",
-    "size": 483,
+    "size": 487,
     "degree": 1
    },
    {
@@ -1097,7 +1097,7 @@
     "label": "aurebako.json",
     "kind": "other",
     "path": "_test/three-cities/characters/aurebako.json",
-    "size": 5669,
+    "size": 5673,
     "degree": 1
    },
    {
@@ -1105,7 +1105,7 @@
     "label": "aurebalo.json",
     "kind": "other",
     "path": "_test/three-cities/characters/aurebalo.json",
-    "size": 5565,
+    "size": 5569,
     "degree": 1
    },
    {
@@ -1113,7 +1113,7 @@
     "label": "aureboro.json",
     "kind": "other",
     "path": "_test/three-cities/characters/aureboro.json",
-    "size": 6043,
+    "size": 6047,
     "degree": 1
    },
    {
@@ -1121,7 +1121,7 @@
     "label": "aurekhobo.json",
     "kind": "other",
     "path": "_test/three-cities/characters/aurekhobo.json",
-    "size": 5639,
+    "size": 5643,
     "degree": 1
    },
    {
@@ -1129,7 +1129,7 @@
     "label": "aurekobo.json",
     "kind": "other",
     "path": "_test/three-cities/characters/aurekobo.json",
-    "size": 5455,
+    "size": 5459,
     "degree": 1
    },
    {
@@ -1137,7 +1137,7 @@
     "label": "aurekomest.json",
     "kind": "other",
     "path": "_test/three-cities/characters/aurekomest.json",
-    "size": 4940,
+    "size": 4944,
     "degree": 1
    },
    {
@@ -1145,7 +1145,7 @@
     "label": "aurelkhau.json",
     "kind": "other",
     "path": "_test/three-cities/characters/aurelkhau.json",
-    "size": 5776,
+    "size": 5780,
     "degree": 1
    },
    {
@@ -1153,7 +1153,7 @@
     "label": "aurelkomest.json",
     "kind": "other",
     "path": "_test/three-cities/characters/aurelkomest.json",
-    "size": 4708,
+    "size": 4712,
     "degree": 1
    },
    {
@@ -1161,7 +1161,7 @@
     "label": "aureluko.json",
     "kind": "other",
     "path": "_test/three-cities/characters/aureluko.json",
-    "size": 7622,
+    "size": 7626,
     "degree": 1
    },
    {
@@ -1169,7 +1169,7 @@
     "label": "aureskomest.json",
     "kind": "other",
     "path": "_test/three-cities/characters/aureskomest.json",
-    "size": 4441,
+    "size": 4445,
     "degree": 1
    },
    {
@@ -1177,7 +1177,7 @@
     "label": "auroboro.json",
     "kind": "other",
     "path": "_test/three-cities/characters/auroboro.json",
-    "size": 5591,
+    "size": 5595,
     "degree": 1
    },
    {
@@ -1185,7 +1185,7 @@
     "label": "darika.json",
     "kind": "other",
     "path": "_test/three-cities/characters/darika.json",
-    "size": 6206,
+    "size": 6210,
     "degree": 1
    },
    {
@@ -1193,7 +1193,7 @@
     "label": "darinak.json",
     "kind": "other",
     "path": "_test/three-cities/characters/darinak.json",
-    "size": 5214,
+    "size": 5218,
     "degree": 1
    },
    {
@@ -1201,7 +1201,7 @@
     "label": "darius.json",
     "kind": "other",
     "path": "_test/three-cities/characters/darius.json",
-    "size": 5300,
+    "size": 5304,
     "degree": 1
    },
    {
@@ -1209,7 +1209,7 @@
     "label": "darnakus.json",
     "kind": "other",
     "path": "_test/three-cities/characters/darnakus.json",
-    "size": 5915,
+    "size": 5919,
     "degree": 1
    },
    {
@@ -1217,7 +1217,7 @@
     "label": "darnarika.json",
     "kind": "other",
     "path": "_test/three-cities/characters/darnarika.json",
-    "size": 4718,
+    "size": 4722,
     "degree": 1
    },
    {
@@ -1225,7 +1225,7 @@
     "label": "darnukas.json",
     "kind": "other",
     "path": "_test/three-cities/characters/darnukas.json",
-    "size": 6154,
+    "size": 6158,
     "degree": 1
    },
    {
@@ -1233,7 +1233,7 @@
     "label": "darnus.json",
     "kind": "other",
     "path": "_test/three-cities/characters/darnus.json",
-    "size": 5586,
+    "size": 5590,
     "degree": 1
    },
    {
@@ -1241,7 +1241,7 @@
     "label": "doraknus.json",
     "kind": "other",
     "path": "_test/three-cities/characters/doraknus.json",
-    "size": 4859,
+    "size": 4863,
     "degree": 1
    },
    {
@@ -1249,7 +1249,7 @@
     "label": "dorakus.json",
     "kind": "other",
     "path": "_test/three-cities/characters/dorakus.json",
-    "size": 5734,
+    "size": 5738,
     "degree": 1
    },
    {
@@ -1257,7 +1257,7 @@
     "label": "dornaknis.json",
     "kind": "other",
     "path": "_test/three-cities/characters/dornaknis.json",
-    "size": 5019,
+    "size": 5023,
     "degree": 1
    },
    {
@@ -1265,7 +1265,7 @@
     "label": "dornakus.json",
     "kind": "other",
     "path": "_test/three-cities/characters/dornakus.json",
-    "size": 6251,
+    "size": 6255,
     "degree": 1
    },
    {
@@ -1273,7 +1273,7 @@
     "label": "dornarika.json",
     "kind": "other",
     "path": "_test/three-cities/characters/dornarika.json",
-    "size": 4844,
+    "size": 4848,
     "degree": 1
    },
    {
@@ -1281,7 +1281,7 @@
     "label": "dornarius.json",
     "kind": "other",
     "path": "_test/three-cities/characters/dornarius.json",
-    "size": 3686,
+    "size": 3690,
     "degree": 1
    },
    {
@@ -1289,7 +1289,7 @@
     "label": "dorukus.json",
     "kind": "other",
     "path": "_test/three-cities/characters/dorukus.json",
-    "size": 5088,
+    "size": 5092,
     "degree": 1
    },
    {
@@ -1297,7 +1297,7 @@
     "label": "farliauzar.json",
     "kind": "other",
     "path": "_test/three-cities/characters/farliauzar.json",
-    "size": 5261,
+    "size": 5265,
     "degree": 1
    },
    {
@@ -1305,7 +1305,7 @@
     "label": "farliauzco.json",
     "kind": "other",
     "path": "_test/three-cities/characters/farliauzco.json",
-    "size": 6898,
+    "size": 6902,
     "degree": 1
    },
    {
@@ -1313,7 +1313,7 @@
     "label": "farliazco.json",
     "kind": "other",
     "path": "_test/three-cities/characters/farliazco.json",
-    "size": 8349,
+    "size": 8353,
     "degree": 1
    },
    {
@@ -1321,7 +1321,7 @@
     "label": "farliazuzco.json",
     "kind": "other",
     "path": "_test/three-cities/characters/farliazuzco.json",
-    "size": 5510,
+    "size": 5514,
     "degree": 1
    },
    {
@@ -1329,7 +1329,7 @@
     "label": "farliukar.json",
     "kind": "other",
     "path": "_test/three-cities/characters/farliukar.json",
-    "size": 7061,
+    "size": 7065,
     "degree": 1
    },
    {
@@ -1337,7 +1337,7 @@
     "label": "farliuzco.json",
     "kind": "other",
     "path": "_test/three-cities/characters/farliuzco.json",
-    "size": 7097,
+    "size": 7101,
     "degree": 1
    },
    {
@@ -1345,7 +1345,7 @@
     "label": "farlo.json",
     "kind": "other",
     "path": "_test/three-cities/characters/farlo.json",
-    "size": 5004,
+    "size": 5008,
     "degree": 1
    },
    {
@@ -1353,7 +1353,7 @@
     "label": "farmuken.json",
     "kind": "other",
     "path": "_test/three-cities/characters/farmuken.json",
-    "size": 4378,
+    "size": 4382,
     "degree": 1
    },
    {
@@ -1361,7 +1361,7 @@
     "label": "fenarnus.json",
     "kind": "other",
     "path": "_test/three-cities/characters/fenarnus.json",
-    "size": 4223,
+    "size": 4227,
     "degree": 1
    },
    {
@@ -1369,7 +1369,7 @@
     "label": "fenekus.json",
     "kind": "other",
     "path": "_test/three-cities/characters/fenekus.json",
-    "size": 3509,
+    "size": 3513,
     "degree": 1
    },
    {
@@ -1377,7 +1377,7 @@
     "label": "fenriukas.json",
     "kind": "other",
     "path": "_test/three-cities/characters/fenriukas.json",
-    "size": 3928,
+    "size": 3932,
     "degree": 1
    },
    {
@@ -1385,7 +1385,7 @@
     "label": "fenrius.json",
     "kind": "other",
     "path": "_test/three-cities/characters/fenrius.json",
-    "size": 6006,
+    "size": 6010,
     "degree": 1
    },
    {
@@ -1393,7 +1393,7 @@
     "label": "fenserika.json",
     "kind": "other",
     "path": "_test/three-cities/characters/fenserika.json",
-    "size": 6684,
+    "size": 6688,
     "degree": 1
    },
    {
@@ -1401,7 +1401,7 @@
     "label": "forliamuk.json",
     "kind": "other",
     "path": "_test/three-cities/characters/forliamuk.json",
-    "size": 5205,
+    "size": 5209,
     "degree": 1
    },
    {
@@ -1409,7 +1409,7 @@
     "label": "forliamus.json",
     "kind": "other",
     "path": "_test/three-cities/characters/forliamus.json",
-    "size": 5834,
+    "size": 5838,
     "degree": 1
    },
    {
@@ -1417,7 +1417,7 @@
     "label": "forliarlo.json",
     "kind": "other",
     "path": "_test/three-cities/characters/forliarlo.json",
-    "size": 4748,
+    "size": 4752,
     "degree": 1
    },
    {
@@ -1425,7 +1425,7 @@
     "label": "forliaukar.json",
     "kind": "other",
     "path": "_test/three-cities/characters/forliaukar.json",
-    "size": 5575,
+    "size": 5579,
     "degree": 1
    },
    {
@@ -1433,7 +1433,7 @@
     "label": "forliaukarla.json",
     "kind": "other",
     "path": "_test/three-cities/characters/forliaukarla.json",
-    "size": 5821,
+    "size": 5825,
     "degree": 1
    },
    {
@@ -1441,7 +1441,7 @@
     "label": "forliaukarli.json",
     "kind": "other",
     "path": "_test/three-cities/characters/forliaukarli.json",
-    "size": 5698,
+    "size": 5702,
     "degree": 1
    },
    {
@@ -1449,7 +1449,7 @@
     "label": "forliauken.json",
     "kind": "other",
     "path": "_test/three-cities/characters/forliauken.json",
-    "size": 5844,
+    "size": 5848,
     "degree": 1
    },
    {
@@ -1457,7 +1457,7 @@
     "label": "forliauzco.json",
     "kind": "other",
     "path": "_test/three-cities/characters/forliauzco.json",
-    "size": 7465,
+    "size": 7469,
     "degree": 1
    },
    {
@@ -1465,7 +1465,7 @@
     "label": "forliazco.json",
     "kind": "other",
     "path": "_test/three-cities/characters/forliazco.json",
-    "size": 6611,
+    "size": 6615,
     "degree": 1
    },
    {
@@ -1473,7 +1473,7 @@
     "label": "forliukar.json",
     "kind": "other",
     "path": "_test/three-cities/characters/forliukar.json",
-    "size": 4885,
+    "size": 4889,
     "degree": 1
    },
    {
@@ -1481,7 +1481,7 @@
     "label": "forliuken.json",
     "kind": "other",
     "path": "_test/three-cities/characters/forliuken.json",
-    "size": 4836,
+    "size": 4840,
     "degree": 1
    },
    {
@@ -1489,7 +1489,7 @@
     "label": "forliuzazco.json",
     "kind": "other",
     "path": "_test/three-cities/characters/forliuzazco.json",
-    "size": 7725,
+    "size": 7729,
     "degree": 1
    },
    {
@@ -1505,7 +1505,7 @@
     "label": "khaobako.json",
     "kind": "other",
     "path": "_test/three-cities/characters/khaobako.json",
-    "size": 4792,
+    "size": 4796,
     "degree": 1
    },
    {
@@ -1513,7 +1513,7 @@
     "label": "khaoboro.json",
     "kind": "other",
     "path": "_test/three-cities/characters/khaoboro.json",
-    "size": 4664,
+    "size": 4668,
     "degree": 1
    },
    {
@@ -1521,7 +1521,7 @@
     "label": "khaubalo.json",
     "kind": "other",
     "path": "_test/three-cities/characters/khaubalo.json",
-    "size": 5286,
+    "size": 5290,
     "degree": 1
    },
    {
@@ -1529,7 +1529,7 @@
     "label": "khaubaluk.json",
     "kind": "other",
     "path": "_test/three-cities/characters/khaubaluk.json",
-    "size": 5698,
+    "size": 5702,
     "degree": 1
    },
    {
@@ -1537,7 +1537,7 @@
     "label": "khaubekho.json",
     "kind": "other",
     "path": "_test/three-cities/characters/khaubekho.json",
-    "size": 5118,
+    "size": 5122,
     "degree": 1
    },
    {
@@ -1545,7 +1545,7 @@
     "label": "khaubestro.json",
     "kind": "other",
     "path": "_test/three-cities/characters/khaubestro.json",
-    "size": 6629,
+    "size": 6633,
     "degree": 1
    },
    {
@@ -1553,7 +1553,7 @@
     "label": "khaubomako.json",
     "kind": "other",
     "path": "_test/three-cities/characters/khaubomako.json",
-    "size": 4431,
+    "size": 4435,
     "degree": 1
    },
    {
@@ -1561,7 +1561,7 @@
     "label": "khaubomest.json",
     "kind": "other",
     "path": "_test/three-cities/characters/khaubomest.json",
-    "size": 4645,
+    "size": 4649,
     "degree": 1
    },
    {
@@ -1569,7 +1569,7 @@
     "label": "khaumestro.json",
     "kind": "other",
     "path": "_test/three-cities/characters/khaumestro.json",
-    "size": 5320,
+    "size": 5324,
     "degree": 1
    },
    {
@@ -1577,7 +1577,7 @@
     "label": "khaus.json",
     "kind": "other",
     "path": "_test/three-cities/characters/khaus.json",
-    "size": 4973,
+    "size": 4977,
     "degree": 1
    },
    {
@@ -1593,7 +1593,7 @@
     "label": "magus.json",
     "kind": "other",
     "path": "_test/three-cities/characters/magus.json",
-    "size": 4487,
+    "size": 4491,
     "degree": 1
    },
    {
@@ -1601,7 +1601,7 @@
     "label": "mekaluko.json",
     "kind": "other",
     "path": "_test/three-cities/characters/mekaluko.json",
-    "size": 3952,
+    "size": 3956,
     "degree": 1
    },
    {
@@ -1609,7 +1609,7 @@
     "label": "mekaurelo.json",
     "kind": "other",
     "path": "_test/three-cities/characters/mekaurelo.json",
-    "size": 5108,
+    "size": 5112,
     "degree": 1
    },
    {
@@ -1617,7 +1617,7 @@
     "label": "mekaurelu.json",
     "kind": "other",
     "path": "_test/three-cities/characters/mekaurelu.json",
-    "size": 5825,
+    "size": 5829,
     "degree": 1
    },
    {
@@ -1625,7 +1625,7 @@
     "label": "mekaurobal.json",
     "kind": "other",
     "path": "_test/three-cities/characters/mekaurobal.json",
-    "size": 4088,
+    "size": 4092,
     "degree": 1
    },
    {
@@ -1633,7 +1633,7 @@
     "label": "mekestros.json",
     "kind": "other",
     "path": "_test/three-cities/characters/mekestros.json",
-    "size": 6130,
+    "size": 6134,
     "degree": 1
    },
    {
@@ -1641,7 +1641,7 @@
     "label": "mekhaobako.json",
     "kind": "other",
     "path": "_test/three-cities/characters/mekhaobako.json",
-    "size": 4815,
+    "size": 4819,
     "degree": 1
    },
    {
@@ -1649,7 +1649,7 @@
     "label": "mekhaobera.json",
     "kind": "other",
     "path": "_test/three-cities/characters/mekhaobera.json",
-    "size": 5553,
+    "size": 5557,
     "degree": 1
    },
    {
@@ -1657,7 +1657,7 @@
     "label": "mekhaubest.json",
     "kind": "other",
     "path": "_test/three-cities/characters/mekhaubest.json",
-    "size": 5090,
+    "size": 5094,
     "degree": 1
    },
    {
@@ -1665,7 +1665,7 @@
     "label": "mekhaubo.json",
     "kind": "other",
     "path": "_test/three-cities/characters/mekhaubo.json",
-    "size": 6220,
+    "size": 6224,
     "degree": 1
    },
    {
@@ -1673,7 +1673,7 @@
     "label": "mekhaurel.json",
     "kind": "other",
     "path": "_test/three-cities/characters/mekhaurel.json",
-    "size": 6228,
+    "size": 6232,
     "degree": 1
    },
    {
@@ -1681,7 +1681,7 @@
     "label": "mekobaluk.json",
     "kind": "other",
     "path": "_test/three-cities/characters/mekobaluk.json",
-    "size": 5397,
+    "size": 5401,
     "degree": 1
    },
    {
@@ -1689,7 +1689,7 @@
     "label": "mekoboro.json",
     "kind": "other",
     "path": "_test/three-cities/characters/mekoboro.json",
-    "size": 7935,
+    "size": 7939,
     "degree": 1
    },
    {
@@ -1697,7 +1697,7 @@
     "label": "merkhaubo.json",
     "kind": "other",
     "path": "_test/three-cities/characters/merkhaubo.json",
-    "size": 6147,
+    "size": 6151,
     "degree": 1
    },
    {
@@ -1705,7 +1705,7 @@
     "label": "merluko.json",
     "kind": "other",
     "path": "_test/three-cities/characters/merluko.json",
-    "size": 6168,
+    "size": 6172,
     "degree": 1
    },
    {
@@ -1713,7 +1713,7 @@
     "label": "nakoran.json",
     "kind": "other",
     "path": "_test/three-cities/characters/nakoran.json",
-    "size": 4272,
+    "size": 4276,
     "degree": 1
    },
    {
@@ -1721,7 +1721,7 @@
     "label": "nakorika.json",
     "kind": "other",
     "path": "_test/three-cities/characters/nakorika.json",
-    "size": 4129,
+    "size": 4133,
     "degree": 1
    },
    {
@@ -1729,7 +1729,7 @@
     "label": "nakus.json",
     "kind": "other",
     "path": "_test/three-cities/characters/nakus.json",
-    "size": 6248,
+    "size": 6252,
     "degree": 1
    },
    {
@@ -1737,7 +1737,7 @@
     "label": "niekus.json",
     "kind": "other",
     "path": "_test/three-cities/characters/niekus.json",
-    "size": 5732,
+    "size": 5736,
     "degree": 1
    },
    {
@@ -1745,7 +1745,7 @@
     "label": "niemius.json",
     "kind": "other",
     "path": "_test/three-cities/characters/niemius.json",
-    "size": 5728,
+    "size": 5732,
     "degree": 1
    },
    {
@@ -1753,7 +1753,7 @@
     "label": "niemoran.json",
     "kind": "other",
     "path": "_test/three-cities/characters/niemoran.json",
-    "size": 7117,
+    "size": 7121,
     "degree": 1
    },
    {
@@ -1761,7 +1761,7 @@
     "label": "niemornak.json",
     "kind": "other",
     "path": "_test/three-cities/characters/niemornak.json",
-    "size": 4259,
+    "size": 4263,
     "degree": 1
    },
    {
@@ -1769,7 +1769,7 @@
     "label": "niemoruk.json",
     "kind": "other",
     "path": "_test/three-cities/characters/niemoruk.json",
-    "size": 2979,
+    "size": 2983,
     "degree": 1
    },
    {
@@ -1777,7 +1777,7 @@
     "label": "niemus.json",
     "kind": "other",
     "path": "_test/three-cities/characters/niemus.json",
-    "size": 5233,
+    "size": 5237,
     "degree": 1
    },
    {
@@ -1785,7 +1785,7 @@
     "label": "nieradus.json",
     "kind": "other",
     "path": "_test/three-cities/characters/nieradus.json",
-    "size": 4055,
+    "size": 4059,
     "degree": 1
    },
    {
@@ -1793,7 +1793,7 @@
     "label": "nieragan.json",
     "kind": "other",
     "path": "_test/three-cities/characters/nieragan.json",
-    "size": 4086,
+    "size": 4090,
     "degree": 1
    },
    {
@@ -1801,7 +1801,7 @@
     "label": "nieragus.json",
     "kind": "other",
     "path": "_test/three-cities/characters/nieragus.json",
-    "size": 5134,
+    "size": 5138,
     "degree": 1
    },
    {
@@ -1809,7 +1809,7 @@
     "label": "nierakus.json",
     "kind": "other",
     "path": "_test/three-cities/characters/nierakus.json",
-    "size": 4004,
+    "size": 4008,
     "degree": 1
    },
    {
@@ -1817,7 +1817,7 @@
     "label": "niergus.json",
     "kind": "other",
     "path": "_test/three-cities/characters/niergus.json",
-    "size": 4184,
+    "size": 4188,
     "degree": 1
    },
    {
@@ -1825,7 +1825,7 @@
     "label": "nierius.json",
     "kind": "other",
     "path": "_test/three-cities/characters/nierius.json",
-    "size": 8096,
+    "size": 8100,
     "degree": 1
    },
    {
@@ -1833,7 +1833,7 @@
     "label": "prince_doran.json",
     "kind": "other",
     "path": "_test/three-cities/characters/prince_doran.json",
-    "size": 6216,
+    "size": 6220,
     "degree": 1
    },
    {
@@ -1841,7 +1841,7 @@
     "label": "tamuken.json",
     "kind": "other",
     "path": "_test/three-cities/characters/tamuken.json",
-    "size": 4807,
+    "size": 4811,
     "degree": 1
    },
    {
@@ -1849,7 +1849,7 @@
     "label": "tamuzakar.json",
     "kind": "other",
     "path": "_test/three-cities/characters/tamuzakar.json",
-    "size": 5123,
+    "size": 5127,
     "degree": 1
    },
    {
@@ -1857,7 +1857,7 @@
     "label": "tamuzaken.json",
     "kind": "other",
     "path": "_test/three-cities/characters/tamuzaken.json",
-    "size": 6133,
+    "size": 6137,
     "degree": 1
    },
    {
@@ -1865,7 +1865,7 @@
     "label": "tamuzarlo.json",
     "kind": "other",
     "path": "_test/three-cities/characters/tamuzarlo.json",
-    "size": 6884,
+    "size": 6888,
     "degree": 1
    },
    {
@@ -1873,7 +1873,7 @@
     "label": "tamuzauzco.json",
     "kind": "other",
     "path": "_test/three-cities/characters/tamuzauzco.json",
-    "size": 4804,
+    "size": 4808,
     "degree": 1
    },
    {
@@ -1881,7 +1881,7 @@
     "label": "tamuzco.json",
     "kind": "other",
     "path": "_test/three-cities/characters/tamuzco.json",
-    "size": 6428,
+    "size": 6432,
     "degree": 1
    },
    {
@@ -1889,7 +1889,7 @@
     "label": "tamuzmuken.json",
     "kind": "other",
     "path": "_test/three-cities/characters/tamuzmuken.json",
-    "size": 4794,
+    "size": 4798,
     "degree": 1
    },
    {
@@ -1897,7 +1897,7 @@
     "label": "tamuzukar.json",
     "kind": "other",
     "path": "_test/three-cities/characters/tamuzukar.json",
-    "size": 6621,
+    "size": 6625,
     "degree": 1
    },
    {
@@ -1905,7 +1905,7 @@
     "label": "tamuzukauk.json",
     "kind": "other",
     "path": "_test/three-cities/characters/tamuzukauk.json",
-    "size": 4659,
+    "size": 4663,
     "degree": 1
    },
    {
@@ -1913,7 +1913,7 @@
     "label": "trezarlo.json",
     "kind": "other",
     "path": "_test/three-cities/characters/trezarlo.json",
-    "size": 4552,
+    "size": 4556,
     "degree": 1
    },
    {
@@ -1921,7 +1921,7 @@
     "label": "trezco.json",
     "kind": "other",
     "path": "_test/three-cities/characters/trezco.json",
-    "size": 4477,
+    "size": 4481,
     "degree": 1
    },
    {
@@ -1929,7 +1929,7 @@
     "label": "trezukaken.json",
     "kind": "other",
     "path": "_test/three-cities/characters/trezukaken.json",
-    "size": 4130,
+    "size": 4134,
     "degree": 1
    },
    {
@@ -1937,7 +1937,7 @@
     "label": "trezukar.json",
     "kind": "other",
     "path": "_test/three-cities/characters/trezukar.json",
-    "size": 4918,
+    "size": 4922,
     "degree": 1
    },
    {
@@ -1945,7 +1945,7 @@
     "label": "trezukuzco.json",
     "kind": "other",
     "path": "_test/three-cities/characters/trezukuzco.json",
-    "size": 5303,
+    "size": 5307,
     "degree": 1
    },
    {
@@ -4176,7 +4176,7 @@
     "label": "scripts",
     "kind": "dir",
     "path": "scripts",
-    "size": 604606,
+    "size": 604794,
     "degree": 6
    },
    {
@@ -4224,7 +4224,7 @@
     "label": "lore",
     "kind": "dir",
     "path": "scripts/lore",
-    "size": 465773,
+    "size": 465961,
     "degree": 64
    },
    {
@@ -4232,7 +4232,7 @@
     "label": "anchor_epistemology.py",
     "kind": "script",
     "path": "scripts/lore/anchor_epistemology.py",
-    "size": 6487,
+    "size": 6495,
     "degree": 1
    },
    {
@@ -4264,7 +4264,7 @@
     "label": "apply_survival.py",
     "kind": "script",
     "path": "scripts/lore/apply_survival.py",
-    "size": 5039,
+    "size": 5063,
     "degree": 1
    },
    {
@@ -4272,7 +4272,7 @@
     "label": "apply_upkeep.py",
     "kind": "script",
     "path": "scripts/lore/apply_upkeep.py",
-    "size": 2824,
+    "size": 2864,
     "degree": 1
    },
    {
@@ -4296,7 +4296,7 @@
     "label": "bootstrap_lore.py",
     "kind": "script",
     "path": "scripts/lore/bootstrap_lore.py",
-    "size": 16895,
+    "size": 16889,
     "degree": 1
    },
    {
@@ -4368,7 +4368,7 @@
     "label": "generate_offspring.py",
     "kind": "script",
     "path": "scripts/lore/generate_offspring.py",
-    "size": 43501,
+    "size": 43513,
     "degree": 1
    },
    {
@@ -4441,6 +4441,14 @@
     "kind": "script",
     "path": "scripts/lore/print_start_banner.py",
     "size": 3195,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/provisions_lib.py",
+    "label": "provisions_lib.py",
+    "kind": "script",
+    "path": "scripts/lore/provisions_lib.py",
+    "size": 4730,
     "degree": 1
    },
    {
@@ -4584,7 +4592,7 @@
     "label": "roll_survival.py",
     "kind": "script",
     "path": "scripts/lore/roll_survival.py",
-    "size": 8725,
+    "size": 8786,
     "degree": 1
    },
    {
@@ -4624,7 +4632,7 @@
     "label": "simulate_generate_population.py",
     "kind": "script",
     "path": "scripts/lore/simulate_generate_population.py",
-    "size": 26208,
+    "size": 26224,
     "degree": 1
    },
    {
@@ -4632,7 +4640,7 @@
     "label": "simulate_pass_brief.py",
     "kind": "script",
     "path": "scripts/lore/simulate_pass_brief.py",
-    "size": 23870,
+    "size": 23894,
     "degree": 1
    },
    {
@@ -4712,15 +4720,7 @@
     "label": "update_character.py",
     "kind": "script",
     "path": "scripts/lore/update_character.py",
-    "size": 12370,
-    "degree": 1
-   },
-   {
-    "id": "file:scripts/lore/wealth_lib.py",
-    "label": "wealth_lib.py",
-    "kind": "script",
-    "path": "scripts/lore/wealth_lib.py",
-    "size": 4725,
+    "size": 12374,
     "degree": 1
    },
    {
@@ -7937,6 +7937,12 @@
    },
    {
     "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/provisions_lib.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/record_bond_quality.py",
     "rel": "contains",
     "weight": 1
@@ -8136,12 +8142,6 @@
    {
     "source": "dir:scripts/lore",
     "target": "file:scripts/lore/update_character.py",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:scripts/lore",
-    "target": "file:scripts/lore/wealth_lib.py",
     "rel": "contains",
     "weight": 1
    },
@@ -8631,6 +8631,14 @@
     "degree": 1
    },
    {
+    "id": "script:lore/provisions_lib.py",
+    "label": "provisions_lib.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/provisions_lib.py",
+    "degree": 1
+   },
+   {
     "id": "script:lore/record_bond_quality.py",
     "label": "record_bond_quality.py",
     "kind": "script",
@@ -8900,14 +8908,6 @@
     "kind": "script",
     "tier": 2,
     "file": "scripts/lore/update_character.py",
-    "degree": 1
-   },
-   {
-    "id": "script:lore/wealth_lib.py",
-    "label": "wealth_lib.py",
-    "kind": "script",
-    "tier": 2,
-    "file": "scripts/lore/wealth_lib.py",
     "degree": 1
    },
    {
@@ -9326,6 +9326,12 @@
    },
    {
     "source": "layer:2",
+    "target": "script:lore/provisions_lib.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
     "target": "script:lore/record_bond_quality.py",
     "rel": "holds",
     "weight": 1
@@ -9525,12 +9531,6 @@
    {
     "source": "layer:2",
     "target": "script:lore/update_character.py",
-    "rel": "holds",
-    "weight": 1
-   },
-   {
-    "source": "layer:2",
-    "target": "script:lore/wealth_lib.py",
     "rel": "holds",
     "weight": 1
    },
@@ -9745,5 +9745,5 @@
   "nodes": [],
   "edges": []
  },
- "generated": "2026-09-12"
+ "generated": "2026-09-13"
 }
