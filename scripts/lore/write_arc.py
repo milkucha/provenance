@@ -64,6 +64,26 @@ def main() -> None:
     if args.context not in contexts:
         raise SystemExit(f"'{args.context}' is not a key in _lore/contexts.json - known: {sorted(contexts)}")
 
+    # Mechanized 2026-08-31, on user correction: `needs` used to be free-typed prose, with no
+    # check that it connected to anything the character's own world could plausibly supply -
+    # confirmed drifting hard in practice (six consecutive arc re-authorings in one /simulate run,
+    # by the same author, all used needs=["news"] regardless of topic, one of them for a
+    # materials/labor-shaped project). `needs` must now be drawn from the SAME vocabulary
+    # check_needs_provides.py will later match it against - this context's own registered
+    # `provides` list in _lore/contexts.json - so a `needs` tag that could never be satisfied by
+    # anything in this world is caught here, at authoring time, not discovered as a silently-dead
+    # arc later. See scripts/lore/suggest_arc_needs.py for a routine-grounded shortlist within
+    # this same vocabulary, and .claude/PRINCIPLES.md's "script everything that can be scripted."
+    provides = contexts[args.context].get("provides", [])
+    invalid = [n for n in args.needs if n not in provides]
+    if invalid:
+        raise SystemExit(
+            f"needs {invalid} not in _lore/contexts.json['{args.context}']['provides'] "
+            f"({provides}) - needs must be drawn from what this context can actually supply, "
+            f"not free-typed. Run scripts/lore/suggest_arc_needs.py {key} for a routine-grounded "
+            f"shortlist."
+        )
+
     character["arc"] = {
         "about": list(args.about),
         "needs": list(args.needs),

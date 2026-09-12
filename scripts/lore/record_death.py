@@ -85,6 +85,7 @@ def main() -> None:
     parser.add_argument("--cause", default=None, help="Only if the scene actually established one; omit for the ordinary unexplained case")
     parser.add_argument("--seed", type=int, default=None, help="Optional seed, for a reproducible notified-circle sample")
     parser.add_argument("--date", dest="told_date", default=None, help="Defaults to today")
+    parser.add_argument("--pass-number", type=int, default=None, help="Provenance (optional, test-suite): the /simulate pass this death was recorded in. Omit for today's exact unchanged output.")
     args = parser.parse_args()
 
     key = args.npc_key.lower()
@@ -176,7 +177,10 @@ def main() -> None:
         with open(notified_char_path, encoding="utf-8") as f:
             notified_char = json.load(f)
         notified_char.setdefault("knowledge", {}).setdefault("experience", [])
-        notified_char["knowledge"]["experience"].append(f"Learned that {name} has died.")
+        entry = f"Learned that {name} has died."
+        if args.pass_number is not None:
+            entry = {"text": entry, "produced_by": {"scene_id": None, "pass_number": args.pass_number}}
+        notified_char["knowledge"]["experience"].append(entry)
         with open(notified_char_path, "w", encoding="utf-8") as f:
             json.dump(notified_char, f, indent=2, ensure_ascii=False)
             f.write("\n")

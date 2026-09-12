@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""
+r"""
 Append a run summary to LAB_REPORT.md based on SIMULATION_LOG.md.
 
 Reads SIMULATION_LOG.md from a worktree, extracts basic setup facts, auto-determines

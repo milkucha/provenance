@@ -62,6 +62,7 @@ def main() -> None:
     parser.add_argument("--pass-number", type=int, required=True)
     args = parser.parse_args()
 
+    lib.rng_context.set_current_pass(args.pass_number)
     pool = [s.lower() for s in args.pool]
     result = resolve_pair(pool, args.pass_number)
 

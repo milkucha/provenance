@@ -80,6 +80,8 @@ def main() -> None:
     parser.add_argument("--add-grounded-experience", action="store_true", help="Append one knowledge.experience entry with a real 'about' ref, reused from a matching hearsay claim (/enact Step 10). Requires one or more --about and one --text. Call again for a second grounded entry the same scene.")
     parser.add_argument("--about", action="append", default=[], help="A parent/source ref for --add-synthesis (pass exactly twice) or --add-grounded-experience (pass one or more).")
     parser.add_argument("--text", default=None, help="The entry text for --add-synthesis or --add-grounded-experience.")
+    parser.add_argument("--scene-id", default=None, help="Provenance (optional, test-suite): the scene this experience entry came from. Wraps --add-experience strings as {text, produced_by}; tags the --add-synthesis/--add-grounded-experience dict directly. Omit for today's exact unchanged output.")
+    parser.add_argument("--pass-number", type=int, default=None, help="Provenance (optional, test-suite): the /simulate pass this experience entry came from. See --scene-id.")
     args = parser.parse_args()
 
     if args.criterion_move and not (args.dialog and args.cause):
@@ -92,6 +94,10 @@ def main() -> None:
         parser.error("--add-grounded-experience requires one or more --about and one --text")
     if (args.about or args.text) and not (args.add_synthesis or args.add_grounded_experience):
         parser.error("--about/--text only apply with --add-synthesis or --add-grounded-experience")
+
+    produced_by = None
+    if args.scene_id is not None or args.pass_number is not None:
+        produced_by = {"scene_id": args.scene_id, "pass_number": args.pass_number}
 
     key = args.npc_key.lower()
     char_path = CHAR_DIR / f"{key}.json"
@@ -114,7 +120,11 @@ def main() -> None:
 
     if args.experience:
         character.setdefault("knowledge", {}).setdefault("experience", [])
-        character["knowledge"]["experience"].extend(args.experience)
+        new_entries = (
+            [{"text": e, "produced_by": produced_by} for e in args.experience]
+            if produced_by else list(args.experience)
+        )
+        character["knowledge"]["experience"].extend(new_entries)
         changes.append(f"knowledge.experience += {len(args.experience)} entr{'y' if len(args.experience) == 1 else 'ies'}")
 
     if args.criterion_move:
@@ -153,18 +163,24 @@ def main() -> None:
 
     if args.add_synthesis:
         character.setdefault("knowledge", {}).setdefault("experience", [])
-        character["knowledge"]["experience"].append({
+        entry = {
             "kind": "synthesis",
             "about": list(args.about),
             "derived_from": list(args.about),
             "text": args.text,
-        })
+        }
+        if produced_by:
+            entry["produced_by"] = produced_by
+        character["knowledge"]["experience"].append(entry)
         changes.append(f"knowledge.experience += 1 synthesis entry (about: {args.about})")
 
     if args.add_grounded_experience:
         character.setdefault("knowledge", {}).setdefault("experience", [])
         about_value = args.about[0] if len(args.about) == 1 else list(args.about)
-        character["knowledge"]["experience"].append({"text": args.text, "about": about_value})
+        entry = {"text": args.text, "about": about_value}
+        if produced_by:
+            entry["produced_by"] = produced_by
+        character["knowledge"]["experience"].append(entry)
         changes.append(f"knowledge.experience += 1 grounded entry (about: {about_value})")
 
     if not changes:

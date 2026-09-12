@@ -8,12 +8,13 @@ Usage:
 """
 
 import argparse
-import random
+from random import Random
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("routine", nargs="+", help='One or more "Name:Weight" pairs')
+    parser.add_argument("--seed", type=int, default=None, help="Optional seed, for a reproducible draw")
     args = parser.parse_args()
 
     names = []
@@ -25,7 +26,8 @@ def main() -> None:
         names.append(name)
         weights.append(float(weight))
 
-    choice = random.choices(names, weights=weights, k=1)[0]
+    rng = Random(args.seed)
+    choice = rng.choices(names, weights=weights, k=1)[0]
     print(f"routine: {choice}")
 
 

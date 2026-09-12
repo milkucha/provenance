@@ -39,9 +39,9 @@ Usage:
 """
 
 import argparse
-import random
 import sys
 from pathlib import Path
+from random import Random
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import tuning  # noqa: E402
@@ -58,6 +58,7 @@ def main() -> None:
     parser.add_argument("--odds", type=float, default=_DEFAULT_ODDS, help=f"Percent chance of a contest firing (default {_DEFAULT_ODDS}, from _lore/tuning.json)")
     parser.add_argument("--strength", type=int, default=0, help="Peer's partners[primacy_winner] count - 0 means no established relationship")
     parser.add_argument("--quality", type=int, default=0, help="Peer's partners_quality[primacy_winner] score - sign decides the skew direction")
+    parser.add_argument("--seed", type=int, default=None, help="Optional seed, for a reproducible roll")
     args = parser.parse_args()
 
     odds = args.odds
@@ -68,7 +69,8 @@ def main() -> None:
             odds += _RELATIONSHIP_SHIFT
     odds = max(_MIN_ODDS, min(_MAX_ODDS, odds))
 
-    contested = random.random() < (odds / 100.0)
+    rng = Random(args.seed)
+    contested = rng.random() < (odds / 100.0)
     print(f"contested: {'true' if contested else 'false'}")
     print(f"odds_used: {odds}")
 

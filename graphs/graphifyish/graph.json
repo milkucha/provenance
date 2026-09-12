@@ -289,7 +289,7 @@
     "label": "Provenance",
     "kind": "root",
     "path": ".",
-    "size": 2790349,
+    "size": 2923983,
     "degree": 20
    },
    {
@@ -385,7 +385,7 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
-    "size": 206137,
+    "size": 223447,
     "degree": 7
    },
    {
@@ -441,8 +441,8 @@
     "label": "skills",
     "kind": "dir",
     "path": ".claude/skills",
-    "size": 191847,
-    "degree": 13
+    "size": 209157,
+    "degree": 14
    },
    {
     "id": "dir:.claude/skills/character",
@@ -513,7 +513,7 @@
     "label": "generate",
     "kind": "dir",
     "path": ".claude/skills/generate",
-    "size": 7796,
+    "size": 8451,
     "degree": 2
    },
    {
@@ -521,7 +521,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/generate/SKILL.md",
-    "size": 7796,
+    "size": 8451,
     "degree": 1
    },
    {
@@ -577,7 +577,7 @@
     "label": "simulate",
     "kind": "dir",
     "path": ".claude/skills/simulate",
-    "size": 27623,
+    "size": 40059,
     "degree": 2
    },
    {
@@ -585,7 +585,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/simulate/SKILL.md",
-    "size": 27623,
+    "size": 40059,
     "degree": 1
    },
    {
@@ -621,6 +621,22 @@
     "degree": 1
    },
    {
+    "id": "dir:.claude/skills/taste",
+    "label": "taste",
+    "kind": "dir",
+    "path": ".claude/skills/taste",
+    "size": 4219,
+    "degree": 2
+   },
+   {
+    "id": "file:.claude/skills/taste/SKILL.md",
+    "label": "SKILL.md",
+    "kind": "skill",
+    "path": ".claude/skills/taste/SKILL.md",
+    "size": 4219,
+    "degree": 1
+   },
+   {
     "id": "dir:.claude/skills/tell",
     "label": "tell",
     "kind": "dir",
@@ -641,7 +657,7 @@
     "label": "_lore",
     "kind": "dir",
     "path": "_lore",
-    "size": 34499,
+    "size": 28312,
     "degree": 10
    },
    {
@@ -665,7 +681,7 @@
     "label": "tuning.json",
     "kind": "lore",
     "path": "_lore/tuning.json",
-    "size": 5896,
+    "size": 5221,
     "degree": 1
    },
    {
@@ -737,7 +753,7 @@
     "label": "grounding",
     "kind": "dir",
     "path": "_lore/grounding",
-    "size": 15206,
+    "size": 9694,
     "degree": 5
    },
    {
@@ -745,7 +761,7 @@
     "label": "_authors.md",
     "kind": "lore",
     "path": "_lore/grounding/_authors.md",
-    "size": 6446,
+    "size": 1002,
     "degree": 1
    },
    {
@@ -753,7 +769,7 @@
     "label": "_index.md",
     "kind": "lore",
     "path": "_lore/grounding/_index.md",
-    "size": 6030,
+    "size": 5962,
     "degree": 1
    },
    {
@@ -3951,7 +3967,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": "graphs",
-    "size": 480788,
+    "size": 479522,
     "degree": 2
    },
    {
@@ -3959,7 +3975,7 @@
     "label": "graphifyish",
     "kind": "dir",
     "path": "graphs/graphifyish",
-    "size": 480788,
+    "size": 479522,
     "degree": 3
    },
    {
@@ -3967,7 +3983,7 @@
     "label": "graph.json",
     "kind": "graph",
     "path": "graphs/graphifyish/graph.json",
-    "size": 251214,
+    "size": 250491,
     "degree": 1
    },
    {
@@ -3975,7 +3991,7 @@
     "label": "graphifyish.html",
     "kind": "graph",
     "path": "graphs/graphifyish/graphifyish.html",
-    "size": 229574,
+    "size": 229031,
     "degree": 1
    },
    {
@@ -4127,7 +4143,7 @@
     "label": "scripts",
     "kind": "dir",
     "path": "scripts",
-    "size": 473584,
+    "size": 597361,
     "degree": 6
    },
    {
@@ -4175,8 +4191,8 @@
     "label": "lore",
     "kind": "dir",
     "path": "scripts/lore",
-    "size": 380276,
-    "degree": 57
+    "size": 459500,
+    "degree": 64
    },
    {
     "id": "file:scripts/lore/anchor_epistemology.py",
@@ -4207,7 +4223,7 @@
     "label": "apply_language_layer.py",
     "kind": "script",
     "path": "scripts/lore/apply_language_layer.py",
-    "size": 10971,
+    "size": 19854,
     "degree": 1
    },
    {
@@ -4215,7 +4231,7 @@
     "label": "apply_survival.py",
     "kind": "script",
     "path": "scripts/lore/apply_survival.py",
-    "size": 4575,
+    "size": 4935,
     "degree": 1
    },
    {
@@ -4223,7 +4239,7 @@
     "label": "apply_upkeep.py",
     "kind": "script",
     "path": "scripts/lore/apply_upkeep.py",
-    "size": 1825,
+    "size": 2764,
     "degree": 1
    },
    {
@@ -4255,7 +4271,7 @@
     "label": "build_source_index.py",
     "kind": "script",
     "path": "scripts/lore/build_source_index.py",
-    "size": 20562,
+    "size": 20159,
     "degree": 1
    },
    {
@@ -4295,7 +4311,23 @@
     "label": "check_resonance.py",
     "kind": "script",
     "path": "scripts/lore/check_resonance.py",
-    "size": 12972,
+    "size": 12909,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/enact_preamble.md",
+    "label": "enact_preamble.md",
+    "kind": "script",
+    "path": "scripts/lore/enact_preamble.md",
+    "size": 7333,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/enact_via_ollama.py",
+    "label": "enact_via_ollama.py",
+    "kind": "script",
+    "path": "scripts/lore/enact_via_ollama.py",
+    "size": 12438,
     "degree": 1
    },
    {
@@ -4303,7 +4335,7 @@
     "label": "generate_offspring.py",
     "kind": "script",
     "path": "scripts/lore/generate_offspring.py",
-    "size": 42919,
+    "size": 42661,
     "degree": 1
    },
    {
@@ -4343,7 +4375,7 @@
     "label": "pass_apply.py",
     "kind": "script",
     "path": "scripts/lore/pass_apply.py",
-    "size": 10106,
+    "size": 12361,
     "degree": 1
    },
    {
@@ -4367,7 +4399,7 @@
     "label": "pick_pair.py",
     "kind": "script",
     "path": "scripts/lore/pick_pair.py",
-    "size": 1466,
+    "size": 1573,
     "degree": 1
    },
    {
@@ -4391,7 +4423,7 @@
     "label": "record_death.py",
     "kind": "script",
     "path": "scripts/lore/record_death.py",
-    "size": 8752,
+    "size": 8913,
     "degree": 1
    },
    {
@@ -4399,7 +4431,7 @@
     "label": "record_hearsay.py",
     "kind": "script",
     "path": "scripts/lore/record_hearsay.py",
-    "size": 7393,
+    "size": 8007,
     "degree": 1
    },
    {
@@ -4419,6 +4451,14 @@
     "degree": 1
    },
    {
+    "id": "file:scripts/lore/reset_reproduction_cooldown.py",
+    "label": "reset_reproduction_cooldown.py",
+    "kind": "script",
+    "path": "scripts/lore/reset_reproduction_cooldown.py",
+    "size": 3344,
+    "degree": 1
+   },
+   {
     "id": "file:scripts/lore/resolve_conflict.py",
     "label": "resolve_conflict.py",
     "kind": "script",
@@ -4427,11 +4467,19 @@
     "degree": 1
    },
    {
+    "id": "file:scripts/lore/rng_context.py",
+    "label": "rng_context.py",
+    "kind": "script",
+    "path": "scripts/lore/rng_context.py",
+    "size": 7088,
+    "degree": 1
+   },
+   {
     "id": "file:scripts/lore/roll_arc_outcome.py",
     "label": "roll_arc_outcome.py",
     "kind": "script",
     "path": "scripts/lore/roll_arc_outcome.py",
-    "size": 3288,
+    "size": 3363,
     "degree": 1
    },
    {
@@ -4439,7 +4487,7 @@
     "label": "roll_arc_primacy.py",
     "kind": "script",
     "path": "scripts/lore/roll_arc_primacy.py",
-    "size": 968,
+    "size": 1082,
     "degree": 1
    },
    {
@@ -4447,7 +4495,7 @@
     "label": "roll_contested.py",
     "kind": "script",
     "path": "scripts/lore/roll_contested.py",
-    "size": 4353,
+    "size": 4418,
     "degree": 1
    },
    {
@@ -4455,7 +4503,7 @@
     "label": "roll_death_legacy.py",
     "kind": "script",
     "path": "scripts/lore/roll_death_legacy.py",
-    "size": 2535,
+    "size": 2621,
     "degree": 1
    },
    {
@@ -4463,7 +4511,7 @@
     "label": "roll_home_visit.py",
     "kind": "script",
     "path": "scripts/lore/roll_home_visit.py",
-    "size": 3423,
+    "size": 3499,
     "degree": 1
    },
    {
@@ -4471,7 +4519,7 @@
     "label": "roll_lead_followup.py",
     "kind": "script",
     "path": "scripts/lore/roll_lead_followup.py",
-    "size": 2292,
+    "size": 2382,
     "degree": 1
    },
    {
@@ -4487,7 +4535,7 @@
     "label": "roll_reproduction.py",
     "kind": "script",
     "path": "scripts/lore/roll_reproduction.py",
-    "size": 2477,
+    "size": 2565,
     "degree": 1
    },
    {
@@ -4495,7 +4543,7 @@
     "label": "roll_routine.py",
     "kind": "script",
     "path": "scripts/lore/roll_routine.py",
-    "size": 1141,
+    "size": 1250,
     "degree": 1
    },
    {
@@ -4503,7 +4551,15 @@
     "label": "roll_survival.py",
     "kind": "script",
     "path": "scripts/lore/roll_survival.py",
-    "size": 8533,
+    "size": 8541,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/run_manifest.py",
+    "label": "run_manifest.py",
+    "kind": "script",
+    "path": "scripts/lore/run_manifest.py",
+    "size": 5629,
     "degree": 1
    },
    {
@@ -4523,11 +4579,19 @@
     "degree": 1
    },
    {
+    "id": "file:scripts/lore/simulate_driver.py",
+    "label": "simulate_driver.py",
+    "kind": "script",
+    "path": "scripts/lore/simulate_driver.py",
+    "size": 17702,
+    "degree": 1
+   },
+   {
     "id": "file:scripts/lore/simulate_generate_population.py",
     "label": "simulate_generate_population.py",
     "kind": "script",
     "path": "scripts/lore/simulate_generate_population.py",
-    "size": 23877,
+    "size": 25736,
     "degree": 1
    },
    {
@@ -4535,7 +4599,7 @@
     "label": "simulate_pass_brief.py",
     "kind": "script",
     "path": "scripts/lore/simulate_pass_brief.py",
-    "size": 19147,
+    "size": 23474,
     "degree": 1
    },
    {
@@ -4543,7 +4607,7 @@
     "label": "simulate_pass_lib.py",
     "kind": "script",
     "path": "scripts/lore/simulate_pass_lib.py",
-    "size": 14100,
+    "size": 14249,
     "degree": 1
    },
    {
@@ -4551,7 +4615,7 @@
     "label": "simulate_pass_reproduction.py",
     "kind": "script",
     "path": "scripts/lore/simulate_pass_reproduction.py",
-    "size": 4312,
+    "size": 4278,
     "degree": 1
    },
    {
@@ -4559,7 +4623,7 @@
     "label": "simulate_record_run.py",
     "kind": "script",
     "path": "scripts/lore/simulate_record_run.py",
-    "size": 6375,
+    "size": 6376,
     "degree": 1
    },
    {
@@ -4567,7 +4631,7 @@
     "label": "simulate_resolve_pair.py",
     "kind": "script",
     "path": "scripts/lore/simulate_resolve_pair.py",
-    "size": 3388,
+    "size": 3367,
     "degree": 1
    },
    {
@@ -4595,6 +4659,14 @@
     "degree": 1
    },
    {
+    "id": "file:scripts/lore/suggest_arc_needs.py",
+    "label": "suggest_arc_needs.py",
+    "kind": "script",
+    "path": "scripts/lore/suggest_arc_needs.py",
+    "size": 3961,
+    "degree": 1
+   },
+   {
     "id": "file:scripts/lore/tuning.py",
     "label": "tuning.py",
     "kind": "script",
@@ -4607,7 +4679,7 @@
     "label": "update_character.py",
     "kind": "script",
     "path": "scripts/lore/update_character.py",
-    "size": 11348,
+    "size": 12160,
     "degree": 1
    },
    {
@@ -4623,7 +4695,7 @@
     "label": "write_arc.py",
     "kind": "script",
     "path": "scripts/lore/write_arc.py",
-    "size": 5199,
+    "size": 6529,
     "degree": 1
    },
    {
@@ -4663,6 +4735,55 @@
     "label": "test",
     "kind": "dir",
     "path": "scripts/test",
+    "size": 44553,
+    "degree": 7
+   },
+   {
+    "id": "file:scripts/test/conformance_report.py",
+    "label": "conformance_report.py",
+    "kind": "script",
+    "path": "scripts/test/conformance_report.py",
+    "size": 12141,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/test/measure_derivation.py",
+    "label": "measure_derivation.py",
+    "kind": "script",
+    "path": "scripts/test/measure_derivation.py",
+    "size": 6967,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/test/measure_divergence.py",
+    "label": "measure_divergence.py",
+    "kind": "script",
+    "path": "scripts/test/measure_divergence.py",
+    "size": 10974,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/test/measure_drift.py",
+    "label": "measure_drift.py",
+    "kind": "script",
+    "path": "scripts/test/measure_drift.py",
+    "size": 7310,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/test/record_tasting.py",
+    "label": "record_tasting.py",
+    "kind": "script",
+    "path": "scripts/test/record_tasting.py",
+    "size": 2856,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/test/simulate_token_usage.py",
+    "label": "simulate_token_usage.py",
+    "kind": "script",
+    "path": "scripts/test/simulate_token_usage.py",
+    "size": 4305,
     "degree": 1
    }
   ],
@@ -4910,6 +5031,18 @@
    {
     "source": "dir:.claude/skills/start",
     "target": "file:.claude/skills/start/SKILL.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/skills",
+    "target": "dir:.claude/skills/taste",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.claude/skills/taste",
+    "target": "file:.claude/skills/taste/SKILL.md",
     "rel": "contains",
     "weight": 1
    },
@@ -7675,6 +7808,18 @@
    },
    {
     "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/enact_preamble.md",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/enact_via_ollama.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/generate_offspring.py",
     "rel": "contains",
     "weight": 1
@@ -7765,7 +7910,19 @@
    },
    {
     "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/reset_reproduction_cooldown.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/resolve_conflict.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/rng_context.py",
     "rel": "contains",
     "weight": 1
    },
@@ -7831,6 +7988,12 @@
    },
    {
     "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/run_manifest.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/sample_grounding.py",
     "rel": "contains",
     "weight": 1
@@ -7838,6 +8001,12 @@
    {
     "source": "dir:scripts/lore",
     "target": "file:scripts/lore/sample_lore_knowledge.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/simulate_driver.py",
     "rel": "contains",
     "weight": 1
    },
@@ -7897,6 +8066,12 @@
    },
    {
     "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/suggest_arc_needs.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/tuning.py",
     "rel": "contains",
     "weight": 1
@@ -7948,6 +8123,42 @@
     "target": "dir:scripts/test",
     "rel": "contains",
     "weight": 1
+   },
+   {
+    "source": "dir:scripts/test",
+    "target": "file:scripts/test/conformance_report.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/test",
+    "target": "file:scripts/test/measure_derivation.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/test",
+    "target": "file:scripts/test/measure_divergence.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/test",
+    "target": "file:scripts/test/measure_drift.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/test",
+    "target": "file:scripts/test/record_tasting.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/test",
+    "target": "file:scripts/test/simulate_token_usage.py",
+    "rel": "contains",
+    "weight": 1
    }
   ]
  },
@@ -7968,7 +8179,7 @@
     "kind": "layer",
     "note": "skills + scripts + supporting patterns",
     "tier": 2,
-    "degree": 78
+    "degree": 91
    },
    {
     "id": "layer:3",
@@ -8064,6 +8275,14 @@
     "kind": "skill",
     "tier": 2,
     "file": ".claude/skills/start/SKILL.md",
+    "degree": 1
+   },
+   {
+    "id": "skill:taste",
+    "label": "/taste",
+    "kind": "skill",
+    "tier": 2,
+    "file": ".claude/skills/taste/SKILL.md",
     "degree": 1
    },
    {
@@ -8267,6 +8486,14 @@
     "degree": 1
    },
    {
+    "id": "script:lore/enact_via_ollama.py",
+    "label": "enact_via_ollama.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/enact_via_ollama.py",
+    "degree": 1
+   },
+   {
     "id": "script:lore/generate_offspring.py",
     "label": "generate_offspring.py",
     "kind": "script",
@@ -8387,11 +8614,27 @@
     "degree": 1
    },
    {
+    "id": "script:lore/reset_reproduction_cooldown.py",
+    "label": "reset_reproduction_cooldown.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/reset_reproduction_cooldown.py",
+    "degree": 1
+   },
+   {
     "id": "script:lore/resolve_conflict.py",
     "label": "resolve_conflict.py",
     "kind": "script",
     "tier": 2,
     "file": "scripts/lore/resolve_conflict.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/rng_context.py",
+    "label": "rng_context.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/rng_context.py",
     "degree": 1
    },
    {
@@ -8475,6 +8718,14 @@
     "degree": 1
    },
    {
+    "id": "script:lore/run_manifest.py",
+    "label": "run_manifest.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/run_manifest.py",
+    "degree": 1
+   },
+   {
     "id": "script:lore/sample_grounding.py",
     "label": "sample_grounding.py",
     "kind": "script",
@@ -8489,6 +8740,14 @@
     "tier": 2,
     "file": "scripts/lore/sample_lore_knowledge.py",
     "degree": 3
+   },
+   {
+    "id": "script:lore/simulate_driver.py",
+    "label": "simulate_driver.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/simulate_driver.py",
+    "degree": 1
    },
    {
     "id": "script:lore/simulate_generate_population.py",
@@ -8563,6 +8822,14 @@
     "degree": 1
    },
    {
+    "id": "script:lore/suggest_arc_needs.py",
+    "label": "suggest_arc_needs.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/suggest_arc_needs.py",
+    "degree": 1
+   },
+   {
     "id": "script:lore/tuning.py",
     "label": "tuning.py",
     "kind": "script",
@@ -8616,6 +8883,54 @@
     "kind": "script",
     "tier": 2,
     "file": "scripts/minecraft/validate_dialog.py",
+    "degree": 1
+   },
+   {
+    "id": "script:test/conformance_report.py",
+    "label": "conformance_report.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/test/conformance_report.py",
+    "degree": 1
+   },
+   {
+    "id": "script:test/measure_derivation.py",
+    "label": "measure_derivation.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/test/measure_derivation.py",
+    "degree": 1
+   },
+   {
+    "id": "script:test/measure_divergence.py",
+    "label": "measure_divergence.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/test/measure_divergence.py",
+    "degree": 1
+   },
+   {
+    "id": "script:test/measure_drift.py",
+    "label": "measure_drift.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/test/measure_drift.py",
+    "degree": 1
+   },
+   {
+    "id": "script:test/record_tasting.py",
+    "label": "record_tasting.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/test/record_tasting.py",
+    "degree": 1
+   },
+   {
+    "id": "script:test/simulate_token_usage.py",
+    "label": "simulate_token_usage.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/test/simulate_token_usage.py",
     "degree": 1
    },
    {
@@ -8727,6 +9042,12 @@
    {
     "source": "layer:2",
     "target": "skill:start",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "skill:taste",
     "rel": "holds",
     "weight": 1
    },
@@ -8882,6 +9203,12 @@
    },
    {
     "source": "layer:2",
+    "target": "script:lore/enact_via_ollama.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
     "target": "script:lore/generate_offspring.py",
     "rel": "holds",
     "weight": 1
@@ -8972,7 +9299,19 @@
    },
    {
     "source": "layer:2",
+    "target": "script:lore/reset_reproduction_cooldown.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
     "target": "script:lore/resolve_conflict.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/rng_context.py",
     "rel": "holds",
     "weight": 1
    },
@@ -9038,6 +9377,12 @@
    },
    {
     "source": "layer:2",
+    "target": "script:lore/run_manifest.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
     "target": "script:lore/sample_grounding.py",
     "rel": "holds",
     "weight": 1
@@ -9045,6 +9390,12 @@
    {
     "source": "layer:2",
     "target": "script:lore/sample_lore_knowledge.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/simulate_driver.py",
     "rel": "holds",
     "weight": 1
    },
@@ -9104,6 +9455,12 @@
    },
    {
     "source": "layer:2",
+    "target": "script:lore/suggest_arc_needs.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
     "target": "script:lore/tuning.py",
     "rel": "holds",
     "weight": 1
@@ -9141,6 +9498,42 @@
    {
     "source": "layer:2",
     "target": "script:minecraft/validate_dialog.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:test/conformance_report.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:test/measure_derivation.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:test/measure_divergence.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:test/measure_drift.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:test/record_tasting.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:test/simulate_token_usage.py",
     "rel": "holds",
     "weight": 1
    },
