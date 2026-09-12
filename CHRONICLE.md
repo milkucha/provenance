@@ -21,6 +21,41 @@ and open questions that were live at a given point, even ones later settled else
 
 ---
 
+### 2026-09-12 — Rescued the orphaned Ollama/simulate-driver/test-suite architecture; clarified the playability horizon
+
+Two worktree branches carrying real, never-merged work (the Ollama local-model enacter, the
+`simulate_driver.py`/`pass_prep.py`/`pass_apply.py` orchestrator split, the survival-mechanism
+redesign, and the whole `scripts/test/` measurement suite) had been deleted without merging. Found
+`origin/provenance-bare`'s own copy of the enacter was an earlier, already-superseded version; the
+true latest state was sitting only as an unreachable local commit (dangling, one `git gc` away from
+gone). Pinned it to a branch, then ported the architecture only — not the 237 `_lore/character/*.json`
+files or other content that branch's own test population carried — via a 3-way merge against the two
+branches' common ancestor, hand-resolving the handful of real conflicts (`simulate/SKILL.md`'s Step 3,
+where both branches had independently redesigned it the same way but only this branch went on to build
+`simulate_record_run.py`'s LAB_REPORT.md auto-templating). See the `integrate-ollama-architecture`
+merge commit for the full inventory of what came back.
+
+Also had a long reflective conversation, prompted by the user independently noticing a resemblance to
+Dwarf Fortress despite never having played it — worth recording since it clarified something about
+where this project is actually headed, not just what it's built so far. The resemblance isn't in
+mechanics (DF's granularity is physical/mechanical; this project's is epistemic — what a mind knows,
+believes, trusts, not what's physically true) but in the *relationship between player and simulation*:
+a world that keeps running its own routines whether or not anyone's standing in it, where stepping in
+adds a participant rather than pausing the clock. The user's own two use cases — `/simulate` as a pure
+narrative-drift generator, and eventually walking into a live Minecraft world as one more actor in an
+already-running simulation — turn out not to need different mechanisms: `/enact` character-vs-player and
+character-vs-character are already the same primitive with a different second participant. **Decided:
+don't change how `/simulate` works right now** — the project is still in the engine-validation phase,
+proving the drift/immersion properties hold up cheaply and offline (the test suite above is exactly
+that evidence) before investing in a live, standing world. But the local-model dispatch work isn't just
+a batch-cost optimization for that testing phase — it's close to a precondition for the eventual
+always-on embodied version, since a world meant to run indefinitely with NPCs acting on their own can't
+depend on per-token API latency for scenes nobody's watching. Open question, logged in `TODO.md`: what
+signal on the test-suite instruments (derivation coverage, felt contingency across many seeds,
+surprising arc outcomes) would actually mark the transition from "keep testing" to "build the standing
+world" — there isn't one yet, and without picking one the validation phase risks never having a natural
+exit.
+
 ### 2026-08-30 — `survival-arc-test`'s round-2/round-3 architecture work merged in (this branch)
 
 `survival-arc-test` had a real, never-committed 21-pass pilot of the survival mechanism sitting

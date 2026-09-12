@@ -3,6 +3,95 @@
 Open implementation decisions and work, deferred for later. This is a build/production backlog —
 open questions about the lore itself live in `_lore/unknowns.md`, not here.
 
+## Open question: what signals "stop testing offline, start building the live/standing world" (raised 2026-09-12, not decided)
+
+The project has two use cases in view that share one mechanism, not two: `/simulate` as an offline
+narrative-drift generator (proving the engine works, cheaply, before committing further), and
+eventually a live, always-on Minecraft world where characters keep running their own routines whether
+or not the user is present, and stepping in as a player adds a participant to an already-running
+simulation rather than pausing it — see `CHRONICLE.md`'s 2026-09-12 entry for the fuller reflection
+(prompted by an unprompted resemblance to Dwarf Fortress's fortress mode). Explicitly not building the
+live version yet — the engine-validation phase needs to run its course first, via the `scripts/test/`
+measurement suite (`conformance_report.py`, `measure_derivation.py`, `measure_divergence.py`,
+`measure_drift.py`, `record_tasting.py`).
+
+What's missing is a stated threshold: some signal on those instruments that would actually mark "yes,
+move on," rather than the validation phase just continuing indefinitely by default. Candidates worth
+deciding between (not yet decided): a tasting score (felt contingency specifically) holding up
+consistently across several different populations/seeds, not just one hand-tuned cast; a target
+derivation-coverage percentage; a run producing an arc outcome or criterion break the user genuinely
+didn't see coming, repeated across more than one run. Also unaddressed: the live version's pacing (a
+pass shouldn't resolve instantly the way a batch `/simulate` run does — it needs to feel like it's
+moving at something closer to a human, inhabitable rate) and its dispatch cost floor (an always-on
+world sustaining NPC-to-NPC scenes nobody's watching can't be billed per API call the way a bounded
+test run can — the local-model/Ollama dispatch path is closer to a precondition here than a nice-to-have).
+
+## Grounding mechanics need causal/recipe structure, not just vocabulary (design discussion 2026-09-12, not built)
+
+`_lore/grounding/mechanics.json` currently supports exactly two entry shapes: universal/contextual
+propositional rules (the old "creepers are dangerous" style, since cleared out) and, per this session's
+design conversation, vocabulary grants — naming a concrete thing that exists in the world (e.g.
+"cobblestone") so a character can refer to a real material instead of a generic placeholder. Neither
+shape alone gets arc resolution to causal specificity: an arc like "build a sword" needs the record to
+say a sword requires iron + a stick, not just that "materials" exist as an abstract bucket a character
+can dip into.
+
+Proposed direction, not built yet, needs its own design pass before touching code:
+
+- `mechanics.json` entries need at least two distinct shapes: existence/vocabulary entries (a named
+  material or item exists in this world) and recipe/causality entries (an item requires a specific list
+  of materials).
+- Tie into `_lore/contexts.json`'s `provides` field (a minimal 6-value vocabulary as of the 2026-09-12
+  rewrite — `materials`, `items`, `transit`, `nourishment`, `records`, `news`): a context's
+  `provides: "materials"` names an abstract category, and mechanics.json entries tagged with that
+  category are its concrete instances — cobblestone/iron/marble are `materials`, a sword is an `item`.
+- `scripts/lore/check_needs_provides.py` currently only runs a semantic yes/no category check (does
+  this context provide `materials`). It should eventually pick and name a concrete mechanics.json
+  instance the character actually obtained, giving causal specificity ("got iron at the market")
+  instead of a generic label ("got materials").
+- Sequencing: build this only after the simpler, already-scoped grounding pieces land — `world_state.json`
+  entries referencing real `locations[].id` values, and a character-level `places_visited` accumulator
+  gating grounding access (both being implemented separately, same session).
+
+## Travel system design sketch (design discussion 2026-09-12, not built)
+
+Arc resolution currently checks a character's context `provides` too abundantly — whatever context
+they're already in generally satisfies a requirement, so there's no real scarcity forcing anyone to go
+anywhere. The fix under discussion: let some arc requirements demand a *specific location*, not just
+"any context providing X" — only what that particular place's context actually offers counts. That's
+what would make travel matter mechanically instead of being decorative. None of this is built; sketched
+only.
+
+- **Locations form a graph.** Nodes are `_lore/encodings.json` `locations[]` entries; edges are
+  `_lore/encodings.json` `routes[]` entries via their `endpoints` field. This isn't an incidental fit —
+  `route.endpoints` was deliberately shaped this way in the 2026-09-12 `encodings.json` restructure,
+  specifically to serve as the travel graph's edge list later.
+- **The `route` context** (one of the 5 elemental contexts, `_lore/contexts.json`,
+  `provides: ["transit", "news"]`) is the natural enactment shape for a single hop of a journey — each
+  step of a multi-hop trip could be played as a `route`-context routine/scene.
+- **Reachability isn't just "adjacent to current location."** A character could travel to anywhere
+  adjacent to (a) their current location, or (b) any location already in their own lore pool (what
+  they know about via `sample_lore_knowledge.py`'s sampled knowledge) — effective reach extends with
+  what a character knows, not just where they physically stand. Echoes an idea already in the user's
+  own working notes about scoping travel to "nodes they've heard about or locations where characters
+  they know exist," and making travel to unknown territory costlier — not yet formalized, but the same
+  instinct.
+- **Multi-hop travel is real traversal, not a teleport.** A graph shaped `A - B - C - D` means reaching
+  D from A requires passing through B then C in sequence — one step (one pass/turn) per edge, with a
+  dice roll each step on whether the trip continues (mirrors the existing advance/stall/reverse/
+  transform discipline already used for ordinary arc-advancement rolls elsewhere in this system, e.g.
+  `/simulate`'s arc tally mechanic).
+- **Staging:** for now, the location graph (the `routes[]` edge set) gets hand-authored in a test seed,
+  same discipline as everything else authored rather than generated in this system. Later,
+  `_lore/grounding/world_state.json` (once fed by the external map/vision pipeline) becomes the actual
+  *input* the location graph is derived from or checked against — not built yet, long-term direction
+  only.
+- **Dependency order:** builds on `places_visited` (character-level accumulator) and
+  `world_state.json`'s real `locations[].id` referencing, both implemented earlier today. Natural
+  companion to the "Grounding mechanics need causal/recipe structure" entry above (arc requirements
+  checking against concrete `mechanics.json` instances) — both are about making arc resolution
+  mechanically specific instead of abstractly semantic.
+
 ## Survival mechanism (designed and built 2026-08-28, on `survival-arc-test` — not yet merged/tested at scale)
 
 Every character now has personal `energy` (`_lore/tuning.json`'s `survival.energy_cap`, default 5;
@@ -611,7 +700,7 @@ construction — every other line keeps its ordinary nod untouched.
 - [x] **Two-layer `sources` provenance, built 2026-08-07.** New `scripts/lore/build_source_index.py`
       (mechanical, no model judgment): migrates every `locations`/`concepts`/
       `characters.in_world_or_legendary`/`characters.real_world_authors_and_players` entry's `sources`
-      from flat strings to `{"category": "material"/"hearsay"/"tale", "origin": "..."}`, and links every
+      from flat strings to `{"category": "material"/"hearsay"/"tale", "document": "..."}`, and links every
       `hearsay.entries[].claims[].about`/`tales.entries[].touches` reference that resolves — exactly, or
       via `difflib` fuzzy match (ratio ≥ 0.77, same-category comparisons only) — into the target node's
       `sources` list. A fuzzy link auto-groups (adds the new spelling to `names[]` so it resolves
