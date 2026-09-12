@@ -289,7 +289,7 @@
     "label": "Provenance",
     "kind": "root",
     "path": ".",
-    "size": 3313822,
+    "size": 2790349,
     "degree": 20
    },
    {
@@ -641,7 +641,7 @@
     "label": "_lore",
     "kind": "dir",
     "path": "_lore",
-    "size": 38952,
+    "size": 34499,
     "degree": 10
    },
    {
@@ -649,7 +649,7 @@
     "label": "contexts.json",
     "kind": "lore",
     "path": "_lore/contexts.json",
-    "size": 7380,
+    "size": 2927,
     "degree": 1
    },
    {
@@ -3951,7 +3951,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": "graphs",
-    "size": 993326,
+    "size": 480788,
     "degree": 2
    },
    {
@@ -3959,7 +3959,7 @@
     "label": "graphifyish",
     "kind": "dir",
     "path": "graphs/graphifyish",
-    "size": 993326,
+    "size": 480788,
     "degree": 3
    },
    {
@@ -3967,7 +3967,7 @@
     "label": "graph.json",
     "kind": "graph",
     "path": "graphs/graphifyish/graph.json",
-    "size": 763750,
+    "size": 251214,
     "degree": 1
    },
    {
@@ -3975,7 +3975,7 @@
     "label": "graphifyish.html",
     "kind": "graph",
     "path": "graphs/graphifyish/graphifyish.html",
-    "size": 229576,
+    "size": 229574,
     "degree": 1
    },
    {
@@ -4127,7 +4127,7 @@
     "label": "scripts",
     "kind": "dir",
     "path": "scripts",
-    "size": 480066,
+    "size": 473584,
     "degree": 6
    },
    {
@@ -4175,16 +4175,8 @@
     "label": "lore",
     "kind": "dir",
     "path": "scripts/lore",
-    "size": 386758,
-    "degree": 58
-   },
-   {
-    "id": "file:scripts/lore/add_categories_schema.py",
-    "label": "add_categories_schema.py",
-    "kind": "script",
-    "path": "scripts/lore/add_categories_schema.py",
-    "size": 6475,
-    "degree": 1
+    "size": 380276,
+    "degree": 57
    },
    {
     "id": "file:scripts/lore/anchor_epistemology.py",
@@ -4527,7 +4519,7 @@
     "label": "sample_lore_knowledge.py",
     "kind": "script",
     "path": "scripts/lore/sample_lore_knowledge.py",
-    "size": 12287,
+    "size": 12280,
     "degree": 1
    },
    {
@@ -7593,12 +7585,6 @@
    },
    {
     "source": "dir:scripts/lore",
-    "target": "file:scripts/lore/add_categories_schema.py",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/anchor_epistemology.py",
     "rel": "contains",
     "weight": 1
@@ -7982,7 +7968,7 @@
     "kind": "layer",
     "note": "skills + scripts + supporting patterns",
     "tier": 2,
-    "degree": 79
+    "degree": 78
    },
    {
     "id": "layer:3",
@@ -8159,14 +8145,6 @@
     "tier": 2,
     "file": "scripts/graphs/graphifyish.py",
     "degree": 2
-   },
-   {
-    "id": "script:lore/add_categories_schema.py",
-    "label": "add_categories_schema.py",
-    "kind": "script",
-    "tier": 2,
-    "file": "scripts/lore/add_categories_schema.py",
-    "degree": 1
    },
    {
     "id": "script:lore/anchor_epistemology.py",
@@ -8809,12 +8787,6 @@
    {
     "source": "layer:2",
     "target": "script:graphs/graphifyish.py",
-    "rel": "holds",
-    "weight": 1
-   },
-   {
-    "source": "layer:2",
-    "target": "script:lore/add_categories_schema.py",
     "rel": "holds",
     "weight": 1
    },
