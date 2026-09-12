@@ -16,3 +16,5 @@ Agent-driven world-building system: takes a seed (sociocultural parameters, a ha
 ---
 
 **Before ending a session** that covered landmark ground — a design decision, a changed mind, a real disagreement and its resolution, a surprising result, a new open question — append a short entry to [CHRONICLE.md](CHRONICLE.md). Not every session needs one; see that file's own header for what counts.
+
+**This includes philosophical/reflective conversations about the project itself** — comparisons to other systems (Dwarf Fortress, Talk of the Town, ...), theoretical framing of what the engine is actually doing, arguments about its trajectory or positioning — even when nothing in the codebase changes as a result. These count as landmark ground on their own; log the reflection's actual substance (the distinction drawn, the position taken, what it clarified or corrected), not just that a conversation happened. If it also surfaces a concrete open item, split it into [TODO.md](TODO.md) rather than leaving it buried in the chronicle prose.

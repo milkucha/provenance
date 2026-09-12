@@ -12,13 +12,13 @@ the mechanism actually working versus the seed material already being unusually 
 sufficiently good hand-authored corpus could make almost any downstream mechanism look decent.
 
 The fix isn't "let the machine invent a world by algorithm" the way Dwarf Fortress or Talk of the Town
-generate their towns from a rule-set - see `CHRONICLE.md`'s 2026-09-12 entry for the fuller
-distinction. **The seed still has to be made of the same kind of thing either way: semantic content -
-facts, sociocultural parameters, character fragments - not a generative rule-set that unfolds into
-content on its own.** What'd change is only the seed's *source*, not its *nature*: a machine producing
-that same shape of content unprompted by real source material, the way `/tell`/`/character`/`/integrate`
-produce it now from a human, rather than DF-style world-gen producing history as a side effect of
-simulating physics forward.
+generate their towns from a closed rule-set (fixed, enumerable, deterministic given a seed) - see
+`CHRONICLE.md`'s 2026-09-12 entry for the fuller distinction. **The seed still has to be made of the
+same kind of thing either way: semantic content - facts, sociocultural parameters, character
+fragments - not the closed rule-set itself unfolding into content on its own.** What'd change is only
+the seed's *source*, not its *nature*: a machine producing that same shape of content unprompted by
+real source material, the way `/tell`/`/character`/`/integrate` produce it now from a human, rather
+than DF-style world-gen producing history as a side effect of simulating physics forward.
 
 Not scoped yet - open questions before this is buildable:
 - What does "the machine invents a seed" actually call, mechanically? Probably a new skill/script
