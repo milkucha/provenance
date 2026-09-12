@@ -289,7 +289,7 @@
     "label": "Provenance",
     "kind": "root",
     "path": ".",
-    "size": 2977827,
+    "size": 2982548,
     "degree": 20
    },
    {
@@ -305,7 +305,7 @@
     "label": "CHRONICLE.md",
     "kind": "doc",
     "path": "CHRONICLE.md",
-    "size": 28231,
+    "size": 31144,
     "degree": 1
    },
    {
@@ -313,7 +313,7 @@
     "label": "CLAUDE.md",
     "kind": "doc",
     "path": "CLAUDE.md",
-    "size": 1916,
+    "size": 2564,
     "degree": 1
    },
    {
@@ -361,7 +361,7 @@
     "label": "TODO.md",
     "kind": "doc",
     "path": "TODO.md",
-    "size": 174193,
+    "size": 174250,
     "degree": 1
    },
    {
@@ -4000,7 +4000,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": "graphs",
-    "size": 497143,
+    "size": 498246,
     "degree": 2
    },
    {
@@ -4008,7 +4008,7 @@
     "label": "graphifyish",
     "kind": "dir",
     "path": "graphs/graphifyish",
-    "size": 497143,
+    "size": 498246,
     "degree": 3
    },
    {
@@ -4016,7 +4016,7 @@
     "label": "graph.json",
     "kind": "graph",
     "path": "graphs/graphifyish/graph.json",
-    "size": 260655,
+    "size": 261300,
     "degree": 1
    },
    {
@@ -4024,7 +4024,7 @@
     "label": "graphifyish.html",
     "kind": "graph",
     "path": "graphs/graphifyish/graphifyish.html",
-    "size": 236488,
+    "size": 236946,
     "degree": 1
    },
    {
