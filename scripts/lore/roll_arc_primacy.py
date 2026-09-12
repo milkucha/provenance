@@ -11,16 +11,18 @@ Usage:
 """
 
 import argparse
-import random
+from random import Random
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--p1", required=True)
     parser.add_argument("--p2", required=True)
+    parser.add_argument("--seed", type=int, default=None, help="Optional seed, for a reproducible roll")
     args = parser.parse_args()
 
-    primary = random.choice([args.p1, args.p2])
+    rng = Random(args.seed)
+    primary = rng.choice([args.p1, args.p2])
     print(f"primary: {primary}")
 
 

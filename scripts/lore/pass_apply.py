@@ -72,9 +72,46 @@ ROOT = SCRIPTS_DIR.parent.parent
 CHAR_DIR = ROOT / "_lore" / "characters"
 BRIEF_PATH = ROOT / ".simulate_pass_brief.json"
 
+sys.path.insert(0, str(SCRIPTS_DIR))
+import rng_context  # noqa: E402
+
+
+def _kv(stdout: str) -> dict:
+    """Parses top-level 'key: value' lines into a dict - same convention
+    simulate_pass_lib.kv() uses, duplicated here (not imported) for the same reason
+    roll_survival.py's own _tally() duplicates rather than pulling in the full lib."""
+    out = {}
+    for line in stdout.splitlines():
+        if not line or line[0] in " \t":
+            continue
+        key, sep, value = line.partition(":")
+        if sep:
+            out[key.strip()] = value.strip()
+    return out
+
 
 def run(args: list, allow_fail: bool = False) -> tuple:
-    result = subprocess.run([sys.executable, *args], capture_output=True, text=True)
+    """This driver calls a couple of genuinely stochastic siblings directly (record_death.py's
+    circle sample, roll_death_legacy.py's roll) rather than through simulate_pass_lib.call() - so,
+    same discipline as that function, auto-inject --seed and log the draw whenever this run is
+    seeded (rng_context.STOCHASTIC_SCRIPTS is the single shared registry both places read)."""
+    script_name = Path(args[0]).name
+    argv = args[1:]
+    stochastic = script_name in rng_context.STOCHASTIC_SCRIPTS and "--seed" not in argv
+    seed = draw_index = None
+    if stochastic:
+        seed, draw_index = rng_context.reserve_seed(ROOT)
+        if seed is not None:
+            argv = [*argv, "--seed", str(seed)]
+
+    result = subprocess.run([sys.executable, args[0], *argv], capture_output=True, text=True)
+    if stochastic:
+        # conformance_report.py's check_fixed_odds() indexes result[outcome_key] as a dict (it
+        # has roll_death_legacy.py registered) - a raw stdout string used to be logged here
+        # instead, which crashed that check the first time a real run reached it (TypeError:
+        # string indices must be integers). Parse to a dict, same shape simulate_pass_lib.call()
+        # already logs for every OTHER stochastic script in the pipeline.
+        rng_context.log_draw(ROOT, script_name, argv, _kv(result.stdout) or None, seed, draw_index)
     if result.returncode != 0 and not allow_fail:
         raise SystemExit(f"{' '.join(args)} failed (exit {result.returncode}):\n{result.stderr}")
     return result.returncode, result.stdout, result.stderr
@@ -106,7 +143,9 @@ def parse_record_death(output: str) -> dict:
     return {"notified_circle": notified, "shock_candidates": shock}
 
 
-def apply_participant(slug: str, decisions: dict) -> dict:
+def apply_participant(slug: str, decisions: dict, scene_id: str | None, pass_number: int) -> dict:
+    provenance = ["--scene-id", scene_id, "--pass-number", str(pass_number)] if scene_id else []
+
     cmd = [str(SCRIPTS_DIR / "update_character.py"), slug, "--lived-delta", str(decisions.get("lived_delta", 0))]
     for entry in decisions.get("experience", []):
         cmd += ["--add-experience", entry]
@@ -121,7 +160,7 @@ def apply_participant(slug: str, decisions: dict) -> dict:
             cmd += ["--trusts", move["trusts"]]
         if move.get("distrusts"):
             cmd += ["--distrusts", move["distrusts"]]
-    run(cmd)
+    run(cmd + provenance)
 
     for g in decisions.get("grounded_experience", []):
         gcmd = [str(SCRIPTS_DIR / "update_character.py"), slug, "--add-grounded-experience"]
@@ -129,13 +168,13 @@ def apply_participant(slug: str, decisions: dict) -> dict:
         for a in about:
             gcmd += ["--about", a]
         gcmd += ["--text", g["text"]]
-        run(gcmd)
+        run(gcmd + provenance)
 
     for s in decisions.get("synthesis", []):
         scmd = [
             str(SCRIPTS_DIR / "update_character.py"), slug, "--add-synthesis",
             "--about", s["about"][0], "--about", s["about"][1], "--text", s["text"],
-        ]
+        ] + provenance
         run(scmd)
 
     result = {"deceased": False, "cause": None, "notified_circle": [], "shock_candidates": []}
@@ -169,6 +208,7 @@ def main() -> None:
     parser.add_argument("--p1", required=True)
     parser.add_argument("--p2", required=True)
     parser.add_argument("--pass-number", type=int, required=True)
+    parser.add_argument("--scene-id", default=None, help="This pass's scene id (pass_record.py's hearsay_id) - threaded into update_character.py's --scene-id/--pass-number so knowledge.experience entries carry produced_by (measure_derivation.py's provenance-coverage instrument reads this). Optional; omitting it reproduces today's exact untagged output.")
     args = parser.parse_args()
 
     p1, p2 = args.p1.lower(), args.p2.lower()
@@ -177,7 +217,9 @@ def main() -> None:
 
     report = {"participants": {}}
     for slug in (p1, p2):
-        report["participants"][slug] = apply_participant(slug, participants.get(slug, {"lived_delta": 1}))
+        report["participants"][slug] = apply_participant(
+            slug, participants.get(slug, {"lived_delta": 1}), args.scene_id, args.pass_number,
+        )
 
     _, repro_out, _ = run([
         str(SCRIPTS_DIR / "simulate_pass_reproduction.py"),

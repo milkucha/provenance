@@ -70,6 +70,7 @@ def main() -> None:
     parser.add_argument("--pass-number", type=int, required=True)
     args = parser.parse_args()
 
+    lib.rng_context.set_current_pass(args.pass_number)
     p1, p2 = args.p1.lower(), args.p2.lower()
     result = check_and_roll(p1, p2, args.pass_number)
 

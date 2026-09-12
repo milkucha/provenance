@@ -29,9 +29,9 @@ Usage:
 """
 
 import argparse
-import random
 import sys
 from pathlib import Path
+from random import Random
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import tuning  # noqa: E402
@@ -52,6 +52,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--inclined", choices=list(WEIGHTS), required=True)
     parser.add_argument("--contested", action="store_true", help=f"Shifts {_CONTESTED_SHIFT} points from advance to reverse (contested_outcome_shift, _lore/tuning.json)")
+    parser.add_argument("--seed", type=int, default=None, help="Optional seed, for a reproducible roll")
     args = parser.parse_args()
 
     advance, stall, reverse = WEIGHTS[args.inclined]
@@ -59,7 +60,8 @@ def main() -> None:
         shift = min(advance, _CONTESTED_SHIFT)
         advance -= shift
         reverse += shift
-    outcome = random.choices(["advance", "stall", "reverse"], weights=[advance, stall, reverse], k=1)[0]
+    rng = Random(args.seed)
+    outcome = rng.choices(["advance", "stall", "reverse"], weights=[advance, stall, reverse], k=1)[0]
     print(f"outcome: {outcome}")
 
 

@@ -94,7 +94,7 @@ def load_categories(data: dict) -> dict:
             "scripts/lore/bootstrap_lore.py first."
         )
     return {
-        cat_key: _get_path(data, spec["path"])
+        cat_key: _safe_get_path(data, spec["path"], [])
         for cat_key, spec in data["_categories"].items()
         if spec.get("has_sources") and spec.get("shape") == "list"
     }

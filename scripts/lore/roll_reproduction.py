@@ -24,9 +24,9 @@ Usage:
 """
 
 import argparse
-import random
 import sys
 from pathlib import Path
+from random import Random
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import tuning  # noqa: E402
@@ -39,12 +39,14 @@ def main() -> None:
     parser.add_argument("--odds", type=float, default=_DEFAULT_ODDS, help=f"Percent chance an eligible pair reproduces this pass (default {_DEFAULT_ODDS}, from _lore/tuning.json)")
     parser.add_argument("--p1", default=None, help="First parent key - only needed to also roll name_lead")
     parser.add_argument("--p2", default=None, help="Second parent key - only needed to also roll name_lead")
+    parser.add_argument("--seed", type=int, default=None, help="Optional seed, for a reproducible roll")
     args = parser.parse_args()
 
-    reproduces = random.random() < (args.odds / 100.0)
+    rng = Random(args.seed)
+    reproduces = rng.random() < (args.odds / 100.0)
     print(f"reproduces: {'true' if reproduces else 'false'}")
     if reproduces and args.p1 and args.p2:
-        print(f"name_lead: {random.choice([args.p1, args.p2])}")
+        print(f"name_lead: {rng.choice([args.p1, args.p2])}")
 
 
 if __name__ == "__main__":
