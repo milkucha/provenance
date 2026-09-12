@@ -1,83 +1,28 @@
 {
-  "_comment": "Hand-authored place-type templates for /simulate's routine/arc mechanism (design debrief 2026-08-10, renamed from archetypes.json to contexts.json 2026-08-16 - 'archetype' read as describing the character, when it's actually the shared context a routine happens in). A context is authored once here, not per character - texture and 'provides' are shared by every routine tagged with this context. A character's routine references one of these by name plus a one-line personal routine_actions entry (see character SKILL.md). Starter set below covers the place-types already implied by the existing cast (Terfila as a port/market town, Görff as workshop/archive territory, the Feria as a waystation of sorts) - expand by hand as new routines need a place-type that isn't here yet, same discipline as everything else authored rather than generated in this system. `grounding_provides` (added 2026-08-26) is a separate field from `provides`: it gates which _lore/grounding/mechanics.json entries a character with this routine context knows (scripts/lore/sample_grounding.py), a different concern from `provides`, which drives arc-need matching via check_needs_provides.py. An empty grounding_provides list is a real, intentional choice for a context with no physical-mechanics content of its own (an archive keeper doesn't need to know crop-growing conditions), not an oversight - expand per-context as mechanics.json grows. Three new tags added 2026-08-26/27 alongside the exhaustive vanilla-1.20.1 mechanics.json pass, each mapped to the one existing context it fit best rather than inventing a new context: `redstone` -> workshop (an extension of hands-on making, not a separate trade), `alchemy` -> temple (brewing/potions read as a temple's remedies/rites, the closest existing fit to anything resembling medicine), `navigation` -> waystation (portals/maps/biomes are exactly a traveler's-eye-view of the world). Mob/survival-danger content stayed `universal` rather than inventing a `combat` tag/context - same epistemic bar as the original creepers/hunger entries (something anyone alive in this world would know, not specialized trade knowledge) - so no context maps to it.",
+  "_comment": "Hand-authored place-type templates for /simulate's routine/arc mechanism. A context is authored once here, not per character - texture and 'provides' are shared by every routine tagged with this context. This is a deliberately minimal starting set (5 contexts) shipped with the repo, not fixed in stone - authors can add more by hand as new routines need a place-type not covered here, same discipline as everything else authored rather than generated in this system. `provides` is currently just a semantic tag used for arc-need matching (check_needs_provides.py); its vocabulary is deliberately minimal right now (materials, items, transit, nourishment, records, news) since the actual interaction mechanic for `provides` hasn't been built yet and will expand once it is. `grounding_provides` is a separate, unrelated field: it gates which _lore/grounding/mechanics.json entries a character with this routine context knows (scripts/lore/sample_grounding.py) - not something touched in this cleanup pass, kept as-is on the 3 contexts that already had a mapping. `route` (renamed from `transit` in this cleanup) is the one context not anchored to a single place - its own `location` should name a route between two points, not a point.",
   "market": {
     "texture": "Buying and selling, price disputes, scarcity, trust in a trading partner or supplier, goods that come and go with the season or the ships.",
-    "provides": ["goods", "materials", "trade", "news"],
-    "grounding_provides": ["trade_goods"]
-  },
-  "workshop": {
-    "texture": "Making things by hand, materials ordered or scavenged, apprentices, pride or shame in the work's quality, tools that need tending as much as the product does.",
-    "provides": ["crafted goods", "materials", "expertise"],
-    "grounding_provides": ["crafting", "trade_goods", "redstone"]
-  },
-  "archive": {
-    "texture": "Records, attribution, gaps in the record, the physical work of maintaining what's stored, contradictions between sources.",
-    "provides": ["records", "expertise"],
-    "grounding_provides": []
-  },
-  "waystation": {
-    "texture": "Travelers passing through, news carried in and out, brief contact that isn't expected to repeat, schedules and delays.",
-    "provides": ["news", "contacts"],
-    "grounding_provides": ["navigation"]
-  },
-  "port": {
-    "texture": "Ships arriving and departing, cargo manifests, customs, tides and sailing schedules, news and goods carried in fresh with every crew.",
-    "provides": ["goods", "materials", "news", "contacts"],
+    "provides": ["materials", "items"],
     "grounding_provides": ["trade_goods"]
   },
   "temple": {
     "texture": "Rites, quiet devotion, disputes over doctrine or upkeep, the material cost of keeping a sacred place running, pilgrims and mourners passing through.",
-    "provides": ["records", "expertise", "contacts"],
+    "provides": ["records", "nourishment"],
     "grounding_provides": ["alchemy"]
   },
-  "gardens": {
-    "texture": "Growing things, seasons and blight, water rights, quiet unglamorous labor, a green space the rest of the city treats as either a shared resource or an afterthought to fund.",
-    "provides": ["materials", "goods", "expertise"],
-    "grounding_provides": ["farming"]
-  },
-  "municipality": {
-    "texture": "Permits, disputes referred upward, budgets, the paperwork that makes a city a city, favors owed and called in.",
-    "provides": ["records", "contacts", "expertise"],
+  "commons": {
+    "texture": "Foot traffic and passing carts, vendors calling from doorways, neighbors crossing paths without meaning to, the ordinary publicness of a city's shared, unowned space.",
+    "provides": ["items", "news"],
     "grounding_provides": []
   },
-  "bank": {
-    "texture": "Ledgers, loans, interest, a city's money moving or not moving, trust extended or withdrawn, disputes over debts.",
-    "provides": ["records", "contacts", "trade"],
+  "home": {
+    "texture": "Rest, family, the private counterpart to every public context — meals shared or eaten alone, the upkeep of a life outside work and trade, the people who know you before any reputation does.",
+    "provides": ["nourishment", "records"],
     "grounding_provides": []
   },
-  "factory": {
-    "texture": "Loud noises, tiredness, effort, wealth and value, struggle, workers, structures, hierarchies, tension, production, large halls.",
-    "provides": ["materials", "goods", "trade", "expertise", "contacts"],
-    "grounding_provides": ["crafting", "trade_goods", "redstone"]
-  },
-  "tavern": {
-    "texture": "Noise, a crowded room, chatter across strangers and regulars alike, music and drink, the easy enjoyment of a place people come to unwind — and, just as readily, the sickness that spreads through a room this close and this late into the night.",
-    "provides": ["stories", "contacts", "nourishment", "satisfaction", "sickness"],
-    "grounding_provides": []
-  },
-  "university": {
-    "texture": "Lectures, debate, students and visiting professors, discovery pursued for its own sake, rivalries between disciplines and schools of thought, the particular pride and precarity of an institution that lives or dies by its reputation.",
-    "provides": ["records", "expertise", "contacts"],
-    "grounding_provides": []
-  },
-  "transit": {
-    "texture": "Between places, not at one — the road, the crossing, the stretch of a journey with nowhere yet arrived. Distance measured in progress rather than a fixed point; provisional company, whoever else is making the same crossing; the open question of whether this leg is a going or a coming. A routine tagged with this context is deliberately not anchored to one place the way every other context is — its own `location` should name the route (e.g. 'Tyrnea <-> Görff'), not a single point, since the character genuinely could be assigned either end depending on the scene.",
-    "provides": ["news", "contacts"],
+  "route": {
+    "texture": "Between places, not at one — the road, the crossing, the stretch of a journey with nowhere yet arrived. Distance measured in progress rather than a fixed point; provisional company, whoever else is making the same crossing; the open question of whether this leg is a going or a coming. A routine tagged with this context is deliberately not anchored to one place the way every other context is — its own `location` should name the route, not a single point.",
+    "provides": ["transit", "news"],
     "grounding_provides": ["navigation"]
-  },
-  "quarry": {
-    "texture": "Rock dust and noise, the graded stone laid out by cut and quality, crews working a face that only gets deeper, the slow arithmetic of what a block is worth against what it cost to cut.",
-    "provides": ["materials", "goods", "expertise"],
-    "grounding_provides": ["crafting"]
-  },
-  "street": {
-    "texture": "Foot traffic and passing carts, vendors calling from doorways, neighbors crossing paths without meaning to, the ordinary publicness of a city's in-between spaces — and, for some, the closest thing to a home address they have.",
-    "provides": ["contacts", "news", "goods"],
-    "grounding_provides": []
-  },
-  "plaza": {
-    "texture": "A town's open civic center, monuments old and half-repaired, festivals and public announcements, the particular pride or embarrassment of whatever stands there for everyone passing through to see.",
-    "provides": ["contacts", "news", "records"],
-    "grounding_provides": []
   }
 }

@@ -49,26 +49,35 @@ will hit step 2's "doesn't fit any existing category" branch, which is expected,
    - **If the user approves a new category:** add its data under a new top-level key in
      `encodings.json`, in whatever shape the material actually supports (most naturally a flat list of
      `{"id": ..., "names": [...], ...}` dicts — the same shape `locations`/`concepts` already use).
-     Then register it in `_categories` (see that key's own `_categories_method_note` for the exact
-     spec fields): `"shape": "list"` if it followed the flat-list convention above — nothing else
-     needs to change, `scripts/lore/sample_lore_knowledge.py` picks it up automatically next run. If
-     the material's own shape doesn't fit `"list"` (a nested grouping, something claim-like), say so
-     explicitly to the user — that shape needs a new handler written into that script's
-     `SHAPE_HANDLERS` by hand before the category can be sampled, and sampling will refuse to run
-     until one exists rather than silently skip the category.
+     Then register it in `_categories` with: `description` (what belongs here), `fields` (the field
+     names entries in this category use), `path` (where the data lives), `shape` (`"list"` for the
+     flat-list convention above — nothing else needs to change, `scripts/lore/sample_lore_knowledge.py`
+     picks it up automatically next run), `id_field`, and `has_sources`. If the material's own shape
+     doesn't fit `"list"` (a nested grouping, something claim-like), say so explicitly to the user —
+     that shape needs a new handler written into that script's `SHAPE_HANDLERS` by hand before the
+     category can be sampled, and sampling will refuse to run until one exists rather than silently
+     skip the category.
+   - **A genuinely new field type also needs a user ask, not just a new category.** If the material
+     provides a kind of detail that doesn't fit any field already listed for that category (e.g. a
+     location entry could now carry a population figure and no category has ever tracked that), ask
+     the user where it belongs before adding it — it may suggest a category, but never decides
+     silently. Once approved, add the field name directly to that category's `fields` list; it's now
+     part of the standard schema going forward, available to every future entry, not a one-off.
+     This is different from filling in a value for a field that **already exists**: if a location entry
+     already has a `region` field and the material states one, that's just extraction — encode it
+     immediately, no ask needed. The ask is only for the field type itself being new, never for
+     using it once it exists.
    - **No epistemology proposal needed anymore (2026-08-16).** `/character` Step 4d used to need a
      per-category `epistemology_group` classification here; it now derives trusts/distrusts per item
      from that item's own `sources[]` provenance instead (`scripts/lore/anchor_epistemology.py`), so a
      newly-registered category needs nothing beyond the `_categories` spec above — `has_sources: true`
-     (the default for any category that carries a `sources` list, per point 3 below) is all Step 4d
-     needs to work with it.
+     is all Step 4d needs to work with it.
 3. Fold the transcribed material into `encodings.json`'s objective arrays (`time_systems`,
-   `locations`, `routes`, `characters`, `concepts`) in the same shape as their existing entries. For the
-   four categories that carry a `sources` list (`locations`, `concepts`,
-   `characters.in_world_or_legendary`, `characters.real_world_authors_and_players`), each entry is
-   `{"category": "material", "origin": "<doc (detail)>"}` — the two-layer shape (what kind of source,
-   then which specific one) that also carries `tale`/`hearsay` provenance once Pass 3's script runs (see
-   Pass 3 step 2). Never edit or remove an existing entry to make room for a new one. If the new
+   `locations`, `routes`, `characters`, `concepts`) in the same shape as their existing entries. For any
+   category where `_categories.<name>.has_sources` is `true`, each entry carries a `sources` list, and
+   each item in it is `{"category": "material", "origin": "<doc (detail)>"}` — the two-layer shape (what
+   kind of source, then which specific one) that also carries `tale`/`hearsay` provenance once Pass 3's
+   script runs (see Pass 3 step 2). Never edit or remove an existing entry to make room for a new one. If the new
    material disagrees with something already encoded, add a `conflicts` entry instead — next
    `CONFLICT-NN` id, `topic`, `detail` — and leave `user_resolution` unset. That field is set by the
    user only; every current entry that has one records it as "(per user, <date>)" — never fill it in on
@@ -121,17 +130,17 @@ anyone noticing.
    meant to carry a row for every tale, the same "both copies must mirror" discipline Pass 2 already
    applies to hearsay, just three-wide instead of two. For any tale file missing a manifest entry,
    build one per `/tell` Step 4: `id`/`source_file` from the filename, `told_by`/`told_date` from the
-   tale file's own `**Told by:**`/`**Told on:**` header lines, and `touches` transcribed from that
-   file's own "Where this lands in the record" section — never re-derive `touches` by re-reading the
+   tale file's own `**Told by:**`/`**Told on:**` header lines, and `about` transcribed from that
+   file's own "Where this lands in the record" section — never re-derive `about` by re-reading the
    tale's prose from scratch, since that was already a judgment call made once when the tale was
-   written (`/tell` Step 5). If that section is still placeholder text, leave `touches: []` and flag
+   written (`/tell` Step 5). If that section is still placeholder text, leave `about: []` and flag
    the tale as never having been folded into the other categories at all — that means Step 5 was
    skipped, not just Step 4. Build any missing `_authors.md`/`_index.md` row the same transcribing way.
    Never invent a `told_by`/`Responsible` value that isn't already written in the tale file.
 2. **Run `py scripts/lore/build_source_index.py`** — mechanical, no judgment involved, so it costs no
    model reasoning to run. It (a) migrates any leftover flat-string `sources` entries into the
    two-layer `{category, origin}` shape, (b) links every `hearsay.entries[].claims[].about` and
-   `tales.entries[].touches` reference that resolves — exactly, or within `difflib` similarity 0.77
+   `tales.entries[].about` reference that resolves — exactly, or within `difflib` similarity 0.77
    compared only within one category at a time (never a location against a character, for instance) —
    into the target node's `sources` list, and (c) prints what it could not resolve. A fuzzy link is
    never treated as settled fact: it also appends a new `CONFLICT-NN` entry ("possible same-entity
@@ -141,17 +150,17 @@ anyone noticing.
    figure out which case it is: a genuinely new entity that was never folded into the objective arrays
    (needs a Pass-1-style entry), a spelling too different from anything existing to fuzzy-match (needs
    a manual `names[]`/`about` fix), or a reference into a category the script doesn't index yet
-   (`routes`, `time_systems` eras, `characters.named_inhabitants` — `about`/`touches` values there are
-   still checked by eye: confirm each resolves to a real entry, the same way this pass always has).
+   (`routes`, `time_systems` eras — `about` values there are still checked by eye: confirm each
+   resolves to a real entry, the same way this pass always has).
    Also confirm, for the `tale:<id>` provenance the script attaches, that the referenced entry actually
-   carries it and the tale's own `touches` list agrees — flag either direction of drift.
+   carries it and the tale's own `about` list agrees — flag either direction of drift.
 4. Cross-check `_npcs/dialogs/registry.json` against `data/luminacion/blabber/dialogues/`: flag any
    registered dialog id with no matching file, and any dialogue file with no registry entry (the
    latter is expected for a few in-flight two-NPC scenes still open in `TODO.md` — check there before
    flagging one as a bug).
 5. Report every dangling reference found (with enough detail — file, field, the id in question — that
    the user can decide the fix), plus every auto-grouped conflict from step 2. Never auto-repair a
-   dangling `about`/`touches` reference by guessing beyond what the script's fuzzy step already does at
+   dangling `about` reference by guessing beyond what the script's fuzzy step already does at
    its fixed, disclosed threshold — below 0.77 similarity, a guess is more likely to corrupt provenance
    than fix it, so it stays a human call. (Step 1's tale-coverage builds are the other exception — those
    transcribe data the tale file already states outright, the same way Pass 2 builds a missing hearsay
@@ -186,5 +195,5 @@ anyone noticing.
 - Never fabricates a hearsay claim that wasn't actually said in the dialogue it's covering.
 - Never closes or edits an `_lore/unknowns.md` entry on its own judgment — Pass 4 only flags
   candidates for the user to confirm.
-- Never rebuilds a tale's `touches` list by re-reading its prose from scratch — only transcribes what
+- Never rebuilds a tale's `about` list by re-reading its prose from scratch — only transcribes what
   the tale file's own "Where this lands in the record" section already states.

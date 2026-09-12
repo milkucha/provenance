@@ -188,7 +188,7 @@ def flatten_pool(data: dict) -> list[dict]:
     if "_categories" not in data:
         raise SystemExit(
             "encodings.json has no '_categories' schema block - run\n"
-            "scripts/lore/add_categories_schema.py before sampling."
+            "scripts/lore/bootstrap_lore.py before sampling."
         )
 
     def add(category: str, item_id: str, *text_parts) -> None:

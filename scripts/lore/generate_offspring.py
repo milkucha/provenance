@@ -35,7 +35,7 @@ What's inherited and how:
      instead of a coin flip. `percent`/`mode`/`topic` copied whole from a coin-flipped parent, since
      those describe how the ORIGINAL sample was drawn, not this child's content.
   2. A small amount of genuinely NEW material neither parent had, drawn from _lore/encodings.json's
-     own world-lore pools (`concepts`, `locations`, `conflicts`, `characters.named_inhabitants`) -
+     own world-lore pools (`concepts`, `locations`, `conflicts`, `characters`) -
      the shared setting record that exists independently of any character, so a large enough cast
      can eventually know more than the founding population ever did, rather than every generation
      only ever recombining the same original items forever. Sized as a random fraction (from
@@ -221,7 +221,7 @@ def write_birth_tale(key: str, name: str, parent_names: list) -> str:
         "told_date": told_date,
         "told_by": None,
         "summary": telling,
-        "touches": [],
+        "about": [],
     })
     with open(ENCODINGS_PATH, "w", encoding="utf-8") as f:
         json.dump(encodings, f, indent=2, ensure_ascii=False)
@@ -340,17 +340,16 @@ def general_knowledge_pool(enc: dict) -> list:
     (user correction: "when I say general knowledge, I mean ALL of the encodings"):
     hearsay.entries (every claim from every pass any /simulate or /enact session has ever recorded,
     via record_hearsay.py - the actual living lore record, not just pre-run material, and usually
-    the largest single pool by far), concepts, locations, conflicts, tales.entries,
-    characters.named_inhabitants, characters.in_world_or_legendary,
-    characters.real_world_authors_and_players (this project's own established convention already
-    treats these as in-fiction-knowable - e.g. Khaoe's own recorded experience of walking the
-    gardens with Milkucha), routes.highways/trains/airports/named_but_unplotted, and
-    time_systems.ensayo_i_eras (the one era-timeline sub-structure shaped as a plain flat list;
-    the other three era systems are each a differently-shaped one-off nested structure cataloguing
-    conflicting source material rather than atomic knowable facts, and are deliberately not parsed
-    here - flag it if that scoping call should change). All independent of any specific character's
-    own file - this is what lets a large enough population's knowledge grow past what the founding
-    cast started with."""
+    the largest single pool by far), concepts, locations, conflicts, tales.entries, characters
+    (this project's own established convention already treats these as in-fiction-knowable - e.g.
+    Khaoe's own recorded experience of walking the gardens with Milkucha; the flat `characters`
+    category now covers named inhabitants, in-world/legendary figures, and real-world authors/
+    players alike, undifferentiated - see 2026-09 schema flattening), routes, and time_systems.
+    All independent of any specific character's own file - this is what lets a large enough
+    population's knowledge grow past what the founding cast started with. Tag prefixes match the
+    `_categories` keys in encodings.json (`location`, `concept`, `conflict`, `hearsay`, `tale`,
+    `character`, `route`, `time_systems`), consistent with how build_source_index.py's
+    resolve_prefixed() recognizes a `"<category>: <value>"` reference elsewhere."""
     pool = []
     for entry in enc.get("hearsay", {}).get("entries", []):
         eid = entry.get("id")
@@ -370,7 +369,7 @@ def general_knowledge_pool(enc: dict) -> list:
         lid = loc.get("id")
         if not lid:
             continue
-        text = " ".join([loc.get("region") or "", loc.get("type_catastro") or ""] + (loc.get("names") or []))
+        text = " ".join([loc.get("region") or "", loc.get("description") or ""] + (loc.get("names") or []))
         pool.append((f"location: {lid}", text))
     for cf in enc.get("conflicts", []):
         cfid = cf.get("id")
@@ -383,55 +382,31 @@ def general_knowledge_pool(enc: dict) -> list:
         if not tid:
             continue
         pool.append((f"tale: {tid}", tale.get("summary") or ""))
-    by_locality = enc.get("characters", {}).get("named_inhabitants", {}).get("by_locality", {})
-    for locality, inhabitants in by_locality.items():
-        for person in inhabitants:
-            if isinstance(person, dict):
-                name, role = person.get("name"), person.get("role") or ""
-            else:
-                name, role = person, ""
-            if not name:
-                continue
-            pool.append((f"inhabitant: {name} ({locality})", f"{role} {locality}"))
-    for legendary in enc.get("characters", {}).get("in_world_or_legendary", []):
-        lid = legendary.get("id")
-        if not lid:
+    for char in enc.get("characters", []):
+        cid = char.get("id")
+        if not cid:
             continue
-        text = " ".join([legendary.get("role") or ""] + (legendary.get("names") or []))
-        pool.append((f"legendary: {lid}", text))
-    for author in enc.get("characters", {}).get("real_world_authors_and_players", []):
-        aid = author.get("id")
-        if not aid:
+        text = " ".join(
+            [char.get("origin") or "", char.get("location") or "", char.get("role") or "", char.get("notes") or ""]
+            + (char.get("names") or [])
+        )
+        pool.append((f"character: {cid}", text))
+    for r in enc.get("routes", []):
+        rid = r.get("id")
+        if not rid:
             continue
-        text = " ".join([author.get("role") or ""] + (author.get("names") or []))
-        pool.append((f"author: {aid}", text))
-    routes = enc.get("routes", {})
-    for hw in routes.get("highways", []):
-        code = hw.get("code")
-        if not code:
+        text = " ".join(
+            [r.get("type") or "", r.get("description") or ""]
+            + (r.get("endpoints") or [])
+            + (r.get("names") or [])
+        )
+        pool.append((f"route: {rid}", text))
+    for era in enc.get("time_systems", []):
+        eid = era.get("id")
+        if not eid:
             continue
-        pool.append((f"highway: {code}", hw.get("name") or ""))
-    for seg in routes.get("trains", {}).get("segments", []):
-        name = seg.get("name")
-        if not name:
-            continue
-        place = (seg.get("ends_at") or {}).get("place") or ""
-        pool.append((f"train: {name}", place))
-    for ap in routes.get("airports", []):
-        loc = ap.get("location")
-        if not loc:
-            continue
-        pool.append((f"airport: {loc}", ap.get("code") or ""))
-    for r in routes.get("named_but_unplotted", []):
-        name = r.get("name")
-        if not name:
-            continue
-        pool.append((f"route: {name}", r.get("note") or ""))
-    for era in enc.get("time_systems", {}).get("ensayo_i_eras", []):
-        name = era.get("name")
-        if not name:
-            continue
-        pool.append((f"era_ensayo: {name}", " ".join([era.get("notes") or "", era.get("artifact") or ""])))
+        text = " ".join([era.get("duration") or "", era.get("description") or ""] + (era.get("names") or []))
+        pool.append((f"time_systems: {eid}", text))
     return pool
 
 

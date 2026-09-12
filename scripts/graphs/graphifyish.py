@@ -167,41 +167,25 @@ def build_lore() -> tuple[Graph, dict]:
         name_to_concept.setdefault(norm(c["id"]), nid)
 
     # --- characters -------------------------------------------------------------------
-    for c in enc["characters"]["in_world_or_legendary"]:
-        g.node(f"chr:{c['id']}", c["names"][0], "character", role=c.get("role", ""),
-               sources=c.get("sources", []), notes=c.get("notes", ""), legendary=True,
-               file="_lore/encodings.json#characters.in_world_or_legendary")
-    for c in enc["characters"]["real_world_authors_and_players"]:
-        g.node(f"chr:{c['id']}", c["names"][0], "author", role=c.get("role", ""),
-               sources=c.get("sources", []),
-               file="_lore/encodings.json#characters.real_world_authors_and_players")
+    # `in_world_or_legendary` and `real_world_authors_and_players` merged into one flat
+    # `characters` array by the 2026-09 encodings.json restructuring - one loop, one anchor.
+    for c in enc.get("characters", []):
+        g.node(f"chr:{c['id']}", c["names"][0] if c.get("names") else c["id"], "character",
+               role=c.get("role", ""), origin=c.get("origin", ""), location=c.get("location", ""),
+               sources=c.get("sources", []), notes=c.get("notes", ""),
+               file="_lore/encodings.json#characters")
 
     # --- census of named inhabitants ---------------------------------------------------
+    # TODO(schema-flatten, 2026-09): `characters.named_inhabitants.by_locality` - a locality-keyed
+    # census that included unnamed "count" crowd instances alongside named residents - was folded
+    # into the flat `characters` array along with everyone else. There's no structural way left to
+    # tell a census-drawn inhabitant apart from any other character (a "real" named character can
+    # have `location` set too, and the flat schema has no `count` field for anonymous crowds), so
+    # filtering on "has a location" would misclassify rather than reconstruct the old distinction.
+    # Left as a no-op rather than guessing - a human should decide whether/how bulk populace should
+    # be represented under the new flat schema (`inhabitant_index` kept, always empty, so every
+    # downstream lookup below degrades to "no match" instead of crashing).
     inhabitant_index: dict[str, str] = {}
-    for locality, people in enc["characters"]["named_inhabitants"]["by_locality"].items():
-        if not isinstance(people, list):
-            continue
-        for person in people:
-            # most entries are {name, role}; the "skin only" locality lists bare names
-            if isinstance(person, str):
-                person = {"name": person}
-            elif not isinstance(person, dict):
-                continue
-            # crowd instances are a role played by several people, with no name of their own
-            name = person.get("name") or person.get("role")
-            if not name:
-                continue
-            nid = g.node(f"inh:{locality}/{name}", name, "inhabitant",
-                         role=person.get("role", ""), locality=locality,
-                         count=person.get("count"), notes=person.get("note", ""),
-                         file="_lore/encodings.json#characters.named_inhabitants")
-            inhabitant_index[f"{norm(name)}|{norm(locality)}"] = nid
-            inhabitant_index.setdefault(norm(name), nid)
-            inhabitant_index.setdefault(norm("the " + name), nid)
-            inhabitant_index.setdefault(f"{norm('the ' + name)}|{norm(locality)}", nid)
-            home = name_to_loc.get(norm(locality))
-            if home:
-                g.edge(nid, home, "census")
 
     # --- conflicts ---------------------------------------------------------------------
     for c in enc["conflicts"]:
@@ -215,78 +199,52 @@ def build_lore() -> tuple[Graph, dict]:
             g.edge(f"loc:{loc['id']}", f"cfl:{ref}", "disputed_by")
 
     # --- eras and time systems ----------------------------------------------------------
-    # each chronicle stores its era list at a different depth
-    ts = enc["time_systems"]
-    era_lists = (
-        ("ensayo", ts.get("ensayo_i_eras") or [], "ensayo_i_eras"),
-        ("libro", (ts.get("libro_venidas_eras") or {}).get("list") or [],
-         "libro_venidas_eras.list"),
-        ("esquema", (ts.get("esquema_poster_eras") or {}).get("era_row") or [],
-         "esquema_poster_eras.era_row"),
-    )
-    for kind, entries, where in era_lists:
-        for era in entries:
-            if not isinstance(era, dict):
-                continue
-            label = era.get("name") or era.get("era") or str(era.get("n", "?"))
-            g.node(f"era:{kind}/{label}", label, "era", system=kind,
-                   span=era.get("range_real") or era.get("range_vortex") or "",
-                   notes=era.get("notes") or era.get("note") or era.get("matches") or "",
-                   file=f"_lore/encodings.json#time_systems.{where}")
-
-    # a founding year is a node too, tied to the places founded in it
-    for row in (ts.get("esquema_poster_eras") or {}).get("year_by_year_foundations", []) or []:
-        if not isinstance(row, dict) or row.get("year") is None:
+    # TODO(schema-flatten, 2026-09): the old ensayo_i_eras/libro_venidas_eras/esquema_poster_eras
+    # three-way split (each a differently-shaped chronicle, tagged "ensayo"/"libro"/"esquema" for
+    # this graph's own `system=` grouping) was collapsed into one flat `time_systems` list with no
+    # sub-typing field - so which chronicle a given era came from can no longer be read back here.
+    # esquema_poster_eras.year_by_year_foundations (a separate "year" node kind, tied by `founds`
+    # edges to the places founded that year) has no equivalent in the new schema at all - `year`/
+    # `places` aren't fields time_systems entries carry - so those nodes/edges are simply gone, not
+    # reconstructed. Left as one undifferentiated loop rather than inventing a fake grouping; a
+    # human should decide whether either distinction is worth carrying forward as a real field.
+    ts_index: dict[str, str] = {}
+    for era in enc.get("time_systems", []):
+        eid = era.get("id")
+        if not eid:
             continue
-        nid = g.node(f"year:{row['year']}", str(row["year"]), "year",
-                     span=row.get("range_as_extracted", ""),
-                     file="_lore/encodings.json"
-                          "#time_systems.esquema_poster_eras.year_by_year_foundations")
-        for place in row.get("places", []) or []:
-            dest = name_to_loc.get(norm(place))
-            if dest:
-                g.edge(nid, dest, "founds")
+        label = era["names"][0] if era.get("names") else eid
+        nid = g.node(f"era:{eid}", label, "era",
+                     span=era.get("duration") or "",
+                     notes=era.get("description") or "",
+                     sources=era.get("sources", []),
+                     file="_lore/encodings.json#time_systems")
+        ts_index[norm(eid)] = nid
+        for name in era.get("names", []) or []:
+            ts_index.setdefault(norm(name), nid)
 
     # --- routes ---------------------------------------------------------------------------
-    # keyed by folded name, since NPC sheets spell accents inconsistently
+    # keyed by folded name, since NPC sheets spell accents inconsistently. The old highways/
+    # trains.segments/airports/named_but_unplotted four-way split - each with its own id field
+    # and its own name-parsing logic to find endpoints - is now one flat `route` category with an
+    # explicit `endpoints` list, so no parsing is needed to find what a route connects.
     route_index: dict[str, str] = {}
-    routes = enc["routes"]
-    for hw in routes.get("highways", []) or []:
-        nid = g.node(f"rte:hw/{hw['code']}", hw["code"], "route", mode="highway",
-                     name=hw.get("name", ""), distance=hw.get("total_distance"),
-                     file="_lore/encodings.json#routes.highways")
-        # "Ruta Puente Intercontinental - Nvhi" -> endpoints by name
-        route_index[f"highway|{norm(hw['code'])}"] = nid
-        # "Ruta Puente Intercontinental - Nvhi" -> endpoints by name
-        for part in re.split(r"\s+-\s+", re.sub(r"^Ruta\s+", "", hw.get("name", ""))):
-            dest = name_to_loc.get(norm(part))
+    for r in enc.get("routes", []):
+        rid = r.get("id")
+        if not rid:
+            continue
+        label = r["names"][0] if r.get("names") else rid
+        nid = g.node(f"rte:{rid}", label, "route", mode=r.get("type", ""),
+                     description=r.get("description", ""),
+                     file="_lore/encodings.json#routes")
+        route_index[norm(rid)] = nid
+        for name in r.get("names", []) or []:
+            route_index.setdefault(norm(name), nid)
+        for endpoint in r.get("endpoints", []) or []:
+            route_index.setdefault(norm(endpoint), nid)
+            dest = name_to_loc.get(norm(endpoint))
             if dest:
                 g.edge(nid, dest, "connects")
-    for seg in routes.get("trains", {}).get("segments", []) or []:
-        nid = g.node(f"rte:tr/{seg['name']}", seg["name"], "route", mode="train",
-                     distance=seg.get("total_distance"),
-                     file="_lore/encodings.json#routes.trains")
-        route_index[f"train_segment|{norm(seg['name'])}"] = nid
-        for part in re.split(r"\s+-\s+", seg["name"]):
-            dest = name_to_loc.get(norm(part))
-            if dest:
-                g.edge(nid, dest, "connects")
-            # sheets cite a segment by either endpoint alone ("train_segment: Khan Ice")
-            route_index.setdefault(f"train_segment|{norm(part)}", nid)
-    for air in routes.get("airports", []) or []:
-        nid = g.node(f"rte:air/{air['location']}", f"{air['location']} ({air.get('code','')})",
-                     "route", mode="airport", code=air.get("code", ""), coords=air.get("coords"),
-                     file="_lore/encodings.json#routes.airports")
-        route_index[f"airport|{norm(air['location'])}"] = nid
-        route_index[f"airport|{norm(air.get('code', ''))}"] = nid
-        dest = name_to_loc.get(norm(air["location"]))
-        if dest:
-            g.edge(nid, dest, "connects")
-    for named in routes.get("named_but_unplotted", []) or []:
-        nid = g.node(f"rte:named/{named['name']}", named["name"], "route", mode="unplotted",
-                     notes=named.get("note", ""),
-                     file="_lore/encodings.json#routes.named_but_unplotted")
-        route_index[f"route_named|{norm(named['name'])}"] = nid
 
     # --- dialogues, and the claims they make -------------------------------------------
     hearsay = {h["id"]: h for h in enc["hearsay"]["entries"]}
@@ -324,20 +282,15 @@ def build_lore() -> tuple[Graph, dict]:
                     break
 
     # --- NPCs ----------------------------------------------------------------------------
+    # Prefixes now match the flat `_categories` keys in encodings.json (`character`, `route`,
+    # `time_systems`), consistent with build_source_index.py's resolve_prefixed().
     prefix_map = {
         "location": lambda v: f"loc:{v}",
         "concept": lambda v: f"con:{v}",
         "conflict": lambda v: f"cfl:{v}",
-        "character_legendary": lambda v: f"chr:{v}",
-        "character_real": lambda v: f"chr:{v}",
-        "airport": lambda v: route_index.get(f"airport|{norm(v)}", ""),
-        "highway": lambda v: route_index.get(f"highway|{norm(v)}", ""),
-        "train_segment": lambda v: route_index.get(f"train_segment|{norm(v)}", ""),
-        "route_named": lambda v: route_index.get(f"route_named|{norm(v)}", ""),
-        "era_ensayo": lambda v: f"era:ensayo/{v}",
-        "era_libro": lambda v: f"era:libro/{v}",
-        "era_esquema": lambda v: f"era:esquema/{v}",
-        "year_esquema": lambda v: f"year:{v}",
+        "character": lambda v: f"chr:{v}",
+        "route": lambda v: route_index.get(norm(v), ""),
+        "time_systems": lambda v: ts_index.get(norm(v), ""),
     }
     unmatched: Counter = Counter()
 
@@ -356,12 +309,8 @@ def build_lore() -> tuple[Graph, dict]:
             hit = name_to_loc.get(n) or name_to_concept.get(n)
             if hit:
                 return hit
-            # "Görff (Volcano)" is written "Volcano-Gorff" in the census
-            for locality in enc["characters"]["named_inhabitants"]["by_locality"]:
-                if norm(locality) == n or set(norm(locality).split()) == {n}:
-                    lh = name_to_loc.get(norm(locality))
-                    if lh:
-                        return lh
+            # the old "Görff (Volcano)" written as "Volcano-Gorff" in the census fallback lived
+            # here - dropped along with named_inhabitants.by_locality, see the census TODO above.
             fold = anagram.get("".join(sorted(n)))
             if fold and len(fold) == 1:
                 return next(iter(fold))
@@ -409,16 +358,6 @@ def build_lore() -> tuple[Graph, dict]:
             value = value.strip()
             if prefix == "hearsay":
                 g.edge(nid, f"dlg:{value.split('#')[0]}", "knows")
-            elif prefix == "inhabitant":
-                m = re.match(r"^(.*?)\s*\((.*)\)$", value)
-                if m:
-                    who, where = m.group(1).strip(), m.group(2).strip()
-                    target = (inhabitant_index.get(f"{norm(who)}|{norm(where)}")
-                              or inhabitant_index.get(norm(who)))
-                    if target:
-                        g.edge(nid, target, "knows")
-                    else:
-                        unmatched[item] += 1
             elif prefix in prefix_map:
                 target = prefix_map[prefix](value)
                 if target in g.nodes:
@@ -437,25 +376,22 @@ def build_lore() -> tuple[Graph, dict]:
                    trigger=d.get("trigger", ""), description=d.get("description", ""))
 
     # --- tales and facts ------------------------------------------------------------------
-    def wire_touches(nid: str, touches: list[str]) -> None:
-        for ref in touches or []:
+    def wire_touches(nid: str, about: list[str]) -> None:
+        # dotted-path convention only (`concepts.<id>`/`locations.<id>`) - a bare or
+        # "category: value" prefixed ref isn't handled here; that was already true before the
+        # 2026-09 schema flattening, not something this fix changed.
+        for ref in about or []:
             head, _, tail = ref.partition(".")
             target = None
             if head == "concepts":
                 target = f"con:{tail}"
             elif head == "locations":
                 target = f"loc:{tail}"
-            elif head == "characters":
-                # by_locality.<Locality> (<Role>, <Name>) for a named person, but crowd
-                # instances have no name, so the third field is their locality instead
-                m = re.search(r"by_locality\.(.+?)\s*\((.*?),\s*(.*?)\)\s*$", tail)
-                if m:
-                    locality, role, who = m.group(1), m.group(2), m.group(3)
-                    target = (inhabitant_index.get(f"{norm(who)}|{norm(locality)}")
-                              or inhabitant_index.get(f"{norm(role)}|{norm(locality)}")
-                              or inhabitant_index.get(norm(who)))
-                else:
-                    target = f"chr:{tail.split('.')[-1]}"
+            # the old `characters.named_inhabitants.by_locality.<Locality> (<Role>, <Name>)`
+            # dotted-path convention is gone along with named_inhabitants - see the census TODO
+            # above; a `tale.about` reference into `characters` now has no dotted-path form to
+            # parse here (the new convention is a "character: <id>" prefixed ref instead, which
+            # this function doesn't resolve, matching its pre-existing scope).
             if target and target in g.nodes:
                 g.edge(nid, target, "touches")
             else:
@@ -469,7 +405,7 @@ def build_lore() -> tuple[Graph, dict]:
                      told_by=t.get("told_by") or "",
                      responsible=provenance.get(t["id"], {}).get("responsible", ""),
                      file=t.get("source_file", ""))
-        wire_touches(nid, t.get("touches", []))
+        wire_touches(nid, t.get("about", []))
     if FACTS.exists():
         facts = load(FACTS)
         entries = facts.get("facts") or facts.get("entries") or []

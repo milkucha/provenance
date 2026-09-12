@@ -155,8 +155,8 @@ the simulation/evaluation tooling described next.
 - **`_lore/`** — the raw material and its analysis, plus two further sources of truth: one told
   directly by the user, and one (`facts/`) that is universal and never sampled:
   - `_lore/material/` — source artifacts as uploaded: screenshots of in-game books, maps,
-    spreadsheets (`Luminacion Register [Code].xlsx`, `Catastro Milkaan y Platinhëa.xlsx`, ...),
-    documents. Treated as excavated primary sources — never edited, only read.
+    spreadsheets, documents, in whatever file format they arrive in. Treated as excavated primary
+    sources — never edited, only read.
   - `_lore/material/_context.md` — one section per material artifact, transcribing only what that
     specific source says or shows, with no cross-source reconciliation. Contradictions between
     sources are noted here, not resolved. Lives inside `material/` itself, the only analysis output

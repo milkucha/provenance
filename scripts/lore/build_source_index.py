@@ -1,21 +1,19 @@
 """
 Build the two-layer `sources` index across every category encodings.json's own `_categories` block
-marks `"has_sources": true` (as of this writing: locations, concepts,
-characters.in_world_or_legendary, characters.real_world_authors_and_players - but read from the data,
-not hardcoded here, so a category /integrate registers later with `has_sources: true` picks this up
-automatically, and a freshly-bootstrapped project with an empty `_categories` block no-ops cleanly
-instead of crashing).
+marks `"has_sources": true` - read from the data, not hardcoded here, so a category /integrate
+registers later with `has_sources: true` picks this up automatically, and a freshly-bootstrapped
+project with an empty `_categories` block no-ops cleanly instead of crashing.
 
 Two things happen, both purely mechanical - this script never decides what a claim or tale means,
-only where an already-written `about`/`touches` reference resolves to:
+only where an already-written `about` reference resolves to:
 
 1. Migration: every entry's old flat `sources: ["ensayo_i (...)", ...]` shape becomes
    `sources: [{"category": "material", "origin": "ensayo_i (...)"}, ...]` - a literal wrap, no
    parsing, so nothing is lost or misparsed (some source strings, e.g. screenshot provenance notes,
    don't follow a clean "doc (detail)" pattern and can't be split apart reliably).
 
-2. Cross-linking: every `hearsay.entries[].claims[].about` and `tales.entries[].touches` reference
-   that resolves to one of the four sourced categories gets folded into that node's `sources` list as
+2. Cross-linking: every `hearsay.entries[].claims[].about` and `tales.entries[].about` reference
+   that resolves to one of the sourced categories gets folded into that node's `sources` list as
    `{"category": "hearsay"/"tale", "origin": "<hearsay_id>#<claim_n>" / "<tale_id>"}`.
    - An EXACT match (against the entry's `id` or any of its `names[]`, accent/case/underscore-
      insensitive) is linked directly.
@@ -86,17 +84,14 @@ def load_categories(data: dict) -> dict:
     bootstrapped project with no categories yet, simply returns nothing to attach into).
 
     Only `shape: "list"` categories are handled here - a flat list of dicts, each carrying its own
-    `id_field` (see build_index, which reads that instead of assuming a hardcoded "id" key; not
-    every category calls its identifier "id" - highways use "code", airports "location", years
-    "year"). `"inhabitant"` is `shape: "grouped_list"` (nested `{locality: [people]}`, no flat
-    id_field) and is deliberately excluded even though its own `has_sources` is true (corrected
-    2026-08-11, on user report - see resolve_touches_path's own named_inhabitants branch for that
-    category's real, still-partial handling) - a real generic-list entry per person would be
-    needed before this function could safely include it the same way as everything else."""
+    `id_field` (see build_index, which reads that instead of assuming a hardcoded "id" key - not
+    every category is guaranteed to call its identifier "id"). Every current content category
+    (`location`, `character`, `concept`, `conflict`, `route`, `time_systems`) is `shape: "list"`
+    with `has_sources: true`, so all of them flow through here."""
     if "_categories" not in data:
         raise SystemExit(
             "encodings.json has no '_categories' schema block - run\n"
-            "scripts/lore/bootstrap_lore.py or scripts/lore/add_categories_schema.py first."
+            "scripts/lore/bootstrap_lore.py first."
         )
     return {
         cat_key: _get_path(data, spec["path"])
@@ -135,36 +130,12 @@ def _safe_get_path(data: dict, path: str, default):
 
 def build_other_known_ids(data: dict) -> set:
     """Normalized ids/names for every category NOT marked `has_sources: true`, used only to tell a
-    recognized-but-out-of-scope reference apart from a genuinely dangling one. Tolerant of any of
-    these categories not existing yet - they're optional content, not guaranteed scaffolding."""
-    known = set()
-    for c in data.get("conflicts", []):
-        known.add(normalize(c["id"]))
-    for e in _safe_get_path(data, "time_systems.ensayo_i_eras", []):
-        known.add(normalize(e["name"]))
-    for e in _safe_get_path(data, "time_systems.esquema_poster_eras.era_row", []):
-        known.add(normalize(e["name"]))
-    for e in _safe_get_path(data, "time_systems.esquema_poster_eras.year_by_year_foundations", []):
-        known.add(normalize(str(e["year"])))
-    for e in _safe_get_path(data, "time_systems.libro_venidas_eras.list", []):
-        known.add(normalize(e["name"]))
-    for h in _safe_get_path(data, "routes.highways", []):
-        known.add(normalize(h["code"]))
-        known.add(normalize(h["name"]))
-    for t in _safe_get_path(data, "routes.trains.segments", []):
-        known.add(normalize(t["name"]))
-    for a in _safe_get_path(data, "routes.airports", []):
-        known.add(normalize(a["location"]))
-    for n in _safe_get_path(data, "routes.named_but_unplotted", []):
-        known.add(normalize(n["name"]))
-    for locality, people in _safe_get_path(data, "characters.named_inhabitants.by_locality", {}).items():
-        known.add(normalize(locality))
-        for p in people:
-            name = p if isinstance(p, str) else (p.get("name") or "")
-            if name:
-                known.add(normalize(f"{name} ({locality})"))
-                known.add(normalize(name))
-    return known
+    recognized-but-out-of-scope reference apart from a genuinely dangling one. Under the current
+    schema every real content category (`location`, `character`, `concept`, `conflict`, `route`,
+    `time_systems`) has `has_sources: true`, so there is currently nothing that needs this
+    treatment - kept as a hook (returning an empty set) for if a future category is ever
+    registered with `has_sources: false`."""
+    return set()
 
 
 def load_grounding() -> tuple[list, dict | None, dict | None]:
@@ -191,10 +162,10 @@ def build_index(categories: dict, specs: dict) -> list:
     """One record per entry: (category, entry, {normalized keys: display form}).
 
     Reads each category's own `id_field` from `_categories` (`specs`) instead of assuming every
-    entry calls its identifier "id" - corrected 2026-08-11, on user report: `concept`/`location`
-    both happen to use "id", but `highway` uses "code", `airport` "location", `year_esquema`
-    "year" (an int - stringified before normalizing), etc. Assuming "id" universally would have
-    KeyError'd the instant a non-concept/location category's `has_sources` flag actually got used."""
+    entry calls its identifier "id" - corrected 2026-08-11, on user report, after a category whose
+    entries used a different identifier key tripped a hardcoded assumption. Every current category
+    happens to use `id_field: "id"`, but this stays data-driven so a future category registered
+    with a different identifier key doesn't KeyError here."""
     index = []
     for cat_key, entries in categories.items():
         id_field = specs.get(cat_key, {}).get("id_field") or "id"
@@ -266,15 +237,10 @@ def resolve_prefixed(prefix: str, value: str, index: list, sourced_keys: set):
     'out_of_scope', or 'unresolved'. Driven entirely by `sourced_keys` (every category key with
     `has_sources: true` in encodings.json's own `_categories` block) rather than a hardcoded prefix
     list - corrected 2026-08-11, on user report ("if something was said by someone, it means there
-    is a source, and that source is hearsay"): this function used to only ever attempt `concept`/
-    `location`/`character` prefixes, silently routing every other prefix (`era_ensayo`,
-    `conflict`, `inhabitant`, `highway`, ...) to `out_of_scope` regardless of what `has_sources`
+    is a source, and that source is hearsay"): this function used to only ever attempt a handful of
+    hardcoded prefixes (`concept`, `location`, `character`), silently routing every other prefix
+    (e.g. `conflict`, `time_systems`, `route`) to `out_of_scope` regardless of what `has_sources`
     said - the flag alone was never sufficient, this is the other half of that fix."""
-    if prefix == "character":
-        exact = find_exact(value, index, "character_legendary") + find_exact(value, index, "character_real")
-        if len(exact) == 1:
-            return ("attach", exact[0][0], exact[0][1], "exact", 1.0, value)
-        return ("unresolved", None, None, None, None, None)
     if prefix in sourced_keys:
         exact = find_exact(value, index, prefix)
         if len(exact) == 1:
@@ -313,7 +279,7 @@ def resolve_bare(value: str, index: list, other_known: set):
     return ("unresolved", None, None, None, None, None)
 
 
-def resolve_touches_path(value: str, index: list, other_known: set):
+def resolve_dotted_path(value: str, index: list, other_known: set):
     parts = value.split(".")
     head = parts[0]
     rest = ".".join(parts[1:])
@@ -326,13 +292,6 @@ def resolve_touches_path(value: str, index: list, other_known: set):
         exact = find_exact(rest, index, "location")
         if len(exact) == 1:
             return ("attach", exact[0][0], exact[0][1], "exact", 1.0, rest)
-        return ("unresolved", None, None, None, None, None)
-    if head == "characters":
-        # e.g. "named_inhabitants.by_locality.Terfila (Peregrin, Zarkapulos)" - no `sources` field
-        # on named_inhabitants entries yet; recognize and skip rather than report as dangling.
-        locality_field = rest.split(" (")[0].split(".")[-1]
-        if normalize(locality_field) in other_known or normalize(rest) in other_known:
-            return ("out_of_scope", None, None, None, None, None)
         return ("unresolved", None, None, None, None, None)
     return resolve_bare(value, index, other_known)
 
@@ -347,8 +306,8 @@ def resolve_ref(raw: str, index: list, other_known: set, hearsay_ids: set, sourc
     if ": " in s:
         prefix, value = s.split(": ", 1)
         return resolve_prefixed(prefix.strip().lower(), value.strip(), index, sourced_keys)
-    if "." in s and s.split(".", 1)[0] in ("concepts", "locations", "characters"):
-        return resolve_touches_path(s, index, other_known)
+    if "." in s and s.split(".", 1)[0] in ("concepts", "locations"):
+        return resolve_dotted_path(s, index, other_known)
     return resolve_bare(s, index, other_known)
 
 
@@ -391,8 +350,10 @@ def process_refs(data: dict, index: list, other_known: set, hearsay_ids: set, so
                 handle(v, "hearsay", origin, f"hearsay:{origin}")
 
     for t in data["tales"]["entries"]:
-        for touches in t.get("touches", []):
-            handle(touches, "tale", t["id"], f"tale:{t['id']}")
+        about = t.get("about", [])
+        values = about if isinstance(about, list) else ([about] if about else [])
+        for v in values:
+            handle(v, "tale", t["id"], f"tale:{t['id']}")
 
 
 def main() -> None:

@@ -1,204 +1,104 @@
-﻿{
-    "conflicts":  [
+{
+  "_method_note": "Machine-readable source of truth for what exists in the world. Fed by three sources: material (excavated evidence via /integrate), tale (knowledge authored directly by the user), and hearsay (claims made by characters in scenes). Characters sample their knowledge from these categories. Each entry carries sources documenting where it came from.",
 
-                  ],
-    "_categories_method_note":  "Describes how scripts/lore/sample_lore_knowledge.py flattens each category below into sample-able pool items, so the set of categories is read from this data rather than hardcoded per-path loops in the script. \u0027shape\u0027 selects a handler: \u0027list\u0027 (a flat list of dicts at \u0027path\u0027, identified by \u0027id_field\u0027, pool text built by joining \u0027text_fields\u0027) covers most categories and is the default shape for any new category with that structure; \u0027grouped_list\u0027 and \u0027claims\u0027 are special-cased for characters.named_inhabitants.by_locality and hearsay.entries respectively, since neither is a flat list. When /integrate approves a genuinely new category, it adds an entry here (and, if the shape isn\u0027t \u0027list\u0027, a new handler in SHAPE_HANDLERS) - no epistemology metadata needs authoring per category anymore (see next). \u0027has_sources\u0027 (bool) marks whether entries in this category carry a \u0027sources\u0027 list (provenance, see .claude/skills/integrate/SKILL.md Pass 1 step 3) - scripts/lore/build_source_index.py reads this to know which categories it should link hearsay/tale references into, instead of a hardcoded category list. Removed 2026-08-16: a per-category \u0027epistemology_group\u0027 field used to drive /character Step 4d\u0027s trusts/distrusts derivation. Replaced with per-ITEM provenance derivation (material/hearsay/tale, read from an anchor\u0027s own \u0027sources[0].category\u0027, or trivially \u0027hearsay\u0027/\u0027tale\u0027 when the anchor\u0027s own category already IS one of those, with \u0027conflict\u0027 kept as a fixed special case outside this system entirely) - see scripts/lore/anchor_epistemology.py and /character Step 4d for the current mechanism. A category-level classification never made sense here: two items in the same category (e.g. two locations) can have completely different provenance, which epistemology_group could never express.",
-    "_categories":  {
-                        "location":  {
-                                         "path":  "locations",
-                                         "shape":  "list",
-                                         "id_field":  "id",
-                                         "text_fields":  [
-                                                             "names",
-                                                             "region",
-                                                             "type_catastro",
-                                                             "notes"
-                                                         ],
-                                         "has_sources":  true
-                                     },
-                        "concept":  {
-                                        "path":  "concepts",
-                                        "shape":  "list",
-                                        "id_field":  "id",
-                                        "text_fields":  [
-                                                            "names",
-                                                            "description",
-                                                            "notes"
-                                                        ],
-                                        "has_sources":  true
-                                    },
-                        "conflict":  {
-                                         "path":  "conflicts",
-                                         "shape":  "list",
-                                         "id_field":  "id",
-                                         "text_fields":  [
-                                                             "topic",
-                                                             "detail"
-                                                         ],
-                                         "has_sources":  true
-                                     },
-                        "character_legendary":  {
-                                                    "path":  "characters.in_world_or_legendary",
-                                                    "shape":  "list",
-                                                    "id_field":  "id",
-                                                    "text_fields":  [
-                                                                        "names",
-                                                                        "role",
-                                                                        "notes"
-                                                                    ],
-                                                    "has_sources":  true
-                                                },
-                        "character_real":  {
-                                               "path":  "characters.real_world_authors_and_players",
-                                               "shape":  "list",
-                                               "id_field":  "id",
-                                               "text_fields":  [
-                                                                   "names",
-                                                                   "role"
-                                                               ],
-                                               "has_sources":  true
-                                           },
-                        "inhabitant":  {
-                                           "path":  "characters.named_inhabitants.by_locality",
-                                           "shape":  "grouped_list",
-                                           "has_sources":  true
-                                       },
-                        "highway":  {
-                                        "path":  "routes.highways",
-                                        "shape":  "list",
-                                        "id_field":  "code",
-                                        "text_fields":  [
-                                                            "name"
-                                                        ],
-                                        "has_sources":  true
-                                    },
-                        "train_segment":  {
-                                              "path":  "routes.trains.segments",
-                                              "shape":  "list",
-                                              "id_field":  "name",
-                                              "text_fields":  [
-                                                                  "name"
-                                                              ],
-                                              "has_sources":  true
-                                          },
-                        "airport":  {
-                                        "path":  "routes.airports",
-                                        "shape":  "list",
-                                        "id_field":  "location",
-                                        "text_fields":  [
-                                                            "location"
-                                                        ],
-                                        "has_sources":  true
-                                    },
-                        "route_named":  {
-                                            "path":  "routes.named_but_unplotted",
-                                            "shape":  "list",
-                                            "id_field":  "name",
-                                            "text_fields":  [
-                                                                "name"
-                                                            ],
-                                            "has_sources":  true
-                                        },
-                        "era_ensayo":  {
-                                           "path":  "time_systems.ensayo_i_eras",
-                                           "shape":  "list",
-                                           "id_field":  "name",
-                                           "text_fields":  [
-                                                               "name"
-                                                           ],
-                                           "has_sources":  true
-                                       },
-                        "era_esquema":  {
-                                            "path":  "time_systems.esquema_poster_eras.era_row",
-                                            "shape":  "list",
-                                            "id_field":  "name",
-                                            "text_fields":  [
-                                                                "name"
-                                                            ],
-                                            "has_sources":  true
-                                        },
-                        "year_esquema":  {
-                                             "path":  "time_systems.esquema_poster_eras.year_by_year_foundations",
-                                             "shape":  "list",
-                                             "id_field":  "year",
-                                             "text_fields":  [
-                                                                 "places"
-                                                             ],
-                                             "has_sources":  true
-                                         },
-                        "era_libro":  {
-                                          "path":  "time_systems.libro_venidas_eras.list",
-                                          "shape":  "list",
-                                          "id_field":  "name",
-                                          "text_fields":  [
-                                                              "name"
-                                                          ],
-                                          "has_sources":  true
-                                      },
-                        "hearsay":  {
-                                        "path":  "hearsay.entries",
-                                        "shape":  "claims",
-                                        "has_sources":  false
-                                    },
-                        "tale":  {
-                                     "path":  "tales.entries",
-                                     "shape":  "list",
-                                     "id_field":  "id",
-                                     "text_fields":  [
-                                                         "summary"
-                                                     ],
-                                     "has_sources":  true
-                                 }
-                    },
-    "time_systems":  {
+  "_categories": {
+    "location": {
+      "description": "Places: cities, regions, landmarks, anything with geographic or cultural significance.",
+      "fields": ["names", "coordinates", "region", "description", "composition"],
+      "path": "locations",
+      "shape": "list",
+      "id_field": "id",
+      "has_sources": true
+    },
 
-                     },
-    "tales":  {
-                  "_method_note":  "A THIRD kind of source, distinct from both the objective record above and \u0027hearsay\u0027 - see _lore/tales/_index.md. A tale is told directly by the user, the world\u0027s author, outside any character\u0027s mouth and outside any excavated document - whether framed as a narrated story or stated plainly as a fact now known. Deliberately not distinguishing those two framings with a fact/fiction label: a tale can be partly true, the way a real legend often is, and that ambiguity is the point. Unlike hearsay, a tale IS folded into the objective arrays above (locations/characters/concepts/routes/time_systems) wherever it overlaps an existing entry - via a \u0027tale:\u003cid\u003e\u0027 item added to that entry\u0027s \u0027sources\u0027 list, exactly like a material-file abbreviation - never by overwriting an existing entry. A genuine disagreement with something already on record gets a new \u0027conflicts\u0027 entry (next CONFLICT-NN id), \u0027user_resolution\u0027 left unset. Populated by the /tell skill (.claude/skills/tell/SKILL.md). Each entry here is a manifest of one tale, not a duplicate of its content: \u0027touches\u0027 lists every id (in any array above, including \u0027conflicts\u0027) this tale added or amended - the full text lives in _lore/tales/\u003cid\u003e.md. \u0027told_by\u0027 (nullable) names who is credited IN-FICTION with this tale, if it\u0027s framed that way (a character, an institution, a legend) - both a name and \u0027nobody\u0027 are genuine, deliberate answers; most tales leave it null since there\u0027s usually no in-world frame at all. Who (which real-world user) actually recorded the entry is a separate question, answered in _lore/tales/_authors.md, never here.",
-                  "entries":  [
+    "character": {
+      "description": "Named people: in-world inhabitants, legendary or historical figures, real-world authors and players.",
+      "fields": ["names", "origin", "location", "role", "notes"],
+      "path": "characters",
+      "shape": "list",
+      "id_field": "id",
+      "has_sources": true
+    },
 
-                              ]
-              },
-    "locations":  [
+    "concept": {
+      "description": "Ideas and abstract things: philosophies, beliefs, systems, immaterial constructs.",
+      "fields": ["names", "description", "notes"],
+      "path": "concepts",
+      "shape": "list",
+      "id_field": "id",
+      "has_sources": true
+    },
 
-                  ],
-    "characters":  {
-                       "real_world_authors_and_players":  [
+    "conflict": {
+      "description": "Unresolved disagreements: contradictions between sources, open questions about the record.",
+      "fields": ["topic", "detail", "about", "user_resolution"],
+      "path": "conflicts",
+      "shape": "list",
+      "id_field": "id",
+      "has_sources": true
+    },
 
-                                                          ],
-                       "in_world_or_legendary":  [
+    "route": {
+      "description": "Ways between places: roads, highways, train lines, air routes, established paths.",
+      "fields": ["names", "endpoints", "type", "description"],
+      "path": "routes",
+      "shape": "list",
+      "id_field": "id",
+      "has_sources": true
+    },
 
-                                                 ],
-                       "named_inhabitants":  {
-                                                 "by_locality":  {
+    "time_systems": {
+      "description": "Time references: units of time, named periods, timelines, eras.",
+      "fields": ["names", "duration", "description"],
+      "path": "time_systems",
+      "shape": "list",
+      "id_field": "id",
+      "has_sources": true
+    },
 
-                                                                 }
-                                             }
-                   },
-    "routes":  {
-                   "highways":  [
+    "hearsay": {
+      "description": "Claims made by characters in scenes: what people have said. Each claim may reference other entries in encodings.",
+      "fields": ["text", "speaker", "location", "about", "inconsistent_with_record", "inconsistent_with_facts"],
+      "path": "hearsay.entries",
+      "shape": "claims",
+      "has_sources": false
+    },
 
-                                ],
-                   "trains":  {
-                                  "segments":  [
+    "tale": {
+      "description": "Oral tradition: knowledge authored directly by the user, stated as fact or narrated as story.",
+      "fields": ["summary", "told_by", "about"],
+      "path": "tales.entries",
+      "shape": "list",
+      "id_field": "id",
+      "has_sources": false
+    }
+  },
 
-                                               ]
-                              },
-                   "airports":  [
+  "locations": [
+  ],
 
-                                ],
-                   "named_but_unplotted":  [
+  "characters": [
+  ],
 
-                                           ]
-               },
-    "hearsay":  {
-                    "_method_note":  "SUBJECTIVE record, distinct from every array above. Mirrors _lore/characters/hearsay.md exactly - one entry per real (non-template) dialog file in data/luminacion/blabber/dialogues/. \u0027claims\u0027 are what a character asserted, not verified facts; \u0027about\u0027 cross-references an id in \u0027locations\u0027/\u0027concepts\u0027/\u0027conflicts\u0027 above ONLY to mark topical overlap, never as corroboration. Consistency is recorded INCONSISTENT-ONLY: a field is present on a claim only when a genuine contradiction was actually found; absence means either \u0027checked and matches\u0027 or \u0027nothing to check against yet\u0027 - recording the unremarkable case explicitly on every claim would just be noise. Two independent flags: (1) \u0027inconsistent_with_record\u0027, an array of {about, source_kind, note} objects - present only when the claim contradicts something in the objective arrays above (\u0027about\u0027 names the contradicted entry/CONFLICT id, \u0027source_kind\u0027 is \u0027material\u0027/\u0027tale\u0027 naming which of the two kinds of objective source the contradicted entry rests on, since disbelieving a written map and disbelieving something someone was told directly are different in kind - a character might reasonably distrust one and not the other; \u0027note\u0027 explains the contradiction in one sentence). (2) \u0027inconsistent_with_facts\u0027, a plain string (present only when true, value = the explanation) - set when a claim contradicts one of the two universal facts in _lore/facts/facts.json. No \u0027fact_ref\u0027 id is needed: there are only two facts, they are baked into every character unconditionally, and checking against them means reading facts.json directly, not looking up an id. A claim can also surface a genuine gap rather than a contradiction - something the objective record has never addressed at all, not something it disagrees with; when that happens and it resonates with the existing corpus, log it in _lore/unknowns.md (cross-referencing the claim\u0027s id), matching the file\u0027s existing shape, the same way material and tale do. Not every claim produces one - skip rather than manufacturing a question that isn\u0027t genuinely there. Since scripts/lore/sample_lore_knowledge.py draws individual claims from this array into a character\u0027s knowledge pool at the same odds as any objective-record fact (see README Â§8 Step 1), a claim can now be retold by a new character and logged again as a fresh claim. Whenever that happens, scripts/lore/lineage_coin.py rolls a flat 50/50 to decide whether the origin survives the retelling: \u0027traceable\u0027 sets \u0027derived_from\u0027 (a claim id, e.g. \u0027nawom_morkulo_first_meeting#5\u0027) and the dialog line may cite the source by name; \u0027untraceable\u0027 leaves \u0027derived_from\u0027 unset and sets \u0027oral_lore\u0027: true instead - no origin recorded, dialog line uses vague framing (\u0027they say...\u0027), regardless of whether the content itself has drifted. \u0027oral_lore\u0027 can also be set true (paired with a \u0027note\u0027 explaining what grew) on a claim that traces back fine but has still accumulated specifics beyond what its \u0027about\u0027 grounding supports. Most claims have none of these fields - they\u0027re unremarkable, either freshly sampled from the objective record or a faithful, traceable retelling.",
-                    "entries":  [
+  "concepts": [
+  ],
 
-                                ]
-                },
-    "_method_note":  "Structured cross-references between locations, time periods, characters, and concepts found across the material set. Every entry lists its source file(s). Nothing here is asserted beyond what a source states; where sources disagree, both values are kept and a matching entry is added to \u0027conflicts\u0027. Full prose per source lives in material/_context.md; this file is the associative index. Sources are abbreviated: atlax_i, atlax_ii, catastro, ensayo_i, libro, timelines_py (timelines.py), esquema (ESQUEMA.pdf), book_of_inventions, cartography_highways/cartography_trains/cartography_airports (Cartography (Map Markers) [Code].xlsx), luminacion_register (Luminacion Register [Code].xlsx), mapa_del_milenio (El Antiguo Continente de Milkan - Mapa del Milenio.png), plus 5 dated/named screenshots (Khan Ice WP, Sid Nalta WP, Milka General Map, Milka Oceans Plan and Continent Outline, Ruta Lundria-Salthos Cruzados) referenced inline by filename. Per the user (2026-07-24), \u0027Luminacion Register\u0027 and \u0027Terraforming Regions Purge Register.xlsx\u0027 ARE lore sources, split into a narrative layer (named characters/locations/actions - captured under characters.named_inhabitants) and a technical/\u0027mysterious formula\u0027 layer (Clock-worldTime triggers, Taterzen movement logic, region-purge flags - left undeciphered, see unknowns.md) - not excluded, just not yet interpreted. Some conflict entries also carry a \u0027user_resolution\u0027 field: a design decision the user gave directly (not derived from any document), dated. These sit alongside the documentary facts rather than replacing them. IMPORTANT: everything above this line, and everything in \u0027locations\u0027/\u0027time_systems\u0027/\u0027routes\u0027/\u0027characters\u0027/\u0027concepts\u0027/\u0027conflicts\u0027 below, is the OBJECTIVE record - reconstructed from primary materials, per the archaeologist method. A second, SUBJECTIVE record sits alongside it: the top-level \u0027hearsay\u0027 array near the end of this file, mirroring _lore/hearsay/hearsay.md, logging what characters have actually said in played Blabber dialogues - never merged into the objective arrays above and never treated as corroborating them, even when they happen to agree; see \u0027hearsay._method_note\u0027 for the exact shape, including how a claim\u0027s consistency with the record and with facts is tracked. A third, OBJECTIVE-track array (not subjective like \u0027hearsay\u0027) is \u0027tales\u0027, fed by the /tell skill and mirrored in _lore/tales/: told/stated directly by the user, the world\u0027s author, folded into locations/characters/concepts/routes/time_systems via a \u0027tale:\u003cid\u003e\u0027 source tag, and into \u0027conflicts\u0027 on disagreement, by the same rules as any material source; see that array\u0027s own _method_note for the exact shape, including \u0027told_by\u0027 vs \u0027responsible\u0027. Update (2026-07-26): \u0027ensayo_i_final\u0027 is a later, July 2026 edition of ensayo_i (\u0027ENSAYO I (Final Version).pdf\u0027), by the same credited author under an expanded byline (\u0027IlÃ¤ria AstraÃ«a desde la lejana ciudad de LÃ¼ndria\u0027). Where the two editions disagree, both are kept, per the same disagreement rule as every other source pair - see CONFLICT-15, CONFLICT-16, CONFLICT-17.",
-    "concepts":  [
+  "conflicts": [
+  ],
 
-                 ]
+  "routes": [
+  ],
+
+  "time_systems": [
+  ],
+
+  "hearsay": {
+    "entries": [
+    ]
+  },
+
+  "tales": {
+    "entries": [
+    ]
+  }
 }
