@@ -26,15 +26,20 @@ It's equally an experiment in agent-based social simulation: characters are play
 constrained to a bounded, randomly-sampled slice of the record, deliberately stripped of room to
 sprawl, so creativity has to work with fewer, authored elements instead of inventing freely. I want
 this to run across different models and harnesses rather than depend on one vendor, and to stay slim
-in token consumption — that budget work is ongoing, and it's not just about cost: the simulation only
-means something if it can run at the scale a living culture requires, which is what makes the whole
-thing usable and testable at all. The project is currently in an experimentation phase, run and
-evaluated lab-report style (`LAB_REPORT.md`) against two standing questions: whether the result reads
-as immersive, and whether it reads as organic rather than mechanically repetitive. The longest pilot
-so far ran `/simulate` to 305 passes on six characters and got real material stakes out of it — arcs
-that stalled, reversed, and transformed on genuine dice rolls, four generations of births, deaths
+in token consumption — that budget work is ongoing, and it's not just aspirational: `/simulate` now
+dispatches either a Claude subagent (Haiku/Sonnet/Opus) or a locally-hosted Ollama model
+(`scripts/lore/enact_via_ollama.py`) for the one judgment-heavy step per pass, with the orchestrating
+session doing every mechanical step itself either way — see §0's "Simulating and evaluating the
+lore." The simulation only means something if it can run at the scale a living culture requires,
+which is what makes the whole thing usable and testable at all. The project is currently in an
+experimentation phase, run and evaluated lab-report style (`LAB_REPORT.md`) against two standing
+questions: whether the result reads as immersive, and whether it reads as organic rather than
+mechanically repetitive — see `scripts/test/record_tasting.py`/`/taste` for how the immersion
+question gets a real, per-run score rather than staying an impression. The longest pilot so far ran
+`/simulate` to 250 passes on a 57-character population and got real material stakes out of it — arcs
+that stalled, reversed, and transformed on genuine dice rolls, multiple generations of births, deaths
 that actually broke a character's own convictions rather than just getting logged — not just
-repetition, which is the actual bar (see `conversation.md`'s Landmarks for the fuller account). The
+repetition, which is the actual bar (see `CHRONICLE.md` for the fuller account). The
 standing fear behind most of the design choices here is producing *slop*: content that sounds
 plausible but isn't actually grounded in anything the record established.
 
@@ -51,7 +56,7 @@ actual lore engine, usable entirely on its own with no Minecraft (or any embodim
 
 This document is a practical, step-by-step guide to working with the system, plus (§0) the
 architecture of the whole as it stands today — read that first in a new session to get oriented
-without having to re-read the whole codebase. `conversation.md` carries the narrative alongside it:
+without having to re-read the whole codebase. `CHRONICLE.md` carries the narrative alongside it:
 why a given design turn got taken, and what's still genuinely open — worth a read if the "why" behind
 something here isn't obvious from the "how." The rest of this file assumes you already know *what*
 character or story you want to add — it's about *how* to realize it, in lore and (currently) in
@@ -226,16 +231,40 @@ the simulation/evaluation tooling described next.
 
 ### Simulating and evaluating the lore
 
-`/simulate` (above) is the mechanism; two more things sit alongside it, reading the lore engine's
+`/simulate` (above) is the mechanism; the pieces below sit alongside it, reading the lore engine's
 output rather than feeding it, and aren't part of the Tier 1–3 dependency stack at all:
 
 - **`LAB_REPORT.md`** — the persistent, cross-run record of whether the system's design actually
   works, kept deliberately outside any worktree so it survives past any single run or conversation.
   It states the standing objective (does drift over many interactions read as genuinely emergent,
   with real material consequence, rather than a repeated pattern or a smooth model-biased
-  convergence?), the methodology for judging a run against that objective, and a dated run log. Read
-  it before any `/simulate` run meant to test or extend the design, not a casual one-off — and append
-  to it after one, per its own instructions. See also §4.
+  convergence?), the methodology for judging a run against that objective, and a dated run log.
+  `scripts/lore/simulate_record_run.py` writes the templated entry automatically at the end of every
+  run; the qualitative sections (what worked, what didn't, open questions) still get filled in by
+  hand. See also §4.
+- **The test suite (`scripts/test/`)** — read-only instruments that measure a run rather than
+  changing anything it produces, all driven off `scripts/lore/rng_context.py` (a per-run draw-audit
+  log every stochastic script call gets recorded into) and `scripts/lore/run_manifest.py` (the
+  run's own machine-readable starting state — pool, pass count, and, if the run opted in, an RNG
+  seed). Wired into `/simulate` Step 4 as a closing block, run only on a run explicitly testing or
+  extending the design, not a casual showcase trail:
+  - `conformance_report.py` — did every stochastic script call actually go through the seeded/logged
+    path it was supposed to, rather than an untracked `random` call slipping past the audit.
+  - `measure_derivation.py` — what fraction of `knowledge.experience`/`grounded_experience` entries
+    carry `produced_by` provenance (which scene, which pass) back to an actual `/enact`/`/simulate`
+    write, rather than reading as content nobody can trace.
+  - `measure_divergence.py` — for the isolation experiment specifically: given the same starting
+    commit and the same `--seed`, do two independent runs actually produce identical mechanical
+    records, isolating whatever *does* differ (scene prose, judgment calls) to the agent layer alone.
+  - `measure_drift.py` — whether a population's criteria/arcs/relationships are moving in a way that
+    reads as genuine drift over the run, not stalled or oscillating in place.
+  - `record_tasting.py` — records one rater's immersion-tasting scores (legibility, aliveness,
+    curiosity, specificity, 0–10 each) against a run's manifest; `.claude/skills/taste/SKILL.md`
+    (`/taste`) is the standalone command that asks the four questions, also folded inline into
+    `/simulate` Step 4 on a design-testing run so the first tasting doesn't wait for a separate
+    invocation.
+  - `simulate_token_usage.py` — reads Claude Code's own session transcript for a run's actual
+    per-turn token cost, so cost is comparable across dispatch models rather than only guessed at.
 - **`graphs/graphifyish/`** — `scripts/graphs/graphifyish.py`'s output: a standalone
   `graphifyish.html` visualizing three graphs built from the repo's own live sources of truth (never
   hand-maintained except the concept graph's shape) — the **lore** graph (NPCs, dialogues, locations,
@@ -249,7 +278,7 @@ output rather than feeding it, and aren't part of the Tier 1–3 dependency stac
 
 Skills and scripts: the process that reads Tier 1 content and shapes it into what Tier 3 ships.
 Skills are the orchestration sub-layer — repeatable procedures invoked as slash commands, each one
-answering to one shared rule stated once in `.claude/PRINCIPLES.md` rather than repeated per skill:
+answering to one shared rule stated once in `CLAUDE.md` rather than repeated per skill:
 nothing gets decided silently. Scripts (`scripts/lore/`, `scripts/minecraft/`, `scripts/graphs/`) are
 the mechanical sub-layer skills call into. Both split cleanly along the lore/Minecraft line that runs
 through the whole system: `/character` and `/enact` are lore-only and know nothing of Minecraft, with
@@ -306,24 +335,30 @@ and `/enact` still never touches either registry or `data/`. `/embody` and `/spa
     the same category — optionally credited to an in-world source (`told_by`), into `_lore/tales/` and
     `encodings.json`'s `tales` category. Real-world provenance (`responsible` — who told the system) is
     recorded separately, in `_lore/tales/_authors.md`, never in `encodings.json`.
-  - **`/simulate`** (`simulate/SKILL.md`) — batch-runs many `/enact` character-vs-character scenes
-    across an existing population, unattended, inside a dedicated git worktree (requires
+  - **`/simulate`** (`simulate/SKILL.md`) — batch-runs many `/enact`-equivalent character-vs-character
+    scenes across an existing population, unattended, inside a dedicated git worktree (requires
     `worktree.baseRef: "head"` in settings, so it branches from the current lore state rather than a
     stale `origin/<default-branch>`). For testing the enactment mechanism at scale, or producing a
     showcase trail of scenes, without risking the real files — the worktree stays on disk afterward
-    for inspection and is never merged back automatically. Lore-only, same as `/enact`, and nothing
-    but orchestration around it: `/simulate` owns pairing and batching only, none of the scene
-    mechanics itself. Every pass is one full `/enact` scene between two existing characters — its
-    own eligibility gate (Step 2) requires both to have `routines`+`arc` on file, non-negotiably; a
-    participant missing either gets flagged and pointed at `/character` rather than falling back to
-    a lesser mode. Once eligible, `/enact`'s mechanical block (Step 4) rolls a routine/location for
-    the pass, tracks each character's own `arc` (mechanical primacy/gate/outcome rolls against
-    `_lore/contexts.json`, tallied toward advance/stall/reverse/transform/resolve), and — beyond its
-    own hearsay/criterion/death machinery — adds reproduction (`roll_reproduction.py`/
-    `generate_offspring.py`, a new character file with inherited knowledge and a birth tale) and
-    death legacy (an ongoing arc transferring to someone in the deceased's notified circle).
-    Currently piloted on 6 seeded characters; whether the mechanism is actually producing good
-    results, as opposed to just running, is tracked in `LAB_REPORT.md` — see below. **`/generate`**
+    for inspection and is never merged back automatically. Lore-only, same as `/enact`. The
+    orchestrating session does every mechanical step itself, directly, script by script — pairing
+    (`pick_pair.py`), the pre-scene mechanical block (`pass_prep.py`: routine/location roll, arc
+    primacy/gate/outcome rolls against `_lore/contexts.json`, tallied toward advance/stall/reverse/
+    transform/resolve, plus the survival roll/apply) and, after the scene, every remaining write
+    (`pass_apply.py`: `update_character.py` calls, energy-death check, reproduction, death legacy) —
+    and dispatches a subagent for exactly one thing: writing the scene itself, from the mechanical
+    JSON `pass_prep.py` already produced, with no tool access of its own. Two dispatch paths for that
+    one call, chosen in Step 1: **Haiku/Sonnet/Opus** (the `Agent` tool, a Claude subagent) or
+    **Local** (`scripts/lore/enact_via_ollama.py`, a plain script call to a locally-hosted Ollama
+    model, no subagent involved) — `scripts/lore/simulate_driver.py` collapses the whole per-pass
+    loop into one call for the Local path specifically, at real token-cost savings over a
+    subagent-per-pass design. Reproduction (`roll_reproduction.py`/`generate_offspring.py`, a new
+    character file with inherited knowledge and a birth tale) and an ongoing arc's needs
+    (`suggest_arc_needs.py`, ranked by overlap with the character's own routine rather than left to
+    whichever tag is easiest to reach for) are both mechanized the same way. A run can optionally
+    pass `--seed` for reproducible, comparable runs (the isolation experiment — see the test suite
+    above); whether the mechanism is actually producing good results, as opposed to just running, is
+    tracked in `LAB_REPORT.md` — see below. **`/generate`**
     is a separate command for pregenerating a large multi-generation starting population quickly
     rather than a showcase trail of scenes: the same underlying mechanics (routines, arcs,
     reproduction, death) run as one script-driven pass loop with no scene-writing and no subagent
@@ -430,8 +465,27 @@ Provenance/
 │   │   ├── horizon.py                 (the only thing /enact may ask about a life's horizon —
 │   │   │                               answers early/established/late, plus a post-scene-only
 │   │   │                               ending: true/false, never the number)
-│   │   └── notify_death.py            (on a character's death, computes their "circle" and
-│   │                                   mechanically samples 30% of it to notify immediately)
+│   │   ├── notify_death.py            (on a character's death, computes their "circle" and
+│   │   │                               mechanically samples 30% of it to notify immediately)
+│   │   ├── enact_via_ollama.py        (/simulate's Local dispatch path — a locally-hosted Ollama
+│   │   │                               model plays one pass's scene, no Agent tool involved)
+│   │   ├── enact_preamble.md          (the fixed writing-rules preamble enact_via_ollama.py reads
+│   │   │                               fresh every call — never composed or edited per-pass)
+│   │   ├── simulate_driver.py         (collapses /simulate's whole per-pass loop into one call,
+│   │   │                               for the Local dispatch path specifically)
+│   │   ├── rng_context.py             (per-run draw-audit log every stochastic script call is
+│   │   │                               recorded into, when the run opted into a --seed)
+│   │   └── run_manifest.py            (a run's own machine-readable starting state — pool, pass
+│   │                                   count, seed if any — scripts/test/ reads this back)
+│   ├── test/                          (read-only instruments that measure a /simulate run, never
+│   │   │                               change what it produces — see §0 "Simulating and evaluating
+│   │   │                               the lore" for what each one checks)
+│   │   ├── conformance_report.py
+│   │   ├── measure_derivation.py
+│   │   ├── measure_divergence.py
+│   │   ├── measure_drift.py
+│   │   ├── record_tasting.py          (backs /taste)
+│   │   └── simulate_token_usage.py
 │   ├── graphs/                        (builds the lore/structure/concept graphs)
 │   │   ├── graphifyish.py             (writes into graphs/graphifyish/)
 │   │   └── graphifyish_template.html  (the standalone page shell graphifyish.py fills in)
