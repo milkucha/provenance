@@ -190,7 +190,7 @@ computes the signal, same discipline as every other script in this pack. Four ca
    script correctly reports `material`, ignoring the later backlinks regardless of their count.
    If `sources[]` is empty (a freshly arc-authored concept with no link yet), the script says so
    plainly — **leave `trusts`/`distrusts` blank rather than guess**, same discipline as
-   `origin: "uncollided"` elsewhere in this file. A character with no particular epistemology is
+   `derivation: "uncollided"` elsewhere in this file. A character with no particular epistemology is
    perfectly normal.
 
 **Do not derive this from which category the character holds most of, and do not use
@@ -229,7 +229,7 @@ Three hard limits:
 If no item in the sample touches the backstory, origin, or location, **do not invent a criterion and
 do not fall back to a place-level or trade-level default** — inherited criteria are a real part of the model but
 are deliberately not built yet (see `TODO.md`). Leave `criterion` blank with
-`"origin": "uncollided"`, and log the character in `TODO.md` as awaiting one. Same rule as
+`"derivation": "uncollided"`, and log the character in `TODO.md` as awaiting one. Same rule as
 `.claude/PRINCIPLES.md`: nothing gets decided silently.
 
 ## Step 5 — Roll the lifespan
@@ -364,17 +364,36 @@ Update (or create) `_lore/characters/<slug>.json`:
 - `origin` — from Step 2, if given. Where they were born/from; fixed once set.
 - `location` — where they currently are, if given (Step 2 or a later Step 2a update). Otherwise left
   blank until a scene (`/enact` Step 1) or another `/character` pass sets it.
+- `places_visited` — append-only, never overwritten or pruned. Whenever this step sets `location` to
+  a place not already in this list, add it (no-op if already present). Same accumulator `/enact`'s
+  Step 10 maintains — everywhere a character has actually been, routine and one-off visits alike.
 - `backstory` — from Step 2, appended/amended per the rule above.
 - `knowledge.education` — `{percent, mode, topic, items}` exactly as drawn in Step 3, only if this was
   a fresh draw. Otherwise leave untouched.
-- `criterion` — `{standard, wasted_life, anchor, origin, trusts, distrusts, tempered, cost_ledger,
-  history}` from Step 4, only if this was a fresh derivation. `origin` is `"derived"` (from a
+- `criterion` — `{standard, wasted_life, anchor, derivation, trusts, distrusts, tempered, cost_ledger,
+  history}` from Step 4, only if this was a fresh derivation. `derivation` is `"derived"` (from a
   collision) or `"uncollided"` (Step 4e). `trusts`/`distrusts` may legitimately be blank even on a
   derived criterion (Step 4d's ambiguous case). Otherwise leave untouched.
 - `life` — `{lived, deceased}`. `lived` starts at 0 for a new character, is backfilled from the
   hearsay record for an existing one (Step 5), and is otherwise only ever incremented by `/enact`.
   `deceased` starts `false` and is only ever set by `/enact`. **The span does not go here** — it goes
   in `_lore/characters/lifespans.json` (Step 5).
+
+**Fields this skill never authors, present in `_template.json` only to document the full shape:**
+`energy` (personal survival resource, `_lore/tuning.json`'s `survival.energy_cap` — lazily defaulted
+on first touch by `apply_survival.py`/`roll_survival.py`, template shows the cap value rather than
+`null` so a fresh character reads as "full," not "unset"), `parents` (array of the two parent keys,
+written only by `generate_offspring.py`), `partners`/`partners_quality` (keyed by the other
+character's own key — `partners[other]` a running shared-scene count, `partners_quality[other]` a
+signed running bond score — written by `record_partner.py`/`record_bond_quality.py`), and
+`social_circle` (see below). None of these are ever hand-authored here.
+
+**`social_circle`** — new (2026-09-13), an array of character keys meant to persistently track this
+character's *extended* circle (scene co-participants + backstory mentions — everyone `notify_death.py`
+currently only computes live, at the moment of death — distinct from `partners`, which is established,
+repeated-contact relationships). Meant to be kept up to date incrementally as scenes happen rather than
+only computed once at death, but **the actual update mechanism (which skill/script writes to it, and
+on what trigger) is not yet decided** — see `TODO.md`. This skill never writes to it.
 
 This skill never touches `_npcs/npcs/registry.json` — `skin`, `taterzen_uuid`, `spawn_position`,
 `display_name`, `taterzen_name` are entirely `/embody`'s and `/spawn`'s concern.
@@ -403,19 +422,21 @@ mechanism.
   backwards: `context` is the shared place-type the routine happens in, `routine_actions` is what
   *this* character actually does there). `context` must be a key already present in
   `_lore/contexts.json` — read the file fresh each time rather than trusting a remembered list, since
-  it grows by hand; as of 2026-08-28 it ships ten starter contexts (market, workshop, archive,
-  waystation, port, temple, gardens, municipality, bank, factory, tavern). Add a new one there by hand if none
+  it grows by hand; as of 2026-09-12 it ships a deliberately minimal starting set of five contexts
+  (market, temple, commons, home, route). Add a new one there by hand if none
   fits, rather than stretching an existing context to cover a place-type it doesn't describe. When
   asking the user to pick, list every context by name with a short (2-3 word) gloss of its `texture`
-  field, not the field verbatim — e.g. "workshop — hands-on making, craft" — so the question stays
-  scannable rather than reciting nine paragraphs. **`routine_actions` is a short progression of actions this specific character
+  field, not the field verbatim — e.g. "market — buying, selling, trade" — so the question stays
+  scannable rather than reciting five paragraphs (market — buying, selling, trade; temple — rites,
+  devotion, doctrine; commons — shared public space, foot traffic; home — rest, family, private
+  life; route — travel, the road between places). **`routine_actions` is a short progression of actions this specific character
   actually does within that context — not a trait or description, and not a restatement of the
   context's own generic texture** (corrected 2026-08-27 — the field was drifting toward
   identity-labels like "blacksmith, values good craft," which describes a person rather than what
   they do). For a `market` routine: *"opens the stall at dawn, greets regulars, haggles with a
-  supplier midday, closes up at dusk."* For a `workshop` routine: *"stokes the forge before first
-  light, takes custom orders through the morning, hammers out the day's work through the
-  afternoon."* Weights should sum to roughly 100. This is deliberately never auto-generated by
+  supplier midday, closes up at dusk."* For a `temple` routine: *"sweeps the sanctuary before
+  first light, receives mourners and pilgrims through the morning, settles the day's accounts
+  with the keeper at dusk."* Weights should sum to roughly 100. This is deliberately never auto-generated by
   `/simulate` itself — same discipline as `backstory` and `criterion`: authored here, consumed
   there.
 - `arc` — **authored at character creation, same discipline as `routines`, not deferred.** Seeded

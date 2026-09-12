@@ -44,9 +44,12 @@ lookup is cheap enough that recomputing it costs nothing worth caching against.
   own routine contexts provide, read from `_lore/contexts.json`'s `grounding_provides` field
   (parallel to that file's existing `provides` field, which drives arc-need matching via
   `check_needs_provides.py` — a different concern; don't conflate the two).
-- A `world_state.json` entry is known if its `location` matches one of the character's own routine
-  locations. (Once travel exists as a mechanic, this should extend to anywhere a character has
-  actually traveled — not built yet.)
+- A `world_state.json` entry is known if its `location` matches a place the character has actually
+  visited — accumulated in the character's own `places_visited` (a growing, never-shrinking record of
+  everywhere they've been, routine and one-off visits alike — see `_lore/characters/_template.json`
+  and `/enact`'s Step 10), not just their fixed `routines[].location` list. This is the minimal form
+  of travel-as-a-mechanic: a one-off visit (say, the "home vs. visiting" resolution in `/enact`) now
+  extends grounding access permanently, not just for the pass it happened in.
 
 This is deliberately **not** `sample_lore_knowledge.py`'s random-percentage draw. That sparseness
 exists on purpose, to create real gaps in social/historical knowledge. Grounding is the opposite
@@ -78,8 +81,7 @@ in-fiction meaning.
 
 ## Grounding on record
 
-See `_authors.md` for the full list. As of this writing: 63 `mechanics.json` entries (an
-exhaustive-but-lean pass over vanilla Minecraft 1.20.1, added 2026-08-26/27 — expand by hand as new
-routine contexts need mechanics content they don't have yet, and see `TODO.md` for the deferred
-mod-content question), 0 `world_state.json` entries (waiting on the external pipeline's first
-delivery).
+See `_authors.md` for the full list. As of this writing: 0 `mechanics.json` entries and
+0 `world_state.json` entries — both cleared ahead of a fresh design pass on the grounding mechanism.
+`mechanics.json` awaits a new hand-authored pass; `world_state.json` is waiting on the external
+pipeline's first delivery, as before.

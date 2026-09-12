@@ -169,15 +169,15 @@
       "sources": [
         {
           "category": "tale",
-          "origin": "salthos_cruzados"
+          "document": "salthos_cruzados"
         },
         {
           "category": "tale",
-          "origin": "forliamus_log_crossing_war"
+          "document": "forliamus_log_crossing_war"
         },
         {
           "category": "tale",
-          "origin": "gorff_ledger_crossing_war"
+          "document": "gorff_ledger_crossing_war"
         }
       ]
     },
@@ -191,11 +191,11 @@
       "sources": [
         {
           "category": "tale",
-          "origin": "terfila"
+          "document": "terfila"
         },
         {
           "category": "tale",
-          "origin": "forliamus_log_crossing_war"
+          "document": "forliamus_log_crossing_war"
         }
       ]
     },
@@ -209,11 +209,11 @@
       "sources": [
         {
           "category": "tale",
-          "origin": "gorff"
+          "document": "gorff"
         },
         {
           "category": "tale",
-          "origin": "gorff_ledger_crossing_war"
+          "document": "gorff_ledger_crossing_war"
         }
       ]
     }
@@ -246,11 +246,11 @@
       "sources": [
         {
           "category": "tale",
-          "origin": "gorff_ledger_crossing_war"
+          "document": "gorff_ledger_crossing_war"
         },
         {
           "category": "tale",
-          "origin": "forliamus_log_crossing_war"
+          "document": "forliamus_log_crossing_war"
         }
       ]
     },
@@ -264,15 +264,15 @@
       "sources": [
         {
           "category": "tale",
-          "origin": "gorff_ledger_crossing_war"
+          "document": "gorff_ledger_crossing_war"
         },
         {
           "category": "tale",
-          "origin": "forliamus_log_crossing_war"
+          "document": "forliamus_log_crossing_war"
         },
         {
           "category": "tale",
-          "origin": "salthos_cruzados"
+          "document": "salthos_cruzados"
         }
       ]
     },
@@ -286,15 +286,15 @@
       "sources": [
         {
           "category": "tale",
-          "origin": "gorff_ledger_crossing_war"
+          "document": "gorff_ledger_crossing_war"
         },
         {
           "category": "tale",
-          "origin": "forliamus_log_crossing_war"
+          "document": "forliamus_log_crossing_war"
         },
         {
           "category": "tale",
-          "origin": "salthos_cruzados"
+          "document": "salthos_cruzados"
         }
       ]
     },
@@ -308,7 +308,7 @@
       "sources": [
         {
           "category": "tale",
-          "origin": "crossing_market_roof"
+          "document": "crossing_market_roof"
         }
       ]
     },
@@ -322,7 +322,7 @@
       "sources": [
         {
           "category": "tale",
-          "origin": "toll_ledger_arrears"
+          "document": "toll_ledger_arrears"
         }
       ]
     },
@@ -336,7 +336,7 @@
       "sources": [
         {
           "category": "tale",
-          "origin": "forliamus_betrothal_offer"
+          "document": "forliamus_betrothal_offer"
         }
       ]
     },

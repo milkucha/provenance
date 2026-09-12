@@ -128,7 +128,7 @@
     "standard": "counts a life well spent only by making Forliamus Log Crossing War their own concern",
     "wasted_life": "treating Forliamus Log Crossing War as someone else's concern",
     "anchor": "tale: forliamus_log_crossing_war",
-    "origin": "derived",
+    "derivation": "derived",
     "trusts": "a story that's been carried and retold and still holds together",
     "distrusts": "a record that insists on a precision no one who was actually there ever needed"
   },

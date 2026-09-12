@@ -60,7 +60,6 @@ def print_facts(facts: list[dict]) -> None:
         print(f"  {fact['text']}")
         print(f"  Known: {'; '.join(fact.get('known', []))}")
         print(f"  Withheld: {'; '.join(fact.get('withheld', []))}")
-        print(f"  Effects: {'; '.join(fact.get('effects', []))}")
         print()
 
 
@@ -84,27 +83,13 @@ def _normalize_field(value):
 def _flatten_list(data: dict, cat_key: str, spec: dict, add) -> None:
     """Default shape: a flat list of dicts at `spec['path']`, identified by `spec['id_field']`,
     pool text built by joining `spec['text_fields']`. Covers every category added so far except the
-    two special-cased below."""
+    one special-cased below."""
     id_field = spec["id_field"]
     for entry in _get_path(data, spec["path"]):
         item_id = entry[id_field]
         if not isinstance(item_id, str):
             item_id = str(item_id)
         add(cat_key, item_id, *(_normalize_field(entry.get(f)) for f in spec["text_fields"]))
-
-
-def _flatten_grouped_list(data: dict, cat_key: str, spec: dict, add) -> None:
-    """Special-cased: characters.named_inhabitants.by_locality - a dict keyed by locality, values are
-    lists of bare strings or small {name, role/route} dicts. Not a flat list, so it can't use the
-    default handler."""
-    for locality, people in _get_path(data, spec["path"]).items():
-        for p in people:
-            if isinstance(p, str):
-                name, role = p, ""
-            else:
-                name = p.get("name") or f"the {p.get('role', 'unnamed')}"
-                role = str(p.get("role") or p.get("route") or "")
-            add(cat_key, f"{name} ({locality})", name, locality, role)
 
 
 def _flatten_claims(data: dict, cat_key: str, spec: dict, add) -> None:
@@ -119,7 +104,6 @@ def _flatten_claims(data: dict, cat_key: str, spec: dict, add) -> None:
 
 SHAPE_HANDLERS = {
     "list": _flatten_list,
-    "grouped_list": _flatten_grouped_list,
     "claims": _flatten_claims,
 }
 

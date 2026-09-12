@@ -104,7 +104,7 @@ TALES_METHOD_NOTE = (
     "like a material-file abbreviation - never by overwriting an existing entry. A genuine "
     "disagreement with something already on record gets a new 'conflicts' entry, 'user_resolution' "
     "left unset. Populated by the /tell skill (.claude/skills/tell/SKILL.md). Each entry here is a "
-    "manifest of one tale, not a duplicate of its content: 'touches' lists every id (in any category "
+    "manifest of one tale, not a duplicate of its content: 'about' lists every id (in any category "
     "above, including 'conflicts') this tale added or amended - the full text lives in "
     "_lore/tales/<id>.md. 'told_by' (nullable) names who is credited IN-FICTION with this tale, if "
     "it's framed that way."
@@ -183,7 +183,7 @@ existing entry is ever overwritten to make room for a tale.
 
 Populated by the `/tell` skill (`.claude/skills/tell/SKILL.md`). One file per tale, named for its
 slug (`<slug>.md`). Every tale also gets an entry in `encodings.json`'s `tales.entries[]` array — see
-that array's own `_method_note` for the exact shape and what `touches` means.
+that array's own `_method_note` for the exact shape and what `about` means.
 
 Every tale distinguishes two different provenance questions. **`told_by`** (optional, lives in
 `encodings.json` — it's lore, and can be sampled) is who is credited *in-fiction* with this telling, if
@@ -193,7 +193,7 @@ never in `encodings.json`) is which *real-world user* told the system this tale,
 
 ## Tales on record
 
-| Told | Title | Told by | Responsible | File | Touches |
+| Told | Title | Told by | Responsible | File | About |
 |---|---|---|---|---|---|
 """
 

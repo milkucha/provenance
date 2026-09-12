@@ -67,7 +67,7 @@ TALES_DIR = ROOT / "_lore" / "tales"
 
 sys.path.insert(0, str(SCRIPTS_DIR))
 import simulate_pass_lib as lib  # noqa: E402
-import wealth_lib  # noqa: E402
+import provisions_lib  # noqa: E402
 from check_needs_provides import significant_words  # noqa: E402
 
 
@@ -222,12 +222,12 @@ def run_pre_scene(p1: str, p2: str, pass_number: int, forced_visit: bool = False
     # Needs/provides - keyed to the primacy winner's own arc, whichever participant that is. Gated
     # two ways now: the primacy winner must have actually chosen "arc" this pass (choosing survive
     # means nothing about their arc advances, win or lose the primacy coin flip), and the location
-    # must be able to afford to provide at all (wealth_per_capita >= provides_wealth_threshold) -
+    # must be able to afford to provide at all (provisions_per_capita >= provides_provisions_threshold) -
     # a starved location can't support anyone's ambition, regardless of context match.
     motivated, matched_need, matched_provide = False, None, None
     if (arc and arc.get("resolution") == "ongoing" and arc.get("needs")
             and primacy_survival_choice == "arc"
-            and wealth_lib.wealth_per_capita(location) >= lib.SURVIVAL["provides_wealth_threshold"]):
+            and provisions_lib.provisions_per_capita(location) >= lib.SURVIVAL["provides_provisions_threshold"]):
         np_res = lib.check_needs_provides(arc["needs"], provides)
         motivated = np_res["match"] == "true"
         if motivated:

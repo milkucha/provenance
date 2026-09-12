@@ -119,8 +119,8 @@ same first-time-only discipline as `education`:
   backstory/origin/location, pick a refutable anchor, derive negatively from "what would this
   character consider a wasted life?", then derive `trusts`/`distrusts` from the anchor's category per
   Step 4d). If it's already set, **use it as-is** — never re-derive on a later run. If nothing
-  collides, leave it blank with `"origin": "uncollided"` (that's `criterion.origin`, unrelated to the
-  character-level `origin` field) and log it in `TODO.md`; do not invent one and do not fall back to a
+  collides, leave it blank with `"derivation": "uncollided"` (that's `criterion.derivation`, unrelated
+  to the character-level `origin` field) and log it in `TODO.md`; do not invent one and do not fall back to a
   place default (`/character` Step 4e).
 - **Lifespan.** If the character has no entry in `_lore/characters/lifespans.json`, roll it now per
   `/character` **Step 5**. If they do, never reroll.
@@ -215,7 +215,7 @@ This one call runs, in order (causal order rewritten 2026-08-28 design debrief �
 matching entry for the full reasoning): partner tracking (both directions, unconditional bookkeeping
 the moment the pair is fixed — moved to the front; has nothing to do with anything decided below),
 **survival** (`roll_survival.py`, one independent roll per participant, against each one's own home
-`location` — survive (work, replenish personal energy, feed the local wealth pool) or pursue their
+`location` — survive (work, replenish personal energy, feed the local provisions pool) or pursue their
 arc (extra personal cost, draws the pool instead) — see `TODO.md`'s "Survival mechanism" entry for
 the full math; energy and pool effects are applied once the pass's actual location is known, a few
 steps below), who's home vs visiting (`roll_home_visit.py` — **skewed by the survival choice just
@@ -235,8 +235,8 @@ above — choosing to survive means nothing about that character's arc moves thi
 primacy coin flip; losing primacy despite having chosen "arc" still costs the full energy/pool price,
 deliberately — a real gamble, not wasted bookkeeping), the needs/provides motivation check (keyed to
 the **arc-primacy winner's** own arc, whichever participant that is — not "the traveler's" as a fixed
-role — and now also gated on the resolved location's wealth: `wealth_per_capita` must clear
-`provides_wealth_threshold`, or a starved location can't support anyone's ambition regardless of
+role — and now also gated on the resolved location's provisions: `provisions_per_capita` must clear
+`provides_provisions_threshold`, or a starved location can't support anyone's ambition regardless of
 context match), the contested roll (only if
 motivated; base odds 15%, `_lore/tuning.json` `odds_percent.contested` — **relationship-aware as of
 2026-08-28**: once the peer's own established tie to the primacy winner crosses `partner_threshold`
@@ -699,6 +699,12 @@ here, since a fresh JSON write could clobber what those calls just did. What's l
   the scene actually put the character, same as `city` used to — it's the *current* half of the
   origin/location split (`/character` owns `origin`, the fixed birthplace; this skill only ever
   touches `location`).
+- `places_visited` — append-only, never overwritten or pruned. Whenever this step sets `location` to
+  a place not already in this list, add it (no-op if it's already there). This is the accumulated-
+  over-a-lifetime record of everywhere a character has actually been — routine locations and one-off
+  visits alike (the "home vs. visiting" mechanic in Step 5 can put a visiting participant somewhere
+  that's neither their own nor the other participant's routine location; that counts too) — distinct
+  from `routines[].location`, which stays a fixed, curated list rather than a growing history.
 - `backstory` — the backstory from Step 1/2, or `""` if none was given. Experience-knowledge,
   conceptually (see the intro), but its own top-level field. For a returning character, only append
   or amend this if the user gives *new* backstory in this run (as with Döran's added hologram/pedestal

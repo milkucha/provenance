@@ -1,6 +1,6 @@
 """
 Apply a survive/arc choice already decided by roll_survival.py - writes the character's own energy
-delta and the resolved location's wealth-pool delta, and reports whether this character just died of
+delta and the resolved location's provisions-pool delta, and reports whether this character just died of
 exhaustion. Split from the roll itself because the roll runs against a character's own HOME location
 (before this pass's actual location is known), while the cost has to land on wherever the scene
 actually resolved to - see roll_survival.py's own docstring.
@@ -49,7 +49,7 @@ CHAR_DIR = ROOT / "_lore" / "characters"
 
 sys.path.insert(0, str(SCRIPTS_DIR))
 import tuning  # noqa: E402
-import wealth_lib  # noqa: E402
+import provisions_lib  # noqa: E402
 
 _S = tuning.load()["survival"]
 
@@ -69,7 +69,7 @@ def main() -> None:
         character = json.load(f)
 
     energy = character.get("energy", _S["energy_cap"])
-    pool = wealth_lib.get_wealth(args.location)
+    pool = provisions_lib.get_provisions(args.location)
 
     energy -= _S["base_cost"]
 
@@ -91,7 +91,7 @@ def main() -> None:
     with open(char_path, "w", encoding="utf-8") as f:
         json.dump(character, f, indent=2, ensure_ascii=False)
         f.write("\n")
-    wealth_lib.set_wealth(args.location, pool)
+    provisions_lib.set_provisions(args.location, pool)
 
     died = energy <= 0
     print(f"energy: {energy}")

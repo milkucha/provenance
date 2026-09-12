@@ -3,6 +3,13 @@
 Open implementation decisions and work, deferred for later. This is a build/production backlog —
 open questions about the lore itself live in `_lore/unknowns.md`, not here.
 
+## `social_circle` update mechanism not yet decided (raised 2026-09-13, not built)
+
+`_lore/characters/_template.json` now carries a persistent `social_circle` field (extended circle —
+scene co-participants + backstory mentions, distinct from `partners`/`parents`), but nothing writes to
+it yet. Follow-up design pass needed: which skill/script updates it, and on what trigger (every
+`/enact` Step 10? a dedicated script run at batch end?) — deliberately left open here, not decided.
+
 ## Machine-generated seeds, as a control for isolating engine quality from seed quality (raised 2026-09-12, not built)
 
 Every seed the engine has grown from so far is hand-authored — twelve years of the user's own
@@ -122,12 +129,48 @@ only.
   checking against concrete `mechanics.json` instances) — both are about making arc resolution
   mechanically specific instead of abstractly semantic.
 
+## Personal provisions and inheritance economy (design discussion 2026-09-12/13, not built)
+
+The "Survival mechanism" entry below only has a *communal* provisions pool, one per location. Today's
+design conversation sketched a second scope for the same resource: a character can ALSO hold a
+**personal** provisions reserve. Not a second resource requiring its own naming scheme — that
+collision (two genuinely different things sharing one word) is exactly the kind Task 1's wealth→
+provisions rename this session was trying to avoid; this is the same substance held at a different
+scope, so scope-qualified names (personal vs. communal/pool) carry the distinction instead of a new noun.
+
+- **Earned by completing an arc**, not by routine survival — arcs could plausibly both cost and grant
+  provisions on resolution, not designed yet, needs its own pass once this lands.
+- **Inheritance:** a character's personal reserve (or some portion of it) passes to their children at
+  birth, via `generate_offspring.py` — the same shape of seeding it already does for a newborn's
+  `places_visited`, just for a number instead of a list. A wealthy parent's children start more
+  independent of needing to draw from the communal pool, which is the whole point of building this as
+  inheritance rather than a flat per-birth grant.
+- **Mechanism sketch:** when a character chooses to "eat" (the existing `survive`-choice universal
+  eating step in `apply_survival.py`), they'd draw from EITHER their personal reserve OR the location's
+  communal pool — personal first falling back to communal, or some other priority, not decided. A
+  character with a healthy personal reserve becomes less dependent on the health of wherever they
+  happen to be standing, which is the mechanical form Bourdieu's capital conversion takes here.
+- **The Bourdieu framing**, raised in the same conversation and worth keeping as the organizing lens
+  for arc-economy work going forward, not just color: this models three capital types. Cultural capital
+  (`knowledge.education`/`experience` — already built, gates arc possibilities and travel reach).
+  Social capital (`partners`/circle plus travel-through-known-people — partially built; "travel to
+  where you know someone" is sketched in the Travel system entry above, and a persistent,
+  continuously-updating `social_circle` character field was also proposed the same day, neither built
+  yet). Economic capital (this personal-provisions system — not built at all). All three should read as
+  one structure, not three unrelated mechanics.
+- **Related but separate, don't conflate:** `/simulate`'s character-pairing (who gets scened with whom
+  each pass) is effectively random today; the same conversation raised weighting it by characters' own
+  arc-pursuit calculations instead — a real design point, but its own follow-up, not solved here.
+- **Sequencing:** depends on Task 1's wealth→provisions rename (this same session) landing first — this
+  is the natural next layer on top of the communal mechanism, not a replacement for it, and needs the
+  renamed field names to build against.
+
 ## Survival mechanism (designed and built 2026-08-28, on `survival-arc-test` — not yet merged/tested at scale)
 
 Every character now has personal `energy` (`_lore/tuning.json`'s `survival.energy_cap`, default 5;
 lazily defaulted on first touch, same as `routines`/`arc`/`partners` before it — not backfilled into
-every character file). Every location has a `wealth` pool in the new `_lore/wealth.json`, seeded at
-`starting_wealth_per_capita × population` the first time it's read. Full mechanism:
+every character file). Every location has a `provisions` pool in the new `_lore/provisions.json`, seeded at
+`starting_provisions_per_capita × population` the first time it's read. Full mechanism:
 
 - Each pass, only the two drawn participants resolve **survive** or **arc** (`roll_survival.py`,
   rolled against each one's own home `location`, before `roll_home_visit.py` even runs — matches the
@@ -139,7 +182,7 @@ every character file). Every location has a `wealth` pool in the new `_lore/weal
   `apply_survival.py` applies both, at the pass's RESOLVED location (which may differ from either
   participant's home), once `roll_home_visit.py` has decided where the scene actually happens.
 - **`provides` gate, live in `simulate_pass_brief.py`/`simulate_generate_population.py`:**
-  `wealth_per_capita ≥ provides_wealth_threshold` (2) before the needs/provides check even runs;
+  `provisions_per_capita ≥ provides_provisions_threshold` (2) before the needs/provides check even runs;
   below it, no bonus regardless of context match.
 - **The survive/arc roll is a percentage-point shift off a 50/50 base** (`roll_survival.py`) — same
   unit and clamp [2, 95] every other roll in this pipeline already uses (`roll_contested.py` is the
@@ -168,14 +211,14 @@ every character file). Every location has a `wealth` pool in the new `_lore/weal
   mechanical fact stays separate from acting on it).
 - **Not yet exercised at any real scale** — verified end-to-end against a handful of manual
   `simulate_pass_brief.py`/`simulate_generate_population.py` calls on the real Tyrnea cast (a
-  starvation death fired correctly, tale written, `life.deceased` set, arc-gating and the wealth
+  starvation death fired correctly, tale written, `life.deceased` set, arc-gating and the provisions
   threshold both behaved as designed), then all test-mutated character/lore data was reverted before
   committing. A real multi-hundred-pass run, and actual tuning of the weights/thresholds/costs
   (everything above is a first guess, explicitly flagged as such throughout the design conversation),
   is still ahead.
 
 **Round-2 debrief (2026-08-29, 50 passes, 0 deaths, 2 births) — retuned and extended:**
-- **Wealth pool went deeply negative (-350.5) with zero mechanical consequence** — `apply_survival.py`
+- **Provisions pool went deeply negative (-350.5) with zero mechanical consequence** — `apply_survival.py`
   let `arc` draws take the pool arbitrarily negative, and `apply_upkeep.py`'s per-capita drain
   (`population_of()` counts every living character registered at the location, not just the active
   cast — 13 at Tyrnea, not 10) ran unconditionally every pass regardless of anyone's choices. Root
@@ -191,8 +234,8 @@ every character file). Every location has a `wealth` pool in the new `_lore/weal
   change) — the town having nothing left to give is now a real, felt, in-fiction consequence, per
   the user's own framing: "if there's nothing in the town, they pay with their own life."
 - **New anticipation input, `scarcity_pressure`** (weight 15) — `roll_survival.py` now also skews on
-  whether the pool's per-capita wealth has been *declining* since `apply_upkeep.py`'s last checkpoint
-  for that location (`wealth_lib.wealth_trend()`/`checkpoint_wealth_trend()`), not just its current
+  whether the pool's per-capita provisions has been *declining* since `apply_upkeep.py`'s last checkpoint
+  for that location (`provisions_lib.provisions_trend()`/`checkpoint_provisions_trend()`), not just its current
   level — lets characters anticipate trouble ahead instead of only reacting to it. Deliberately
   one-directional: a worsening trend pushes toward "survive," a recovering one applies no extra pull
   toward "arc."
@@ -1047,7 +1090,7 @@ loading, in-scene modulation, and Step 5b shock/drift resolution. Still open:
       backstory and drift slowly with `knowledge.experience` (the working split: knowledge changes
       your criterion, experience changes your temperament).
 - [ ] **Inherited criteria (place/trade fallback).** `/character` Step 4e currently leaves
-      `criterion` blank with `"origin": "uncollided"` when nothing in the sample touches the
+      `criterion` blank with `"derivation": "uncollided"` when nothing in the sample touches the
       backstory, origin, or location, because the fallback implies giving every place (and trade) its
       own ambient criterion. Pinned by the user on 2026-07-31. Worth building — it's what produces shared
       culture rather than a hundred idiosyncratic philosophies, and it's the common case for

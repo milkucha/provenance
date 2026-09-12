@@ -35,8 +35,8 @@ Recording a synthesis (Step 9 point 8, one call per synthesis - call again for a
 same scene, since --add-synthesis only takes one --about pair and one --text per call):
 
     py scripts/lore/update_character.py nerkeli \\
-        --add-synthesis --about "highway: M7" --about "character_legendary: navalius" \\
-        --text "If M7 always ends where Nuvilo's family says they're from, then all these years turning around at the airstrip, I've been skipping past the one place that might matter most to him."
+        --add-synthesis --about "route: coastal_road" --about "character: navalius" \\
+        --text "If the coastal road always ends where Nuvilo's family says they're from, then all these years turning around short of it, I've been skipping past the one place that might matter most to him."
 
 Recording a knowledge.experience entry that has a matching hearsay claim (Step 6 - reuse that
 claim's `about` ref rather than writing a plain string, so check_resonance.py can find it later; one
@@ -129,7 +129,7 @@ def main() -> None:
 
     if args.criterion_move:
         criterion = character.setdefault("criterion", {
-            "standard": "", "wasted_life": "", "anchor": "", "origin": "",
+            "standard": "", "wasted_life": "", "anchor": "", "derivation": "",
             "trusts": "", "distrusts": "", "tempered": 0, "cost_ledger": [], "history": [],
         })
         move_label = _MOVE_LABELS[args.criterion_move]

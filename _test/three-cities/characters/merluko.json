@@ -113,7 +113,7 @@
     "standard": "counts the arrears actually paid above another season of 'the count's been difficult'",
     "wasted_life": "the same forge going short again, not from a blockade this time but from money that's owed and simply isn't arriving",
     "anchor": "concept: toll_ledger_arrears",
-    "origin": "collision between his backstory (a smith who went short of iron for years during the old blockade) and the sample's own toll_ledger_arrears (Gorff's own money going unpaid again, for a different reason)",
+    "derivation": "collision between his backstory (a smith who went short of iron for years during the old blockade) and the sample's own toll_ledger_arrears (Gorff's own money going unpaid again, for a different reason)",
     "trusts": "a story that's been carried and retold and still holds together",
     "distrusts": "a record that insists on a precision no one who was actually there ever needed",
     "tempered": 0,

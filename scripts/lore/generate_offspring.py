@@ -22,7 +22,7 @@ What's inherited and how:
   `derive_criterion_mechanical()` picks a random item from whatever collides as the anchor and
   composes `wasted_life`/`standard` from a template keyed to it, and `trusts`/`distrusts` come from
   `anchor_epistemology.py`'s real provenance signal (imported directly, not shelled out to) exactly
-  as Step 4d prescribes. `origin` is `"derived"` when something collided, `"uncollided"` (blank
+  as Step 4d prescribes. `derivation` is `"derived"` when something collided, `"uncollided"` (blank
   standard/wasted_life/trusts/distrusts) when nothing did - same two values Step 4 itself uses, not
   a third "inherited" value anymore. An internal-only coin-flipped `skew_criterion` (not persisted)
   still exists solely to weight the general-knowledge draw below, same as the old inherited criterion
@@ -578,7 +578,7 @@ def derive_criterion_mechanical(items: list, backstory: str, location: str, pool
     base = {"tempered": 0, "cost_ledger": [], "history": []}
     collision_pool = find_collision_items(items, backstory, location, pool_text)
     if not collision_pool:
-        return {**base, "standard": "", "wasted_life": "", "anchor": "", "origin": "uncollided", "trusts": "", "distrusts": ""}
+        return {**base, "standard": "", "wasted_life": "", "anchor": "", "derivation": "uncollided", "trusts": "", "distrusts": ""}
 
     anchor = random.choice(collision_pool)
     anchor_text = truncate_fragment(humanize_tag(anchor))
@@ -592,7 +592,7 @@ def derive_criterion_mechanical(items: list, backstory: str, location: str, pool
         "standard": standard_t.format(a=anchor_text),
         "wasted_life": wasted_life_t.format(a=anchor_text),
         "anchor": anchor,
-        "origin": "derived",
+        "derivation": "derived",
         "trusts": trusts,
         "distrusts": distrusts,
     }
@@ -679,6 +679,7 @@ def main() -> None:
         "name": args.name,
         "origin": origin,
         "location": location,
+        "places_visited": [location] if location else [],
         "backstory": backstory,
         "knowledge": {
             "education": {

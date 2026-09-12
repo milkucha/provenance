@@ -21,9 +21,10 @@ obviously know or have seen given where they actually spend their time:
   entry is known only if it's tagged with something the character's own routine contexts provide,
   read from _lore/contexts.json's `grounding_provides` (a separate field from that file's existing
   `provides`, which drives arc-need matching via check_needs_provides.py - a different concern).
-- world_state.json: an entry is known if its `location` matches one of the character's own routine
-  locations. (Once travel exists as a mechanic, this should also include anywhere the character has
-  actually traveled to - not built yet, see TODO.md.)
+- world_state.json: an entry is known if its `location` matches a place the character has actually
+  visited - accumulated in `places_visited` (routine locations and one-off visits alike, see
+  _lore/characters/_template.json and /enact's Step 10), not just the fixed `routines[].location`
+  list.
 
 Usage:
     python scripts/lore/sample_grounding.py --character khaoe
@@ -57,7 +58,13 @@ def main() -> None:
     routines = character.get("routines", [])
 
     context_keys = {r["context"] for r in routines if "context" in r}
-    locations = {r["location"] for r in routines if "location" in r}
+    routine_locations = {r["location"] for r in routines if "location" in r}
+    # places_visited accumulates over a character's life (routine locations and one-off visits
+    # alike, per _lore/characters/_template.json and /enact Step 10) - lazily defaulted to empty
+    # for a character file that predates this field. Routine locations are folded in here too
+    # rather than trusted to already be present, since not every write path is guaranteed to have
+    # kept places_visited in sync.
+    locations = set(character.get("places_visited", [])) | routine_locations
 
     contexts = load_json(CONTEXTS_PATH)
     provides: set[str] = set()
@@ -79,7 +86,7 @@ def main() -> None:
 
     print(f"Grounding for {args.character}:")
     print(f"  Routine contexts: {sorted(context_keys) or '(none)'}")
-    print(f"  Routine locations: {sorted(locations) or '(none)'}")
+    print(f"  Places visited (routine + one-off): {sorted(locations) or '(none)'}")
     print(f"  Grounding-provides tags in scope: {sorted(provides) or '(none)'}")
     print()
     print(f"Mechanics known ({len(known_mechanics)} of {len(mechanics)}):")

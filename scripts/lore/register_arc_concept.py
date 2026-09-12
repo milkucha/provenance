@@ -12,7 +12,7 @@ concept tag rather than minting a new one) - never overwrites an existing entry.
 Deliberately writes `sources: []` - this script only registers that the concept EXISTS; it never
 decides which hearsay claims are about it. That linking is build_source_index.py's own job, and
 running it is what keeps every new entry's provenance honestly hearsay-tagged
-({"category": "hearsay", "origin": "<id>#<n>"}) rather than silently implying material-source
+({"category": "hearsay", "document": "<id>#<n>"}) rather than silently implying material-source
 confirmation it doesn't have.
 
 Usage:

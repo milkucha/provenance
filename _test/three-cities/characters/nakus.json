@@ -110,7 +110,7 @@
     "standard": "counts a ledger that actually reconciles above one more season of the count 'being difficult'",
     "wasted_life": "keeping a record honest enough to survive a lawsuit, while an actual shortfall sits unremarked three years running because nobody's asked outright",
     "anchor": "concept: toll_ledger_arrears",
-    "origin": "collision between his backstory (clerk who records every dispute brought to the crossing) and the sample's own toll_ledger_arrears (a live, unreconciled shortfall in Gorff's own payments)",
+    "derivation": "collision between his backstory (clerk who records every dispute brought to the crossing) and the sample's own toll_ledger_arrears (a live, unreconciled shortfall in Gorff's own payments)",
     "trusts": "a story that's been carried and retold and still holds together",
     "distrusts": "a record that insists on a precision no one who was actually there ever needed",
     "tempered": 0,

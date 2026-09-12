@@ -72,7 +72,7 @@
     "standard": "counts a roof actually standing above one more season of patched stalls and stalled petitions",
     "wasted_life": "letting the temple work absorb every scrap of coin and timber while the market stalls rot under the same rain, season after season",
     "anchor": "concept: crossing_market_roof",
-    "origin": "collision between his backstory (a mason patching the crossing temple) and the sample's own crossing_market_roof (a second, competing structural project at the same crossing)",
+    "derivation": "collision between his backstory (a mason patching the crossing temple) and the sample's own crossing_market_roof (a second, competing structural project at the same crossing)",
     "trusts": "a story that's been carried and retold and still holds together",
     "distrusts": "a record that insists on a precision no one who was actually there ever needed",
     "tempered": 0,

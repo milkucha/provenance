@@ -102,7 +102,7 @@
     "standard": "measures a life by whether Birth Of Nieragus is still remembered rightly",
     "wasted_life": "forgetting what Birth Of Nieragus actually meant, the way most people already have",
     "anchor": "tale: birth_of_nieragus",
-    "origin": "derived",
+    "derivation": "derived",
     "trusts": "a story that's been carried and retold and still holds together",
     "distrusts": "a record that insists on a precision no one who was actually there ever needed"
   },

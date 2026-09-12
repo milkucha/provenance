@@ -84,7 +84,7 @@
     "standard": "counts a life well spent only if it stayed close to CONFLICT-03",
     "wasted_life": "a life spent never once engaging with CONFLICT-03",
     "anchor": "conflict: CONFLICT-03",
-    "origin": "derived",
+    "derivation": "derived",
     "trusts": "verification",
     "distrusts": "anyone who sounds certain"
   },

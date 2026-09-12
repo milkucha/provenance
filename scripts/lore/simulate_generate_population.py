@@ -74,7 +74,7 @@ LOG_PATH = ROOT / "GENERATION_LOG.md"
 sys.path.insert(0, str(SCRIPTS_DIR))
 import simulate_pass_lib as lib  # noqa: E402
 import simulate_pass_reproduction as repro_lib  # noqa: E402
-import wealth_lib  # noqa: E402
+import provisions_lib  # noqa: E402
 import rng_context  # noqa: E402
 import run_manifest  # noqa: E402
 
@@ -245,7 +245,7 @@ def run_pass(state: State, pass_number: int) -> str:
     motivated, contested = False, False
     if (arc and arc.get("resolution") == "ongoing" and arc.get("needs")
             and primacy_survival_choice == "arc"
-            and wealth_lib.wealth_per_capita(location) >= SURVIVAL["provides_wealth_threshold"]):
+            and provisions_lib.provisions_per_capita(location) >= SURVIVAL["provides_provisions_threshold"]):
         np_res = check_needs_provides(arc["needs"], provides)
         motivated = np_res["match"] == "true"
     elif arc and arc.get("resolution") == "ongoing" and primacy_survival_choice != "arc":

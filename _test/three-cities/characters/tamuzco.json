@@ -154,7 +154,7 @@
     "standard": "counts it worthwhile only by paying real attention to CONFLICT-02",
     "wasted_life": "letting CONFLICT-02 slip past unexamined, the way it's easiest to",
     "anchor": "conflict: CONFLICT-02",
-    "origin": "derived",
+    "derivation": "derived",
     "trusts": "verification",
     "distrusts": "anyone who sounds certain"
   },

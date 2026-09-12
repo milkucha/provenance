@@ -2,6 +2,7 @@
   "name": "",
   "origin": "",
   "location": "",
+  "places_visited": [],
   "backstory": "",
   "knowledge": {
     "education": {
@@ -16,7 +17,7 @@
     "standard": "",
     "wasted_life": "",
     "anchor": "",
-    "origin": "",
+    "derivation": "",
     "trusts": "",
     "distrusts": "",
     "tempered": 0,
@@ -26,5 +27,19 @@
   "life": {
     "lived": 0,
     "deceased": false
+  },
+  "energy": 20,
+  "parents": [],
+  "partners": {},
+  "partners_quality": {},
+  "social_circle": [],
+  "routines": [],
+  "arc": {
+    "about": [],
+    "needs": [],
+    "context": "",
+    "premise": "",
+    "resolution": "ongoing",
+    "history": []
   }
 }

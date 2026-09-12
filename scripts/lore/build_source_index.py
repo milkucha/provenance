@@ -8,13 +8,13 @@ Two things happen, both purely mechanical - this script never decides what a cla
 only where an already-written `about` reference resolves to:
 
 1. Migration: every entry's old flat `sources: ["ensayo_i (...)", ...]` shape becomes
-   `sources: [{"category": "material", "origin": "ensayo_i (...)"}, ...]` - a literal wrap, no
+   `sources: [{"category": "material", "document": "ensayo_i (...)"}, ...]` - a literal wrap, no
    parsing, so nothing is lost or misparsed (some source strings, e.g. screenshot provenance notes,
    don't follow a clean "doc (detail)" pattern and can't be split apart reliably).
 
 2. Cross-linking: every `hearsay.entries[].claims[].about` and `tales.entries[].about` reference
    that resolves to one of the sourced categories gets folded into that node's `sources` list as
-   `{"category": "hearsay"/"tale", "origin": "<hearsay_id>#<claim_n>" / "<tale_id>"}`.
+   `{"category": "hearsay"/"tale", "document": "<hearsay_id>#<claim_n>" / "<tale_id>"}`.
    - An EXACT match (against the entry's `id` or any of its `names[]`, accent/case/underscore-
      insensitive) is linked directly.
    - A NEAR match (difflib ratio >= 0.77, compared only within one category at a time - never a
@@ -109,7 +109,7 @@ def migrate_sources(categories: dict, report: dict) -> None:
             migrated = []
             for s in sources:
                 if isinstance(s, str):
-                    migrated.append({"category": "material", "origin": s})
+                    migrated.append({"category": "material", "document": s})
                     report["migrated"] += 1
                 else:
                     migrated.append(s)  # already migrated, idempotent rerun
@@ -215,12 +215,12 @@ def next_conflict_id(data: dict) -> str:
     return f"CONFLICT-{max(nums) + 1 if nums else 1}"
 
 
-def attach_source(entry: dict, category: str, origin: str) -> bool:
+def attach_source(entry: dict, category: str, document: str) -> bool:
     entry.setdefault("sources", [])
     for s in entry["sources"]:
-        if isinstance(s, dict) and s.get("category") == category and s.get("origin") == origin:
+        if isinstance(s, dict) and s.get("category") == category and s.get("document") == document:
             return False  # already attached, idempotent rerun
-    entry["sources"].append({"category": category, "origin": origin})
+    entry["sources"].append({"category": category, "document": document})
     return True
 
 
@@ -312,7 +312,7 @@ def resolve_ref(raw: str, index: list, other_known: set, hearsay_ids: set, sourc
 
 
 def process_refs(data: dict, index: list, other_known: set, hearsay_ids: set, sourced_keys: set, specs: dict, report: dict) -> None:
-    def handle(raw: str, origin_category: str, origin: str, source_label: str):
+    def handle(raw: str, source_category: str, document: str, source_label: str):
         if not raw:
             return
         status, cat_key, entry, match_kind, score, display = resolve_ref(raw, index, other_known, hearsay_ids, sourced_keys)
@@ -337,17 +337,17 @@ def process_refs(data: dict, index: list, other_known: set, hearsay_ids: set, so
                 ),
             })
             report["fuzzy_grouped"].append((source_label, raw, entry_id, round(score, 2), conflict_id))
-        did_attach = attach_source(entry, origin_category, origin)
+        did_attach = attach_source(entry, source_category, document)
         if did_attach:
             report["linked"] += 1
 
     for e in data["hearsay"]["entries"]:
         for i, claim in enumerate(e["claims"], start=1):
-            origin = f"{e['id']}#{i}"
+            document = f"{e['id']}#{i}"
             about = claim.get("about")
             values = about if isinstance(about, list) else ([about] if about else [])
             for v in values:
-                handle(v, "hearsay", origin, f"hearsay:{origin}")
+                handle(v, "hearsay", document, f"hearsay:{document}")
 
     for t in data["tales"]["entries"]:
         about = t.get("about", [])
@@ -381,7 +381,7 @@ def main() -> None:
     sourced_keys = set(categories.keys()) | ({"grounding"} if grounding_entries else set())
     process_refs(data, index, other_known, hearsay_ids, sourced_keys, specs, report)
 
-    print(f"Migrated source strings to {{category, origin}}: {report['migrated']}")
+    print(f"Migrated source strings to {{category, document}}: {report['migrated']}")
     print(f"Newly linked hearsay/tale sources: {report['linked']}")
     print(f"Fuzzy auto-groupings (new CONFLICT entries): {len(report['fuzzy_grouped'])}")
     for source_label, raw, matched_id, score, conflict_id in report["fuzzy_grouped"]:

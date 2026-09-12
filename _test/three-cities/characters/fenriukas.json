@@ -66,7 +66,7 @@
     "standard": "counts a life well spent only if it stayed close to Forliamus Betrothal Offer",
     "wasted_life": "a life spent never once engaging with Forliamus Betrothal Offer",
     "anchor": "concept: forliamus_betrothal_offer",
-    "origin": "derived",
+    "derivation": "derived",
     "trusts": "a story that's been carried and retold and still holds together",
     "distrusts": "a record that insists on a precision no one who was actually there ever needed"
   },

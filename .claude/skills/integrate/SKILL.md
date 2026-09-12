@@ -75,7 +75,7 @@ will hit step 2's "doesn't fit any existing category" branch, which is expected,
 3. Fold the transcribed material into `encodings.json`'s objective arrays (`time_systems`,
    `locations`, `routes`, `characters`, `concepts`) in the same shape as their existing entries. For any
    category where `_categories.<name>.has_sources` is `true`, each entry carries a `sources` list, and
-   each item in it is `{"category": "material", "origin": "<doc (detail)>"}` — the two-layer shape (what
+   each item in it is `{"category": "material", "document": "<doc (detail)>"}` — the two-layer shape (what
    kind of source, then which specific one) that also carries `tale`/`hearsay` provenance once Pass 3's
    script runs (see Pass 3 step 2). Never edit or remove an existing entry to make room for a new one. If the new
    material disagrees with something already encoded, add a `conflicts` entry instead — next
@@ -139,7 +139,7 @@ anyone noticing.
    Never invent a `told_by`/`Responsible` value that isn't already written in the tale file.
 2. **Run `py scripts/lore/build_source_index.py`** — mechanical, no judgment involved, so it costs no
    model reasoning to run. It (a) migrates any leftover flat-string `sources` entries into the
-   two-layer `{category, origin}` shape, (b) links every `hearsay.entries[].claims[].about` and
+   two-layer `{category, document}` shape, (b) links every `hearsay.entries[].claims[].about` and
    `tales.entries[].about` reference that resolves — exactly, or within `difflib` similarity 0.77
    compared only within one category at a time (never a location against a character, for instance) —
    into the target node's `sources` list, and (c) prints what it could not resolve. A fuzzy link is

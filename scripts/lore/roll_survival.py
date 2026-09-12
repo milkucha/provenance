@@ -1,7 +1,7 @@
 """
 Roll whether a character spends this pass surviving (working, replenishing their own energy and
-the local wealth pool) or pursuing their arc (spending extra energy and the pool's own wealth, on a
-bet that this pass advances something) - a weighted dice roll, not a model's judgment call, same
+the local provisions pool) or pursuing their arc (spending extra energy and the pool's own provisions,
+on a bet that this pass advances something) - a weighted dice roll, not a model's judgment call, same
 "skew, never decide" philosophy as every other roll in this pipeline (roll_contested.py in
 particular is the closest precedent: a base percentage, shifted point-by-point by each real input,
 clamped, then rolled).
@@ -14,16 +14,16 @@ a percentage-point shift toward "arc" (or away from it, negative):
   - **arc_pressure** - how much this arc wants pursuing right now: its own tally stage (early/mid/
     about to resolve) plus how much time this character reads as having left (horizon.py's band -
     a character who's "late" leans harder into their arc, less to lose).
-  - **pool_reliance** - a healthy local wealth pool only feels like a safety net if this character is
-    actually connected to the people sharing it (net_affinity) - reliance is pool_surplus AMPLIFIED
-    by affinity, not an input on its own. An isolated character in a wealthy town doesn't get to lean
-    on wealth they don't feel part of.
+  - **pool_reliance** - a healthy local provisions pool only feels like a safety net if this character
+    is actually connected to the people sharing it (net_affinity) - reliance is pool_surplus AMPLIFIED
+    by affinity, not an input on its own. An isolated character in a well-provisioned town doesn't get
+    to lean on provisions they don't feel part of.
   - **affinity_obligation** - the SAME net_affinity number, independently, pulling the other way: the
     more bonded a character is, the more duty-bound to work for the collective, regardless of the
     pool's own health.
   - **scarcity_pressure** (added 2026-08-29) - lets a character anticipate trouble ahead, not just
-    react to the pool's current level: how much the pool's own per-capita wealth has fallen since
-    apply_upkeep.py's last checkpoint for this location (wealth_lib.wealth_trend()). Deliberately
+    react to the pool's current level: how much the pool's own per-capita provisions has fallen since
+    apply_upkeep.py's last checkpoint for this location (provisions_lib.provisions_trend()). Deliberately
     one-directional, same asymmetry pool_reliance/affinity_obligation already apply to net_affinity -
     a declining trend pushes toward "survive" (contribute now, before it's worse), but a recovering
     trend applies no extra pull toward "arc" at all.
@@ -58,7 +58,7 @@ LIFESPANS_PATH = CHAR_DIR / "lifespans.json"
 
 sys.path.insert(0, str(SCRIPTS_DIR))
 import tuning  # noqa: E402
-import wealth_lib  # noqa: E402
+import provisions_lib  # noqa: E402
 from horizon import band_for  # noqa: E402
 
 _T = tuning.load()
@@ -129,10 +129,10 @@ def roll(character: dict, key: str, home_location: str, rng: Random | None = Non
     energy = character.get("energy", _S["energy_cap"])
     affinity = net_affinity(character)
     pressure = arc_pressure(character, key)
-    per_capita = wealth_lib.wealth_per_capita(home_location)
-    threshold = _S["provides_wealth_threshold"]
+    per_capita = provisions_lib.provisions_per_capita(home_location)
+    threshold = _S["provides_provisions_threshold"]
     pool_surplus = max(-1.0, min(1.0, (per_capita - threshold) / threshold)) if threshold else 0.0
-    trend = wealth_lib.wealth_trend(home_location)
+    trend = provisions_lib.provisions_trend(home_location)
     trend_normalized = max(-1.0, min(1.0, trend / threshold)) if threshold else 0.0
 
     w = _S["weights"]

@@ -141,7 +141,7 @@
     "standard": "counts a life well spent only by making Forliamus Betrothal Offer their own concern",
     "wasted_life": "treating Forliamus Betrothal Offer as someone else's concern",
     "anchor": "tale: forliamus_betrothal_offer",
-    "origin": "derived",
+    "derivation": "derived",
     "trusts": "a story that's been carried and retold and still holds together",
     "distrusts": "a record that insists on a precision no one who was actually there ever needed"
   },

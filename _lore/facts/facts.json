@@ -13,12 +13,7 @@
       "withheld": [
         "The number itself. It lives in _lore/characters/lifespans.json, deliberately NOT in the character file /enact loads to play them; the enactment asks scripts/lore/horizon.py, which answers with a coarse band (early/established/late) and never the figure. Never revealed as a count, a countdown, or a hint that they are running low.",
         "Which scene, if any, is their last. There is no exception for it: a character never experiences or senses their own death, so their final scene is written exactly like any other and is only knowable as such afterward, mechanically, once it has already closed (see scripts/lore/horizon.py's ending check)."
-      ],
-      "effects": [
-        "Forces ranking: a character with a closing horizon must decide what matters most, which is where personality becomes visible behavior.",
-        "Governs drift: as remaining span shortens against the scale of what a criterion demands, the character becomes more susceptible to having it broken."
-      ],
-      "file": "life_is_finite.md"
+      ]
     },
     {
       "id": "a_worthwhile_life",
@@ -30,12 +25,7 @@
       ],
       "withheld": [
         "What 'worthwhile' actually means. The impulse is universal; the criterion is not. A character's particular answer is derived from the collision of their knowledge with their backstory (see criterion in _lore/characters/<key>.json and the derivation procedure in .claude/skills/character/SKILL.md), is inherited from somewhere specific, and can be argued with or lost."
-      ],
-      "effects": [
-        "It is the engine: paired with life_is_finite, it is the will to live - time is short and it matters what the time was spent on.",
-        "It is what makes a broken criterion a crisis rather than a shrug: a character who loses the story they were living by still wants their life to be worthwhile, they just no longer know what that would look like."
-      ],
-      "file": "a_worthwhile_life.md"
+      ]
     }
   ]
 }

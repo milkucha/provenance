@@ -111,7 +111,7 @@
     "standard": "counts the toll dispute settled quietly above the road staying open by luck alone",
     "wasted_life": "the road closing over a fight about money he never had any part of, same as it almost did the last time nobody settled anything",
     "anchor": "concept: toll_ledger_arrears",
-    "origin": "collision between his backstory (drives the transit route weekly, never cared how the tollhouse dispute ended) and the sample's own toll_ledger_arrears (an unresolved dispute that could disrupt the very road he depends on)",
+    "derivation": "collision between his backstory (drives the transit route weekly, never cared how the tollhouse dispute ended) and the sample's own toll_ledger_arrears (an unresolved dispute that could disrupt the very road he depends on)",
     "trusts": "a story that's been carried and retold and still holds together",
     "distrusts": "a record that insists on a precision no one who was actually there ever needed",
     "tempered": 0,

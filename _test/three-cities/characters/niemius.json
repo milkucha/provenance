@@ -141,7 +141,7 @@
     "standard": "holds themself accountable to CONFLICT-01, whatever it costs",
     "wasted_life": "one that never had to answer for CONFLICT-01",
     "anchor": "conflict: CONFLICT-01",
-    "origin": "derived",
+    "derivation": "derived",
     "trusts": "verification",
     "distrusts": "anyone who sounds certain"
   },

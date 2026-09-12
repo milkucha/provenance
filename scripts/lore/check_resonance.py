@@ -38,7 +38,7 @@ directly (repeatable) to check specific refs without a recorded entry.
 
 Usage:
     py scripts/lore/check_resonance.py <npc_key> --hearsay-id <entry_id>
-    py scripts/lore/check_resonance.py <npc_key> --about "highway: M7" --about "character_legendary: navalius"
+    py scripts/lore/check_resonance.py <npc_key> --about "route: coastal_road" --about "character: navalius"
 """
 
 import argparse
@@ -75,8 +75,8 @@ def category_of(ref: str) -> str:
     """'conflict' for a bare CONFLICT-NN id, the prefix before ': ' otherwise, or '' if the ref
     isn't shaped like either (a free-text item this script can't classify). Deliberately does NOT
     go through normalize() - that strips underscores for id-matching tolerance, which would mangle
-    a category key like 'character_legendary' into 'character legendary' and break the lookup
-    against _categories' actual keys. Only colon-spacing and case are normalized here."""
+    a category key like 'time_systems' into 'time systems' and break the lookup against
+    _categories' actual keys. Only colon-spacing and case are normalized here."""
     s = ref.strip()
     if CONFLICT_ID_RE.match(s):
         return "conflict"

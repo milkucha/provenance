@@ -24,7 +24,7 @@ Three cases, in order:
    pick among however many backlinks have since accumulated. If `sources[]` is empty (e.g. a
    freshly arc-authored concept with no material/hearsay/tale link yet), there is nothing to derive
    from: report that plainly rather than guessing, same as any other "leave it blank" case in this
-   system (`origin: "uncollided"` for a criterion, `origin: "inherited"` for a child's).
+   system (`derivation: "uncollided"` for a criterion, `derivation: "inherited"` for a child's).
 
 Usage:
     py scripts/lore/anchor_epistemology.py "location: gorff"

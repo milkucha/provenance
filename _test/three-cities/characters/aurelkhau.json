@@ -126,7 +126,7 @@
     "standard": "counts a life well spent only if it stayed close to Birth Of Dorakus",
     "wasted_life": "a life spent never once engaging with Birth Of Dorakus",
     "anchor": "tale: birth_of_dorakus",
-    "origin": "derived",
+    "derivation": "derived",
     "trusts": "a story that's been carried and retold and still holds together",
     "distrusts": "a record that insists on a precision no one who was actually there ever needed"
   },

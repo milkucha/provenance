@@ -1,10 +1,10 @@
 """
-Drain one location's wealth pool by its per-capita upkeep for this pass - the one thing in the
+Drain one location's provisions pool by its per-capita upkeep for this pass - the one thing in the
 survival mechanism that runs regardless of any individual's choice, same as a town needs feeding
 whether or not anyone worked today. Per-capita, not flat (design session 2026-08-28): a flat drain
 would be meaningless at 100 population and crushing at 2 - `upkeep_rate_per_capita` (0.5,
 _lore/tuning.json's `survival` block) scales with however many living characters are currently
-registered at this exact location string (wealth_lib.population_of()).
+registered at this exact location string (provisions_lib.population_of()).
 
 Call this ONCE per pass, for the pass's resolved location - not once per participant, and not for
 every location in the world every pass (locations nobody's touched this pass just don't tick; same
@@ -34,7 +34,7 @@ ROOT = SCRIPTS_DIR.parent.parent
 
 sys.path.insert(0, str(SCRIPTS_DIR))
 import tuning  # noqa: E402
-import wealth_lib  # noqa: E402
+import provisions_lib  # noqa: E402
 
 _S = tuning.load()["survival"]
 
@@ -44,12 +44,12 @@ def main() -> None:
     parser.add_argument("--location", required=True)
     args = parser.parse_args()
 
-    pop = wealth_lib.population_of(args.location)
-    pool = wealth_lib.get_wealth(args.location)
+    pop = provisions_lib.population_of(args.location)
+    pool = provisions_lib.get_provisions(args.location)
     upkeep = pop * _S["upkeep_rate_per_capita"]
     pool = max(0.0, pool - upkeep)
-    wealth_lib.set_wealth(args.location, pool)
-    wealth_lib.checkpoint_wealth_trend(args.location)
+    provisions_lib.set_provisions(args.location, pool)
+    provisions_lib.checkpoint_provisions_trend(args.location)
 
     print(f"population: {pop}")
     print(f"upkeep: {round(upkeep, 2)}")

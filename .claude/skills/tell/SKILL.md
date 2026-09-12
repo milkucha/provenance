@@ -60,7 +60,7 @@ content the user didn't actually say, never softening a genuine gap into an inve
 
 ## Where this lands in the record
 
-- Touches: <ids added/amended elsewhere in encodings.json, or "none yet">
+- About: <ids added/amended elsewhere in encodings.json, or "none yet">
 - Conflicts raised: <CONFLICT-NN id(s), or "none">
 - Open questions logged: <unknowns.md reference, or "none">
 ```
@@ -79,11 +79,11 @@ Add to the `tales.entries` array (currently empty - this may be the first):
   "told_date": "<date>",
   "told_by": <in-world source as a string, or null>,
   "summary": "<one or two sentences - what the tale actually says, not editorializing>",
-  "touches": []
+  "about": []
 }
 ```
 
-`touches` gets filled in as Step 5 proceeds - it's the manifest's whole point: a list of every id (in
+`about` gets filled in as Step 5 proceeds - it's the manifest's whole point: a list of every id (in
 `locations`/`characters`/`concepts`/`routes`/`time_systems`/`conflicts`) this tale added or amended,
 so a later `/integrate` Pass 3 drift check can confirm the manifest matches reality without re-reading
 the tale's full text.
@@ -119,8 +119,8 @@ describes, or adds detail to.
   `topic` and `detail` describing the disagreement, `user_resolution` left unset. Never resolve it
   yourself, and never quietly prefer the tale's version over the existing one (or vice versa).
 
-Record every id touched (including any new `CONFLICT-NN`) in the `touches` array from Step 4, and in
-the tale file's own "Touches"/"Conflicts raised" lines from Step 3.
+Record every id touched (including any new `CONFLICT-NN`) in the `about` array from Step 4, and in
+the tale file's own "About"/"Conflicts raised" lines from Step 3.
 
 ## Step 6 — Notable unknowns
 
@@ -134,6 +134,6 @@ the tale file's "Open questions logged" line accordingly.
 ## Step 7 — Update the index and report back
 
 Add a row to `_lore/tales/_index.md`'s table (told date, title, told by, responsible, filename, a short
-`touches` summary). Then report back to the user: what was recorded, who (if anyone) was credited
+`about` summary). Then report back to the user: what was recorded, who (if anyone) was credited
 in-world, what it touched or added, every new conflict raised (don't bury one in a large diff), and
 any notable unknown logged.

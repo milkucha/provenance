@@ -98,7 +98,7 @@
     "standard": "counts a good telling above a precise one, same as everyone else on the docks",
     "wasted_life": "spending a life retelling a story he was never part of and never checked",
     "anchor": "concept: crossing_toll_dispute",
-    "origin": "collision between his backstory (heard the tollhouse story retold his whole life) and crossing_toll_dispute itself",
+    "derivation": "collision between his backstory (heard the tollhouse story retold his whole life) and crossing_toll_dispute itself",
     "trusts": "a story that's been carried and retold and still holds together",
     "distrusts": "a record that insists on a precision no one who was actually there ever needed",
     "tempered": 0,

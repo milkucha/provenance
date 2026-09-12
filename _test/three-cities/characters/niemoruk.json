@@ -50,7 +50,7 @@
     "standard": "counts it worthwhile only by paying real attention to Salthos Cruzados",
     "wasted_life": "letting Salthos Cruzados slip past unexamined, the way it's easiest to",
     "anchor": "location: salthos_cruzados",
-    "origin": "derived",
+    "derivation": "derived",
     "trusts": "a story that's been carried and retold and still holds together",
     "distrusts": "a record that insists on a precision no one who was actually there ever needed"
   },

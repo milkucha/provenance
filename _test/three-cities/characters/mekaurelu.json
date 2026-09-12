@@ -135,7 +135,7 @@
     "standard": "counts a life well spent only by making CONFLICT-01 their own concern",
     "wasted_life": "treating CONFLICT-01 as someone else's concern",
     "anchor": "conflict: CONFLICT-01",
-    "origin": "derived",
+    "derivation": "derived",
     "trusts": "verification",
     "distrusts": "anyone who sounds certain"
   },

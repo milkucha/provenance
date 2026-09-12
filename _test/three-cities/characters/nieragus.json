@@ -103,7 +103,7 @@
     "standard": "measures a life by whether CONFLICT-03 is still remembered rightly",
     "wasted_life": "forgetting what CONFLICT-03 actually meant, the way most people already have",
     "anchor": "conflict: CONFLICT-03",
-    "origin": "derived",
+    "derivation": "derived",
     "trusts": "verification",
     "distrusts": "anyone who sounds certain"
   },
