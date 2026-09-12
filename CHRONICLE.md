@@ -21,6 +21,83 @@ and open questions that were live at a given point, even ones later settled else
 
 ---
 
+### 2026-09-13 — Full lore-schema cleanup ahead of the next simulation; grounding, travel, and provisions sketched
+
+A long architecture-tightening pass, prompted by the standalone branch having accumulated entropy
+across several earlier sessions' schema changes — stale references, split categories that had never
+actually been merged, documentation describing structure that no longer existed. Went through
+`_lore/` folder by folder rather than fixing things as they were tripped over.
+
+**`encodings.json` rebuilt from scratch, deliberately lean.** Flattened the old split categories
+(`character_legendary`/`character_real`/`inhabitant` → one `character`; four route sub-types → one
+`route`; four time-system sub-types → one flat `time_systems`) and stripped the file's own method
+notes down to only what an agent deciding where to encode something actually needs — everything else
+(sampling mechanics, hearsay consistency tracking, tale-folding rules) moved to `/integrate`'s
+`SKILL.md` or the relevant folder's own `_index.md`. Real design tension, resolved: whether categories
+should carry a generic `references` field so related entries (a character, their home city, an era)
+point at each other. Rejected in favor of **named, specific fields** (`character.origin`,
+`route.endpoints`) wherever the relationship is a real attribute, keeping a generic `about` field only
+for the "claims" layer (`hearsay`, `tale`, `conflict`), where an entry isn't itself an object with
+named attributes — it's inherently a statement *about* other things. The deciding argument: a generic
+reference field risks turning "sample one character" into "sample their whole neighborhood" by
+cascade; a named field is just an ordinary attribute, sampled or not like any other, and lets deliberate
+skewed sampling (e.g. "bias toward Terfila") work as a plain filter instead of a graph traversal.
+
+**Two identical naming collisions found and fixed the same way.** `sources[].origin` (which document)
+collided in name with the new `character.origin` (birthplace) — renamed to `sources[].document`.
+Later, `criterion.origin` (an enum: `derived`/`uncollided`/legacy `inherited`) turned out to collide
+with the same `character.origin` — renamed to `criterion.derivation`. Same lesson both times: `origin`
+is an overloaded word in this schema and should probably be avoided for any new field going forward.
+
+**`contexts.json` cut from 16 hand-authored place-types to 5** (`market`, `temple`, `commons` —
+renamed from `street`, since the intent was always generic public space, not literally a road —
+`home`, and `route` — renamed from `transit`), explicitly as a minimal shippable seed, not a ceiling.
+`provides` cut at the same time from a dozen loosely-motivated tags down to 6 (`materials`, `items`,
+`transit`, `nourishment`, `records`, `news`), majority-concrete over epistemological on purpose — the
+mechanic that will actually consume `provides` values doesn't exist yet, so the tag vocabulary was
+built to be minimal and legible rather than speculatively complete.
+
+**Grounding clarified as the ontological counterpart to encodings' epistemological record** —
+sharpens the existing Troy distinction (material is the claim, grounding is the ruins) into a working
+split: `encodings.json` (fed by material/tale/hearsay) is *what's known*; `_lore/grounding/` is *what
+is*, independent of anyone's belief. `mechanics.json` (the world's "laws of nature") turns out to serve
+two purposes, not one — propositional rules *and* vocabulary grants (naming a concrete material like
+"cobblestone" so a character can refer to it instead of a generic placeholder) — logged as needing a
+third, causal/recipe shape (an item requires specific materials) before arc resolution can check
+anything more specific than an abstract category (`TODO.md`). Built the simpler pieces now: a
+character's `places_visited` accumulates (routine locations plus one-off visits, per `/enact`'s own
+home-vs-visiting mechanic), gating `world_state.json` access — corrected mid-design from an initial
+"current scene location only" proposal, since knowing what a place *looks like* should require having
+actually been there, not just currently standing in it. `world_state.json` itself is the one place in
+the whole system where mutation-in-place, not accumulation, is the right discipline — it's a snapshot
+of the world's current state, not a record of claims about it.
+
+**Travel system sketched, not built** (`TODO.md`) — and it turns out `_lore/encodings.json`'s
+`route.endpoints` field was already shaped, on purpose, to double as the travel graph's edge list; the
+`route` context (one of the 5 above) is the natural shape for enacting a single hop. Reachability
+isn't just "adjacent to where you are" — a character can also reach anywhere adjacent to somewhere
+already in their own lore pool, so what a character knows extends how far they can go. The actual lever
+this unlocks: arc requirements currently check `provides` too abundantly to create real scarcity;
+gating some arcs to a *specific place's* context, not just any context that happens to provide the
+right tag, is what would make travel mechanically necessary rather than decorative.
+
+**A personal provisions/inheritance economy was sketched** (`TODO.md`), triggered by a good pushback:
+initially proposed as a personal resource separate from the location-level survival pool (renamed
+`wealth` → `provisions` in the same conversation, to stop "wealth" colliding with this new personal
+concept before it existed), but corrected to be the *same substance held at two scopes* — a personal
+reserve a character earns by completing an arc, can pass to children, and can draw on instead of the
+communal pool, rather than a second, differently-named resource. Framed against Bourdieu's three
+capitals as an explicit organizing lens, not just decoration: cultural capital is already built
+(`knowledge.education`/`experience` gates arc possibility and, per the travel sketch, reach);
+social capital is partially built (`partners`, and now a persistent `social_circle` field, update
+mechanism deliberately left undecided); economic capital is this new provisions system, not built at
+all yet. Character pairing being effectively random right now, versus intentional based on the same
+arc-pursuit calculus, was flagged as a related but separate open item.
+
+**Workflow shift, mid-session:** moved from doing the file edits directly to orchestrating — deciding,
+reviewing, and delegating well-scoped implementation to subagents, keeping the main thread for
+judgment calls and cross-checking their work rather than the mechanics of each edit.
+
 ### 2026-09-12 — Talk of the Town comparison; sharpened "seed vs. rules" into "closed rules vs. interpretation"
 
 Continuation of the same day's reflective conversation (see the entry below). The user independently
