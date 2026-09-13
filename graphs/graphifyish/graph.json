@@ -289,7 +289,7 @@
     "label": "Provenance",
     "kind": "root",
     "path": ".",
-    "size": 2995369,
+    "size": 3053089,
     "degree": 20
    },
    {
@@ -361,7 +361,7 @@
     "label": "TODO.md",
     "kind": "doc",
     "path": "TODO.md",
-    "size": 177961,
+    "size": 182144,
     "degree": 1
    },
    {
@@ -385,7 +385,7 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
-    "size": 226625,
+    "size": 229793,
     "degree": 7
    },
    {
@@ -441,7 +441,7 @@
     "label": "skills",
     "kind": "dir",
     "path": ".claude/skills",
-    "size": 212336,
+    "size": 215504,
     "degree": 14
    },
    {
@@ -449,7 +449,7 @@
     "label": "character",
     "kind": "dir",
     "path": ".claude/skills/character",
-    "size": 35000,
+    "size": 35455,
     "degree": 2
    },
    {
@@ -457,7 +457,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/character/SKILL.md",
-    "size": 35000,
+    "size": 35455,
     "degree": 1
    },
    {
@@ -481,7 +481,7 @@
     "label": "enact",
     "kind": "dir",
     "path": ".claude/skills/enact",
-    "size": 57047,
+    "size": 57612,
     "degree": 2
    },
    {
@@ -489,7 +489,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/enact/SKILL.md",
-    "size": 57047,
+    "size": 57612,
     "degree": 1
    },
    {
@@ -577,7 +577,7 @@
     "label": "simulate",
     "kind": "dir",
     "path": ".claude/skills/simulate",
-    "size": 40557,
+    "size": 42705,
     "degree": 2
    },
    {
@@ -585,7 +585,7 @@
     "label": "SKILL.md",
     "kind": "skill",
     "path": ".claude/skills/simulate/SKILL.md",
-    "size": 40557,
+    "size": 42705,
     "degree": 1
    },
    {
@@ -657,7 +657,7 @@
     "label": "_lore",
     "kind": "dir",
     "path": "_lore",
-    "size": 38106,
+    "size": 41943,
     "degree": 10
    },
    {
@@ -681,7 +681,7 @@
     "label": "tuning.json",
     "kind": "lore",
     "path": "_lore/tuning.json",
-    "size": 5233,
+    "size": 9029,
     "degree": 1
    },
    {
@@ -697,7 +697,7 @@
     "label": "characters",
     "kind": "dir",
     "path": "_lore/characters",
-    "size": 2370,
+    "size": 2411,
     "degree": 5
    },
    {
@@ -713,7 +713,7 @@
     "label": "_template.json",
     "kind": "lore",
     "path": "_lore/characters/_template.json",
-    "size": 800,
+    "size": 841,
     "degree": 1
    },
    {
@@ -4176,7 +4176,7 @@
     "label": "scripts",
     "kind": "dir",
     "path": "scripts",
-    "size": 604794,
+    "size": 651326,
     "degree": 6
    },
    {
@@ -4224,8 +4224,8 @@
     "label": "lore",
     "kind": "dir",
     "path": "scripts/lore",
-    "size": 465961,
-    "degree": 64
+    "size": 512493,
+    "degree": 65
    },
    {
     "id": "file:scripts/lore/anchor_epistemology.py",
@@ -4376,7 +4376,7 @@
     "label": "horizon.py",
     "kind": "script",
     "path": "scripts/lore/horizon.py",
-    "size": 4365,
+    "size": 4373,
     "degree": 1
    },
    {
@@ -4393,6 +4393,14 @@
     "kind": "script",
     "path": "scripts/lore/list_open_unknowns.py",
     "size": 2282,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/location_context.py",
+    "label": "location_context.py",
+    "kind": "script",
+    "path": "scripts/lore/location_context.py",
+    "size": 18924,
     "degree": 1
    },
    {
@@ -4416,7 +4424,7 @@
     "label": "pass_prep.py",
     "kind": "script",
     "path": "scripts/lore/pass_prep.py",
-    "size": 6277,
+    "size": 6555,
     "degree": 1
    },
    {
@@ -4432,7 +4440,7 @@
     "label": "pick_pair.py",
     "kind": "script",
     "path": "scripts/lore/pick_pair.py",
-    "size": 1610,
+    "size": 1856,
     "degree": 1
    },
    {
@@ -4512,7 +4520,7 @@
     "label": "rng_context.py",
     "kind": "script",
     "path": "scripts/lore/rng_context.py",
-    "size": 7232,
+    "size": 7207,
     "degree": 1
    },
    {
@@ -4521,14 +4529,6 @@
     "kind": "script",
     "path": "scripts/lore/roll_arc_outcome.py",
     "size": 3432,
-    "degree": 1
-   },
-   {
-    "id": "file:scripts/lore/roll_arc_primacy.py",
-    "label": "roll_arc_primacy.py",
-    "kind": "script",
-    "path": "scripts/lore/roll_arc_primacy.py",
-    "size": 1112,
     "degree": 1
    },
    {
@@ -4548,14 +4548,6 @@
     "degree": 1
    },
    {
-    "id": "file:scripts/lore/roll_home_visit.py",
-    "label": "roll_home_visit.py",
-    "kind": "script",
-    "path": "scripts/lore/roll_home_visit.py",
-    "size": 3567,
-    "degree": 1
-   },
-   {
     "id": "file:scripts/lore/roll_lead_followup.py",
     "label": "roll_lead_followup.py",
     "kind": "script",
@@ -4569,6 +4561,14 @@
     "kind": "script",
     "path": "scripts/lore/roll_lifespan.py",
     "size": 3647,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/roll_meetable.py",
+    "label": "roll_meetable.py",
+    "kind": "script",
+    "path": "scripts/lore/roll_meetable.py",
+    "size": 3227,
     "degree": 1
    },
    {
@@ -4592,7 +4592,7 @@
     "label": "roll_survival.py",
     "kind": "script",
     "path": "scripts/lore/roll_survival.py",
-    "size": 8786,
+    "size": 9997,
     "degree": 1
    },
    {
@@ -4624,7 +4624,7 @@
     "label": "simulate_driver.py",
     "kind": "script",
     "path": "scripts/lore/simulate_driver.py",
-    "size": 18089,
+    "size": 24522,
     "degree": 1
    },
    {
@@ -4632,7 +4632,7 @@
     "label": "simulate_generate_population.py",
     "kind": "script",
     "path": "scripts/lore/simulate_generate_population.py",
-    "size": 26224,
+    "size": 20015,
     "degree": 1
    },
    {
@@ -4640,7 +4640,7 @@
     "label": "simulate_pass_brief.py",
     "kind": "script",
     "path": "scripts/lore/simulate_pass_brief.py",
-    "size": 23894,
+    "size": 11608,
     "degree": 1
    },
    {
@@ -4648,7 +4648,7 @@
     "label": "simulate_pass_lib.py",
     "kind": "script",
     "path": "scripts/lore/simulate_pass_lib.py",
-    "size": 14581,
+    "size": 38048,
     "degree": 1
    },
    {
@@ -4672,7 +4672,7 @@
     "label": "simulate_resolve_pair.py",
     "kind": "script",
     "path": "scripts/lore/simulate_resolve_pair.py",
-    "size": 3444,
+    "size": 2575,
     "degree": 1
    },
    {
@@ -4705,6 +4705,14 @@
     "kind": "script",
     "path": "scripts/lore/suggest_arc_needs.py",
     "size": 4045,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/travel_graph.py",
+    "label": "travel_graph.py",
+    "kind": "script",
+    "path": "scripts/lore/travel_graph.py",
+    "size": 16806,
     "degree": 1
    },
    {
@@ -7901,6 +7909,12 @@
    },
    {
     "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/location_context.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/notify_death.py",
     "rel": "contains",
     "weight": 1
@@ -7997,12 +8011,6 @@
    },
    {
     "source": "dir:scripts/lore",
-    "target": "file:scripts/lore/roll_arc_primacy.py",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/roll_contested.py",
     "rel": "contains",
     "weight": 1
@@ -8015,12 +8023,6 @@
    },
    {
     "source": "dir:scripts/lore",
-    "target": "file:scripts/lore/roll_home_visit.py",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/roll_lead_followup.py",
     "rel": "contains",
     "weight": 1
@@ -8028,6 +8030,12 @@
    {
     "source": "dir:scripts/lore",
     "target": "file:scripts/lore/roll_lifespan.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/roll_meetable.py",
     "rel": "contains",
     "weight": 1
    },
@@ -8135,6 +8143,12 @@
    },
    {
     "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/travel_graph.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/tuning.py",
     "rel": "contains",
     "weight": 1
@@ -8236,7 +8250,7 @@
     "kind": "layer",
     "note": "skills + scripts + supporting patterns",
     "tier": 2,
-    "degree": 91
+    "degree": 92
    },
    {
     "id": "layer:3",
@@ -8583,6 +8597,14 @@
     "degree": 1
    },
    {
+    "id": "script:lore/location_context.py",
+    "label": "location_context.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/location_context.py",
+    "degree": 1
+   },
+   {
     "id": "script:lore/notify_death.py",
     "label": "notify_death.py",
     "kind": "script",
@@ -8711,14 +8733,6 @@
     "degree": 1
    },
    {
-    "id": "script:lore/roll_arc_primacy.py",
-    "label": "roll_arc_primacy.py",
-    "kind": "script",
-    "tier": 2,
-    "file": "scripts/lore/roll_arc_primacy.py",
-    "degree": 1
-   },
-   {
     "id": "script:lore/roll_contested.py",
     "label": "roll_contested.py",
     "kind": "script",
@@ -8732,14 +8746,6 @@
     "kind": "script",
     "tier": 2,
     "file": "scripts/lore/roll_death_legacy.py",
-    "degree": 1
-   },
-   {
-    "id": "script:lore/roll_home_visit.py",
-    "label": "roll_home_visit.py",
-    "kind": "script",
-    "tier": 2,
-    "file": "scripts/lore/roll_home_visit.py",
     "degree": 1
    },
    {
@@ -8757,6 +8763,14 @@
     "tier": 2,
     "file": "scripts/lore/roll_lifespan.py",
     "degree": 2
+   },
+   {
+    "id": "script:lore/roll_meetable.py",
+    "label": "roll_meetable.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/roll_meetable.py",
+    "degree": 1
    },
    {
     "id": "script:lore/roll_reproduction.py",
@@ -8892,6 +8906,14 @@
     "kind": "script",
     "tier": 2,
     "file": "scripts/lore/suggest_arc_needs.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/travel_graph.py",
+    "label": "travel_graph.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/travel_graph.py",
     "degree": 1
    },
    {
@@ -9290,6 +9312,12 @@
    },
    {
     "source": "layer:2",
+    "target": "script:lore/location_context.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
     "target": "script:lore/notify_death.py",
     "rel": "holds",
     "weight": 1
@@ -9386,12 +9414,6 @@
    },
    {
     "source": "layer:2",
-    "target": "script:lore/roll_arc_primacy.py",
-    "rel": "holds",
-    "weight": 1
-   },
-   {
-    "source": "layer:2",
     "target": "script:lore/roll_contested.py",
     "rel": "holds",
     "weight": 1
@@ -9404,12 +9426,6 @@
    },
    {
     "source": "layer:2",
-    "target": "script:lore/roll_home_visit.py",
-    "rel": "holds",
-    "weight": 1
-   },
-   {
-    "source": "layer:2",
     "target": "script:lore/roll_lead_followup.py",
     "rel": "holds",
     "weight": 1
@@ -9417,6 +9433,12 @@
    {
     "source": "layer:2",
     "target": "script:lore/roll_lifespan.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/roll_meetable.py",
     "rel": "holds",
     "weight": 1
    },
@@ -9519,6 +9541,12 @@
    {
     "source": "layer:2",
     "target": "script:lore/suggest_arc_needs.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/travel_graph.py",
     "rel": "holds",
     "weight": 1
    },
