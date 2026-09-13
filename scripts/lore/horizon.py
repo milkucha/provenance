@@ -71,7 +71,7 @@ def main() -> None:
     with open(char_path, encoding="utf-8") as f:
         character = json.load(f)
     with open(LIFESPANS_PATH, encoding="utf-8") as f:
-        lifespans = json.load(f)["lifespans"]
+        lifespans = json.load(f).get("lifespans", {})
 
     if key not in lifespans:
         raise SystemExit(f"No lifespan rolled for '{key}' yet - run scripts/lore/roll_lifespan.py and record it in _lore/characters/lifespans.json.")

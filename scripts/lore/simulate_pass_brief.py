@@ -1,54 +1,46 @@
 """
-Run every MECHANICAL decision in one /enact scene between two NPCs - routine roll through the
-reproduction roll (minus the three things that genuinely need a model) - and hand the result to
-whoever is about to write the scene as a single JSON brief, instead of hand-relaying 12+ sequential
-`py scripts/lore/*.py` calls one at a time (design debrief 2026-08-13, following the same
-mechanization `/generate`'s simulate_generate_population.py already proved out for the mechanical-
-pregeneration case - this is that same pipeline's logic, reused via simulate_pass_lib.py).
+Run every MECHANICAL decision in one /enact scene starting from one already-picked NPC (`p1`) - the
+asymmetric per-pass model (design session 2026-09-13, see TODO.md's "asymmetric per-pass rewrite"
+entry and CHRONICLE.md's matching entry). Replaces the old "already-fixed --pair" model: there is no
+pre-selected second participant any more. `p1` rolls survive-vs-arc, and if arc, the rest of the pass
+- whether anyone else is even involved, and who - is discovered over the course of
+`simulate_pass_lib.run_pass_mechanics()` (local satisfaction, travel, the "missed connection" roll,
+p2's own routine roll, and the payment gate that now decides whether the pass is "motivated"). See
+that function's own docstring for the full step-by-step algorithm.
 
-Takes an already-fixed `--pair <p1> <p2>` - both participants must already be settled by the time
-this runs, either by an author (an ordinary `/enact` call) or by `/simulate`'s own pick_pair.py +
-lead-override check before it ever dispatches to `/enact` (see `.claude/skills/simulate/SKILL.md`'s
-Step 3). Pairing and lead-override are deliberately NOT this script's job any more (moved 2026-08-27,
-alongside folding this whole mechanism into `/enact` itself): they decide *who's* in the scene, which
-must already be settled by the time `/enact`'s own eligibility gate (both participants need
-`routines`+`arc`) has already checked these exact two slugs - resolving identity here, after that
-gate already ran, could hand the scene a participant nobody vetted.
+Takes an already-fixed `--p1 <slug>` - who this is has already been decided by the time this runs,
+either by an author (an ordinary `/enact` call) or by `/simulate`'s own pick_pair.py before it ever
+dispatches here. Identity resolution stays out of this script's job for the same reason it always
+was: `/enact`'s own eligibility gate (participant needs `routines`+`arc`) has already checked this
+exact slug by the time this runs.
 
 Exactly two things are deliberately left undecided here, flagged in the brief for the subagent to
 fill - nothing else in this file's output is the subagent's to decide:
   - `arc_authoring_needed` - the fallback path for a character who reached extended-mode play
-    without an arc already on file (as of 2026-08-16, `/character` Step 8 authors `arc` at creation
-    time by default): their first arc, or a re-authored one after a failure or after completing the
-    prior one (`reauthor_failed`/`reauthor_complete` - completing an arc isn't a reason to stop
-    having one). Content (about/needs/context/premise) is composed by the subagent, then written
-    with write_arc.py (which also registers the concept in the same call).
-  - `contested_hinder_slot` - only present on a contested scene that resolved "hinder" against the
-    arc-primacy winner. The subagent may dramatize this against a SPECIFIC existing rival (if one
-    plausibly fits and already has a character file) or keep it ambient/unnamed (the default). If
-    named, call apply_contested_lead.py with the rival's slug.
+    without an arc (or without `needs` on it yet) already on file: their first arc, or a re-authored
+    one after a failure or after completing the prior one (`reauthor_failed`/`reauthor_complete`).
+    Content (about/needs/context/premise) is composed by the subagent, then written with
+    write_arc.py (which also registers the concept in the same call).
+  - `contested_hinder_slot` - only present on a motivated scene that resolved "hinder" against p1's
+    arc AND rolled contested. The subagent may dramatize this against a SPECIFIC existing rival (if
+    one plausibly fits and already has a character file) or keep it ambient/unnamed (the default).
+    If named, call apply_contested_lead.py with the rival's slug.
 
-Reproduction is deliberately NOT decided here any more (moved 2026-08-28, design debrief: the
-eligibility+roll used to run before the scene so a birth could be dramatized inside it; now it runs
-strictly AFTER, via the sibling script simulate_pass_reproduction.py, so a birth becomes a short coda
-after the scene instead). Partner counts still get bumped here, at the very top, the moment the pair
-is fixed - unconditional bookkeeping that has nothing to do with whether a birth happens, and
-simulate_pass_reproduction.py reads the counts this call already wrote.
-
-Everything else in the brief is already fixed and written to disk by the time this script returns:
-arc gate/outcome/tally (including any transform), partner counts, who's home vs visiting and why,
-and whether contested - the subagent's job past this point is /enact Steps 3b, 5, 5b, 6 (the scene
-itself, hearsay mutation, shock resolution, drift) plus the two slots above, never re-deciding
-anything already settled here.
+Reproduction is decided post-scene, by the caller (`/enact` Step 8's simulate_pass_reproduction.py),
+exactly as before - never here, and only when this brief's own `participant_2` is non-null (a solo
+survive/travel/no-target/missed-connection pass has no second participant to reproduce with at all).
 
 Writes `.simulate_pass_brief.json` at the worktree root (same location as .simulate_snapshot.json) -
 `/enact`'s own Step 5b reads it back to write the scene and resolve the two judgment slots above;
-nothing reads it again after that. Post-scene mechanics (horizon re-check, death, death-legacy,
-reproduction) are `/enact` Step 8's own concern from there, working off the participant slugs
-directly, not this file - this script never touches life.lived.
+nothing reads it again after that. A pass with no `participant_2` (survive, travel, no-target, no
+candidates, or a missed connection) has no second-NPC scene to enact at all under `/enact`'s existing
+Step 2/4 shape - see this rewrite's own report for the open question that leaves for `/enact`'s and
+`/simulate`'s own SKILL.md, which this rewrite does not touch. Post-scene mechanics (horizon
+re-check, death, death-legacy, reproduction) are `/enact` Step 8's own concern from there, working off
+whichever of `participant_1`/`participant_2` are actually present, not this file.
 
 Usage:
-    py "<worktree>/scripts/lore/simulate_pass_brief.py" --pair khaoe farlis --pass-number 12
+    py "<worktree>/scripts/lore/simulate_pass_brief.py" --p1 khaoe --pass-number 12
 """
 
 import argparse
@@ -67,7 +59,6 @@ TALES_DIR = ROOT / "_lore" / "tales"
 
 sys.path.insert(0, str(SCRIPTS_DIR))
 import simulate_pass_lib as lib  # noqa: E402
-import provisions_lib  # noqa: E402
 from check_needs_provides import significant_words  # noqa: E402
 
 
@@ -103,13 +94,11 @@ def git_user_name() -> str:
 
 def write_arc_completion_tale(key: str, name: str, arc: dict) -> str:
     """Mechanical - files already-decided content, makes no judgment call, same discipline
-    write_arc.py itself follows. Added 2026-08-31 on user request: an arc's premise is already a
-    concrete, resolved fact the moment its resolution flips to "complete" - the same standing a
-    birth or death already has (generate_offspring.py's write_birth_tale() / record_death.py's
-    write_tale_file()), so it belongs in tales.entries too, not left to evaporate as a bare
-    resolution flag on the character's own arc field. Makes a character's completed project
-    tangible and sampleable (sample_lore_knowledge.py, generate_offspring.py's world-lore pools,
-    a future character's own knowledge.education.items) the same way any other tale already is."""
+    write_arc.py itself follows. An arc's premise is already a concrete, resolved fact the moment
+    its resolution flips to "complete" - the same standing a birth or death already has
+    (generate_offspring.py's write_birth_tale() / record_death.py's write_tale_file()), so it belongs
+    in tales.entries too, not left to evaporate as a bare resolution flag on the character's own arc
+    field."""
     slug = f"arc_complete_{key}"
     base_slug, n = slug, 2
     while (TALES_DIR / f"{slug}.md").exists():
@@ -153,229 +142,65 @@ def write_arc_completion_tale(key: str, name: str, arc: dict) -> str:
     return slug
 
 
-def run_pre_scene(p1: str, p2: str, pass_number: int, forced_visit: bool = False) -> dict:
-    """`forced_visit=True` means the caller already resolved an unexpired lead of p1's toward p2
-    (pick_pair.py + roll_lead_followup.py, run by whoever fixed this pair before calling here) -
-    p1 is always the traveler in that case, home is fixed to p2 outright, skipping the ordinary
-    home-visit coin flip below (roll_home_visit.py) since the lead is a stronger, already-resolved
-    signal.
-
-    Causal order rewritten 2026-08-28 design debrief - see CHRONICLE.md's matching entry for the
-    full reasoning: home/visiting is now decided BEFORE any routine is rolled (not derived after the
-    fact by comparing two independently-rolled routines), only the home participant ever rolls a
-    routine at all, and arc primacy is decided AFTER home/visiting and independently of it - the
-    visiting participant's arc can still be the one that leads the scene. Needs/provides, contested,
-    and the alignment gate all key off whichever arc primacy actually picked, never off "the
-    traveler" as a fixed role."""
-    notes = []
-    p1_char, p2_char = lib.load_char(p1), lib.load_char(p2)
-
-    # Partner tracking - moved to the very top (2026-08-28 reorder): unconditional bookkeeping the
-    # moment this pair is fixed, with nothing to do with anything decided below.
-    lib.record_partner(p1, p2)
-    lib.record_partner(p2, p1)
-    p1_char, p2_char = lib.load_char(p1), lib.load_char(p2)
-
-    # Survival - rolled BEFORE home/visiting, one per participant, against each one's own home
-    # location (not the pass's eventual one, which isn't known yet). See roll_survival.py's own
-    # docstring for why the causal order runs this way.
-    p1_survival = lib.roll_survival(p1, p1_char.get("location", ""))
-    p2_survival = lib.roll_survival(p2, p2_char.get("location", ""))
-
-    # Home/visiting, then (home only) routine, then location/context assembly - no script call left
-    # for the location step itself, see simulate_pass_lib.assemble_location()'s own docstring.
-    # Skewed by the survival choices just rolled (design session 2026-08-28) - the hook
-    # roll_home_visit.py's original flat-coin version left for exactly this.
-    if forced_visit:
-        home, visiting = p2, p1
-        notes.append(f"{p1} followed a lead to {p2}")
-    else:
-        home, visiting = lib.roll_home_visit(p1, p2, p1_survival["choice"], p2_survival["choice"])
-    home_char = p1_char if home == p1 else p2_char
-    home_routine = lib.roll_routine(home_char["routines"])
-    loc = lib.assemble_location(home, home_routine, visiting, home_char)
-    location, home_frame, traveler = loc["location"], loc["home_frame"], loc["traveler"]
-    context, texture, provides = loc["context"], loc["texture"], loc["provides"]
-
-    # Survival effects apply at the RESOLVED location, not each participant's home - upkeep once
-    # for the location (never once per participant, or it's double-charged), then each
-    # participant's own energy/pool delta from the choice already rolled above.
-    lib.apply_upkeep(location)
-    p1_effect = lib.apply_survival(p1, location, p1_survival["choice"])
-    p2_effect = lib.apply_survival(p2, location, p2_survival["choice"])
-    if p1_survival["choice"] == "arc":
-        notes.append(f"{p1} spent this pass on their arc instead of working ({p1_effect['energy']} energy left)")
-    if p2_survival["choice"] == "arc":
-        notes.append(f"{p2} spent this pass on their arc instead of working ({p2_effect['energy']} energy left)")
-    if p1_effect["died"]:
-        notes.append(f"{p1}'s energy hit 0 - exhaustion/starvation, not yet recorded (post-scene step)")
-    if p2_effect["died"]:
-        notes.append(f"{p2}'s energy hit 0 - exhaustion/starvation, not yet recorded (post-scene step)")
-
-    # Arc primacy - decided next, independently of who's home vs visiting.
-    primacy = lib.roll_arc_primacy(p1, p2)
-    primary_char = p1_char if primacy == p1 else p2_char
-    other_char = p2_char if primacy == p1 else p1_char
-    arc = primary_char.get("arc")
-    primacy_survival_choice = p1_survival["choice"] if primacy == p1 else p2_survival["choice"]
-
-    # Needs/provides - keyed to the primacy winner's own arc, whichever participant that is. Gated
-    # two ways now: the primacy winner must have actually chosen "arc" this pass (choosing survive
-    # means nothing about their arc advances, win or lose the primacy coin flip), and the location
-    # must be able to afford to provide at all (provisions_per_capita >= provides_provisions_threshold) -
-    # a starved location can't support anyone's ambition, regardless of context match.
-    motivated, matched_need, matched_provide = False, None, None
-    if (arc and arc.get("resolution") == "ongoing" and arc.get("needs")
-            and primacy_survival_choice == "arc"
-            and provisions_lib.provisions_per_capita(location) >= lib.SURVIVAL["provides_provisions_threshold"]):
-        np_res = lib.check_needs_provides(arc["needs"], provides)
-        motivated = np_res["match"] == "true"
-        if motivated:
-            matched_need = np_res.get("matched_need")
-            matched_provide = np_res.get("matched_provide")
-    elif arc and arc.get("resolution") == "ongoing" and primacy_survival_choice != "arc":
-        notes.append(f"{primacy} chose to work this pass - arc untouched regardless of primacy")
-
-    # Contested - roll only if motivated, same as always. Relationship-aware 2026-08-28: the peer's
-    # own established tie to the primacy winner skews the odds (see roll_contested.py's docstring).
-    peer_strength = other_char.get("partners", {}).get(primacy, 0)
-    peer_quality = other_char.get("partners_quality", {}).get(primacy, 0)
-    contested = lib.roll_contested(strength=peer_strength, quality=peer_quality) if motivated else False
-
-    # Gate, outcome (now contested-aware), tally/threshold (including transform)
-    arc_authoring_needed = None
-    gate_hit, inclined, arc_outcome, tally_result, matched_about = False, None, None, None, []
-
-    if not arc:
-        if primacy == home_frame:
-            arc_authoring_needed = {
-                "character_slug": primacy, "reason": "first",
-                "band": lib.horizon(primacy)["band"],
-                "origin": primary_char.get("origin", ""), "location": primary_char.get("location", ""), "backstory": primary_char.get("backstory", ""),
-                "criterion": primary_char.get("criterion", {}), "routines": primary_char.get("routines", []),
-                "needs_candidates": needs_candidates(primary_char.get("routines", [])),
-                "prior_arc": None,
-            }
-            notes.append(f"{primacy} needs a first arc authored (home_frame, no arc yet)")
-    elif arc.get("resolution") == "ongoing" and primacy_survival_choice == "arc":
-        gate_res = lib.check_arc_alignment(arc.get("about", []), arc.get("needs", []), other_char)
-        gate_hit = gate_res["gate"] == "hit"
-        if gate_hit:
-            inclined = gate_res.get("inclined", "neutral")
-            other_key = p2 if primacy == p1 else p1
-            quality_delta = lib.BOND_QUALITY_DELTA[inclined]
-            if quality_delta:
-                lib.record_bond_quality(other_key, primacy, quality_delta)
-            arc_outcome = lib.roll_arc_outcome(inclined, contested=contested)
-            arc.setdefault("history", []).append({"pass": pass_number, "outcome": arc_outcome})
-            score = lib.tally(arc["history"])
-            if score >= lib.ARC_RESOLUTION_THRESHOLD:
-                arc["resolution"] = "complete"
-                tally_result = "complete"
-                notes.append(f"{primacy}'s arc completed")
-                tale_id = write_arc_completion_tale(primacy, primary_char.get("name", primacy), arc)
-                notes.append(f"{primacy}'s completed arc filed as tale '{tale_id}' - tag the completion-announcement hearsay claim 'about: \"tale: {tale_id}\"'")
-                arc_authoring_needed = {
-                    "character_slug": primacy, "reason": "reauthor_complete",
-                    "band": lib.horizon(primacy)["band"],
-                    "origin": primary_char.get("origin", ""), "location": primary_char.get("location", ""), "backstory": primary_char.get("backstory", ""),
-                    "criterion": primary_char.get("criterion", {}), "routines": primary_char.get("routines", []),
-                    "needs_candidates": needs_candidates(primary_char.get("routines", [])),
-                    "prior_arc": arc,
-                    "completion_tale_id": tale_id,
-                }
-            elif score <= -lib.ARC_RESOLUTION_THRESHOLD:
-                matched_about = gate_res.get("matched_about") or []
-                if matched_about:
-                    arc["about"] = matched_about
-                    arc["history"][-1]["outcome"] = "transform"
-                    tally_result = "transform"
-                    notes.append(f"{primacy}'s arc transformed -> {matched_about}")
-                else:
-                    arc["resolution"] = "failed"
-                    tally_result = "failed"
-                    notes.append(f"{primacy}'s arc failed")
-                    arc_authoring_needed = {
-                        "character_slug": primacy, "reason": "reauthor_failed",
-                        "band": lib.horizon(primacy)["band"],
-                        "origin": primary_char.get("origin", ""), "location": primary_char.get("location", ""), "backstory": primary_char.get("backstory", ""),
-                        "criterion": primary_char.get("criterion", {}), "routines": primary_char.get("routines", []),
-                        "needs_candidates": needs_candidates(primary_char.get("routines", [])),
-                        "prior_arc": arc,
-                    }
-            else:
-                tally_result = "ongoing"
-                notes.append(f"{primacy}'s arc: {arc_outcome}")
-            # primary_char was loaded before apply_survival() ran its own separate read-modify-write
-            # on this same file (line ~116) - without re-syncing energy here first, this save would
-            # silently revert the primacy winner's energy back to its pre-pass value on every
-            # gate-hit pass, erasing the survival mechanism's whole cost exactly where it matters most
-            # (confirmed the hard way, round-3 debrief 2026-08-29: found via a brief/file mismatch -
-            # the brief reported energy 1, the file still showed 4, on a gate-hit pass).
-            primary_effect = p1_effect if primacy == p1 else p2_effect
-            primary_char["energy"] = primary_effect["energy"]
-            lib.save_char(primacy, primary_char)
-
-    # Consequence slot - only surfaced on a contested scene that resolved "hinder"
-    contested_hinder_slot = None
-    if contested and gate_hit and inclined == "hinder":
-        contested_hinder_slot = {
-            "traveler": traveler, "supplier": home_frame, "matched_provide": matched_provide,
-        }
-
-    # Reproduction is deliberately NOT decided here (2026-08-28: moved to
-    # simulate_pass_reproduction.py, run after the scene) - see this function's own docstring.
-
-    return {
-        "pass": pass_number,
-        "participant_1": p1, "participant_2": p2,
-        "forced_visit": forced_visit,
-        "location": location, "home_frame": home_frame, "traveler": traveler,
-        "context": context, "texture": texture,
-        "motivated": motivated, "matched_need": matched_need, "matched_provide": matched_provide,
-        "contested": contested,
-        "arc": {
-            "primacy_winner": primacy, "gate": "hit" if gate_hit else "miss", "inclined": inclined,
-            "outcome": arc_outcome, "tally_result": tally_result, "matched_about": matched_about,
-        },
-        "arc_authoring_needed": arc_authoring_needed,
-        "contested_hinder_slot": contested_hinder_slot,
-        "survival": {
-            p1: {"choice": p1_survival["choice"], "energy": p1_effect["energy"], "died": p1_effect["died"]},
-            p2: {"choice": p2_survival["choice"], "energy": p2_effect["energy"], "died": p2_effect["died"]},
-        },
-        "character_files": {
-            p1: str(lib.CHAR_DIR / f"{p1}.json"), p2: str(lib.CHAR_DIR / f"{p2}.json"),
-        },
-        "notes": notes,
+def enrich_arc_authoring_needed(p1: str, reason: str) -> dict:
+    """Fills out the minimal `{"character_slug", "reason"}` signal run_pass_mechanics() returns with
+    everything the subagent actually needs to author/reauthor an arc - band, criterion, routines,
+    ranked needs candidates, and (on a re-author) the prior arc for continuity/contrast. On
+    `reauthor_complete`, also writes the completion tale - same division of labor the pre-rewrite
+    version of this file already used for this exact slot."""
+    p1_char = lib.load_char(p1)
+    prior_arc = p1_char.get("arc") if reason in ("reauthor_failed", "reauthor_complete") else None
+    entry = {
+        "character_slug": p1, "reason": reason,
+        "band": lib.horizon(p1)["band"],
+        "origin": p1_char.get("origin", ""), "location": p1_char.get("location", ""), "backstory": p1_char.get("backstory", ""),
+        "criterion": p1_char.get("criterion", {}), "routines": p1_char.get("routines", []),
+        "needs_candidates": needs_candidates(p1_char.get("routines", [])),
+        "prior_arc": prior_arc,
     }
+    return entry
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--pair", nargs=2, metavar=("P1", "P2"), required=True,
-                         help="The two already-fixed participant slugs")
+    parser.add_argument("--p1", required=True, help="The already-fixed participant slug")
     parser.add_argument("--pass-number", type=int, required=True)
-    parser.add_argument("--forced-visit", action="store_true",
-                         help="P1 is visiting P2 because of an already-resolved unexpired lead")
     args = parser.parse_args()
 
     lib.rng_context.set_current_pass(args.pass_number)
-    p1, p2 = args.pair[0].lower(), args.pair[1].lower()
-    brief = run_pre_scene(p1, p2, args.pass_number, forced_visit=args.forced_visit)
+    p1 = args.p1.lower()
+    brief = lib.run_pass_mechanics(p1, args.pass_number)
+
+    if brief["arc_authoring_needed"]:
+        reason = brief["arc_authoring_needed"]["reason"]
+        entry = enrich_arc_authoring_needed(p1, reason)
+        if reason == "reauthor_complete":
+            p1_char = lib.load_char(p1)
+            tale_id = write_arc_completion_tale(p1, p1_char.get("name", p1), entry["prior_arc"])
+            entry["completion_tale_id"] = tale_id
+            brief["notes"].append(
+                f"{p1}'s completed arc filed as tale '{tale_id}' - tag the completion-announcement "
+                f"hearsay claim 'about: \"tale: {tale_id}\"'"
+            )
+        brief["arc_authoring_needed"] = entry
 
     BRIEF_PATH.write_text(json.dumps(brief, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
-    print(f"pass {brief['pass']}: {brief['participant_1']} x {brief['participant_2']} (home: {brief['home_frame']}, at {brief['location']})")
-    if brief["forced_visit"]:
-        print(f"  forced visit (lead followup): {brief['participant_1']} sought out {brief['participant_2']}")
+    p2 = brief["participant_2"]
+    print(f"pass {brief['pass']}: {p1}" + (f" x {p2}" if p2 else " (solo this pass)") + f" at {brief['location']}")
+    if brief["travel"]:
+        t = brief["travel"]
+        print(f"  travel: target={t['target']} hop={t['hop']} path={t['path']}")
     print(f"  context: {brief['context']}  |  motivated: {brief['motivated']}" + (f" ({brief['matched_need']} <-> {brief['matched_provide']})" if brief["motivated"] else ""))
     print(f"  contested: {brief['contested']}")
     surv = brief["survival"]
-    print(f"  survival: {brief['participant_1']}={surv[brief['participant_1']]['choice']} (energy {surv[brief['participant_1']]['energy']})"
-          f"  {brief['participant_2']}={surv[brief['participant_2']]['choice']} (energy {surv[brief['participant_2']]['energy']})")
+    p1_surv = surv.get(p1, {})
+    line = f"  survival: {p1}={p1_surv.get('choice')} (energy {p1_surv.get('energy')})"
+    if p2 and p2 in surv:
+        line += f"  {p2}=(energy {surv[p2].get('energy')})"
+    print(line)
     arc = brief["arc"]
-    print(f"  arc: primacy={arc['primacy_winner']}  gate={arc['gate']}  inclined={arc['inclined']}  outcome={arc['outcome']}  tally={arc['tally_result']}")
+    print(f"  arc: gate={arc['gate']}  inclined={arc['inclined']}  outcome={arc['outcome']}  tally={arc['tally_result']}")
     for n in brief["notes"]:
         print(f"  note: {n}")
     print()
@@ -386,10 +211,10 @@ def main() -> None:
     if brief["contested_hinder_slot"]:
         c = brief["contested_hinder_slot"]
         print(f"JUDGMENT SLOT - contested hinder: may name an existing rival for {c['traveler']} (supplier: {c['supplier']}, provide: {c['matched_provide']}) - if named, run apply_contested_lead.py; otherwise leave ambient")
-    for k in (brief["participant_1"], brief["participant_2"]):
-        if surv[k]["died"]:
-            print(f"DEATH - {k}'s energy hit 0 this pass. Not yet recorded - run record_death.py {k} --cause \"exhaustion/starvation\" post-scene, same as a horizon-ending death.")
-    print("(reproduction is no longer decided here - run simulate_pass_reproduction.py after the scene)")
+    if p1_surv.get("died"):
+        print(f"DEATH - {p1}'s energy hit 0 this pass. Not yet recorded - run record_death.py {p1} --cause \"exhaustion/starvation\" post-scene, same as a horizon-ending death.")
+    if p2:
+        print("(reproduction is only relevant when participant_2 is present - run simulate_pass_reproduction.py after the scene if so)")
 
 
 if __name__ == "__main__":

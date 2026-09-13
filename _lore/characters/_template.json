@@ -2,6 +2,7 @@
   "name": "",
   "origin": "",
   "location": "",
+  "last_scene": "",
   "places_visited": [],
   "backstory": "",
   "knowledge": {
@@ -29,6 +30,7 @@
     "deceased": false
   },
   "energy": 20,
+  "provisions": 2,
   "parents": [],
   "partners": {},
   "partners_quality": {},

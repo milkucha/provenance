@@ -243,24 +243,39 @@ For pass 1 through N:
 
 1. If fewer than 2 living participants remain, stop early and say so, noting how many passes
    actually ran before the pool ran out.
-2. Resolve this pass's pair, one call, absolute path:
+2. Draw this pass's participant, one call, absolute path:
    ```bash
    py "<worktree>/scripts/lore/simulate_resolve_pair.py" --pool <every slug still in the living pool> --pass-number <N>
    ```
    A genuine uniform draw over the pool (not the model's own guess at "random," which skews toward
-   whichever names are most salient in context), plus the lead-override check (an unexpired `leads`
-   entry on the drawn participant_1, younger than `lead_expiry_passes` — 8, from `_lore/tuning.json`
-   — forces this pass to `participant_1` visiting that lead's target instead, consuming the lead).
-   Prints `participant_1`, `participant_2`, and `forced_visit` — keep all three for point 3 below.
-   Every pass is an independent draw; pairs can repeat, and should be expected to over a long run.
+   whichever names are most salient in context) — exactly one participant, `p1`. There is no second
+   participant to resolve here any more (design session 2026-09-13, asymmetric per-pass rewrite —
+   see TODO.md's and CHRONICLE.md's matching entries): whoever else ends up in this pass, if anyone,
+   is discovered over the course of point 3 below, not fixed up front. Prints `participant_1` — keep
+   it for point 3. Every pass is an independent draw; the same `p1` can come up repeatedly, and
+   should be expected to over a long run.
 3. **Run the mechanical prep yourself, in the orchestrating session, absolute paths, Bash only, never
-   `cd`:** `py "<worktree>/scripts/lore/pass_prep.py" --p1 <slug> --p2 <slug> --pass-number <N>
-   [--forced-visit]` — wraps `horizon.py` (both participants), the whole `simulate_pass_brief.py`
-   mechanical block (survival roll/apply, arc gate, criterion-move gate check, everything /enact Step
-   4 decides), AND (added 2026-08-29, round-3 debrief) each participant's own `criterion` and, if they
-   have one, their arc's `premise`/`about`/`needs` — into one call. Prints the pre-scene horizon, the
-   full brief, and this `characters` block as one JSON object. This is now the *complete* input the
-   enacter needs; nothing else has to be separately fetched, composed, or looked up. If the brief's
+   `cd`:** `py "<worktree>/scripts/lore/pass_prep.py" --p1 <slug> --pass-number <N>` — wraps
+   `horizon.py`, the whole `simulate_pass_brief.py` mechanical block, AND (added 2026-08-29, round-3
+   debrief) each participant's own `criterion` and, if they have one, their arc's
+   `premise`/`about`/`needs` — into one call. That mechanical block now runs the full asymmetric
+   chain: `p1` rolls survive vs. arc (`roll_survival.py`, unchanged); on survive, `p1` rolls their own
+   routine and the pass ends there, no second participant. On arc, it checks whether the need is
+   satisfiable at `p1`'s current location and, if not, pathfinds (`location_context.py`/
+   `travel_graph.py`) toward a location that can satisfy it, preferring a known supplier over general
+   knowledge — this pass either arrives (this hop reaches the target) or spends the pass in transit (a
+   `route`-context step, still no second participant). Once arrived, a `roll_meetable.py` roll decides
+   whether anyone useful is actually present (a real "missed connection" miss, skewed toward a known
+   supplier when the target was found that way); if someone is found they become `p2` and roll their
+   OWN routine, which may still turn out not to match the need (also a miss). Only a genuine match
+   reaches the payment gate (`p1`'s own `provisions` against a tuning-configured cost, graded by
+   surplus and damped as the arc nears completion) — only on success does the pass proceed into the
+   unchanged `roll_contested`/`check_arc_alignment`/`roll_arc_outcome`/`record_bond_quality` chain.
+   `p1` is definitionally the lead throughout; there's no symmetric primacy coin flip any more
+   (`roll_home_visit.py`/`roll_arc_primacy.py` no longer exist). Prints the pre-scene horizon
+   (for `p1`, and for `p2` too if the brief's own `participant_2` field names one), the full brief, and
+   the `characters` block as one JSON object. This is now the *complete* input the enacter needs;
+   nothing else has to be separately fetched, composed, or looked up. If the brief's
    `arc_authoring_needed` is non-null, author that arc yourself (`premise`/`context`/`about` are a
    name-blend-shaped judgment call, not a dice roll — same reasoning `generate_offspring.py`'s own
    docstring gives for why it can't script a child's name) and call `write_arc.py` directly before
@@ -275,9 +290,16 @@ For pass 1 through N:
    already ran inside `simulate_pass_brief.py` before this brief was even printed — the completed
    arc's `completion_tale_id` is right there in the payload; nothing further to do for it (it's
    mechanical, not a judgment call — the arc's own already-authored `premise` is what got filed).
-4. **Dispatch the enacter.** How depends on Step 1's model choice — either way this is the ONE dispatch
-   per pass, it does no tool-calling of its own, and it never sees anything beyond point 3's JSON plus,
-   when relevant, a short director's note (below).
+   **A pass with no `participant_2` in the brief (a solo survive pass, an en-route travel pass, or a
+   missed connection) never reaches a dialogue scene at all** — skip point 4's dispatch and point 5's
+   `pass_record.py`/`pass_apply.py` calls entirely for that pass; only the mechanical prep above (and,
+   for `p1`, its own lived-delta/death/horizon bookkeeping) applies. See `simulate_driver.py`'s own
+   `apply_solo()` for exactly what that bookkeeping covers on the Local/driver path — the same
+   bookkeeping applies here even when running the manual per-pass sequence instead of the driver.
+4. **Dispatch the enacter — only for a pass that actually reached a genuine two-participant scene**
+   (the brief's own `motivated: true`, per point 3 above). How depends on Step 1's model choice —
+   either way this is the ONE dispatch per pass, it does no tool-calling of its own, and it never sees
+   anything beyond point 3's JSON plus, when relevant, a short director's note (below).
 
    **Haiku/Sonnet/Opus** (Agent tool, `subagent_type: general-purpose`, the model chosen in Step 1,
    `run_in_background: false`). Redesigned 2026-08-29 (round-2 debrief) after auditing an actual run's

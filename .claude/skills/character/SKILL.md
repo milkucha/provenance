@@ -382,7 +382,12 @@ Update (or create) `_lore/characters/<slug>.json`:
 **Fields this skill never authors, present in `_template.json` only to document the full shape:**
 `energy` (personal survival resource, `_lore/tuning.json`'s `survival.energy_cap` — lazily defaulted
 on first touch by `apply_survival.py`/`roll_survival.py`, template shows the cap value rather than
-`null` so a fresh character reads as "full," not "unset"), `parents` (array of the two parent keys,
+`null` so a fresh character reads as "full," not "unset"), `provisions` (personal reserve, distinct
+from the communal per-location pool in `_lore/provisions.json` — lazily defaulted to
+`survival.starting_provisions_per_capita`, same convention as `energy`; feeds `roll_survival.py`'s
+`personal_cushion` input as of 2026-09-13, but nothing yet grows or spends it — a placeholder field
+ahead of the not-yet-built earning/inheritance economy, see `TODO.md`'s "Personal provisions and
+inheritance economy" entry), `parents` (array of the two parent keys,
 written only by `generate_offspring.py`), `partners`/`partners_quality` (keyed by the other
 character's own key — `partners[other]` a running shared-scene count, `partners_quality[other]` a
 signed running bond score — written by `record_partner.py`/`record_bond_quality.py`), and

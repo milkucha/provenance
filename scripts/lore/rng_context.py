@@ -44,8 +44,8 @@ DRAW_AUDIT_FILENAME = ".simulate_draw_audit.jsonl"
 # simulate_pass_lib.py) so any other caller (a per-pass CLI driver invoking a script directly) can
 # check the same registry without importing the full pass-orchestration library.
 STOCHASTIC_SCRIPTS = {
-    "pick_pair.py", "roll_routine.py", "roll_home_visit.py", "roll_survival.py",
-    "roll_arc_primacy.py", "roll_contested.py", "roll_arc_outcome.py", "roll_lead_followup.py",
+    "pick_pair.py", "roll_routine.py", "roll_survival.py", "roll_meetable.py",
+    "roll_contested.py", "roll_arc_outcome.py", "roll_lead_followup.py",
     "roll_reproduction.py", "roll_death_legacy.py", "lineage_coin.py", "roll_lifespan.py",
     "generate_offspring.py", "notify_death.py", "record_death.py", "sample_lore_knowledge.py",
 }

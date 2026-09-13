@@ -202,50 +202,52 @@ next.** Everything decidable by a script, a dice roll, or plain arithmetic over 
 record is decided that way, in one call:
 
 ```bash
-py scripts/lore/simulate_pass_brief.py --pair <p1 slug> <p2 slug> --pass-number <N>
+py scripts/lore/pass_prep.py --p1 <p1 slug> --pass-number <N>
 ```
 
-`<N>` is this pairing's own running count if run standalone (one more than the higher of the two
-participants' `life.lived`), or the pass number `/simulate` is already tracking, when dispatched
-from there. Add `--forced-visit` only when `/simulate` has already resolved an unexpired lead of
-p1's toward p2 before dispatching here (see its own Step 3) — never set it for a standalone `/enact`
-call, since there's no lead-tracking pool to have resolved one against.
+`<N>` is p1's own running count if run standalone (one more than `life.lived`), or the pass number
+`/simulate` is already tracking, when dispatched from there. There is no `p2` to pass in any more —
+this call takes exactly one participant; whoever else ends up in the pass, if anyone, is discovered
+over the course of the mechanics below, not fixed up front (design session 2026-09-13, asymmetric
+per-pass rewrite — see TODO.md's and CHRONICLE.md's matching entries).
 
-This one call runs, in order (causal order rewritten 2026-08-28 design debrief — see CHRONICLE.md's
-matching entry for the full reasoning): partner tracking (both directions, unconditional bookkeeping
-the moment the pair is fixed — moved to the front; has nothing to do with anything decided below),
-**survival** (`roll_survival.py`, one independent roll per participant, against each one's own home
+This one call runs, in order: **survival** (`roll_survival.py`, one roll against p1's own home
 `location` — survive (work, replenish personal energy, feed the local provisions pool) or pursue their
 arc (extra personal cost, draws the pool instead) — see `TODO.md`'s "Survival mechanism" entry for
-the full math; energy and pool effects are applied once the pass's actual location is known, a few
-steps below), who's home vs visiting (`roll_home_visit.py` — **skewed by the survival choice just
-rolled**: a participant who chose to survive leans toward staying home to do it, arc/no-ongoing-arc
-contributes no skew — decided *before* any routine is rolled, not derived afterward by comparing two
-independently-rolled routines), the routine roll (**only for the
-home participant** — the visiting participant simply enters whatever context the home participant's
-own roll produces; no more "coincidence" mode, since there's no second independent routine left for
-it to coincide with), the context/texture lookup (a plain `_lore/contexts.json` dict lookup, folded
-into the same call, no script of its own), **survival effects applied** (`apply_upkeep.py` once for
-the resolved location, then `apply_survival.py` once per participant — the roll already happened
-above, this just writes the energy/pool consequence to the location this pass actually landed on,
-which may not be either participant's home), arc primacy (whose arc leads this scene — decided *after*
-and *independently of* who's home vs visiting; the visiting participant's arc can still be the one
-that leads, though it only actually advances if the primacy winner chose "arc" in the survival roll
-above — choosing to survive means nothing about that character's arc moves this pass, win or lose the
-primacy coin flip; losing primacy despite having chosen "arc" still costs the full energy/pool price,
-deliberately — a real gamble, not wasted bookkeeping), the needs/provides motivation check (keyed to
-the **arc-primacy winner's** own arc, whichever participant that is — not "the traveler's" as a fixed
-role — and now also gated on the resolved location's provisions: `provisions_per_capita` must clear
-`provides_provisions_threshold`, or a starved location can't support anyone's ambition regardless of
-context match), the contested roll (only if
+the full math). On **survive**, p1 rolls their own routine, it's applied at that location, and the
+pass ends right there — no second participant, ever. On **arc**, the mechanics first check whether
+the need is satisfiable at p1's own current location (a plain `_lore/contexts.json` `provides` lookup
+against p1's own routines, favored but not forced when it matches); if not, p1 pathfinds
+(`location_context.py`/`travel_graph.py`) toward a location that can satisfy it, preferring a known
+supplier over general knowledge of the world — this pass either arrives (if this hop reaches the
+target) or spends the pass in transit (a `route`-context step, mechanically applied, no second
+participant yet). Once arrived (locally or via travel), a `roll_meetable.py` roll decides whether
+anyone useful is actually present — a real chance of a "missed connection" miss, skewed toward a
+known supplier when the pathfinding target was found that way. If someone is found, they become `p2`
+and roll their OWN routine independently — if that doesn't actually land them at the same place doing
+something that matches the need, that's also a miss. Only once `p2`'s own routine confirms a match
+does a payment gate (`arc_payment_gate()` — p1's own `provisions` against a tuning-configured cost,
+graded by surplus above that cost and damped as the arc nears completion, `_lore/tuning.json`
+`arc_payment`) decide whether the transaction actually succeeds — on success it transfers the cost
+from p1 to p2 and this is what makes the pass "motivated," gating everything below. **`apply_upkeep.py`
+once for the resolved location, then `apply_survival.py` once for p1**, write the energy/pool
+consequence at whatever location the pass actually landed on, regardless of how far it got. Partner
+tracking (`record_partner.py`, both directions) fires the moment p1 and p2 are both confirmed present
+with matching contexts — the earliest point in this algorithm two characters have verifiably shared a
+pass — independently of whether the payment gate that follows succeeds.
+
+**p1 is definitionally the lead now — there is no arc-primacy coin flip.** `roll_home_visit.py` and
+`roll_arc_primacy.py` no longer exist; the old "whose arc leads, decided independently of who's home
+vs. visiting" question doesn't arise because there's no symmetric pair to decide it between.
+
+From the payment gate's success onward, the chain is unchanged: the contested roll (only if
 motivated; base odds 15%, `_lore/tuning.json` `odds_percent.contested` — **relationship-aware as of
-2026-08-28**: once the peer's own established tie to the primacy winner crosses `partner_threshold`
+2026-08-28**: once the peer's own established tie to p1 crosses `partner_threshold`
 (5), its `partners_quality` sign shifts the odds by `contested_relationship_shift` (10) — positive
 down, negative up, clamped to [2, 95]; below the threshold, or exactly neutral at it, nothing shifts
-— see `roll_contested.py`'s own docstring), the knowledge/criteria gate (only
-if the primacy winner has an ongoing arc — checks whether the OTHER participant's own
-knowledge/criterion touches it at all — **and, when it hits, also bumps that peer's own
-`partners_quality` toward the primacy winner**, `record_bond_quality.py`, `+1`/`-1`/`0` for
+— see `roll_contested.py`'s own docstring), the knowledge/criteria gate (checks whether p2's own
+knowledge/criterion touches p1's arc at all — **and, when it hits, also bumps p2's own
+`partners_quality` toward p1**, `record_bond_quality.py`, `+1`/`-1`/`0` for
 `help`/`hinder`/`mixed`-or-`neutral` — a signed number next to `partners`' own plain interaction
 count, added 2026-08-28: `partners` alone only ever said two characters have MET, never whether
 those meetings went well), the arc-outcome roll (only if the gate hit — **resolved
@@ -265,26 +267,26 @@ session's own working directory for a standalone `/enact` run) and prints a summ
 (if any) of two judgment slots below are open this scene — resolved in Step 5b, not here:
 - `arc_authoring_needed` — the **fallback** path only, for a participant who reached this point
   without an arc already on file (`/character` Step 8 authors one at creation by default, so this
-  should be the exception). Present when the primacy winner needs a fresh arc: their very first one,
+  should be the exception). Present when p1 needs a fresh arc: their very first one,
   a re-authored one after a `"failed"` tally with no gate hit to transform it instead, or after a
   `"complete"` resolution. Carries `band`, `criterion`, `routines`, and (for either re-author case)
   `prior_arc` for continuity/contrast.
 - `contested_hinder_slot` — present only when a motivated scene rolled contested AND the alignment
-  gate resolved `hinder` against the primacy winner. Carries `traveler`, `supplier`, and
-  `matched_provide`. Genuinely optional even when present — only fill it if the scene plausibly
-  points at a SPECIFIC character who already has a file (`_lore/characters/<slug>.json` exists),
-  otherwise leave it ambient/unnamed.
+  gate resolved `hinder` against p1. Carries `traveler` (p1, the field's own name unchanged even
+  though there's no longer a symmetric "traveler vs. home" pair it distinguishes from), `supplier`
+  (p2), and `matched_provide`. Genuinely optional even when present — only fill it if the scene
+  plausibly points at a SPECIFIC character who already has a file (`_lore/characters/<slug>.json`
+  exists), otherwise leave it ambient/unnamed.
 
-The scene itself (`location`/`home_frame`/`traveler`/`context`/`texture`/`motivated`/`contested`/the
-arc's already-decided `outcome`) is always present and always fixed — Step 5b dramatizes it, never
-re-decides it. **"advance" and "complete" are not staged the same way.** An
-"advance" outcome can be any small step forward and still read fine. A "complete" outcome
-(`tally_result: "complete"`) has to depict the arc's own object/goal actually being obtained or
-resolved *within this one scene* — not another lead, not one step closer, the culminating action
-itself, plausible as a single-sitting resolution given what this brief already fixed. A scene that
-hands the primacy winner a lead instead of the thing itself, while the brief says "complete," is
-staged as "advance" and doesn't match the fixed fact — rewrite it so the culminating moment actually
-happens on the page.
+The scene itself (`location`/`context`/`travel`/`motivated`/`contested`/the arc's already-decided
+`outcome`) is always present and always fixed — Step 5b dramatizes it, never re-decides it.
+**"advance" and "complete" are not staged the same way.** An "advance" outcome can be any small step
+forward and still read fine. A "complete" outcome (`tally_result: "complete"`) has to depict the
+arc's own object/goal actually being obtained or resolved *within this one scene* — not another lead,
+not one step closer, the culminating action itself, plausible as a single-sitting resolution given
+what this brief already fixed. A scene that hands p1 a lead instead of the thing itself, while the
+brief says "complete," is staged as "advance" and doesn't match the fixed fact — rewrite it so the
+culminating moment actually happens on the page.
 
 ## Step 5a — Enact against the player
 
@@ -705,6 +707,11 @@ here, since a fresh JSON write could clobber what those calls just did. What's l
   visits alike (the "home vs. visiting" mechanic in Step 5 can put a visiting participant somewhere
   that's neither their own nor the other participant's routine location; that counts too) — distinct
   from `routines[].location`, which stays a fixed, curated list rather than a growing history.
+- `last_scene` — overwritten every run, never accumulated (same mutation discipline as `location`, not
+  `knowledge.experience`'s append-only one). A short (1-2 sentence) prose summary of what just happened
+  in this scene for this character, written by whoever is running `/enact` — a natural byproduct of
+  having just written the scene, not a new judgment call. Gives a returning character's next scene a
+  cheap thread of continuity without reconstructing context from a full transcript re-read.
 - `backstory` — the backstory from Step 1/2, or `""` if none was given. Experience-knowledge,
   conceptually (see the intro), but its own top-level field. For a returning character, only append
   or amend this if the user gives *new* backstory in this run (as with Döran's added hologram/pedestal

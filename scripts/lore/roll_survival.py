@@ -7,7 +7,7 @@ particular is the closest precedent: a base percentage, shifted point-by-point b
 clamped, then rolled).
 
 Design session 2026-08-28 - see TODO.md's "Survival mechanism" entry for the full worked-through
-math and CHRONICLE.md's matching entry for how each input got settled. Five inputs, each contributing
+math and CHRONICLE.md's matching entry for how each input got settled. Six inputs, each contributing
 a percentage-point shift toward "arc" (or away from it, negative):
 
   - **energy** - more personal buffer, safer to gamble. Normalized around the cap's midpoint.
@@ -27,6 +27,15 @@ a percentage-point shift toward "arc" (or away from it, negative):
     one-directional, same asymmetry pool_reliance/affinity_obligation already apply to net_affinity -
     a declining trend pushes toward "survive" (contribute now, before it's worse), but a recovering
     trend applies no extra pull toward "arc" at all.
+  - **personal_cushion** (added 2026-09-13, see TODO.md's "Personal provisions and inheritance
+    economy" entry) - the opposite economic intuition from pool_reliance: a character's OWN
+    `provisions` field (lazily defaulted, `_lore/characters/_template.json`), normalized the same way
+    pool_reliance's pool_surplus is (against provides_provisions_threshold), but pushing toward "arc"
+    rather than "survive" - a healthy personal reserve is what makes gambling on the arc feel safe
+    this pass, independent of the communal pool's own health or who this character is bonded to.
+    Distinct scope from pool_reliance/affinity_obligation on purpose: those two are about the
+    *communal* pool and this character's ties to the people sharing it; this one is about what this
+    character holds personally, and nothing else.
 
 net_affinity itself is Sum(partners_quality[p]) / Sum(partners[p]) across ESTABLISHED partners only
 (count >= partner_threshold, same bar roll_contested.py already uses) - a character with many strong
@@ -104,7 +113,7 @@ def character_band(character: dict, key: str) -> str:
     if not LIFESPANS_PATH.exists():
         return "early"
     with open(LIFESPANS_PATH, encoding="utf-8") as f:
-        lifespans = json.load(f)["lifespans"]
+        lifespans = json.load(f).get("lifespans", {})
     if key not in lifespans:
         return "early"
     lived = character.get("life", {}).get("lived", 0)
@@ -134,6 +143,8 @@ def roll(character: dict, key: str, home_location: str, rng: Random | None = Non
     pool_surplus = max(-1.0, min(1.0, (per_capita - threshold) / threshold)) if threshold else 0.0
     trend = provisions_lib.provisions_trend(home_location)
     trend_normalized = max(-1.0, min(1.0, trend / threshold)) if threshold else 0.0
+    provisions = character.get("provisions", _S["starting_provisions_per_capita"])
+    personal_cushion = max(-1.0, min(1.0, (provisions - threshold) / threshold)) if threshold else 0.0
 
     w = _S["weights"]
     pct = _S["odds_percent"]["arc_base"]
@@ -142,6 +153,7 @@ def roll(character: dict, key: str, home_location: str, rng: Random | None = Non
     pct += w["pool_reliance"] * pool_surplus * affinity
     pct -= w["affinity_obligation"] * affinity
     pct += w["scarcity_pressure"] * min(0.0, trend_normalized)
+    pct += w["personal_cushion"] * personal_cushion
     pct = max(_S["odds_percent"]["min"], min(_S["odds_percent"]["max"], pct))
 
     choice = "arc" if rng.random() < (pct / 100.0) else "survive"
@@ -150,6 +162,7 @@ def roll(character: dict, key: str, home_location: str, rng: Random | None = Non
         "energy": energy, "arc_pressure": round(pressure, 2),
         "pool_surplus": round(pool_surplus, 2), "net_affinity": round(affinity, 2),
         "scarcity_trend": round(trend_normalized, 2),
+        "personal_cushion": round(personal_cushion, 2),
     }
 
 
@@ -178,6 +191,7 @@ def main() -> None:
         print(f"pool_surplus: {result['pool_surplus']}")
         print(f"net_affinity: {result['net_affinity']}")
         print(f"scarcity_trend: {result['scarcity_trend']}")
+        print(f"personal_cushion: {result['personal_cushion']}")
 
 
 if __name__ == "__main__":

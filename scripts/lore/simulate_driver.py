@@ -43,6 +43,28 @@ and next_pass: 1 before the first `run` call - this script does not do any of th
 judgment slots (arc content, child names) are deliberately never scripted - same discipline
 write_arc.py/generate_offspring.py themselves already follow; this driver only collapses the
 MECHANICAL steps around those judgment calls, never the calls themselves.
+
+**Updated for the asymmetric per-pass model (design session 2026-09-13):** `simulate_resolve_pair.py`
+now only draws `p1` (no `participant_2`/`forced_visit` to carry any more), and `pass_prep.py` takes
+only `--p1`, discovering the rest (whether a `participant_2` even exists this pass, and whether the
+pass reached a genuinely motivated two-participant scene) inside `simulate_pass_brief.py`'s own
+`run_pass_mechanics()`. This driver now dispatches the Ollama enacter ONLY when `brief["motivated"]`
+is true (a real two-participant scene with dialogue/hearsay) - a solo survive pass, an en-route travel
+pass, a missed connection, an unmatched routine, or a failed payment gate all resolve with no model
+call and no scene at all. Those passes still need `p1`'s own mechanical per-pass bookkeeping (lived
+delta, the energy-death check, the post-lived-delta horizon/ending check) that `pass_apply.py` would
+otherwise own - `pass_apply.py` itself still hard-requires two participants (`--p2` is `required=True`,
+and it loops `for slug in (p1, p2)` unconditionally), which doesn't fit a solo pass, and patching that
+script was out of this task's own scope. `apply_solo()` below covers that p1-only slice directly,
+calling the same underlying scripts (`update_character.py`/`horizon.py`/`record_death.py`) `pass_apply.py`
+already calls for exactly this purpose - see its own docstring for what it deliberately does NOT
+attempt (death-legacy's shock-candidate criterion moves, which need a judgment call this driver has no
+model dispatch left to make on a solo pass).
+
+**Known gap, inherited from `simulate_resolve_pair.py`'s own rewrite, not solved here:** the old
+`leads`/`roll_lead_followup.py`/`apply_contested_lead.py` rivalry-followup mechanism has no call site
+left anywhere in the new single-`p1`-draw algorithm - see that script's own docstring and TODO.md's
+matching entry. This driver does not attempt to invent one.
 """
 
 import argparse
@@ -58,7 +80,7 @@ import rng_context  # noqa: E402
 STATE_PATH = ROOT / ".simulate_driver_state.json"
 LOG_PATH = ROOT / ".simulate_running_log.txt"
 BRIEF_PATH = ROOT / ".simulate_pass_brief.json"
-PENDING_PATH = ROOT / ".simulate_pending.json"  # {"kind": "arc"|"birth", "pass": N, "p1":..,"p2":..,"forced_visit":bool, ...}
+PENDING_PATH = ROOT / ".simulate_pending.json"  # {"kind": "arc"|"birth"|"resume", "pass": N, "p1":.., "p2": ..|None, ...}
 
 
 def _kv(stdout):
@@ -137,18 +159,23 @@ def parse_horizon_text(output):
     return {"band": fields.get("band"), "lived": int(fields.get("lived", 0)), "ending": fields.get("ending") == "true"}
 
 
-def horizon_pre_block(p1, p2):
+def horizon_pre_block(p1, p2=None):
     _, o1, _ = run([SCRIPTS / "horizon.py", p1])
-    _, o2, _ = run([SCRIPTS / "horizon.py", p2])
-    return {p1: parse_horizon_text(o1), p2: parse_horizon_text(o2)}
+    out = {p1: parse_horizon_text(o1)}
+    if p2:
+        _, o2, _ = run([SCRIPTS / "horizon.py", p2])
+        out[p2] = parse_horizon_text(o2)
+    return out
 
 
 def characters_block(p1, p2, context):
     """Mirrors pass_prep.py's load_character_brief() - re-read directly here so a resumed pass
     (after write_arc.py just ran) picks up the freshly-authored arc's own premise, same as a fresh
-    pass_prep.py call would if it ran after the write instead of before."""
+    pass_prep.py call would if it ran after the write instead of before. `p2` may be None (an
+    arc-reauthor pending can only resume into a genuine two-participant scene - see do_one_pass -
+    but this stays defensive rather than assuming that)."""
     out = {}
-    for slug in (p1, p2):
+    for slug in ([p1, p2] if p2 else [p1]):
         f = ROOT / "_lore" / "characters" / f"{slug}.json"
         if not f.exists():
             out[slug] = {}
@@ -170,13 +197,47 @@ def characters_block(p1, p2, context):
     return out
 
 
+def apply_solo(p1, pass_number, raw_brief):
+    """The p1-only slice of pass_apply.py's own apply_participant() - lived-delta, the energy-based
+    death check (read straight off this pass's own `survival` block, same as pass_apply.py does, never
+    re-derived), and the post-lived-delta horizon/ending check - for a pass that never reached a
+    genuine two-participant scene (solo survive, en-route travel, a missed connection, an unmatched
+    routine, or a failed payment gate). There is no scene, so nothing here is a judgment call; every
+    field pass_apply.py's own decisions payload would otherwise carry (experience, cost_ledger,
+    criterion_move) simply doesn't apply when nothing got dramatized this pass.
+
+    Deliberately NOT attempted here: death-legacy (pass_apply.py's point 7) and any shock-candidate
+    criterion-move resolution for a notified circle - both need a judgment call, and a solo pass has no
+    model dispatch left to make one. If a solo-pass death notifies a circle with a shock candidate in
+    it, that candidate's criterion move goes unresolved by this driver - a real, currently-unaddressed
+    gap, flagged rather than papered over with an invented default (see this task's own report)."""
+    run([SCRIPTS / "update_character.py", p1, "--lived-delta", "1"])
+    result = {"deceased": False, "cause": None}
+
+    def is_deceased():
+        f = ROOT / "_lore" / "characters" / f"{p1}.json"
+        return json.loads(f.read_text(encoding="utf-8")).get("life", {}).get("deceased", False)
+
+    energy_died = raw_brief.get("survival", {}).get(p1, {}).get("died", False)
+    if energy_died and not is_deceased():
+        run([SCRIPTS / "record_death.py", p1, "--cause", "exhaustion/starvation - energy depleted"])
+        result.update({"deceased": True, "cause": "energy"})
+    else:
+        _, out, _ = run([SCRIPTS / "horizon.py", p1])
+        after = parse_horizon_text(out)
+        if after["ending"] and not is_deceased():
+            run([SCRIPTS / "record_death.py", p1])
+            result.update({"deceased": True, "cause": "unspecified"})
+    return result
+
+
 def do_one_pass(state, pass_number):
     """Runs one pass through to completion (no pending judgment call). Returns a dict describing
     what happened, or raises SystemExit on script failure."""
     pending = json.loads(PENDING_PATH.read_text(encoding="utf-8")) if PENDING_PATH.exists() else None
 
     if pending and pending["pass"] == pass_number and pending["kind"] == "resume":
-        p1, p2, forced_visit = pending["p1"], pending["p2"], pending["forced_visit"]
+        p1, p2 = pending["p1"], pending["p2"]
         raw_brief = json.loads(BRIEF_PATH.read_text(encoding="utf-8"))
         # The arc that triggered this resume is already written (write_arc.py just ran) - strip the
         # now-stale arc_authoring_needed block before handing this to the enacter. Found 2026-09-01:
@@ -193,20 +254,34 @@ def do_one_pass(state, pass_number):
     else:
         _, out, _ = run([SCRIPTS / "simulate_resolve_pair.py", "--pool", *state["pool"], "--pass-number", pass_number])
         resolved = json.loads(out.strip().splitlines()[-1])
-        p1, p2, forced_visit = resolved["participant_1"], resolved["participant_2"], resolved["forced_visit"]
+        p1 = resolved["participant_1"]
 
-        prep_args = [SCRIPTS / "pass_prep.py", "--p1", p1, "--p2", p2, "--pass-number", pass_number]
-        if forced_visit:
-            prep_args.append("--forced-visit")
-        _, out, _ = run(prep_args)
+        _, out, _ = run([SCRIPTS / "pass_prep.py", "--p1", p1, "--pass-number", pass_number])
         brief = json.loads(out)
+        p2 = brief["brief"].get("participant_2")
 
         if brief["brief"].get("arc_authoring_needed"):
             PENDING_PATH.write_text(json.dumps({
-                "kind": "arc", "pass": pass_number, "p1": p1, "p2": p2, "forced_visit": forced_visit,
+                "kind": "arc", "pass": pass_number, "p1": p1, "p2": p2,
             }), encoding="utf-8")
             return {"status": "needs_arc", "pass": pass_number, "p1": p1, "p2": p2,
                     "arc_authoring_needed": brief["brief"]["arc_authoring_needed"]}
+
+    # A genuine two-participant scene (dialogue, hearsay, judgment content) only happens when this
+    # pass's mechanics actually reached `motivated: true` (the payment gate succeeded) - see
+    # simulate_pass_lib.run_pass_mechanics()'s own section docstring. Everything else (no p2 at all,
+    # a met-but-mismatched routine, a failed payment gate) resolves as a solo pass: no Ollama dispatch,
+    # no scene, no hearsay - only p1's own mechanical bookkeeping via apply_solo() above. p2 (if one
+    # was momentarily discovered this pass) never had any survival/energy effect applied to them by
+    # run_pass_mechanics unless the meeting was confirmed, so there is nothing to apply for them here.
+    if not p2 or not brief["brief"].get("motivated"):
+        solo = apply_solo(p1, pass_number, brief["brief"])
+        result = {"status": "ok", "pass": pass_number, "p1": p1, "p2": p2, "deaths": [], "births": None}
+        if solo["deceased"]:
+            result["deaths"].append(p1)
+            if p1 in state["pool"]:
+                state["pool"].remove(p1)
+        return result
 
     # Dispatch the local enacter.
     brief_file = ROOT / f".pass_{pass_number}_brief.json"
@@ -287,7 +362,7 @@ def do_one_pass(state, pass_number):
 
 def finish_pass(state, n, p1, p2, deaths, birth_slug=None):
     maybe_admit_children(state, n)
-    line = f"pass {n}: {p1} x {p2}"
+    line = f"pass {n}: {p1} x {p2}" if p2 else f"pass {n}: {p1} (solo)"
     if deaths:
         line += f" DEATHS:{','.join(deaths)}"
     if birth_slug:
@@ -328,12 +403,32 @@ def cmd_resolve_arc(args):
     cmd += ["--context", a["context"], "--premise", a["premise"]]
     _, out, _ = run(cmd)
     pending = json.loads(PENDING_PATH.read_text(encoding="utf-8"))
-    PENDING_PATH.write_text(json.dumps({
-        "kind": "resume", "pass": pending["pass"], "p1": pending["p1"], "p2": pending["p2"],
-        "forced_visit": pending["forced_visit"],
-    }), encoding="utf-8")
+
+    if pending.get("p2"):
+        # A reauthor triggered mid-scene (arc completed/failed as part of a pass whose mechanics -
+        # including this pass's own dialogue-worthy scene - are already fully resolved) - the write
+        # above only sets up the NEXT arc; this pass's own scene dispatch still has to happen.
+        PENDING_PATH.write_text(json.dumps({
+            "kind": "resume", "pass": pending["pass"], "p1": pending["p1"], "p2": pending["p2"],
+        }), encoding="utf-8")
+        print(out)
+        print(json.dumps({"status": "arc_written", "resume_pass": pending["pass"]}))
+        return
+
+    # The "first" case: p1 chose arc with no needs authored yet, before any second participant was
+    # ever in play - this pass itself is already mechanically complete (p1's own routine, applied).
+    # The arc write above only matters for the NEXT time p1 pursues it; finish this pass now, no
+    # resume, no dispatch.
+    raw_brief = json.loads(BRIEF_PATH.read_text(encoding="utf-8"))
+    state = load_state()
+    solo = apply_solo(pending["p1"], pending["pass"], raw_brief)
+    deaths = [pending["p1"]] if solo["deceased"] else []
+    if solo["deceased"] and pending["p1"] in state["pool"]:
+        state["pool"].remove(pending["p1"])
+    PENDING_PATH.unlink()
+    finish_pass(state, pending["pass"], pending["p1"], None, deaths)
     print(out)
-    print(json.dumps({"status": "arc_written", "resume_pass": pending["pass"]}))
+    print(json.dumps({"status": "ok", "pass": pending["pass"], "next_pass": state["next_pass"]}))
 
 
 def cmd_resolve_birth(args):

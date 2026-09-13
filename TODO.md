@@ -3,6 +3,19 @@
 Open implementation decisions and work, deferred for later. This is a build/production backlog —
 open questions about the lore itself live in `_lore/unknowns.md`, not here.
 
+## `leads`/rivalry-followup mechanism orphaned by the asymmetric per-pass rewrite (raised 2026-09-13, not built)
+
+The old pairing model's rivalry-persistence loop — a contested "hinder" outcome writes a `leads`
+entry (`apply_contested_lead.py`), and `roll_lead_followup.py` could later override which second
+participant got drawn to force a pass toward pursuing an unexpired one — has no call site left
+anywhere in the new single-`p1`-draw algorithm (`simulate_pass_lib.run_pass_mechanics()`; see
+`simulate_resolve_pair.py`'s own docstring, which first flagged this). `leads` entries still get
+written by the unchanged contested/hinder chain, but nothing reads or drains them any more — dead
+data quietly accumulating, not a crash risk, but a lost mechanic. Per an earlier audit tonight, this
+was the one confirmed-working multi-pass feedback loop in the whole system. Needs a real design
+pass before rebuilding it — a plausible third pathfinding tier that prefers an open lead's target
+over ordinary need-resolution is one option, not decided here — just flagged so it isn't lost.
+
 ## `social_circle` update mechanism not yet decided (raised 2026-09-13, not built)
 
 `_lore/characters/_template.json` now carries a persistent `social_circle` field (extended circle —
@@ -90,7 +103,7 @@ Proposed direction, not built yet, needs its own design pass before touching cod
   entries referencing real `locations[].id` values, and a character-level `places_visited` accumulator
   gating grounding access (both being implemented separately, same session).
 
-## Travel system design sketch (design discussion 2026-09-12, not built)
+## Travel system design sketch (design discussion 2026-09-12/13, refined, still not built)
 
 Arc resolution currently checks a character's context `provides` too abundantly — whatever context
 they're already in generally satisfies a requirement, so there's no real scarcity forcing anyone to go
@@ -106,13 +119,15 @@ only.
 - **The `route` context** (one of the 5 elemental contexts, `_lore/contexts.json`,
   `provides: ["transit", "news"]`) is the natural enactment shape for a single hop of a journey — each
   step of a multi-hop trip could be played as a `route`-context routine/scene.
-- **Reachability isn't just "adjacent to current location."** A character could travel to anywhere
-  adjacent to (a) their current location, or (b) any location already in their own lore pool (what
-  they know about via `sample_lore_knowledge.py`'s sampled knowledge) — effective reach extends with
-  what a character knows, not just where they physically stand. Echoes an idea already in the user's
-  own working notes about scoping travel to "nodes they've heard about or locations where characters
-  they know exist," and making travel to unknown territory costlier — not yet formalized, but the same
-  instinct.
+- **Reachability, refined (2026-09-13; supersedes the "adjacent to current location" framing above).**
+  A character can pathfind toward: anywhere in their own `places_visited`, anywhere named in their own
+  sampled knowledge pool (material/hearsay/tale entries known via `sample_lore_knowledge.py`), **and
+  anywhere a person they know (`partners`/`social_circle`/`parents`) is located** — knowing a person is
+  itself a route into a place never physically visited. All of this is gated by actual graph
+  connectivity (`routes[].endpoints`): a character can't path to a *known* place with no connecting
+  route, only to known places reachable by an actual sequence of edges. Realizes the instinct already in
+  the user's own working notes about scoping travel to "nodes they've heard about or locations where
+  characters they know exist," and making travel to unknown territory costlier.
 - **Multi-hop travel is real traversal, not a teleport.** A graph shaped `A - B - C - D` means reaching
   D from A requires passing through B then C in sequence — one step (one pass/turn) per edge, with a
   dice roll each step on whether the trip continues (mirrors the existing advance/stall/reverse/
@@ -128,6 +143,42 @@ only.
   companion to the "Grounding mechanics need causal/recipe structure" entry above (arc requirements
   checking against concrete `mechanics.json` instances) — both are about making arc resolution
   mechanically specific instead of abstractly semantic.
+
+**Decision-order clarification (2026-09-13 follow-up).** This refines, rather than replaces, the
+per-pass `pick_pair` → `roll_survival` → `roll_home_visit` → `roll_routine` sequence already documented
+in the "Survival mechanism" entry below — see that entry for the sequence itself, not re-explained here.
+
+1. `pick_pair` stays random/unskewed — explicitly NOT part of this travel-pathfinding change. How the
+   *second* participant in a pair relates to a *first* participant's arc-driven travel is still
+   genuinely open (see "Still open" below), not resolved by anything here.
+2. `roll_survival` proceeds as normal, now also reading the new personal-cushion input from the
+   "Personal provisions and inheritance economy" entry below (landing the same day, a parallel track —
+   not re-described here).
+3. **New: if a character chooses arc**, the normal weighted `roll_routine` pick (among a character's own
+   hand-authored routines) is replaced for that pass by a pathfinding-driven check: does completing the
+   arc's need require travel? If the need is satisfiable locally (one of the character's own routines
+   already matches), that routine gets favored instead. If travel is required, the favored choice
+   becomes a `route`-context "transit" step toward the next node on the path to wherever the need can be
+   fulfilled.
+4. **This is still a genuine dice roll, not a hard commitment.** Pathfinding computes a *favored*
+   direction (the shortest/best path's next hop), which skews the roll, but the character can still end
+   up somewhere else. This divergence is a deliberate feature: when it happens, the enacting agent has to
+   dramatize *why* the character ended up elsewhere despite pursuing their arc — a real judgment call,
+   the same category as how an arc's `premise` already gets re-composed after a `transform`, not a new
+   kind of agent work.
+5. Path recomputation is fresh-favorite-each-turn for now, not committed-until-invalidated — deliberately
+   kept simple at this stage; revisit later if it reads as indecisive rather than as organic drift (see
+   "Still open" below).
+
+**Multi-destination handling (2026-09-13, minor clarification).** If more than one location could
+satisfy an arc's need, pathfinding should compute distance to every valid candidate and take the
+minimum — ordinary multi-source shortest path, no added complexity at this graph's likely scale.
+
+**Still open, not decided by any of the above:**
+- How the second participant in a pair relates to a first participant's arc-driven travel decision
+  (`pick_pair` staying random, above) — genuinely unresolved.
+- Whether path recomputation should eventually become commit-until-invalidated rather than
+  fresh-favorite-each-turn.
 
 ## Personal provisions and inheritance economy (design discussion 2026-09-12/13, not built)
 

@@ -1,9 +1,15 @@
 """
 Driver script for /simulate's unattended batch mode - collapses every mechanical, pre-scene call a
-pass needs into one: both participants' pre-scene horizon band (/enact Step 1's "Horizon" bullet)
-plus the whole of simulate_pass_brief.py (/enact Step 4). Chains the real scripts via subprocess,
-exactly like write_arc.py already chains to register_arc_concept.py - this never reimplements their
-logic, it only collapses how many separate tool-call round-trips a subagent pays for reaching it.
+pass needs into one: `p1`'s pre-scene horizon band (/enact Step 1's "Horizon" bullet) plus the whole
+of simulate_pass_brief.py (/enact Step 4). Chains the real scripts via subprocess, exactly like
+write_arc.py already chains to register_arc_concept.py - this never reimplements their logic, it only
+collapses how many separate tool-call round-trips a subagent pays for reaching it.
+
+**Updated for the asymmetric per-pass model (design session 2026-09-13):** only `--p1` is required
+now - there is no pre-fixed `--p2`/`--forced-visit` any more, since whether a second participant even
+exists this pass (and who) is discovered inside simulate_pass_brief.py itself. This script reads
+`participant_2` back out of the brief JSON after that call returns and only fetches its own
+horizon/`characters` block for them if the brief actually names one.
 
 Why this exists: a /simulate subagent dispatched fresh per pass shares no context or cache with any
 other pass, so every separate Bash call re-pays that pass's entire growing context. See the repo's own
@@ -29,7 +35,7 @@ when a gate hit needs one, a short one-sentence director's note) - never a hand-
 of it. See `.claude/PRINCIPLES.md`'s "script everything that can be scripted" principle.
 
 Usage:
-    py scripts/lore/pass_prep.py --p1 khaoe --p2 farlis --pass-number 12 [--forced-visit]
+    py scripts/lore/pass_prep.py --p1 khaoe --pass-number 12
 """
 
 import argparse
@@ -98,27 +104,24 @@ def load_character_brief(slug: str, context: str) -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--p1", required=True)
-    parser.add_argument("--p2", required=True)
     parser.add_argument("--pass-number", type=int, required=True)
-    parser.add_argument("--forced-visit", action="store_true")
     args = parser.parse_args()
 
-    p1, p2 = args.p1.lower(), args.p2.lower()
+    p1 = args.p1.lower()
 
-    horizon_pre = {
-        p1: parse_horizon(run([str(SCRIPTS_DIR / "horizon.py"), p1])),
-        p2: parse_horizon(run([str(SCRIPTS_DIR / "horizon.py"), p2])),
-    }
+    horizon_pre = {p1: parse_horizon(run([str(SCRIPTS_DIR / "horizon.py"), p1]))}
 
-    brief_cmd = [str(SCRIPTS_DIR / "simulate_pass_brief.py"), "--pair", p1, p2, "--pass-number", str(args.pass_number)]
-    if args.forced_visit:
-        brief_cmd.append("--forced-visit")
+    brief_cmd = [str(SCRIPTS_DIR / "simulate_pass_brief.py"), "--p1", p1, "--pass-number", str(args.pass_number)]
     run(brief_cmd)
 
     brief = json.loads(BRIEF_PATH.read_text(encoding="utf-8"))
 
     context = brief.get("context")
-    characters = {p1: load_character_brief(p1, context), p2: load_character_brief(p2, context)}
+    p2 = brief.get("participant_2")
+    characters = {p1: load_character_brief(p1, context)}
+    if p2:
+        horizon_pre[p2] = parse_horizon(run([str(SCRIPTS_DIR / "horizon.py"), p2]))
+        characters[p2] = load_character_brief(p2, context)
 
     combined = {"horizon_pre": horizon_pre, "brief": brief, "characters": characters}
     print(json.dumps(combined, indent=2, ensure_ascii=False))

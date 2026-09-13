@@ -1,13 +1,16 @@
 """
-Draw one uniformly random pair of two distinct participants from a living pool, for
-.claude/skills/simulate/SKILL.md Step 3 point 2 ("pick 2 participants from the living pool uniformly
-at random").
+Draw ONE uniformly random participant from a living pool, for the asymmetric per-pass model
+(design session 2026-09-13 - see TODO.md's "asymmetric per-pass rewrite" entry and CHRONICLE.md's
+matching entry). Retired this file's old "draw two" behavior: under the new model there is no
+pre-selected second participant any more - only `p1` is picked up front, unweighted, and whoever
+else ends up in the pass (if anyone) is *discovered* later, via the arc-needs/travel/meetable chain
+(see `location_context.py`/`travel_graph.py`/`roll_meetable.py` and `simulate_pass_lib.run_pass_mechanics()`).
 
-This exists because a model asked to "pick randomly" is not actually a uniform random source - it
-tends toward recency, salience, or whatever it mentioned last, in ways a real PRNG doesn't. Over a
-50-pass run that bias would quietly skew which pairs of characters actually get scenes together,
-which is exactly the kind of thing /simulate is trying to measure honestly. random.sample() carries
-no judgement and needs none - this script makes no decision beyond the draw itself.
+Kept in this file rather than moved, per the rewrite's own instruction to keep the draw here unless
+there's a strong reason not to - there isn't one: this is still exactly the same "a model asked to
+pick randomly isn't a uniform random source" problem pick_pair.py always solved, just over a draw of
+1 instead of 2. random.choice() carries no judgement and needs none - this script makes no decision
+beyond the draw itself.
 
 Usage:
     py scripts/lore/pick_pair.py khaoe gondarfolas auroboro_iii nerkeli
@@ -24,13 +27,12 @@ def main() -> None:
     args = parser.parse_args()
 
     pool = list(dict.fromkeys(args.pool))  # de-dup, keep order, in case a slug was passed twice
-    if len(pool) < 2:
-        raise SystemExit(f"Need at least 2 distinct participants in the pool; got {len(pool)}.")
+    if not pool:
+        raise SystemExit("Need at least 1 participant in the pool; got 0.")
 
     rng = Random(args.seed)
-    a, b = rng.sample(pool, 2)
-    print(f"participant_1: {a}")
-    print(f"participant_2: {b}")
+    chosen = rng.choice(pool)
+    print(f"participant: {chosen}")
 
 
 if __name__ == "__main__":

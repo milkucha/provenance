@@ -8,6 +8,10 @@
   "arc_resolution_threshold": 3,
   "contested_outcome_shift": 20,
   "contested_relationship_shift": 10,
+  "arc_match_boost_factor": 3,
+  "_comment_arc_match_boost_factor": "Design session 2026-09-13 (asymmetric per-pass rewrite): weight multiplier used two places - Step 4's local-need routine-boost (any of p1's own routines[] whose context provides their arc's matched need gets its weight multiplied by this before roll_routine.py's normal weighted pick, so it's FAVORED not FORCED) and Step 6's meetable-favor draw (the known-supplier match from resolve_arc_target's tier-3 lookup gets this same multiplier over an ordinary candidate). 3x chosen as a clear, legible favor - strong enough to usually win a two-or-three-way weighted draw without ever guaranteeing it (a boosted routine at weight 30 vs. two unboosted ones at 35 each still loses more often than not) - same 'skew, never decide' unit as every percentage-point shift elsewhere in this file, just multiplicative instead of additive since it's shifting a weighted-choice draw, not a coin-flip percentage.",
+  "arc_meetable_odds_percent": 55,
+  "_comment_arc_meetable_odds_percent": "Design session 2026-09-13: odds that ANYONE useful is actually present once p1 has arrived (or was already) at a location that can satisfy their arc's need - the 'missed connection' mechanic. Deliberately a real, non-trivial chance of a miss (not 90%+) since the whole point of this roll is that showing up doesn't guarantee anyone worth meeting is there this exact pass - 55 keeps it closer to a coin flip than a near-certainty, in the same range as survival's own arc_base (50) rather than borrowing a rare-event odds value like contested (15).",
   "odds_percent": {
     "contested": 15,
     "reproduction": 40,
@@ -39,15 +43,27 @@
     "starting_provisions_per_capita": 2,
     "odds_percent": {"arc_base": 50, "min": 2, "max": 95},
     "weights": {
-      "_comment": "Percentage-point shifts applied to the arc_base odds above - same 'skew, never decide' unit every other roll in this codebase already uses (see roll_contested.py). Each weight is multiplied by its input, which is itself normalized to roughly [-1, 1] before the multiply - see roll_survival.py. scarcity_pressure added 2026-08-29: only ever pushes toward 'survive' (a declining per-capita trend since apply_upkeep.py's last checkpoint for this location), never rewards a recovering trend by pushing further into 'arc' - deliberately asymmetric, same reasoning pool_reliance/affinity_obligation already apply to net_affinity.",
+      "_comment": "Percentage-point shifts applied to the arc_base odds above - same 'skew, never decide' unit every other roll in this codebase already uses (see roll_contested.py). Each weight is multiplied by its input, which is itself normalized to roughly [-1, 1] before the multiply - see roll_survival.py. scarcity_pressure added 2026-08-29: only ever pushes toward 'survive' (a declining per-capita trend since apply_upkeep.py's last checkpoint for this location), never rewards a recovering trend by pushing further into 'arc' - deliberately asymmetric, same reasoning pool_reliance/affinity_obligation already apply to net_affinity. personal_cushion added 2026-09-13 (design discussion, TODO.md's 'Personal provisions and inheritance economy' entry): the character's OWN provisions field, normalized the same way pool_reliance's pool_surplus is (against provides_provisions_threshold) but pushing the opposite economic direction - a healthy personal reserve makes gambling on the arc feel safe, so this pushes toward 'arc' rather than 'survive'. Weighted at the same magnitude as pool_reliance, its communal mirror, rather than a fresh guess.",
       "energy": 20,
       "arc_pressure": 25,
       "pool_reliance": 20,
       "affinity_obligation": 20,
-      "scarcity_pressure": 15
+      "scarcity_pressure": 15,
+      "personal_cushion": 20
     },
     "arc_pressure_stage_weight": {"early": 0.2, "mid": 0.5, "late": 0.8},
     "arc_pressure_urgency_bonus": {"early": 0.0, "established": 0.1, "late": 0.3},
     "home_visit_survival_shift": 20
+  },
+  "arc_payment": {
+    "_comment": "Design session 2026-09-13 (asymmetric per-pass rewrite, Step 8): the payment gate that replaces check_needs_provides.py's old word-overlap role as the 'is this pass motivated' signal - now a single, clear owner (arc_payment_gate() in simulate_pass_lib.py) instead of scattered logic. arc_need_cost is a flat number for now, matching the user's explicit 'start fixed, parametrize later' instruction - per-item pricing is a separate, not-yet-built system. 3 was picked to sit in the same small-integer range as the survival mechanism's own flat provisions numbers (survive_contribute 3, eat_amount 2) rather than inventing a new scale - a single successful arc transaction costs about as much as one pass's worth of pool contribution.",
+    "arc_need_cost": 3,
+    "odds_percent": {
+      "_comment": "base is the floor probability even at zero surplus (affordable but with nothing extra to spare) - deliberately below survival's arc_base (50) since paying for a need should read as a genuine ask, not a coin flip, before surplus or arc-proximity ever move it. surplus_weight is how many percentage points the FULL surplus term (normalized to [0,1], damped by (1 - tally-to-threshold ratio) - see arc_payment_gate()'s own docstring) can add on top of base; 40 lets a flush character with a fresh arc reach base+40=70%, a strong-but-not-certain odds, while a character near their arc's own completion gets that same surplus term faded toward negligible, min/max clamp exactly like every other odds_percent block in this file.",
+      "base": 30,
+      "min": 2,
+      "max": 95
+    },
+    "surplus_weight": 40
   }
 }

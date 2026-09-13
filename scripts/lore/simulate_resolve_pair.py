@@ -1,20 +1,20 @@
 """
-Resolve which two participants a /simulate pass actually involves - draw + lead-override, in one
-mechanical call - before /enact's own eligibility gate and mechanical block ever run against them
-(.claude/skills/enact/SKILL.md's Step 2/4). Extracted 2026-08-27 when /simulate stopped calling
-simulate_pass_brief.py with a whole pool: that script now only ever takes an already-fixed --pair,
-so drawing the pair and resolving lead-override has to happen here instead, as its own one-call
-mechanical step, same "don't hand-relay a mechanical fact across several calls" discipline as
-everywhere else in this pack.
+Resolve which participant a /simulate pass starts from - now just `p1` (design session 2026-09-13,
+asymmetric per-pass rewrite; see TODO.md's "asymmetric per-pass rewrite" entry and CHRONICLE.md's
+matching entry). Retired this file's old dual role (draw a PAIR, then check for a lead-override that
+could reassign participant_2) - under the new model there is no participant_2 to pre-resolve at all;
+whoever else ends up in the pass, if anyone, is discovered inside simulate_pass_brief.py itself (see
+`simulate_pass_lib.run_pass_mechanics()`'s own docstring for the full chain).
 
-Draws uniformly from the living pool (pick_pair.py's own logic, reused via simulate_pass_lib.py),
-then checks participant_1's file for an unexpired `leads` entry (younger than
-lead_expiry_passes - 8, from _lore/tuning.json). Any expired leads found are dropped from the file
-right here, whether or not one gets followed. If at least one is still fresh, rolls
-roll_lead_followup.py's own logic against them; a `followed: true` result overrides participant_2 to
-the lead's target (only if that target is actually in the pool and isn't participant_1) and consumes
-that lead entry from participant_1's file - the one piece of file mutation this script does, since
-nothing else in this pack exposes "remove one lead entry" as its own call.
+**Known gap, flagged rather than silently papered over (see this rewrite's own report):** the old
+lead-override mechanic (`leads`/roll_lead_followup.py/apply_contested_lead.py's "does p1 chase down a
+named rival" half) has no natural home left in the new asymmetric algorithm, which the rewrite's own
+spec never mentions integrating. This script now only draws `p1`; it does not touch `leads` at all
+any more (neither expiring them nor rolling a follow-up), so a character's `leads` entries persist
+indefinitely until some future wave decides how "follow a lead" fits the new model (a plausible third
+tier alongside resolve_arc_target()'s known-supplier/general tiers, but that's new design, not
+something to invent here). `.claude/skills/simulate/SKILL.md`'s own Step 3 still describes the old
+draw-a-pair-plus-lead-override contract and needs a follow-up documentation pass to match.
 
 Usage:
     py scripts/lore/simulate_resolve_pair.py --pool khaoe farlis nerkeli --pass-number 12
@@ -31,29 +31,8 @@ import simulate_pass_lib as lib  # noqa: E402
 
 
 def resolve_pair(pool: list, pass_number: int) -> dict:
-    notes = []
-    p1, p2 = lib.pick_pair(pool)
-    p1_char = lib.load_char(p1)
-
-    forced_visit = False
-    leads = p1_char.get("leads", [])
-    fresh_leads = [l for l in leads if pass_number - l["created_pass"] < lib.LEAD_EXPIRY_PASSES]
-    if len(fresh_leads) != len(leads):
-        p1_char["leads"] = fresh_leads
-        lib.save_char(p1, p1_char)
-
-    if fresh_leads:
-        res = lib.roll_lead_followup([l["target"] for l in fresh_leads])
-        if res["followed"] == "true":
-            target = res["lead"]
-            if target in pool and target != p1:
-                p2 = target
-                p1_char["leads"] = [l for l in fresh_leads if l["target"] != target]
-                lib.save_char(p1, p1_char)
-                forced_visit = True
-                notes.append(f"{p1} followed a lead to {p2}")
-
-    return {"participant_1": p1, "participant_2": p2, "forced_visit": forced_visit, "notes": notes}
+    p1 = lib.draw_participant(pool)
+    return {"participant_1": p1, "notes": []}
 
 
 def main() -> None:
@@ -66,8 +45,7 @@ def main() -> None:
     pool = [s.lower() for s in args.pool]
     result = resolve_pair(pool, args.pass_number)
 
-    print(f"pair: {result['participant_1']} x {result['participant_2']}")
-    print(f"forced_visit: {result['forced_visit']}")
+    print(f"participant_1: {result['participant_1']}")
     for n in result["notes"]:
         print(f"  note: {n}")
     print(json.dumps(result))
