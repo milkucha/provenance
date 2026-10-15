@@ -289,7 +289,7 @@
     "label": "Provenance",
     "kind": "root",
     "path": ".",
-    "size": 3055348,
+    "size": 3081566,
     "degree": 20
    },
    {
@@ -385,8 +385,8 @@
     "label": ".claude",
     "kind": "dir",
     "path": ".claude",
-    "size": 229793,
-    "degree": 7
+    "size": 229670,
+    "degree": 6
    },
    {
     "id": "file:.claude/VOICE.md",
@@ -394,14 +394,6 @@
     "kind": "doc",
     "path": ".claude/VOICE.md",
     "size": 10587,
-    "degree": 1
-   },
-   {
-    "id": "file:.claude/scheduled_tasks.lock",
-    "label": "scheduled_tasks.lock",
-    "kind": "other",
-    "path": ".claude/scheduled_tasks.lock",
-    "size": 123,
     "degree": 1
    },
    {
@@ -4000,7 +3992,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": "graphs",
-    "size": 499404,
+    "size": 499406,
     "degree": 2
    },
    {
@@ -4008,7 +4000,7 @@
     "label": "graphifyish",
     "kind": "dir",
     "path": "graphs/graphifyish",
-    "size": 499404,
+    "size": 499406,
     "degree": 3
    },
    {
@@ -4016,7 +4008,7 @@
     "label": "graph.json",
     "kind": "graph",
     "path": "graphs/graphifyish/graph.json",
-    "size": 261969,
+    "size": 261970,
     "degree": 1
    },
    {
@@ -4024,7 +4016,7 @@
     "label": "graphifyish.html",
     "kind": "graph",
     "path": "graphs/graphifyish/graphifyish.html",
-    "size": 237435,
+    "size": 237436,
     "degree": 1
    },
    {
@@ -4176,7 +4168,7 @@
     "label": "scripts",
     "kind": "dir",
     "path": "scripts",
-    "size": 651326,
+    "size": 677665,
     "degree": 6
    },
    {
@@ -4224,8 +4216,8 @@
     "label": "lore",
     "kind": "dir",
     "path": "scripts/lore",
-    "size": 512493,
-    "degree": 65
+    "size": 538832,
+    "degree": 69
    },
    {
     "id": "file:scripts/lore/anchor_epistemology.py",
@@ -4364,6 +4356,30 @@
     "degree": 1
    },
    {
+    "id": "file:scripts/lore/fix_encodings_summary_text.py",
+    "label": "fix_encodings_summary_text.py",
+    "kind": "script",
+    "path": "scripts/lore/fix_encodings_summary_text.py",
+    "size": 4390,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/fix_placeholder_backstory_text.py",
+    "label": "fix_placeholder_backstory_text.py",
+    "kind": "script",
+    "path": "scripts/lore/fix_placeholder_backstory_text.py",
+    "size": 9966,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/fix_stale_tale_refs.py",
+    "label": "fix_stale_tale_refs.py",
+    "kind": "script",
+    "path": "scripts/lore/fix_stale_tale_refs.py",
+    "size": 7223,
+    "degree": 1
+   },
+   {
     "id": "file:scripts/lore/generate_offspring.py",
     "label": "generate_offspring.py",
     "kind": "script",
@@ -4457,6 +4473,14 @@
     "kind": "script",
     "path": "scripts/lore/provisions_lib.py",
     "size": 4730,
+    "degree": 1
+   },
+   {
+    "id": "file:scripts/lore/prune_orphan_pilot_tales.py",
+    "label": "prune_orphan_pilot_tales.py",
+    "kind": "script",
+    "path": "scripts/lore/prune_orphan_pilot_tales.py",
+    "size": 4760,
     "degree": 1
    },
    {
@@ -4904,12 +4928,6 @@
    {
     "source": "dir:.claude",
     "target": "file:.claude/VOICE.md",
-    "rel": "contains",
-    "weight": 1
-   },
-   {
-    "source": "dir:.claude",
-    "target": "file:.claude/scheduled_tasks.lock",
     "rel": "contains",
     "weight": 1
    },
@@ -7885,6 +7903,24 @@
    },
    {
     "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/fix_encodings_summary_text.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/fix_placeholder_backstory_text.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/fix_stale_tale_refs.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
     "target": "file:scripts/lore/generate_offspring.py",
     "rel": "contains",
     "weight": 1
@@ -7952,6 +7988,12 @@
    {
     "source": "dir:scripts/lore",
     "target": "file:scripts/lore/provisions_lib.py",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:scripts/lore",
+    "target": "file:scripts/lore/prune_orphan_pilot_tales.py",
     "rel": "contains",
     "weight": 1
    },
@@ -8250,7 +8292,7 @@
     "kind": "layer",
     "note": "skills + scripts + supporting patterns",
     "tier": 2,
-    "degree": 92
+    "degree": 96
    },
    {
     "id": "layer:3",
@@ -8565,6 +8607,30 @@
     "degree": 1
    },
    {
+    "id": "script:lore/fix_encodings_summary_text.py",
+    "label": "fix_encodings_summary_text.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/fix_encodings_summary_text.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/fix_placeholder_backstory_text.py",
+    "label": "fix_placeholder_backstory_text.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/fix_placeholder_backstory_text.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/fix_stale_tale_refs.py",
+    "label": "fix_stale_tale_refs.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/fix_stale_tale_refs.py",
+    "degree": 1
+   },
+   {
     "id": "script:lore/generate_offspring.py",
     "label": "generate_offspring.py",
     "kind": "script",
@@ -8658,6 +8724,14 @@
     "kind": "script",
     "tier": 2,
     "file": "scripts/lore/provisions_lib.py",
+    "degree": 1
+   },
+   {
+    "id": "script:lore/prune_orphan_pilot_tales.py",
+    "label": "prune_orphan_pilot_tales.py",
+    "kind": "script",
+    "tier": 2,
+    "file": "scripts/lore/prune_orphan_pilot_tales.py",
     "degree": 1
    },
    {
@@ -9288,6 +9362,24 @@
    },
    {
     "source": "layer:2",
+    "target": "script:lore/fix_encodings_summary_text.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/fix_placeholder_backstory_text.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/fix_stale_tale_refs.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
     "target": "script:lore/generate_offspring.py",
     "rel": "holds",
     "weight": 1
@@ -9355,6 +9447,12 @@
    {
     "source": "layer:2",
     "target": "script:lore/provisions_lib.py",
+    "rel": "holds",
+    "weight": 1
+   },
+   {
+    "source": "layer:2",
+    "target": "script:lore/prune_orphan_pilot_tales.py",
     "rel": "holds",
     "weight": 1
    },
@@ -9773,5 +9871,5 @@
   "nodes": [],
   "edges": []
  },
- "generated": "2026-09-13"
+ "generated": "2026-10-16"
 }
