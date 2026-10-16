@@ -256,10 +256,10 @@ def arc_payment_gate(p1_key: str, p2_key: str, arc: dict) -> dict:
     if not success:
         return {"motivated": False, "reason": "payment_failed", "odds_used": round(pct, 1), "cost": cost}
 
-    p1_char["provisions"] = provisions - cost
+    p1_char["provisions"] = max(0, provisions - cost)  # floored at 0, same as provisions_lib.set_provisions
     save_char(p1_key, p1_char)
     p2_char = load_char(p2_key)
-    p2_char["provisions"] = p2_char.get("provisions", SURVIVAL["starting_provisions_per_capita"]) + cost
+    p2_char["provisions"] = max(0, p2_char.get("provisions", SURVIVAL["starting_provisions_per_capita"]) + cost)
     save_char(p2_key, p2_char)
 
     return {"motivated": True, "reason": None, "odds_used": round(pct, 1), "cost": cost}

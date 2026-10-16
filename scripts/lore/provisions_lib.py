@@ -81,8 +81,10 @@ def get_provisions(location: str) -> float:
 
 
 def set_provisions(location: str, value: float) -> None:
+    """Floored at 0: a pool (or anything standing in for one) never goes negative. Found by the
+    2026-10-16 audit (F14): the latent path stored -5 if anything ever pushed it there."""
     data = _load()
-    data["pools"][location] = value
+    data["pools"][location] = max(0, value)
     _save(data)
 
 
