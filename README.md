@@ -17,6 +17,16 @@ It is both a tool for authors and an experiment in agent-based constrained socia
 
 Pre-alpha. Currently only text-based, but ships an embodiment layer (in progress) to instantiate characters in Minecraft. GUI planned but not built yet.
 
+## Why
+
+I started this project because I wanted to infuse life into the lore of my 14 year old Minecraft world. I wanted the world to feel less liminal, and so I wanted to populate it with NPCs that I could interact with who could tell me stories about the world I was in. But not any random or sloppified story. but a real story; a story connected to what I had built, when and why. 
+
+LLMs can generate dialog and entire worlds that seem plausible very easily, but the output is at best generic or at worst downright plagiarized. Throughout the years, the lore I had had accumulated in scattered notes, maps, some Minecraft books or merely in my and my friends' imaginations, and as such it was hard to make it stick to it. So I was curious to know what would happen if I encoded this knowledge and gave portions of it to agents as the only thing they knew about the world, while putting them in a simple parametrized world where they could interact with one another, while feeding back their interactions into the knowledge pool that others would draw upon later in a recursive semantic unraveling.
+
+The idea of simulating a society solely (or mainly) via the conversations characters have with one another comes from Niklas Luhmann's theory of society, wherein society is analysed purely from the lens of its systems of communication, which are in turn conceived as self-reproducing, autopoietic entities. In this view, complexity is made sense of imperfectly, and it's in this process that meaning is created.
+
+The simulation architecture resembles other systems that attempt something similar following different approaches, such as Dwarf Fortress and Talk of the Town. Other parts of the system are inspired by Lévi-Strauss' mythemes and Bourdieu's concept of capitals. 
+
 ## Objectives
 
 To sustain a living substratum of lore that reads immersive and organic, and that users can explore and participate in. 
@@ -65,16 +75,6 @@ Underneath sits a floor, conformance: outcomes checked against the stated odds a
 | `record_tasting.py` (`/taste`) | A person scores 0 to 10: legibility, aliveness, curiosity, specificity |
 | `simulate_token_usage.py` | What did each pass cost? |
 
-
-## Why
-
-I started this project because I wanted to infuse life into the lore of my 14 year old Minecraft world. I wanted the world to feel less liminal, and so I wanted to populate it with NPCs that I could interact with who could tell me stories about the world I was in. But not any random or sloppified story. but a real story; a story connected to what I had built, when and why. 
-
-LLMs can generate dialog and entire worlds that seem plausible very easily, but the output is at best generic or at worst downright plagiarized. Throughout the years, the lore I had had accumulated in scattered notes, maps, some Minecraft books or merely in my and my friends' imaginations, and as such it was hard to make it stick to it. So I was curious to know what would happen if I encoded this knowledge and gave portions of it to agents as the only thing they knew about the world, while putting them in a simple parametrized world where they could interact with one another, while feeding back their interactions into the knowledge pool that others would draw upon later in a recursive semantic unraveling.
-
-The idea of simulating a society solely (or mainly) via the conversations characters have with one another comes from Niklas Luhmann's theory of society, wherein society is analysed purely from the lens of its systems of communication, which are in turn conceived as self-reproducing, autopoietic entities. In this view, complexity is made sense of imperfectly, and it's in this process that meaning is created.
-
-The simulation architecture resembles other systems that attempt something similar following different approaches, such as Dwarf Fortress and Talk of the Town. Other parts of the system are inspired by Lévi-Strauss' mythemes and Bourdieu's concept of capitals. 
 
 ## The parts of the system [Work in Progress]
 
