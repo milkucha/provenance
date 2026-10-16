@@ -49,7 +49,7 @@ now only draws `p1` (no `participant_2`/`forced_visit` to carry any more), and `
 only `--p1`, discovering the rest (whether a `participant_2` even exists this pass, and whether the
 pass reached a genuinely motivated two-participant scene) inside `simulate_pass_brief.py`'s own
 `run_pass_mechanics()`. This driver now dispatches the Ollama enacter ONLY when `brief["motivated"]`
-is true (a real two-participant scene with dialogue/hearsay) - a solo survive pass, an en-route travel
+is true (a real two-participant scene with dialogue/hearsay) - a solo work pass, an en-route travel
 pass, a missed connection, an unmatched routine, or a failed payment gate all resolve with no model
 call and no scene at all.
 
@@ -184,7 +184,7 @@ def apply_solo(p1, pass_number, raw_brief):
     """The p1-only slice of pass_apply.py's own apply_participant() - lived-delta, the energy-based
     death check (read straight off this pass's own `survival` block, same as pass_apply.py does, never
     re-derived), and the post-lived-delta horizon/ending check - for a pass that never reached a
-    genuine two-participant scene (solo survive, en-route travel, a missed connection, an unmatched
+    genuine two-participant scene (solo work, en-route travel, a missed connection, an unmatched
     routine, or a failed payment gate). There is no scene, so nothing here is a judgment call; every
     field pass_apply.py's own decisions payload would otherwise carry (experience, cost_ledger,
     criterion_move) simply doesn't apply when nothing got dramatized this pass.
@@ -250,7 +250,7 @@ def do_one_pass(state, pass_number):
     # A two-participant scene (dialogue, hearsay, judgment content) happens when the mechanics set
     # `scene: "pair"` - see simulate_pass_lib.run_pass_mechanics()'s own section docstring: a payment
     # that went through (`motivated`), or a failed arrival the redesign turns into a scene. Everything
-    # else (survive, en route, no target, an empty place - `scene` "solo" or null) resolves with no
+    # else (work, en route, no target, an empty place - `scene` "solo" or null) resolves with no
     # Ollama dispatch, no scene, no hearsay: only p1's own mechanical bookkeeping via apply_solo()
     # above. p2 never had any survival/energy effect applied unless there is a pair scene.
     if not p2 or brief["brief"].get("scene") != "pair":

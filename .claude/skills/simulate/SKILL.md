@@ -259,9 +259,15 @@ For pass 1 through N:
    `horizon.py`, the whole `simulate_pass_brief.py` mechanical block, AND (added 2026-08-29, round-3
    debrief) each participant's own `criterion` and, if they have one, their arc's
    `premise`/`about`/`needs` — into one call. That mechanical block now runs the full asymmetric
-   chain: `p1` rolls survive vs. arc (`roll_survival.py`, unchanged); on survive, `p1` rolls their own
+   chain: `p1` rolls work vs. arc (`roll_survival.py`); on work, `p1` rolls their own
    routine and the pass ends there, no second participant (mid-journey they work where they stand and
-   the trip is kept). On arc, it checks whether the need is satisfiable where `p1` lives and, if not,
+   the trip is kept). **The economy**, every pass for `p1` (`apply_survival.py`, the pure rule in
+   `economy_rules.py`): -1 energy; then eat 2 units, one from `p1`'s own `provisions` and one from the
+   location's pool (a shortfall on one side is filled from the other; if both fall short it is a half
+   meal, energy +1 per unit actually eaten); then, on work, +2 to `p1`'s own provisions and +1 to the
+   pool, on arc, -1 extra energy and nothing paid. Upkeep drains the pool flat per head
+   (`apply_upkeep.py`). Paying for an arc is paid out of the same food you eat. Knobs: `_lore/tuning.json`
+   `survival`; `scripts/test/balance_economy.py` runs them. On arc, it checks whether the need is satisfiable where `p1` lives and, if not,
    **draws a destination with dice** (`location_context.destination_options()`: places where someone in
    `p1`'s own circle supplies the need are skewed up, other places that provide it are weighted by how
    few connections away they are; knobs in `_lore/tuning.json` `pursuit`; the draw is logged as
@@ -303,7 +309,7 @@ For pass 1 through N:
    already ran inside `simulate_pass_brief.py` before this brief was even printed — the completed
    arc's `completion_tale_id` is right there in the payload; nothing further to do for it (it's
    mechanical, not a judgment call — the arc's own already-authored `premise` is what got filed).
-   **A pass whose brief has `scene` other than `"pair"` (a solo survive pass, an en-route travel pass, no
+   **A pass whose brief has `scene` other than `"pair"` (a solo work pass, an en-route travel pass, no
    target, or an empty place; a `"solo"` scene is flagged but not dispatched, see OPEN_QUESTIONS.md)
    never reaches a dialogue scene at all** — skip point 4's dispatch and point 5's
    `pass_record.py`/`pass_apply.py` calls entirely for that pass; only the mechanical prep above (and,

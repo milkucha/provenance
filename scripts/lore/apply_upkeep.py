@@ -1,8 +1,8 @@
 """
 Drain one location's provisions pool by its per-capita upkeep for this pass - the one thing in the
-survival mechanism that runs regardless of any individual's choice, same as a town needs feeding
+energy/eating mechanism that runs regardless of any individual's choice, same as a town needs feeding
 whether or not anyone worked today. Per-capita, not flat (design session 2026-08-28): a flat drain
-would be meaningless at 100 population and crushing at 2 - `upkeep_rate_per_capita` (0.5,
+would be meaningless at 100 population and crushing at 2 - `upkeep_rate_per_capita` (0.15,
 _lore/tuning.json's `survival` block) scales with however many living characters are currently
 registered at this exact location string (provisions_lib.population_of()).
 
@@ -15,11 +15,15 @@ floor at all, so a populous location's pool would free-fall arbitrarily negative
 Salthos Cruzados after ~340 combined passes) with zero further mechanical effect once it dropped
 below `eat_amount`: the "can anyone eat here" check is a plain `pool >= eat_amount`, so -2 and -430
 behave identically downstream. The deep negative number was pure noise, not a harsher penalty, and
-made recovery effectively impossible - `survive_contribute` (a flat +3 per choice) could never claw
+made recovery effectively impossible - a work pass's pool contribution (then a flat +3) could never claw
 back out of a hole that deep. Clamping the drain at 0 keeps every existing downstream behavior
 unchanged (nothing reads the *magnitude* of a negative pool, only whether it's below `eat_amount`)
 while leaving recovery back to positive at least reachable. This is a floor, not a tuning change -
-`upkeep_rate_per_capita`, `survive_contribute`, and `eat_amount` are all untouched.
+`upkeep_rate_per_capita` and `eat_amount` are untouched.
+
+Still flat per capita under the economy rewrite (author's call 2026-10-17): no proportional decay on
+the pool, none on personal provisions. The arithmetic is economy_rules.upkeep(), shared with the
+balance script.
 
 Usage:
     py scripts/lore/apply_upkeep.py --location Tyrnea
@@ -35,6 +39,7 @@ ROOT = SCRIPTS_DIR.parent.parent
 sys.path.insert(0, str(SCRIPTS_DIR))
 import tuning  # noqa: E402
 import provisions_lib  # noqa: E402
+import economy_rules  # noqa: E402
 
 _S = tuning.load()["survival"]
 
@@ -47,7 +52,7 @@ def main() -> None:
     pop = provisions_lib.population_of(args.location)
     pool = provisions_lib.get_provisions(args.location)
     upkeep = pop * _S["upkeep_rate_per_capita"]
-    pool = max(0.0, pool - upkeep)
+    pool = economy_rules.upkeep(pool, pop, _S["upkeep_rate_per_capita"])
     provisions_lib.set_provisions(args.location, pool)
     provisions_lib.checkpoint_provisions_trend(args.location)
 

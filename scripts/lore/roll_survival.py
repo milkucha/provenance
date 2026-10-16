@@ -1,14 +1,14 @@
 """
-Roll whether a character spends this pass surviving (working, replenishing their own energy and
-the local provisions pool) or pursuing their arc (spending extra energy and the pool's own provisions,
-on a bet that this pass advances something) - a weighted dice roll, not a model's judgment call, same
+Roll whether a character spends this pass working (which pays them provisions and feeds the local
+pool) or pursuing their arc (spending extra energy, on a bet that this pass advances something) - a weighted dice roll, not a model's judgment call, same
 "skew, never decide" philosophy as every other roll in this pipeline (roll_contested.py in
 particular is the closest precedent: a base percentage, shifted point-by-point by each real input,
 clamped, then rolled).
 
 Design session 2026-08-28 - see TODO.md's "Survival mechanism" entry for the full worked-through
 math and CHRONICLE.md's matching entry for how each input got settled. Six inputs, each contributing
-a percentage-point shift toward "arc" (or away from it, negative):
+a percentage-point shift toward "arc" (or away from it, negative; the arithmetic is the pure `arc_odds()` below, shared with
+scripts/test/balance_economy.py):
 
   - **energy** - more personal buffer, safer to gamble. Normalized around the cap's midpoint.
   - **arc_pressure** - how much this arc wants pursuing right now: its own tally stage (early/mid/
@@ -25,13 +25,13 @@ a percentage-point shift toward "arc" (or away from it, negative):
     react to the pool's current level: how much the pool's own per-capita provisions has fallen since
     apply_upkeep.py's last checkpoint for this location (provisions_lib.provisions_trend()). Deliberately
     one-directional, same asymmetry pool_reliance/affinity_obligation already apply to net_affinity -
-    a declining trend pushes toward "survive" (contribute now, before it's worse), but a recovering
+    a declining trend pushes toward "work" (contribute now, before it's worse), but a recovering
     trend applies no extra pull toward "arc" at all.
   - **personal_cushion** (added 2026-09-13, see TODO.md's "Personal provisions and inheritance
     economy" entry) - the opposite economic intuition from pool_reliance: a character's OWN
     `provisions` field (lazily defaulted, `_lore/characters/_template.json`), normalized the same way
     pool_reliance's pool_surplus is (against provides_provisions_threshold), but pushing toward "arc"
-    rather than "survive" - a healthy personal reserve is what makes gambling on the arc feel safe
+    rather than "work" - a healthy personal reserve is what makes gambling on the arc feel safe
     this pass, independent of the communal pool's own health or who this character is bonded to.
     Distinct scope from pool_reliance/affinity_obligation on purpose: those two are about the
     *communal* pool and this character's ties to the people sharing it; this one is about what this
@@ -42,7 +42,7 @@ net_affinity itself is Sum(partners_quality[p]) / Sum(partners[p]) across ESTABL
 but negative bonds gets pushed the correct direction on both terms, not just one, since it's one
 signed number playing two roles.
 
-A character with no ongoing arc has nothing to pursue this pass - always survives, no roll needed.
+A character with no ongoing arc has nothing to pursue this pass - always works, no roll needed.
 
 Called BEFORE roll_home_visit.py (this pass's location isn't known yet) - `--location` is this
 character's own registered `location` field (their home base), used as a proxy for "is where I'm
@@ -129,40 +129,54 @@ def arc_pressure(character: dict, key: str) -> float:
     return max(0.0, min(1.0, pressure))
 
 
-def roll(character: dict, key: str, home_location: str, rng: Random | None = None) -> dict:
-    rng = rng or Random()
-    arc = character.get("arc") or {}
-    if arc.get("resolution") != "ongoing":
-        return {"choice": "survive", "reason": "no_ongoing_arc", "odds_used": None}
-
-    energy = character.get("energy", _S["energy_cap"])
-    affinity = net_affinity(character)
-    pressure = arc_pressure(character, key)
-    per_capita = provisions_lib.provisions_per_capita(home_location)
-    threshold = _S["provides_provisions_threshold"]
+def arc_odds(s: dict, energy: float, affinity: float, pressure: float,
+             per_capita: float, trend: float, provisions: float) -> dict:
+    """The work-vs-arc odds as a pure function: `s` is tuning's `survival` block, the rest are the
+    raw inputs (`per_capita` and `trend` are the location pool's per-capita provisions and its change
+    since the last checkpoint; `provisions` is the character's own). Returns the clamped percentage
+    chance of "arc" and the normalized terms. No I/O - the balance script calls this same function."""
+    threshold = s["provides_provisions_threshold"]
     pool_surplus = max(-1.0, min(1.0, (per_capita - threshold) / threshold)) if threshold else 0.0
-    trend = provisions_lib.provisions_trend(home_location)
     trend_normalized = max(-1.0, min(1.0, trend / threshold)) if threshold else 0.0
-    provisions = character.get("provisions", _S["starting_provisions_per_capita"])
     personal_cushion = max(-1.0, min(1.0, (provisions - threshold) / threshold)) if threshold else 0.0
 
-    w = _S["weights"]
-    pct = _S["odds_percent"]["arc_base"]
-    pct += w["energy"] * (energy / _S["energy_cap"] - 0.5) * 2
+    w = s["weights"]
+    pct = s["odds_percent"]["arc_base"]
+    pct += w["energy"] * (energy / s["energy_cap"] - 0.5) * 2
     pct += w["arc_pressure"] * (pressure * 2 - 1)
     pct += w["pool_reliance"] * pool_surplus * affinity
     pct -= w["affinity_obligation"] * affinity
     pct += w["scarcity_pressure"] * min(0.0, trend_normalized)
     pct += w["personal_cushion"] * personal_cushion
-    pct = max(_S["odds_percent"]["min"], min(_S["odds_percent"]["max"], pct))
+    pct = max(s["odds_percent"]["min"], min(s["odds_percent"]["max"], pct))
+    return {"pct": pct, "pool_surplus": pool_surplus, "trend": trend_normalized,
+            "personal_cushion": personal_cushion}
 
-    choice = "arc" if rng.random() < (pct / 100.0) else "survive"
+
+def roll(character: dict, key: str, home_location: str, rng: Random | None = None) -> dict:
+    rng = rng or Random()
+    arc = character.get("arc") or {}
+    if arc.get("resolution") != "ongoing":
+        return {"choice": "work", "reason": "no_ongoing_arc", "odds_used": None}
+
+    energy = character.get("energy", _S["energy_cap"])
+    affinity = net_affinity(character)
+    pressure = arc_pressure(character, key)
+    odds = arc_odds(
+        _S, energy, affinity, pressure,
+        provisions_lib.provisions_per_capita(home_location),
+        provisions_lib.provisions_trend(home_location),
+        character.get("provisions", _S["starting_provisions_per_capita"]),
+    )
+    pct = odds["pct"]
+
+    choice = "arc" if rng.random() < (pct / 100.0) else "work"
     return {
         "choice": choice, "reason": None, "odds_used": round(pct, 1),
         "energy": energy, "arc_pressure": round(pressure, 2),
-        "pool_surplus": round(pool_surplus, 2), "net_affinity": round(affinity, 2),
-        "scarcity_trend": round(trend_normalized, 2),
-        "personal_cushion": round(personal_cushion, 2),
+        "pool_surplus": round(odds["pool_surplus"], 2), "net_affinity": round(affinity, 2),
+        "scarcity_trend": round(odds["trend"], 2),
+        "personal_cushion": round(odds["personal_cushion"], 2),
     }
 
 

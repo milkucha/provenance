@@ -212,9 +212,9 @@ over the course of the mechanics below, not fixed up front (design session 2026-
 per-pass rewrite — see TODO.md's and CHRONICLE.md's matching entries).
 
 This one call runs, in order: **survival** (`roll_survival.py`, one roll against p1's own home
-`location` — survive (work, replenish personal energy, feed the local provisions pool) or pursue their
-arc (extra personal cost, draws the pool instead) — see `TODO.md`'s "Survival mechanism" entry for
-the full math). On **survive**, p1 rolls their own routine, it's applied at that location, and the
+`location` — work (which pays: +2 to p1's own provisions, +1 to the local pool) or pursue their
+arc (extra personal energy cost, pays nothing); eating, from p1's provisions and the pool, happens every
+pass either way — see `TODO.md`'s "Economy rewrite" entry for the rules). On **work**, p1 rolls their own routine, it's applied at that location, and the
 pass ends right there — no second participant, ever. On **arc**, the mechanics first check whether
 the need is satisfiable at p1's own current location (a plain `_lore/contexts.json` `provides` lookup
 against p1's own routines, favored but not forced when it matches); if not, p1 pathfinds

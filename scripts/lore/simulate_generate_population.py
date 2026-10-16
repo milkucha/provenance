@@ -5,7 +5,7 @@ multi-generation starting population quickly rather than a showcase trail of pro
 asymmetric per-pass algorithm simulate_pass_brief.py runs for `/enact` (design session 2026-09-13 -
 see TODO.md's "asymmetric per-pass rewrite" entry and CHRONICLE.md's matching entry), via the shared
 `simulate_pass_lib.run_pass_mechanics()`: draw one `p1` (draw_participant(), née pick_pair()'s
-draw-two), survive-vs-arc, and - only if arc - local satisfaction or pathfinding, the "missed
+draw-two), work-vs-arc, and - only if arc - local satisfaction or pathfinding, the "missed
 connection" roll, `p2`'s own routine roll, the payment gate, then the unchanged contested/alignment/
 outcome/tally chain. `p2` is never fixed up front any more; run_pass() below only acts on it when
 run_pass_mechanics() actually surfaces one this pass.
@@ -152,7 +152,7 @@ def run_pass(state: State, pass_number: int) -> str:
     née pick_pair()'s draw-two), then runs the entire mechanical algorithm via
     simulate_pass_lib.run_pass_mechanics() (shared verbatim with simulate_pass_brief.py - see that
     function's own docstring for the full step-by-step). `participant_2`, if any, is discovered
-    inside that call, never fixed here - a solo survive/travel/no-target/missed-connection pass has
+    inside that call, never fixed here - a solo work/travel/no-target/missed-connection pass has
     no second participant at all, so reproduction/death/death-legacy below only ever consider
     whichever of p1/p2 actually took part this pass."""
     p1 = draw_participant(state.living)

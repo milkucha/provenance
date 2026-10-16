@@ -2,7 +2,7 @@
 Run every MECHANICAL decision in one /enact scene starting from one already-picked NPC (`p1`) - the
 asymmetric per-pass model (design session 2026-09-13, see TODO.md's "asymmetric per-pass rewrite"
 entry and CHRONICLE.md's matching entry). Replaces the old "already-fixed --pair" model: there is no
-pre-selected second participant any more. `p1` rolls survive-vs-arc, and if arc, the rest of the pass
+pre-selected second participant any more. `p1` rolls work-vs-arc, and if arc, the rest of the pass
 - whether anyone else is even involved, and who - is discovered over the course of
 `simulate_pass_lib.run_pass_mechanics()` (local satisfaction, travel, the "missed connection" roll,
 p2's own routine roll, and the payment gate that now decides whether the pass is "motivated"). See
@@ -28,7 +28,7 @@ fill - nothing else in this file's output is the subagent's to decide:
 
 Reproduction is decided post-scene, by the caller (`/enact` Step 8's simulate_pass_reproduction.py),
 exactly as before - never here, and only when this brief's own `participant_2` is non-null (a solo
-survive/travel/no-target/empty-place pass has no second participant to reproduce with at all).
+work/travel/no-target/empty-place pass has no second participant to reproduce with at all).
 
 Pursuit redesign (2026-10-17): a pass whose arc choice sends the character after a need now carries a
 `pursuit` object ({stage, reason, need, place, supplier, present, could_afford}; the stages are
@@ -38,7 +38,7 @@ that the payment went through.
 
 Writes `.simulate_pass_brief.json` at the worktree root (same location as .simulate_snapshot.json) -
 `/enact`'s own Step 5b reads it back to write the scene and resolve the two judgment slots above;
-nothing reads it again after that. A pass with no `participant_2` (survive, travel, no-target, an
+nothing reads it again after that. A pass with no `participant_2` (work, travel, no-target, an
 empty place) has no second-NPC scene to enact at all under `/enact`'s existing Step 2/4 shape. Post-scene mechanics (horizon
 re-check, death, death-legacy, reproduction) are `/enact` Step 8's own concern from there, working off
 whichever of `participant_1`/`participant_2` are actually present, not this file.

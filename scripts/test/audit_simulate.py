@@ -139,8 +139,8 @@ def run_passes(tmp, passes, seed, counts):
             counts["could_afford_" + str(pu["could_afford"]).lower()] += 1
         if b.get("scene"):
             counts["scene_" + b["scene"]] += 1
-        if journey_before and b["survival"].get(p1, {}).get("choice") == "survive":
-            counts["survive_midjourney"] += 1
+        if journey_before and b["survival"].get(p1, {}).get("choice") in ("work", "survive"):  # "survive" is the pre-2026-10-17 name
+            counts["work_midjourney"] += 1
             if not load_chars(tmp)[p1].get("pursuit"):
                 counts["journey_reset"] += 1
         counts["choice_" + str(b["survival"].get(p1, {}).get("choice"))] += 1
@@ -240,9 +240,9 @@ def static_probes(tmp, counts, fixture_info):
         "F4": "check_anchor_reference" not in prep_src and "check_anchor_reference" not in mech_src,
         "F5": "derived_from" not in src("enact_via_ollama.py").split("REPLY_SCHEMA")[1].split("def load_preamble")[0],
         "F6": "provides" not in inspect.getsource(lib.candidates_at),
-        # RAN since the pursuit redesign: a survive roll taken mid-journey must leave the journey alone.
+        # RAN since the pursuit redesign: a work roll taken mid-journey must leave the journey alone.
         # None when this run never rolled one.
-        "F7": (counts["journey_reset"] > 0) if counts["survive_midjourney"] else None,
+        "F7": (counts["journey_reset"] > 0) if counts["work_midjourney"] else None,
         "F8": 'add_argument("--p2", required=True' in src("pass_apply.py") and "roll_death_legacy" not in inspect.getsource(importlib.import_module("simulate_driver").apply_solo),
         "F9": counts.get("conformance_kin_invariant_failures", 0) > 0,
         "F10": None,

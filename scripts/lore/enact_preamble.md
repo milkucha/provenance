@@ -40,7 +40,7 @@ JSON reply shape given below.
     `tally_result` is where the arc now stands (`ongoing`, `complete`, `transform`, `failed`).
     `matched_about` is the new topic after a `transform`.
   - `survival.<slug>`: `energy` is how worn they are (low means hungry and tired); `choice` is whether
-    they came to work or to pursue. `died` is bookkeeping, not for you.
+    they came to work (`work`) or to pursue their project (`arc`). `died` is bookkeeping, not for you.
   - `notes`: the mechanics' own log of how the pass went. Read it for context, do not quote it.
   - `arc_authoring_needed`, `contested_hinder_slot`, `travel`: orchestrator bookkeeping. Ignore.
 

@@ -234,9 +234,9 @@ def roll_routine_at(character: dict, location: str) -> dict:
 
 
 # --------------------------------------------------------------------------------------------
-# Survival mechanism (design session 2026-08-28) - roll_survival() against a character's own home
-# `location` field; apply_survival()/apply_upkeep() AFTER, once the pass's actual location is
-# resolved. See TODO.md's "Survival mechanism" entry for the full math.
+# Energy/eating mechanism (design session 2026-08-28; economy rewrite 2026-10-17) - roll_survival()
+# (work vs. arc) against a character's own home `location` field; apply_survival()/apply_upkeep()
+# AFTER, once the pass's actual location is resolved. See TODO.md's "Economy rewrite" entry.
 # --------------------------------------------------------------------------------------------
 
 def roll_survival(key: str, home_location: str) -> dict:
@@ -248,6 +248,7 @@ def apply_survival(key: str, location: str, choice: str) -> dict:
     out = kv(call("apply_survival.py", ["--key", key, "--location", location, "--choice", choice]))
     out["died"] = out["died"] == "true"
     out["energy"] = int(out["energy"])
+    out["provisions"] = float(out["provisions"])
     return out
 
 
@@ -467,8 +468,8 @@ def tally(history: list) -> int:
 #
 # Only `p1` is ever fixed before this runs (draw_participant()). Everything else - whether a second
 # participant even exists this pass, and who - is discovered over the course of the algorithm itself:
-#   Step 2  roll_survival(p1)                                   - survive vs. arc, unchanged script
-#   Step 3  survive -> p1's own routine roll, apply, DONE        - no second participant, ever. Mid-journey
+#   Step 2  roll_survival(p1)                                   - work vs. arc
+#   Step 3  work -> p1's own routine roll, apply, DONE        - no second participant, ever. Mid-journey
 #           (a kept destination) they work where they stand and the journey survives (audit F7)
 #   Step 4  arc, locally satisfiable (and standing at a place of their own routines) -> boosted
 #           own-routine roll, apply, DONE                        - pursuit stage local_satisfied
@@ -599,6 +600,8 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
                 character.pop("pursuit", None)
         save_char(p1, character)
 
+    afford = {"v": None}  # set by _apply_p1 (after eating) and read by _pursuit; see could_afford below
+
     def _apply_p1(location: str, choice: str, context: str | None) -> dict:
         """Applies apply_upkeep/apply_survival for p1 at `location` and writes the common result
         fields every branch below needs - `context` is always the caller's own explicit call (a
@@ -606,6 +609,8 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
         routine was rolled at all this pass), never guessed here."""
         apply_upkeep(location)
         effect = apply_survival(p1, location, choice)
+        # Means as of now, after this pass's eating: what the payment gate will see (see `afford` below).
+        afford["v"] = effect["provisions"] >= ARC_PAYMENT["arc_need_cost"]
         result["location"] = location
         result["context"] = context
         result["survival"][p1] = {"choice": choice, "energy": effect["energy"], "died": effect["died"]}
@@ -622,29 +627,29 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
         p1_char.pop("pursuit", None)
         save_char(p1, p1_char)
 
-    # Mid-journey, "home" for the survival roll is where they set out from, not the hop they are
+    # Mid-journey, "home" for the work-or-arc roll is where they set out from, not the hop they are
     # standing on (audit F7, second half).
     home_location = (journey or {}).get("origin") or location_now
     p1_survival = roll_survival(p1, home_location)
 
-    # Step 3 - survive: p1's own routine roll, unweighted, apply at that location, done. No second
-    # participant, matching how a "no ongoing arc" survive-only pass already works today.
-    if p1_survival["choice"] == "survive":
+    # Step 3 - work: p1's own routine roll, unweighted, apply at that location, done. No second
+    # participant, matching how a "no ongoing arc" work-only pass already works today.
+    if p1_survival["choice"] == "work":
         if journey:
-            # Audit F7: a survive roll mid-journey used to snap the traveler back to a routine
+            # Audit F7: a work roll mid-journey used to snap the traveler back to a routine
             # location and lose the trip. Now they work where they stand and the journey is kept.
-            _apply_p1(location_now, "survive", "route")
+            _apply_p1(location_now, "work", "route")
             _write_back(location_now, f"Worked where they stood, on the way to {journey['target']}.", pursuit=_KEEP)
             notes.append(f"{p1} worked in place at {location_now} - still bound for {journey['target']} ('{journey['need']}')")
             return result
         location = _own_routine_roll(p1_char)
         context = resolve_context_for_location(p1_char, location)
-        _apply_p1(location, "survive", context)
+        _apply_p1(location, "work", context)
         _write_back(location, f"Worked a {context} routine at {location}.")
         return result
 
     # Step 4/5 precondition - roll_survival.py's own "no ongoing arc" gate should have already forced
-    # "survive" above for a character with no ongoing arc; this branch only ever fires for the
+    # "work" above for a character with no ongoing arc; this branch only ever fires for the
     # first-arc/needs-not-yet-authored shape _template.json ships (resolution "ongoing", needs: []),
     # which that gate does NOT catch (an empty needs list is not the same as "no ongoing arc").
     if arc.get("resolution") != "ongoing" or not arc.get("needs"):
@@ -666,15 +671,16 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
     needs = arc.get("needs") or []
     need = journey["need"] if journey else needs[0]
     cost = ARC_PAYMENT["arc_need_cost"]
-    # Computed here, before any meeting, so "had the means but did not find them" can be told apart
-    # from "could not have paid anyway".
-    could_afford = p1_char.get("provisions", SURVIVAL["starting_provisions_per_capita"]) >= cost
+    # Decided before any meeting, so "had the means but did not find them" can be told apart from
+    # "could not have paid anyway". Measured after this pass's eating (_apply_p1 updates `afford`),
+    # since eating comes out of the same provisions the payment would: the same number the payment
+    # gate checks. Every exit of this branch runs _apply_p1 before it reports a stage.
 
     def _pursuit(stage: str, reason: str | None, place: str | None, supplier: str | None = None,
                  present: list | None = None, **extra) -> None:
         result["pursuit"] = {
             "stage": stage, "reason": reason, "need": need, "place": place, "supplier": supplier,
-            "present": present or [], "could_afford": could_afford, **extra,
+            "present": present or [], "could_afford": afford["v"], **extra,
         }
 
     # Step 4 - locally satisfiable. Only for someone standing at a place of their own routines: a

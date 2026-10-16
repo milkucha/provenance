@@ -43,11 +43,12 @@
     "quality_scale": 0.25
   },
   "survival": {
-    "_comment": "Design session 2026-08-28: whether a character spends a pass working (survive) or pursuing their arc, and what that costs them and their location's shared provisions pool. History through 2026-08-31 (energy_cap 5->10->20, survive_take 1->2, survive_contribute 2->3, upkeep_rate_per_capita 0.5->0.15) preserved in git history. Redesigned 2026-08-31 (three-cities-baseline-20260831 pass-250 checkpoint, on user correction): the prior design let `survive` restore energy unconditionally regardless of the pool's own health, so a depleted pool never actually starved anyone directly - `survive_take`/`arc_pool_draw`/`arc_extra_cost_scarce` retired. Eating is now universal and pool-gated (`eat_amount`, taken by EVERY character each pass if the pool can afford it, independent of survive/arc choice) - `survive` now purely contributes to the pool, `arc` purely costs extra personal energy, and an arc-choosing character in a starved town feels it twice (failing to eat, then still paying the extra personal cost). See apply_survival.py's own docstring for the exact math.",
+    "_comment": "Design session 2026-08-28: whether a character spends a pass working or pursuing their arc, and what that costs them and their location's shared provisions pool. Earlier history (energy_cap 5->10->20, upkeep_rate_per_capita 0.5->0.15, the 2026-08-31 split of eating from the choice) is in git. Economy rewrite 2026-10-17 (TODO.md, 'Economy rewrite'): the old `survive` choice is `work`, and work pays the worker: `work_personal` (2) to the character's own provisions, `work_pool` (1) to the location's pool (the old `survive_contribute`, 3, retired). Eating is universal, every pass, independent of the choice: `eat_amount` (2) units, half from the character's provisions and half from the pool, a shortfall on one side filled from the other, a half meal if both together fall short (energy +1 per unit eaten). `arc` costs `arc_extra_cost` extra energy and pays nothing. Upkeep stays flat per capita. See economy_rules.py (the pure rule) and apply_survival.py.",
     "energy_cap": 20,
     "base_cost": 1,
     "arc_extra_cost": 1,
-    "survive_contribute": 3,
+    "work_personal": 2,
+    "work_pool": 1,
     "eat_amount": 2,
     "upkeep_rate_per_capita": 0.15,
     "provides_provisions_threshold": 2,
@@ -64,7 +65,7 @@
     },
     "arc_pressure_stage_weight": {"early": 0.2, "mid": 0.5, "late": 0.8},
     "arc_pressure_urgency_bonus": {"early": 0.0, "established": 0.1, "late": 0.3},
-    "home_visit_survival_shift": 20
+    "home_visit_work_shift": 20
   },
   "arc_payment": {
     "_comment": "Design session 2026-09-13 (asymmetric per-pass rewrite, Step 8): the payment gate that replaces check_needs_provides.py's old word-overlap role as the 'is this pass motivated' signal - now a single, clear owner (arc_payment_gate() in simulate_pass_lib.py) instead of scattered logic. arc_need_cost is a flat number for now, matching the user's explicit 'start fixed, parametrize later' instruction - per-item pricing is a separate, not-yet-built system. 3 was picked to sit in the same small-integer range as the survival mechanism's own flat provisions numbers (survive_contribute 3, eat_amount 2) rather than inventing a new scale - a single successful arc transaction costs about as much as one pass's worth of pool contribution.",
