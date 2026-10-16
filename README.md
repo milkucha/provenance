@@ -21,9 +21,11 @@ Pre-alpha. Currently only text-based, but ships an embodiment layer (in progress
 
 To sustain a living sustratum of lore that reads immersive and organic, and that users can explore and participate in. 
 
-Immersive insofar as it is responsive and unpredictable enough to be experienced as natural, consequential, real, alive.
-Organic insofar as it's not mechanic: varied and imperfect, shaped by its environment and with the capacity to shape it back, emergent.
+  Immersive insofar as it is responsive and unpredictable enough to be experienced as natural, consequential, real, alive.
+  
+  Organic insofar as it's not mechanic: varied and imperfect, shaped by its environment and with the capacity to shape it back, emergent.
 
+To have its components be model-agnostic and token-lean
 
 ## Design Principles
 
@@ -144,15 +146,7 @@ Runs live in disposable git worktrees that are never merged back on their own. K
 
 <!-- blueprint: testing process (pending) -->
 
-A run that's testing the design (not a casual showcase) writes a manifest (population, pass count, starting commit, RNG seed if any) and a draw-audit log. The instruments above read those two files, `/simulate`'s closing step runs them and asks for a tasting, and a templated entry lands in `LAB_REPORT.md`; the qualitative sections I still write by hand.
-
-## Branches, and where it's going
-
-`provenance-standalone` is the engine and nothing else: always current, never a lore corpus. Each corpus lives on its own branch cut from it (`corpus-three-cities` exists; one for the Milkantis lore, my Minecraft forever-world, is planned), so a corpus shows how the *current* engine treats it, not how an old one did.
-
-Direction, not features. Engine and model access should be separate, behind one small "complete this task" interface, with Ollama and bring-your-own endpoints first; the test suite doubles as how a model gets qualified (run it per tier, publish what passed). A front end is meant to follow: an explainer site built from these blueprints, then a local web app over the same scripts, with worlds staying plain files in git. None of that is built (`TODO.md`).
-
-**Does it need Minecraft?** No. **Does it need Claude?** No; the local path runs the scene on Ollama, though the orchestrating session is still an agent. **Can I use my own world?** That's what a corpus branch is for.
+A run that's testing the design (not a casual showcase) writes a manifest (population, pass count, starting commit, RNG seed if any) and a draw-audit log. The instruments above read those two files, `/simulate`'s closing step runs them and asks for a tasting, and a templated entry lands in `LAB_REPORT.md`; the qualitative sections I still write by hand.¡
 
 ## Glossary
 
@@ -171,15 +165,8 @@ Direction, not features. Engine and model access should be separate, behind one 
 
 ---
 
-# Part II. The structure of the repo
+# Part II. Technical
 
-This half is a practical, step-by-step guide to working with the system, plus (§0) the
-architecture of the whole as it stands today — read that first in a new session to get oriented
-without having to re-read the whole codebase. `CHRONICLE.md` carries the narrative alongside it:
-why a given design turn got taken, and what's still genuinely open — worth a read if the "why" behind
-something here isn't obvious from the "how." The rest of this file assumes you already know *what*
-character or story you want to add — it's about *how* to realize it, in lore and (currently) in
-Minecraft.
 
 ## Getting started
 
