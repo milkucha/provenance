@@ -82,6 +82,36 @@ Usage:
     py scripts/test/balance_economy.py --pop 6 12 25 --grid work_pool=0,1,2 upkeep_rate_per_capita=0.05,0.15
     py scripts/test/balance_economy.py --pop 12 --trace          # the run's trajectory, 10 checkpoints
     py scripts/test/balance_economy.py --scan                    # the stable region, N in 6, 12, 25
+TEMPERAMENT (added 2026-10-17; `--traits on|off`, `--traits-report`, `--calibrate`): the same toy town with
+the real temperament machinery, so the numbers in tuning's `temperament` block get tuned by running them.
+Real, imported: `roll_survival.arc_odds` with traits and the window of recent observations,
+`economy_rules.payment_odds` (the payment gate's odds, thrift included), `temperament.*`. Stated, not measured:
+  T1. Traits: with `--traits on` each character's four traits are drawn uniformly in [-1, 1] (seeded, its own
+      stream so the dice of the town are the same as with `off`); with `off` every trait is 0 (the neutral
+      character, still with the window, the trends and the comfortable pool level).
+  T2. Each character keeps up to `recent_window_max` of its own observations (pool per capita, own provisions,
+      energy) on its own turns, as the engine does; the roll reads them. `--trend off` gives no window, so the
+      old checkpoint scarcity term. `--window global` forces one window length (the neutral 5) on everybody
+      with traits otherwise on, to measure what the per-character windows add. `--legacy` is the roll before
+      temperament existed (arc_odds with t=None), for the baseline.
+  T1b. Each character has a fixed net affinity, `--affinity` (0) plus a uniform draw in [0, 0.5] (its own stream,
+      the same on and off), so that the communality and pool-reliance terms, which are multiplied by it, act at all.
+  T3. A reached supplier (probability --pay-rate) is a pair scene: if the character holds `arc_need_cost` it
+      rolls the REAL payment odds (arc tally 0), thrift hesitation included; and the other participant, drawn
+      uniformly, eats (Part A: p2 eats, no pay, no arc cost). Everything else as above (one town, no births).
+Metrics added: `work_sd` standard deviation across characters of each one's work share (the point of traits is
+variety; over characters with at least 8 turns), `surv_sd` the same for the fraction of the run each lived,
+`osc` pool-per-capita amplitude (sd / mean of the per-round means, a round = N passes, first two rounds left
+out), `ac1` its lag-1 autocorrelation (a negative one is a swing back and forth), `sync` the sd of the
+per-round work share over what independent coin flips would give (about 1 = no synchronization),
+`pc_med` the median pool per head (units), `info` the share of own turns on which the pool term was strictly between -1 and +1 (informative), `floor`/`ceil` the share on which it sat at -1 / +1 (pinned; -1 means an empty pool whatever the comfortable level, so the level can only move the other two), `rate_pin` the share of
+turns on which the pool rate was at +/-1.
+
+Usage:
+    py scripts/test/balance_economy.py --traits on --pop 12 --seeds 10
+    py scripts/test/balance_economy.py --traits-report                 # the full comparison, both economies
+    py scripts/test/balance_economy.py --calibrate                     # the comfortable pool level
+
 Parameters (for --grid / --set): work_pool, work_personal, upkeep_rate_per_capita, eat_amount,
 arc_need_cost, or any other key of tuning's `survival` block.
 """
@@ -99,12 +129,17 @@ sys.path.insert(0, str(LORE))
 import tuning  # noqa: E402
 import economy_rules  # noqa: E402
 import arc_completion  # noqa: E402
+import temperament  # noqa: E402
 from roll_arc_outcome import WEIGHTS as ARC_WEIGHTS  # noqa: E402
 from roll_survival import arc_odds  # noqa: E402
 
 TUNING = tuning.load()
 BASE_S = TUNING["survival"]
 BASE_COST = TUNING["arc_payment"]["arc_need_cost"]
+TEMP = TUNING["temperament"]
+PAY = TUNING["arc_payment"]
+RICH = {"work_pool": 6, "upkeep_rate_per_capita": 0.05, "work_personal": 3}  # a setting where the pool is a commons, for calibration only
+PROPOSAL = {"work_pool": 4, "upkeep_rate_per_capita": 0.05, "work_personal": 3}  # OPEN_QUESTIONS.md, not adopted
 CORE = ["work_pool", "work_personal", "upkeep_rate_per_capita", "eat_amount", "arc_need_cost"]
 SCAN_GRID = {
     "work_pool": [0, 1, 2, 3, 5, 8],
@@ -182,8 +217,135 @@ def simulate(pop: int, passes: int, seed: int, params: dict, affinity: float = 0
     }
 
 
+def _sd(xs):
+    xs = list(xs)
+    return statistics.pstdev(xs) if len(xs) > 1 else 0.0
+
+
+def _autocorr(xs, lag=1):
+    xs = list(xs)
+    if len(xs) <= lag + 1:
+        return 0.0
+    m = statistics.mean(xs)
+    den = sum((x - m) ** 2 for x in xs)
+    return sum((xs[i] - m) * (xs[i + lag] - m) for i in range(len(xs) - lag)) / den if den else 0.0
+
+
+def simulate_t(pop: int, passes: int, seed: int, params: dict, traits: str = "on", trend: bool = True,
+               window: str = "trait", legacy: bool = False, affinity: float = 0.0, pressure: float = 0.5,
+               pay_rate: float = 0.35, temp: dict | None = None, p2_eats: bool = True,
+               affinity_spread: float = 0.5) -> dict:
+    """The town with temperament (see TEMPERAMENT above). `temp` overrides tuning's `temperament` block."""
+    s = dict(BASE_S)
+    s.update({k: v for k, v in params.items() if k != "arc_need_cost"})
+    cost = params.get("arc_need_cost", BASE_COST)
+    t = None if legacy else dict(temp or TEMP)
+    if t and window == "global":
+        mid = round((t["recent_window_min"] + t["recent_window_max"]) / 2)
+        t = {**t, "recent_window_min": mid, "recent_window_max": mid}
+    keep = (temp or TEMP)["recent_window_max"]
+    rng = Random(seed)
+    trng = Random(seed * 7919 + 13)  # the traits' own stream: the town's dice are the same on and off
+    start = s["starting_provisions_per_capita"]
+    tr = [temperament.draw_random(trng) if traits == "on" else dict(temperament.NEUTRAL) for _ in range(pop)]
+    # every character also has a fixed net affinity, `affinity` plus a uniform draw in [0, affinity_spread]
+    # from the same stream (after the traits, so the traits are the same whatever it is), because the
+    # communality and pool-reliance terms are multiplied by it and would otherwise never act
+    aff = [affinity + trng.uniform(0.0, affinity_spread) for _ in range(pop)]
+    recent = [[] for _ in range(pop)]
+    energy = [s["energy_cap"]] * pop
+    personal = [start] * pop
+    alive = list(range(pop))
+    died_at = {}
+    pool = start * pop
+    ckpt = None
+    turns = [0] * pop
+    works_i = [0] * pop
+    works = arcs = can = starved = 0
+    floor = ceil = rate_pin = rate_n = info = 0
+    pcs, round_work, cur = [], [], [0, 0]
+    round_pc = []
+    for tpass in range(passes):
+        if not alive:
+            break
+        i = rng.choice(alive)
+        n = len(alive)
+        per_capita = pool / n
+        tr_ = 0.0 if ckpt is None else per_capita - ckpt
+        if trend and not legacy:
+            recent[i] = temperament.observe(recent[i], per_capita, personal[i], energy[i], keep)
+        out = arc_odds(s, energy[i], aff[i], pressure, per_capita, tr_, personal[i],
+                       traits=tr[i], recent=recent[i] if (trend and not legacy) else None, t=t)
+        pct = out["pct"]
+        turns[i] += 1
+        floor += out["pool_surplus"] <= -1.0
+        ceil += out["pool_surplus"] >= 1.0
+        info += -1.0 < out["pool_surplus"] < 1.0
+        if trend and not legacy and len(recent[i]) >= 2:
+            rate_n += 1
+            rate_pin += abs(out["trend"]) >= 1.0
+        choice = "arc" if rng.random() < pct / 100.0 else "work"
+        pool = economy_rules.upkeep(pool, n, s["upkeep_rate_per_capita"])
+        ckpt = pool / n
+        r = economy_rules.resolve_pass(energy[i], personal[i], pool, choice, s)
+        energy[i], personal[i], pool = r["energy"], r["personal"], r["pool"]
+        if choice == "work":
+            works += 1
+            works_i[i] += 1
+            cur[0] += 1
+        else:
+            arcs += 1
+            if personal[i] >= cost:
+                can += 1
+        cur[1] += 1
+        if choice == "arc" and rng.random() < pay_rate and n > 1:
+            j = rng.choice([k for k in alive if k != i])
+            if p2_eats:  # the second participant of a pair scene eats (Part A)
+                e = economy_rules.resolve_pass(energy[j], personal[j], pool, "eat", s)
+                energy[j], personal[j], pool = e["energy"], e["personal"], e["pool"]
+                if e["died"]:
+                    alive.remove(j)
+                    died_at[j] = tpass
+                    starved += 1
+            if personal[i] >= cost:
+                od = economy_rules.payment_odds(personal[i], cost, 0.0, tr[i]["thrift"], PAY, s, t)
+                if rng.random() < od["pct"] / 100.0 and j in alive:
+                    personal[i] -= cost
+                    personal[j] += cost
+        if r["died"] and i in alive:
+            alive.remove(i)
+            died_at[i] = tpass
+            starved += 1
+        n = len(alive)
+        pcs.append(pool / n if n else 0.0)
+        if (tpass + 1) % pop == 0:
+            round_pc.append(statistics.mean(pcs[-pop:]))
+            round_work.append(cur[0] / cur[1] if cur[1] else 0.0)
+            cur = [0, 0]
+    plist = [personal[k] for k in alive]
+    done = works + arcs
+    total = max(1, passes)
+    shares = [works_i[k] / turns[k] for k in range(pop) if turns[k] >= 8]
+    surv = [(died_at.get(k, total) / total) for k in range(pop)]
+    rp = round_pc[2:]
+    rw = round_work[2:]
+    w_mean = statistics.mean(rw) if rw else 0.0
+    binom = (w_mean * (1 - w_mean) / pop) ** 0.5 if rw else 0.0
+    return {
+        "alive": len(alive) / pop, "pc_mean": statistics.mean(pcs) if pcs else 0.0, "pc_end": pool / len(alive) if alive else 0.0,
+        "pers_mean": statistics.mean(plist) if plist else 0.0, "pers_med": statistics.median(plist) if plist else 0.0,
+        "work": works / done if done else 0.0, "starved": starved, "can_pay": can / arcs if arcs else 0.0,
+        "work_sd": _sd(shares), "surv_sd": _sd(surv),
+        "osc": (_sd(rp) / statistics.mean(rp)) if rp and statistics.mean(rp) > 0 else 0.0,
+        "ac1": _autocorr(rp, 1), "sync": (_sd(rw) / binom) if binom else 0.0,
+        "pc_med": statistics.median(pcs) if pcs else 0.0, "info": info / max(1, done),
+        "floor": floor / max(1, done), "ceil": ceil / max(1, done), "rate_pin": rate_pin / max(1, rate_n),
+        "pc_series": rp,
+    }
+
+
 def average(runs: list) -> dict:
-    keys = [k for k in runs[0] if k != "traj"]
+    keys = [k for k in runs[0] if k not in ("traj", "pc_series")]
     return {k: statistics.mean(r[k] for r in runs) for k in keys}
 
 
@@ -499,6 +661,69 @@ def run_generations(a) -> None:
             print("  ".join(x.ljust(w) if i == 0 else x.rjust(w) for i, (x, w) in enumerate(zip(r, widths))))
 
 
+T_COLS = ["alive", "pc_mean", "pc_med", "can_pay", "work", "work_sd", "surv_sd", "starved", "osc", "ac1", "sync", "info", "floor", "ceil", "rate_pin"]
+
+
+def t_rows(label_kw: list, pops, seeds, seed_base, params, passes, kw) -> list:
+    rows = []
+    for n in pops:
+        for label, extra in label_kw:
+            runs = [simulate_t(n, passes or 40 * n, seed_base + sd, params, **{**kw, **extra}) for sd in range(seeds)]
+            rows.append((n, label, average(runs)))
+    return rows
+
+
+def print_t(rows) -> None:
+    head = ["N", "case"] + T_COLS
+    lines = [head] + [[str(n), label] + [f"{m[c]:.2f}" for c in T_COLS] for n, label, m in rows]
+    widths = [max(len(r[c]) for r in lines) for c in range(len(head))]
+    for r in lines:
+        print("  ".join(x.ljust(w) if i == 1 else x.rjust(w) for i, (x, w) in enumerate(zip(r, widths))))
+
+
+CASES = [
+    ("legacy (no temperament)", dict(legacy=True, traits="off")),
+    ("traits off (neutral)", dict(traits="off")),
+    ("traits on", dict(traits="on")),
+    ("on, one global window", dict(traits="on", window="global")),
+    ("on, trend off", dict(traits="on", trend=False)),
+]
+
+
+def traits_report(a) -> None:
+    pops = a.pop or [6, 12, 25]
+    kw = dict(affinity=a.affinity, pressure=a.pressure, pay_rate=a.pay_rate)
+    for name, extra in (("CURRENT defaults", {}), ("PROPOSAL (work_pool 4, upkeep 0.05, work_personal 3; not adopted)", PROPOSAL)):
+        params = dict(today(), **extra)
+        print(f"\n== {name}: " + ", ".join(f"{k}={fmt(v)}" for k, v in params.items()) + f" | {a.seeds} seeds, passes {a.passes or '40 x N'}; comfortable pool {TEMP['pool_comfortable_meals']:g} meal(s)/head, window {TEMP['recent_window_min']}..{TEMP['recent_window_max']}, trend scale {TEMP['trend_scale_meals']:g} meals")
+        print_t(t_rows(CASES, pops, a.seeds, a.seed_base, params, a.passes, kw))
+
+
+def calibrate(a) -> None:
+    pops = a.pop or [6, 12, 25]
+    kw = dict(affinity=a.affinity, pressure=a.pressure, pay_rate=a.pay_rate)
+    print("pool-term calibration: share of own turns with the pool term pinned at -1 (floor) / +1 (ceil), traits on")
+    for name, extra in (("CURRENT", {}), ("PROPOSAL", PROPOSAL), ("RICH POOL (work_pool 6, upkeep 0.05, work_personal 3)", RICH)):
+        params = dict(today(), **extra)
+        print(f"\n{name}: " + ", ".join(f"{k}={fmt(v)}" for k, v in params.items()))
+        pcs = [simulate_t(n, a.passes or 40 * n, a.seed_base + sd, params, **kw)["pc_mean"] for n in pops for sd in range(a.seeds)]
+        print(f"  pool per head, mean over runs: {statistics.mean(pcs):.2f} units = {statistics.mean(pcs) / params['eat_amount']:.2f} meals")
+        rows = []
+        for c in (0.5, 1, 1.5, 2, 3, 4):
+            for n in pops:
+                runs = [simulate_t(n, a.passes or 40 * n, a.seed_base + sd, params, temp={**TEMP, "pool_comfortable_meals": c}, **kw) for sd in range(a.seeds)]
+                rows.append((n, f"comfortable {c:g} meal(s)", average(runs)))
+        print_t(rows)
+    print("\ntrend scale (meals): share of turns with the pool rate pinned at +/-1, PROPOSAL economy")
+    params = dict(today(), **PROPOSAL)
+    rows = []
+    for sc in (1, 2, 3, 4):
+        for n in pops:
+            runs = [simulate_t(n, a.passes or 40 * n, a.seed_base + sd, params, temp={**TEMP, "trend_scale_meals": sc}, **kw) for sd in range(a.seeds)]
+            rows.append((n, f"trend scale {sc} meal(s)", average(runs)))
+    print_t(rows)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--pop", type=int, nargs="+", default=None, help="population(s); default 12 (scan: 6 12 25)")
@@ -522,12 +747,30 @@ def main() -> None:
     ap.add_argument("--pc-min", type=float, default=0.5, help="pool per capita below this = collapsed")
     ap.add_argument("--can-pay-min", type=float, default=0.0, help="optional extra bar for --scan: share of arc passes able to pay")
     ap.add_argument("--pc-max", type=float, default=8.0, help="pool per capita above this = runaway (4 x the start)")
+    ap.add_argument("--traits", choices=["on", "off"], default=None, help="the town with temperament (see TEMPERAMENT above): traits drawn uniformly in [-1, 1] per character (on) or all neutral (off)")
+    ap.add_argument("--trend", choices=["on", "off"], default="on", help="with --traits: the window of recent observations (off: the old checkpoint scarcity term)")
+    ap.add_argument("--window", choices=["trait", "global"], default="trait", help="with --traits: window length by risk/thrift, or the neutral one for everybody")
+    ap.add_argument("--legacy", action="store_true", help="with --traits: the roll as it was before temperament (baseline)")
+    ap.add_argument("--traits-report", action="store_true", help="the full comparison (legacy / off / on / global window / trend off), current defaults and the proposal")
+    ap.add_argument("--calibrate", action="store_true", help="the comfortable pool level and the trend scale: how often the terms sit at their limits")
     ap.add_argument("--journey", action="store_true", help="roads as nodes: energy on arriving after k connections of arc passes")
     ap.add_argument("--stop-pool", type=float, default=4.0, help="--journey: units in the pool of every place stopped at")
     a = ap.parse_args()
 
     if a.journey:
         return journeys(a.stop_pool)
+    if a.traits_report:
+        return traits_report(a)
+    if a.calibrate:
+        return calibrate(a)
+    if a.traits:
+        pops = a.pop or [12]
+        base = dict(today(), **{k: v[0] for k, v in parse_grid(a.set).items()})
+        kw = dict(affinity=a.affinity, pressure=a.pressure, pay_rate=a.pay_rate)
+        case = [(f"traits {a.traits}, window {a.window}, trend {a.trend}" + (", legacy" if a.legacy else ""),
+                 dict(traits=a.traits, trend=a.trend == "on", window=a.window, legacy=a.legacy))]
+        print("params: " + ", ".join(f"{k}={fmt(v)}" for k, v in base.items()) + f" | {a.seeds} seeds, passes {a.passes or '40 x N'}")
+        return print_t(t_rows(case, pops, a.seeds, a.seed_base, base, a.passes, kw))
 
     if a.gens:
         return run_generations(a)
