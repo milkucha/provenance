@@ -50,21 +50,26 @@ Ran the mechanical scripts (no model) on a scratch copy of `corpus-three-cities`
 - [ ] **Stale (READ):** `diagrams/gen_simulate_pass.py` and `simulate-pass.html` still draw the pair model with lead override; `roll_contested.py` and `simulate_pass_reproduction.py` docstrings say `partner_threshold` 5 (tuning says 3); `enact_preamble.md` still talks about "who is home and who is visiting".
 - `set_provisions` has no floor: confirmed (RAN, it stores -5), but nothing can reach it today (`apply_survival` only eats when `pool >= eat_amount`, `apply_upkeep` clamps at 0). Latent, not live.
 
-## Failed pursuit passes should become scenes, not nothing (raised 2026-10-17, direction set, not built)
+## Pursuit redesign: destination choice, failed pursuits as scenes (raised 2026-10-17, direction set, not built)
 
-Today a pursue pass that finds nobody (step 5a) or can't pay (step 7a) ends with nothing written. The
-author's call: both should prompt lore. The situation goes into the brief and the enacter interprets
-it; the facts of what happens are still rolled first.
-- **5a, nobody useful is there:** draw from whoever else is in that place, roll their routine too, and
-  a conversation happens. The brief states the situation (what the character came for, who wasn't
-  there, who was).
-- **7a, can't pay:** the scene happens with the provider present; the brief carries what's needed and
-  what the character has.
-- Open, not decided: what an empty place does (no scene, or solo?); whether the arc outcome is still
-  rolled on these scenes, and with what skew; whether a failed-payment scene can roll an outcome that
-  moves provisions (favor, debt, work for pay), which would also be the faucet the audit says is
-  missing; the token cost, since every pursue pass now spends a model call and the lean constraint is
-  a stated objective; and the brief/enacter schema needs a `situation` field.
+Author's decisions, from the walk-through of one pass:
+- **Destination choice is weighted, not nearest-wins.** Known suppliers (people in the character's own
+  circle) skew the dice toward them; general places are weighted by closeness in connections (hops).
+  Today it is deterministic: known suppliers always win, then fewest hops, no dice
+  (`location_context.resolve_arc_target`, `travel_graph.shortest_path`).
+- **A chosen destination is kept.** The character keeps moving that way until arriving and either
+  meeting or failing; on a failure while pursuing an arc, the process starts again. (Audit F7: a survive
+  roll mid-journey currently resets the journey.)
+- **Nobody useful at the place:** a conversation with whoever else is there, their routine rolled too;
+  an empty place is a solo scene.
+- **Can't pay:** a scene with the provider present. No arc outcome is rolled on a failed-payment scene;
+  the arc outcome is rolled only once the purchase conditions with the supplier are met.
+- The brief carries what the enacter needs to know about the situation; the facts are rolled first.
+- Open: the brief's shape (see what the enacter is given: `pass_prep.py` output = `horizon_pre`,
+  `brief`, `characters`); whether a failed-payment scene can roll an outcome that moves provisions
+  (favor, debt, work for pay), which would also be the faucet the audit says is missing; token cost,
+  since every pursue pass would now spend a model call and lean is a stated objective; tie-breaking in
+  the travel graph (neighbours are sets, so order may vary between processes, unverified).
 
 ## `leads`/rivalry-followup mechanism orphaned by the asymmetric per-pass rewrite (raised 2026-09-13, not built)
 
