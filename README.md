@@ -287,6 +287,16 @@ the simulation/evaluation tooling described next.
     a `user_resolution` once settled), `tales`, and `hearsay` (claims made *in* dialogues — §3 Step 7).
     This is what `scripts/lore/sample_lore_knowledge.py` draws an NPC's knowledge pool from. Sits at `_lore/`
     root since every source type writes into it — it's the hub.
+    **Connections between places** are `routes[]` entries: `endpoints` (the location ids it joins; with more
+    than two, every pair is connected), plus an optional `type` ("road", "sea lane") and `description`. That is
+    all the authoring a journey needs. Every connection becomes two hops: the engine puts a **road node** in the
+    middle of it when it builds the travel graph (`scripts/lore/travel_graph.py`; id `road:<a>--<b>`, the two
+    ids sorted, never stored in `encodings.json`), so A to B is A, road, B and B to C through A is four hops.
+    A road is a place like any other (a character can stand on one, and two can meet on one) but holds no
+    provisions pool, and its place block for the enacter comes from a template on the endpoints' names
+    ("The road between A and B"), using your `type` and `description` if you gave them. Location ids must not
+    contain `--` or start with `road:`. `scripts/test/make_travel_fixture.py` builds a throwaway root with a
+    chain of places for testing travel; the repo ships no places itself.
   - `_lore/unknowns.md` — gaps and open questions that material, tale, and hearsay all feed (a claim can
     surface a genuine gap the objective record has never addressed, distinct from `inconsistent_with_record`,
     which flags a claim that actively contradicts something already on record), plus a log of which
@@ -467,7 +477,10 @@ and `/enact` still never touches either registry or `data/`. `/embody` and `/spa
     mechanically and gets no scene), the
     pre-scene mechanical block (`pass_prep.py`: the work-or-arc roll, the routine/location roll or
     a weighted dice draw of where to go for the arc's need (people the character knows skewed up,
-    nearer places heavier), kept across passes until they arrive; at arrival the missed-connection
+    nearer places heavier, counted in connections), kept across passes until they arrive; the walk goes one
+    node per pass and every connection has a road node in the middle (a road has no provisions pool, so a
+    traveller eats from their own provisions and can starve on the way; if another traveller is on the same
+    road the pass is a scene with them, `met_on_road`, nothing bought and no arc outcome rolled); at arrival the missed-connection
     roll, and a failed arrival (the supplier isn't there, the routine has nothing to offer, the
     payment fails) is itself a scene with whoever is present, or a solo scene in an empty place, with
     no arc outcome rolled; the payment gate, and only when it passes the contested/arc

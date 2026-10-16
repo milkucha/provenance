@@ -220,8 +220,8 @@ the need is satisfiable at p1's own current location (a plain `_lore/contexts.js
 against p1's own routines, favored but not forced when it matches); if not, p1 pathfinds
 (`location_context.py`/`travel_graph.py`) toward a location that can satisfy it, preferring a known
 supplier over general knowledge of the world — this pass either arrives (if this hop reaches the
-target) or spends the pass in transit (a `route`-context step, mechanically applied, no second
-participant yet). Once arrived (locally or via travel), a `roll_meetable.py` roll decides whether
+target) or spends the pass in transit (a `route`-context step onto the next node, roads included, mechanically
+applied, no second participant unless someone else is standing on that road: `met_on_road`). Once arrived (locally or via travel), a `roll_meetable.py` roll decides whether
 anyone useful is actually present — a real chance of a "missed connection" miss, skewed toward a
 known supplier when the pathfinding target was found that way. If someone is found, they become `p2`
 and roll their OWN routine independently — if that doesn't actually land them at the same place doing

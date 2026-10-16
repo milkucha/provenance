@@ -272,7 +272,15 @@ For pass 1 through N:
    `p1`'s own circle supplies the need are skewed up, other places that provide it are weighted by how
    few connections away they are; knobs in `_lore/tuning.json` `pursuit`; the draw is logged as
    `pursuit_destination`). **The destination is kept** in `p1`'s `pursuit` field: later arc passes
-   keep stepping toward it (`route` context, no second participant) until `p1` arrives, and a failure
+   keep stepping toward it (`route` context) until `p1` arrives. **Roads are nodes:** every connection in
+   `routes[]` has a derived road node in the middle (`road:<a>--<b>`, `travel_graph.build_graph`), so a
+   connection is two hops and the walk is one node per pass; a road has no provisions pool (nothing is
+   created, no upkeep: the traveller eats only from their own provisions, a half meal or none when they
+   have little, and can starve there: `died_en_route`), is never added to `places_visited`, and the
+   destination weight counts connections, not hops. If other living characters stand on the road node a
+   step lands on, the pass is a scene with one of them, drawn uniformly (`pursuit_bystander`, stage
+   `met_on_road`): no purchase, no arc outcome, the journey goes on. With nobody there it is a plain
+   no-scene step. A failure
    at arrival starts the process over with a new draw. Once arrived, nobody living there means a solo
    scene; otherwise a `roll_meetable.py` roll decides whether the person `p1` came for is there
    (skewed toward a known supplier). If not, the scene is with someone else who is there
@@ -283,8 +291,8 @@ For pass 1 through N:
    rolled**; only success proceeds into the unchanged `roll_contested`/`check_arc_alignment`/
    `roll_arc_outcome`/`record_bond_quality` chain. Every exit of the pursuit branch sets
    `brief.pursuit` = `{stage, reason, need, place, supplier, present, could_afford}`, with `stage` one
-   of `local_satisfied`, `no_target`, `en_route`, `arrived_nobody`, `arrived_empty`, `met_mismatch`,
-   `met_cannot_pay`, `met_paid`, `died_en_route` (`simulate_pass_lib.PURSUIT_STAGES`; `could_afford` is
+   of `local_satisfied`, `no_target`, `en_route`, `met_on_road`, `arrived_nobody`, `arrived_empty`,
+   `met_mismatch`, `met_cannot_pay`, `met_paid`, `died_en_route` (`simulate_pass_lib.PURSUIT_STAGES`; `could_afford` is
    computed before any meeting), and `brief.scene` says what to do with the pass: `"pair"`
    (dispatch the enacter), `"solo"` or null (no dispatch). The dead are never met and never make a
    place provide anything.
