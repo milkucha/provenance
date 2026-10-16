@@ -138,6 +138,16 @@ Author's decisions, from the walk-through of one pass:
 - Settled by building: the brief's shape (`horizon_pre` band only, `brief`, `characters`, `place`, `facts`); tie-breaking in the travel graph (sorted).
 - Still open: whether a failed-payment scene can roll an outcome that moves provisions (favor, debt, work for pay), which would also be the faucet the audit says is missing; token cost, now measured: with nobody able to pay, about 10% of passes dispatch the enacter for a scene that is only a failed purchase or a miss (OPEN_QUESTIONS.md); whether a solo scene gets an enacter.
 
+## Circle writer, arc completion and the estate (author's design 2026-10-17, built 2026-10-17 on `circle-inheritance`, open items in OPEN_QUESTIONS.md)
+
+The three capitals of class, each at its own moment: economic when a parent dies, social at birth, cultural when a parent completes an arc. Built so:
+- **`social_circle` is a stored `{key: kind}` map** (`update_social_circle.py`, one writer). Kinds, strongest first: `parent`, `child`, `descendant`, `met`, `inherited`, `mentioned`; a person keeps the strongest. At birth: parents, a seeded `social_circle.inherit_share` (30%) of each parent's circle (logged as `social_circle_inherit`), the child's knowledge refs; the child goes into the parents' circles (`child`) and every ancestor's (`descendant`). `record_partner.py` writes `met`. `backfill_social_circle.py` catches up an older world (dry-run by default, `--apply` needs an explicit `--root`). Readers (`location_context._known_keys`, `travel_graph`) take the map unchanged; the death notification now also reads it (kinds that know the person).
+- **Arc completion** (`arc_completion.py`, called where `run_pass_mechanics` flips the arc to complete): the tale is filed (moved there from `simulate_pass_brief`), told like a death (same circle, same `notification.extended_share` knob, draw logged as `arc_completion_notify`), added to every living child's `knowledge.education`, and the completer is paid `clamp(base + per_turn x turns, min, max)` (`arc_completion_reward`; `arc.turns` counts the character's own drawn passes).
+- **Estate** (`estate.py`, called by `record_death.py`, which every death path already goes through): personal provisions split equally among living children, else into the local pool.
+- **Instruments:** `balance_economy.py --gens` models generations (birth rate and town cap stated in its docstring); `audit_simulate.py` has scenario probes F17 to F19, `--births`, `--digest-out`; snapshot `diagrams/simulate-audit/findings-2026-10-17-circle.json`.
+- Left alone by the author's decision: p2 and newborns skip the economy step; a worker eats before being paid.
+- Open: the reward defaults and whether a sink is wanted; the pool as the heir of the childless; how broad `mentioned` should be (the circles are big); whether later children get the tale. All in OPEN_QUESTIONS.md, numbered.
+
 ## `leads`/rivalry-followup mechanism orphaned by the asymmetric per-pass rewrite (raised 2026-09-13, not built)
 
 The old pairing model's rivalry-persistence loop — a contested "hinder" outcome writes a `leads`
@@ -151,12 +161,11 @@ was the one confirmed-working multi-pass feedback loop in the whole system. Need
 pass before rebuilding it — a plausible third pathfinding tier that prefers an open lead's target
 over ordinary need-resolution is one option, not decided here — just flagged so it isn't lost.
 
-## `social_circle` update mechanism not yet decided (raised 2026-09-13, not built)
+## `social_circle` update mechanism (raised 2026-09-13, built 2026-10-17: see the next section's neighbour, "Circle writer, arc completion and the estate")
 
-`_lore/characters/_template.json` now carries a persistent `social_circle` field (extended circle —
-scene co-participants + backstory mentions, distinct from `partners`/`parents`), but nothing writes to
-it yet. Follow-up design pass needed: which skill/script updates it, and on what trigger (every
-`/enact` Step 10? a dedicated script run at batch end?) — deliberately left open here, not decided.
+Decided and built: one writer, `scripts/lore/update_social_circle.py`, called in-process at birth
+(`generate_offspring.py`), on a scene (`record_partner.py`), and after a participant's knowledge changes
+(`pass_apply.py`; the interactive path runs `update_social_circle.py mentions <p1> <p2>`, `/enact` Step 10).
 
 ## Machine-generated seeds, as a control for isolating engine quality from seed quality (raised 2026-09-12, not built)
 
