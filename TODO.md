@@ -50,6 +50,22 @@ Ran the mechanical scripts (no model) on a scratch copy of `corpus-three-cities`
 - [ ] **Stale (READ):** `diagrams/gen_simulate_pass.py` and `simulate-pass.html` still draw the pair model with lead override; `roll_contested.py` and `simulate_pass_reproduction.py` docstrings say `partner_threshold` 5 (tuning says 3); `enact_preamble.md` still talks about "who is home and who is visiting".
 - `set_provisions` has no floor: confirmed (RAN, it stores -5), but nothing can reach it today (`apply_survival` only eats when `pool >= eat_amount`, `apply_upkeep` clamps at 0). Latent, not live.
 
+## Failed pursuit passes should become scenes, not nothing (raised 2026-10-17, direction set, not built)
+
+Today a pursue pass that finds nobody (step 5a) or can't pay (step 7a) ends with nothing written. The
+author's call: both should prompt lore. The situation goes into the brief and the enacter interprets
+it; the facts of what happens are still rolled first.
+- **5a, nobody useful is there:** draw from whoever else is in that place, roll their routine too, and
+  a conversation happens. The brief states the situation (what the character came for, who wasn't
+  there, who was).
+- **7a, can't pay:** the scene happens with the provider present; the brief carries what's needed and
+  what the character has.
+- Open, not decided: what an empty place does (no scene, or solo?); whether the arc outcome is still
+  rolled on these scenes, and with what skew; whether a failed-payment scene can roll an outcome that
+  moves provisions (favor, debt, work for pay), which would also be the faucet the audit says is
+  missing; the token cost, since every pursue pass now spends a model call and the lean constraint is
+  a stated objective; and the brief/enacter schema needs a `situation` field.
+
 ## `leads`/rivalry-followup mechanism orphaned by the asymmetric per-pass rewrite (raised 2026-09-13, not built)
 
 The old pairing model's rivalry-persistence loop — a contested "hinder" outcome writes a `leads`
