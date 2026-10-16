@@ -1,8 +1,8 @@
 
 
-<div align="center">
-<img src="https://i.imgur.com/cASXA69.png" alt="logo" style="display: block; margin: 0 auto;">
-</div>
+<p align="center">
+  <img src="assets/blueprints/Banner.png" alt="Provenance" width="100%">
+</p>
 
 # Part I. Concept
 
