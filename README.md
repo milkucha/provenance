@@ -9,7 +9,7 @@
 
 ## Introduction
 
-Provenance is a storytelling and world-building engine for authors. Starting from a hand-authored seed, it grows a fictional society via proceedural and semantic generation based on a foundational corpus of knowledge that mutates through deterministic rulesets, user interaction and subjectified iteration.
+Provenance is a storytelling and world-building engine for authors. Starting from a hand-authored seed, it grows a fictional society via procedural and semantic generation based on a foundational corpus of knowledge that mutates through deterministic rulesets, user interaction and subjectified iteration.
 
 Characters, played by constrained agents, meet, talk and interpret one another, develop story arcs, reproduce and eventually die; with each of these things leaving a trace in the corpus that later characters draw and base what they know about the world, and thus what they say about it, on.
 
@@ -19,21 +19,23 @@ Pre-alpha. Currently only text-based, but ships an embodiment layer (in progress
 
 ## Objectives
 
-To sustain a living sustratum of lore that reads immersive and organic, and that users can explore and participate in. 
+To sustain a living substratum of lore that reads immersive and organic, and that users can explore and participate in. 
 
   Immersive insofar as it is responsive and unpredictable enough to be experienced as natural, consequential, real, alive.
   
   Organic insofar as it's not mechanic: varied and imperfect, shaped by its environment and with the capacity to shape it back, emergent.
 
-To have its components be model-agnostic and token-lean
+Organic has two sides. Structurally, the world produces its own components: it reproduces, mutates and exchanges with its environment. Perceived, it reads as alive. Immersion is what you feel when you act inside a world that reads as alive.
+
+Under both, two constraints: it should run on any model and stay lean enough in tokens to work at the scale a culture needs.
 
 ## Design Principles
 
-Negative space sustains the foundations of the world. The lore is accesible through what characters say about it. Every claim that is made presumes the existence of what is spoken about, at least in so far as it is credible by who interprets it given its provenance. 
+Negative space sustains the foundations of the world. The lore is accessible through what characters say about it. Every claim that is made presumes the existence of what is spoken about, at least in so far as it is credible by who interprets it given its provenance. 
 
 All world knowledge is self-contained. Agents only know what the characters they voice know, who only know a portion of what is to know in and about the world. All new added knowledge to the world comes from author input and from knowledge mutations that results from it passing through characters interactions.
 
-Perfection is not the goal, slop is the enemy. World knowledge may be contradictory, incomplete and overlapping. The soul of the world sprouts from in between the contents' imperfections, not from an statistically probable soul-like shape.
+Perfection is not the goal, slop is the enemy. World knowledge may be contradictory, incomplete and overlapping. The soul of the world sprouts from in between the contents' imperfections, not from a statistically probable soul-like shape.
 
 ## Testability
 
@@ -41,7 +43,7 @@ As an experiment on the capacities and limits of agentic workflows to generate a
 
 The lore is measurably organic and perceived as alive.
 
-(1) Organicity is operationalized as the world lore reproducing its own transforming components allowing for both drifting and traceability. New characters, claims and relationships appear, with every retelling reinterpreting what it retells, and with each change being able to be traced back to something already in the record. 
+(1) Structural organicity is operationalized as the world lore reproducing its own transforming components allowing for both drifting and traceability. New characters, claims and relationships appear, with every retelling reinterpreting what it retells, and with each change being able to be traced back to something already in the record. 
 
 It is measured on the traces that interpretation leaves as it advances:
 
@@ -51,7 +53,7 @@ It is measured on the traces that interpretation leaves as it advances:
 
 Underneath sits a floor, conformance: outcomes checked against the stated odds and a few invariants, so that a failure of the dice is not mistaken for a failure of the world. And one control, a pair of runs with the same seed and the same dice, so that whatever differs between them is the agent layer alone.
 
-(2) Immersion is accorded by users satisfaction, measured in standardized scale with set of questions to compare accross runs and configuration settings.
+(2) Perceived organicity and immersion are accorded by users satisfaction, measured in standardized scale with set of questions to compare across runs and configuration settings.
 
 
 | Instrument | Asks |
@@ -70,15 +72,15 @@ I started this project because I wanted to infuse life into the lore of my 14 ye
 
 LLMs can generate dialog and entire worlds that seem plausible very easily, but the output is at best generic or at worst downright plagiarized. Throughout the years, the lore I had had accumulated in scattered notes, maps, some Minecraft books or merely in my and my friends' imaginations, and as such it was hard to make it stick to it. So I was curious to know what would happen if I encoded this knowledge and gave portions of it to agents as the only thing they knew about the world, while putting them in a simple parametrized world where they could interact with one another, while feeding back their interactions into the knowledge pool that others would draw upon later in a recursive semantic unraveling.
 
-The idea of simulating a society solely (or mainly) via the conversations characters have with one another comes from Niklas Luhmann's theory of society, wherein society is analysed purely from the lens of its systems of communication, which are in turn conceived as self-reproducing, autopoietic entities. In this view, complexity is made sense of imperfectly, and its in this process that meaning is created.
+The idea of simulating a society solely (or mainly) via the conversations characters have with one another comes from Niklas Luhmann's theory of society, wherein society is analysed purely from the lens of its systems of communication, which are in turn conceived as self-reproducing, autopoietic entities. In this view, complexity is made sense of imperfectly, and it's in this process that meaning is created.
 
-The simulation architecture resembles other systems that attempt something similar following different approaches, such like Dwarf Fortress and Talk of the Town. Other parts of the system are inspired by Levi-Strauss' mythemes and Bourdeau's concept of capitals. 
+The simulation architecture resembles other systems that attempt something similar following different approaches, such as Dwarf Fortress and Talk of the Town. Other parts of the system are inspired by Lévi-Strauss' mythemes and Bourdieu's concept of capitals. 
 
 ## The parts of the system [Work in Progress]
 
 ### Seeds
 
-Content provided by author and encoded by agent. To be conceptualized as the *arqueological record* of the world: books, fragments, maps, lists. May come in any format that an agent can digest. The agent is instructed to archive the material as an arqueologist logging in an artifact in a museum. No inference on materials is made. Can be feed at any point, but requires an initial seed to get the system running.
+Content provided by author and encoded by agent. To be conceptualized as the *archaeological record* of the world: books, fragments, maps, lists. May come in any format that an agent can digest. The agent is instructed to archive the material as an archaeologist logging in an artifact in a museum. No inference on materials is made. Can be fed at any point, but requires an initial seed to get the system running.
 
 ### Lore
 
@@ -154,7 +156,7 @@ Runs live in disposable git worktrees that are never merged back on their own. K
 
 <!-- blueprint: testing process (pending) -->
 
-A run that's testing the design (not a casual showcase) writes a manifest (population, pass count, starting commit, RNG seed if any) and a draw-audit log. The instruments above read those two files, `/simulate`'s closing step runs them and asks for a tasting, and a templated entry lands in `LAB_REPORT.md`; the qualitative sections I still write by hand.¡
+A run that's testing the design (not a casual showcase) writes a manifest (population, pass count, starting commit, RNG seed if any) and a draw-audit log. The instruments above read those two files, `/simulate`'s closing step runs them and asks for a tasting, and a templated entry lands in `LAB_REPORT.md`; the qualitative sections I still write by hand.
 
 ## Glossary
 
@@ -173,7 +175,7 @@ A run that's testing the design (not a casual showcase) writes a manifest (popul
 
 ---
 
-# Part II. Technical [In Continous Development]
+# Part II. Technical [In Continuous Development]
 
 
 ## Getting started
