@@ -4,36 +4,53 @@
 <img src="https://i.imgur.com/cASXA69.png" alt="logo" style="display: block; margin: 0 auto;">
 </div>
 
-# Part I. The idea
+# Part I. Concept
 
-This half is conceptual. Part II, further down, is the dry one: the literal structure of the repo and how to work in it. If you only want to run something, jump to [Part II](#part-ii-the-structure-of-the-repo).
 
-## What this is
+## Introduction
 
-Provenance grows a fictional society from a small seed and keeps a record of how it got where it is. Characters, played by model agents, meet, talk, repeat each other a little wrong, have children and die; each of those things leaves a trace that later characters draw on. Nobody writes the culture end to end.
+Provenance is a storytelling and world-building engine for authors. Starting from a hand-authored seed, it grows a fictional society via proceedural and semantic generation based on a foundational corpus of knowledge that mutates through deterministic rulesets, user interaction and subjectified iteration.
 
-The lore underneath is about twelve years old, written in fragments before there was anything to grow it with. I built this to see whether a system could take a seed like that and keep it sounding like *its* world, and not like model output with the names swapped in. It is a tool for authors and an experiment in agent-based social simulation, in about equal measure. The Minecraft layer (Part II, §5 onward) is one way of seeing the characters; the engine doesn't depend on it.
+Characters, played by constrained agents, meet, talk and interpret one another, develop story arcs, reproduce and eventually die; with each of these things leaving a trace in the corpus that later characters draw and base what they know about the world, and thus what they say about it, on.
 
-## The objective
+It is both a tool for authors and an experiment in agent-based constrained social simulation. 
 
-Two questions, the same two `LAB_REPORT.md` is organised around. Does it read as immersive? And does it read as *organic*; in other words, do characters' criteria, knowledge and relationships drift out of their starting conditions, instead of repeating one pattern or settling into polite agreement because the model likes agreeing?
+Pre-alpha. Currently only text-based, but ships an embodiment layer (in progress) to instantiate characters in Minecraft. GUI planned but not built yet.
 
-To be sure, drift that costs nothing doesn't count. Things have to be able to fail, end or run out. My first long run had plenty of the first kind and none of the second: nearly every scene circled the same conflict, because routines were bare weighted locations and arcs were derived from what a character already believed, not from what they did somewhere.
+## Objectives
 
-Three constraints ride along: it should run across models and harnesses, stay lean in tokens, and work at the scale a culture needs. We're in an experimentation phase, judged lab-report style, and there is no standing, always-on world yet. That's a decision, not an omission: I want the drift and immersion properties proven offline and cheaply first.
+To sustain a living sustratum of lore that reads immersive and organic, and that users can explore and participate in. 
 
-## Design philosophy
+Immersive insofar as it is responsive and unpredictable enough to be experienced as natural, consequential, real, alive.
+Organic insofar as it's not mechanic: varied and imperfect, shaped by its environment and with the capacity to shape it back, emergent.
 
-- **Nothing gets decided silently.** Gaps go to me or into `OPEN_QUESTIONS.md`. The worst bugs so far were quiet ones; an accent mismatch ("Ilaría" against "Ilaria") dropped one character's whole death circle for 115 passes before anyone saw it.
-- **Script what can be scripted.** Dice, drawing, arithmetic and sequence are scripts; the model writes the words of a scene that is already decided, and the odd name. The line isn't "rules versus content". It's closed versus open: a roll has one right answer for a given input, two dramatizations of one brief don't (Dilthey's *erklären* and *verstehen*, if you like).
-- **Write in the author's voice.** Docs sound like me, characters like themselves (`.claude/VOICE.md`).
-- **Keep the record current.** `CHRONICLE.md`, `TODO.md`, `SESSION_LOG.md`; chat history ages out and isn't a record.
 
-Under all four sits one image. A good painting doesn't paint every detail; it insinuates, and imagination does the rest. So the record stays mostly unsurfaced, each character gets a small random slice of it, and what's said is thin on purpose. The standing fear is *slop*: content that sounds plausible and is grounded in nothing.
+## Design Principles
 
-## How I know whether it works
+Negative space sustains the foundations of the world. The lore is accesible through what characters say about it. Every claim that is made presumes the existence of what is spoken about, at least in so far as it is credible by who interprets it given its provenance. 
 
-What I can test directly is the machinery and the traceability of what it makes. Whether it's any good needs a person reading. The suite in `scripts/test/` is read-only against a run and covers the first well and the second thinly.
+All world knowledge is self-contained. Agents only know what the characters they voice know, who only know a portion of what is to know in and about the world. All new added knowledge to the world comes from author input and from knowledge mutations that results from it passing through characters interactions.
+
+Perfection is not the goal, slop is the enemy. World knowledge may be contradictory, incomplete and overlapping. The soul of the world sprouts from in between the contents' imperfections, not from an statistically probable soul-like shape.
+
+## Testability
+
+As an experiment on the capacities and limits of agentic workflows to generate an experience of immersion and organicity, the project objectives can be considered achieved if the following is satisfied:
+
+The lore is measurably organic and perceived as alive.
+
+(1) Organicity is operationalized as the world lore reproducing its own transforming components allowing for both drifting and traceability. New characters, claims and relationships appear, with every retelling reinterpreting what it retells, and with each change being able to be traced back to something already in the record. 
+
+It is measured on the traces that interpretation leaves as it advances:
+
+- **Derivation**: how much of a claim traces back to an existing entry, and how much floats free of it. Content anchored to nothing is counted as slop.
+- **Drift**: how far a claim travels across retellings and generations.
+- **Divergence**: how far apart the accounts of one event are between characters with different criteria, and between runs of the same seed.
+
+Underneath sits a floor, conformance: outcomes checked against the stated odds and a few invariants, so that a failure of the dice is not mistaken for a failure of the world. And one control, a pair of runs with the same seed and the same dice, so that whatever differs between them is the agent layer alone.
+
+(2) Immersion is accorded by users satisfaction, measured in standardized scale with set of questions to compare accross runs and configuration settings.
+
 
 | Instrument | Asks | Doesn't tell you |
 |---|---|---|
@@ -44,32 +61,22 @@ What I can test directly is the machinery and the traceability of what it makes.
 | `record_tasting.py` (`/taste`) | A person scores 0 to 10: legibility, aliveness, curiosity, specificity | Anything beyond that rater |
 | `simulate_token_usage.py` | What did each pass cost? | Whether it was worth it |
 
-What the runs have shown is in `LAB_REPORT.md`. The extended early run (6 characters, extended in place to 305 passes) got the stakes the first one lacked: arcs that stalled, reversed and transformed on real dice, four generations, deaths that broke a character's convictions. A survival mechanism at first-guess tuning killed 7 of 8 characters in 44 passes; retuned, it killed none in 50. A 57-character cast on a local model over 250 passes gave 11 deaths, 5 births, 4 arc completions and a single criterion move.
 
-What isn't measured, or isn't settled:
+## Why
 
-- The run log has no tasting score and no divergence reading in it yet. I can't give you a number for "immersive". I'm the only author here, so any tasting I do is an insider's account; the script appends, so more raters can accumulate.
-- There's no exit criterion. I haven't picked what reading would mean "stop testing offline, build the standing world" (`TODO.md`).
-- Every seed so far is hand-authored, which is a confound: a rich seed can flatter a mediocre mechanism. A machine-made seed as a control is sketched, not built.
-- Odds and thresholds in `_lore/tuning.json` are first guesses.
-- The local-model path is less proven than the Claude one.
-- This branch has no corpus, so nothing here for the instruments to measure; they run on worktrees grown from a corpus branch. (Their design contract, `TESTING_BRIEF.md`, lives outside the repo.)
+I started this project because I wanted to infuse life into the lore of my 14 year old Minecraft world. I wanted the world to feel less liminal, and so I wanted to populate it with NPCs that I could interact with who could tell me stories about the world I was in. But not any random or sloppified story. but a real story; a story connected to what I had built, when and why. 
 
-## Where it comes from
+LLMs can generate dialog and entire worlds that seem plausible very easily, but the output is at best generic or at worst downright plagiarized. Throughout the years, the lore I had had accumulated in scattered notes, maps, some Minecraft books or merely in my and my friends' imaginations, and as such it was hard to make it stick to it. So I was curious to know what would happen if I encoded this knowledge and gave portions of it to agents as the only thing they knew about the world, while putting them in a simple parametrized world where they could interact with one another, while feeding back their interactions into the knowledge pool that others would draw upon later in a recursive semantic unraveling.
 
-Not a literature I built from; these are the things it got compared to, and `CHRONICLE.md` records them, so I claim only that.
+The idea of simulating a society solely (or mainly) via the conversations characters have with one another comes from Niklas Luhmann's theory of society, wherein society is analysed purely from the lens of its systems of communication, which are in turn conceived as self-reproducing, autopoietic entities. In this view, complexity is made sense of imperfectly, and its in this process that meaning is created.
 
-- **Dwarf Fortress.** I noticed the resemblance myself, never having played it. It isn't the mechanics (DF's granularity is physical, this one's is epistemic: what a mind knows, believes and trusts). It's the relationship between player and simulation: a world that keeps running whether or not you're standing in it, where stepping in adds a participant.
-- **Talk of the Town** (James Ryan, UC Santa Cruz). Gossip and belief propagation, every belief provenanced back through the conversations that made it; close to the hearsay layer here. Its logic is closed-form all the way down, dialogue included, and mine isn't.
-- **Troy.** The legend is material; whether the ruins are there is grounding.
-- **Luhmann and mythemes**, loosely (society as communication; recurring narrative structure). Still under discussion, not theory this repo commits to.
-- **Bourdieu's three capitals**, as a lens for the provisions sketch in `TODO.md`.
+The simulation architecture resembles other systems that attempt something similar following different approaches, such like Dwarf Fortress and Talk of the Town. Other parts of the system are inspired by Levi-Strauss' mythemes and Bourdeau's concept of capitals. 
 
 ## The parts of the system
 
-### The seed
+### Seeds
 
-CLAUDE.md names it as sociocultural parameters and a handful of authored facts. In practice it's whatever goes into the lore below, plus enough characters, each with routines and an arc, to start a pass (it needs two living ones). `bootstrap_lore.py` lays down the empty scaffolding and pre-fills nothing. I haven't written the minimum viable seed down in one place; that's still a gap.
+Content provided by author and encoded by agent. To be conceptualized as the *arqueological record* of the world: books, fragments, maps, lists. May come in any format that an agent can digest. The agent is instructed to archive the material as an arqueologist logging in an artifact in a museum. No inference on materials is made. Can be feed at any point, but requires an initial seed to get the system running.
 
 ### Lore
 
