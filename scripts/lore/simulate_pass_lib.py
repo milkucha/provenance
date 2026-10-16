@@ -500,6 +500,10 @@ def tally(history: list) -> int:
 #           success -> the UNCHANGED contested/alignment/outcome/tally chain, keyed to p1's arc vs.
 #           p2 as peer (met_paid)
 #
+# The second participant of any confirmed pair scene (a met_on_road fellow, a bystander, the confirmed
+# match) eats at the scene's location (_apply_p2: base cost and the meal, no work pay, no arc cost, no
+# second upkeep) and can starve; the callers route that through record_death.py like p1's.
+#
 # Every exit of Steps 4-8 sets `result["pursuit"]` {stage, reason, need, place, supplier, present,
 # could_afford} (PURSUIT_STAGES, below), and `result["scene"]` ("pair" / "solo" / None) says whether
 # the pass is something to dramatize. `motivated` stays what it was: the payment went through.
@@ -641,6 +645,18 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
         result["survival"][p1] = {"choice": choice, "energy": effect["energy"], "died": effect["died"]}
         if effect["died"]:
             notes.append(f"{p1}'s energy hit 0 - exhaustion/starvation, not yet recorded (post-scene step)")
+        return effect
+
+    def _apply_p2(p2: str, location: str) -> dict:
+        """The second participant of a confirmed pair scene eats (2026-10-17, TODO.md): base energy cost
+        and the meal at the scene's location, the same half-meal rule as p1, and a starvation check that
+        the callers route through record_death.py exactly as p1's (`survival.<p2>.died`). No work pay and
+        no arc cost (apply_survival.py `--choice eat`), and no upkeep: _apply_p1 already drained this
+        location's pool once this pass. Called wherever a pair scene is confirmed; a solo scene has no p2."""
+        effect = apply_survival(p2, location, "eat")
+        result["survival"][p2] = {"choice": None, "energy": effect["energy"], "died": effect["died"]}
+        if effect["died"]:
+            notes.append(f"{p2}'s energy hit 0 - exhaustion/starvation, not yet recorded (post-scene step)")
         return effect
 
     # A journey in progress (the `pursuit` field) is dropped if the arc it was for is gone or no
@@ -788,7 +804,7 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
                 p2 = draw_bystander(p1, fellow)
                 result["participant_2"] = p2
                 result["scene"] = "pair"
-                result["survival"].setdefault(p2, {"choice": None, "energy": load_char(p2).get("energy"), "died": False})
+                _apply_p2(p2, hop)
                 record_partner(p1, p2)
                 record_partner(p2, p1)
                 _pursuit("met_on_road", "fellow_traveller", hop, present=[p2], destination=target)
@@ -828,7 +844,7 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
         result["participant_2"] = p2
         result["context"] = routine["context"]
         result["scene"] = "pair"
-        result["survival"].setdefault(p2, {"choice": None, "energy": load_char(p2).get("energy"), "died": False})
+        _apply_p2(p2, location)
         record_partner(p1, p2)
         record_partner(p2, p1)
         _pursuit(stage, reason, location, supplier=wanted, present=[p2])
@@ -871,7 +887,7 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
     result["participant_2"] = p2
     result["context"] = p2_context
     result["scene"] = "pair"
-    result["survival"].setdefault(p2, {"choice": None, "energy": p2_char.get("energy"), "died": False})
+    _apply_p2(p2, location)
 
     # p1 and p2 verifiably shared this pass - partner tracking fires here (see this module's own
     # section docstring for why this timing was chosen).

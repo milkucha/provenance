@@ -178,6 +178,8 @@ def main() -> None:
         print(f"JUDGMENT SLOT - contested hinder: may name an existing rival for {c['traveler']} (supplier: {c['supplier']}, provide: {c['matched_provide']}) - if named, run apply_contested_lead.py; otherwise leave ambient")
     if p1_surv.get("died"):
         print(f"DEATH - {p1}'s energy hit 0 this pass. Not yet recorded - run record_death.py {p1} --cause \"exhaustion/starvation\" post-scene, same as a horizon-ending death.")
+    if p2 and surv.get(p2, {}).get("died"):
+        print(f"DEATH - {p2}'s energy hit 0 this pass (they ate at the scene like p1 and still ran out). Not yet recorded - run record_death.py {p2} --cause \"exhaustion/starvation\" post-scene.")
     if p2:
         print("(reproduction is only relevant when participant_2 is present - run simulate_pass_reproduction.py after the scene if so)")
 

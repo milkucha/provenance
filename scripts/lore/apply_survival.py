@@ -21,6 +21,8 @@ the earlier design is in git and TODO.md):
   - **On a road node** (`road:<a>--<b>`): there is no pool (provisions_lib.has_pool), so eating takes
     from the character's own provisions only: with none, no meal or half a meal, and the character can
     starve on the road. Work there pays the worker as usual; the pool's share has nowhere to go.
+  - **eat** (the second participant of a pair scene, 2026-10-17): base cost and the meal, nothing
+    else. No work pay, no arc cost.
   Personal provisions and the pool never go negative. This does NOT include per-capita upkeep -
   call apply_upkeep.py once per pass per location, not once per participant.
 
@@ -31,6 +33,7 @@ The old choice value `survive` is read as `work`.
 Usage:
     py scripts/lore/apply_survival.py --key degustarios --location Tyrnea --choice work
     py scripts/lore/apply_survival.py --key degustarios --location Tyrnea --choice arc
+    py scripts/lore/apply_survival.py --key farlis --location Tyrnea --choice eat
 """
 
 import argparse
@@ -54,7 +57,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--key", required=True)
     parser.add_argument("--location", required=True, help="The pass's resolved location, not necessarily this character's home")
-    parser.add_argument("--choice", choices=["work", "survive", "arc"], required=True)
+    parser.add_argument("--choice", choices=["work", "survive", "arc", "eat"], required=True)
     args = parser.parse_args()
 
     key = args.key.lower()

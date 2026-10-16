@@ -51,8 +51,10 @@ def upkeep(pool: float, population: int, rate_per_capita: float) -> float:
 def resolve_pass(energy: float, personal: float, pool: float, choice: str, s: dict) -> dict:
     """One pass for one character: base cost, then eating, then the choice (work pays, arc costs
     extra energy), energy capped. `s` is tuning's `survival` block (or any dict with the same keys).
-    `choice` is "work" or "arc" (the old "survive" is read as "work"). Personal provisions and the
-    pool never come out negative. Reports `died` (energy 0 or below) and `ate`."""
+    `choice` is "work" or "arc" (the old "survive" is read as "work"), or "eat": the second
+    participant of a pair scene (2026-10-17), who pays the base cost and eats but earns nothing and
+    pays no arc cost. Personal provisions and the pool never come out negative. Reports `died`
+    (energy 0 or below) and `ate`."""
     energy = energy - s["base_cost"]
     meal = eat(personal, pool, s["eat_amount"])
     personal = max(0, personal - meal["from_personal"])
@@ -61,7 +63,7 @@ def resolve_pass(energy: float, personal: float, pool: float, choice: str, s: di
     if choice in ("work", "survive"):
         personal += s["work_personal"]
         pool += s["work_pool"]
-    else:
+    elif choice == "arc":
         energy -= s["arc_extra_cost"]
     energy = min(energy, s["energy_cap"])
     return {"energy": energy, "personal": personal, "pool": pool, "ate": meal["ate"],
