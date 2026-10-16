@@ -460,7 +460,173 @@ def scenario_probes(tmp):
     ok["backfill_is_idempotent"] = snap == again
     if snap != again:
         detail["backfill_changed_on_second_run"] = sorted(k for k in snap if snap[k] != again.get(k))[:5]
+
+    # --- temperament and the second participant (2026-10-17): p2 eats, traits move the odds in the
+    # stated directions, trends respond, a neutral character is unchanged, and the window is kept.
+    ok.update(temperament_checks(tmp, lib, S, home_ctx, shop_ctx, need, detail))
     ok["_detail"] = detail
+    return ok
+
+
+
+def temperament_checks(tmp, lib, S, home_ctx, shop_ctx, need, detail):
+    """Probes for the second participant eating (p2_*) and for temperament (trait_*, trend_*,
+    neutral_*, window_*, retry_*). Names start with their prefix so main() can fold them into findings
+    F21 to F24. Everything runs through the REAL code; only the dice that would decide where the pass
+    goes are fixed (the same stubs scenario_probes installed)."""
+    ok = {}
+    rs = importlib.import_module("roll_survival")
+    tm = importlib.import_module("temperament")
+    er = importlib.import_module("economy_rules")
+    pl = importlib.import_module("provisions_lib")
+    T = importlib.import_module("tuning").load()
+    s_, t_ = T["survival"], T["temperament"]
+    eat, rate = s_["eat_amount"], s_["upkeep_rate_per_capita"]
+
+    # ---- the second participant eats ------------------------------------------------------------
+    lifespans_path = tmp / "_lore" / "characters" / "lifespans.json"
+
+    def add_lifespans(*keys):
+        ls = json.loads(lifespans_path.read_text(encoding="utf-8"))
+        for k in keys:
+            ls["lifespans"][k] = {"span": 99, "range": "30-60"}
+        lifespans_path.write_text(json.dumps(ls, indent=2), encoding="utf-8")
+
+    shop = [{"location": "ProbeShop", "context": shop_ctx, "weight": 100, "routine_actions": "probe"}]
+    home = [{"location": "ProbeHome", "context": home_ctx, "weight": 100, "routine_actions": "probe"}]
+    arc = {"about": ["concept: probe_q"], "needs": [need], "context": home_ctx, "premise": "Probe wants a thing.", "resolution": "ongoing", "history": [], "turns": 0}
+    # q1 stands at the shop but works at home (a visitor), so the shop is its destination at 0 hops
+    _write(tmp, "probe_q1", _blank("Probe Q One", "ProbeShop", routines=home, arc=arc, places_visited=["ProbeHome", "ProbeShop"], provisions=2))
+    _write(tmp, "probe_s", _blank("Probe Supplier", "ProbeShop", routines=shop, energy=10, provisions=2))
+    _write(tmp, "probe_t", _blank("Probe Starver", "ProbeShop", routines=shop, energy=1, provisions=0))
+    add_lifespans("probe_q1", "probe_s", "probe_t")
+    pop = pl.population_of("ProbeShop")
+    pl.set_provisions("ProbeShop", 100)
+    lib.roll_survival = lambda key, home: {"choice": "arc"}
+    lib.roll_meetable = lambda candidates, favor=None: {"met": True, "chosen": "probe_s", "odds_used": 100}
+    lib.arc_payment_gate = lambda p1, p2, arc_: {"motivated": False, "reason": "cannot_afford", "odds_used": None, "cost": 3}
+    lib.check_arc_alignment = lambda a_, n_, peer: {"gate": "miss", "inclined": None, "matched_about": []}
+    r = lib.run_pass_mechanics("probe_q1", 700)
+    after = load_chars(tmp)
+    sv = after["probe_s"]
+    pool_now = json.loads((tmp / "_lore" / "provisions.json").read_text(encoding="utf-8"))["pools"]["ProbeShop"]
+    detail["p2_pass"] = {"pursuit": (r.get("pursuit") or {}).get("stage"), "survival": r["survival"].get("probe_s"), "pool": pool_now}
+    ok["p2_eats_base_cost_and_meal"] = r.get("participant_2") == "probe_s" and sv["energy"] == 10 - s_["base_cost"] + eat and r["survival"]["probe_s"]["energy"] == sv["energy"]
+    ok["p2_eats_from_own_and_pool"] = sv["provisions"] == 2 - eat // 2
+    ok["p2_no_work_pay_no_arc_cost"] = sv["provisions"] <= 2 and sv["energy"] == 10 - s_["base_cost"] + eat  # a worker would hold more, an arc-goer one less energy
+    ok["p2_upkeep_once_per_pass"] = abs(pool_now - (100 - pop * rate - eat)) < 1e-9  # p1 and p2 each take one unit from the pool, the drain is taken once
+    # failed pursuit leaves the character a memory of where it went (persistence reads it)
+    ok["retry_failed_destination_written"] = (after["probe_q1"].get("failed_destination") or {}).get("place") == "ProbeShop"
+
+    # starvation: p2 with 1 energy, nothing in the purse, nothing in the pool
+    pl.set_provisions("ProbeShop", 0)
+    lib.roll_meetable = lambda candidates, favor=None: {"met": True, "chosen": "probe_t", "odds_used": 100}
+    q = load_chars(tmp)["probe_q1"]; q["provisions"] = 2; q["energy"] = 20; _write(tmp, "probe_q1", q)
+    r2 = lib.run_pass_mechanics("probe_q1", 701)
+    ok["p2_can_starve"] = bool(r2["survival"].get("probe_t", {}).get("died")) and any("probe_t" in n and "hit 0" in n for n in r2["notes"])
+    # and it goes through the death path: pass_apply reads the brief and calls record_death.py
+    if ok["p2_can_starve"]:
+        (tmp / ".simulate_pass_brief.json").write_text(json.dumps(r2), encoding="utf-8")
+        hs = tmp / ".hq.json"
+        hs.write_text(json.dumps({"participants": ["probe_q1", "probe_t"], "location": "ProbeShop", "summary": "stub", "claims": [{"text": "stub", "about": None}]}))
+        rec = json.loads(sh([S / "pass_record.py", "--json-file", hs, "--p1", "probe_q1", "--p2", "probe_t", "--pass-number", 701], tmp))
+        dec = tmp / ".dq.json"
+        dec.write_text(json.dumps({"participants": {"probe_q1": {"lived_delta": 1}, "probe_t": {"lived_delta": 1}}}))
+        rep = json.loads(sh([S / "pass_apply.py", "--json-file", dec, "--p1", "probe_q1", "--p2", "probe_t", "--pass-number", 701, "--scene-id", rec["hearsay_id"]], tmp))
+        tdead = load_chars(tmp)["probe_t"]
+        ok["p2_starvation_recorded"] = rep["participants"]["probe_t"]["cause"] == "energy" and tdead["life"]["deceased"] and any(t_["id"].startswith("death_of_probe_starver") for t_ in json.loads((tmp / "_lore" / "encodings.json").read_text(encoding="utf-8"))["tales"]["entries"])
+
+    # ---- the window is kept ------------------------------------------------------------------------
+    q = load_chars(tmp)["probe_q1"]
+    ok["window_recorded_per_own_turn"] = len(q.get("recent", [])) == 2 and set(q["recent"][-1]) == {"pc", "p", "e"}
+    for _ in range(t_["recent_window_max"] + 3):
+        lib.run_pass_mechanics("probe_q1", 710 + _)
+        c_ = load_chars(tmp)["probe_q1"]
+        if c_["life"]["deceased"]:
+            break
+    ok["window_capped_at_max"] = len(load_chars(tmp)["probe_q1"].get("recent", [])) <= t_["recent_window_max"]
+
+    # ---- traits move the odds in the stated directions ------------------------------------------------
+    base = (10, 0.5, 0.5, 2, 0.0, 2)  # energy, affinity, pressure, pool per head, checkpoint trend, provisions
+    odds = lambda traits=None, recent=None, args=base: rs.arc_odds(s_, *args, traits=traits, recent=recent, t=t_)
+    ok["trait_risk_bold_pursues_sooner"] = odds({"risk": 1})["pct"] > odds({"risk": 0})["pct"] > odds({"risk": -1})["pct"]
+    low = (3, 0.5, 0.5, 2, 0.0, 2)
+    e_b, e_c = odds({"risk": 1}, args=low), odds({"risk": -1}, args=low)
+    ok["trait_risk_scales_threat_terms"] = e_b["pct"] - odds({"risk": 0}, args=low)["pct"] > 0 and e_c["pct"] < odds({"risk": 0}, args=low)["pct"]
+    ok["trait_risk_cushion_centre_moves"] = odds({"risk": -1})["personal_cushion"] < odds({"risk": 0})["personal_cushion"] < odds({"risk": 1})["personal_cushion"]
+    ok["trait_communality_scales_obligation_only"] = (
+        odds({"communality": 1})["pct"] < odds({"communality": 0})["pct"] < odds({"communality": -1})["pct"]
+        and abs((odds({"communality": 0})["pct"] - odds({"communality": 1})["pct"]) - s_["weights"]["affinity_obligation"] * 0.5 * t_["communality"]["obligation_k"]) < 1e-9
+        and odds({"communality": 1})["pool_surplus"] == odds({"communality": -1})["pool_surplus"]
+        and abs(odds({"communality": 1}, args=(10, 0.0, 0.5, 2, 0.0, 2))["pct"] - odds({"communality": -1}, args=(10, 0.0, 0.5, 2, 0.0, 2))["pct"]) < 1e-9)  # no bond, no duty to scale
+    ok["trait_persistence_adds_pressure"] = odds({"persistence": 1})["pct"] > odds({"persistence": 0})["pct"] > odds({"persistence": -1})["pct"]
+    # thrift: the hard gate is unchanged, the hesitation is soft and relative to a neutral payer
+    cost = T["arc_payment"]["arc_need_cost"]
+    pay = lambda thrift, prov: er.payment_odds(prov, cost, 0.0, thrift, T["arc_payment"], s_, t_)
+    ok["trait_thrift_hesitates_below_keep_level"] = pay(1, cost + 1)["pct"] < pay(0, cost + 1)["pct"] < pay(-1, cost + 1)["pct"] and pay(1, cost + 1)["hesitation"] > 0
+    ok["trait_thrift_none_when_flush"] = pay(1, cost + 4 * eat)["hesitation"] == 0 and pay(1, cost + 4 * eat)["pct"] == pay(0, cost + 4 * eat)["pct"]
+    # the real gate (scenario_probes stubbed the module's), loaded fresh from the scratch copy
+    from importlib import util as _iu
+    spec = _iu.spec_from_file_location("spl_real", S / "simulate_pass_lib.py")
+    real = _iu.module_from_spec(spec); spec.loader.exec_module(real)
+
+    def gate(thrift, prov):
+        c_ = load_chars(tmp)["probe_q1"]
+        c_.update(provisions=prov, temperament={"risk": 0, "thrift": thrift, "communality": 0, "persistence": 0}); _write(tmp, "probe_q1", c_)
+        return real.arc_payment_gate("probe_q1", "probe_s", c_["arc"])
+    g1, g0 = gate(1, cost + 1), gate(0, cost + 1)
+    ok["trait_thrift_hard_gate_unchanged"] = gate(1, cost - 0.5)["reason"] == "cannot_afford" and gate(-1, cost - 0.5)["reason"] == "cannot_afford"
+    ok["trait_thrift_shown_in_gate"] = g1["odds_used"] < g0["odds_used"] and g1["hesitation"] > 0 and g0["hesitation"] == 0
+    detail["gate"] = {"saver": [g1["odds_used"], g1["hesitation"]], "neutral": [g0["odds_used"], g0["hesitation"]]}
+
+    # ---- trends respond -----------------------------------------------------------------------------------
+    win = lambda pcs, ps=None: [{"pc": pc, "p": (ps[i] if ps else 2), "e": 15} for i, pc in enumerate(pcs)]
+    flat, fall, rise = win([3, 3, 3, 3, 3]), win([5, 4, 3, 2, 1]), win([1, 2, 3, 4, 5])
+    n_, bold = {}, {"risk": 1}
+    ok["trend_decline_pushes_to_work"] = odds(n_, fall)["pct"] < odds(n_, flat)["pct"] and odds(n_, fall)["trend"] < 0
+    ok["trend_rise_no_pull_unless_bold"] = abs(odds(n_, rise)["pct"] - odds(n_, flat)["pct"]) < 1e-9 and odds(bold, rise)["pct"] > odds(bold, flat)["pct"]
+    mild, calm, mild_args = win([3.5, 3.25, 3, 2.75, 2.5]), win([3] * 5), (10, 0.0, 0.5, 2, 0.0, 3)  # a fall of one unit: rate -0.25, no clamps in play
+    drop = lambda r: odds({"risk": r}, calm, mild_args)["pct"] - odds({"risk": r}, mild, mild_args)["pct"]
+    ok["trend_cautious_feel_declines_more"] = drop(1) < drop(0) < drop(-1) and drop(1) > 0
+    dropping = win([3] * 5, [6, 5, 4, 3, 2])
+    ok["trend_thrift_scales_purse_decline"] = (odds({"thrift": 1}, dropping)["pct"] < odds({"thrift": 0}, dropping)["pct"] < odds({"thrift": -1}, dropping)["pct"]) and odds({"thrift": 0}, dropping)["personal_trend"] < 0
+    # window length: bold short, cautious long, whole observations; a short history is used as it is
+    ok["trend_window_by_trait"] = (tm.pool_window(1, t_), tm.pool_window(0, t_), tm.pool_window(-1, t_)) == (t_["recent_window_min"], round((t_["recent_window_min"] + t_["recent_window_max"]) / 2), t_["recent_window_max"]) and \
+        (tm.personal_window(-1, t_), tm.personal_window(1, t_)) == (t_["recent_window_min"], t_["recent_window_max"])
+    spike = win([3, 3, 3, 3, 3, 3, 1, 1])
+    pr_bold, _ = tm.rates(spike, 4, tm.pool_window(1, t_), 5)
+    pr_cautious, _ = tm.rates(spike, 4, tm.pool_window(-1, t_), 5)
+    ok["trend_short_window_forgets_long_remembers"] = pr_bold == 0 and pr_cautious < 0
+    few = win([3, 1, 1])
+    ok["trend_few_observations_use_what_exists"] = tm.rates(few, 4, 8, 8)[0] == tm.rates(few, 4, 3, 3)[0] < 0 and tm.rates(few[:1], 4, 8, 8) == (None, None)
+    # no window: the old checkpoint term, untouched
+    ok["trend_no_window_is_checkpoint_term"] = abs(odds(n_, None, (10, 0.5, 0.5, 2, -1.0, 2))["pct"] - odds(n_, win([3]), (10, 0.5, 0.5, 2, -1.0, 2))["pct"]) < 1e-9 and odds(n_, None, (10, 0.5, 0.5, 2, -1.0, 2))["trend"] < 0
+
+    # ---- a neutral character is unchanged ------------------------------------------------------------------
+    th = s_["provides_provisions_threshold"]
+    def legacy(e, a, p, pc, tr, pr):
+        cl = lambda x: max(-1, min(1, x)); w = s_["weights"]
+        v = 50 + w["energy"] * (e / s_["energy_cap"] - .5) * 2 + w["arc_pressure"] * (p * 2 - 1) + w["pool_reliance"] * cl((pc - th) / th) * a - w["affinity_obligation"] * a + w["scarcity_pressure"] * min(0, cl(tr / th)) + w["personal_cushion"] * cl((pr - th) / th)
+        return max(s_["odds_percent"]["min"], min(s_["odds_percent"]["max"], v))
+    import random as _r
+    rr, same_none, same_zero = _r.Random(4), True, True
+    t_flat = {**t_, "pool_comfortable_meals": th / eat}  # the pre-temperament pool centre, for the comparison only
+    for _ in range(300):
+        a_ = (rr.uniform(1, 20), rr.uniform(-1, 1), rr.random(), rr.uniform(0, 6), rr.uniform(-2, 2), rr.uniform(0, 8))
+        want = legacy(*a_)
+        same_none &= abs(rs.arc_odds(s_, *a_)["pct"] - want) < 1e-9
+        same_zero &= abs(rs.arc_odds(s_, *a_, traits={}, t=t_flat)["pct"] - want) < 1e-9 and abs(rs.arc_odds(s_, *a_, traits={"risk": 0, "thrift": 0, "communality": 0, "persistence": 0}, t=t_flat)["pct"] - want) < 1e-9
+    ok["neutral_roll_is_the_old_roll"] = bool(same_none and same_zero)
+    ok["neutral_payment_odds_unchanged"] = all(abs(pay(0, cost + x)["pct"] - er.payment_odds(cost + x, cost, 0.0, 0, T["arc_payment"], s_, None)["pct"]) < 1e-9 for x in (0, 1, 2, 5))
+    ok["neutral_missing_field_reads_zero"] = tm.traits_of({}) == tm.traits_of({"temperament": {}}) == {k: 0.0 for k in tm.TRAITS} and tm.words({}, .4) == ""
+    ok["neutral_old_character_no_window_same_odds"] = abs(rs.arc_odds(s_, *base, traits=None, recent=None, t=t_)["pct"] - rs.arc_odds(s_, *base, traits={"risk": 0}, recent=None, t=t_)["pct"]) < 1e-9
+
+    # ---- persistence retries the failed destination -----------------------------------------------------
+    opts = [{"location": "A", "weight": 2.0}, {"location": "B", "weight": 2.0}]
+    r_ = {"need": "n", "place": "A"}; pc_ = t_["persistence"]
+    got = {p: tm.retry_adjust(opts, r_, "n", p, pc_)[0]["weight"] for p in (1, 0, -1)}
+    ok["retry_persistent_pulled_restless_pushed"] = got[1] > got[0] == 2.0 > got[-1] > 0 and tm.retry_adjust(opts, r_, "other", 1, pc_) == opts
+    detail["temperament"] = {"retry_weights_A": got, "windows_pool_by_risk": [tm.pool_window(x, t_) for x in (-1, 0, 1)], "windows_purse_by_thrift": [tm.personal_window(x, t_) for x in (-1, 0, 1)]}
     return ok
 
 
@@ -569,6 +735,11 @@ def main():
         probes["F17"] = counts["pair_scenes_without_circle_tie"] > 0 or any(not scen[k] for k in scen if k.startswith(("birth_", "readers_", "backfill_")))
         probes["F18"] = any(not scen[k] for k in scen if k.startswith(("completion_", "reward_", "turns_", "tale_", "child_", "wider_", "completer_")))
         probes["F19"] = counts["dead_holding_provisions"] > 0 or any(not scen[k] for k in scen if k.startswith("estate_"))
+        # 2026-10-17 temperament work: True when the thing is still wrong
+        probes["F21"] = any(not scen[k] for k in scen if k.startswith("p2_"))                 # p2 does not eat / cannot starve
+        probes["F22"] = any(not scen[k] for k in scen if k.startswith(("trait_", "retry_")))  # a trait does not move the odds as stated
+        probes["F23"] = any(not scen[k] for k in scen if k.startswith(("trend_", "window_")))  # trends do not respond
+        probes["F24"] = any(not scen[k] for k in scen if k.startswith("neutral_"))            # a neutral character changed
         result = {"root": str(root), "passes": a.passes, "seed": a.seed, "fixture": a.fixture, "fixture_info": fixture,
                   "observed": dict(counts), "static": extra, "probes": probes}
         if a.baseline:
