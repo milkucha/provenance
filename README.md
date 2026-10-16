@@ -4,57 +4,383 @@
 <img src="https://i.imgur.com/cASXA69.png" alt="logo" style="display: block; margin: 0 auto;">
 </div>
 
-The lore underneath this project is about 12 years old — authored in fragments, long before there
-was any system to grow it. Provenance is what I built to test whether an agent-driven system can
-actually take a seed like that and keep growing it in a way that still reads as *this* world's own
-culture: organic, drifting, full of honest gaps — not generic model output wearing the world's
-names. Basically, a storytelling and world-building tool for authors: it grows a fictional society
-from a small authored seed — sociocultural parameters, a handful of authored facts — into an
-organically drifting, ecosystemic record of tales, through procedural and semantic generation
-rather than being hand-written end to end.
+# Part I. What this is, and why it's built this way
 
-The design leans on a negative-space principle: a world's real structure lives in what stays
-unsurfaced — the objective record, the pillars a character's convictions stand on — while what
-actually gets communicated (dialogue, hearsay, tales) is a thin, subjective slice drawn from that
-foundation, never the whole of it. Like a good painting, which doesn't need to paint every detail of
-something, only needs to insinuate the existence of it, so imagination does the rest. (Loosely in
-the spirit of Luhmann's account of society as constituted by communication, and of mytheme/monomyth-
-style thinking about recurring narrative structure — both still under active discussion here, not
-settled theory this repo commits to.)
+This half is the conceptual one: what the system is for, the rules I hold it to, how I'm trying to
+tell whether it works, and what each of its parts does. Part II, further down, is the dry half, the
+literal structure of the repo and how to work in it. If you only want to run something, skip to
+[Part II](#part-ii-the-structure-of-the-repo).
 
-It's equally an experiment in agent-based social simulation: characters are played by model agents
-constrained to a bounded, randomly-sampled slice of the record, deliberately stripped of room to
-sprawl, so creativity has to work with fewer, authored elements instead of inventing freely. I want
-this to run across different models and harnesses rather than depend on one vendor, and to stay slim
-in token consumption — that budget work is ongoing, and it's not just aspirational: `/simulate` now
-dispatches either a Claude subagent (Haiku/Sonnet/Opus) or a locally-hosted Ollama model
-(`scripts/lore/enact_via_ollama.py`) for the one judgment-heavy step per pass, with the orchestrating
-session doing every mechanical step itself either way — see §0's "Simulating and evaluating the
-lore." The simulation only means something if it can run at the scale a living culture requires,
-which is what makes the whole thing usable and testable at all. The project is currently in an
-experimentation phase, run and evaluated lab-report style (`LAB_REPORT.md`) against two standing
-questions: whether the result reads as immersive, and whether it reads as organic rather than
-mechanically repetitive — see `scripts/test/record_tasting.py`/`/taste` for how the immersion
-question gets a real, per-run score rather than staying an impression. The longest pilot so far ran
-`/simulate` to 250 passes on a 57-character population and got real material stakes out of it — arcs
-that stalled, reversed, and transformed on genuine dice rolls, multiple generations of births, deaths
-that actually broke a character's own convictions rather than just getting logged — not just
-repetition, which is the actual bar (see `CHRONICLE.md` for the fuller account). The
-standing fear behind most of the design choices here is producing *slop*: content that sounds
-plausible but isn't actually grounded in anything the record established.
+## What this is
 
-The engine itself is embodiment-agnostic — it never assumes any particular place its generated
-characters and lore need to surface. This repo currently ships one optional embodiment backend on
-top of it: a Minecraft datapack layer (the repo's original context, and where I still get to stand
-in the world and talk to these characters myself) that puts the generated characters live in a
-Minecraft world as NPCs (Taterzens) running dialogs (Blabber) and following their own routines,
-pausing to talk and picking their routine back up. That's one integration, not the product — the
-tales and the world they accrete into exist entirely independent of it, and a different or
-additional embodiment backend could replace this layer without touching the engine at all. The
-embodiment layer is documented at the end of this file (§5 onward); everything before it is the
-actual lore engine, usable entirely on its own with no Minecraft (or any embodiment) involved.
+Provenance grows a fictional society out of a small seed. You give it sociocultural parameters, a
+handful of authored facts, and whatever documents or stories you already have (a map, a photograph of
+a construction, a legend you'd tell at a fire). From there the characters take over: they meet, they
+talk, they hear things from each other and repeat them a little wrong, they age, have children and
+die, and every one of those things leaves a trace the next characters draw on. Nobody writes the
+culture end to end. I supply the floor, and the system supplies the weather.
 
-This document is a practical, step-by-step guide to working with the system, plus (§0) the
+The lore underneath is about 12 years old, written in fragments long before there was anything to grow
+it with. Provenance is what I built to find out whether an agent-driven system can take a seed like
+that and keep going in a way that still reads as *this* world's own culture: organic, drifting, full of
+honest gaps, and not generic model output wearing the world's names. Basically, it's a storytelling and
+world-building tool for authors. It is equally an experiment in agent-based social simulation, since
+the characters are played by model agents that only get a bounded, randomly sampled slice of the
+record.
+
+The engine doesn't assume anywhere its characters have to show up. Today the one place they do is a
+Minecraft world, where they stand as NPCs (Taterzens), run dialogs (Blabber) and walk their routines,
+pausing to talk and picking the routine back up afterwards. That was the repo's original context, and
+it's where I get to stand in the world and talk to them myself, but it's one integration and not the
+product. Everything in this half holds with no Minecraft involved, and a different embodiment could
+replace that layer without touching the engine. The Minecraft material starts at §5 of Part II.
+
+## The objective
+
+Two standing questions, and they're the ones [`LAB_REPORT.md`](LAB_REPORT.md) is organised around.
+Does the result read as immersive? And does it read as *organic*, meaning that characters' criteria,
+knowledge and relationships drift out of their starting conditions, instead of repeating one pattern or
+sliding smoothly toward agreement because the model likes agreeing?
+
+Underneath both sits a third requirement: the drift has to have material consequence. Things must be
+able to fail, end, or run out. The first long run is the reason I insist on this. It had real deaths and
+a keeper network that collapsed as the population shrank, but nearly every scene circled the same one
+conflict, because the routines were bare weighted locations and the arcs were derived from what a
+character already believed rather than from what they did somewhere. That wasn't a prompting problem,
+it was structural, and it's what sent the design toward routines tied to a place, arcs with progress
+that can stall or reverse, reproduction, and death (see [`CHRONICLE.md`](CHRONICLE.md), the
+2026-08-05 to 13 entries).
+
+Three constraints ride along. I want this to run across different models and harnesses instead of
+depending on one vendor. I want it slim in tokens, because a simulation only means something at the
+scale a living culture needs, and that scale is unaffordable if every decision is a model call. And I
+want it to stay honest about being in an experimentation phase: run and judged lab-report style, with
+no standing, always-on world yet. That last one is a decision and not an omission. I chose to prove the
+drift and immersion properties offline and cheaply first, and I haven't yet picked the signal that would
+tell me it's time to stop (see "How I know whether it works" below, and the open item in
+[`TODO.md`](TODO.md)).
+
+## Design philosophy
+
+Four rules hold the project together, and most of the design choices downstream of them read as
+consequences.
+
+**Nothing gets decided silently.** If a run surfaces a gap, or a real disagreement about how
+something should work, it goes to me or gets logged in [`OPEN_QUESTIONS.md`](OPEN_QUESTIONS.md),
+never into a quiet guess. The quiet kind is the kind that has hurt most. An accent mismatch
+("Ilaría" against "Ilaria") silently broke one character's whole death-notification circle for 115
+passes, and for a while 325 of 331 hearsay references were pointing at concepts that didn't exist as
+entries anywhere. Both got found late, and both were failures nobody had chosen.
+
+**Script everything that can be scripted, and keep prose for where judgment is really needed.** Dice
+rolls, drawing who acts, arithmetic, the mechanical sequence of a pass: all scripts, living in
+`scripts/lore/` or `scripts/minecraft/`, each paired with the skill that calls it. A model asked to
+"pick at random" isn't a uniform random source, which is the whole reason `pick_pair.py` exists. What's
+left for a model is the words of a scene, which dramatize something already fully decided and never
+decide it, and the rare judgment call like blending two parents' names into a child's. I should say
+where I think the line really sits, because the first way it got put (in `CHRONICLE.md`) was "rules
+versus semantic content", and that didn't survive pushback: a dice roll and a model's dramatization are
+both rules in some loose sense. What separates them is closed versus open: a roll gives one determinate
+output for a fixed input and seed, and "correct" just means matching the rule, while two dramatizations
+of the same brief don't have to match and neither is *the* right one. That's closer to Dilthey's
+*erklären* and *verstehen* (explaining by closed law, understanding by situated interpretation) than to
+any "rules present or absent" split. Orchestration prose that only sequences steps is meant to
+shrink as well.
+
+**Write in the author's voice.** Project prose (README, TODO, LAB_REPORT, commit messages, in-repo
+notes) should sound like me and not like default assistant prose, and lore content has its own voice per
+character. [`.claude/VOICE.md`](.claude/VOICE.md) holds both, built from things I actually said rather
+than a generic "casual tone". It's also why you're reading this in the first person.
+
+**Keep the files current.** [`CHRONICLE.md`](CHRONICLE.md) for landmark sessions (including the
+reflective ones where nothing in the code changed), [`TODO.md`](TODO.md) for design decisions and open
+gaps, [`SESSION_LOG.md`](SESSION_LOG.md) for where work stopped. Chat history ages out and gets
+compacted, so it can't be the project's record.
+
+Two more commitments sit under those rules, and they're worth stating separately. The first is a
+negative-space principle: a world's real structure lives in what stays unsurfaced (the objective
+record, the pillars a character's convictions stand on), and what actually gets communicated
+(dialogue, hearsay, tales) is a thin, subjective slice drawn from that foundation, never the whole of
+it. Like a good painting, which doesn't need to paint every detail of something, only needs to
+insinuate it, so imagination does the rest. The second is that characters are deliberately stripped of
+room to sprawl. Each one gets a bounded, randomly sampled slice of the record, so creativity has to
+work with fewer, authored elements instead of inventing freely. The standing fear behind both is
+*slop*: content that sounds plausible but isn't grounded in anything the record established.
+
+## How I know whether it works
+
+I want to be exact here, because "does it feel alive" is easy to claim and hard to check. What I can
+test directly is the machinery and the traceability of what it produces. What I can only get at through
+a person reading is whether it's any good. The suite in `scripts/test/` covers the first well and the
+second thinly, and I'd rather say so than blur it.
+
+**What gets measured today.** All of these are read-only against a run. They read a manifest and a
+draw-audit log that `/simulate` writes, and they never change what a run produced.
+
+- *Conformance* (`conformance_report.py`): did every stochastic script come out at the odds it was
+  supposed to, with a Wilson interval flagging any observed rate that excludes the odds used; how arc
+  outcomes distribute across their inputs; whether the deterministic invariants held; and whether any
+  draw slipped past the audit log (counts by script, seeded versus free). It checks the dice. It says nothing about the prose.
+- *Derivation* (`measure_derivation.py`): the share of hearsay claims whose `about` references resolve
+  to a real entry in the record, and the share of `knowledge.experience` entries that carry a
+  `produced_by` pointing back to the scene and pass that wrote them. This is the nearest thing I have to
+  a slop meter, since it asks whether a claim traces back to the record or floats free. It's a proxy,
+  though. A claim can resolve perfectly and still be dull.
+- *Drift* (`measure_drift.py`): how far a claim moves each time it's retold, measured along the
+  retelling genealogy as edit-distance and word-bigram overlap, plus whether the claim's reference
+  category changed.
+- *Divergence* (`measure_divergence.py`): the isolation experiment. Two runs from the same starting
+  commit with the same RNG seed should have identical dice, diffed result by result, so whatever differs
+  afterwards belongs to the agent layer alone. It also compares how differently two characters remember
+  the same event. I think of it as a running proxy for how much of a run was closed rules and how much
+  was interpretation, but that framing is mine and the script doesn't claim it.
+- *Tasting* (`record_tasting.py`, driven by `/taste`): a person scores a run 0 to 10 on legibility,
+  aliveness (including felt contingency), curiosity and specificity. It's the only subjective
+  instrument, and the only one that speaks to "does it read well" at all.
+- *Token cost* (`simulate_token_usage.py`): per-turn cost read from the session transcript, so dispatch
+  models can be compared on something better than a guess.
+
+**What the runs have shown.** [`LAB_REPORT.md`](LAB_REPORT.md) is the dated log. The early extended run
+(started on 6 characters, extended in place to 305 passes) got the material stakes the first run was
+missing: arcs that stalled, reversed, transformed and resolved on real dice, four generations of births,
+deaths that broke a character's own convictions. A survival mechanism at first-guess tuning killed 7 of
+8 characters in 44 passes, and retuned it killed none in 50. A 57-character cast run for 250 passes on a
+local model produced 11 deaths, 5 births and 4 arc completions, with a single criterion move in the
+whole run. The seeded isolation pair has a first run logged (11 deaths, 9 births, zero criterion moves
+despite arcs hitting their gate), and no second run yet.
+
+**What isn't measured, or isn't settled.**
+
+- The run log in `LAB_REPORT.md` has no tasting score and no divergence reading in it yet. The
+  instruments exist, but I can't point you at a number for "immersive".
+- There's no exit criterion. I haven't decided what reading on these instruments would mean "stop
+  testing offline, build the standing world". Without one the validation phase has no natural end
+  (`TODO.md`).
+- Every seed so far is hand-authored, which is a confound. If a run reads as organic, I can't yet tell
+  how much is the mechanism and how much is a rich seed. A machine-generated seed would be the control,
+  and it's sketched, not built (`TODO.md`).
+- Drift and divergence are lexical and stdlib-only. A semantic measure (embeddings) is deliberately
+  not implemented, so a retelling that changes every word and keeps the meaning reads as far-travelled.
+- Every odds value and threshold in `_lore/tuning.json` is a first guess. A pilot is partly a test of
+  whether they give a believable pace (`OPEN_QUESTIONS.md`).
+- The local-model path (Ollama) is newer and less proven than the Claude one. Its harder judgment calls
+  haven't been exercised at the scale the Claude path has.
+- The design contract the instruments cite, `TESTING_BRIEF.md`, lives outside this repo.
+- On this branch `_lore/` is an empty skeleton, so there is nothing here for the instruments to measure.
+  They run against worktrees grown on a corpus branch (see "Branches" below).
+
+Tell me what you think of that list. I'd rather be argued out of a gap than miss one.
+
+## Where it comes from
+
+None of this is a literature I built from. These are the things the project got compared to, or that I
+reached for, and [`CHRONICLE.md`](CHRONICLE.md) is where they're recorded, so I'll only claim what's
+there.
+
+- **Dwarf Fortress.** I noticed the resemblance myself, and I've never played it. It isn't in the
+  mechanics, since DF's granularity is physical and this project's is epistemic: what a mind knows,
+  believes and trusts, not what's physically true. It's in the relationship between player and
+  simulation. A world keeps running its own routines whether or not anyone is standing in it, and
+  stepping in adds a participant instead of pausing the clock. My two use cases, `/simulate` as a
+  narrative-drift generator and, eventually, walking into a live Minecraft world as one more actor, turn
+  out to be the same primitive: `/enact` against the player or against another character differs only
+  in who the second participant is.
+- **Talk of the Town** (James Ryan, Expressive Intelligence Studio, UC Santa Cruz). A town simulation
+  where every character's belief is provenanced back through the conversations that produced it, which is
+  structurally close to the hearsay, trust and `produced_by` layer here. It never shipped as the open-ended
+  town game; `Bad News` was one bounded scenario on the same engine. The difference that matters is that
+  its mechanism is closed-form logic all the way down, dialogue included, with no model doing semantic
+  work anywhere.
+- **Troy**, for the split between *material* and *grounding*. The idea of Troy, and everything anyone
+  wrote about it, is material. Whether the ruins are actually there is grounding. Neither corrects the
+  other.
+- **Luhmann and mythemes**, loosely: society as constituted by communication, and recurring narrative
+  structure in the vein of Lévi-Strauss. Both are still under active discussion here, and not settled
+  theory this repo commits to.
+- **Bourdieu's three capitals**, as an organizing lens for the provisions and inheritance sketch in
+  `TODO.md`: cultural capital is built (what a character knows gates what their arc can do), social
+  capital is partly built, economic capital is the provisions system.
+- **A Minecraft world seed**, for non-determinism as a feature instead of a bug.
+
+## The parts of the system
+
+Seven parts, in the order I'd explain them to someone standing at my shoulder: where knowledge comes
+from, where it gets collected, who holds it, how it changes, how you drive it, how it runs on its own,
+and how it gets checked. The drawings are mine, in `assets/blueprints/`.
+
+### Lore
+
+![Lore blueprint: a central hub with five clusters of sources branching off it, and three smaller nodes beside it.](assets/blueprints/Lore.png)
+
+*The sources of truth, "the stones that are the road". Each cluster is one kind of source, drawn as a
+swarm of individual entries around a labelled node: materials (archaeological evidence, an archive),
+characters (with hearsay hanging off them), tales (oral tradition, myth and legend), facts
+(unconditional), and groundings (`mechanics` and `world_state`). The three small nodes on the hub are
+`contexts`, `tuning` and, bracketed, `encodings`, the structure the sources all feed.*
+
+Lore is everything the world can draw on, and the useful thing is that it comes in kinds that behave
+differently. **Material** is excavated: a book, a map, a photograph of a construction, any document,
+transcribed and never edited, with contradictions between sources noted and not resolved. **Tales** are
+what I tell the system directly, a myth or a legend or a plain stated fact, an epistemic layer of its
+own, neither document nor hearsay. **Characters** are sources too, since whatever they say in a scene
+becomes hearsay on the record. **Facts** are the handful of things true of being a person in this world
+at all, currently two: a life ends, and everyone wants theirs to have been worthwhile. A fact is never
+sampled, never attributed and can't be dismissed, because it's the floor a character's contestable view
+of a good life stands on. **Groundings** are what's true whether or not anyone knows it, the ruins to
+material's claim about Troy, and a character only knows them if their routines and the places they've
+actually been would plausibly have shown them. The small nodes are tooling more than lore: `contexts`
+are the place-type templates (market, temple, commons, home, route) that give a routine its texture and
+its `provides`, and `tuning` is the one file every odds and threshold lives in.
+
+### Encodings
+
+![Encodings blueprint: a tree whose root is labelled categories, with each category as a branch listing its fields.](assets/blueprints/Encodings.png)
+
+*The repository of all knowledge, "the beating heart of the lore". A tree rooted in `categories`, one
+branch per kind of thing the record can hold, each branch carrying its fields: location, time_systems,
+route, concept, conflict, tale, character and hearsay. The last, unlabelled branch (`"...": {...}`)
+is the room left for a category that doesn't exist yet.*
+
+`_lore/encodings.json` is where the sources get turned into one structured, queryable record. Eight
+categories today, and each one has named fields instead of a generic "references" list. I argued
+myself into that: a generic reference field would have turned "sample one character" into "sample their
+whole neighborhood" by cascade, whereas a named field like `character.origin` or `route.endpoints` is an
+ordinary attribute, sampled or not like any other. The exception is the claims layer (`hearsay`, `tale`,
+`conflict`), where an entry isn't an object with attributes but a statement *about* other things, so it
+keeps an `about`. Disagreements between sources live in `conflict` and wait for me, and only `/resolve`
+ever sets a resolution. Hearsay claims get flagged when they contradict the record or the facts, and a
+claim being sampled never upgrades it to fact: it stays something a character heard from someone.
+
+### Characters
+
+<!-- blueprint: characters (pending) -->
+
+A character is one file, and the interesting parts of it move at different speeds. `knowledge.education`
+is frozen at creation, a random sample of the record, which is why a character is unevenly gapped
+instead of conveniently informed. `knowledge.experience` only ever appends, a little more every scene.
+`criterion` is sticky but revisable, and it's the part I care most about: what this person would count
+as a *wasted* life, derived once from the collision of what they know with their backstory, and anchored
+to one concrete, refutable case. It's what makes two characters with the same knowledge in the same
+situation choose differently. A criterion implies an epistemology too (a life built on testimony trusts
+testimony and finds chronicles bloodless), so how much a claim lands depends on who's hearing it.
+
+It only moves through a *shock*, a claim or experience that references the anchor, which the character
+can reject, accept and reinterpret, or accept and break. *Drift* (accrued cost plus a shortening
+horizon) never changes a criterion by itself, it only changes how susceptible the character is when a
+shock arrives. The default outcome of any scene is no change at all.
+
+Characters also have a secret length. Each gets a lifespan rolled once (30 to 60 scenes by default) that
+is deliberately kept out of the file the model reads to play them, so the character can only ever be told
+a coarse horizon: early, established or late. When a death comes it isn't announced. Relations (parents,
+children, partners) are told for certain, 30% of the wider circle (anyone who shared a scene with them,
+or is named in their backstory) hears right away, and everyone else finds out the way people find out
+anything here, from a tale or from someone who knew.
+
+### State transformation
+
+![State transformation blueprint: arrows between material, tales, hearsay, groundings, encodings and a character drawn twice, with a scene feeding back into hearsay, the character and tales.](assets/blueprints/State%20Transformation.png)
+
+*Knowledge pool appendage and mutation; myth formation. Pink arrows are author input (into material,
+and into tales). Blue arrows are what the record does: material, tales and hearsay flow into encodings,
+and encodings flows out to the character, drawn twice (a pink ring and a fainter purple one), as the same
+character before and after a scene. Green arrows are what a scene writes: what was said into hearsay,
+experience and stat changes onto the character, and births, deaths and achievements out as tales. The
+brown arrow is groundings, joining from the side.*
+
+This is the picture I'd show first to anyone who wants to know why the system is a system and not a
+generator. Nothing is written once. Material and tales go into the record because I put them there. A
+character is handed a sample of the record, plays a scene, and the scene writes back in three places: what
+was said becomes hearsay, which folds into the record and can be sampled by someone else later; what it
+did to the character (experience, a criterion that moved or didn't, a partner, a life ticked forward)
+goes on their file; and the events a world remembers (a birth, a death, an arc completed) become tales,
+which re-enter the same pool as everything else. That loop is what I mean by lore drift. Provenance is the thread through it: every entry that folds in keeps its
+source, honestly tagged, and promotion registers that something exists without upgrading how well
+evidenced it is.
+
+One caveat on the drawing itself. Groundings are drawn feeding the encodings. In the repo, groundings
+stay in their own folder and are read live per character, gated by routines and places visited, and are
+never folded into `encodings.json`, though the source index does list them as a sourced category. I'd
+read the arrow as "groundings sit beside the record and constrain it", not "groundings get copied into
+it".
+
+### Handling
+
+![Handling blueprint: a white root with twelve lines running out to red nodes, eleven of them labelled with slash commands.](assets/blueprints/Handling.png)
+
+*The levers that can be pulled; the way to drive the vehicle. One root, one line out to each skill:
+/start, /integrate, /tell, /character, /resolve, /simulate, /enact, /generate, /embody, /spawn and
+/package. A twelfth node at the bottom right is drawn with no label.*
+
+Everything you can do falls into two kinds, and the skills are the levers. You can *grow the record*
+(`/integrate` for material, `/tell` for tales, `/character` for a person, `/resolve` for a disagreement
+the record is holding open) or you can *put it in motion* (`/enact` for one scene, `/simulate` for many
+chained across a population, `/generate` to fast-forward a starting cast with no prose). `/embody`,
+`/spawn` and `/package` are the embodiment side, the ones that know about Minecraft. The two kinds
+combine in any order. The practical walk-through is the "Getting started" block in Part II, and `/start`
+shows a live version of it with counts from whatever copy of the world you're standing in.
+
+### Simulation
+
+<!-- blueprint: simulation process (pending) -->
+
+`/simulate` is what keeps the world running without me. One pass goes like this. A single living
+character is drawn uniformly (nobody is paired up front, because who else is in a pass is *discovered*,
+not assigned). They roll to either survive or pursue their arc, weighted by their energy, how pressing the
+arc is, how well their town is eating and who they're close to. Survive means their own routine roll and
+that's the pass. Pursue means looking for somewhere that can supply what the arc needs, travelling there
+along the location graph if it isn't local, and rolling whether anyone useful is actually present once
+they arrive (a real chance of a missed connection). If someone is, that person rolls their own routine,
+which may or may not fit, and then a payment gate, spent out of the character's own provisions, decides
+whether the pass was motivated at all. Only a pass that gets all the way through produces a scene.
+Outcomes (advance, stall, reverse, transform, resolve) are rolled *before* the scene is written, so the
+model is dramatizing something already decided, which is the second rule above doing its job.
+
+Around that sit the stakes. Locations hold a shared provisions pool, a character eats from it if it
+can afford them, working contributes to it and chasing an arc costs extra energy, so a town can actually run
+dry. After a scene come the horizon check, death, legacy of an unfinished arc, and reproduction (a child
+inherits some of both parents' knowledge and a faint version of their relationships, and gets a birth
+tale). The one judgment-heavy step, writing the scene, is dispatched either to a Claude subagent
+(Haiku, Sonnet or Opus) or to a local Ollama model (`qwen2.5:14b` by default, through
+`enact_via_ollama.py`). The orchestrating session does every other step itself, either way. Each run
+lives in a disposable git worktree that stays on disk afterwards and is never merged back on its own, so a
+stress test can't touch the real record.
+
+Known gaps, stated plainly. The rivalry follow-up loop (`leads`) has no call site in the current
+single-draw model and its data just accumulates. `social_circle` exists as a field and nothing writes to
+it. A death during a pass with no second participant has no dispatch to resolve its legacy or its shocks.
+A character who dies late with an arc still open leaves that arc stranded. The *reflection* mechanism, a
+character processing alone with no peer, is entirely undesigned, and it's the main place I'd expect a
+character's interiority to recombine into something new. (`TODO.md`, `OPEN_QUESTIONS.md`, `SESSION_LOG.md`.)
+
+### Testing
+
+<!-- blueprint: testing process (pending) -->
+
+A run only gets the full test block when it's explicitly testing or extending the design, not when it's a
+casual showcase trail. The mechanism is basically a manifest and an audit log. Every stochastic script
+call is recorded against a per-run draw-audit log, and the run's starting state (population, pass count,
+RNG seed if it opted in, starting commit) goes into a machine-readable manifest. The instruments listed
+above read those two files, `/simulate`'s closing step runs them and asks for a tasting, and a templated
+entry lands in `LAB_REPORT.md` automatically, with the qualitative sections (what worked, what didn't,
+what's open) still written by hand. The same-seed pair is the isolation experiment: identical dice, so
+the difference is the agent layer. What the instruments conclude, and where they stop, is in "How I know
+whether it works" above.
+
+## Branches
+
+Three kinds of branch, and the split is on purpose. `provenance-standalone` (this one) is the logic-only
+line: the engine, the skills, the test suite, and a `_lore/` skeleton that's always without a lore
+corpus (an empty record, the two universal facts, the Minecraft mechanics).
+`corpus-three-cities` carries the three-city test cast the simulation runs in `LAB_REPORT.md` were grown
+on, and keeps it out of this branch. A corpus branch for the Milkantis lore (my Minecraft forever-world) is planned and doesn't exist yet. The idea is that engine changes land here and corpora can be
+grown, compared and thrown away without touching the logic, and the same engine can be pointed at a
+different seed.
+
+---
+
+# Part II. The structure of the repo
+
+This half is a practical, step-by-step guide to working with the system, plus (§0) the
 architecture of the whole as it stands today — read that first in a new session to get oriented
 without having to re-read the whole codebase. `CHRONICLE.md` carries the narrative alongside it:
 why a given design turn got taken, and what's still genuinely open — worth a read if the "why" behind
@@ -97,7 +423,7 @@ Pick any door — they combine in any order, and the record only grows richer fo
 
 ## Index
 
-**Starting a new session? Read the intro above plus §0–§2 first — that's the compulsory minimum for
+**Starting a new session? Read Part I above plus §0–§2 first — that's the compulsory minimum for
 orientation.** Everything past that, read only the section(s) the task at hand actually needs.
 
 - [Getting started](#getting-started) — brand new to this repo? The two doors in: growing the record
@@ -176,6 +502,8 @@ the simulation/evaluation tooling described next.
     which flags a claim that actively contradicts something already on record), plus a log of which
     have since been resolved by the user. Sits at `_lore/` root alongside `encodings.json` since it's
     cross-cutting, not specific to any one source folder.
+  - `_lore/contexts.json` — the place-type templates `/simulate`'s routine/arc mechanism draws on, authored once here and shared by every routine tagged with that context: five today (`market`, `temple`, `commons`, `home`, `route`), each with a `texture`, a `provides` list (which arc needs it can satisfy) and a `grounding_provides` list (which `grounding/mechanics.json` entries a character with that routine knows). A minimal starting set, meant to grow by hand.
+  - `_lore/tuning.json` — every tunable odds value, threshold, cooldown and the lifespan range, read by the scripts through `scripts/lore/tuning.py` instead of hardcoded in each; every value in it is a first guess, untuned by any run.
   - `_lore/characters/` — one JSON file per character (`<key>.json`, key = lowercased, slugified
     name), the complete lore record for who they are: `name` (canonical — the one place a character's
     name is decided), `origin` (fixed birthplace), `location` (current whereabouts), `backstory`,
@@ -231,7 +559,7 @@ the simulation/evaluation tooling described next.
 
 ### Simulating and evaluating the lore
 
-`/simulate` (above) is the mechanism; the pieces below sit alongside it, reading the lore engine's
+`/simulate` (Tier 2, below) is the mechanism; the pieces below sit alongside it, reading the lore engine's
 output rather than feeding it, and aren't part of the Tier 1–3 dependency stack at all:
 
 - **`LAB_REPORT.md`** — the persistent, cross-run record of whether the system's design actually
@@ -247,7 +575,8 @@ output rather than feeding it, and aren't part of the Tier 1–3 dependency stac
   log every stochastic script call gets recorded into) and `scripts/lore/run_manifest.py` (the
   run's own machine-readable starting state — pool, pass count, and, if the run opted in, an RNG
   seed). Wired into `/simulate` Step 4 as a closing block, run only on a run explicitly testing or
-  extending the design, not a casual showcase trail:
+  extending the design, not a casual showcase trail (the design contract these
+  instruments cite, `TESTING_BRIEF.md`, lives outside this repo):
   - `conformance_report.py` — did every stochastic script call actually go through the seeded/logged
     path it was supposed to, rather than an untracked `random` call slipping past the audit.
   - `measure_derivation.py` — what fraction of `knowledge.experience`/`grounded_experience` entries
@@ -336,15 +665,19 @@ and `/enact` still never touches either registry or `data/`. `/embody` and `/spa
     `encodings.json`'s `tales` category. Real-world provenance (`responsible` — who told the system) is
     recorded separately, in `_lore/tales/_authors.md`, never in `encodings.json`.
   - **`/simulate`** (`simulate/SKILL.md`) — batch-runs many `/enact`-equivalent character-vs-character
-    scenes across an existing population, unattended, inside a dedicated git worktree (requires
-    `worktree.baseRef: "head"` in settings, so it branches from the current lore state rather than a
-    stale `origin/<default-branch>`). For testing the enactment mechanism at scale, or producing a
+    scenes across an existing population, unattended, inside a dedicated git worktree
+    (`simulate_setup_worktree.py` creates it from `HEAD`, so it branches from the current lore state
+    rather than a stale `origin/<default-branch>`; `worktree.baseRef: "head"` in settings does the
+    same for `EnterWorktree`'s own `name`-based flow). For testing the enactment mechanism at scale, or producing a
     showcase trail of scenes, without risking the real files — the worktree stays on disk afterward
     for inspection and is never merged back automatically. Lore-only, same as `/enact`. The
-    orchestrating session does every mechanical step itself, directly, script by script — pairing
-    (`pick_pair.py`), the pre-scene mechanical block (`pass_prep.py`: routine/location roll, arc
-    primacy/gate/outcome rolls against `_lore/contexts.json`, tallied toward advance/stall/reverse/
-    transform/resolve, plus the survival roll/apply) and, after the scene, every remaining write
+    orchestrating session does every mechanical step itself, directly, script by script — drawing the first
+    participant (`pick_pair.py`: one uniform draw; a second participant, if any, is discovered during
+    the pass, and a pass that never finds one is recorded mechanically and gets no scene), the
+    pre-scene mechanical block (`pass_prep.py`: the survive-or-arc roll, the routine/location roll or
+    travel toward a place that can supply the arc's need, the missed-connection roll, the payment
+    gate, then the contested/arc gate/outcome rolls against `_lore/contexts.json`, tallied toward
+    advance/stall/reverse/transform/resolve, plus the survival apply) and, after the scene, every remaining write
     (`pass_apply.py`: `update_character.py` calls, energy-death check, reproduction, death legacy) —
     and dispatches a subagent for exactly one thing: writing the scene itself, from the mechanical
     JSON `pass_prep.py` already produced, with no tool access of its own. Two dispatch paths for that
@@ -406,7 +739,7 @@ build sequence.
 `resourcepack/` folder (own `pack.mcmeta` + `assets/`, same idea as `data/` is to the datapack).
 Currently:
 
-- **Gestures** — 13 animated poses (plus left-arm mirror variants) for Taterzens NPCs and real
+- **Gestures** — 12 animated poses (plus left-arm mirror variants) for Taterzens NPCs and real
   players: a forked `player.jem`/`player_slim.jem` EMF/Iris override, each pose triggered by a
   `CustomModelData`-tagged invisible stick in the main hand, coexisting with the installed Fresh
   Animations + FA+Player pack. **All detail lives in `GESTURES.md`** — the per-gesture
@@ -428,16 +761,28 @@ and the separate not-yet-built distribution zip — is in `GESTURES.md`.
 
 ```
 Provenance/
+├── CLAUDE.md                          (the project's standing instructions to any agent in it)
+├── CHRONICLE.md, TODO.md,
+│   OPEN_QUESTIONS.md, SESSION_LOG.md  (landmark sessions / design backlog / unsettled design
+│                                       questions / where work stopped — see Part I)
+├── GESTURES.md                        (the gesture rig's reference — §0 Tier 3)
+├── assets/blueprints/                 (the drawings Part I embeds)
+├── diagrams/                          (gen_simulate_pass.py + simulate-pass.html, a pass diagram)
+├── .claude/                           (VOICE.md, settings.json, hooks/, and skills/ — one folder
+│                                       per slash command)
 ├── LAB_REPORT.md                      (the standing test of the whole system — read before a
 │                                       design-testing /simulate run; see §0)
 ├── _lore/                             (the lore engine's sources of truth)
 │   ├── encodings.json                 (the central record — every source type writes in here)
 │   ├── unknowns.md                    (gaps — fed by material and tales, not hearsay)
+│   ├── contexts.json                  (place-type templates for routines — see §0 Tier 1)
+│   ├── tuning.json                    (every odds/threshold/cooldown the scripts read)
 │   ├── material/                      (excavated primary sources — read-only)
 │   │   └── _context.md                (per-source transcription, only this folder's concern)
 │   ├── characters/                    (one file per character — the complete lore record)
 │   │   ├── <key>.json                 (name, origin, location, backstory, knowledge, criterion, life)
 │   │   ├── _template.json             (blank shape for a new character)
+│   │   ├── _index.md                  (what a character file holds and why)
 │   │   ├── lifespans.json             (SECRET — each character's total span; /enact never opens
 │   │   │                               this file, ask scripts/lore/horizon.py instead)
 │   │   └── hearsay.md                 (human-readable mirror of encodings.json's hearsay array)
@@ -453,7 +798,8 @@ Provenance/
 │   └── graphifyish/                   (scripts/graphs/graphifyish.py's output — graph.json + a standalone
 │                                       graphifyish.html visualizing the lore/structure/concept graphs)
 ├── scripts/
-│   ├── lore/                          (only ever touch _lore/ — no embodiment awareness)
+│   ├── lore/                          (only ever touch _lore/ — no embodiment awareness; what's
+│   │                                   listed here is a selection, the folder holds about 65 scripts)
 │   │   ├── sample_lore_knowledge.py    (draws a character's education sample — §3 Step 1)
 │   │   ├── sample_grounding.py        (computes a character's live-gated grounding access — see
 │   │   │                               _lore/grounding/_index.md; never cached, never random)
@@ -466,7 +812,7 @@ Provenance/
 │   │   │                               answers early/established/late, plus a post-scene-only
 │   │   │                               ending: true/false, never the number)
 │   │   ├── notify_death.py            (on a character's death, computes their "circle" and
-│   │   │                               mechanically samples 30% of it to notify immediately)
+│   │   │                               notifies relations in full, samples 30% of the rest)
 │   │   ├── enact_via_ollama.py        (/simulate's Local dispatch path — a locally-hosted Ollama
 │   │   │                               model plays one pass's scene, no Agent tool involved)
 │   │   ├── enact_preamble.md          (the fixed writing-rules preamble enact_via_ollama.py reads
@@ -492,6 +838,7 @@ Provenance/
 │   ├── hooks/
 │   │   └── post-commit                (optional git hook — regenerates the graph after every commit)
 │   └── minecraft/                     (only ever touch _npcs/ / data/ — embodiment backend only)
+│       ├── validate_dialog.py         (structural checks on a Blabber dialogue JSON — /embody Step 1)
 │       ├── update_uuids.py            (automates NPC UUID capture — see §7)
 │       └── package.py                 (zips the datapack + resource pack for release — see /package)
 │
@@ -572,7 +919,7 @@ string values, which parse fine either way. Anything named `_shared` is called d
 
 **Lifespan** — how many scenes a character has in them, rolled once by `scripts/lore/roll_lifespan.py` (default range 30–60) and **structurally hidden from them**: the span lives in `_lore/characters/lifespans.json`, *not* in the character's own file, because that file is what `/enact` loads in order to play the character. An enactment asks `scripts/lore/horizon.py` instead, which answers with a coarse band — `early`, `established`, `late` — and never the number. Only `life.lived` (their history, no secret) stays in the character's file. The same script also reports `ending: true/false`, but that can only ever read `true` *after* a scene closes and `life.lived` is incremented for it — there is no moment, even for the character's own last scene, where it's knowable in advance. Once `ending` does come back true, `life.deceased` is set `true` and they're never enacted again.
 
-**Death and its circle** — a character's death isn't announced to the world, it propagates in two tiers. `scripts/lore/notify_death.py` computes their *circle* (everyone they've shared a recorded scene with, plus everyone named in their own backstory) and mechanically notifies 30% of it immediately — a forced `knowledge.experience` entry, no attribution needed. Anyone notified whose `criterion.anchor` referenced the deceased gets that resolved as a shock, same reject/reinterpret/break machinery as any other (`/enact` Step 8 point 6). Everyone outside the circle only finds out the ordinary way: the death is recorded as a `_lore/tales/` entry (see `/tell`), which re-enters the normal sampling pool at ordinary odds, or they hear it from someone in the circle later, subject to the same `lineage_coin.py` traceable/untraceable rule as any retelling.
+**Death and its circle** — a character's death isn't announced to the world, it propagates in two tiers. `scripts/lore/notify_death.py` computes who hears directly, in two parts: their *relations* (parents, children, partners) are always notified, and of the rest of their *circle* (everyone they've shared a recorded scene with, plus everyone named in their own backstory) it mechanically notifies 30% (rounded, at least one) immediately — a forced `knowledge.experience` entry, no attribution needed. Anyone notified whose `criterion.anchor` referenced the deceased gets that resolved as a shock, same reject/reinterpret/break machinery as any other (`/enact` Step 8 point 6). Everyone outside the circle only finds out the ordinary way: the death is recorded as a `_lore/tales/` entry (see `/tell`), which re-enters the normal sampling pool at ordinary odds, or they hear it from someone in the circle later, subject to the same `lineage_coin.py` traceable/untraceable rule as any retelling.
 
 **Three mutability classes.** Worth holding onto, since they're easy to conflate: `knowledge.education` is **frozen** at creation, `knowledge.experience` **appends freely** every scene, and `criterion` is **sticky-but-revisable** — it changes only when a referencing shock lands on a susceptible character, and the default outcome of any given scene is no change at all.
 
