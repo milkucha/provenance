@@ -128,7 +128,7 @@ def _bfs_reachable(graph: dict[str, set[str]], start: str) -> set[str]:
     queue = deque([start])
     while queue:
         current = queue.popleft()
-        for neighbor in graph.get(current, ()):
+        for neighbor in sorted(graph.get(current, ())):
             if neighbor not in seen:
                 seen.add(neighbor)
                 queue.append(neighbor)
@@ -177,6 +177,8 @@ def _known_people_locations(character: dict) -> set[str]:
     locations: set[str] = set()
     for key in keys:
         other = _load_character(key)
+        if other and other.get("life", {}).get("deceased"):
+            continue  # the dead are not somewhere you can go and find them (audit F3)
         if other and other.get("location"):
             locations.add(other["location"])
     return locations
@@ -224,7 +226,10 @@ def shortest_path(graph: dict[str, set[str]], start: str, targets: set[str]) -> 
 
     while queue:
         current = queue.popleft()
-        for neighbor in graph.get(current, ()):
+        # sorted(): the adjacency values are sets, whose iteration order can differ between
+        # processes (string hashing is randomized per interpreter), so a tie between two equally
+        # near targets used to resolve differently run to run. Sorted, a seeded pair stays identical.
+        for neighbor in sorted(graph.get(current, ())):
             if neighbor in visited:
                 continue
             visited.add(neighbor)
@@ -238,6 +243,24 @@ def shortest_path(graph: dict[str, set[str]], start: str, targets: set[str]) -> 
             queue.append(neighbor)
 
     return None
+
+
+def shortest_paths(graph: dict[str, set[str]], start: str) -> dict[str, list[str]]:
+    """One BFS from `start`: {location_id: shortest path start..location_id} for every location
+    reachable from it, `start` itself included (path [start]). Sorted neighbours, so the path chosen
+    between two equally short ones is the same in every process. Used to weigh every candidate
+    destination by its hop count in a single pass instead of one BFS per candidate."""
+    if start not in graph:
+        return {}
+    paths = {start: [start]}
+    queue = deque([start])
+    while queue:
+        current = queue.popleft()
+        for neighbor in sorted(graph.get(current, ())):
+            if neighbor not in paths:
+                paths[neighbor] = paths[current] + [neighbor]
+                queue.append(neighbor)
+    return paths
 
 
 def next_hop(path: list[str]) -> str | None:

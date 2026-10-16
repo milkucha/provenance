@@ -86,6 +86,8 @@ def location_context_tally(location_id: str, all_characters: list[dict]) -> dict
     """
     tally: dict[str, float] = {}
     for character in all_characters:
+        if (character.get("life") or {}).get("deceased"):
+            continue  # a dead character's routines no longer make a place "provide" anything (audit F3)
         for routine in character.get("routines") or []:
             if routine.get("location") != location_id:
                 continue
@@ -129,18 +131,17 @@ def _known_keys(traveler: dict) -> set[str]:
     return keys
 
 
-def find_supplier_locations(traveler: dict, need: str, all_characters: list[dict], contexts_data: dict) -> set[str]:
-    """Tier 3: known-supplier locations. For every character in the traveler's own circle
-    (partners/social_circle/parents), load that person's own file and check whether any of THEIR
-    routines[] has a context whose `provides` list contains `need`. Collect that routine's
-    `location` as a candidate. `all_characters` is accepted (matching the task's declared signature)
-    but not needed here beyond the traveler's own circle - each known person is loaded fresh by key
-    via `_load_character` since a known person may not be in whatever slice of the population the
-    caller happened to pass as `all_characters`."""
-    candidates: set[str] = set()
-    for key in _known_keys(traveler):
+def find_supplier_map(traveler: dict, need: str, all_characters: list[dict], contexts_data: dict) -> dict[str, list[str]]:
+    """Tier 3: known suppliers, as {location: [slugs of the traveler's own circle (partners/
+    social_circle/parents) who are alive and have a routine there whose context provides `need`]}.
+    Each known person is loaded fresh by key via `_load_character` since a known person may not be in
+    whatever slice of the population the caller happened to pass as `all_characters` (which is
+    accepted to match the declared signature, but not needed here). The dead are skipped: a dead
+    supplier is not a reason to walk anywhere (audit F3)."""
+    out: dict[str, list[str]] = {}
+    for key in sorted(_known_keys(traveler)):
         other = _load_character(key)
-        if not other:
+        if not other or (other.get("life") or {}).get("deceased"):
             continue
         for routine in other.get("routines") or []:
             context = routine.get("context")
@@ -148,9 +149,14 @@ def find_supplier_locations(traveler: dict, need: str, all_characters: list[dict
             if not context or not location:
                 continue
             provides = (contexts_data.get(context) or {}).get("provides") or []
-            if need in provides:
-                candidates.add(location)
-    return candidates
+            if need in provides and key not in out.setdefault(location, []):
+                out[location].append(key)
+    return out
+
+
+def find_supplier_locations(traveler: dict, need: str, all_characters: list[dict], contexts_data: dict) -> set[str]:
+    """Tier 3, locations only: the keys of `find_supplier_map()`."""
+    return set(find_supplier_map(traveler, need, all_characters, contexts_data))
 
 
 def find_general_locations(
@@ -167,13 +173,14 @@ def find_general_locations(
         reimplementing it would just be duplication for no reason).
     `traveler` is accepted (matching the task's declared signature) but unused: tier 4 is
     traveler-agnostic by design - it's the "public knowledge" tier, not keyed to who's asking.
+    (The pass mechanics no longer call `resolve_arc_target()`; they draw from `destination_options()`.)
     """
     del traveler  # tier 4 is deliberately traveler-agnostic; see docstring
     need_words = significant_words(need)
     locations_by_id = {loc.get("id"): loc for loc in encodings_data.get("locations", []) or [] if loc.get("id")}
 
     matches: set[str] = set()
-    for location_id in reachable:
+    for location_id in sorted(reachable):
         if need in location_provides(location_id, all_characters, contexts_data):
             matches.add(location_id)
             continue
@@ -182,6 +189,60 @@ def find_general_locations(
         if need_words & significant_words(text):
             matches.add(location_id)
     return matches
+
+
+DEFAULT_PURSUIT_WEIGHTS = {"known_supplier_weight": 6.0, "general_weight": 2.0, "hop_decay": 0.5}
+
+
+def destination_options(
+    traveler: dict, need: str, encodings_data: dict, all_characters: list[dict], contexts_data: dict,
+    weights: dict | None = None,
+) -> list[dict]:
+    """Every place the traveler could head for to satisfy `need`, each with its path from where they
+    stand and a dice weight. Replaces the winner-takes-all of `resolve_arc_target()` (known supplier
+    always, then fewest hops) with something a roll can draw from:
+
+      - a place where someone in the traveler's own circle supplies the need gets
+        `known_supplier_weight`, flat: a warm lead is worth a longer walk, so distance does not erode it;
+      - a place that merely provides it (a routine there, or its description/composition text
+        matches) gets `general_weight * hop_decay ** (hops - 1)`: the fewer connections away, the
+        heavier. A place at 0 or 1 hops carries the full `general_weight`;
+      - a place that is both gets the two added.
+
+    Only places in the traveler's `reachable_set()` count, same as before. Returns a list sorted by
+    location id (so a seeded draw over it is reproducible), each item
+    `{"location", "hops", "path", "suppliers": [slugs], "weight"}`; empty if there is nowhere to go."""
+    cfg = {**DEFAULT_PURSUIT_WEIGHTS, **(weights or {})}
+    graph = travel_graph.build_graph(encodings_data)
+    reachable = travel_graph.reachable_set(traveler, encodings_data)
+    start = traveler.get("location")
+    paths = travel_graph.shortest_paths(graph, start)
+
+    supplier_map = {loc: who for loc, who in find_supplier_map(traveler, need, all_characters, contexts_data).items() if loc in reachable}
+    general = find_general_locations(traveler, need, encodings_data, reachable, all_characters, contexts_data)
+
+    options = []
+    for loc in sorted(set(supplier_map) | general):
+        path = paths.get(loc)
+        if not path:
+            continue
+        hops = len(path) - 1
+        weight = 0.0
+        if loc in supplier_map:
+            weight += cfg["known_supplier_weight"]
+        if loc in general:
+            weight += cfg["general_weight"] * cfg["hop_decay"] ** (max(hops, 1) - 1)
+        options.append({"location": loc, "hops": hops, "path": path, "suppliers": supplier_map.get(loc, []), "weight": round(weight, 4)})
+    return options
+
+
+def pick_destination(options: list[dict], rng) -> dict | None:
+    """The dice half: one weighted draw from `destination_options()`'s list with the caller's `rng`
+    (a `random.Random`, seeded through rng_context by the caller so the draw lands in the audit log).
+    None if the list is empty."""
+    if not options:
+        return None
+    return rng.choices(options, weights=[o["weight"] for o in options], k=1)[0]
 
 
 def resolve_arc_target(
@@ -333,6 +394,43 @@ def _demo() -> None:
     print("  OK: 'news' matches nothing in either tier -> correctly None")
 
 
+def _demo_destinations() -> None:
+    """destination_options(): a known supplier far away vs a general place near; dead supplier skipped."""
+    print()
+    print("=== destination_options / pick_destination ===")
+    from random import Random
+    enc = {
+        "locations": [{"id": i} for i in ("a", "b", "c", "d")],
+        "routes": [{"id": "r1", "endpoints": ["a", "b"]}, {"id": "r2", "endpoints": ["b", "c"]}, {"id": "r3", "endpoints": ["c", "d"]}],
+    }
+    ctx = {"market": {"provides": ["materials"]}, "home": {"provides": ["nourishment"]}}
+    people = [
+        {"routines": [{"location": "b", "context": "market", "weight": 100}]},   # general: b, 1 hop
+        {"routines": [{"location": "d", "context": "market", "weight": 100}]},   # general + known: d, 3 hops
+    ]
+    traveler = {"location": "a", "places_visited": ["b", "c", "d"], "partners": {"sup": 1, "ghost": 1}}
+    fixtures = {
+        "sup": {"life": {"deceased": False}, "location": "d", "routines": [{"location": "d", "context": "market", "weight": 100}]},
+        "ghost": {"life": {"deceased": True}, "location": "b", "routines": [{"location": "b", "context": "market", "weight": 100}]},
+    }
+    original = globals()["_load_character"]
+    globals()["_load_character"] = lambda key: fixtures.get(key)
+    try:
+        opts = destination_options(traveler, "materials", enc, people, ctx, {"known_supplier_weight": 6, "general_weight": 2, "hop_decay": 0.5})
+    finally:
+        globals()["_load_character"] = original
+    for o in opts:
+        print(f"  {o['location']}: hops={o['hops']} suppliers={o['suppliers']} weight={o['weight']}")
+    by = {o["location"]: o for o in opts}
+    assert by["b"]["weight"] == 2.0 and by["b"]["suppliers"] == []          # near and general, the dead 'ghost' ignored
+    assert by["d"]["weight"] == 6 + 2 * 0.25 and by["d"]["suppliers"] == ["sup"]  # known supplier, far, plus a decayed general share
+    picks = [pick_destination(opts, Random(i))["location"] for i in range(400)]
+    share_d = picks.count("d") / len(picks)
+    print(f"  400 seeded draws: d {share_d:.0%}, b {picks.count('b') / len(picks):.0%}")
+    assert 0.6 < share_d < 0.9 and picks.count("b") > 0   # skewed toward the known supplier, never certain
+    print("  OK: known supplier favored but not guaranteed; nearer general place still drawn; dead supplier ignored")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument(
@@ -364,6 +462,7 @@ def main() -> None:
         return
 
     _demo()
+    _demo_destinations()
 
 
 if __name__ == "__main__":
