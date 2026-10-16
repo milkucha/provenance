@@ -15,6 +15,8 @@ in git so corpus branches keep working. Stage 3: hosted version, only if there's
 - Parked: a hosted default model for everyone, and who pays for inference. Decide with real
   per-pass token numbers (`simulate_token_usage.py`, `LAB_REPORT.md`).
 - Run the test suite per model tier so "supported models" is a measured list.
+- Typography: serif (Georgia or similar), matching the banner and blueprints. GitHub's README can't
+  change fonts (it strips CSS), so this is a requirement for the site, not the README.
 - Prerequisite: audit which skills (`/enact`, `/character`, ...) still need an interactive agent
   and can't run through the headless driver.
 
