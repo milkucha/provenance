@@ -463,18 +463,22 @@ and `/enact` still never touches either registry or `data/`. `/embody` and `/spa
     for inspection and is never merged back automatically. Lore-only, same as `/enact`. The
     orchestrating session does every mechanical step itself, directly, script by script — drawing the first
     participant (`pick_pair.py`: one uniform draw; a second participant, if any, is discovered during
-    the pass, and a pass that is only a survive roll, a step along the road or a dead end is recorded
+    the pass, and a pass that is only a work roll, a step along the road or a dead end is recorded
     mechanically and gets no scene), the
-    pre-scene mechanical block (`pass_prep.py`: the survive-or-arc roll, the routine/location roll or
+    pre-scene mechanical block (`pass_prep.py`: the work-or-arc roll, the routine/location roll or
     a weighted dice draw of where to go for the arc's need (people the character knows skewed up,
     nearer places heavier), kept across passes until they arrive; at arrival the missed-connection
     roll, and a failed arrival (the supplier isn't there, the routine has nothing to offer, the
     payment fails) is itself a scene with whoever is present, or a solo scene in an empty place, with
     no arc outcome rolled; the payment gate, and only when it passes the contested/arc
     gate/outcome rolls against `_lore/contexts.json`, tallied toward
-    advance/stall/reverse/transform/resolve, plus the survival apply). Every way the pursuit can end
+    advance/stall/reverse/transform/resolve, plus the pass's economy: upkeep on the pool, then for `p1` a meal
+    (one unit from their own provisions, one from the location's pool, a half meal if the two together
+    fall short, `economy_rules.py`), then work pays them 2 provisions and the pool 1, while an arc costs an
+    extra point of energy and pays nothing; `scripts/test/balance_economy.py` runs these numbers on a toy
+    town). Every way the pursuit can end
     is named in the brief (`pursuit.stage` and `reason`, with `could_afford` decided before the
-    meeting), and the enacter is handed each participant's whole knowledge sample and the place, but
+    meeting, after the pass's eating), and the enacter is handed each participant's whole knowledge sample and the place, but
     only the life-stage band, never the lifespan. After the scene, every remaining write
     (`pass_apply.py`: `update_character.py` calls, energy-death check, reproduction, death legacy) —
     and dispatches a subagent for exactly one thing: writing the scene itself, from the mechanical

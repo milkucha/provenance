@@ -36,13 +36,13 @@ it: `corpus-three-cities` exists; a Milkantis branch (Minecraft forever-world lo
 ## Audit of one `/simulate` pass after c444b49 (2026-10-16, bugs; design questions went to OPEN_QUESTIONS.md)
 
 Ran the mechanical scripts (no model) on a scratch copy of `corpus-three-cities`, seeded, 40 and 200 passes, plus two fixtures with a travel graph. Marked RAN or READ. The diagram is at the artifact link in the session, not in the repo.
-- [ ] **Nobody can pay, so no scene ever happens (RAN).** `provisions` defaults to 2 (`_template.json`, and the `.get` default in `arc_payment_gate`/`roll_survival`), `arc_need_cost` is 3, so the gate answers `cannot_afford` before it rolls. Nothing grants a character provisions either (only the payee gains, `simulate_pass_lib.arc_payment_gate`), so a world seeded with defaults stays stuck. Corpus run: 0 motivated passes in 40. Fixture: `cannot_afford` for the default-2 characters, `paid` only for the ones I hand-set to 8. A source of personal provisions (or a starting value above the cost) is missing.
+- [ ] **Nobody can pay, so no scene ever happens (RAN).** Half fixed 2026-10-17 by the economy rewrite: work now pays 2 personal provisions (`apply_survival.py`), so there is a source (audit F1's probe flips). Not enough though: with `arc_need_cost` 3 and eating taking a unit or two of the same provisions every pass, a character rarely holds 3 after eating (balance script: 0 to 8% of arc passes at today's numbers, travel fixture 19 of 103 arc passes, 3 paid). See OPEN_QUESTIONS.md. Original finding: `provisions` defaulted to 2 and nothing granted any; corpus run, 0 motivated passes in 40.
 - [ ] **A locally satisfiable need costs energy and goes nowhere (RAN).** `run_pass_mechanics()` Step 4 returns after the routine roll: no `arc.history` entry, no payment, no scene. 19 of 40 corpus passes and 90 of 200 fixture passes were this, each paying `arc_extra_cost`. In a three-city world every need is provided somewhere in each city (`location_provides` is presence-only), so arcs freeze. Whether that is meant is a question, see OPEN_QUESTIONS.md.
 - [ ] **The criterion shock gate isn't in the brief (READ).** SKILL.md Step 3 point 4 says `criterion_move` is for when "the brief's own anchor-reference check flagged it", but `pass_prep.py`/`simulate_pass_brief.py` never run `check_anchor_reference.py`; `pass_record.py` runs it after the scene, and `simulate_driver.py` throws that output (and `check_resonance.py`'s) away. A move is whatever the model volunteers, and `synthesis` never fires on the driver path.
 - [ ] **`measure_drift` has no producer (READ + RAN).** `enact_via_ollama.REPLY_SCHEMA` has no `derived_from`, `lineage_coin.py` has no call site on the unattended path, and `pass_prep.py` never samples the hearsay pool into the scene. The instrument ran and found "no retelling edges".
 - [x] **The dead can be met (RAN).** Fixed 2026-10-17 (pursuit redesign): `candidates_at()`, `location_context_tally()` (so `location_provides()` too), `find_supplier_map()` and `travel_graph`'s known-people lookup all skip `life.deceased`; the audit probe reads 0 dead among 22 candidates. Original finding: `candidates_at()`, `location_provides()`, `find_supplier_locations()` and `travel_graph`'s known-people lookup never check `life.deceased`. On the corpus copy, 13 of the 35 candidates at one city were dead; a dead character can be rolled as p2, take the payment, get `lived` +1 and be recorded as a partner. Their routines also still make a city "provide" things.
 - [ ] **Meetable pool isn't filtered by the need (RAN).** `candidates_at()` takes everyone with a routine at the location; p2 then has to roll that location and a providing context. With one supplier among 22 it was 9 mismatches out of 11 meetings.
-- [x] **A journey resets on a survive roll (READ).** Fixed 2026-10-17: the destination is kept in the character's `pursuit` field, a survive roll mid-journey works in place and leaves it alone, and `roll_survival` is handed the origin, not the hop. Seen in a seeded 200-pass run: 3 survive rolls mid-journey, 0 resets. Original finding: Step 3 rolls the character's own routine, so a traveler mid-route is back at a routine location the next time they choose survive. Also `roll_survival` is handed `p1_char["location"]` as "home", which after a hop is the hop.
+- [x] **A journey resets on a work roll (READ).** Fixed 2026-10-17: the destination is kept in the character's `pursuit` field, a work roll mid-journey works in place and leaves it alone, and `roll_survival` is handed the origin, not the hop. Seen in a seeded 200-pass run: 3 work rolls mid-journey, 0 resets (11 after the economy rewrite). Original finding: Step 3 rolls the character's own routine, so a traveler mid-route is back at a routine location the next time they choose work. Also `roll_survival` is handed `p1_char["location"]` as "home", which after a hop is the hop.
 - [ ] **Solo-pass death: recorded, not finished (READ).** `apply_solo()` calls `record_death.py`, but shock candidates are never resolved and death-legacy never rolls; the manual path in SKILL.md has no CLI for `apply_solo` at all (`pass_apply.py`/`pass_record.py` still require `--p2`).
 - [ ] **`conformance_report.py` flags 69 kin-as-partner failures on the pristine corpus (RAN).** The invariant is `parents & partners`, but `record_partner` now fires on any crossing and pairing no longer excludes kin (the real exclusion is in `simulate_pass_reproduction`). It tests the wrong thing now. Its fixed-odds table also lists `roll_lead_followup` (dead) and misses survive/meetable/payment.
 - [ ] **p2 gets no survival step (READ).** No upkeep, eating or energy cost for the person met, only `lived` and the partner bump. A newborn gets no `energy`/`provisions` (defaults), and a dead character's provisions vanish.
@@ -76,30 +76,17 @@ Found while walking through one pass; each confirmed by reading `pass_prep.py`, 
   `pursuit` stage and reason; (4) `ending` leak: undecided, see the open question below.
 - Failure modes: named since 2026-10-17, each exit of the pursuit branch sets `brief.pursuit` (`simulate_pass_lib.PURSUIT_STAGES`); the free-text `notes` stay too.
 
-## Economy rewrite: one substance, work pays the worker (author's rules 2026-10-17, not built)
+## Economy rewrite: one substance, work pays the worker (author's rules 2026-10-17, built 2026-10-17, open items below)
 
-Rules as given: `survive` is renamed `work`. Work gives the character +2 provisions and the pool +1.
-Eating takes 1 from the pool and 1 from the character's provisions; with no personal provisions it
-takes 2 from the pool; with no pool it takes 2 from personal provisions. Personal provisions and the
-pool become one substance at two scopes (the sketch in "Personal provisions and inheritance economy").
-- Why: today personal provisions have no source (audit F1) and paying for an arc costs nothing to
-  survival. Under these rules paying for an arc costs food you could have eaten.
-- A toy simulation (one town, random actor each pass, fixed work share, no arc payments, no
-  survive/arc feedback; script in the session scratchpad, not in the repo) found: food in is +3 per work
-  pass and out is -2 per pass, so a population needs to work about two thirds of the time to
-  hold, whatever the split; the new rules keep large towns alive at 70% work where the old ones lose
-  most of them, but the pool sits near 0 permanently (upkeep drains it faster than +1 per work pass
-  refills it), so the commons stops mattering unless upkeep or the pool's share changes.
-- Decided 2026-10-17: partial food is a half meal (take what exists, up to 2 units, energy +1 per unit);
-  rename everything, `survive` becomes `work` throughout (choice value, scripts, tuning keys, docs); a
-  balance script under `scripts/test/` tunes the numbers by running them.
-- Open: the pool's share of work and the upkeep rate. In the toy run (12 people, half-meal rule), +2
-  pool share with upkeep 0.05 held a town at 50% work and didn't run away at 70%; upkeep 0 runs away
-  at 70% (pool in the hundreds). Per-capita upkeep stands in for the unseen eating of everyone not
-  drawn this pass; a proportional decay on the pool (spoilage) would be self-stabilizing instead.
-  Pool starts at 2 x population (already the case, `provisions_lib.get_provisions`).
-  Wait for the pursuit redesign branch (`sim-pursuit-redesign`) to land before touching
-  `apply_survival.py` again.
+**Built:** `survive` is `work` everywhere it names the choice (choice value, tuning, brief, preamble, docs; an old `survive` is still read as `work`). Work gives the character +2 provisions and the pool +1 (`work_personal`, `work_pool`). Eating is universal and independent of the choice: 2 units, one from the character, one from the pool, a shortfall on either side filled from the other, a half meal if both fall short (energy +1 per unit eaten, units are whole; `ate` is full, half or none). Upkeep stays flat per head, no decay anywhere (the author's call), pool starts at 2 x population, personal default 2, the payment gate unchanged. The rule is pure (`scripts/lore/economy_rules.py`: `eat`, `upkeep`, `resolve_pass`; the odds formula is `roll_survival.arc_odds`) and `scripts/test/balance_economy.py` calls those same functions on a toy town. `could_afford` in the pursuit brief is now measured after the pass's eating (the same number the gate sees); it used to be read before.
+- Why: personal provisions had no source (audit F1) and paying for an arc cost nothing to survival. Now paying for an arc costs food you could have eaten.
+- Where survive/survival is still the name: the energy/eating mechanism itself (`roll_survival.py`, `apply_survival.py`, the `survival` tuning block, the `survival.<slug>` block of the brief, `pass_apply`'s exhaustion check) and the history sections of this file. Renaming those is churn.
+- What the balance script says (first run, 2026-10-17; N 6/12/25, 40 passes per head, flat upkeep):
+  - Upkeep is flat per head *per pass*, so one pass drains `0.15 x N` from a pool that gets at most `work_pool x work share` back: the drain grows with the town, the income does not. At today's numbers (work_pool 1, upkeep 0.15) the pool sits near 0 at every N, and 16 to 17% of the people at N=12 and 25 starve over a run (19% at N=6).
+  - The pool can only be a commons if `work_pool` is several times higher (about 5) and upkeep is low, and then the window is narrow: the same setting (work_pool 5, upkeep 0.05) piles up 13 per head at N=6 and leaves the pool at 0.14 at N=25.
+  - Personal provisions hover around 1.2 to 1.6 whatever the setting (a worker nets +1 per pass after eating, an arc costs a unit), so with `arc_need_cost` 3 almost nobody can ever pay.
+  - Numbers and proposals are in OPEN_QUESTIONS.md.
+- Open: the pool's share of work and the upkeep rate (see above; the author had said stay flat, so the proposal there is a rate that scales with the town, not a decay); whether a worker should eat before or after being paid (today: after, the engine's old order); whether the dead's personal provisions go to the pool or the heirs (the inheritance sketch above); p2 and newborns still skip the whole step.
 
 ## Pursuit redesign: destination choice, failed pursuits as scenes (raised 2026-10-17, built 2026-10-17 on `sim-pursuit-redesign`, open items below)
 
@@ -111,7 +98,7 @@ Author's decisions, from the walk-through of one pass:
   Today it is deterministic: known suppliers always win, then fewest hops, no dice
   (`location_context.resolve_arc_target`, `travel_graph.shortest_path`).
 - **A chosen destination is kept.** The character keeps moving that way until arriving and either
-  meeting or failing; on a failure while pursuing an arc, the process starts again. (Audit F7: a survive
+  meeting or failing; on a failure while pursuing an arc, the process starts again. (Audit F7: a work
   roll mid-journey currently resets the journey.)
 - **Nobody useful at the place:** a conversation with whoever else is there, their routine rolled too;
   an empty place is a solo scene.
@@ -314,9 +301,8 @@ scope, so scope-qualified names (personal vs. communal/pool) carry the distincti
   `places_visited`, just for a number instead of a list. A wealthy parent's children start more
   independent of needing to draw from the communal pool, which is the whole point of building this as
   inheritance rather than a flat per-birth grant.
-- **Mechanism sketch:** when a character chooses to "eat" (the existing `survive`-choice universal
-  eating step in `apply_survival.py`), they'd draw from EITHER their personal reserve OR the location's
-  communal pool — personal first falling back to communal, or some other priority, not decided. A
+- **Mechanism sketch** (built 2026-10-17, see "Economy rewrite"): eating, the universal step in
+  `apply_survival.py`, now draws from BOTH, one unit each, a shortfall on one side filled from the other. A
   character with a healthy personal reserve becomes less dependent on the health of wherever they
   happen to be standing, which is the mechanical form Bourdieu's capital conversion takes here.
 - **The Bourdieu framing**, raised in the same conversation and worth keeping as the organizing lens

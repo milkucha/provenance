@@ -21,6 +21,17 @@ and open questions that were live at a given point, even ones later settled else
 
 ---
 
+### 2026-10-17 — Work pays the worker; the numbers get run instead of argued
+
+The economy rewrite got built: `survive` is `work`, work pays the worker (2 to them, 1 to the pool),
+eating takes one unit from you and one from the pool, and when that can't be covered it is a half meal
+instead of nothing. The author kept the upkeep flat, no decay. What came out of putting the real
+rules on a toy town (`scripts/test/balance_economy.py`) is that today's numbers don't hold: the upkeep
+is flat per head *per pass*, so the drain grows with the town and the income doesn't, the pool sits at
+zero at any size, and personal provisions hover around 1.5 so almost nobody can ever pay the 3 an arc
+costs. The faucet exists now; it isn't a faucet you can pay with yet. Proposals are in OPEN_QUESTIONS.md,
+none applied. Landmark for the method more than the rule: numbers tuned by running them.
+
 ### 2026-10-16 — Branches get a rule; the front end gets a direction
 
 Sorted out what the branches are for. `provenance-standalone` is the engine and nothing else: always
