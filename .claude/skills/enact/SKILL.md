@@ -527,13 +527,16 @@ py scripts/lore/record_death.py <npc_key> [--cause "<only if the scene actually 
 
 This does the entire mechanical procedure in one call: sets `life.deceased: true` on the character's
 file (a plain, non-secret fact — unlike `life.span`, nothing about death itself is hidden, and it's
-what stops a future `/enact` run from accidentally reusing them, see the Step 1 guard below); records
+what stops a future `/enact` run from accidentally reusing them, see the Step 1 guard below); moves
+their personal `provisions` to their living children in equal shares, or into the pool of the place
+they died in if they have none (`estate.py`, printed as the `estate:` line); records
 it as an objective fact of the world in the same shape `/tell` produces (a new
 `_lore/tales/<slug>.md` file, a matching `tales.entries` manifest row in `encodings.json`, and rows
 in `_lore/tales/_authors.md`/`_index.md`) — this is what makes death re-enter the ordinary sampling
 pool for characters created later, at ordinary odds, the *only* channel anyone outside the circle
-below has; computes the character's *circle* (everyone they've shared a recorded scene with, plus
-everyone named in their own backstory) and mechanically samples 30% of it (minimum 1 if the circle
+below has; computes the character's *circle* (everyone they've shared a recorded scene with, everyone
+named in their own backstory, and the members of their stored `social_circle` who knew them) and
+mechanically samples `notification.extended_share` of it (30%; minimum 1 if the circle
 isn't empty) as who learns immediately; and appends a plain "learned of the death" line to every
 notified character's `knowledge.experience` — reported fact, no attribution needed, written
 immediately regardless of whether that character is ever enacted again soon.
@@ -752,6 +755,11 @@ here, since a fresh JSON write could clobber what those calls just did. What's l
   `--add-experience` takes several at once) — fold whichever apply into the same Step 8 call for this
   character when there is one, rather than a separate write. Both append to the existing list; a
   returning character's prior entries are never touched or retroactively grounded.
+
+  **Then, once for the scene's participants:** `py scripts/lore/update_social_circle.py mentions <p1> <p2>`.
+  Their knowledge just changed, so whoever it now refers to goes into their stored `social_circle` as
+  `mentioned` (a stronger kind they already hold stays). Nothing to decide, no dice; `pass_apply.py`
+  does it by itself on the driver path. The `met` tie was already written by `record_partner.py`.
 - `criterion`/`life` — already handled by Step 8's `update_character.py`/`record_death.py` calls for
   every character whose criterion changed, cost something, or advanced `life.lived`/`life.deceased`
   this scene. Only touch these fields by hand for a first-time character's *initial* criterion (the

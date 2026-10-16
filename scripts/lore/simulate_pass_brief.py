@@ -63,6 +63,7 @@ TALES_DIR = ROOT / "_lore" / "tales"
 
 sys.path.insert(0, str(SCRIPTS_DIR))
 import simulate_pass_lib as lib  # noqa: E402
+import arc_completion  # noqa: E402
 from check_needs_provides import significant_words  # noqa: E402
 
 
@@ -96,62 +97,16 @@ def git_user_name() -> str:
         return "unknown"
 
 
-def write_arc_completion_tale(key: str, name: str, arc: dict) -> str:
-    """Mechanical - files already-decided content, makes no judgment call, same discipline
-    write_arc.py itself follows. An arc's premise is already a concrete, resolved fact the moment
-    its resolution flips to "complete" - the same standing a birth or death already has
-    (generate_offspring.py's write_birth_tale() / record_death.py's write_tale_file()), so it belongs
-    in tales.entries too, not left to evaporate as a bare resolution flag on the character's own arc
-    field."""
-    slug = f"arc_complete_{key}"
-    base_slug, n = slug, 2
-    while (TALES_DIR / f"{slug}.md").exists():
-        slug = f"{base_slug}_{n}"
-        n += 1
-
-    told_date = date.today().isoformat()
-    responsible = git_user_name()
-    telling = f"{name} achieved what they'd set out to do: {arc.get('premise', '').rstrip('.')}."
-
-    content = f"""# The Completion of {name}'s Arc
-
-**Responsible:** {responsible} - real-world provenance only, never an in-fiction detail (also recorded in `_lore/tales/_authors.md`)
-**Told by:** no one; simply now known
-**Told on:** {told_date}
-**Encodings id:** `tales.entries[].id = "{slug}"`
-
-## The tale
-
-{telling}
-
-## Where this lands in the record
-
-- Touches: {arc.get('about', [])}
-- Conflicts raised: none
-- Open questions logged: none
-"""
-    TALES_DIR.mkdir(parents=True, exist_ok=True)
-    (TALES_DIR / f"{slug}.md").write_text(content, encoding="utf-8")
-
-    encodings = json.loads(ENCODINGS_PATH.read_text(encoding="utf-8"))
-    encodings["tales"]["entries"].append({
-        "id": slug,
-        "source_file": f"_lore/tales/{slug}.md",
-        "told_date": told_date,
-        "told_by": None,
-        "summary": telling,
-        "touches": [],
-    })
-    ENCODINGS_PATH.write_text(json.dumps(encodings, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    return slug
+write_arc_completion_tale = arc_completion.write_arc_completion_tale  # moved to arc_completion.py (kept here for old callers)
 
 
 def enrich_arc_authoring_needed(p1: str, reason: str) -> dict:
     """Fills out the minimal `{"character_slug", "reason"}` signal run_pass_mechanics() returns with
     everything the subagent actually needs to author/reauthor an arc - band, criterion, routines,
     ranked needs candidates, and (on a re-author) the prior arc for continuity/contrast. On
-    `reauthor_complete`, also writes the completion tale - same division of labor the pre-rewrite
-    version of this file already used for this exact slot."""
+    `reauthor_complete`, the completion itself (tale, reward, telling, the children's inheritance)
+    has already run inside run_pass_mechanics via arc_completion.complete(); the caller only reads
+    the tale id off `brief["arc_completion"]`."""
     p1_char = lib.load_char(p1)
     prior_arc = p1_char.get("arc") if reason in ("reauthor_failed", "reauthor_complete") else None
     entry = {
@@ -179,8 +134,9 @@ def main() -> None:
         reason = brief["arc_authoring_needed"]["reason"]
         entry = enrich_arc_authoring_needed(p1, reason)
         if reason == "reauthor_complete":
-            p1_char = lib.load_char(p1)
-            tale_id = write_arc_completion_tale(p1, p1_char.get("name", p1), entry["prior_arc"])
+            # run_pass_mechanics already completed the arc (arc_completion.complete: tale, reward,
+            # telling); the brief only carries the tale id for the enacter to tag.
+            tale_id = brief["arc_completion"]["tale_id"]
             entry["completion_tale_id"] = tale_id
             brief["notes"].append(
                 f"{p1}'s completed arc filed as tale '{tale_id}' - tag the completion-announcement "

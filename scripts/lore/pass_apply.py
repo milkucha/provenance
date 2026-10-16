@@ -19,6 +19,8 @@ the parts of the mechanism that are pure arithmetic/roll with no judgment left i
     drift from what simulate_pass_brief.py actually rolled
   - horizon.py again, post-lived-delta (Step 8 point 6) - and record_death.py if `ending` now reads
     true and the energy check hasn't already recorded this character's death this pass
+  - update_social_circle.py mentions, for both - their knowledge just changed, so whoever it now
+    refers to goes into their stored social_circle (kind `mentioned`)
   - reproduction (simulate_pass_reproduction.py, Step 8 point 8) - always run, regardless of whether
     either death check fired
   - death-legacy (roll_death_legacy.py then, on a true roll, apply_death_legacy.py, Step 8 point 7) -
@@ -220,6 +222,10 @@ def main() -> None:
         report["participants"][slug] = apply_participant(
             slug, participants.get(slug, {"lived_delta": 1}), args.scene_id, args.pass_number,
         )
+
+    # Knowledge changed for both: the circle writer re-reads it and adds whoever it now refers to
+    # (mentioned). One call for both, not deterministic-draw work: no dice in it.
+    run([str(SCRIPTS_DIR / "update_social_circle.py"), "mentions", p1, p2])
 
     _, repro_out, _ = run([
         str(SCRIPTS_DIR / "simulate_pass_reproduction.py"),

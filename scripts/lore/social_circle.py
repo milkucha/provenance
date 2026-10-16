@@ -3,7 +3,7 @@ Report one character's whole social circle in one place - family (parents, rever
 children, siblings) plus every tracked tie (partners{} strength, partners_quality{} sign), instead
 of having to separately read `parents`, grep every other character's own `parents` field for
 reverse hits, and eyeball `partners`/`partners_quality` side by side. Read-only - this script never
-writes anything, it only ever reports what's already on record across `_lore/characters/*.json`.
+writes anything, it only ever reports what's already on record across `_lore/characters/*.json` (the stored `social_circle` map, by kind, is listed last).
 
 Family reuses notify_death.py's own `compute_relations()` for parents/children/frequent-partners
 (the same "guaranteed relations" tier death notification uses), then adds siblings on top - anyone
@@ -86,6 +86,15 @@ def main() -> None:
         q_text = f"{q:+d}" if q is not None else "  0 (no signal yet)"
         close = "  [close]" if other_key in frequent_partners else ""
         print(f"  {other_key:<24} strength={s:<4} quality={q_text}{close}{tag(other_key)}")
+
+    stored = subject.get("social_circle") or {}
+    if isinstance(stored, dict) and stored:
+        print()
+        print(f"STORED CIRCLE ({len(stored)}, written by update_social_circle.py)")
+        for kind in ("parent", "child", "descendant", "met", "inherited", "mentioned"):
+            keys = sorted(k for k, v in stored.items() if v == kind)
+            if keys:
+                print(f"  {kind:<11} {', '.join(k + tag(k) for k in keys)}")
 
     print()
     print(f"(\"close\" = strength >= partner_threshold, {threshold}, from _lore/tuning.json)")

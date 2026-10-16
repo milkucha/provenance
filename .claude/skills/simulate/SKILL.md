@@ -313,10 +313,15 @@ For pass 1 through N:
    chosen `context`, not whichever tag was easiest to reach for.** `write_arc.py` also now hard-rejects
    any `--needs` value outside that context's own `_lore/contexts.json` `provides` list, so this isn't
    optional — but read the ranked list and actually use it, don't just satisfy the gate with the first
-   valid-but-ungrounded option. If `reason` is `"reauthor_complete"`, `write_arc_completion_tale()`
-   already ran inside `simulate_pass_brief.py` before this brief was even printed — the completed
-   arc's `completion_tale_id` is right there in the payload; nothing further to do for it (it's
-   mechanical, not a judgment call — the arc's own already-authored `premise` is what got filed).
+   valid-but-ungrounded option. If `reason` is `"reauthor_complete"`, `arc_completion.complete()` already ran
+   inside `run_pass_mechanics` before this brief was even printed — the completed arc's
+   `completion_tale_id` is right there in the payload, and the rest is done too: the tale is filed,
+   it has been told (relations for certain, a share of the wider circle, the same odds as a death),
+   every living child has it in their knowledge, and the completer has been paid provisions by how
+   many of their own turns the arc took (`arc_completion_reward`, `_lore/tuning.json`). Nothing
+   further to do for any of it (mechanical, not a judgment call — the arc's own already-authored
+   `premise` is what got filed). `brief.arc_completion` carries the numbers for the orchestrator;
+   the enacter is told to ignore it.
    **A pass whose brief has `scene` other than `"pair"` (a solo work pass, an en-route travel pass, no
    target, or an empty place; a `"solo"` scene is flagged but not dispatched, see OPEN_QUESTIONS.md)
    never reaches a dialogue scene at all** — skip point 4's dispatch and point 5's

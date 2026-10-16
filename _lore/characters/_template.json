@@ -34,7 +34,7 @@
   "parents": [],
   "partners": {},
   "partners_quality": {},
-  "social_circle": [],
+  "social_circle": {},
   "routines": [],
   "arc": {
     "about": [],
@@ -42,6 +42,7 @@
     "context": "",
     "premise": "",
     "resolution": "ongoing",
-    "history": []
+    "history": [],
+    "turns": 0
   }
 }

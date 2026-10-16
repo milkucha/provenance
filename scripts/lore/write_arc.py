@@ -91,6 +91,7 @@ def main() -> None:
         "premise": args.premise,
         "resolution": "ongoing",
         "history": [],
+        "turns": 0,  # the character's own turns on this arc; simulate_pass_lib counts them, arc_completion reads them
     }
     with open(char_path, "w", encoding="utf-8") as f:
         json.dump(character, f, indent=2, ensure_ascii=False)

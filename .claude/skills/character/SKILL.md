@@ -386,19 +386,21 @@ on first touch by `apply_survival.py`/`roll_survival.py`, template shows the cap
 from the communal per-location pool in `_lore/provisions.json` — lazily defaulted to
 `survival.starting_provisions_per_capita`, same convention as `energy`; feeds `roll_survival.py`'s
 `personal_cushion` input; work pays it, eating and an arc's payment draw it down, see `TODO.md`'s
-"Economy rewrite" entry; inheritance is still not built, see "Personal provisions and inheritance
-economy"), `parents` (array of the two parent keys,
+"Economy rewrite" entry; at death they pass to the living children, or the local pool, see
+`scripts/lore/estate.py`), `parents` (array of the two parent keys,
 written only by `generate_offspring.py`), `partners`/`partners_quality` (keyed by the other
 character's own key — `partners[other]` a running shared-scene count, `partners_quality[other]` a
 signed running bond score — written by `record_partner.py`/`record_bond_quality.py`), and
 `social_circle` (see below). None of these are ever hand-authored here.
 
-**`social_circle`** — new (2026-09-13), an array of character keys meant to persistently track this
-character's *extended* circle (scene co-participants + backstory mentions — everyone `notify_death.py`
-currently only computes live, at the moment of death — distinct from `partners`, which is established,
-repeated-contact relationships). Meant to be kept up to date incrementally as scenes happen rather than
-only computed once at death, but **the actual update mechanism (which skill/script writes to it, and
-on what trigger) is not yet decided** — see `TODO.md`. This skill never writes to it.
+**`social_circle`** — a map `{character key: kind}` of everyone this character knows of, written only by
+`scripts/lore/update_social_circle.py` (2026-10-17; it was an unwritten array before). Kinds, strongest
+first, a person keeping the strongest they qualify for: `parent`, `child`, `descendant`, `met` (shared a
+scene; `record_partner.py` writes it), `inherited` (in a parent's circle at this character's birth: a
+seeded 30% of each parent's), `mentioned` (referenced in their knowledge). Distinct from `partners`,
+which counts shared scenes. The dead stay in it. A hand-authored character starts with `{}`; the
+writer fills it as scenes, births and knowledge happen, and `backfill_social_circle.py` (dry-run by
+default) catches up an older world. This skill never writes to it.
 
 This skill never touches `_npcs/npcs/registry.json` — `skin`, `taterzen_uuid`, `spawn_position`,
 `display_name`, `taterzen_name` are entirely `/embody`'s and `/spawn`'s concern.

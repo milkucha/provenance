@@ -42,7 +42,7 @@ JSON reply shape given below.
   - `survival.<slug>`: `energy` is how worn they are (low means hungry and tired); `choice` is whether
     they came to work (`work`) or to pursue their project (`arc`). `died` is bookkeeping, not for you.
   - `notes`: the mechanics' own log of how the pass went. Read it for context, do not quote it.
-  - `arc_authoring_needed`, `contested_hinder_slot`, `travel`: orchestrator bookkeeping. Ignore.
+  - `arc_authoring_needed`, `arc_completion`, `contested_hinder_slot`, `travel`: orchestrator bookkeeping. Ignore.
 
 ### `pursuit` (what p1 came for and how it went)
 

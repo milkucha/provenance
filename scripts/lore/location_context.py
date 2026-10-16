@@ -126,7 +126,7 @@ def _known_keys(traveler: dict) -> set[str]:
     `_known_people_locations` reads, for the same reason (see that function's docstring)."""
     keys: set[str] = set()
     keys.update((traveler.get("partners") or {}).keys())
-    keys.update(traveler.get("social_circle") or [])
+    keys.update(traveler.get("social_circle") or {})  # {key: kind} (update_social_circle.py); the old bare list iterates the same way
     keys.update(traveler.get("parents") or [])
     return keys
 

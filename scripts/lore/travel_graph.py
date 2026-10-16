@@ -248,7 +248,7 @@ def _known_people_locations(character: dict) -> set[str]:
     are plain key lists (see notify_death.py's compute_relations())."""
     keys: set[str] = set()
     keys.update((character.get("partners") or {}).keys())
-    keys.update(character.get("social_circle") or [])
+    keys.update(character.get("social_circle") or {})  # {key: kind} (update_social_circle.py); the old bare list iterates the same way
     keys.update(character.get("parents") or [])
 
     locations: set[str] = set()

@@ -49,6 +49,7 @@ def main() -> None:
         "premise": deceased_arc.get("premise", ""),
         "resolution": "ongoing",
         "history": [],
+        "turns": 0,
     }
     lib.save_char(args.recipient, recipient_char)
     print(f"death-legacy applied: {args.deceased}'s arc -> {args.recipient}")
