@@ -106,6 +106,43 @@ or a permanent boost) so it can compound across generations.
   tests and display, not a stored attribute or a mechanic. The balance script should model
   generations before this is built.
 
+## Temperament traits and recent trends in the work roll (designed 2026-10-17, not built)
+
+Today the work-or-pursue roll (`roll_survival.arc_odds`) is a base 50% shifted by six state inputs with
+the same weights for everyone, so personality can't enter. Design (Jev kept out for now; it may come
+later for agent decisions): four continuous traits per character, each in [-1, 1], neutral 0, each
+scaling an existing weight, so no new machinery; the roll becomes the character weighing "me" against
+"us" through who they are.
+- **Risk appetite** decides *when I start*: the margin of safety wanted before pursuing, in meals
+  (a meal is `eat_amount`). Reserve wanted = arc_need_cost + margin_meals x eat_amount; bold means ~0
+  meals of margin, cautious ~4 to 6 (knob range). Bold also shrugs off the threat terms (low energy,
+  falling pool); cautious feels them more.
+- **Thrift** decides *what I keep when I pay*: the hard affordability gate stays, plus a soft
+  hesitation in the payment odds proportional to how far below their keep-level (in meals) paying
+  would leave them. Saver keeps about 3 meals back, spender 0.
+- **Communality** scales the weight of "us": the obligation term (bond pulls toward work) is scaled by
+  it; reliance on the pool (safety net) is not, so an individualist with strong bonds still leans on
+  the pool but feels little duty: the free rider. Comfortable-town threshold is a world constant in
+  meals per head (today's 2 per head is one meal each, likely too low; calibrate with the balance
+  script).
+- **Persistence** adds to arc pressure, makes a failed pursuit retry the same destination rather than
+  redraw, and (later, open) how long a stalled arc is held before being abandoned.
+- Traits are drawn at birth as the parents' average plus noise (habitus), random for generated
+  populations, authored in `/character`, default neutral for existing characters; the enacter sees
+  them as words.
+- **Recent trends (author's idea):** a character measures the rate of change of the pool and of its own
+  provisions over its last ~5 observations and feeds that into the roll, so what has been happening
+  matters, not only what is. Today there is a one-directional version (`scarcity_pressure`: pool per
+  capita since the location's last upkeep checkpoint; a decline pushes toward work, a recovery adds
+  nothing). Proposed: a per-character window of the last K observations (K=5, knob), pool trend
+  measured per touch of the place and personal trend per own turn; risk-averse characters weigh
+  declines more, bold ones may be pulled by rises; thrift scales the personal trend. Watch for
+  synchronized swings (everyone works when the pool falls): window and weights damp it, the balance
+  script should show it.
+- Also queued from the same session: the second participant of a scene eats too (base cost, eating,
+  starvation death through the same death path, no work pay, no arc cost, upkeep still once per
+  location per pass).
+
 ## Economy rewrite: one substance, work pays the worker (author's rules 2026-10-17, built 2026-10-17, open items below)
 
 **Built:** `survive` is `work` everywhere it names the choice (choice value, tuning, brief, preamble, docs; an old `survive` is still read as `work`). Work gives the character +2 provisions and the pool +1 (`work_personal`, `work_pool`). Eating is universal and independent of the choice: 2 units, one from the character, one from the pool, a shortfall on either side filled from the other, a half meal if both fall short (energy +1 per unit eaten, units are whole; `ate` is full, half or none). Upkeep stays flat per head, no decay anywhere (the author's call), pool starts at 2 x population, personal default 2, the payment gate unchanged. The rule is pure (`scripts/lore/economy_rules.py`: `eat`, `upkeep`, `resolve_pass`; the odds formula is `roll_survival.arc_odds`) and `scripts/test/balance_economy.py` calls those same functions on a toy town. `could_afford` in the pursuit brief is now measured after the pass's eating (the same number the gate sees); it used to be read before.
