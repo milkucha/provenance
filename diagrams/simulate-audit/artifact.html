@@ -1,6 +1,7 @@
 <title>Pass Map</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dagre/0.8.5/dagre.min.js"></script>
 <style>
 /* Layout: one sticky tab bar, five panels. The flow is a vertical rail of expandable steps; the rest are tables and cards. */
 :root{
@@ -139,33 +140,33 @@ td.off{color:var(--line);text-align:center}
 .irow p{font-size:13.5px;margin-top:4px;max-width:80ch}
 .irow .ev{font:12px var(--mono);color:var(--muted);margin-top:4px;overflow-wrap:anywhere}
 .themebtn{float:right;font:500 12px var(--sans);color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;margin-top:4px}
-/* decision tree */
+/* decision flowchart */
 .seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:10px 0}
 .seg button{font:500 13px var(--sans);background:var(--card);color:var(--muted);border:0;padding:7px 14px;cursor:pointer}
 .seg button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
-.tctl{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 10px}
-.tctl button{font:500 12px var(--sans);background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:5px 10px;cursor:pointer}
-.tree,.tree ul{list-style:none;margin:0;padding:0}
-.tree ul{margin-left:11px;padding-left:12px;border-left:2px solid var(--line)}
-.tree li{margin:7px 0;position:relative}
-.edge{display:inline-block;font:500 11.5px var(--mono);color:var(--muted);margin-bottom:3px}
-.edge b{color:var(--fg);font-weight:500}
-.tn{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:7px 10px;border-left:4px solid var(--muted)}
-.tn.roll{border-left-color:var(--dice)} .tn.cond{border-left-color:var(--read)} .tn.leaf{border-left-color:var(--write)} .tn.scene{border-left-color:var(--lore);background:var(--lore-bg)}
-.tn.sp{box-shadow:0 0 0 2px var(--lore)}
-.tn.bad{border-color:var(--bad);border-left-color:var(--bad)}
-.tn .row{display:flex;gap:6px 10px;align-items:baseline;flex-wrap:wrap;cursor:pointer}
-.tn .tt{font-weight:600;font-size:13.5px}
-.tn .od{font:12px var(--mono);color:var(--dice)}
-.tn .ob{font:11.5px var(--mono);color:var(--muted)}
-.tn .sw2{font:600 10.5px var(--mono);letter-spacing:.06em;color:var(--lore);border:1px solid var(--lore);border-radius:10px;padding:0 6px}
-.tn .tog{font:12px var(--mono);color:var(--muted);width:14px;display:inline-block}
-.tn .dt{display:none;margin-top:7px;font-size:12.5px}
-.tn.show .dt{display:block}
-.tn .dt div{margin:3px 0;padding-left:8px;border-left:3px solid}
-.tn .dt .r{border-color:var(--read)} .tn .dt .d{border-color:var(--dice)} .tn .dt .w{border-color:var(--write)} .tn .dt .c{border-color:var(--line);font:12px var(--mono);color:var(--muted);overflow-wrap:anywhere}
-.tree li.collapsed>ul{display:none}
-.tree.onlypath li:not(.onpath){display:none}
+.fctl{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.fctl button{font:500 12.5px var(--sans);background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:6px 11px;cursor:pointer;min-width:34px}
+.fctl button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.fctl .sp{flex:1}
+.strip{display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center;font-size:12.5px;margin:6px 0 10px}
+.strip span.s{border:1px solid var(--line);background:var(--card);border-radius:6px;padding:3px 8px;font-family:var(--mono);font-size:12px}
+.strip span.s b{font-weight:600}
+.strip span.s.last{border-color:var(--lore);color:var(--lore)}
+.strip i{font-style:normal;color:var(--muted)}
+.fcwrap{overflow:auto;border:1px solid var(--line);border-radius:10px;background:var(--card);max-height:78vh;touch-action:pan-x pan-y;cursor:grab}
+.fcwrap:active{cursor:grabbing}
+.fcsvg{display:block;font-family:var(--sans)}
+.fcsvg .ed{transition:opacity .12s}
+.fcsvg.hov .ed:not(.hl),.fcsvg.hov .nd:not(.hl){opacity:.18}
+.fcsvg .nd{cursor:pointer}
+.fcsvg .nd:focus{outline:none}
+.fcsvg .nd:focus-visible .shape{stroke-width:3.5}
+.fdetail{margin-top:10px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:13.5px}
+.fdetail h3{font-size:16px;margin-bottom:6px}
+.fdetail .cols{margin-top:6px}
+.shapekey{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--muted);margin:8px 0}
+.shapekey span{display:inline-flex;gap:6px;align-items:center}
+.shapekey svg{flex:none}
 @media(prefers-reduced-motion:no-preference){.step>button{transition:border-color .15s}}
 </style>
 
@@ -196,9 +197,16 @@ td.off{color:var(--line);text-align:center}
     <div class="rail" id="rail"></div>
   </div>
   <div id="treeview" hidden>
-    <p class="sub">One pass as a tree. Amber = a roll, blue = a condition on state, green = where the pass ends and what it wrote, purple outline = the only path that ends in a scene. Red = the audit found this branch broken or unreachable. Counts: <b>A</b> corpus as it is, 40 passes. <b>B</b> travel fixture, 200 passes. Tap a node to open it, tap a title to fold its branches. This view only shows what exists.</p>
-    <div class="tctl"><button type="button" id="t-open">Expand all</button><button type="button" id="t-close">Collapse all</button><button type="button" id="t-path">Scene path only</button></div>
-    <ul class="tree" id="tree"></ul>
+    <p class="sub">One pass as a flowchart. Everything here exists in code today; nothing is proposed. Purple is the only route that ends in a scene. Line thickness is how many passes took that branch in the run you pick. Tap a node for its detail; hover or tap to light up its edges.</p>
+    <div class="fctl" role="group" aria-label="Run">
+      <button type="button" id="r-a" aria-pressed="true">A: corpus, 40 passes</button>
+      <button type="button" id="r-b" aria-pressed="false">B: travel fixture, 200 passes</button>
+    </div>
+    <div class="strip" id="strip"></div>
+    <div class="shapekey" id="shapekey"></div>
+    <div class="fctl"><button type="button" id="z-out" aria-label="Zoom out">−</button><button type="button" id="z-in" aria-label="Zoom in">+</button><button type="button" id="z-fit">Fit width</button><span class="sp"></span><span style="font-size:12px;color:var(--muted)">scroll or drag to pan</span></div>
+    <div class="fcwrap" id="fcwrap"><svg class="fcsvg" id="fcsvg" role="img" aria-label="Decision flowchart of one pass. Only one route ends in a scene; most passes end earlier."></svg></div>
+    <div class="fdetail" id="fdetail"><h3>Tap a node</h3><p style="color:var(--muted)">Its reads, dice, writes and the file:function that does it appear here.</p></div>
   </div>
 </section>
 
@@ -535,73 +543,242 @@ function renderIntent(){
 }
 
 
-/* ---------------- DECISION TREE ---------------- */
-const N=(k,t,o,a,b,x,ch)=>({k,t,o,a,b,...x,ch:ch||[]});
-const TREE=N('roll','Draw p1','uniform 1/N',40,200,{p:1,r:'living pool',d:'one uniform draw; nobody else chosen yet',w:'draw-audit line only',c:'simulate_resolve_pair.py → pick_pair.py:main'},[
- ['',N('roll','Survive or arc?','P(arc) = 50 ± weights, clamp 2 to 95','','',{p:1,r:'energy · arc tally and band · ties ≥ 3 · pool per capita and trend · own provisions',d:'50 + 20·energy + 25·arc pressure + 20·pool surplus×affinity − 20·affinity + 15·falling trend + 20·cushion. No ongoing arc: forced survive, no roll',w:'nothing, it only decides',c:'roll_survival.py:roll; tuning.json:survival.weights'},[
-  ['survive',N('leaf','Work a routine, pass ends','weighted routine pick',21,111,{r:'routines, population, pool, energy',d:'weighted pick over own routines',w:'pool −0.15×pop (floor 0), −2 eat, +3 contribute · energy −1, +2 if ate · location, places_visited, last_scene · lived +1 and death checks. Nothing in the record',c:'run_pass_mechanics Step 3; apply_survival.py; apply_upkeep.py; simulate_driver.py:apply_solo'})],
-  ['arc',N('cond','Does the arc have needs written?','',19,89,{p:1,r:'arc.needs',c:'run_pass_mechanics Step 4 precondition'},[
-    ['no',N('leaf','Routine, flag a first arc to author','routine pick',0,0,{w:'energy, pool, location, last_scene. A model is asked to author the arc (write_arc.py, concept registered). Ends',c:'run_pass_mechanics: arc_authoring_needed "first"'})],
-    ['yes',N('cond','Is the need available at p1\'s current place?','',19,89,{p:1,r:'arc.needs · every character\'s routines here, the dead included · contexts.json provides',c:'location_context.py:location_provides'},[
-      ['yes, available here',N('leaf','Routine x3 where it provides it, then ends','weights ×3',19,54,{bad:'F2',r:'p1 routines',d:'weighted pick; ×3 for routines whose context provides the need',w:'energy −1 base −1 arc extra ±eat · pool · location · last_scene. NOT arc.history: the arc never ticks, no payment, no scene',c:'run_pass_mechanics Step 4'})],
-      ['no',N('cond','Find the place (deterministic search)','',0,35,{p:1,r:'places_visited · "location:" refs in knowledge · places of partners, social_circle (never written), parents · routes · contexts',d:'none; tier 3 known supplier, else tier 4 any reachable place that provides it',c:'location_context.py:resolve_arc_target; travel_graph.py:shortest_path',bad:'F13'},[
-        ['no reachable target',N('leaf','Stay, pass ends','',0,2,{w:'energy, pool, last_scene',c:'run_pass_mechanics Step 5'})],
-        ['still travelling: land on the hop',N('leaf','Hop, pass ends','one hop per pass',0,22,{bad:'F7',w:'location = hop, places_visited, last_scene, context "route". Next pass pathfinds from here, but a survive roll sends the character back to a routine place',c:'travel_graph.py:next_hop'})],
-        ['arrived',N('cond','Does anyone have a routine here?','',0,11,{p:1,r:'every character\'s routines at this location, dead included',c:'simulate_pass_lib.py:candidates_at',bad:'F3'},[
-          ['nobody',N('leaf','Pass ends','',0,0,{w:'last_scene',c:'run_pass_mechanics Step 6'})],
-          ['someone',N('roll','Anyone useful present?','55% yes',0,11,{p:1,d:'55% (arc_meetable_odds_percent); on yes a weighted draw, known supplier ×3, not filtered by the need',c:'roll_meetable.py:main',bad:'F6'},[
-            ['miss 45%',N('leaf','Pass ends, nothing written','',0,2,{w:'last_scene only',c:'run_pass_mechanics Step 6'})],
-            ['hit 55%',N('roll','p2 rolls their own routine','weighted',0,9,{p:1,d:'weighted pick over p2\'s routines',r:'p2 routines, contexts',c:'run_pass_mechanics Step 7'},[
-              ['other place, or context lacks the need',N('leaf','Pass ends','',0,3,{w:'last_scene. No partner count, p2 gets no survival step',c:'run_pass_mechanics Step 7'})],
-              ['match',N('cond','Does p1 hold at least 3 provisions?','hard gate',0,6,{p:1,r:'p1.provisions (default 2)',w:'partners[p2] +1 and partners[p1] +1',c:'simulate_pass_lib.py:arc_payment_gate',bad:'F1'},[
-                ['no: cannot_afford',N('leaf','Pass ends, nothing paid','',0,2,{bad:'F1',w:'last_scene. Nothing in the engine ever creates provisions, so the default 2 stays below 3',c:'arc_payment_gate; _template.json'})],
-                ['yes',N('roll','Payment roll','30 + 40·surplus·(1−|tally|/3), 2 to 95',0,4,{p:1,d:'exactly 3 provisions: 30%',r:'p1.provisions, arc.history',c:'arc_payment_gate'},[
-                  ['fail',N('leaf','Pass ends','',0,1,{w:'last_scene. Partner counts already bumped',c:'arc_payment_gate'})],
-                  ['success: 3 provisions to p2',N('cond','Alignment gate (contested 15% first)','word overlap, 15 sampled items',0,3,{p:1,d:'contested 15%, ±10 if p2\'s tie to p1 is established. Gate: overlap of arc about/needs with a random 15 of p2\'s items; direction from p2\'s standard / wasted_life text',r:'p2 knowledge, criterion, partners_quality',w:'p1.provisions −3, p2.provisions +3',c:'roll_contested.py; check_arc_alignment.py'},[
-                    ['gate miss',N('scene','Scene is made, arc does not tick','',0,0,{sp:1,w:'scene, hearsay, lived +1, deaths, reproduction check. Payment already spent, no arc.history entry',c:'enact_via_ollama.py; pass_record.py; pass_apply.py'})],
-                    ['gate hit',N('roll','Arc outcome roll','help 60/30/10 · hinder 15/35/50 · mixed 35/40/25 · neutral 40/40/20',0,3,{p:1,d:'advance / stall / reverse by inclination; contested moves 20 points from advance to reverse',w:'arc.history +{pass, outcome}; tally ±3 completes, transforms (copies p2\'s tags) or fails the arc; partners_quality ±1',c:'roll_arc_outcome.py:WEIGHTS; simulate_pass_lib.py:tally'},[
-                      ['advance',N('scene','Scene (model), then apply','',0,2,{sp:1,p:1,w:'hearsay claims, scene file, experience (+produced_by), lived +1; death checks, reproduction 40%, death-legacy 40%; completion tale if the arc completes',c:'pass_record.py → record_hearsay.py; pass_apply.py:apply_participant; simulate_pass_reproduction.py'})],
-                      ['stall',N('scene','Scene (model), then apply','',0,1,{sp:1,p:1,w:'same writes',c:'pass_apply.py'})],
-                      ['reverse',N('scene','Scene (model), then apply','',0,0,{sp:1,p:1,w:'same writes',c:'pass_apply.py'})]
-                    ])]
-                  ])]
-                ])]
-              ])]
-            ])]
-          ])]
-        ])]
-      ])]
-    ])]
-  ])]
- ])]
-]);
-function renderTree(){
-  const rows=[];
-  const cnt=(a,b)=>(a===''&&b==='')?'':`<span class="ob">A ${a} · B ${b}</span>`;
-  function node(e,n,top){
-    const open=n.ch.length;
-    const dt=[n.r?`<div class="r"><b>Reads</b> ${esc(n.r)}</div>`:'',n.d?`<div class="d"><b>Dice</b> ${esc(n.d)}</div>`:'',n.w?`<div class="w"><b>Writes</b> ${esc(n.w)}</div>`:'',n.c?`<div class="c">${esc(n.c)}</div>`:'',n.bad?`<div><a class="fl" data-f="${n.bad}">${n.bad}</a></div>`:''].join('');
-    const cls=['tn',n.k==='scene'?'scene':n.k,n.p?'':'',n.sp?'sp':'',n.bad?'bad':''].join(' ');
-    const edge=e?`<span class="edge">${n.p?'<b>':''}${esc(e)}${n.p?'</b>':''}</span><br>`:'';
-    return `<li class="${(n.p||n.sp)?'onpath':''}">${edge}<div class="${cls}"><div class="row"><span class="tog">${open?'▾':''}</span><span class="tt">${esc(n.t)}</span>${n.o?`<span class="od">${esc(n.o)}</span>`:''}${cnt(n.a,n.b)}${n.sp?'<span class="sw2">SCENE</span>':''}${n.bad?`<span class="chip bad">BROKEN ${n.bad}</span>`:''}</div><div class="dt">${dt}</div></div>${open?`<ul>${n.ch.map(c=>node(c[0],c[1])).join('')}</ul>`:''}</li>`;
-  }
-  document.getElementById('tree').innerHTML=node('',TREE);
-  const tr=document.getElementById('tree');
-  tr.addEventListener('click',e=>{
-    const fl=e.target.closest('.fl'); if(fl){gotoFinding(fl.dataset.f);return}
-    const tog=e.target.closest('.tog'); const row=e.target.closest('.row'); if(!row)return;
-    const li=row.closest('li');
-    if(tog&&tog.textContent){li.classList.toggle('collapsed');tog.textContent=li.classList.contains('collapsed')?'▸':'▾';return}
-    row.closest('.tn').classList.toggle('show');
+/* ---------------- DECISION FLOWCHART ---------------- */
+/* kinds: roll (dice, amber diamond) · cond (condition on state, blue diamond) · act (action) · end (pass ends) · scene.
+   p = on the route to a scene. bad = finding id, broken or unreachable. badge = finding id, works but flawed. */
+const RUNS={a:{name:'A',total:40,label:'corpus, 40 passes'},b:{name:'B',total:200,label:'travel fixture, 200 passes'}};
+const FN=[
+ {id:'start',k:'act',p:1,t:'Draw one living character (p1)',r:'living pool',d:'uniform 1/N, nobody else chosen yet',w:'draw-audit line only',c:'simulate_resolve_pair.py → pick_pair.py:main'},
+ {id:'surv',k:'roll',p:1,t:'Survive or chase the arc?',r:'energy · arc tally and age band · ties of 3+ · pool per capita and trend · own provisions',d:'P(arc) = 50 + 20·energy + 25·arc pressure + 20·pool×affinity − 20·affinity + 15·falling trend + 20·cushion, clamped 2 to 95. No ongoing arc: forced survive',w:'nothing, it only decides',c:'roll_survival.py:roll · tuning.json:survival.weights'},
+ {id:'e_surv',k:'end',t:'Work a routine, pass ends',s:'energy, pool, location',r:'routines, population, pool, energy',d:'weighted pick over own routines',w:'pool −0.15×pop (floor 0), −2 eat, +3 contribute · energy −1, +2 if ate · location, places_visited, last_scene · lived +1 and death checks. Nothing in the lore',c:'run_pass_mechanics Step 3 · apply_survival.py · apply_upkeep.py · simulate_driver.py:apply_solo'},
+ {id:'needs',k:'cond',p:1,t:'Arc has needs written?',r:'arc.needs',c:'run_pass_mechanics Step 4 precondition'},
+ {id:'e_first',k:'end',t:'Routine, flag a first arc',s:'a model authors it',d:'weighted routine pick',w:'energy, pool, location, last_scene; arc_authoring_needed "first" (write_arc.py registers the concept)',c:'run_pass_mechanics: reason "first"'},
+ {id:'local',k:'cond',p:1,t:'Need available here?',r:'arc.needs · every character\'s routines here, the dead included · contexts.json provides',c:'location_context.py:location_provides'},
+ {id:'e_local',k:'end',bad:'F2',t:'Routine only, arc frozen',s:'burns arc energy, no tally, no scene',d:'weighted routine pick, weight ×3 where the context provides the need',w:'energy −1 −1(arc) ±eat · pool · location · last_scene. NOT arc.history',c:'run_pass_mechanics Step 4'},
+ {id:'find',k:'act',p:1,badge:'F13',t:'Search for the place, one hop',r:'places_visited · "location:" refs in knowledge · places of partners, social_circle (never written), parents · routes · contexts',d:'none: breadth-first, known supplier before any other place',w:'location, places_visited, last_scene (when it ends here)',c:'location_context.py:resolve_arc_target · travel_graph.py:shortest_path, next_hop'},
+ {id:'e_none',k:'end',t:'No target, stay',s:'pass ends',w:'energy, pool, last_scene',c:'run_pass_mechanics Step 5'},
+ {id:'e_hop',k:'end',badge:'F7',t:'Land on the hop',s:'pass ends',w:'location = hop, places_visited, last_scene, context "route". A later survive roll sends the character back to a routine place',c:'travel_graph.py:next_hop · run_pass_mechanics Step 5'},
+ {id:'there',k:'cond',p:1,badge:'F3',t:'Anyone with a routine here?',r:'every character\'s routines at this place, dead ones included',c:'simulate_pass_lib.py:candidates_at'},
+ {id:'e_nobody',k:'end',t:'Nobody, pass ends',w:'last_scene',c:'run_pass_mechanics Step 6'},
+ {id:'meet',k:'roll',p:1,badge:'F6',t:'Anyone useful present?',r:'p1\'s partners / social_circle / parents for the favor',d:'55% yes (arc_meetable_odds_percent), then a weighted draw, known supplier ×3; not filtered by the need',c:'roll_meetable.py:main'},
+ {id:'e_miss',k:'end',t:'Missed connection',s:'pass ends',w:'last_scene',c:'run_pass_mechanics Step 6'},
+ {id:'p2',k:'roll',p:1,t:'p2\'s own routine matches?',r:'p2 routines · contexts',d:'weighted pick over p2\'s routines',w:'on a match: partners[p2] +1 and partners[p1] +1',c:'run_pass_mechanics Step 7'},
+ {id:'e_mis',k:'end',t:'Mismatch, pass ends',s:'p2 gets no survival step',w:'last_scene',c:'run_pass_mechanics Step 7'},
+ {id:'afford',k:'cond',p:1,badge:'F1',t:'p1 holds 3+ provisions?',r:'p1.provisions (default 2)',c:'simulate_pass_lib.py:arc_payment_gate'},
+ {id:'e_cant',k:'end',bad:'F1',t:'cannot_afford, pass ends',s:'nothing creates provisions: 2 < 3',w:'last_scene',c:'arc_payment_gate · _template.json'},
+ {id:'pay',k:'roll',p:1,t:'Payment roll',r:'p1.provisions, arc.history tally',d:'30 + 40 × min(1, surplus/2) × (1 − |tally|/3), clamped 2 to 95. At exactly 3 provisions: 30%',w:'on success p1.provisions −3, p2.provisions +3',c:'arc_payment_gate · tuning.json:arc_payment'},
+ {id:'e_fail',k:'end',t:'Roll failed, pass ends',w:'last_scene',c:'arc_payment_gate'},
+ {id:'gate',k:'cond',p:1,t:'p2 knows the arc\'s topic?',r:'15 random items of p2\'s education + tagged experience · p2 criterion · partners_quality',d:'contested roll first: 15%, ±10 if p2\'s tie to p1 is established. Then word-overlap gate',w:'partners_quality[p2→p1] ±1 on help/hinder',c:'roll_contested.py · check_arc_alignment.py'},
+ {id:'scene0',k:'scene',p:1,t:'Scene, arc does not tick',s:'payment already spent',w:'scene, hearsay, lived +1, deaths, reproduction check. No arc.history entry',c:'enact_via_ollama.py · pass_record.py · pass_apply.py'},
+ {id:'outc',k:'roll',p:1,t:'Arc outcome',d:'advance/stall/reverse by inclination: help 60/30/10 · hinder 15/35/50 · mixed 35/40/25 · neutral 40/40/20. Contested moves 20 points from advance to reverse',w:'arc.history +{pass, outcome}; tally ±3 completes, transforms (copies p2\'s tags) or fails the arc',c:'roll_arc_outcome.py:WEIGHTS · simulate_pass_lib.py:tally'},
+ {id:'scene',k:'scene',p:1,t:'Scene (model), then apply',s:'aging, deaths, birth',w:'hearsay claims, scene file, experience (+produced_by), lived +1; death checks; reproduction 40% (partners ≥3, cooldown, not kin); death-legacy 40%; completion tale if the arc completes',c:'pass_record.py → record_hearsay.py · pass_apply.py:apply_participant · simulate_pass_reproduction.py'}
+];
+/* [from, to, label line 1, count A, count B, flags] */
+const FE=[
+ ['start','surv','',40,200,'p'],
+ ['surv','e_surv','survive',21,111,''],
+ ['surv','needs','arc, P ≈ 50% ±',19,89,'p'],
+ ['needs','e_first','no',0,0,''],
+ ['needs','local','yes',19,89,'p'],
+ ['local','e_local','yes',19,54,'bad'],
+ ['local','find','no',0,35,'p'],
+ ['find','e_none','no target',0,2,''],
+ ['find','e_hop','far: hop',0,22,''],
+ ['find','there','arrived',0,11,'p'],
+ ['there','e_nobody','nobody',0,0,''],
+ ['there','meet','someone',0,11,'p'],
+ ['meet','e_miss','miss 45%',0,2,''],
+ ['meet','p2','hit 55%',0,9,'p'],
+ ['p2','e_mis','mismatch',0,3,''],
+ ['p2','afford','match',0,6,'p'],
+ ['afford','e_cant','no',0,2,'bad'],
+ ['afford','pay','yes',0,4,'p'],
+ ['pay','e_fail','fail',0,1,''],
+ ['pay','gate','success',0,3,'p'],
+ ['gate','scene0','miss',0,0,'p'],
+ ['gate','outc','hit',0,3,'p'],
+ ['outc','scene','any outcome',0,3,'p']
+];
+const FUN={a:[['40 passes',''],['19 chose arc',''],['19 found the need at home',''],['0 went further','last'],['0 scenes','last']],
+ b:[['200 passes',''],['89 chose arc',''],['35 left home','' ],['11 reached a place','' ],['6 met a match',''],['3 passed payment',''],['3 scenes','last']]};
+const FS=12.5, LH=15, CW=6.9; /* font size, line height, avg char width (generous: wide fallback fonts) */
+function wrapT(t,max){const w=t.split(' ');const L=[];let c='';w.forEach(x=>{if((c+' '+x).trim().length>max&&c){L.push(c);c=x}else c=(c+' '+x).trim()});if(c)L.push(c);return L}
+const SVGNS='http://www.w3.org/2000/svg';
+const el=(n,a,txt)=>{const e=document.createElementNS(SVGNS,n);for(const k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;return e};
+let FC={run:'a',scale:1,fit:true,W:0,H:0,sel:null};
+function nodeBox(n){
+  const maxc=n.k==='roll'||n.k==='cond'?13:17;
+  const lines=wrapT(n.t,maxc);
+  const sub=n.s?wrapT(n.s,maxc+4):[];
+  const w=Math.max(...lines.map(l=>l.length),...sub.map(l=>l.length*0.92))*CW;
+  const h=lines.length*LH+(sub.length?sub.length*(LH-1)+3:0);
+  n.lines=lines;n.sub=sub;
+  if(n.k==='roll'||n.k==='cond'){n.w=Math.round(w*1.5+30);n.h=Math.round(h*1.55+20)}
+  else{n.w=Math.round(w+26);n.h=Math.round(h+16)}
+}
+function drawChart(){
+  const svg=document.getElementById('fcsvg');
+  if(!window.dagre){svg.innerHTML='';document.getElementById('fdetail').innerHTML='<h3>Layout library did not load</h3><p>The flowchart needs dagre from cdnjs. The Sequence view still works.</p>';return}
+  FN.forEach(nodeBox);
+  const g=new dagre.graphlib.Graph({multigraph:true});
+  g.setGraph({rankdir:'TB',nodesep:26,ranksep:10,edgesep:14,marginx:14,marginy:14,ranker:'network-simplex'});
+  g.setDefaultEdgeLabel(()=>({}));
+  FN.forEach(n=>g.setNode(n.id,{width:n.w,height:n.h}));
+  FE.forEach((e,i)=>{const lw=e[2]?Math.max(e[2].length*CW*1.08,44)+10:44;g.setEdge(e[0],e[1],{width:lw,height:LH*2+6,labelpos:'c',weight:e[5].includes('p')?4:1,minlen:1},'e'+i)});
+  dagre.layout(g);
+  const NB={};FN.forEach(n=>{const p=g.node(n.id);n.x=p.x;n.y=p.y;NB[n.id]=n});
+  /* dagre gives the layers (y) and the left/right order. The main route is then straightened into one column and
+     side exits are hung either side of it, so the picture reads as a spine with branches, not a staircase. */
+  const spine=FN.filter(n=>n.p&&n.id!=='scene0');const isSp=(n)=>spine.includes(n);
+  const GAP=60;
+  spine.forEach(n=>{n.x=0});
+  let flip=-1;
+  spine.forEach(P=>{
+    const kids=FE.filter(e=>e[0]===P.id&&!isSp(NB[e[1]])).map(e=>NB[e[1]]);
+    if(!kids.length)return;
+    if(kids.length===1){kids[0].side=flip;flip=-flip}else{kids[0].side=-1;kids[1].side=1}
+    kids.forEach(k=>{k.y=P.y;k.x=k.side*(P.w/2+GAP+k.w/2)});
   });
-  const all=(f)=>tr.querySelectorAll('li').forEach(li=>{const t=li.querySelector(':scope>.tn .tog');if(t&&t.textContent){li.classList.toggle('collapsed',f);t.textContent=f?'▸':'▾'}});
-  document.getElementById('t-open').onclick=()=>{all(false);tr.classList.remove('onlypath')};
-  document.getElementById('t-close').onclick=()=>{all(true);tr.querySelector('li').classList.remove('collapsed');tr.querySelector('.tog').textContent='▾'};
-  document.getElementById('t-path').onclick=()=>{all(false);tr.classList.toggle('onlypath')};
+  let minX=1e9,maxX=-1e9;FN.forEach(n=>{minX=Math.min(minX,n.x-n.w/2);maxX=Math.max(maxX,n.x+n.w/2)});
+  const M=16;FN.forEach(n=>{n.x=n.x-minX+M});
+  FC.W=Math.ceil(maxX-minX+2*M);FC.H=Math.ceil(g.graph().height);
+  svg.setAttribute('viewBox',`0 0 ${FC.W} ${FC.H}`);
+  svg.innerHTML='';
+  const defs=el('defs',{});
+  [['mu','--muted'],['pa','--lore'],['ba','--bad']].forEach(([id,v])=>{
+    const m=el('marker',{id:'ah-'+id,viewBox:'0 0 10 10',refX:'9',refY:'5',markerWidth:'8',markerHeight:'8',orient:'auto-start-reverse',markerUnits:'userSpaceOnUse'});
+    m.appendChild(el('path',{d:'M0,0 L10,5 L0,10 z',style:`fill:var(${v})`}));defs.appendChild(m)});
+  svg.appendChild(defs);
+  const eg=el('g',{}),ng=el('g',{});svg.appendChild(eg);svg.appendChild(ng);
+  FE.forEach((e,i)=>{
+    const a=NB[e[0]],b=NB[e[1]];
+    const kind=e[5].includes('bad')?'bad':e[5].includes('p')?'path':'mu';
+    const grp=el('g',{class:'ed','data-i':i,'data-f':e[0],'data-t':e[1]});
+    let d,lx,ly,anchor='middle';
+    const lw=e[2]?Math.max(e[2].length*CW*1.08,44)+6:44;
+    if(isSp(a)&&isSp(b)){
+      const y1=a.y+a.h/2,y2=b.y-b.h/2;d=`M${a.x},${y1} L${b.x},${y2}`;lx=a.x+8;ly=(y1+y2)/2;anchor='start';
+    }else{
+      const sd=b.side,sx=a.x+sd*a.w/2,ex=b.x-sd*b.w/2,sy=a.y;
+      d=`M${sx},${sy} L${ex},${sy}`;lx=(sx+ex)/2;ly=sy-LH-3;
+    }
+    const path=el('path',{d:d,fill:'none','marker-end':'url(#ah-'+(kind==='bad'?'ba':kind==='path'?'pa':'mu')+')'});
+    path.dataset.kind=kind;grp.appendChild(path);
+    const h=LH*2;
+    const bx=anchor==='start'?lx-3:lx-lw/2;
+    const by=anchor==='start'?ly-h/2:ly-h/2+2;
+    grp.appendChild(el('rect',{x:bx,y:by,width:lw,height:h,rx:4,style:'fill:var(--card)',opacity:'.9'}));
+    const tx=anchor==='start'?lx:lx;
+    if(e[2])grp.appendChild(el('text',{x:tx,y:by+LH-3,'text-anchor':anchor,'font-size':FS-1,style:`fill:var(${kind==='bad'?'--bad':kind==='path'?'--lore':'--fg'});font-weight:${kind==='path'?600:500}`},e[2]));
+    grp.appendChild(el('text',{x:tx,y:by+LH*2-4,'text-anchor':anchor,'font-size':FS-1.5,class:'cnt',style:'fill:var(--muted);font-family:var(--mono)'},''));
+    eg.appendChild(grp);
+  });
+  FN.forEach(n=>{
+    const grp=el('g',{class:'nd','data-id':n.id,tabindex:'0',role:'button','aria-label':n.t});
+    const col={roll:['--dice','--dice-bg'],cond:['--read','--read-bg'],act:['--muted','--card'],end:['--write','--write-bg'],scene:['--lore','--lore']}[n.k];
+    const stroke=n.bad?'--bad':n.p&&n.k!=='scene'?'--lore':col[0];
+    const sw=n.bad?2.2:n.p?2.6:1.6;
+    const st=`fill:var(${n.bad?'--bad-bg':col[1]});stroke:var(${stroke});stroke-width:${sw}`+(n.bad?';stroke-dasharray:6 3':'');
+    let sh;
+    if(n.k==='roll'||n.k==='cond')sh=el('polygon',{points:`${n.x},${n.y-n.h/2} ${n.x+n.w/2},${n.y} ${n.x},${n.y+n.h/2} ${n.x-n.w/2},${n.y}`,class:'shape',style:st});
+    else sh=el('rect',{x:n.x-n.w/2,y:n.y-n.h/2,width:n.w,height:n.h,rx:n.k==='act'?8:Math.min(n.h/2,22),class:'shape',style:st});
+    grp.appendChild(sh);
+    const tc=n.k==='scene'?'--bg':n.bad?'--bad':'--fg';
+    const total=n.lines.length*LH+(n.sub.length?n.sub.length*(LH-1)+3:0);
+    let y=n.y-total/2+LH-3;
+    n.lines.forEach(l=>{grp.appendChild(el('text',{x:n.x,y:y,'text-anchor':'middle','font-size':FS,style:`fill:var(${tc});font-weight:600`},l));y+=LH});
+    y+=1;
+    n.sub.forEach(l=>{grp.appendChild(el('text',{x:n.x,y:y,'text-anchor':'middle','font-size':FS-1.5,style:`fill:var(${n.k==='scene'?'--bg':n.bad?'--bad':'--muted'})`},l));y+=LH-1});
+    if(n.bad||n.badge){
+      const lab=(n.bad||n.badge);const bw=lab.length*6.4+10;
+      const dia=n.k==='roll'||n.k==='cond';const bx=dia?n.x+n.w/2-bw-n.w*0.18:n.side===-1?n.x-n.w/2-2:n.side===1?n.x+n.w/2-bw+2:n.x-bw/2,by=n.y-n.h/2-7;
+      grp.appendChild(el('rect',{x:bx,y:by,width:bw,height:15,rx:3,style:'fill:var(--bad);'}));
+      grp.appendChild(el('text',{x:bx+bw/2,y:by+11,'text-anchor':'middle','font-size':10.5,style:'fill:#fff;font-family:var(--mono);font-weight:600'},(n.bad?'! ':'')+lab));
+    }
+    ng.appendChild(grp);
+  });
+  svg.addEventListener('mouseover',e=>{const n=e.target.closest('.nd');svgHover(n?n.dataset.id:null)});
+  svg.addEventListener('mouseleave',()=>svgHover(FC.sel));
+  svg.addEventListener('click',e=>{const n=e.target.closest('.nd');if(n){FC.sel=n.dataset.id;svgHover(FC.sel);showNode(FC.sel)}});
+  svg.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){const n=e.target.closest('.nd');if(n){e.preventDefault();FC.sel=n.dataset.id;svgHover(FC.sel);showNode(FC.sel)}}});
+  paintRun();applyScale();
+}
+function clip(n,toward){
+  const dx=toward.x-n.x,dy=toward.y-n.y;if(!dx&&!dy)return{x:n.x,y:n.y};
+  const a=n.w/2,b=n.h/2;let t;
+  if(n.k==='roll'||n.k==='cond')t=1/(Math.abs(dx)/a+Math.abs(dy)/b);
+  else t=Math.min(a/Math.abs(dx||1e-9),b/Math.abs(dy||1e-9));
+  return{x:n.x+dx*t,y:n.y+dy*t};
+}
+function smooth(p){
+  if(p.length<3)return`M${p[0].x},${p[0].y} L${p[p.length-1].x},${p[p.length-1].y}`;
+  let d=`M${p[0].x},${p[0].y}`;
+  for(let i=1;i<p.length-1;i++){const m={x:(p[i].x+p[i+1].x)/2,y:(p[i].y+p[i+1].y)/2};d+=` Q${p[i].x},${p[i].y} ${i===p.length-2?p[i+1].x+','+p[i+1].y:m.x+','+m.y}`}
+  return d;
+}
+function paintRun(){
+  const R=RUNS[FC.run],idx=FC.run==='a'?3:4;
+  document.querySelectorAll('#fcsvg .ed').forEach(g=>{
+    const e=FE[g.dataset.i],n=e[idx],share=n/R.total;
+    const path=g.querySelector('path'),kind=path.dataset.kind;
+    const w=(kind==='path'?2.2:1.3)+9*share;
+    const col=kind==='bad'?'--bad':kind==='path'?'--lore':'--muted';
+    path.setAttribute('style',`stroke:var(${col});stroke-width:${w.toFixed(1)};opacity:${kind==='mu'?(n?0.75:0.45):1}`+(kind==='bad'||n===0?';stroke-dasharray:'+(kind==='bad'?'7 4':'3 4'):''));
+    const ct=g.querySelector('.cnt');if(ct)ct.textContent=n?`${n}/${R.total}`:'0';
+  });
+  const f=document.getElementById('strip');
+  f.innerHTML=FUN[FC.run].map((x,i)=>`${i?'<i>→</i>':''}<span class="s ${x[1]}">${esc(x[0])}</span>`).join('');
+  document.getElementById('r-a').setAttribute('aria-pressed',FC.run==='a');document.getElementById('r-b').setAttribute('aria-pressed',FC.run==='b');
+}
+function svgHover(id){
+  const svg=document.getElementById('fcsvg');
+  svg.querySelectorAll('.hl').forEach(x=>x.classList.remove('hl'));
+  if(!id){svg.classList.remove('hov');return}
+  svg.classList.add('hov');
+  svg.querySelectorAll('.ed').forEach(g=>{if(g.dataset.f===id||g.dataset.t===id){g.classList.add('hl');[g.dataset.f,g.dataset.t].forEach(n=>svg.querySelector(`.nd[data-id="${n}"]`).classList.add('hl'))}});
+  svg.querySelector(`.nd[data-id="${id}"]`).classList.add('hl');
+}
+function showNode(id){
+  const n=FN.find(x=>x.id===id);const li=(a)=>a?`<li>${esc(a)}</li>`:'';
+  const inE=FE.filter(e=>e[1]===id),outE=FE.filter(e=>e[0]===id),idx=FC.run==='a'?3:4;
+  document.getElementById('fdetail').innerHTML=`<h3>${esc(n.t)}${n.s?` <span style="font:400 13px var(--sans);color:var(--muted)">· ${esc(n.s)}</span>`:''}</h3>
+  <div class="cols">${n.r?`<div class="box read"><h4>Reads</h4><ul>${li(n.r)}</ul></div>`:''}${n.d?`<div class="box dice"><h4>Dice</h4><ul>${li(n.d)}</ul></div>`:''}${n.w?`<div class="box write"><h4>Writes</h4><ul>${li(n.w)}</ul></div>`:''}</div>
+  ${outE.length?`<div class="conn"><h4>Branches, run ${RUNS[FC.run].name}</h4><ul>${outE.map(e=>`<li><span class="chip ${e[5].includes('bad')?'bad':e[5].includes('p')?'ran':'read'}">${e[idx]}</span><span>${esc(e[2]||'next')} → ${esc(FN.find(x=>x.id===e[1]).t)}</span></li>`).join('')}</ul></div>`:''}
+  <div class="cites"><h4>Cited</h4>${esc(n.c||'')}</div>
+  ${(n.bad||n.badge)?`<div class="cites"><h4>Finding</h4><a class="fl" data-f="${n.bad||n.badge}">${n.bad||n.badge}</a></div>`:''}`;
+}
+function applyScale(){
+  const wrap=document.getElementById('fcwrap'),svg=document.getElementById('fcsvg');
+  if(FC.fit){const aw=wrap.clientWidth||340;FC.scale=Math.min(1.6,aw/FC.W)}
+  svg.style.width=Math.round(FC.W*FC.scale)+'px';svg.style.height=Math.round(FC.H*FC.scale)+'px';
+}
+function zoom(f){FC.fit=false;FC.scale=Math.max(0.3,Math.min(3,FC.scale*f));applyScale()}
+function initChart(){
+  document.getElementById('shapekey').innerHTML=[
+   ['<svg width="22" height="16"><polygon points="11,1 21,8 11,15 1,8" style="fill:var(--dice-bg);stroke:var(--dice);stroke-width:1.6"/></svg>','dice roll'],
+   ['<svg width="22" height="16"><polygon points="11,1 21,8 11,15 1,8" style="fill:var(--read-bg);stroke:var(--read);stroke-width:1.6"/></svg>','condition on state'],
+   ['<svg width="22" height="16"><rect x="1" y="2" width="20" height="12" rx="4" style="fill:var(--card);stroke:var(--muted);stroke-width:1.6"/></svg>','action'],
+   ['<svg width="26" height="16"><rect x="1" y="2" width="24" height="12" rx="6" style="fill:var(--write-bg);stroke:var(--write);stroke-width:1.6"/></svg>','pass ends, state written'],
+   ['<svg width="26" height="16"><rect x="1" y="2" width="24" height="12" rx="6" style="fill:var(--lore);stroke:var(--lore)"/></svg>','scene made'],
+   ['<svg width="26" height="16"><rect x="1" y="2" width="24" height="12" rx="6" style="fill:var(--bad-bg);stroke:var(--bad);stroke-width:2;stroke-dasharray:5 3"/></svg>','broken or unreachable'],
+   ['<svg width="26" height="8"><line x1="1" y1="4" x2="25" y2="4" style="stroke:var(--lore);stroke-width:3"/></svg>','route to a scene']
+  ].map(x=>`<span>${x[0]}${x[1]}</span>`).join('');
+  document.getElementById('r-a').onclick=()=>{FC.run='a';paintRun();if(FC.sel)showNode(FC.sel)};
+  document.getElementById('r-b').onclick=()=>{FC.run='b';paintRun();if(FC.sel)showNode(FC.sel)};
+  document.getElementById('z-in').onclick=()=>zoom(1.25);document.getElementById('z-out').onclick=()=>zoom(0.8);
+  document.getElementById('z-fit').onclick=()=>{FC.fit=true;applyScale();document.getElementById('fcwrap').scrollLeft=0};
+  const wrap=document.getElementById('fcwrap');let drag=null;
+  wrap.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&!e.target.closest('.nd')){drag={x:e.clientX,y:e.clientY,l:wrap.scrollLeft,t:wrap.scrollTop}}});
+  window.addEventListener('pointermove',e=>{if(drag){wrap.scrollLeft=drag.l-(e.clientX-drag.x);wrap.scrollTop=drag.t-(e.clientY-drag.y)}});
+  window.addEventListener('pointerup',()=>{drag=null});
+  window.addEventListener('resize',()=>{if(FC.fit&&!document.getElementById('treeview').hidden)applyScale()});
+  document.getElementById('fdetail').addEventListener('click',e=>{const fl=e.target.closest('.fl');if(fl)gotoFinding(fl.dataset.f)});
+  drawChart();
 }
 function setView(v){
   document.getElementById('seqview').hidden=v!=='seq';document.getElementById('treeview').hidden=v!=='tree';
   document.getElementById('v-seq').setAttribute('aria-pressed',v==='seq');document.getElementById('v-tree').setAttribute('aria-pressed',v==='tree');
+  if(v==='tree')applyScale();
 }
 document.getElementById('v-seq').onclick=()=>setView('seq');document.getElementById('v-tree').onclick=()=>setView('tree');
 
@@ -620,6 +797,6 @@ document.getElementById('themebtn').addEventListener('click',()=>{
   const r=document.documentElement,cur=r.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
   r.dataset.theme=cur==='dark'?'light':'dark';
 });
-renderFunnel();renderRail();renderTree();renderMatrix();renderCons();renderFind();renderIntent();
+renderFunnel();renderRail();initChart();renderMatrix();renderCons();renderFind();renderIntent();
 const h=location.hash.replace('#','');if(['flow','state','cons','find','intent'].includes(h))showTab(h);
 </script>

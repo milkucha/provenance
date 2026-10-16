@@ -40,7 +40,7 @@ One entry each, same shape as the baseline JSON: `id` (keep the old id if it is 
 
 ## Step 6 - Rebuild and republish the artifact
 
-The page is `diagrams/simulate-audit/artifact.html` (self-contained, tokens at the top, data in `STEPS`, `TREE`, `ROWS`, `CONS`, `FINDS`, `INTENT`). Edit the data, not the layout: update the counts from the run, flip finding statuses, move the cited lines. Save it back to the same path, then republish to the **same artifact URL** (Artifact tool, `url` set, `file_path` the saved html) so the link stays stable. Keep generic characters only; no lore names.
+The page is `diagrams/simulate-audit/artifact.html` (self-contained, tokens at the top, data in `STEPS`, `FN`/`FE` (flowchart nodes and edges with the observed counts per run), `ROWS`, `CONS`, `FINDS`, `INTENT`; the flowchart is laid out by dagre 0.8.5 from cdnjs, then the main route is straightened in `drawChart`). Edit the data, not the layout: update the counts from the run (the `FE` rows hold run A and run B counts, `FUN` the strip above the chart), flip finding statuses, move the cited lines. Save it back to the same path, then republish to the **same artifact URL** (Artifact tool, `url` set, `file_path` the saved html) so the link stays stable. Keep generic characters only; no lore names.
 
 ## Rules
 
