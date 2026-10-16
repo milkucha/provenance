@@ -289,8 +289,8 @@
     "label": "Provenance",
     "kind": "root",
     "path": ".",
-    "size": 2295250,
-    "degree": 19
+    "size": 2281463,
+    "degree": 20
    },
    {
     "id": "file:.gitignore",
@@ -305,7 +305,7 @@
     "label": "CHRONICLE.md",
     "kind": "doc",
     "path": "CHRONICLE.md",
-    "size": 37900,
+    "size": 39440,
     "degree": 1
    },
    {
@@ -337,7 +337,7 @@
     "label": "OPEN_QUESTIONS.md",
     "kind": "doc",
     "path": "OPEN_QUESTIONS.md",
-    "size": 21389,
+    "size": 21440,
     "degree": 1
    },
    {
@@ -345,7 +345,7 @@
     "label": "README.md",
     "kind": "doc",
     "path": "README.md",
-    "size": 68848,
+    "size": 94440,
     "degree": 1
    },
    {
@@ -361,7 +361,7 @@
     "label": "TODO.md",
     "kind": "doc",
     "path": "TODO.md",
-    "size": 182144,
+    "size": 184204,
     "degree": 1
    },
    {
@@ -649,7 +649,7 @@
     "label": "_lore",
     "kind": "dir",
     "path": "_lore",
-    "size": 41943,
+    "size": 42166,
     "degree": 10
    },
    {
@@ -657,7 +657,7 @@
     "label": "contexts.json",
     "kind": "lore",
     "path": "_lore/contexts.json",
-    "size": 2927,
+    "size": 2955,
     "degree": 1
    },
    {
@@ -665,7 +665,7 @@
     "label": "encodings.json",
     "kind": "lore",
     "path": "_lore/encodings.json",
-    "size": 3060,
+    "size": 3164,
     "degree": 1
    },
    {
@@ -689,7 +689,7 @@
     "label": "characters",
     "kind": "dir",
     "path": "_lore/characters",
-    "size": 2411,
+    "size": 2413,
     "degree": 5
    },
    {
@@ -713,7 +713,7 @@
     "label": "hearsay.md",
     "kind": "lore",
     "path": "_lore/characters/hearsay.md",
-    "size": 27,
+    "size": 28,
     "degree": 1
    },
    {
@@ -721,7 +721,7 @@
     "label": "lifespans.json",
     "kind": "lore",
     "path": "_lore/characters/lifespans.json",
-    "size": 3,
+    "size": 4,
     "degree": 1
    },
    {
@@ -817,7 +817,7 @@
     "label": "tales",
     "kind": "dir",
     "path": "_lore/tales",
-    "size": 5678,
+    "size": 5767,
     "degree": 3
    },
    {
@@ -825,7 +825,7 @@
     "label": "_authors.md",
     "kind": "lore",
     "path": "_lore/tales/_authors.md",
-    "size": 1165,
+    "size": 1185,
     "degree": 1
    },
    {
@@ -833,7 +833,7 @@
     "label": "_index.md",
     "kind": "lore",
     "path": "_lore/tales/_index.md",
-    "size": 4513,
+    "size": 4582,
     "degree": 1
    },
    {
@@ -1002,6 +1002,86 @@
     "kind": "template",
     "path": "_npcs/templates/states/stationary_state.mcfunction",
     "size": 2092,
+    "degree": 1
+   },
+   {
+    "id": "dir:assets",
+    "label": "assets",
+    "kind": "dir",
+    "path": "assets",
+    "size": 135705,
+    "degree": 2
+   },
+   {
+    "id": "dir:assets/blueprints",
+    "label": "blueprints",
+    "kind": "dir",
+    "path": "assets/blueprints",
+    "size": 135705,
+    "degree": 9
+   },
+   {
+    "id": "file:assets/blueprints/Encodings.png",
+    "label": "Encodings.png",
+    "kind": "other",
+    "path": "assets/blueprints/Encodings.png",
+    "size": 39660,
+    "degree": 1
+   },
+   {
+    "id": "file:assets/blueprints/Encodings.pngZone.Identifier",
+    "label": "Encodings.pngZone.Identifier",
+    "kind": "other",
+    "path": "assets/blueprints/Encodings.pngZone.Identifier",
+    "size": 57,
+    "degree": 1
+   },
+   {
+    "id": "file:assets/blueprints/Handling.png",
+    "label": "Handling.png",
+    "kind": "other",
+    "path": "assets/blueprints/Handling.png",
+    "size": 25759,
+    "degree": 1
+   },
+   {
+    "id": "file:assets/blueprints/Handling.pngZone.Identifier",
+    "label": "Handling.pngZone.Identifier",
+    "kind": "other",
+    "path": "assets/blueprints/Handling.pngZone.Identifier",
+    "size": 57,
+    "degree": 1
+   },
+   {
+    "id": "file:assets/blueprints/Lore.png",
+    "label": "Lore.png",
+    "kind": "other",
+    "path": "assets/blueprints/Lore.png",
+    "size": 38024,
+    "degree": 1
+   },
+   {
+    "id": "file:assets/blueprints/Lore.pngZone.Identifier",
+    "label": "Lore.pngZone.Identifier",
+    "kind": "other",
+    "path": "assets/blueprints/Lore.pngZone.Identifier",
+    "size": 57,
+    "degree": 1
+   },
+   {
+    "id": "file:assets/blueprints/State Transformation.png",
+    "label": "State Transformation.png",
+    "kind": "other",
+    "path": "assets/blueprints/State Transformation.png",
+    "size": 32034,
+    "degree": 1
+   },
+   {
+    "id": "file:assets/blueprints/State Transformation.pngZone.Identifier",
+    "label": "State Transformation.pngZone.Identifier",
+    "kind": "other",
+    "path": "assets/blueprints/State Transformation.pngZone.Identifier",
+    "size": 57,
     "degree": 1
    },
    {
@@ -1968,7 +2048,7 @@
     "label": "graphs",
     "kind": "dir",
     "path": "graphs",
-    "size": 504126,
+    "size": 325168,
     "degree": 2
    },
    {
@@ -1976,7 +2056,7 @@
     "label": "graphifyish",
     "kind": "dir",
     "path": "graphs/graphifyish",
-    "size": 504126,
+    "size": 325168,
     "degree": 3
    },
    {
@@ -1984,7 +2064,7 @@
     "label": "graph.json",
     "kind": "graph",
     "path": "graphs/graphifyish/graph.json",
-    "size": 264645,
+    "size": 163781,
     "degree": 1
    },
    {
@@ -1992,7 +2072,7 @@
     "label": "graphifyish.html",
     "kind": "graph",
     "path": "graphs/graphifyish/graphifyish.html",
-    "size": 239481,
+    "size": 161387,
     "degree": 1
    },
    {
@@ -3360,6 +3440,66 @@
    {
     "source": "dir:_npcs/templates/states",
     "target": "file:_npcs/templates/states/stationary_state.mcfunction",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:.",
+    "target": "dir:assets",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:assets",
+    "target": "dir:assets/blueprints",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:assets/blueprints",
+    "target": "file:assets/blueprints/Encodings.png",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:assets/blueprints",
+    "target": "file:assets/blueprints/Encodings.pngZone.Identifier",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:assets/blueprints",
+    "target": "file:assets/blueprints/Handling.png",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:assets/blueprints",
+    "target": "file:assets/blueprints/Handling.pngZone.Identifier",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:assets/blueprints",
+    "target": "file:assets/blueprints/Lore.png",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:assets/blueprints",
+    "target": "file:assets/blueprints/Lore.pngZone.Identifier",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:assets/blueprints",
+    "target": "file:assets/blueprints/State Transformation.png",
+    "rel": "contains",
+    "weight": 1
+   },
+   {
+    "source": "dir:assets/blueprints",
+    "target": "file:assets/blueprints/State Transformation.pngZone.Identifier",
     "rel": "contains",
     "weight": 1
    },
