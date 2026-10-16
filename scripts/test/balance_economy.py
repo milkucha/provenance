@@ -32,7 +32,16 @@ over the run / at the end; `pers_mean`/`pers_med` personal provisions of the liv
 of ARC passes whose character held at least `arc_need_cost` after eating; `fed` share of passes
 in which the pool still held a unit when the meal came (after that pass's upkeep).
 
+JOURNEYS (--journey, roads as nodes, TODO.md "Travel as nodes"): a walk of k connections is 2k passes of
+`arc` for the traveller, road, place, road, place, ... Roads have NO pool, so on a road the meal comes from
+the traveller's own provisions only (economy_rules.eat with pool 0); at a place it is the usual meal from
+the place's pool (--stop-pool, units, default 4). Worst case on purpose: every pass of the walk is an arc
+pass (a work roll mid-journey would feed them, 2 provisions each). Deterministic, no dice; the same
+resolve_pass the engine runs. Prints energy on arriving by starting energy and provisions, and the
+lowest starting energy that gets there.
+
 Usage:
+    py scripts/test/balance_economy.py --journey
     py scripts/test/balance_economy.py --pop 12 --seeds 8
     py scripts/test/balance_economy.py --pop 6 12 25 --grid work_pool=0,1,2 upkeep_rate_per_capita=0.05,0.15
     py scripts/test/balance_economy.py --pop 12 --trace          # the run's trajectory, 10 checkpoints
@@ -232,6 +241,39 @@ def scan(a) -> None:
         table(rows, names)
 
 
+def journey(connections: int, energy: float, personal: float, stop_pool: float, s: dict | None = None) -> dict:
+    """A walk of `connections` connections, all arc passes: road (no pool), place (pool of `stop_pool`
+    units, refilled for every stop: someone else's town), ending with the arrival pass at a place.
+    Returns {"energy", "personal", "died_at": pass number or None, "passes"}."""
+    s = s or BASE_S
+    passes = 2 * connections
+    for i in range(1, passes + 1):
+        on_road = i % 2 == 1
+        out = economy_rules.resolve_pass(energy, personal, 0 if on_road else stop_pool, "arc", s)
+        energy, personal = out["energy"], out["personal"]
+        if out["died"]:
+            return {"energy": energy, "personal": personal, "died_at": i, "passes": passes}
+    return {"energy": energy, "personal": personal, "died_at": None, "passes": passes}
+
+
+def journeys(stop_pool: float) -> None:
+    print(f"journeys: k connections = 2k arc passes (road, place, ...), roads without a pool, places with a pool of {stop_pool:g}")
+    ks = [1, 2, 3, 4, 6]
+    print(f"{'provisions':>10s} {'energy':>6s} | " + "  ".join(f"k={k:<2d}" for k in ks) + "   (energy on arrival, x = died on pass n)")
+    for personal in (2, 0):
+        for energy in (20, 12, 8, 5, 3):
+            cells = []
+            for k in ks:
+                r = journey(k, energy, personal, stop_pool)
+                cells.append(f"{r['energy']:>4g}" if r["died_at"] is None else f"x{r['died_at']:<3d}")
+            print(f"{personal:>10d} {energy:>6d} | " + "  ".join(cells))
+    for personal in (2, 0):
+        need = {}
+        for k in ks:
+            need[k] = next((e for e in range(1, 21) if journey(k, e, personal, stop_pool)["died_at"] is None), None)
+        print(f"lowest starting energy that arrives, {personal} provisions: " + ", ".join(f"k={k}: {v}" for k, v in need.items()))
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--pop", type=int, nargs="+", default=None, help="population(s); default 12 (scan: 6 12 25)")
@@ -249,8 +291,12 @@ def main() -> None:
     ap.add_argument("--pc-min", type=float, default=0.5, help="pool per capita below this = collapsed")
     ap.add_argument("--can-pay-min", type=float, default=0.0, help="optional extra bar for --scan: share of arc passes able to pay")
     ap.add_argument("--pc-max", type=float, default=8.0, help="pool per capita above this = runaway (4 x the start)")
+    ap.add_argument("--journey", action="store_true", help="roads as nodes: energy on arriving after k connections of arc passes")
+    ap.add_argument("--stop-pool", type=float, default=4.0, help="--journey: units in the pool of every place stopped at")
     a = ap.parse_args()
 
+    if a.journey:
+        return journeys(a.stop_pool)
     if a.scan:
         return scan(a)
     pops = a.pop or [12]

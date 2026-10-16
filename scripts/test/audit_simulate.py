@@ -11,6 +11,12 @@ Two modes:
                     with routes, makes one need available only at the far end, and seeds half the
                     starting city with provisions >= the arc cost. Generic: picks its own need tag.
 
+`--dump DIR` keeps the run's end state (characters, provisions pools, draw audit) in DIR, for comparing two
+seeded runs byte for byte (see scripts/test/test_travel_nodes.py). Roads are nodes now (TODO.md "Travel as
+nodes"): the observed counts carry `road_hops`, `stage_met_on_road`, `road_meetings_with_outcome`,
+`died_en_route`, `longest_journey_passes`, and probes F17-F20 cover roads. A root with a travel graph but
+no lore can be made with scripts/test/make_travel_fixture.py.
+
 `--baseline findings-<date>.json` diffs the probes against a saved snapshot and prints
 fixed / new / regressed / unchanged. Probes are True when the finding is still present.
 
@@ -47,6 +53,7 @@ NOTE_PATTERNS = {
     "arc_failed": "arc failed",
     "arc_transform": "transformed",
     "arc_no_needs": "has no needs authored",
+    "met_on_road": "on the road at",
 }
 
 
@@ -123,6 +130,7 @@ def run_passes(tmp, passes, seed, counts):
     sys.path.insert(0, str(S))
     drv = importlib.import_module("simulate_driver")
     start_pool = set(living(load_chars(tmp)))
+    journey_len: dict = {}
     for n in range(1, passes + 1):
         pool = sorted(k for k in living(load_chars(tmp)) if k in start_pool)
         if len(pool) < 2:
@@ -150,6 +158,20 @@ def run_passes(tmp, passes, seed, counts):
                 counts[k] += 1
         if b["travel"] and b["context"] == "route":
             counts["travel_hop_pass"] += 1
+            if b["location"].startswith("road:"):
+                counts["road_hops"] += 1
+            else:
+                counts["place_hops_mid_journey"] += 1
+        if pu and pu["stage"] == "died_en_route":
+            counts["died_en_route"] += 1
+        if pu and pu["stage"] == "met_on_road":
+            counts["met_on_road_with_payment"] += bool(b["motivated"])
+            counts["road_meetings_with_outcome"] += bool(b["arc"]["outcome"])  # must stay 0: nothing is bought on a road
+        if journey_before:
+            journey_len[p1] = journey_len.get(p1, 0) + 1
+            counts["longest_journey_passes"] = max(counts["longest_journey_passes"], journey_len[p1])
+        else:
+            journey_len.pop(p1, None)
         if b["participant_2"]:
             counts["met_someone"] += 1
         if b["participant_2"] and b.get("scene") == "pair":
@@ -227,6 +249,13 @@ def static_probes(tmp, counts, fixture_info):
         unused.append("lead_expiry_passes (loaded, never used)")
     counts["unused_tuning_keys"] = unused
 
+    pv = json.loads((tmp / "_lore" / "provisions.json").read_text(encoding="utf-8")) if (tmp / "_lore" / "provisions.json").exists() else {}
+    counts["road_pools_created"] = sum(1 for sect in pv.values() if isinstance(sect, dict) for k in sect if k.startswith("road:"))
+    counts["roads_in_places_visited"] = sum(1 for c in chars.values() for l in c.get("places_visited") or [] if l.startswith("road:"))
+    tg = importlib.import_module("travel_graph")
+    g = tg.build_graph(json.loads((tmp / "_lore" / "encodings.json").read_text(encoding="utf-8")))
+    counts["direct_place_to_place_edges"] = sum(1 for n, nb in g.items() for m in nb if not tg.is_road(n) and not tg.is_road(m))
+
     social_writers = [n for n, t in all_py.items() if re.search(r'social_circle["\']\]?\s*(=|\.append|\.extend)', t) or "setdefault(\"social_circle\"" in t]
     lead_readers = [n for n, t in all_py.items() if "roll_lead_followup(" in t and n not in ("simulate_pass_lib.py",)]
     prep_src = src("pass_prep.py") + src("simulate_pass_brief.py")
@@ -252,6 +281,11 @@ def static_probes(tmp, counts, fixture_info):
         "F14": "max(" not in inspect.getsource(importlib.import_module("provisions_lib").set_provisions),
         "F15": None,
         "F16": "knowledge" not in inspect.getsource(importlib.import_module("pass_prep").load_character_brief),
+        # Roads as nodes (2026-10-17). Each is True when the problem is present.
+        "F17": counts["road_pools_created"] > 0,           # a pool, or an upkeep checkpoint, exists for a road
+        "F18": counts["road_meetings_with_outcome"] > 0 or counts["met_on_road_with_payment"] > 0,  # an arc outcome or a purchase on a road scene
+        "F19": counts["roads_in_places_visited"] > 0,      # a road recorded as a place visited
+        "F20": counts["direct_place_to_place_edges"] > 0,  # a connection without a road node between
     }, {"provisions_writers_outside_payment": writers, "social_circle_writers": social_writers, "lead_followup_callers": lead_readers}
 
 
@@ -286,6 +320,7 @@ def main():
     ap.add_argument("--fixture", choices=["none", "travel"], default="none")
     ap.add_argument("--baseline", default=None)
     ap.add_argument("--json-out", default=None)
+    ap.add_argument("--dump", default=None, help="keep the run's end state (characters, pools, draw audit) in this new directory")
     a = ap.parse_args()
     root = Path(a.root).resolve()
     if not (root / "_lore").exists() or not (root / "scripts" / "lore").exists():
@@ -312,6 +347,14 @@ def main():
         print(text)
         if a.json_out:
             Path(a.json_out).write_text(text + "\n", encoding="utf-8")
+        if a.dump:
+            d = Path(a.dump)
+            shutil.copytree(tmp / "_lore" / "characters", d / "characters")
+            for name in (".simulate_draw_audit.jsonl",):
+                if (tmp / name).exists():
+                    shutil.copy(tmp / name, d / name)
+            if (tmp / "_lore" / "provisions.json").exists():
+                shutil.copy(tmp / "_lore" / "provisions.json", d / "provisions.json")
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
 
