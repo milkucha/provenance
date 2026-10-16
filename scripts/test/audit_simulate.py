@@ -14,6 +14,15 @@ Two modes:
 `--baseline findings-<date>.json` diffs the probes against a saved snapshot and prints
 fixed / new / regressed / unchanged. Probes are True when the finding is still present.
 
+Added with the circle writer / arc completion / estate work (2026-10-17): `--births` makes a pair
+that reproduces actually have a child (a stub name, no model), so the birth-time circle writer runs
+in the loop; `scenario_probes()` builds a tiny synthetic world in the scratch copy and drives the
+three new mechanisms through the REAL code (a completion through run_pass_mechanics, deaths through
+record_death.py, a birth through generate_offspring.py) - probes F17 (circle), F18 (completion), F19
+(estate). `--digest-out` writes sha256 digests of the draw log (timestamps stripped) and of every
+character file and encodings.json, so two runs of one seed - also under different PYTHONHASHSEED -
+can be compared byte for byte.
+
 Usage:
     py scripts/test/audit_simulate.py --root <corpus worktree> --passes 40 --seed 7 --fixture none
     py scripts/test/audit_simulate.py --root <corpus worktree> --passes 200 --seed 5 --fixture travel \\
@@ -30,6 +39,7 @@ import re
 import shutil
 import subprocess
 import sys
+import hashlib
 import tempfile
 from pathlib import Path
 
@@ -117,7 +127,7 @@ def apply_travel_fixture(tmp):
     return {"start": start, "supplier": supplier, "need": need, "supplier_context": ctx, "chain": locs, "seeded_provisions": (n + 1) // 2}
 
 
-def run_passes(tmp, passes, seed, counts):
+def run_passes(tmp, passes, seed, counts, births=False):
     S = tmp / "scripts" / "lore"
     (tmp / ".simulate_rng_state.json").write_text(json.dumps({"rng_seed": seed, "draw_counter": 0}))
     sys.path.insert(0, str(S))
@@ -144,6 +154,11 @@ def run_passes(tmp, passes, seed, counts):
             if not load_chars(tmp)[p1].get("pursuit"):
                 counts["journey_reset"] += 1
         counts["choice_" + str(b["survival"].get(p1, {}).get("choice"))] += 1
+        if b.get("arc_completion"):
+            ac = b["arc_completion"]
+            counts["arc_completions"] += 1
+            counts.setdefault("arc_completion_turns", []).append(ac["turns"])
+            counts.setdefault("arc_completion_rewards", []).append(ac["reward"])
         notes = " | ".join(b["notes"])
         for k, pat in NOTE_PATTERNS.items():
             if pat in notes:
@@ -173,6 +188,15 @@ def run_passes(tmp, passes, seed, counts):
                 counts["scene_deaths"] += bool(r["deceased"])
             if "reproduces: true" in rep["reproduction_raw"]:
                 counts["reproduces"] += 1
+                if births:
+                    counts["births"] += 1
+                    drv.run([S / "generate_offspring.py", "--parent-a", p1, "--parent-b", p2, "--name", f"Audit Child {n}", "--pass-number", n])
+            # circle writer: two people who shared a scene hold each other as at least `met`
+            after = load_chars(tmp)
+            for a_, b_ in ((p1, p2), (p2, p1)):
+                circle = after[a_].get("social_circle") or {}
+                if not isinstance(circle, dict) or b_ not in circle:
+                    counts["pair_scenes_without_circle_tie"] += 1
             hs.unlink(); dec.unlink()
         else:
             if drv.apply_solo(p1, n, b)["deceased"]:
@@ -255,6 +279,198 @@ def static_probes(tmp, counts, fixture_info):
     }, {"provisions_writers_outside_payment": writers, "social_circle_writers": social_writers, "lead_followup_callers": lead_readers}
 
 
+def _write(tmp, key, c):
+    (tmp / "_lore" / "characters" / f"{key}.json").write_text(json.dumps(c, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
+def _blank(name, location, **extra):
+    c = {"name": name, "origin": location, "location": location, "places_visited": [location], "backstory": "", "knowledge": {"education": {"percent": None, "mode": "", "topic": None, "items": []}, "experience": []},
+         "criterion": {"standard": "", "wasted_life": "", "anchor": "", "derivation": "", "trusts": "", "distrusts": "", "tempered": 0, "cost_ledger": [], "history": []},
+         "life": {"lived": 0, "deceased": False}, "energy": 20, "provisions": 2, "parents": [], "partners": {}, "partners_quality": {}, "social_circle": {}, "routines": [],
+         "arc": {"about": [], "needs": [], "context": "", "premise": "", "resolution": "ongoing", "history": [], "turns": 0}}
+    c.update(extra)
+    return c
+
+
+def scenario_probes(tmp):
+    """A tiny synthetic world in the scratch copy, driven through the real code. Returns
+    {check name: True if it PASSED}, plus a `_detail` dict. Generic names only (no lore)."""
+    S = tmp / "scripts" / "lore"
+    sys.path.insert(0, str(S))
+    for m in [m for m in sys.modules if m in ("simulate_pass_lib", "arc_completion", "estate", "update_social_circle", "notify_death", "tuning", "provisions_lib", "rng_context", "location_context", "travel_graph")]:
+        del sys.modules[m]  # fresh import against this scratch root
+    lib = importlib.import_module("simulate_pass_lib")
+    usc = importlib.import_module("update_social_circle")
+    ac = importlib.import_module("arc_completion")
+    tuning_mod = importlib.import_module("tuning")
+    T = tuning_mod.load()
+    contexts = json.loads((tmp / "_lore" / "contexts.json").read_text(encoding="utf-8"))
+    ctx_need = next((c, d["provides"][0]) for c, d in contexts.items() if isinstance(d, dict) and d.get("provides"))
+    shop_ctx, need = ctx_need
+    home_ctx = next(c for c, d in contexts.items() if isinstance(d, dict) and need not in d.get("provides", []))
+    chars_before = set(load_chars(tmp))
+    ok, detail = {}, {}
+
+    # --- locations and a route between them
+    enc_path = tmp / "_lore" / "encodings.json"
+    enc = json.loads(enc_path.read_text(encoding="utf-8"))
+    for loc in ("ProbeHome", "ProbeShop"):
+        enc["locations"].append({"id": loc, "names": [loc], "sources": []})
+    enc["routes"].append({"id": "probe_route", "endpoints": ["ProbeHome", "ProbeShop"]})
+    enc_path.write_text(json.dumps(enc, indent=1, ensure_ascii=False), encoding="utf-8")
+
+    # --- the cast: completer A (child C, mentioned X, five people met), supplier B, a childless E
+    mets = [f"probe_m{i}" for i in range(5)]
+    for k in mets:
+        _write(tmp, k, _blank(k.title().replace("_", " "), "ProbeHome", routines=[{"location": "ProbeHome", "context": home_ctx, "weight": 100, "routine_actions": "probe"}]))
+    a_arc = {"about": ["concept: probe"], "needs": [need], "context": home_ctx, "premise": "Probe wants the thing done.", "resolution": "ongoing",
+             "history": [{"pass": 1, "outcome": "advance"}, {"pass": 2, "outcome": "advance"}], "turns": 6}
+    _write(tmp, "probe_a", _blank("Probe Alpha", "ProbeHome", provisions=20, arc=a_arc, places_visited=["ProbeHome", "ProbeShop"],
+                                  routines=[{"location": "ProbeHome", "context": home_ctx, "weight": 100, "routine_actions": "probe"}],
+                                  social_circle={**{m: "met" for m in mets}, "probe_x": "mentioned"}))
+    _write(tmp, "probe_x", _blank("Probe Ex", "ProbeHome"))
+    _write(tmp, "probe_b", _blank("Probe Bravo", "ProbeShop", routines=[{"location": "ProbeShop", "context": shop_ctx, "weight": 100, "routine_actions": "probe"}]))
+    _write(tmp, "probe_c", _blank("Probe Child", "ProbeHome", parents=["probe_a"], provisions=1))
+    _write(tmp, "probe_e", _blank("Probe Echo", "ProbeHome", provisions=4))
+    lifespans = json.loads((tmp / "_lore" / "characters" / "lifespans.json").read_text(encoding="utf-8"))
+    for k in ("probe_a", "probe_b", "probe_c", "probe_e", "probe_x", *mets):
+        lifespans["lifespans"][k] = {"span": 99, "range": "30-60"}
+    (tmp / "_lore" / "characters" / "lifespans.json").write_text(json.dumps(lifespans, indent=2), encoding="utf-8")
+
+    # --- drive one pass of probe_a through the real run_pass_mechanics. Only the dice are fixed.
+    lib.roll_survival = lambda key, home: {"choice": "arc"}
+    lib.roll_meetable = lambda candidates, favor=None: {"met": True, "chosen": "probe_b", "odds_used": 100}
+    lib.arc_payment_gate = lambda p1, p2, arc: {"motivated": True, "reason": None, "odds_used": 100, "cost": 0}
+    lib.roll_contested = lambda strength=0, quality=0: False
+    lib.check_arc_alignment = lambda about, needs, peer: {"gate": "hit", "inclined": "help", "matched_about": []}
+    lib.roll_arc_outcome = lambda inclined, contested=False: "advance"
+    (tmp / ".simulate_rng_state.json").write_text(json.dumps({"rng_seed": 99, "draw_counter": 0}))
+    for _ in range(3):  # the first passes may be the walk; keep going until the arc is settled
+        r = lib.run_pass_mechanics("probe_a", 500 + _)
+        if (r.get("arc") or {}).get("tally_result") == "complete":
+            break
+    a = load_chars(tmp)["probe_a"]
+    done = r.get("arc_completion") or {}
+    if not done:
+        detail["completion_last_pass"] = {"pursuit": r.get("pursuit"), "arc": r.get("arc"), "notes": r.get("notes")}
+    ok["completion_detected"] = bool(done)
+    if done:
+        expect = ac.reward_for(a["arc"]["turns"], T["arc_completion_reward"])
+        ok["reward_in_range"] = T["arc_completion_reward"]["min"] <= done["reward"] <= T["arc_completion_reward"]["max"]
+        ok["reward_is_the_formula"] = abs(done["reward"] - expect) < 1e-9 and a["arc"]["completion"]["turns"] == a["arc"]["turns"]
+        ok["turns_counted_each_own_pass"] = a["arc"]["turns"] >= 7  # 6 before + this walk, at least one pass
+        ok["tale_filed"] = (tmp / "_lore" / "tales" / f"{done['tale_id']}.md").exists() and any(t["id"] == done["tale_id"] for t in json.loads(enc_path.read_text(encoding="utf-8"))["tales"]["entries"])
+        c = load_chars(tmp)["probe_c"]
+        ok["child_has_tale_in_knowledge"] = f"tale: {done['tale_id']}" in c["knowledge"]["education"]["items"]
+        ok["child_told_for_certain"] = "probe_c" in done["notified"] and any("achieved" in (e if isinstance(e, str) else e.get("text", "")) for e in c["knowledge"]["experience"])
+        wider = len(mets) + 1  # the five met, plus the supplier A met in this very pass
+        ok["wider_circle_share"] = len(done["notified"]) == 1 + max(1, round(T["notification"]["extended_share"] * wider)) and "probe_x" not in done["notified"]
+        ok["completer_holds_reward"] = a["provisions"] > 20 and done["provisions"] == a["provisions"]
+        detail["completion"] = {"turns": a["arc"]["turns"], "reward": done["reward"], "notified": done["notified"]}
+
+    # --- deaths through record_death.py: estate to the living child, and to the pool when childless
+    before_c = load_chars(tmp)["probe_c"]["provisions"]
+    estate_a = load_chars(tmp)["probe_a"]["provisions"]
+    sh([S / "record_death.py", "probe_a", "--seed", "3"], tmp)
+    after = load_chars(tmp)
+    ok["estate_to_living_child"] = abs(after["probe_c"]["provisions"] - (before_c + estate_a)) < 1e-9 and after["probe_a"]["provisions"] == 0
+    pool_mod = importlib.import_module("provisions_lib")
+    pool_before = pool_mod.get_provisions("ProbeHome")
+    sh([S / "record_death.py", "probe_e", "--seed", "3"], tmp)
+    pool_after = json.loads((tmp / "_lore" / "provisions.json").read_text(encoding="utf-8"))["pools"]["ProbeHome"]
+    ok["estate_to_pool_without_children"] = abs(pool_after - (pool_before + 4)) < 1e-9 and load_chars(tmp)["probe_e"]["provisions"] == 0
+    # two heirs split equally
+    _write(tmp, "probe_p", _blank("Probe Papa", "ProbeHome", provisions=5))
+    for k in ("probe_k1", "probe_k2"):
+        _write(tmp, k, _blank(k.title().replace("_", " "), "ProbeHome", parents=["probe_p"], provisions=0))
+    lifespans["lifespans"].update({"probe_p": {"span": 99, "range": "30-60"}})
+    (tmp / "_lore" / "characters" / "lifespans.json").write_text(json.dumps(lifespans, indent=2), encoding="utf-8")
+    sh([S / "record_death.py", "probe_p", "--seed", "3"], tmp)
+    after = load_chars(tmp)
+    ok["estate_split_equally"] = after["probe_k1"]["provisions"] == after["probe_k2"]["provisions"] == 2.5
+
+    # --- a birth through generate_offspring.py: circle inheritance and propagation
+    pool_live = [k for k in sorted(chars_before) if not load_chars(tmp)[k]['life'].get('deceased') and load_chars(tmp)[k].get('parents')]
+    parents = len(pool_live) >= 14
+    if parents:
+        # two living characters that have parents of their own are the parents of the test child
+        pa, pb = pool_live[0], pool_live[1]
+        others = [k for k in pool_live[2:14] if k not in (pa, pb)]
+        ca, cb = load_chars(tmp)[pa], load_chars(tmp)[pb]
+        ca["social_circle"] = {k: "met" for k in others[:10]}
+        cb["social_circle"] = {k: "met" for k in others[4:10]}
+        _write(tmp, pa, ca); _write(tmp, pb, cb)
+        sh([S / "generate_offspring.py", "--parent-a", pa, "--parent-b", pb, "--name", "Probe Newborn", "--pass-number", 600, "--seed", 11], tmp)
+        circ = load_chars(tmp)["probe_newborn"]["social_circle"]
+        inh = [k for k, v in circ.items() if v == "inherited"]
+        ok["birth_parents_in_circle"] = circ.get(pa) == "parent" and circ.get(pb) == "parent"
+        ok["birth_inherits_a_share"] = 3 <= len(inh) <= 5 and set(inh) <= set(others[:10])
+        got = load_chars(tmp)
+        ok["birth_child_in_parents_circles"] = got[pa]["social_circle"].get("probe_newborn") == "child" and got[pb]["social_circle"].get("probe_newborn") == "child"
+        grand = [g for p in (pa, pb) for g in got[p].get("parents", []) if g in got]
+        ok["birth_descendant_up_the_line"] = all(got[g]["social_circle"].get("probe_newborn") == "descendant" for g in grand)
+        detail["birth"] = {"inherited": inh, "grandparents": grand}
+    # --- readers take the new shape
+    lc = importlib.import_module("location_context")
+    tg = importlib.import_module("travel_graph")
+    kid_like = {"social_circle": {"probe_b": "met", "probe_x": "mentioned"}, "partners": {}, "parents": []}
+    ok["readers_take_the_map"] = lc._known_keys(kid_like) == {"probe_b", "probe_x"} and tg._known_people_locations(kid_like) is not None
+    # --- backfill is a dry run by default and idempotent
+    bf = tmp / "scripts" / "lore" / "backfill_social_circle.py"
+    dry = sh([bf, "--root", tmp], tmp)
+    ok["backfill_dry_run_writes_nothing"] = "DRY RUN" in dry and "nothing written" in dry
+    sh([bf, "--root", tmp, "--apply", "--seed", 2], tmp)
+    snap = {k: json.dumps(v, sort_keys=True) for k, v in load_chars(tmp).items()}
+    sh([bf, "--root", tmp, "--apply", "--seed", 2], tmp)
+    again = {k: json.dumps(v, sort_keys=True) for k, v in load_chars(tmp).items()}
+    ok["backfill_is_idempotent"] = snap == again
+    if snap != again:
+        detail["backfill_changed_on_second_run"] = sorted(k for k in snap if snap[k] != again.get(k))[:5]
+    ok["_detail"] = detail
+    return ok
+
+
+def run_end_stats(tmp, dead_before):
+    """What the run left behind: circles by kind, completions, dead characters still holding food."""
+    chars = load_chars(tmp)
+    kinds = collections.Counter()
+    for c in chars.values():
+        circle = c.get("social_circle")
+        if isinstance(circle, dict):
+            kinds.update(circle.values())
+    # dead during THIS run and still holding food = an estate that never moved (the corpus's earlier
+    # dead predate the rule and are not judged)
+    holding = [k for k, c in chars.items() if c.get("life", {}).get("deceased") and k not in dead_before and c.get("provisions", 0) > 0]
+    arc_turns = [c["arc"]["turns"] for c in chars.values() if (c.get("arc") or {}).get("turns")]
+    return {
+        "circle_ties_by_kind": dict(kinds),
+        "characters_with_a_circle": sum(1 for c in chars.values() if isinstance(c.get("social_circle"), dict) and c["social_circle"]),
+        "dead_holding_provisions": len(holding),
+        "ongoing_arc_turns": sorted(arc_turns),
+    }
+
+
+def digest(tmp):
+    """sha256 of the draw log with timestamps stripped, of every character file and of encodings.json."""
+    out = {}
+    log = tmp / ".simulate_draw_audit.jsonl"
+    if log.exists():
+        lines = []
+        for line in log.read_text(encoding="utf-8").splitlines():
+            d = json.loads(line)
+            d.pop("timestamp", None)
+            lines.append(json.dumps(d, sort_keys=True))
+        out["draw_log"] = hashlib.sha256("\n".join(lines).encode()).hexdigest()
+        out["draw_count"] = len(lines)
+    for p in sorted((tmp / "_lore" / "characters").glob("*.json")):
+        out["char/" + p.stem] = hashlib.sha256(p.read_bytes()).hexdigest()
+    out["encodings"] = hashlib.sha256((tmp / "_lore" / "encodings.json").read_bytes()).hexdigest()
+    pj = tmp / "_lore" / "provisions.json"
+    if pj.exists():
+        out["provisions"] = hashlib.sha256(pj.read_bytes()).hexdigest()
+    return out
+
+
 def conformance_kin_failures(tmp):
     r = subprocess.run([sys.executable, str(tmp / "scripts" / "test" / "conformance_report.py"), "--root", str(tmp)], capture_output=True, text=True, cwd=tmp)
     return len(re.findall(r"also appear as partners", r.stdout))
@@ -285,6 +501,8 @@ def main():
     ap.add_argument("--seed", type=int, default=7)
     ap.add_argument("--fixture", choices=["none", "travel"], default="none")
     ap.add_argument("--baseline", default=None)
+    ap.add_argument("--births", action="store_true", help="a pair that reproduces has a child (stub name), so the birth-time circle writer runs in the loop")
+    ap.add_argument("--digest-out", default=None, help="write sha256 digests of the draw log (no timestamps), every character file and encodings.json, for a same-seed identity check")
     ap.add_argument("--json-out", default=None)
     a = ap.parse_args()
     root = Path(a.root).resolve()
@@ -301,9 +519,21 @@ def main():
         counts = collections.Counter()
         if fixture and fixture.get("skipped"):
             print(f"fixture skipped: {fixture['skipped']}")
-        run_passes(tmp, a.passes, a.seed, counts)
+        dead_before = {k for k, c in load_chars(tmp).items() if c.get('life', {}).get('deceased')}
+        run_passes(tmp, a.passes, a.seed, counts, births=a.births)
         counts["conformance_kin_invariant_failures"] = conformance_kin_failures(tmp)
+        run_digest = digest(tmp) if a.digest_out else None
+        for k_, v_ in run_end_stats(tmp, dead_before).items():
+            counts[k_] = v_  # Counter.update would add; these are plain values
         probes, extra = static_probes(tmp, counts, fixture)
+        scen = scenario_probes(tmp)
+        if a.digest_out:  # the scenario is seeded too, so the world after it is part of the identity check
+            Path(a.digest_out).write_text(json.dumps({"after_run": run_digest, "after_scenarios": digest(tmp)}, indent=1, sort_keys=True) + "\n", encoding="utf-8")
+        detail = scen.pop("_detail", {})
+        extra["scenario"] = {"passed": sorted(k for k, v in scen.items() if v), "failed": sorted(k for k, v in scen.items() if not v), "detail": detail}
+        probes["F17"] = counts["pair_scenes_without_circle_tie"] > 0 or any(not scen[k] for k in scen if k.startswith(("birth_", "readers_", "backfill_")))
+        probes["F18"] = any(not scen[k] for k in scen if k.startswith(("completion_", "reward_", "turns_", "tale_", "child_", "wider_", "completer_")))
+        probes["F19"] = counts["dead_holding_provisions"] > 0 or any(not scen[k] for k in scen if k.startswith("estate_"))
         result = {"root": str(root), "passes": a.passes, "seed": a.seed, "fixture": a.fixture, "fixture_info": fixture,
                   "observed": dict(counts), "static": extra, "probes": probes}
         if a.baseline:
