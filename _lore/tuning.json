@@ -82,6 +82,40 @@
     "arc_pressure_urgency_bonus": {"early": 0.0, "established": 0.1, "late": 0.3},
     "home_visit_work_shift": 20
   },
+  "temperament": {
+    "_comment": "Design session 2026-10-17 (TODO.md, 'Temperament traits and recent trends in the work roll'). Four traits per character, each in [-1, 1], neutral 0 (a missing field is neutral, so old characters behave as before): risk, thrift, communality, persistence. They scale weights that already exist, no new machinery. EVERY NUMBER HERE IS A FIRST GUESS, the author's to confirm (OPEN_QUESTIONS.md). Units: a 'meal' is survival.eat_amount provisions. inherit_noise: standard deviation of the gaussian added to the mean of the parents' trait at birth (then clamped). word_threshold: the enacter's brief names a trait ('bold', 'thrifty', ...) only when it is further than this from zero. recent_window_min / recent_window_max: a character keeps up to recent_window_max of its own last observations (pool per capita at its home place, its own provisions, its energy) and LOOKS at fewer or more depending on who it is, linear from trait -1 to +1, whole observations, neutral = their midpoint (5, the K of the first design): the pool-trend window follows risk (bold short, cautious long), the own-provisions window follows thrift (spender short, saver long); a window is min(window, observations available). All knobs are global, none per location. trend_scale_meals: a change of this many meals across the window is a full (+/-1) rate. pool_comfortable_meals: the pool per head the town counts as comfortable, a world constant that centres roll_survival's pool term (before this knob it was survival.provides_provisions_threshold, 2 units = 1 meal), calibrated with scripts/test/balance_economy.py --traits on. personal_trend_weight: points on the odds for a fully falling purse (the pool's own falling-trend weight is survival.weights.scarcity_pressure).",
+    "inherit_noise": 0.25,
+    "word_threshold": 0.4,
+    "recent_window_min": 2,
+    "recent_window_max": 8,
+    "trend_scale_meals": 2,
+    "pool_comfortable_meals": 1,
+    "personal_trend_weight": 10,
+    "risk": {
+      "_comment": "margin_meals_*: meals of margin wanted on top of arc_need_cost before pursuing (reserve wanted = arc_need_cost + margin x eat_amount), cautious max at risk -1, bold min at +1, linear between. The personal-cushion term is centred where a neutral character's always was and moves by the DIFFERENCE from the neutral margin, so risk 0 is today's roll. threat_k: threat terms (the negative part of energy, a falling pool or purse) are multiplied by 1 - threat_k x risk. rise_pull: points of pull toward the arc, at risk +1, for a fully rising pool and purse (asymmetric on purpose: only the bold are pulled by a rise, nobody else gets any).",
+      "margin_meals_cautious": 5,
+      "margin_meals_bold": 0,
+      "threat_k": 0.5,
+      "rise_pull": 10
+    },
+    "thrift": {
+      "_comment": "keep_meals_*: meals a character wants left in hand AFTER paying, saver at thrift +1, spender at -1. hesitation_per_meal: points off the payment odds for each meal that paying leaves them below that keep-level, measured against a neutral character's (so thrift 0 is today's odds, a spender gets a small bonus). The hard affordability gate is unchanged. trend_k: the fall of the character's own provisions is multiplied by 1 + trend_k x thrift.",
+      "keep_meals_saver": 3,
+      "keep_meals_spender": 0,
+      "hesitation_per_meal": 8,
+      "trend_k": 0.5
+    },
+    "communality": {
+      "_comment": "obligation_k: the affinity-obligation term is multiplied by max(0, 1 + obligation_k x communality). Leaning on the pool (pool_reliance) is not scaled: the self-reliant still take the safety net, they just feel no duty.",
+      "obligation_k": 1.0
+    },
+    "persistence": {
+      "_comment": "pressure_k: persistence x pressure_k is added to the normalized arc-pressure term (which runs -1..1). retry_weight: after a failed pursuit (arrived_nobody, met_mismatch, met_cannot_pay) the previous destination's weight in the destination draw gets retry_weight x persistence added (negative for the restless, floored at retry_min_fraction of its weight). How long a stalled arc is held before abandoning is NOT built (open).",
+      "pressure_k": 0.3,
+      "retry_weight": 6,
+      "retry_min_fraction": 0.1
+    }
+  },
   "arc_payment": {
     "_comment": "Design session 2026-09-13 (asymmetric per-pass rewrite, Step 8): the payment gate that replaces check_needs_provides.py's old word-overlap role as the 'is this pass motivated' signal - now a single, clear owner (arc_payment_gate() in simulate_pass_lib.py) instead of scattered logic. arc_need_cost is a flat number for now, matching the user's explicit 'start fixed, parametrize later' instruction - per-item pricing is a separate, not-yet-built system. 3 was picked to sit in the same small-integer range as the survival mechanism's own flat provisions numbers (the old survive_contribute 3, eat_amount 2) rather than inventing a new scale - a single successful arc transaction costs about as much as one pass's worth of pool contribution.",
     "arc_need_cost": 3,

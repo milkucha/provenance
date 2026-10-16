@@ -17,6 +17,8 @@ location's pool are the same food, held personally or in common.
 
 from math import floor
 
+import temperament
+
 
 def eat(personal: float, pool: float, eat_amount: int) -> dict:
     """Take `eat_amount` units from the two sources. Returns what was taken from each, the units
@@ -68,3 +70,23 @@ def resolve_pass(energy: float, personal: float, pool: float, choice: str, s: di
     energy = min(energy, s["energy_cap"])
     return {"energy": energy, "personal": personal, "pool": pool, "ate": meal["ate"],
             "units": meal["units"], "died": energy <= 0}
+
+
+def payment_odds(provisions: float, cost: float, ratio: float, thrift: float, pay: dict, s: dict,
+                 t: dict | None = None) -> dict:
+    """The payment gate's graded odds as a pure function (simulate_pass_lib.arc_payment_gate rolls
+    them; the balance script calls this same one). `provisions` is the payer's own (the hard gate,
+    provisions >= cost, is the caller's), `ratio` how near the arc is to resolving (0..1), `pay` is
+    tuning's `arc_payment` block, `s` its `survival` block, `t` its `temperament` block (None: no
+    thrift, today's odds exactly). Odds are `base + surplus_weight x surplus_norm x (1 - ratio)`, less a
+    soft hesitation for thrift: `hesitation_per_meal` for each meal paying leaves the payer below their
+    keep-level (temperament.hesitation), reported so the gate can show it. Returns the clamped
+    percentage `pct` and the `hesitation` in points (positive took odds off, negative a spender's bonus)."""
+    threshold = s["provides_provisions_threshold"]
+    surplus = provisions - cost
+    surplus_norm = min(1.0, surplus / threshold) if threshold else 0.0
+    odds = pay["odds_percent"]
+    pct = odds["base"] + pay["surplus_weight"] * surplus_norm * (1 - ratio)
+    held = temperament.hesitation(thrift, surplus, s["eat_amount"], t["thrift"]) if t else 0.0
+    pct -= held
+    return {"pct": max(odds["min"], min(odds["max"], pct)), "hesitation": held}

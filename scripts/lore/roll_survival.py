@@ -37,6 +37,13 @@ scripts/test/balance_economy.py):
     *communal* pool and this character's ties to the people sharing it; this one is about what this
     character holds personally, and nothing else.
 
+Temperament (added 2026-10-17, TODO.md 'Temperament traits and recent trends in the work roll'): four
+per-character traits (risk, thrift, communality, persistence) scale the weights above, and a short
+window of the character's own recent observations (`recent`) generalizes `scarcity_pressure` into
+rates of change of the pool and of the character's own provisions. See arc_odds()'s docstring and
+temperament.py; the knobs are `_lore/tuning.json` `temperament`. A character with neither is rolled
+as before. The roll is still one seeded draw against the odds.
+
 net_affinity itself is Sum(partners_quality[p]) / Sum(partners[p]) across ESTABLISHED partners only
 (count >= partner_threshold, same bar roll_contested.py already uses) - a character with many strong
 but negative bonds gets pushed the correct direction on both terms, not just one, since it's one
@@ -68,12 +75,14 @@ LIFESPANS_PATH = CHAR_DIR / "lifespans.json"
 sys.path.insert(0, str(SCRIPTS_DIR))
 import tuning  # noqa: E402
 import provisions_lib  # noqa: E402
+import temperament  # noqa: E402
 from horizon import band_for  # noqa: E402
 
 _T = tuning.load()
 _ARC_THRESHOLD = _T["arc_resolution_threshold"]
 _PARTNER_THRESHOLD = _T["partner_threshold"]
 _S = _T["survival"]
+_TEMP = _T["temperament"]
 
 
 def net_affinity(character: dict) -> float:
@@ -130,26 +139,66 @@ def arc_pressure(character: dict, key: str) -> float:
 
 
 def arc_odds(s: dict, energy: float, affinity: float, pressure: float,
-             per_capita: float, trend: float, provisions: float) -> dict:
+             per_capita: float, trend: float, provisions: float,
+             traits: dict | None = None, recent: list | None = None, t: dict | None = None) -> dict:
     """The work-vs-arc odds as a pure function: `s` is tuning's `survival` block, the rest are the
     raw inputs (`per_capita` and `trend` are the location pool's per-capita provisions and its change
     since the last checkpoint; `provisions` is the character's own). Returns the clamped percentage
-    chance of "arc" and the normalized terms. No I/O - the balance script calls this same function."""
+    chance of "arc" and the normalized terms. No I/O - the balance script calls this same function.
+
+    Temperament (TODO.md, 'Temperament traits and recent trends'): `t` is tuning's `temperament`
+    block, `traits` the character's {risk, thrift, communality, persistence} (missing = 0) and `recent`
+    its window of own observations. With `t` None the roll is exactly the pre-temperament one. With
+    neutral traits and no window it is that roll too, except that the pool term is centred on the
+    world's `pool_comfortable_meals` instead of the old threshold. The traits only scale weights above:
+      - risk: the personal cushion is centred on the reserve wanted (arc_need_cost + margin meals), as a
+        difference from a neutral character's; the threat terms (negative energy, falling pool or purse)
+        are scaled by 1 - threat_k x risk; the bold are pulled a little by a RISE (rise_pull).
+      - communality scales the affinity-obligation term only, never pool reliance.
+      - persistence adds to the arc-pressure term.
+      - thrift scales how much a falling purse (the character's own provisions) weighs.
+    The trend: with a window of two or more observations, the pool's rate and the purse's rate come from
+    it (temperament.rates, window lengths by risk and thrift); without one, the old checkpoint trend."""
     threshold = s["provides_provisions_threshold"]
-    pool_surplus = max(-1.0, min(1.0, (per_capita - threshold) / threshold)) if threshold else 0.0
+    tr = temperament.traits_of(traits) if t else dict(temperament.NEUTRAL)
+    eat = s["eat_amount"]
+    comfortable = t["pool_comfortable_meals"] * eat if t else threshold
+    pool_surplus = max(-1.0, min(1.0, (per_capita - comfortable) / comfortable)) if comfortable else 0.0
     trend_normalized = max(-1.0, min(1.0, trend / threshold)) if threshold else 0.0
-    personal_cushion = max(-1.0, min(1.0, (provisions - threshold) / threshold)) if threshold else 0.0
+    shift = temperament.reserve_shift(tr["risk"], eat, t["risk"]) if t else 0.0
+    personal_cushion = max(-1.0, min(1.0, (provisions - threshold - shift) / threshold)) if threshold else 0.0
+    threat = temperament.threat_factor(tr["risk"], t["risk"]) if t else 1.0
 
     w = s["weights"]
     pct = s["odds_percent"]["arc_base"]
-    pct += w["energy"] * (energy / s["energy_cap"] - 0.5) * 2
-    pct += w["arc_pressure"] * (pressure * 2 - 1)
+    energy_term = w["energy"] * (energy / s["energy_cap"] - 0.5) * 2
+    if energy_term < 0:
+        energy_term *= threat
+    pct += energy_term
+    pressure_term = (pressure * 2 - 1) + (t["persistence"]["pressure_k"] * tr["persistence"] if t else 0.0)
+    pct += w["arc_pressure"] * max(-1.0, min(1.0, pressure_term))
     pct += w["pool_reliance"] * pool_surplus * affinity
-    pct -= w["affinity_obligation"] * affinity
-    pct += w["scarcity_pressure"] * min(0.0, trend_normalized)
+    pct -= w["affinity_obligation"] * affinity * (temperament.obligation_factor(tr["communality"], t["communality"]) if t else 1.0)
+
+    pool_rate = personal_rate = None
+    if t and recent:
+        scale = t["trend_scale_meals"] * eat
+        pool_rate, personal_rate = temperament.rates(
+            recent, scale, temperament.pool_window(tr["risk"], t), temperament.personal_window(tr["thrift"], t))
+    pool_effective = pool_rate if pool_rate is not None else trend_normalized
+    pct += w["scarcity_pressure"] * min(0.0, pool_effective) * threat
+    personal_term = pull = 0.0
+    if personal_rate is not None:
+        personal_term = (t["personal_trend_weight"] * min(0.0, personal_rate)
+                         * temperament.personal_trend_factor(tr["thrift"], t["thrift"]) * threat)
+    if pool_rate is not None or personal_rate is not None:
+        rise = (max(0.0, pool_rate or 0.0) + max(0.0, personal_rate or 0.0)) / 2
+        pull = t["risk"]["rise_pull"] * max(0.0, tr["risk"]) * rise
+    pct += personal_term + pull
     pct += w["personal_cushion"] * personal_cushion
     pct = max(s["odds_percent"]["min"], min(s["odds_percent"]["max"], pct))
-    return {"pct": pct, "pool_surplus": pool_surplus, "trend": trend_normalized,
+    return {"pct": pct, "pool_surplus": pool_surplus, "trend": pool_effective,
+            "personal_trend": personal_rate or 0.0, "rise_pull": pull,
             "personal_cushion": personal_cushion}
 
 
@@ -167,6 +216,7 @@ def roll(character: dict, key: str, home_location: str, rng: Random | None = Non
         provisions_lib.provisions_per_capita(home_location),
         provisions_lib.provisions_trend(home_location),
         character.get("provisions", _S["starting_provisions_per_capita"]),
+        traits=character.get("temperament"), recent=character.get("recent"), t=_TEMP,
     )
     pct = odds["pct"]
 
@@ -175,7 +225,8 @@ def roll(character: dict, key: str, home_location: str, rng: Random | None = Non
         "choice": choice, "reason": None, "odds_used": round(pct, 1),
         "energy": energy, "arc_pressure": round(pressure, 2),
         "pool_surplus": round(odds["pool_surplus"], 2), "net_affinity": round(affinity, 2),
-        "scarcity_trend": round(odds["trend"], 2),
+        "scarcity_trend": round(odds["trend"], 2), "personal_trend": round(odds["personal_trend"], 2),
+        "rise_pull": round(odds["rise_pull"], 1),
         "personal_cushion": round(odds["personal_cushion"], 2),
     }
 
@@ -206,6 +257,8 @@ def main() -> None:
         print(f"net_affinity: {result['net_affinity']}")
         print(f"scarcity_trend: {result['scarcity_trend']}")
         print(f"personal_cushion: {result['personal_cushion']}")
+        print(f"personal_trend: {result['personal_trend']}")
+        print(f"rise_pull: {result['rise_pull']}")
 
 
 if __name__ == "__main__":

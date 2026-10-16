@@ -35,6 +35,9 @@ import rng_context  # noqa: E402
 import location_context  # noqa: E402
 import travel_graph  # noqa: E402
 import arc_completion  # noqa: E402
+import provisions_lib  # noqa: E402
+import temperament  # noqa: E402
+import economy_rules  # noqa: E402
 
 T = tuning.load()
 PARTNER_THRESHOLD = T["partner_threshold"]
@@ -45,6 +48,7 @@ ARC_RESOLUTION_THRESHOLD = T["arc_resolution_threshold"]
 SURVIVAL = T["survival"]
 ARC_MATCH_BOOST_FACTOR = T["arc_match_boost_factor"]
 ARC_PAYMENT = T["arc_payment"]
+TEMPERAMENT = T["temperament"]
 
 CONTEXTS = json.loads((ROOT / "_lore" / "contexts.json").read_text(encoding="utf-8"))
 
@@ -282,32 +286,34 @@ def arc_payment_gate(p1_key: str, p2_key: str, arc: dict) -> dict:
     approaching 1 near completion) - a near-complete arc leans less on raw economics to advance
     further. On success, transfers `arc_need_cost` in `provisions` from p1 to p2 (both files
     written) - this success is what makes the pass "motivated," gating the unchanged
-    contested/alignment/outcome chain below it."""
+    contested/alignment/outcome chain below it.
+
+    Thrift (2026-10-17, temperament): the hard gate above is unchanged; the odds also lose a soft
+    hesitation, `hesitation_per_meal` for each meal that paying would leave the payer below their
+    keep-level (saver ~3 meals, spender 0), measured against a neutral character's. The odds are
+    economy_rules.payment_odds(); the returned `odds_used` is after it and `hesitation` is the points
+    it took off (negative for a spender), also logged in the draw audit."""
     cost = ARC_PAYMENT["arc_need_cost"]
     p1_char = load_char(p1_key)
     provisions = p1_char.get("provisions", SURVIVAL["starting_provisions_per_capita"])
     if provisions < cost:
         return {"motivated": False, "reason": "cannot_afford", "odds_used": None, "cost": cost}
 
-    surplus = provisions - cost
-    threshold = SURVIVAL["provides_provisions_threshold"]
-    surplus_norm = min(1.0, surplus / threshold) if threshold else 0.0
     ratio = min(1.0, abs(tally(arc.get("history", []))) / ARC_RESOLUTION_THRESHOLD) if ARC_RESOLUTION_THRESHOLD else 0.0
-
-    odds = ARC_PAYMENT["odds_percent"]
-    pct = odds["base"] + ARC_PAYMENT["surplus_weight"] * surplus_norm * (1 - ratio)
-    pct = max(odds["min"], min(odds["max"], pct))
+    thrift = temperament.traits_of(p1_char)["thrift"]
+    odds_ = economy_rules.payment_odds(provisions, cost, ratio, thrift, ARC_PAYMENT, SURVIVAL, TEMPERAMENT)
+    pct, held = odds_["pct"], odds_["hesitation"]
 
     seed, draw_index = rng_context.reserve_seed(ROOT)
     rng = Random(seed)
     success = rng.random() < (pct / 100.0)
     rng_context.log_draw(
         ROOT, "arc_payment_gate.py", [p1_key, p2_key],
-        {"success": success, "odds_used": round(pct, 1)}, seed, draw_index,
+        {"success": success, "odds_used": round(pct, 1), "hesitation": round(held, 1)}, seed, draw_index,
     )
 
     if not success:
-        return {"motivated": False, "reason": "payment_failed", "odds_used": round(pct, 1), "cost": cost}
+        return {"motivated": False, "reason": "payment_failed", "odds_used": round(pct, 1), "hesitation": round(held, 1), "cost": cost}
 
     p1_char["provisions"] = max(0, provisions - cost)  # floored at 0, same as provisions_lib.set_provisions
     save_char(p1_key, p1_char)
@@ -315,7 +321,7 @@ def arc_payment_gate(p1_key: str, p2_key: str, arc: dict) -> dict:
     p2_char["provisions"] = max(0, p2_char.get("provisions", SURVIVAL["starting_provisions_per_capita"]) + cost)
     save_char(p2_key, p2_char)
 
-    return {"motivated": True, "reason": None, "odds_used": round(pct, 1), "cost": cost}
+    return {"motivated": True, "reason": None, "odds_used": round(pct, 1), "hesitation": round(held, 1), "cost": cost}
 
 
 def ancestors_of(key: str, cache: dict | None = None) -> set:
@@ -592,7 +598,7 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
     def _own_routine_roll(character: dict) -> str:
         return roll_routine(character.get("routines", []))
 
-    def _write_back(location: str, last_scene: str, pursuit=None) -> None:
+    def _write_back(location: str, last_scene: str, pursuit=None, retry=_KEEP) -> None:
         """Task fix (2026-09-13 smoke test): the automated `/simulate` pipeline (pass_apply.py,
         simulate_driver.py's apply_solo()) never wrote `location`/`places_visited`/`last_scene` back
         to a character's file - only /enact's own interactive Step 10 did. That silently broke the
@@ -613,7 +619,11 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
 
         Also owns the character's `pursuit` field (the destination they are walking toward): a dict
         while a journey is in progress, cleared (None) by every other exit, so the default is to end
-        the journey. `_KEEP` leaves it as it is."""
+        the journey. `_KEEP` leaves it as it is.
+
+        Also owns `failed_destination` ({need, place}), what persistence reads (2026-10-17): set by the
+        three failed-pursuit exits (arrived_nobody, met_mismatch, met_cannot_pay), cleared by a purchase,
+        consumed by the next destination draw. `_KEEP` (the default) leaves it as it is."""
         character = load_char(p1)
         character["location"] = location
         visited = character.setdefault("places_visited", [])
@@ -627,6 +637,11 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
                 character["pursuit"] = pursuit
             else:
                 character.pop("pursuit", None)
+        if retry is not _KEEP:
+            if retry:
+                character["failed_destination"] = retry
+            else:
+                character.pop("failed_destination", None)
         save_char(p1, character)
 
     afford = {"v": None}  # set by _apply_p1 (after eating) and read by _pursuit; see could_afford below
@@ -671,6 +686,16 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
     # Mid-journey, "home" for the work-or-arc roll is where they set out from, not the hop they are
     # standing on (audit F7, second half).
     home_location = (journey or {}).get("origin") or location_now
+    # The character's own turn: one more entry in its `recent` window (pool per capita at its home
+    # place, its provisions, its energy), written before the roll so the roll reads it. No dice.
+    p1_char["recent"] = temperament.observe(
+        p1_char.get("recent"),
+        provisions_lib.provisions_per_capita(home_location) if provisions_lib.has_pool(home_location) else None,
+        p1_char.get("provisions", SURVIVAL["starting_provisions_per_capita"]),
+        p1_char.get("energy", SURVIVAL["energy_cap"]),
+        TEMPERAMENT["recent_window_max"],
+    )
+    save_char(p1, p1_char)
     p1_survival = roll_survival(p1, home_location)
 
     # Step 3 - work: p1's own routine roll, unweighted, apply at that location, done. No second
@@ -763,6 +788,13 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
         options = location_context.destination_options(
             p1_char, need, encodings_data, list(all_characters.values()), CONTEXTS, T.get("pursuit"),
         )
+        # Persistence: a failed pursuit's destination is remembered (failed_destination); the
+        # persistent are pulled back to it, the restless pushed off. Read and consumed here, once.
+        fresh = load_char(p1)
+        retry = fresh.pop("failed_destination", None)
+        if retry:
+            save_char(p1, fresh)
+            options = temperament.retry_adjust(options, retry, need, temperament.traits_of(p1_char)["persistence"], TEMPERAMENT["persistence"])
         chosen = draw_destination(p1, need, options) if options else None
         if chosen:
             target, path = chosen["location"], chosen["path"]
@@ -852,7 +884,7 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
             f"{p1} arrived at {location} for '{need}' but {'the person they came for' if wanted else 'no supplier'} "
             f"was not there ({reason}); spent the pass with {p2} instead - arc doesn't advance"
         )
-        _write_back(location, f"Arrived at {location}, found no supplier, and spent the pass with {p2}.")
+        _write_back(location, f"Arrived at {location}, found no supplier, and spent the pass with {p2}.", retry={"need": need, "place": location})
 
     if not candidates:
         _apply_p1(location, "arc", None)
@@ -897,7 +929,7 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
     if need not in p2_provides:
         _pursuit("met_mismatch", "context_does_not_provide", location, supplier=p2, present=[p2])
         notes.append(f"{p1} met {p2} at {location}, but {p2}'s own routine this pass ({p2_context}) doesn't provide '{need}' - scene, no purchase")
-        _write_back(location, f"Met {p2} at {location} but they had nothing to offer this pass.")
+        _write_back(location, f"Met {p2} at {location} but they had nothing to offer this pass.", retry={"need": need, "place": location})
         return result
 
     # Step 8 - payment gate. No arc outcome is rolled unless the purchase goes through.
@@ -906,9 +938,11 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
         _pursuit("met_cannot_pay", payment["reason"], location, supplier=p2, present=[p2])
         notes.append(
             f"{p1} met {p2} at {location} ('{need}' available) but the payment gate failed "
-            f"({payment['reason']}, odds {payment['odds_used']}) - scene, no arc outcome"
+            f"({payment['reason']}, odds {payment['odds_used']}"
+            + (f", thrift hesitation {payment['hesitation']:g}" if payment.get("hesitation") else "")
+            + ") - scene, no arc outcome"
         )
-        _write_back(location, f"Met {p2} at {location} but couldn't afford '{need}'.")
+        _write_back(location, f"Met {p2} at {location} but couldn't afford '{need}'.", retry={"need": need, "place": location})
         return result
 
     result["motivated"] = True
@@ -930,7 +964,7 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
     gate_hit = gate_res["gate"] == "hit"
     result["arc"]["gate"] = "hit" if gate_hit else "miss"
     if not gate_hit:
-        _write_back(location, f"Completed a trade with {p2} at {location} for '{need}'.")
+        _write_back(location, f"Completed a trade with {p2} at {location} for '{need}'.", retry=None)
         return result
 
     inclined = gate_res.get("inclined", "neutral")
@@ -992,6 +1026,6 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
         last_scene = f"Completed a trade with {p2} at {location} for '{need}' - arc failed."
     else:
         last_scene = f"Completed a trade with {p2} at {location}, arc {tally_word}."
-    _write_back(location, last_scene)
+    _write_back(location, last_scene, retry=None)
 
     return result
