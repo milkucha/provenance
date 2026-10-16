@@ -150,7 +150,7 @@ Two kinds of lever: grow the record, or put it in motion. The walk-through is "G
 
 **The Ollama enacter.** Writing the scene is the one judgment step. It goes to a Claude subagent, or to a local Ollama model (`qwen2.5:14b` by default) through `enact_via_ollama.py`, which demands strict JSON (scene lines, hearsay claims) so a small model can't wander into free text, and reads a fixed preamble of writing rules fresh on every call. The orchestrating session does everything else itself, which is what makes the local path cheap.
 
-Runs live in disposable git worktrees that are never merged back on their own. Known gaps: the rivalry follow-up (`leads`) has no call site in the current model, `social_circle` is a field nothing writes to, and *reflection* (a character processing alone) is undesigned.
+Runs live in disposable git worktrees that are never merged back on their own. Known gaps: the rivalry follow-up (`leads`) has no call site in the current model, and *reflection* (a character processing alone) is undesigned.
 
 ### Testing
 
