@@ -76,6 +76,36 @@ Found while walking through one pass; each confirmed by reading `pass_prep.py`, 
   `pursuit` stage and reason; (4) `ending` leak: undecided, see the open question below.
 - Failure modes: named since 2026-10-17, each exit of the pursuit branch sets `brief.pursuit` (`simulate_pass_lib.PURSUIT_STAGES`); the free-text `notes` stay too.
 
+## Travel as nodes, social circle writer, class through inheritance (raised 2026-10-17, designed, not built)
+
+**Travel (author's decision).** Routes are nodes between locations, and locations themselves. Distance
+is uniform: every connection between two places gets one automatic node in the middle, so A to B is
+two hops (A, road, B) and B to C through A is four (B, road, A, road, C). Roads are derived from the
+city connections, not authored one by one. Today the graph is `routes[].endpoints` edges with no node
+between: a hop lands the character on the next place, and neither standalone nor the three-city corpus
+has any routes at all (travel only runs in test fixtures).
+- Proposed, awaiting the author's call: road nodes have no provisions pool, so travellers eat only from
+  their own provisions and a journey costs food; a road's description comes from a template on its
+  endpoints for the enacter's place block.
+
+**Social circle (author's sources).** What writes `social_circle`: the parents and 30% of their
+circles, characters they have met, characters referenced in their knowledge, and their children and
+descendants. Nothing writes it today, and the known-supplier tier of destination choice reads it.
+- Proposed, awaiting the author's call: a script ("circle writer") seeds it at birth (parents plus a
+  seeded 30% draw of theirs), adds the co-participant after each scene and children when born,
+  and adds knowledge-referenced characters when knowledge changes; stored, each entry with a kind
+  (parent, child, met, mentioned, inherited), not computed on read.
+
+**Class (author's idea).** Through provisions, with the other two capitals already covered. Completing
+an arc is filed as a tale (already built); descendants bequeath something (a bigger starting reserve
+or a permanent boost) so it can compound across generations.
+- Proposed, awaiting the author's call: bequeath at death, split among living children, with a bonus
+  to the estate when an arc was completed (a permanent multiplier would run away); inherit all three
+  capitals together: the estate, the 30% circle share, and the ancestor's completion tale entering the
+  descendants' knowledge sample with higher odds; class as a derived index of the three capitals for
+  tests and display, not a stored attribute or a mechanic. The balance script should model
+  generations before this is built.
+
 ## Economy rewrite: one substance, work pays the worker (author's rules 2026-10-17, built 2026-10-17, open items below)
 
 **Built:** `survive` is `work` everywhere it names the choice (choice value, tuning, brief, preamble, docs; an old `survive` is still read as `work`). Work gives the character +2 provisions and the pool +1 (`work_personal`, `work_pool`). Eating is universal and independent of the choice: 2 units, one from the character, one from the pool, a shortfall on either side filled from the other, a half meal if both fall short (energy +1 per unit eaten, units are whole; `ate` is full, half or none). Upkeep stays flat per head, no decay anywhere (the author's call), pool starts at 2 x population, personal default 2, the payment gate unchanged. The rule is pure (`scripts/lore/economy_rules.py`: `eat`, `upkeep`, `resolve_pass`; the odds formula is `roll_survival.arc_odds`) and `scripts/test/balance_economy.py` calls those same functions on a toy town. `could_afford` in the pursuit brief is now measured after the pass's eating (the same number the gate sees); it used to be read before.
