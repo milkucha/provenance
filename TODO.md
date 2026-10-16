@@ -50,6 +50,27 @@ Ran the mechanical scripts (no model) on a scratch copy of `corpus-three-cities`
 - [ ] **Stale (READ):** `diagrams/gen_simulate_pass.py` and `simulate-pass.html` still draw the pair model with lead override; `roll_contested.py` and `simulate_pass_reproduction.py` docstrings say `partner_threshold` 5 (tuning says 3); `enact_preamble.md` still talks about "who is home and who is visiting".
 - `set_provisions` has no floor: confirmed (RAN, it stores -5), but nothing can reach it today (`apply_survival` only eats when `pool >= eat_amount`, `apply_upkeep` clamps at 0). Latent, not live.
 
+## What the enacter is given: three gaps found reading the brief (raised 2026-10-17, not fixed)
+
+Found while walking through one pass; each confirmed by reading `pass_prep.py`, `enact_preamble.md` and
+`simulate_driver.py`, and by running `pass_prep.py` on a scratch corpus copy.
+- **No knowledge goes in.** The enacter gets each character's criterion, routine and arc premise, and
+  nothing of their education, experience or hearsay, nor anything about the place (what Gorff is).
+  `/simulate`'s SKILL.md says this on purpose (short, stable prompt for small models), but the
+  preamble still tells it to never invent anything "outside a character's own sample" with no sample
+  given, and Part I's "agents only know what their characters know" isn't true of the scene in any
+  useful sense.
+- **`horizon_pre.ending: true` reaches the enacter.** The lifespan is meant to be secret (the model
+  may only be told early/established/late), and the preamble says it can't know whether a scene is a
+  last one, yet the JSON it receives carries `ending` and `lived`. Likely a leak; the rest of the
+  system treats the field as orchestrator-only.
+- **The brief's fields are never explained to the model.** The preamble covers `arc.gate`/`outcome`
+  and little else; `motivated`, `matched_need`, `contested`, `survival`, `horizon_pre` are raw flags
+  with no legend.
+- Failure modes (arrived and nobody there, had the means but didn't find them, can't pay, no route,
+  nowhere to look, died on the way) are not named by the code today: each branch only appends a
+  free-text line to `notes`. Idea to discuss: each branch sets a structured `pursuit` stage and reason.
+
 ## Pursuit redesign: destination choice, failed pursuits as scenes (raised 2026-10-17, direction set, not built)
 
 Author's decisions, from the walk-through of one pass:
