@@ -76,6 +76,25 @@ Found while walking through one pass; each confirmed by reading `pass_prep.py`, 
   nowhere to look, died on the way) are not named by the code today: each branch only appends a
   free-text line to `notes`. Idea to discuss: each branch sets a structured `pursuit` stage and reason.
 
+## Economy rewrite: one substance, work pays the worker (author's rules 2026-10-17, not built)
+
+Rules as given: `survive` is renamed `work`. Work gives the character +2 provisions and the pool +1.
+Eating takes 1 from the pool and 1 from the character's provisions; with no personal provisions it
+takes 2 from the pool; with no pool it takes 2 from personal provisions. Personal provisions and the
+pool become one substance at two scopes (the sketch in "Personal provisions and inheritance economy").
+- Why: today personal provisions have no source (audit F1) and paying for an arc costs nothing to
+  survival. Under these rules paying for an arc costs food you could have eaten.
+- A toy simulation (one town, random actor each pass, fixed work share, no arc payments, no
+  survive/arc feedback; script in the session scratchpad, not in the repo) found: food in is +3 per work
+  pass and out is -2 per pass, so a population needs to work about two thirds of the time to
+  hold, whatever the split; the new rules keep large towns alive at 70% work where the old ones lose
+  most of them, but the pool sits near 0 permanently (upkeep drains it faster than +1 per work pass
+  refills it), so the commons stops mattering unless upkeep or the pool's share changes.
+- Open: eating when neither source alone covers 2 (personal 1, pool 0; personal 0, pool 1); the pool's
+  share of work and the upkeep rate; renaming only the choice value or the whole mechanism; and a
+  balance script under scripts/test to tune it by running instead of guessing. Wait for the pursuit
+  redesign branch (`sim-pursuit-redesign`) to land before touching `apply_survival.py` again.
+
 ## Pursuit redesign: destination choice, failed pursuits as scenes (raised 2026-10-17, direction set, not built)
 
 Author's decisions, from the walk-through of one pass:
