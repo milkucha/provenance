@@ -40,17 +40,19 @@ Ran the mechanical scripts (no model) on a scratch copy of `corpus-three-cities`
 - [ ] **A locally satisfiable need costs energy and goes nowhere (RAN).** `run_pass_mechanics()` Step 4 returns after the routine roll: no `arc.history` entry, no payment, no scene. 19 of 40 corpus passes and 90 of 200 fixture passes were this, each paying `arc_extra_cost`. In a three-city world every need is provided somewhere in each city (`location_provides` is presence-only), so arcs freeze. Whether that is meant is a question, see OPEN_QUESTIONS.md.
 - [ ] **The criterion shock gate isn't in the brief (READ).** SKILL.md Step 3 point 4 says `criterion_move` is for when "the brief's own anchor-reference check flagged it", but `pass_prep.py`/`simulate_pass_brief.py` never run `check_anchor_reference.py`; `pass_record.py` runs it after the scene, and `simulate_driver.py` throws that output (and `check_resonance.py`'s) away. A move is whatever the model volunteers, and `synthesis` never fires on the driver path.
 - [ ] **`measure_drift` has no producer (READ + RAN).** `enact_via_ollama.REPLY_SCHEMA` has no `derived_from`, `lineage_coin.py` has no call site on the unattended path, and `pass_prep.py` never samples the hearsay pool into the scene. The instrument ran and found "no retelling edges".
-- [ ] **The dead can be met (RAN).** `candidates_at()`, `location_provides()`, `find_supplier_locations()` and `travel_graph`'s known-people lookup never check `life.deceased`. On the corpus copy, 13 of the 35 candidates at one city were dead; a dead character can be rolled as p2, take the payment, get `lived` +1 and be recorded as a partner. Their routines also still make a city "provide" things.
+- [x] **The dead can be met (RAN).** Fixed 2026-10-17 (pursuit redesign): `candidates_at()`, `location_context_tally()` (so `location_provides()` too), `find_supplier_map()` and `travel_graph`'s known-people lookup all skip `life.deceased`; the audit probe reads 0 dead among 22 candidates. Original finding: `candidates_at()`, `location_provides()`, `find_supplier_locations()` and `travel_graph`'s known-people lookup never check `life.deceased`. On the corpus copy, 13 of the 35 candidates at one city were dead; a dead character can be rolled as p2, take the payment, get `lived` +1 and be recorded as a partner. Their routines also still make a city "provide" things.
 - [ ] **Meetable pool isn't filtered by the need (RAN).** `candidates_at()` takes everyone with a routine at the location; p2 then has to roll that location and a providing context. With one supplier among 22 it was 9 mismatches out of 11 meetings.
-- [ ] **A journey resets on a survive roll (READ).** Step 3 rolls the character's own routine, so a traveler mid-route is back at a routine location the next time they choose survive. Also `roll_survival` is handed `p1_char["location"]` as "home", which after a hop is the hop.
+- [x] **A journey resets on a survive roll (READ).** Fixed 2026-10-17: the destination is kept in the character's `pursuit` field, a survive roll mid-journey works in place and leaves it alone, and `roll_survival` is handed the origin, not the hop. Seen in a seeded 200-pass run: 3 survive rolls mid-journey, 0 resets. Original finding: Step 3 rolls the character's own routine, so a traveler mid-route is back at a routine location the next time they choose survive. Also `roll_survival` is handed `p1_char["location"]` as "home", which after a hop is the hop.
 - [ ] **Solo-pass death: recorded, not finished (READ).** `apply_solo()` calls `record_death.py`, but shock candidates are never resolved and death-legacy never rolls; the manual path in SKILL.md has no CLI for `apply_solo` at all (`pass_apply.py`/`pass_record.py` still require `--p2`).
 - [ ] **`conformance_report.py` flags 69 kin-as-partner failures on the pristine corpus (RAN).** The invariant is `parents & partners`, but `record_partner` now fires on any crossing and pairing no longer excludes kin (the real exclusion is in `simulate_pass_reproduction`). It tests the wrong thing now. Its fixed-odds table also lists `roll_lead_followup` (dead) and misses survive/meetable/payment.
 - [ ] **p2 gets no survival step (READ).** No upkeep, eating or energy cost for the person met, only `lived` and the partner bump. A newborn gets no `energy`/`provisions` (defaults), and a dead character's provisions vanish.
 - [ ] **Dead or write-only (READ):** `leads` (written by `apply_contested_lead`, read by nothing), `social_circle` (read in 3 places, written by nothing), `last_scene` (no script reads it), tuning keys `lead_expiry_passes`, `home_visit_survival_shift`, `odds_percent.lead_followup`; `arc.context` is only read by death-legacy and `register_arc_concept`.
 - [ ] **Stale (READ):** `diagrams/gen_simulate_pass.py` and `simulate-pass.html` still draw the pair model with lead override; `roll_contested.py` and `simulate_pass_reproduction.py` docstrings say `partner_threshold` 5 (tuning says 3); `enact_preamble.md` still talks about "who is home and who is visiting".
-- `set_provisions` has no floor: confirmed (RAN, it stores -5), but nothing can reach it today (`apply_survival` only eats when `pool >= eat_amount`, `apply_upkeep` clamps at 0). Latent, not live.
+- ~~`set_provisions` has no floor~~ Fixed 2026-10-17: floored at 0, and so is the payment gate's write to personal provisions.
 
-## What the enacter is given: three gaps found reading the brief (raised 2026-10-17, not fixed)
+## What the enacter is given: three gaps found reading the brief (raised 2026-10-17, built 2026-10-17 on `sim-pursuit-redesign`)
+
+**Done:** (1) `pass_prep.enacter_input()` puts each participant's whole knowledge sample (education refs resolved to text, experience incl. hearsay carried) plus `name` into `characters`, the place and the universal facts beside it; `tuning.json` `enacter_knowledge` can cap it (default none). Measured on 12 corpus pair scenes: knowledge about 11,100 chars (about 2,800 tokens), whole brief 3,300 -> 15,800 chars. (2) `enact_preamble.md` has a legend of every field and of each pursuit stage, and the contradiction about "a character's own sample" is gone. (3) `ending` and `lived` no longer reach the enacter: `horizon_pre` is the band only, and `enact_via_ollama.enacter_view()` enforces it; the driver and `pass_apply.py` re-read `horizon.py` for their own bookkeeping. Still open: the cost (see OPEN_QUESTIONS), the criterion shock gate, `derived_from`/`lineage_coin`.
 
 Found while walking through one pass; each confirmed by reading `pass_prep.py`, `enact_preamble.md` and
 `simulate_driver.py`, and by running `pass_prep.py` on a scratch corpus copy.
@@ -72,11 +74,11 @@ Found while walking through one pass; each confirmed by reading `pass_prep.py`, 
   character, to be measured); (2) add a legend of every brief field to the preamble; the composed
   one-line sentence is not wanted for now; (3) name the failure modes in code with a structured
   `pursuit` stage and reason; (4) `ending` leak: undecided, see the open question below.
-- Failure modes (arrived and nobody there, had the means but didn't find them, can't pay, no route,
-  nowhere to look, died on the way) are not named by the code today: each branch only appends a
-  free-text line to `notes`. Idea to discuss: each branch sets a structured `pursuit` stage and reason.
+- Failure modes: named since 2026-10-17, each exit of the pursuit branch sets `brief.pursuit` (`simulate_pass_lib.PURSUIT_STAGES`); the free-text `notes` stay too.
 
-## Pursuit redesign: destination choice, failed pursuits as scenes (raised 2026-10-17, direction set, not built)
+## Pursuit redesign: destination choice, failed pursuits as scenes (raised 2026-10-17, built 2026-10-17 on `sim-pursuit-redesign`, open items below)
+
+**Built:** weighted destination draw (`location_context.destination_options`/`pick_destination`, knobs in `tuning.json` `pursuit`, logged as `pursuit_destination`), kept destination (`pursuit` on the character), bystander scene (`pursuit_bystander`), solo flag, failed payment as a scene with no arc outcome, `brief.pursuit` stages, `brief.scene`, sorted travel-graph neighbours (a seeded pair is identical across processes with different `PYTHONHASHSEED`). The choices where the spec left room are in OPEN_QUESTIONS.md.
 
 Author's decisions, from the walk-through of one pass:
 - **Destination choice is weighted, not nearest-wins.** Known suppliers (people in the character's own
@@ -91,11 +93,8 @@ Author's decisions, from the walk-through of one pass:
 - **Can't pay:** a scene with the provider present. No arc outcome is rolled on a failed-payment scene;
   the arc outcome is rolled only once the purchase conditions with the supplier are met.
 - The brief carries what the enacter needs to know about the situation; the facts are rolled first.
-- Open: the brief's shape (see what the enacter is given: `pass_prep.py` output = `horizon_pre`,
-  `brief`, `characters`); whether a failed-payment scene can roll an outcome that moves provisions
-  (favor, debt, work for pay), which would also be the faucet the audit says is missing; token cost,
-  since every pursue pass would now spend a model call and lean is a stated objective; tie-breaking in
-  the travel graph (neighbours are sets, so order may vary between processes, unverified).
+- Settled by building: the brief's shape (`horizon_pre` band only, `brief`, `characters`, `place`, `facts`); tie-breaking in the travel graph (sorted).
+- Still open: whether a failed-payment scene can roll an outcome that moves provisions (favor, debt, work for pay), which would also be the faucet the audit says is missing; token cost, now measured: with nobody able to pay, about 10% of passes dispatch the enacter for a scene that is only a failed purchase or a miss (OPEN_QUESTIONS.md); whether a solo scene gets an enacter.
 
 ## `leads`/rivalry-followup mechanism orphaned by the asymmetric per-pass rewrite (raised 2026-09-13, not built)
 
