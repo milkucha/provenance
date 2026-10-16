@@ -3,6 +3,34 @@
 Open implementation decisions and work, deferred for later. This is a build/production backlog —
 open questions about the lore itself live in `_lore/unknowns.md`, not here.
 
+## Website and front-end platform (raised 2026-10-16, direction decided, nothing built)
+
+Stage 1: static explainer site (blueprints plus prose), no backend. Stage 2: local web app, a backend
+wrapping the existing scripts and `simulate_driver.py`, serving a UI on localhost; worlds stay files
+in git so corpus branches keep working. Stage 3: hosted version, only if there's demand.
+- Stack: TypeScript and React (the rest of the libraries still to pick).
+- Engine and model access stay separate: one small `complete(task, prompt)` interface, providers
+  behind it (Ollama, any OpenAI-compatible endpoint). OpenCode is a possible optional adapter, not
+  the runtime; its server mode is unverified.
+- Parked: a hosted default model for everyone, and who pays for inference. Decide with real
+  per-pass token numbers (`simulate_token_usage.py`, `LAB_REPORT.md`).
+- Run the test suite per model tier so "supported models" is a measured list.
+- Prerequisite: audit which skills (`/enact`, `/character`, ...) still need an interactive agent
+  and can't run through the headless driver.
+
+## Branch workflow (decided 2026-10-16)
+
+`provenance-standalone` stays engine-only, no corpus, always current. Corpora get their own branch off
+it: `corpus-three-cities` exists; a Milkantis branch (Minecraft forever-world lore) is next.
+- Open on `corpus-three-cities` (see its `OPEN_QUESTIONS.md`): `criterion.derivation` should be
+  `"derived"` for the 15 authored characters, `contexts.json` `provides` vocabulary vs. standalone's
+  (OPEN_QUESTIONS.md on standalone), and 9 characters keep `origin` in `criterion.history`.
+- Standalone: `provisions_lib.set_provisions` has no floor; `data/` and `_npcs/` still carry named
+  NPC dialogue; `GESTURES.md` says 13 gestures, README says 12; `apply_language_layer.py` and
+  `simulate_record_run.py` failed `--help` under the corpus agent's run but passed the earlier smoke
+  check, so check whether it's the environment; the "not built" headers below for travel and
+  provisions are stale after c444b49.
+
 ## `leads`/rivalry-followup mechanism orphaned by the asymmetric per-pass rewrite (raised 2026-09-13, not built)
 
 The old pairing model's rivalry-persistence loop — a contested "hinder" outcome writes a `leads`

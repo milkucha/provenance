@@ -21,6 +21,29 @@ and open questions that were live at a given point, even ones later settled else
 
 ---
 
+### 2026-10-16 — Branches get a rule; the front end gets a direction
+
+Sorted out what the branches are for. `provenance-standalone` is the engine and nothing else: always
+state-of-the-art, never a lore corpus. Each corpus lives on its own branch cut from it
+(`corpus-three-cities` now, a Milkantis one from the Minecraft forever-world lore later), so a corpus
+shows how the current engine treats that corpus, not how an old one did. The two old archive branches
+(`recovered-simulate-work`, `provenance-bare`) turned out to hold nothing the engine lacked once the
+infra fixes were ported; most of "bare" was already in standalone under newer names. The old
+three-cities dump that had been sitting in `_test/` on standalone was a stashed corpus, not a test
+fixture, so it went.
+
+Importing that corpus onto the new schema showed what migration costs: most of it was mechanical
+renames, but the authored characters still carried prose in a field that now takes two values, and
+the conformance check's one failure was the check reading the wrong thing, not the data.
+
+Website, in the same sitting. It starts as an explainer built from the blueprints and grows into the
+platform. Decided: TypeScript and React; worlds stay files in git; the engine is separate from model
+access, behind one small "complete this task" interface, with Ollama and bring-your-own endpoints
+first. A hosted default model is parked, and the test suite doubles as the thing that qualifies
+which models are supported. Tracked in `TODO.md`.
+
+---
+
 ### 2026-09-13 — Full lore-schema cleanup ahead of the next simulation; grounding, travel, and provisions sketched
 
 A long architecture-tightening pass, prompted by the standalone branch having accumulated entropy
