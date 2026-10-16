@@ -19,6 +19,9 @@ JSON reply shape given below.
   - `criterion`: what they count as a life well spent (`standard`), a wasted one (`wasted_life`), who
     they `trust` and `distrust`, and the `anchor`, the one belief everything hangs on. It steers; it is
     never recited.
+  - `temperament` (only if they have one): a few words for how they tend to act (bold or cautious,
+    thrifty or free with money, communal or self-reliant, persistent or restless). Colors manner and
+    choices; never recited.
   - `routine`: where they work and what they ordinarily do there (`routine_actions`).
   - `arc_premise`: the project they are pursuing (`premise`), what it is `about`, and what it `needs`.
   - `knowledge`: **everything they know, and all they know.** `education` maps a reference (like

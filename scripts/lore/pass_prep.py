@@ -57,6 +57,7 @@ SCRIPTS_DIR = Path(__file__).resolve().parent
 ROOT = SCRIPTS_DIR.parent.parent
 sys.path.insert(0, str(SCRIPTS_DIR))
 import travel_graph  # noqa: E402
+import temperament  # noqa: E402
 BRIEF_PATH = ROOT / ".simulate_pass_brief.json"
 CHAR_DIR = ROOT / "_lore" / "characters"
 ENCODINGS_PATH = ROOT / "_lore" / "encodings.json"
@@ -194,6 +195,11 @@ def load_character_brief(slug: str, context: str, index: dict | None = None) -> 
             "anchor": criterion.get("anchor"),
         }
     }
+    # A few words for how they tend to act, from the four traits (temperament.words); nothing at all for
+    # a neutral character, so the brief only grows for those who have something to say.
+    tw = temperament.words(char, (json.loads(TUNING_PATH.read_text(encoding="utf-8")).get("temperament") or {}).get("word_threshold", 0.4))
+    if tw:
+        result["temperament"] = tw
     routine = next((r for r in char.get("routines", []) if r.get("context") == context), None)
     if routine:
         result["routine"] = {"location": routine.get("location"), "routine_actions": routine.get("routine_actions")}

@@ -61,6 +61,7 @@ What's inherited and how:
   honest fallback, not a substitute for eventually hand-revising a child's routines. Not touched by
   this knowledge-inheritance retune - the union-of-both-parents' logic here was never the part that
   needed fixing.
+- `temperament` - **the mean of the parents' four traits plus seeded gaussian noise** (`temperament.inherit_noise`), clamped to [-1, 1]; a parent without the field reads neutral (2026-10-17).
 - `arc` - none at birth. Seeded the normal way (context + routine_actions + criterion) the first
   time this character is actually a scene's home_frame - the fallback path (as of 2026-08-16, a
   hand-authored character gets `arc` at creation instead; a newborn still can't, since nothing is
@@ -135,6 +136,8 @@ import anchor_epistemology as ae  # noqa: E402  (sibling module, sys.path adjust
 import notify_death  # noqa: E402
 import update_social_circle  # noqa: E402
 import tuning  # noqa: E402
+import temperament  # noqa: E402
+import rng_context  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 CHAR_DIR = ROOT / "_lore" / "characters"
@@ -682,6 +685,13 @@ def main() -> None:
 
     span = random.randint(SPAN_MIN, SPAN_MAX)
 
+    # Temperament (2026-10-17): the mean of the parents' traits plus seeded noise. Its own Random,
+    # derived from --seed in a separate stream (draw index -1 of rng_context.derive_seed), so adding it
+    # does not move any other draw in this script. Printed below as a top-level `temperament:` line, which
+    # is what puts it in the draw audit (simulate_pass_lib.call() logs the script's top-level output).
+    temper_rng = random.Random(None if args.seed is None else rng_context.derive_seed(args.seed, -1))
+    child_temperament = temperament.inherit(parent_a, parent_b, temper_rng, _TUNING["temperament"]["inherit_noise"])
+
     child = {
         "name": args.name,
         "origin": origin,
@@ -703,6 +713,7 @@ def main() -> None:
         "parents": [a_key, b_key],
         "partners": inherited_strength,
         "partners_quality": inherited_quality,
+        "temperament": child_temperament,
         "birth_pass": args.pass_number,
     }
     save_char(key, child)
@@ -787,6 +798,7 @@ def main() -> None:
     print(f"social_circle: {len(circle['circle'])} ties ({sum(len(v) for v in circle['inherited'].values())} inherited from the parents' circles, share {tuning.load()['social_circle']['inherit_share']:.0%})")
     print(f"knowledge.education.items: {len(items)} total  ({len(inherited_items)} from parents, {len(general_items)} new from encodings.json's world-lore pools)")
     print(f"knowledge.experience: {len(inherited_experience)} inherited as family lore (wrapped 'Grew up hearing: ...', not lived firsthand)")
+    print(f"temperament: {temperament.fmt(child_temperament)}")
     print(f"routines: {len(routines)} inherited")
     print(f"partners: {len(inherited_strength)} inherited (of which {len(inherited_quality)} carry an inherited quality sign too)")
     print("life.span: rolled fresh, written to lifespans.json - never into the child's own file")

@@ -76,6 +76,8 @@ import simulate_pass_lib as lib  # noqa: E402
 import simulate_pass_reproduction as repro_lib  # noqa: E402
 import rng_context  # noqa: E402
 import run_manifest  # noqa: E402
+import temperament  # noqa: E402
+from random import Random  # noqa: E402
 
 load_char = lib.load_char
 save_char = lib.save_char
@@ -268,6 +270,7 @@ def main() -> None:
     parser.add_argument("--passes", type=int, required=True)
     parser.add_argument("--living-pool-out", default=None, help="Also write the ending living pool (JSON array of slugs) to this path - for a caller that wants to feed it straight into a subsequent showcase-trail run without retyping it (see SKILL.md's --pregenerate)")
     parser.add_argument("--seed", type=int, default=None, help="RNG seed - if given, this is a seeded run (the isolation experiment: an identical --seed + identical starting commit reproduces identical mechanical records). Omit for a free/unseeded run (default, today's exact behavior).")
+    parser.add_argument("--keep-neutral", action="store_true", help="Do not draw a temperament for starting characters that have none (they stay neutral, 0 on every trait).")
     parser.add_argument("--mode", choices=["simple", "divergence"], default="simple", help="Recorded on the run manifest only - a per-run label, not a different code path.")
     args = parser.parse_args()
 
@@ -290,6 +293,20 @@ def main() -> None:
     run_manifest.write(ROOT, args.mode, args.seed, pool, args.passes)
     if args.seed is not None:
         rng_context.start_seeded_run(ROOT, args.seed)
+
+    # Temperament (2026-10-17): a starting character with no temperament yet (authored before the field
+    # existed, or without one) gets a seeded uniform draw per trait, one logged draw each (`temperament_draw`
+    # in the draw audit). Children are not drawn here: generate_offspring.py inherits theirs.
+    # `--keep-neutral` leaves them at 0.
+    if not args.keep_neutral:
+        for slug in pool:
+            c = load_char(slug)
+            if c.get("temperament"):
+                continue
+            seed_, idx_ = rng_context.reserve_seed(ROOT)
+            c["temperament"] = temperament.draw_random(Random(seed_))
+            save_char(slug, c)
+            rng_context.log_draw(ROOT, "temperament_draw", [slug], {"temperament": temperament.fmt(c["temperament"])}, seed_, idx_)
 
     state = State(pool)
     ran = 0
