@@ -10,6 +10,17 @@
   "contested_relationship_shift": 10,
   "arc_match_boost_factor": 3,
   "_comment_arc_match_boost_factor": "Design session 2026-09-13 (asymmetric per-pass rewrite): weight multiplier used two places - Step 4's local-need routine-boost (any of p1's own routines[] whose context provides their arc's matched need gets its weight multiplied by this before roll_routine.py's normal weighted pick, so it's FAVORED not FORCED) and Step 6's meetable-favor draw (the known-supplier match from resolve_arc_target's tier-3 lookup gets this same multiplier over an ordinary candidate). 3x chosen as a clear, legible favor - strong enough to usually win a two-or-three-way weighted draw without ever guaranteeing it (a boosted routine at weight 30 vs. two unboosted ones at 35 each still loses more often than not) - same 'skew, never decide' unit as every percentage-point shift elsewhere in this file, just multiplicative instead of additive since it's shifting a weighted-choice draw, not a coin-flip percentage.",
+  "pursuit": {
+    "_comment": "Design session 2026-10-17 (pursuit redesign): where a character heads when their arc's need is not met where they live. A weighted dice draw, no longer nearest-wins. known_supplier_weight: a place where someone in the character's own circle (partners/social_circle/parents, alive) supplies the need, flat, so distance does not wear a warm lead down. general_weight: a place that merely provides it, times hop_decay ** (hops - 1), so each extra connection away halves it (1 hop and 0 hops both carry the full weight). A place that is both gets the two added. Defaults: with one known supplier 3 hops off (6) against two general places 1 hop off (2 each), the supplier wins about 60% of the time, still never guaranteed. First guesses, untuned by any run. The draw goes through rng_context like every other roll and shows in the draw audit as `pursuit_destination`.",
+    "known_supplier_weight": 6,
+    "general_weight": 2,
+    "hop_decay": 0.5
+  },
+  "enacter_knowledge": {
+    "_comment": "What each participant's knowledge sample puts in front of the enacter (pass_prep.py). null = no cap, the author's call 2026-10-17: the whole sample goes in. If the token cost turns out to bite, set a number: education keeps the first N items, experience keeps the last N (the most recent).",
+    "max_education_items": null,
+    "max_experience_items": null
+  },
   "arc_meetable_odds_percent": 55,
   "_comment_arc_meetable_odds_percent": "Design session 2026-09-13: odds that ANYONE useful is actually present once p1 has arrived (or was already) at a location that can satisfy their arc's need - the 'missed connection' mechanic. Deliberately a real, non-trivial chance of a miss (not 90%+) since the whole point of this roll is that showing up doesn't guarantee anyone worth meeting is there this exact pass - 55 keeps it closer to a coin flip than a near-certainty, in the same range as survival's own arc_base (50) rather than borrowing a rare-event odds value like contested (15).",
   "odds_percent": {

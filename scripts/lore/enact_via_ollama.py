@@ -18,7 +18,7 @@ inlined here - so editing the writing rules never means editing this script.
 Usage:
     py scripts/lore/enact_via_ollama.py --brief-file .simulate_pass_brief_combined.json
     py scripts/lore/enact_via_ollama.py --brief-file brief.json --director-note "..." --out reply.json
-    py scripts/lore/pass_prep.py --p1 a --p2 b --pass-number 1 | py scripts/lore/enact_via_ollama.py
+    py scripts/lore/pass_prep.py --p1 a --pass-number 1 | py scripts/lore/enact_via_ollama.py
 """
 
 import argparse
@@ -153,6 +153,8 @@ def known_tags(brief: dict) -> set:
         anchor = (char.get("criterion") or {}).get("anchor")
         if anchor:
             tags.add(anchor)
+        for ref in (char.get("knowledge") or {}).get("education") or {}:
+            tags.add(ref)  # a knowledge ref ("tale: x", "location: y") is a legitimate tag, copied exactly
         arc_premise = char.get("arc_premise") or {}
         for key in ("about", "needs"):
             for t in arc_premise.get(key) or []:
@@ -227,8 +229,17 @@ def validate_reply(reply: dict, expected_slugs: list, brief: dict) -> list:
     return problems
 
 
+def enacter_view(brief: dict) -> dict:
+    """The last gate before the model: `horizon_pre` is reduced to the band, whatever the caller
+    handed in. The lifespan is meant to be secret (`ending`, `lived` are orchestrator bookkeeping);
+    pass_prep.py already sends the band only, this keeps a hand-built or older brief from leaking."""
+    view = dict(brief)
+    view["horizon_pre"] = {s: {"band": (h or {}).get("band")} for s, h in (brief.get("horizon_pre") or {}).items()}
+    return view
+
+
 def build_user_message(brief: dict, director_note: str) -> str:
-    parts = ["## This pass's brief (JSON)", "```json", json.dumps(brief, indent=2, ensure_ascii=False), "```"]
+    parts = ["## This pass's brief (JSON)", "```json", json.dumps(enacter_view(brief), indent=2, ensure_ascii=False), "```"]
     if director_note:
         parts += ["", f"## Director's note\n{director_note}"]
     return "\n".join(parts)

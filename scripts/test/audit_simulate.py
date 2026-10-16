@@ -129,8 +129,20 @@ def run_passes(tmp, passes, seed, counts):
             counts["pool_exhausted_at"] = n
             break
         p1 = json.loads(sh([S / "simulate_resolve_pair.py", "--pool", *pool, "--pass-number", n], tmp).strip().splitlines()[-1])["participant_1"]
+        journey_before = load_chars(tmp)[p1].get("pursuit")
         b = json.loads(sh([S / "pass_prep.py", "--p1", p1, "--pass-number", n], tmp))["brief"]
         counts["passes"] += 1
+        pu = b.get("pursuit")
+        if pu:
+            counts["stage_" + pu["stage"]] += 1
+            counts["stagereason_%s/%s" % (pu["stage"], pu["reason"])] += 1
+            counts["could_afford_" + str(pu["could_afford"]).lower()] += 1
+        if b.get("scene"):
+            counts["scene_" + b["scene"]] += 1
+        if journey_before and b["survival"].get(p1, {}).get("choice") == "survive":
+            counts["survive_midjourney"] += 1
+            if not load_chars(tmp)[p1].get("pursuit"):
+                counts["journey_reset"] += 1
         counts["choice_" + str(b["survival"].get(p1, {}).get("choice"))] += 1
         notes = " | ".join(b["notes"])
         for k, pat in NOTE_PATTERNS.items():
@@ -140,13 +152,16 @@ def run_passes(tmp, passes, seed, counts):
             counts["travel_hop_pass"] += 1
         if b["participant_2"]:
             counts["met_someone"] += 1
-        if b["motivated"] and b["participant_2"]:
-            counts["motivated"] += 1
-            counts["gate_" + b["arc"]["gate"]] += 1
+        if b["participant_2"] and b.get("scene") == "pair":
+            if b["motivated"]:
+                counts["motivated"] += 1
+                counts["gate_" + b["arc"]["gate"]] += 1
             if b["contested"]:
                 counts["contested"] += 1
             if b["arc"]["outcome"]:
                 counts["outcome_" + b["arc"]["outcome"]] += 1
+            if not b["motivated"] and b["arc"]["outcome"]:
+                counts["outcome_without_payment"] += 1  # must stay 0: no arc outcome without a purchase
             p2 = b["participant_2"]
             hs = tmp / f".h{n}.json"
             hs.write_text(json.dumps({"participants": [p1, p2], "location": b["location"], "summary": "stub", "claims": [{"text": "stub", "about": None}]}))
@@ -189,6 +204,14 @@ def static_probes(tmp, counts, fixture_info):
         total_cand, dead_cand = len(cands), len([c for c in cands if c in dead])
     counts["candidates_at_biggest_city"] = total_cand
     counts["dead_among_candidates"] = dead_cand
+    # F3, second half: a dead character's routine must not make a place "provide" anything
+    dead_provide_leak = False
+    if biggest:
+        contexts_all = json.loads((tmp / "_lore" / "contexts.json").read_text(encoding="utf-8"))
+        with_dead = lc.location_provides(biggest[0][0], list(chars.values()), contexts_all)
+        living_only = lc.location_provides(biggest[0][0], list(live.values()), contexts_all)
+        dead_provide_leak = with_dead != living_only
+    counts["dead_routines_change_provides"] = dead_provide_leak
 
     locs_enc = json.loads((tmp / "_lore" / "encodings.json").read_text(encoding="utf-8")).get("locations", [])
     contexts = json.loads((tmp / "_lore" / "contexts.json").read_text(encoding="utf-8"))
@@ -213,11 +236,13 @@ def static_probes(tmp, counts, fixture_info):
     return {
         "F1": default_prov < cost and not writers,
         "F2": "history" not in mech_src.split("if matched_need:")[1].split("# Step 5")[0],
-        "F3": dead_cand > 0,
+        "F3": dead_cand > 0 or dead_provide_leak,
         "F4": "check_anchor_reference" not in prep_src and "check_anchor_reference" not in mech_src,
         "F5": "derived_from" not in src("enact_via_ollama.py").split("REPLY_SCHEMA")[1].split("def load_preamble")[0],
         "F6": "provides" not in inspect.getsource(lib.candidates_at),
-        "F7": None,
+        # RAN since the pursuit redesign: a survive roll taken mid-journey must leave the journey alone.
+        # None when this run never rolled one.
+        "F7": (counts["journey_reset"] > 0) if counts["survive_midjourney"] else None,
         "F8": 'add_argument("--p2", required=True' in src("pass_apply.py") and "roll_death_legacy" not in inspect.getsource(importlib.import_module("simulate_driver").apply_solo),
         "F9": counts.get("conformance_kin_invariant_failures", 0) > 0,
         "F10": None,

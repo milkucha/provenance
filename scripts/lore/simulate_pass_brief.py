@@ -28,14 +28,18 @@ fill - nothing else in this file's output is the subagent's to decide:
 
 Reproduction is decided post-scene, by the caller (`/enact` Step 8's simulate_pass_reproduction.py),
 exactly as before - never here, and only when this brief's own `participant_2` is non-null (a solo
-survive/travel/no-target/missed-connection pass has no second participant to reproduce with at all).
+survive/travel/no-target/empty-place pass has no second participant to reproduce with at all).
+
+Pursuit redesign (2026-10-17): a pass whose arc choice sends the character after a need now carries a
+`pursuit` object ({stage, reason, need, place, supplier, present, could_afford}; the stages are
+simulate_pass_lib.PURSUIT_STAGES) and a `scene` flag ("pair" / "solo" / null) saying whether there is
+something to dramatize. A failed arrival is a scene, not a dead pass; `motivated` still means only
+that the payment went through.
 
 Writes `.simulate_pass_brief.json` at the worktree root (same location as .simulate_snapshot.json) -
 `/enact`'s own Step 5b reads it back to write the scene and resolve the two judgment slots above;
-nothing reads it again after that. A pass with no `participant_2` (survive, travel, no-target, no
-candidates, or a missed connection) has no second-NPC scene to enact at all under `/enact`'s existing
-Step 2/4 shape - see this rewrite's own report for the open question that leaves for `/enact`'s and
-`/simulate`'s own SKILL.md, which this rewrite does not touch. Post-scene mechanics (horizon
+nothing reads it again after that. A pass with no `participant_2` (survive, travel, no-target, an
+empty place) has no second-NPC scene to enact at all under `/enact`'s existing Step 2/4 shape. Post-scene mechanics (horizon
 re-check, death, death-legacy, reproduction) are `/enact` Step 8's own concern from there, working off
 whichever of `participant_1`/`participant_2` are actually present, not this file.
 
@@ -192,6 +196,11 @@ def main() -> None:
         t = brief["travel"]
         print(f"  travel: target={t['target']} hop={t['hop']} path={t['path']}")
     print(f"  context: {brief['context']}  |  motivated: {brief['motivated']}" + (f" ({brief['matched_need']} <-> {brief['matched_provide']})" if brief["motivated"] else ""))
+    pu = brief.get("pursuit")
+    if pu:
+        print(f"  pursuit: {pu['stage']}" + (f" ({pu['reason']})" if pu.get("reason") else "")
+              + f"  need={pu['need']} place={pu['place']} supplier={pu['supplier']} present={pu['present']} could_afford={pu['could_afford']}")
+    print(f"  scene: {brief.get('scene')}")
     print(f"  contested: {brief['contested']}")
     surv = brief["survival"]
     p1_surv = surv.get(p1, {})

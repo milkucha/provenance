@@ -463,11 +463,19 @@ and `/enact` still never touches either registry or `data/`. `/embody` and `/spa
     for inspection and is never merged back automatically. Lore-only, same as `/enact`. The
     orchestrating session does every mechanical step itself, directly, script by script — drawing the first
     participant (`pick_pair.py`: one uniform draw; a second participant, if any, is discovered during
-    the pass, and a pass that never finds one is recorded mechanically and gets no scene), the
+    the pass, and a pass that is only a survive roll, a step along the road or a dead end is recorded
+    mechanically and gets no scene), the
     pre-scene mechanical block (`pass_prep.py`: the survive-or-arc roll, the routine/location roll or
-    travel toward a place that can supply the arc's need, the missed-connection roll, the payment
-    gate, then the contested/arc gate/outcome rolls against `_lore/contexts.json`, tallied toward
-    advance/stall/reverse/transform/resolve, plus the survival apply) and, after the scene, every remaining write
+    a weighted dice draw of where to go for the arc's need (people the character knows skewed up,
+    nearer places heavier), kept across passes until they arrive; at arrival the missed-connection
+    roll, and a failed arrival (the supplier isn't there, the routine has nothing to offer, the
+    payment fails) is itself a scene with whoever is present, or a solo scene in an empty place, with
+    no arc outcome rolled; the payment gate, and only when it passes the contested/arc
+    gate/outcome rolls against `_lore/contexts.json`, tallied toward
+    advance/stall/reverse/transform/resolve, plus the survival apply). Every way the pursuit can end
+    is named in the brief (`pursuit.stage` and `reason`, with `could_afford` decided before the
+    meeting), and the enacter is handed each participant's whole knowledge sample and the place, but
+    only the life-stage band, never the lifespan. After the scene, every remaining write
     (`pass_apply.py`: `update_character.py` calls, energy-death check, reproduction, death legacy) —
     and dispatches a subagent for exactly one thing: writing the scene itself, from the mechanical
     JSON `pass_prep.py` already produced, with no tool access of its own. Two dispatch paths for that

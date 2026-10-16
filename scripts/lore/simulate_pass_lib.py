@@ -180,16 +180,57 @@ def roll_meetable(candidates: list, favor: str | None = None) -> dict:
 
 
 def candidates_at(location: str, all_characters: dict, exclude: str) -> list:
-    """Every character key (excluding `exclude`) in `all_characters` (load_all_characters()'s own
-    shape - key -> character dict) with a routines[] entry at exactly `location` - Step 6's candidate
-    pool for the meetable roll."""
+    """Every LIVING character key (excluding `exclude`) in `all_characters` (load_all_characters()'s
+    own shape - key -> character dict) with a routines[] entry at exactly `location` - Step 6's
+    candidate pool for the meetable roll. Sorted, so a seeded draw over it is reproducible. The dead
+    are filtered out (audit F3: 13 of 35 candidates at one corpus city were dead)."""
     out = []
-    for key, char in all_characters.items():
-        if key == exclude:
+    for key, char in sorted(all_characters.items()):
+        if key == exclude or (char.get("life") or {}).get("deceased"):
             continue
         if any(r.get("location") == location for r in (char.get("routines") or [])):
             out.append(key)
     return out
+
+
+def _logged_rng(context_name: str, argv: list) -> tuple:
+    """A `Random` seeded through rng_context like every scripted roll (so a seeded run replays it),
+    plus the (seed, draw_index) the caller hands to `rng_context.log_draw` once it knows the result.
+    For rolls that live in this module instead of a sibling script (the payment gate does the same)."""
+    seed, draw_index = rng_context.reserve_seed(ROOT)
+    return Random(seed), seed, draw_index
+
+
+def draw_destination(p1_key: str, need: str, options: list) -> dict:
+    """Pursuit redesign (2026-10-17): the weighted draw over `location_context.destination_options()`.
+    Logged to the draw audit as `pursuit_destination` with the weights it drew from."""
+    rng, seed, draw_index = _logged_rng("pursuit_destination", [p1_key, need])
+    chosen = location_context.pick_destination(options, rng)
+    rng_context.log_draw(
+        ROOT, "pursuit_destination", [p1_key, need],
+        {"chosen": chosen["location"], "weights": {o["location"]: o["weight"] for o in options}}, seed, draw_index,
+    )
+    return chosen
+
+
+def draw_bystander(p1_key: str, pool: list) -> str:
+    """Pursuit redesign: with nobody useful at the place, the scene goes to someone else who is
+    there. Uniform over the living residents present; logged as `pursuit_bystander`."""
+    rng, seed, draw_index = _logged_rng("pursuit_bystander", [p1_key])
+    chosen = rng.choice(sorted(pool))
+    rng_context.log_draw(ROOT, "pursuit_bystander", [p1_key, *sorted(pool)], {"chosen": chosen}, seed, draw_index)
+    return chosen
+
+
+def roll_routine_at(character: dict, location: str) -> dict:
+    """A character's routine roll restricted to the routines they have AT `location` (weights
+    kept). For a bystander the draw already says they are there; this only decides what they are
+    doing, which gives the scene its context."""
+    here = [r for r in (character.get("routines") or []) if r.get("location") == location]
+    # roll_routine.py draws by name; the names here are the contexts, so two routines at one place
+    # stay distinguishable
+    chosen = roll_routine([{"location": r["context"], "weight": r["weight"]} for r in here])
+    return next(r for r in here if r["context"] == chosen)
 
 
 # --------------------------------------------------------------------------------------------
@@ -256,10 +297,10 @@ def arc_payment_gate(p1_key: str, p2_key: str, arc: dict) -> dict:
     if not success:
         return {"motivated": False, "reason": "payment_failed", "odds_used": round(pct, 1), "cost": cost}
 
-    p1_char["provisions"] = provisions - cost
+    p1_char["provisions"] = max(0, provisions - cost)  # floored at 0, same as provisions_lib.set_provisions
     save_char(p1_key, p1_char)
     p2_char = load_char(p2_key)
-    p2_char["provisions"] = p2_char.get("provisions", SURVIVAL["starting_provisions_per_capita"]) + cost
+    p2_char["provisions"] = max(0, p2_char.get("provisions", SURVIVAL["starting_provisions_per_capita"]) + cost)
     save_char(p2_key, p2_char)
 
     return {"motivated": True, "reason": None, "odds_used": round(pct, 1), "cost": cost}
@@ -427,22 +468,32 @@ def tally(history: list) -> int:
 # Only `p1` is ever fixed before this runs (draw_participant()). Everything else - whether a second
 # participant even exists this pass, and who - is discovered over the course of the algorithm itself:
 #   Step 2  roll_survival(p1)                                   - survive vs. arc, unchanged script
-#   Step 3  survive -> p1's own routine roll, apply, DONE        - no second participant, ever
-#   Step 4  arc, locally satisfiable -> boosted own-routine roll, apply, DONE
-#   Step 5  arc, not locally satisfiable -> pathfind (location_context.resolve_arc_target);
-#           no target -> DONE (not motivated); mid-journey -> mechanical "route" override, DONE;
+#   Step 3  survive -> p1's own routine roll, apply, DONE        - no second participant, ever. Mid-journey
+#           (a kept destination) they work where they stand and the journey survives (audit F7)
+#   Step 4  arc, locally satisfiable (and standing at a place of their own routines) -> boosted
+#           own-routine roll, apply, DONE                        - pursuit stage local_satisfied
+#   Step 5  arc, not locally satisfiable -> destination: the one kept from an earlier pass, or a
+#           weighted dice draw over location_context.destination_options() (known suppliers skewed,
+#           general places by hops). No option -> DONE (no_target); not there yet -> a mechanical
+#           "route" hop, the destination kept in p1's `pursuit` field, DONE (en_route / died_en_route);
 #           arrived -> Step 6
-#   Step 6  who's meetable at the arrival location (roll_meetable, favoring a known supplier) -
-#           miss -> DONE; hit -> p2 fixed, Step 7
-#   Step 7  p2's own routine roll - context/location mismatch with the need -> DONE (miss);
-#           match -> Step 8
-#   Step 8  arc_payment_gate() - fail -> DONE (not motivated); success -> the UNCHANGED
-#           contested/alignment/outcome/tally chain, keyed to p1's arc vs. p2 as peer
+#   Step 6  who's about at the arrival place: living residents with a routine there. None -> solo
+#           scene (arrived_empty). roll_meetable, favoring a known supplier - miss -> a scene with
+#           someone else who is there (arrived_nobody), no purchase, no arc outcome
+#   Step 7  p2's own routine roll - routine elsewhere -> as a miss; context doesn't supply the need ->
+#           a scene with p2, no purchase (met_mismatch); match -> Step 8
+#   Step 8  arc_payment_gate() - fail -> a scene with p2, NO arc outcome rolled (met_cannot_pay);
+#           success -> the UNCHANGED contested/alignment/outcome/tally chain, keyed to p1's arc vs.
+#           p2 as peer (met_paid)
+#
+# Every exit of Steps 4-8 sets `result["pursuit"]` {stage, reason, need, place, supplier, present,
+# could_afford} (PURSUIT_STAGES, below), and `result["scene"]` ("pair" / "solo" / None) says whether
+# the pass is something to dramatize. `motivated` stays what it was: the payment went through.
 #
 # Partner tracking (record_partner, both directions) fires exactly once, at the point p1 and p2 are
-# BOTH confirmed present with matching contexts (end of Step 7/start of Step 8) - the earliest point
-# in the new algorithm where two characters have actually, verifiably shared a pass, matching the old
-# algorithm's own "the moment the pair is fixed" timing as closely as the new asymmetric model allows.
+# BOTH confirmed present (Step 7, or a bystander scene) - the earliest point in the new algorithm
+# where two characters have actually, verifiably shared a pass, matching the old algorithm's own
+# "the moment the pair is fixed" timing as closely as the new asymmetric model allows.
 # This is a judgment call, not dictated by the spec - see this rewrite's own report for the reasoning
 # and the open question it leaves (whether a payment-gate failure should still count as a "meeting"
 # for partner-tracking purposes; it does, here, since the two characters still verifiably crossed
@@ -454,12 +505,21 @@ def tally(history: list) -> int:
 # nothing in this pipeline drains them any more either.
 # --------------------------------------------------------------------------------------------
 
-def _known_circle(character: dict) -> set:
-    return (
-        set((character.get("partners") or {}).keys())
-        | set(character.get("social_circle") or [])
-        | set(character.get("parents") or [])
-    )
+# Pursuit stages (brief["pursuit"]["stage"]). Every exit of the pursuit branch of run_pass_mechanics
+# sets exactly one. The legend the enacter reads is in enact_preamble.md; keep the two in step.
+PURSUIT_STAGES = (
+    "local_satisfied",  # the need is met where they live; routine roll, nothing to travel for
+    "no_target",        # nowhere reachable supplies the need, so the arc cannot move
+    "en_route",         # chose or kept a destination; this pass is a step toward it, no scene
+    "arrived_nobody",   # at the destination, the person/place's supplier is not there; scene with someone else present
+    "arrived_empty",    # at the destination, nobody else is there at all; solo scene
+    "met_mismatch",     # met someone present, but what they are doing this pass does not supply the need; scene
+    "met_cannot_pay",   # found the supplier, the purchase did not go through (reason: cannot_afford | payment_failed); scene, no arc outcome rolled
+    "met_paid",         # found the supplier and paid; the arc outcome is rolled and the scene dramatizes it
+    "died_en_route",    # energy ran out on the road
+)
+
+_KEEP = object()
 
 
 def run_pass_mechanics(p1: str, pass_number: int) -> dict:
@@ -468,10 +528,18 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
     by each step. `arc_authoring_needed`, when present, is a minimal `{"character_slug", "reason"}`
     signal only - each caller enriches it with the full authoring context (band/criterion/routines/
     needs_candidates/prior_arc) and, on `reauthor_complete`, writes the completion tale itself, the
-    same division of labor the pre-rewrite simulate_pass_brief.py already used for this exact slot."""
+    same division of labor the pre-rewrite simulate_pass_brief.py already used for this exact slot.
+
+    Pursuit redesign (2026-10-17, TODO.md): the pursuit branch (arc chosen, need not met at home)
+    now draws its destination with dice (location_context.destination_options), keeps it across
+    passes (the character's `pursuit` field) until they arrive, turns a failed arrival into a scene
+    instead of a dead pass, and names every exit in `result["pursuit"]` (see PURSUIT_STAGES).
+    `result["scene"]` says what the driver should do with the pass: "pair" (a two-character scene,
+    `participant_2` set), "solo" (a scene-worthy situation with nobody else in it) or None (no
+    scene)."""
     notes: list = []
     p1_char = load_char(p1)
-    home_location = p1_char.get("location", "")
+    location_now = p1_char.get("location", "")
 
     result = {
         "pass": pass_number,
@@ -480,6 +548,8 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
         "location": None,
         "context": None,
         "travel": None,
+        "scene": None,
+        "pursuit": None,
         "motivated": False,
         "matched_need": None,
         "matched_provide": None,
@@ -494,7 +564,7 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
     def _own_routine_roll(character: dict) -> str:
         return roll_routine(character.get("routines", []))
 
-    def _write_back(location: str, last_scene: str) -> None:
+    def _write_back(location: str, last_scene: str, pursuit=None) -> None:
         """Task fix (2026-09-13 smoke test): the automated `/simulate` pipeline (pass_apply.py,
         simulate_driver.py's apply_solo()) never wrote `location`/`places_visited`/`last_scene` back
         to a character's file - only /enact's own interactive Step 10 did. That silently broke the
@@ -511,13 +581,22 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
         Interactive /enact's own Step 10 still runs afterward and is unaffected: it overwrites
         `last_scene` with the actual dramatized summary (per its own docs, `last_scene` is
         "overwritten every run, never accumulated") and re-sets `location`/`places_visited` to the
-        same values this already wrote, a harmless no-op."""
+        same values this already wrote, a harmless no-op.
+
+        Also owns the character's `pursuit` field (the destination they are walking toward): a dict
+        while a journey is in progress, cleared (None) by every other exit, so the default is to end
+        the journey. `_KEEP` leaves it as it is."""
         character = load_char(p1)
         character["location"] = location
         visited = character.setdefault("places_visited", [])
         if location not in visited:
             visited.append(location)
         character["last_scene"] = last_scene
+        if pursuit is not _KEEP:
+            if pursuit:
+                character["pursuit"] = pursuit
+            else:
+                character.pop("pursuit", None)
         save_char(p1, character)
 
     def _apply_p1(location: str, choice: str, context: str | None) -> dict:
@@ -534,11 +613,30 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
             notes.append(f"{p1}'s energy hit 0 - exhaustion/starvation, not yet recorded (post-scene step)")
         return effect
 
+    # A journey in progress (the `pursuit` field) is dropped if the arc it was for is gone or no
+    # longer wants that need - a finished, failed or re-authored arc does not keep walking.
+    arc = p1_char.get("arc") or {}
+    journey = p1_char.get("pursuit") or None
+    if journey and (arc.get("resolution") != "ongoing" or journey.get("need") not in (arc.get("needs") or [])):
+        journey = None
+        p1_char.pop("pursuit", None)
+        save_char(p1, p1_char)
+
+    # Mid-journey, "home" for the survival roll is where they set out from, not the hop they are
+    # standing on (audit F7, second half).
+    home_location = (journey or {}).get("origin") or location_now
     p1_survival = roll_survival(p1, home_location)
 
     # Step 3 - survive: p1's own routine roll, unweighted, apply at that location, done. No second
     # participant, matching how a "no ongoing arc" survive-only pass already works today.
     if p1_survival["choice"] == "survive":
+        if journey:
+            # Audit F7: a survive roll mid-journey used to snap the traveler back to a routine
+            # location and lose the trip. Now they work where they stand and the journey is kept.
+            _apply_p1(location_now, "survive", "route")
+            _write_back(location_now, f"Worked where they stood, on the way to {journey['target']}.", pursuit=_KEEP)
+            notes.append(f"{p1} worked in place at {location_now} - still bound for {journey['target']} ('{journey['need']}')")
+            return result
         location = _own_routine_roll(p1_char)
         context = resolve_context_for_location(p1_char, location)
         _apply_p1(location, "survive", context)
@@ -549,7 +647,6 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
     # "survive" above for a character with no ongoing arc; this branch only ever fires for the
     # first-arc/needs-not-yet-authored shape _template.json ships (resolution "ongoing", needs: []),
     # which that gate does NOT catch (an empty needs list is not the same as "no ongoing arc").
-    arc = p1_char.get("arc") or {}
     if arc.get("resolution") != "ongoing" or not arc.get("needs"):
         location = _own_routine_roll(p1_char)
         context = resolve_context_for_location(p1_char, location)
@@ -564,95 +661,153 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
         _write_back(location, last_scene)
         return result
 
+    # ---- the pursuit branch: arc chosen, ongoing, with needs -----------------------------------
     all_characters = load_all_characters()
     needs = arc.get("needs") or []
-    provides_here = location_context.location_provides(home_location, list(all_characters.values()), CONTEXTS)
-    matched_need = next((n for n in needs if n in provides_here), None)
+    need = journey["need"] if journey else needs[0]
+    cost = ARC_PAYMENT["arc_need_cost"]
+    # Computed here, before any meeting, so "had the means but did not find them" can be told apart
+    # from "could not have paid anyway".
+    could_afford = p1_char.get("provisions", SURVIVAL["starting_provisions_per_capita"]) >= cost
 
-    if matched_need:
-        # Step 4 - locally satisfiable: prefer (not force) whichever of p1's own routines has a
-        # context that provides the matched need.
-        boost_locations = {
-            r["location"] for r in p1_char.get("routines", [])
-            if matched_need in (CONTEXTS.get(r.get("context")) or {}).get("provides", [])
+    def _pursuit(stage: str, reason: str | None, place: str | None, supplier: str | None = None,
+                 present: list | None = None, **extra) -> None:
+        result["pursuit"] = {
+            "stage": stage, "reason": reason, "need": need, "place": place, "supplier": supplier,
+            "present": present or [], "could_afford": could_afford, **extra,
         }
-        location = (
-            roll_routine_boosted(p1_char["routines"], boost_locations)
-            if boost_locations else _own_routine_roll(p1_char)
-        )
-        _apply_p1(location, "arc", resolve_context_for_location(p1_char, location))
-        notes.append(f"{p1} pursued their arc's need ('{matched_need}') locally at {location}")
-        _write_back(location, f"Pursued '{matched_need}' locally at {location}.")
-        return result
 
-    # Step 5 - pathfind. Single-need MVP: resolves only the first of arc.needs (see this rewrite's
-    # report for why - a genuine judgment call, not dictated by the spec).
-    need = needs[0]
-    if len(needs) > 1:
+    # Step 4 - locally satisfiable. Only for someone standing at a place of their own routines: a
+    # visitor at the end of a failed trip is not "home", and the place providing the need is exactly
+    # why they came (so it must not read as "satisfied locally" and send them back to their desk).
+    is_home = any(r.get("location") == location_now for r in p1_char.get("routines", []))
+    if not journey and is_home:
+        provides_here = location_context.location_provides(location_now, list(all_characters.values()), CONTEXTS)
+        matched_need = next((n for n in needs if n in provides_here), None)
+        if matched_need:
+            # Prefer (not force) whichever of p1's own routines has a context that provides the need.
+            boost_locations = {
+                r["location"] for r in p1_char.get("routines", [])
+                if matched_need in (CONTEXTS.get(r.get("context")) or {}).get("provides", [])
+            }
+            location = (
+                roll_routine_boosted(p1_char["routines"], boost_locations)
+                if boost_locations else _own_routine_roll(p1_char)
+            )
+            _apply_p1(location, "arc", resolve_context_for_location(p1_char, location))
+            need = matched_need
+            _pursuit("local_satisfied", "need_provided_here", location)
+            notes.append(f"{p1} pursued their arc's need ('{matched_need}') locally at {location}")
+            _write_back(location, f"Pursued '{matched_need}' locally at {location}.")
+            return result
+
+    # Step 5 - destination. Kept from an earlier pass, or drawn now. Single-need MVP: resolves only
+    # the first of arc.needs.
+    if len(needs) > 1 and not journey:
         notes.append(f"{p1}'s arc has {len(needs)} needs - resolving only the first ('{need}') this pass")
     encodings_data = load_encodings()
-    target_result = location_context.resolve_arc_target(p1_char, need, encodings_data, list(all_characters.values()), CONTEXTS)
+    graph = travel_graph.build_graph(encodings_data)
+    path = target = None
+    if journey:
+        found = travel_graph.shortest_path(graph, location_now, {journey["target"]})
+        if found:
+            target, path = found
+    else:
+        options = location_context.destination_options(
+            p1_char, need, encodings_data, list(all_characters.values()), CONTEXTS, T.get("pursuit"),
+        )
+        chosen = draw_destination(p1, need, options) if options else None
+        if chosen:
+            target, path = chosen["location"], chosen["path"]
+            notes.append(
+                f"{p1} settled on {target} for '{need}' ({chosen['hops']} hop(s), weight {chosen['weight']} of "
+                f"{round(sum(o['weight'] for o in options), 2)})"
+            )
 
-    if target_result is None:
-        # No reachable target at all - treat exactly like "not motivated": arc doesn't advance, but
-        # p1 didn't go anywhere, so upkeep/survival apply at their own current location.
-        _apply_p1(home_location, "arc", None)
+    if target is None:
+        # Nowhere reachable (or a kept destination the map no longer connects): treat exactly like
+        # "not motivated" - the arc doesn't advance, and p1 stays where they are.
+        _apply_p1(location_now, "arc", None)
+        _pursuit("no_target", "kept_destination_unreachable" if journey else "no_reachable_source", location_now)
         notes.append(f"{p1}'s arc has no reachable target for '{need}' this pass - arc doesn't advance")
-        _write_back(home_location, f"Sought '{need}' but found no reachable path from {home_location}.")
+        _write_back(location_now, f"Sought '{need}' but found no reachable path from {location_now}.")
         return result
 
-    target, path = target_result
     hop = travel_graph.next_hop(path)
 
     if hop is not None and hop != target:
         # Mid-journey - mechanical override, no roll_routine.py call, no second participant, no arc
-        # advance this pass.
-        _apply_p1(hop, "arc", "route")
+        # advance this pass. The destination is kept in the character's file for the next arc pass.
+        effect = _apply_p1(hop, "arc", "route")
         result["travel"] = {"target": target, "path": path, "hop": hop}
         notes.append(f"{p1} is traveling toward {target} for '{need}' - this pass lands at {hop}, still en route")
-        _write_back(hop, f"Traveled toward {target}, passing through {hop}.")
+        if effect["died"]:
+            _pursuit("died_en_route", "energy_depleted", hop, destination=target)
+            _write_back(hop, f"Died on the road toward {target}, at {hop}.")
+        else:
+            _pursuit("en_route", "keeping_destination" if journey else "destination_chosen", hop, destination=target)
+            _write_back(hop, f"Traveled toward {target}, passing through {hop}.", pursuit={
+                "need": need, "target": target, "origin": (journey or {}).get("origin") or location_now,
+                "since_pass": (journey or {}).get("since_pass", pass_number),
+            })
         return result
 
-    # Arrived (hop == target, or already at target with a length-1 path and hop is None).
+    # Arrived (hop == target, or already at target with a length-1 path and hop is None). The
+    # journey ends here whatever happens next (the default of _write_back).
     location = target
     result["travel"] = {"target": target, "path": path, "hop": hop}
 
-    # Step 6 - who's meetable. Tier-3 (known supplier) preference: check whether resolve_arc_target's
-    # own tier-3 lookup would have succeeded for this need, and if so, whether any actual candidate
-    # here is both in p1's own circle AND has a matching routine at this exact location - that
-    # specific person is who gets favored in the meetable roll, never guaranteed.
+    # Step 6 - who's about. Living residents with a routine here. Tier-3 (known supplier) favor: if
+    # someone in p1's own circle supplies the need here and is a resident, they are favored in the
+    # meetable roll, never guaranteed.
     candidates = candidates_at(location, all_characters, exclude=p1)
+    supplier_map = location_context.find_supplier_map(p1_char, need, list(all_characters.values()), CONTEXTS)
+    favor = next((k for k in supplier_map.get(location, []) if k in candidates), None)
+
+    def _bystander_scene(stage: str, reason: str, excluded: set, wanted: str | None) -> None:
+        """Nobody useful: the scene goes to someone else who lives or works here, drawn uniformly. Their
+        routine is rolled over the routines they have at this place (the draw already says they are
+        here; the roll only says what they are doing). No payment, no arc outcome. An empty pool is a
+        solo scene."""
+        pool = [c for c in candidates if c not in excluded]
+        if not pool:
+            _pursuit("arrived_empty", "no_one_else_present", location, supplier=wanted)
+            result["scene"] = "solo"
+            notes.append(f"{p1} arrived at {location} and found nobody else there - solo scene, arc doesn't advance")
+            _write_back(location, f"Arrived at {location} and found no one there.")
+            return
+        p2 = draw_bystander(p1, pool)
+        routine = roll_routine_at(load_char(p2), location)
+        result["participant_2"] = p2
+        result["context"] = routine["context"]
+        result["scene"] = "pair"
+        result["survival"].setdefault(p2, {"choice": None, "energy": load_char(p2).get("energy"), "died": False})
+        record_partner(p1, p2)
+        record_partner(p2, p1)
+        _pursuit(stage, reason, location, supplier=wanted, present=[p2])
+        notes.append(
+            f"{p1} arrived at {location} for '{need}' but {'the person they came for' if wanted else 'no supplier'} "
+            f"was not there ({reason}); spent the pass with {p2} instead - arc doesn't advance"
+        )
+        _write_back(location, f"Arrived at {location}, found no supplier, and spent the pass with {p2}.")
+
     if not candidates:
         _apply_p1(location, "arc", None)
+        _pursuit("arrived_empty", "no_residents", location)
+        result["scene"] = "solo"
         notes.append(f"{p1} arrived at {location} but nobody is around this pass - arc doesn't advance")
         _write_back(location, f"Arrived at {location} but no one was around.")
         return result
-
-    supplier_targets = location_context.find_supplier_locations(p1_char, need, list(all_characters.values()), CONTEXTS)
-    favor = None
-    if location in supplier_targets:
-        known_circle = _known_circle(p1_char)
-        for key in candidates:
-            if key not in known_circle:
-                continue
-            other = all_characters.get(key) or {}
-            for r in other.get("routines") or []:
-                if r.get("location") == location and need in (CONTEXTS.get(r.get("context")) or {}).get("provides", []):
-                    favor = key
-                    break
-            if favor:
-                break
 
     meet = roll_meetable(candidates, favor=favor)
     _apply_p1(location, "arc", None)
 
     if not meet["met"]:
-        notes.append(f"{p1} arrived at {location} but missed the connection this pass (odds {meet['odds_used']}) - arc doesn't advance")
-        _write_back(location, f"Arrived at {location} but missed the connection.")
+        notes.append(f"{p1} arrived at {location} but missed the connection this pass (odds {meet['odds_used']})")
+        _bystander_scene("arrived_nobody", "supplier_absent", {favor} if favor else set(), favor)
         return result
 
     p2 = meet["chosen"]
-    result["participant_2"] = p2
 
     # Step 7 - p2 rolls their own routine. Even having been drawn as present, p2's own roll might not
     # actually land them here doing something that matches the need.
@@ -660,27 +815,35 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
     p2_location = roll_routine(p2_char.get("routines") or [])
     p2_context = resolve_context_for_location(p2_char, p2_location)
     p2_provides = set((CONTEXTS.get(p2_context) or {}).get("provides") or [])
-    result["survival"].setdefault(p2, {"choice": None, "energy": p2_char.get("energy"), "died": False})
 
-    if p2_location != location or need not in p2_provides:
-        result["context"] = p2_context if p2_location == location else None
-        notes.append(f"{p1} met {p2} at {location}, but {p2}'s own routine this pass ({p2_context} at {p2_location}) doesn't provide '{need}' - miss")
-        _write_back(location, f"Met {p2} at {location} but couldn't align this pass.")
+    if p2_location != location:
+        notes.append(f"{p1} looked for {p2} at {location}, but {p2}'s own routine this pass took them to {p2_location}")
+        _bystander_scene("arrived_nobody", "supplier_elsewhere", {p2}, p2)
         return result
 
+    result["participant_2"] = p2
     result["context"] = p2_context
+    result["scene"] = "pair"
+    result["survival"].setdefault(p2, {"choice": None, "energy": p2_char.get("energy"), "died": False})
 
-    # A genuine, mutually-confirmed meeting - partner tracking fires here (see this module's own
+    # p1 and p2 verifiably shared this pass - partner tracking fires here (see this module's own
     # section docstring for why this timing was chosen).
     record_partner(p1, p2)
     record_partner(p2, p1)
 
-    # Step 8 - payment gate.
+    if need not in p2_provides:
+        _pursuit("met_mismatch", "context_does_not_provide", location, supplier=p2, present=[p2])
+        notes.append(f"{p1} met {p2} at {location}, but {p2}'s own routine this pass ({p2_context}) doesn't provide '{need}' - scene, no purchase")
+        _write_back(location, f"Met {p2} at {location} but they had nothing to offer this pass.")
+        return result
+
+    # Step 8 - payment gate. No arc outcome is rolled unless the purchase goes through.
     payment = arc_payment_gate(p1, p2, arc)
     if not payment["motivated"]:
+        _pursuit("met_cannot_pay", payment["reason"], location, supplier=p2, present=[p2])
         notes.append(
             f"{p1} met {p2} at {location} ('{need}' available) but the payment gate failed "
-            f"({payment['reason']}, odds {payment['odds_used']}) - not motivated"
+            f"({payment['reason']}, odds {payment['odds_used']}) - scene, no arc outcome"
         )
         _write_back(location, f"Met {p2} at {location} but couldn't afford '{need}'.")
         return result
@@ -688,6 +851,7 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
     result["motivated"] = True
     result["matched_need"] = need
     result["matched_provide"] = need
+    _pursuit("met_paid", "paid", location, supplier=p2, present=[p2])
     notes.append(f"{p1} paid {payment['cost']} provisions to {p2} for '{need}' at {location} - motivated")
 
     # Unchanged chain from here: contested, alignment gate, outcome, tally/threshold - keyed to p1's

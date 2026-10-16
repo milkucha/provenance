@@ -51,7 +51,16 @@ pass reached a genuinely motivated two-participant scene) inside `simulate_pass_
 `run_pass_mechanics()`. This driver now dispatches the Ollama enacter ONLY when `brief["motivated"]`
 is true (a real two-participant scene with dialogue/hearsay) - a solo survive pass, an en-route travel
 pass, a missed connection, an unmatched routine, or a failed payment gate all resolve with no model
-call and no scene at all. Those passes still need `p1`'s own mechanical per-pass bookkeeping (lived
+call and no scene at all.
+
+**Superseded by the pursuit redesign (2026-10-17):** the dispatch now keys on `brief["scene"]`, not
+`motivated`. A pass the mechanics call a "pair" scene (a payment that went through, a failed payment
+with the supplier present, a supplier who wasn't there so someone else is, a person met whose
+routine had nothing to offer) goes to the enacter, with its arc outcome rolled only if the payment
+went through. A "solo" scene (arrived, nobody else there) is flagged but NOT dispatched: the whole
+scene toolchain (`enact_via_ollama.py`'s reply shape, `pass_record.py`, `pass_apply.py`) wants two
+participants, and a solo pass has always been bookkept by `apply_solo()`. Making the enacter write
+one person alone is a separate piece of work, logged in OPEN_QUESTIONS.md. Those passes still need `p1`'s own mechanical per-pass bookkeeping (lived
 delta, the energy-death check, the post-lived-delta horizon/ending check) that `pass_apply.py` would
 otherwise own - `pass_apply.py` itself still hard-requires two participants (`--p2` is `required=True`,
 and it loops `for slug in (p1, p2)` unconditionally), which doesn't fit a solo pass, and patching that
@@ -77,6 +86,7 @@ SCRIPTS = Path(__file__).resolve().parent
 ROOT = SCRIPTS.parent.parent
 sys.path.insert(0, str(SCRIPTS))
 import rng_context  # noqa: E402
+import pass_prep  # noqa: E402
 STATE_PATH = ROOT / ".simulate_driver_state.json"
 LOG_PATH = ROOT / ".simulate_running_log.txt"
 BRIEF_PATH = ROOT / ".simulate_pass_brief.json"
@@ -159,41 +169,14 @@ def parse_horizon_text(output):
     return {"band": fields.get("band"), "lived": int(fields.get("lived", 0)), "ending": fields.get("ending") == "true"}
 
 
-def horizon_pre_block(p1, p2=None):
+def horizon_block(p1, p2=None):
+    """Full horizon readings (band, lived, ending), for the driver's own bookkeeping. What reaches
+    the enacter is pass_prep.enacter_input()'s band-only view of this."""
     _, o1, _ = run([SCRIPTS / "horizon.py", p1])
     out = {p1: parse_horizon_text(o1)}
     if p2:
         _, o2, _ = run([SCRIPTS / "horizon.py", p2])
         out[p2] = parse_horizon_text(o2)
-    return out
-
-
-def characters_block(p1, p2, context):
-    """Mirrors pass_prep.py's load_character_brief() - re-read directly here so a resumed pass
-    (after write_arc.py just ran) picks up the freshly-authored arc's own premise, same as a fresh
-    pass_prep.py call would if it ran after the write instead of before. `p2` may be None (an
-    arc-reauthor pending can only resume into a genuine two-participant scene - see do_one_pass -
-    but this stays defensive rather than assuming that)."""
-    out = {}
-    for slug in ([p1, p2] if p2 else [p1]):
-        f = ROOT / "_lore" / "characters" / f"{slug}.json"
-        if not f.exists():
-            out[slug] = {}
-            continue
-        char = json.loads(f.read_text(encoding="utf-8"))
-        criterion = char.get("criterion") or {}
-        entry = {"criterion": {
-            "standard": criterion.get("standard"), "wasted_life": criterion.get("wasted_life"),
-            "trusts": criterion.get("trusts"), "distrusts": criterion.get("distrusts"),
-            "anchor": criterion.get("anchor"),
-        }}
-        routine = next((r for r in char.get("routines", []) if r.get("context") == context), None)
-        if routine:
-            entry["routine"] = {"location": routine.get("location"), "routine_actions": routine.get("routine_actions")}
-        arc = char.get("arc")
-        if arc and arc.get("resolution") == "ongoing":
-            entry["arc_premise"] = {"about": arc.get("about"), "needs": arc.get("needs"), "premise": arc.get("premise")}
-        out[slug] = entry
     return out
 
 
@@ -245,11 +228,8 @@ def do_one_pass(state, pass_number):
         # and the local model reliably latches onto that as a fake `about` tag for its own claims,
         # since it reads as just another id-shaped string sitting in the brief.
         raw_brief.pop("arc_authoring_needed", None)
-        brief = {
-            "horizon_pre": horizon_pre_block(p1, p2),
-            "brief": raw_brief,
-            "characters": characters_block(p1, p2, raw_brief.get("context")),
-        }
+        # Re-read here (not from a cached pass_prep output), so the freshly-authored arc's premise is in.
+        brief = pass_prep.enacter_input(raw_brief, horizon_block(p1, p2))
         PENDING_PATH.unlink()
     else:
         _, out, _ = run([SCRIPTS / "simulate_resolve_pair.py", "--pool", *state["pool"], "--pass-number", pass_number])
@@ -267,14 +247,13 @@ def do_one_pass(state, pass_number):
             return {"status": "needs_arc", "pass": pass_number, "p1": p1, "p2": p2,
                     "arc_authoring_needed": brief["brief"]["arc_authoring_needed"]}
 
-    # A genuine two-participant scene (dialogue, hearsay, judgment content) only happens when this
-    # pass's mechanics actually reached `motivated: true` (the payment gate succeeded) - see
-    # simulate_pass_lib.run_pass_mechanics()'s own section docstring. Everything else (no p2 at all,
-    # a met-but-mismatched routine, a failed payment gate) resolves as a solo pass: no Ollama dispatch,
-    # no scene, no hearsay - only p1's own mechanical bookkeeping via apply_solo() above. p2 (if one
-    # was momentarily discovered this pass) never had any survival/energy effect applied to them by
-    # run_pass_mechanics unless the meeting was confirmed, so there is nothing to apply for them here.
-    if not p2 or not brief["brief"].get("motivated"):
+    # A two-participant scene (dialogue, hearsay, judgment content) happens when the mechanics set
+    # `scene: "pair"` - see simulate_pass_lib.run_pass_mechanics()'s own section docstring: a payment
+    # that went through (`motivated`), or a failed arrival the redesign turns into a scene. Everything
+    # else (survive, en route, no target, an empty place - `scene` "solo" or null) resolves with no
+    # Ollama dispatch, no scene, no hearsay: only p1's own mechanical bookkeeping via apply_solo()
+    # above. p2 never had any survival/energy effect applied unless there is a pair scene.
+    if not p2 or brief["brief"].get("scene") != "pair":
         solo = apply_solo(p1, pass_number, brief["brief"])
         result = {"status": "ok", "pass": pass_number, "p1": p1, "p2": p2, "deaths": [], "births": None}
         if solo["deceased"]:

@@ -6,21 +6,76 @@ It restates only the rules an enacter actually needs; it never re-derives what t
 brief already decided.
 
 You are playing one scene between two characters in an ongoing fictional world. You will receive,
-as a JSON object, everything already decided about this pass: where it happens, who is home and who
-is visiting, whether either arc leads this scene, its already-fixed outcome, and each character's own
-criterion and (if they have one) their arc's premise. **Nothing in that JSON is yours to re-decide.**
-Your only job is to dramatize it as a short scene and report what happened, in the exact JSON reply
-shape given below.
+as a JSON object, everything already decided about this pass. **Nothing in that JSON is yours to
+re-decide.** Your only job is to dramatize it as a short scene and report what happened, in the exact
+JSON reply shape given below.
+
+## What you are given (legend)
+
+- `horizon_pre.<slug>.band`: `early`, `established` or `late`, how far into their life this character
+  is. Shades how settled or urgent they are. It never tells you how many scenes are left (nobody can know).
+- `characters.<slug>`: one entry per participant.
+  - `name`: how to label their lines (`speaker`).
+  - `criterion`: what they count as a life well spent (`standard`), a wasted one (`wasted_life`), who
+    they `trust` and `distrust`, and the `anchor`, the one belief everything hangs on. It steers; it is
+    never recited.
+  - `routine`: where they work and what they ordinarily do there (`routine_actions`).
+  - `arc_premise`: the project they are pursuing (`premise`), what it is `about`, and what it `needs`.
+  - `knowledge`: **everything they know, and all they know.** `education` maps a reference (like
+    `tale: x`, `location: y`) to what it says; `experience` is what they have lived or heard
+    (including "Grew up hearing: ..." hearsay). Draw on it, do not contradict it, do not give one
+    character the other's knowledge unless they say it aloud in the scene.
+- `place`: where this happens, as the world records it (name and description). Absent when the pass has
+  no named place.
+- `facts`: what every character knows about being alive. Background, not a topic.
+- `brief`: what the dice decided.
+  - `location`, `context`: where, and what kind of place-activity it is (`route` means on the road).
+  - `participant_1` came on a pursuit; `participant_2` is whoever was there. `scene` is `pair` for you.
+  - `pursuit`: the situation, see below. `motivated` is true only when p1 actually bought what they came
+    for (`matched_need`, `matched_provide`: what was needed and what was supplied).
+  - `contested`: true means someone or something is resisting p1's project in this scene.
+  - `arc`: `gate` `"hit"` means this scene moves p1's project; `"miss"` means it does not (see the rule
+    below). When it hits, `inclined` is how p2 stands toward the project (`help`, `hinder`, `mixed`,
+    `neutral`), `outcome` is what happens (`advance`, `stall`, `reverse`, or `transform`) and
+    `tally_result` is where the arc now stands (`ongoing`, `complete`, `transform`, `failed`).
+    `matched_about` is the new topic after a `transform`.
+  - `survival.<slug>`: `energy` is how worn they are (low means hungry and tired); `choice` is whether
+    they came to work or to pursue. `died` is bookkeeping, not for you.
+  - `notes`: the mechanics' own log of how the pass went. Read it for context, do not quote it.
+  - `arc_authoring_needed`, `contested_hinder_slot`, `travel`: orchestrator bookkeeping. Ignore.
+
+### `pursuit` (what p1 came for and how it went)
+
+`need` is what p1's project needs from the world, `place` where they are, `supplier` the person they
+came for (null if no particular person), `present` who is in the scene with them. `could_afford` is
+whether p1 had the means to pay, **decided before they met anyone**. Do not state amounts; let it show
+as ease or worry. By `stage`:
+
+- `arrived_nobody`: p1 got to `place` and the person they came for (`supplier`) is not there (`reason`:
+  `supplier_absent` or `supplier_elsewhere`, away today). The scene is with `present[0]`, who lives or
+  works here. Nothing is bought, p1's need stays open, and the project does not move. With `could_afford`
+  true: she had the means, but the person she came for was not there. With false: they would not have
+  been able to pay anyway.
+- `met_mismatch`: p1 met `present[0]`, who is there but whose business today has nothing to do with
+  p1's need. No purchase. Play the encounter as an ordinary one with a faint miss in it.
+- `met_cannot_pay`: the supplier is here and has what p1 needs, and the purchase did not happen.
+  `reason` `cannot_afford`: p1 did not have enough; `payment_failed`: p1 could pay, but the terms did
+  not come together today (a haggle that went nowhere, a refusal, bad timing). p1 leaves without it,
+  and `arc.gate` is `"miss"` with no outcome: the scene is about the failed purchase, not the project.
+- `met_paid`: p1 paid and has what they came for. This is the scene the `arc` block decides.
+- `local_satisfied`, `no_target`, `en_route`, `died_en_route`, `arrived_empty`: no scene is played for
+  these, so you should not see them.
 
 ## Writing rules
 
 - **Dialogue only, no action cues.** A line is only what a character says — no asterisk-delimited
   stage directions, no narrated gestures, no scene-setting prose outside the `line` fields themselves.
   Personality comes through word choice and rhythm, never a narrated gesture.
-- **Never invent as fact anything outside a character's own sample.** Each character's `criterion`
-  and `arc_premise` (if present) in the brief is the only grounded material they can draw on for
-  claims about the world. Personality and small personal texture (a turn of phrase, a passing mood,
-  a detail about *this moment*) are free to invent. Never invent a new named person, place, or
+- **Never invent as fact anything outside what the brief gives.** A character's `knowledge`,
+  `criterion` and `arc_premise`, the `place` and the `facts` are the only grounded material for claims
+  about the world; a character can only assert what is in their own `knowledge` or what the scene
+  itself establishes. Personality and small personal texture (a turn of phrase, a passing mood, a
+  detail about *this moment*) are free to invent. Never invent a new named person, place, or
   historical claim that isn't already in the brief.
 - **Keep every line short — dialog-box length.** Two sentences at most per line, almost always one.
 - **The criterion shows, it never gets recited.** It shapes what a character steers toward, what they
@@ -95,7 +150,8 @@ Notes on the reply fields:
   scenes produce a handful. `about` should be `""` only when a claim genuinely doesn't tie to anything
   in the brief's `characters`/`arc` data — prefer tagging it against something the brief already named
   when it plausibly does, and when you do, **copy that tag character-for-character from the brief**
-  (a criterion's `anchor` string, an `arc_premise.about`/`needs` entry, a `matched_about` value) —
+  (a criterion's `anchor` string, an `arc_premise.about`/`needs` entry, a `matched_about` value, or a
+  key of a character's `knowledge.education` such as `tale: x`) —
   never paraphrase, shorten, or reword it. A tag has to match exactly to be usable downstream.
 - `experience` vs `grounded_experience` — use `grounded_experience` only when the entry restates the
   same fact as one of this scene's own `claims` (reuse that claim's `about` tag, copied exactly, same

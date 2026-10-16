@@ -260,21 +260,34 @@ For pass 1 through N:
    debrief) each participant's own `criterion` and, if they have one, their arc's
    `premise`/`about`/`needs` — into one call. That mechanical block now runs the full asymmetric
    chain: `p1` rolls survive vs. arc (`roll_survival.py`, unchanged); on survive, `p1` rolls their own
-   routine and the pass ends there, no second participant. On arc, it checks whether the need is
-   satisfiable at `p1`'s current location and, if not, pathfinds (`location_context.py`/
-   `travel_graph.py`) toward a location that can satisfy it, preferring a known supplier over general
-   knowledge — this pass either arrives (this hop reaches the target) or spends the pass in transit (a
-   `route`-context step, still no second participant). Once arrived, a `roll_meetable.py` roll decides
-   whether anyone useful is actually present (a real "missed connection" miss, skewed toward a known
-   supplier when the target was found that way); if someone is found they become `p2` and roll their
-   OWN routine, which may still turn out not to match the need (also a miss). Only a genuine match
-   reaches the payment gate (`p1`'s own `provisions` against a tuning-configured cost, graded by
-   surplus and damped as the arc nears completion) — only on success does the pass proceed into the
-   unchanged `roll_contested`/`check_arc_alignment`/`roll_arc_outcome`/`record_bond_quality` chain.
+   routine and the pass ends there, no second participant (mid-journey they work where they stand and
+   the trip is kept). On arc, it checks whether the need is satisfiable where `p1` lives and, if not,
+   **draws a destination with dice** (`location_context.destination_options()`: places where someone in
+   `p1`'s own circle supplies the need are skewed up, other places that provide it are weighted by how
+   few connections away they are; knobs in `_lore/tuning.json` `pursuit`; the draw is logged as
+   `pursuit_destination`). **The destination is kept** in `p1`'s `pursuit` field: later arc passes
+   keep stepping toward it (`route` context, no second participant) until `p1` arrives, and a failure
+   at arrival starts the process over with a new draw. Once arrived, nobody living there means a solo
+   scene; otherwise a `roll_meetable.py` roll decides whether the person `p1` came for is there
+   (skewed toward a known supplier). If not, the scene is with someone else who is there
+   (`pursuit_bystander` draw, uniform over living residents), no purchase, no arc outcome. If the
+   supplier is there they roll their OWN routine, which may still not supply the need (a scene with
+   them, no purchase). Only a genuine match reaches the payment gate (`p1`'s own `provisions` against a
+   tuning-configured cost): **a failed payment is a scene with the supplier and no arc outcome is
+   rolled**; only success proceeds into the unchanged `roll_contested`/`check_arc_alignment`/
+   `roll_arc_outcome`/`record_bond_quality` chain. Every exit of the pursuit branch sets
+   `brief.pursuit` = `{stage, reason, need, place, supplier, present, could_afford}`, with `stage` one
+   of `local_satisfied`, `no_target`, `en_route`, `arrived_nobody`, `arrived_empty`, `met_mismatch`,
+   `met_cannot_pay`, `met_paid`, `died_en_route` (`simulate_pass_lib.PURSUIT_STAGES`; `could_afford` is
+   computed before any meeting), and `brief.scene` says what to do with the pass: `"pair"`
+   (dispatch the enacter), `"solo"` or null (no dispatch). The dead are never met and never make a
+   place provide anything.
    `p1` is definitionally the lead throughout; there's no symmetric primacy coin flip any more
    (`roll_home_visit.py`/`roll_arc_primacy.py` no longer exist). Prints the pre-scene horizon
-   (for `p1`, and for `p2` too if the brief's own `participant_2` field names one), the full brief, and
-   the `characters` block as one JSON object. This is now the *complete* input the enacter needs;
+   (the band only, for `p1` and for `p2` if named: `ending` and `lived` do not go to the enacter), the
+   full brief, the `characters` block (each participant's `name`, criterion, routine, arc premise and
+   their whole `knowledge` sample resolved to text), the `place` and the universal `facts` as one
+   JSON object. `_lore/tuning.json` `enacter_knowledge` can cap the knowledge lists (default: none). This is now the *complete* input the enacter needs;
    nothing else has to be separately fetched, composed, or looked up. If the brief's
    `arc_authoring_needed` is non-null, author that arc yourself (`premise`/`context`/`about` are a
    name-blend-shaped judgment call, not a dice roll — same reasoning `generate_offspring.py`'s own
@@ -290,14 +303,17 @@ For pass 1 through N:
    already ran inside `simulate_pass_brief.py` before this brief was even printed — the completed
    arc's `completion_tale_id` is right there in the payload; nothing further to do for it (it's
    mechanical, not a judgment call — the arc's own already-authored `premise` is what got filed).
-   **A pass with no `participant_2` in the brief (a solo survive pass, an en-route travel pass, or a
-   missed connection) never reaches a dialogue scene at all** — skip point 4's dispatch and point 5's
+   **A pass whose brief has `scene` other than `"pair"` (a solo survive pass, an en-route travel pass, no
+   target, or an empty place; a `"solo"` scene is flagged but not dispatched, see OPEN_QUESTIONS.md)
+   never reaches a dialogue scene at all** — skip point 4's dispatch and point 5's
    `pass_record.py`/`pass_apply.py` calls entirely for that pass; only the mechanical prep above (and,
    for `p1`, its own lived-delta/death/horizon bookkeeping) applies. See `simulate_driver.py`'s own
    `apply_solo()` for exactly what that bookkeeping covers on the Local/driver path — the same
    bookkeeping applies here even when running the manual per-pass sequence instead of the driver.
 4. **Dispatch the enacter — only for a pass that actually reached a genuine two-participant scene**
-   (the brief's own `motivated: true`, per point 3 above). How depends on Step 1's model choice —
+   (the brief's own `scene: "pair"`, per point 3 above: a payment that went through, or a failed
+   arrival turned into a scene; `motivated` is true only for the former, and `arc.gate`/`outcome` are
+   only ever set then). How depends on Step 1's model choice —
    either way this is the ONE dispatch per pass, it does no tool-calling of its own, and it never sees
    anything beyond point 3's JSON plus, when relevant, a short director's note (below).
 
