@@ -7,7 +7,7 @@ An audit, not a fix. It looks at the engine as it stands, says what it found and
 
 ## Step 1 - Scope
 
-One pass, in order: draw p1, survive-or-arc, routine, local check, pathfind/travel, meet, p2 routine, payment, contest/align/outcome/tally, scene and record, apply (aging, deaths, birth, legacy), solo bookkeeping. For each step write down: the script, the state it reads, the dice with their odds (from `_lore/tuning.json`, never from memory), the state it writes, and what lands in the lore (hearsay, tale, character file). Then check the seams: is what step N writes actually read by step N+1? Look for dead fields (written, never read), dangling reads (read, never written), and docs that say something the code does not (SKILL.md, README, docstrings, `diagrams/`). Start from `scripts/lore/simulate_pass_lib.py:run_pass_mechanics`; it is the spine.
+One pass, in order: draw p1, work-or-arc, routine, local check, pathfind/travel, meet, p2 routine, payment, contest/align/outcome/tally, scene and record, apply (aging, deaths, birth, legacy), solo bookkeeping. For each step write down: the script, the state it reads, the dice with their odds (from `_lore/tuning.json`, never from memory), the state it writes, and what lands in the lore (hearsay, tale, character file). Then check the seams: is what step N writes actually read by step N+1? Look for dead fields (written, never read), dangling reads (read, never written), and docs that say something the code does not (SKILL.md, README, docstrings, `diagrams/`). Start from `scripts/lore/simulate_pass_lib.py:run_pass_mechanics`; it is the spine.
 
 ## Step 2 - Intent against README Part I
 
