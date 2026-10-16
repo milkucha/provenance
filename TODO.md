@@ -90,10 +90,16 @@ pool become one substance at two scopes (the sketch in "Personal provisions and 
   hold, whatever the split; the new rules keep large towns alive at 70% work where the old ones lose
   most of them, but the pool sits near 0 permanently (upkeep drains it faster than +1 per work pass
   refills it), so the commons stops mattering unless upkeep or the pool's share changes.
-- Open: eating when neither source alone covers 2 (personal 1, pool 0; personal 0, pool 1); the pool's
-  share of work and the upkeep rate; renaming only the choice value or the whole mechanism; and a
-  balance script under scripts/test to tune it by running instead of guessing. Wait for the pursuit
-  redesign branch (`sim-pursuit-redesign`) to land before touching `apply_survival.py` again.
+- Decided 2026-10-17: partial food is a half meal (take what exists, up to 2 units, energy +1 per unit);
+  rename everything, `survive` becomes `work` throughout (choice value, scripts, tuning keys, docs); a
+  balance script under `scripts/test/` tunes the numbers by running them.
+- Open: the pool's share of work and the upkeep rate. In the toy run (12 people, half-meal rule), +2
+  pool share with upkeep 0.05 held a town at 50% work and didn't run away at 70%; upkeep 0 runs away
+  at 70% (pool in the hundreds). Per-capita upkeep stands in for the unseen eating of everyone not
+  drawn this pass; a proportional decay on the pool (spoilage) would be self-stabilizing instead.
+  Pool starts at 2 x population (already the case, `provisions_lib.get_provisions`).
+  Wait for the pursuit redesign branch (`sim-pursuit-redesign`) to land before touching
+  `apply_survival.py` again.
 
 ## Pursuit redesign: destination choice, failed pursuits as scenes (raised 2026-10-17, direction set, not built)
 
