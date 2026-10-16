@@ -242,6 +242,7 @@ def run_pass(state: State, pass_number: int) -> str:
                             "premise": deceased_arc.get("premise", ""),
                             "resolution": "ongoing",
                             "history": [],
+                            "turns": 0,
                         }
                         save_char(recipient, recipient_char)
                         notes.append(f"{participant}'s arc passed to {recipient} (death-legacy)")

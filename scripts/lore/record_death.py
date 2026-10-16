@@ -7,11 +7,13 @@ point 6. This is everything in that point EXCEPT the one genuine judgement call 
 other shock resolution. Everything else here is bookkeeping:
 
     - sets life.deceased: true on the character's own file
+    - moves their personal provisions to their living children (equal shares), or to the pool of the
+      place they died in if there are none (estate.py - the one function every death goes through)
     - writes _lore/tales/<slug>.md recording the death as an objective fact of the world
     - adds the matching row to encodings.json's tales.entries, _lore/tales/_authors.md, and
       _lore/tales/_index.md
-    - computes the character's circle and samples 30% of it to notify immediately (reuses
-      notify_death.py's own logic, so the two never drift apart)
+    - computes the character's circle and samples a share of it (`notification.extended_share`,
+      30%) to notify immediately (notify_death.circle_of, so the two never drift apart)
     - appends a plain "learned of the death" knowledge.experience line to every notified character
     - flags which notified characters are shock candidates (their criterion.anchor references the
       deceased) so the caller knows exactly who still needs a Step 6 judgement call afterward
@@ -32,6 +34,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import notify_death  # noqa: E402  (sibling module, sys.path adjusted above)
+import estate  # noqa: E402
+import update_social_circle  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 CHAR_DIR = ROOT / "_lore" / "characters"
@@ -107,6 +111,9 @@ def main() -> None:
         json.dump(character, f, indent=2, ensure_ascii=False)
         f.write("\n")
 
+    # 1b. economic inheritance - the dead's provisions to the living children, else the local pool
+    inheritance = estate.inherit(key)
+
     # 2. tale file
     slug = f"death_of_{slugify(name)}"
     base_slug, n = slug, 2
@@ -147,24 +154,10 @@ def main() -> None:
     entries_by_id = {e["id"]: e for e in entries}
     name_to_key = notify_death.name_to_key_map(characters)
 
-    relations = notify_death.compute_relations([key], characters)
-
-    extended_keys = set()
-    for _scene_id, others in notify_death.scene_participants_of(name, entries):
-        for other_name in others:
-            k = name_to_key.get(notify_death.normalize(other_name))
-            if k and k != key:
-                extended_keys.add(k)
-    backstory_all = character.get("backstory") or ""
-    for other_key, other_char in characters.items():
-        if other_key == key:
-            continue
-        if notify_death.normalize(other_char.get("name", "")) in notify_death.normalize(backstory_all):
-            extended_keys.add(other_key)
-    extended_keys = notify_death.living_only(extended_keys, characters) - relations
+    relations, extended_keys = notify_death.circle_of(key, characters, entries)
 
     extended = sorted(extended_keys)
-    n_notify = 0 if not extended else max(1, round(0.30 * len(extended)))
+    n_notify = notify_death.notify_count(len(extended))
     from random import Random
     rng = Random(args.seed)
     sampled = sorted(rng.sample(extended, n_notify)) if n_notify else []
@@ -181,6 +174,7 @@ def main() -> None:
         if args.pass_number is not None:
             entry = {"text": entry, "produced_by": {"scene_id": None, "pass_number": args.pass_number}}
         notified_char["knowledge"]["experience"].append(entry)
+        update_social_circle.add_tie(notified_char, key, "mentioned")  # they heard of the dead: a mention, at the weakest
         with open(notified_char_path, "w", encoding="utf-8") as f:
             json.dump(notified_char, f, indent=2, ensure_ascii=False)
             f.write("\n")
@@ -191,7 +185,13 @@ def main() -> None:
 
     print(f"deceased: {key} ({name})")
     print(f"tale written: _lore/tales/{slug}.md  (id: {slug})")
-    print(f"relations (guaranteed): {len(relations)}  |  extended circle: {len(extended)} -> sampled {len(sampled)} (30%)  |  total notified: {len(notified)}")
+    if inheritance["heirs"]:
+        print(f"estate: {inheritance['amount']:g} provisions split among {len(inheritance['heirs'])} living child(ren): {', '.join(inheritance['heirs'])}")
+    elif inheritance["pool"] is not None:
+        print(f"estate: {inheritance['amount']:g} provisions to the pool at {inheritance['pool'] or '(no location)'} (no living children)")
+    else:
+        print("estate: nothing to leave")
+    print(f"relations (guaranteed): {len(relations)}  |  extended circle: {len(extended)} -> sampled {len(sampled)} ({notify_death.tuning.load()['notification']['extended_share']:.0%})  |  total notified: {len(notified)}")
     for k in notified:
         tag = "  [relation]" if k in relations else ""
         flag = "  <-- SHOCK CANDIDATE: resolve per /character Step 6" if k in shock_candidates else ""

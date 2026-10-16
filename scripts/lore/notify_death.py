@@ -13,8 +13,9 @@ itself is handled in two tiers, and this script only ever computes the first:
            circle members BY COINCIDENCE, if a scene or backstory mention happened to register them -
            nothing guaranteed a parent or partner ever actually made the circle at all.
        (b) EXTENDED CIRCLE: everyone else who's shared a scene (co-participants across every
-           _lore/encodings.json hearsay.entries record) or is named in the character's own backstory,
-           minus anyone already counted as a relation. 30% of THIS group (rounded, minimum 1 if
+           _lore/encodings.json hearsay.entries record), is named in the character's own backstory, or
+           is in their stored `social_circle` (update_social_circle.py) with a kind that knows them
+           (met, descendant), minus anyone already counted as a relation. `notification.extended_share` (tuning.json, 30%) of THIS group (rounded, minimum 1 if
            non-empty) is notified immediately - this script picks who. The other 70% simply don't
            hear, not yet.
     2. PROBABILISTIC - everyone else. Handled outside this script entirely: the death is recorded as
@@ -137,6 +138,53 @@ def compute_relations(subject_keys, characters: dict) -> set:
     return living_only(relations, characters)
 
 
+def notify_count(n_extended: int) -> int:
+    """How many of the wider circle hear at once: `notification.extended_share` of it (the author's
+    30%), rounded, at least one if there is anyone. The ONE place that number is read - a death, a
+    birth and an arc completion all go through it."""
+    share = tuning.load()["notification"]["extended_share"]
+    return 0 if not n_extended else max(1, round(share * n_extended))
+
+
+# Kinds of stored social_circle tie that mean "knows the subject personally" - the ones whose
+# holder the subject's news can plausibly reach. `inherited` and `mentioned` are things the subject
+# heard of, not people who know the subject, so they do not widen the pool that hears.
+KNOWING_KINDS = ("parent", "child", "descendant", "met")
+
+
+def stored_circle_keys(subject: dict) -> set:
+    """Keys in the subject's own stored `social_circle` (update_social_circle.py) of a kind that
+    knows them. Accepts the old list shape too (no kinds: nobody counts, a list says nothing about
+    how they know each other)."""
+    raw = subject.get("social_circle") or {}
+    if not isinstance(raw, dict):
+        return set()
+    return {k for k, kind in raw.items() if kind in KNOWING_KINDS}
+
+
+def circle_of(key: str, characters: dict, entries: list) -> tuple:
+    """(relations, extended) for one subject: the two tiers a death, and an arc completion, notify.
+    relations = compute_relations (always told); extended = everyone else living who shared a recorded
+    scene with them, is named in their backstory, or is in their stored social_circle with a kind
+    that knows them, minus the relations. Shared by main() below, record_death.py and
+    arc_completion.py, so the three never drift apart."""
+    subject = characters[key]
+    name_to_key = name_to_key_map(characters)
+    relations = compute_relations([key], characters)
+    extended_keys = set()
+    for _scene_id, others in scene_participants_of(subject["name"], entries):
+        for name in others:
+            k = name_to_key.get(normalize(name))
+            if k and k != key:
+                extended_keys.add(k)
+    backstory = normalize(subject.get("backstory") or "")
+    for other_key, other_char in characters.items():
+        if other_key != key and normalize(other_char.get("name", "")) in backstory:
+            extended_keys.add(other_key)
+    extended_keys |= (stored_circle_keys(subject) & set(characters)) - {key}
+    return relations, living_only(extended_keys, characters) - relations
+
+
 def anchor_references(anchor: str, deceased_name: str, entries_by_id: dict) -> bool:
     """Does this criterion.anchor point at a scene the deceased participated in?"""
     if anchor.startswith("experience: ") or anchor.startswith("hearsay: "):
@@ -164,25 +212,9 @@ def main() -> None:
     deceased_name = deceased["name"]
     entries = enc["hearsay"]["entries"]
     entries_by_id = {e["id"]: e for e in entries}
-    name_to_key = name_to_key_map(characters)
-
-    relations = compute_relations([key], characters)
-
-    extended_keys = set()
-    for _scene_id, others in scene_participants_of(deceased_name, entries):
-        for name in others:
-            k = name_to_key.get(normalize(name))
-            if k and k != key:
-                extended_keys.add(k)
-
-    backstory = normalize(deceased.get("backstory") or "")
-    for other_key, other_name in ((k, v["name"]) for k, v in characters.items() if k != key):
-        if normalize(other_name) in backstory:
-            extended_keys.add(other_key)
-
-    extended_keys = living_only(extended_keys, characters) - relations
+    relations, extended_keys = circle_of(key, characters, entries)
     extended = sorted(extended_keys)
-    n_notify = 0 if not extended else max(1, round(0.30 * len(extended)))
+    n_notify = notify_count(len(extended))
 
     rng = Random(args.seed)
     sampled = sorted(rng.sample(extended, n_notify)) if n_notify else []
@@ -190,7 +222,7 @@ def main() -> None:
     notified = sorted(relations) + sampled
 
     print(f"deceased: {key} ({deceased_name})")
-    print(f"relations (guaranteed): {len(relations)}  |  extended circle: {len(extended)} -> sampling {n_notify} (30%)")
+    print(f"relations (guaranteed): {len(relations)}  |  extended circle: {len(extended)} -> sampling {n_notify} ({tuning.load()['notification']['extended_share']:.0%})")
     print()
     print("NOTIFIED (write a knowledge.experience entry now):")
     for k in notified:

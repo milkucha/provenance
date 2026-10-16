@@ -34,6 +34,7 @@ import tuning  # noqa: E402
 import rng_context  # noqa: E402
 import location_context  # noqa: E402
 import travel_graph  # noqa: E402
+import arc_completion  # noqa: E402
 
 T = tuning.load()
 PARTNER_THRESHOLD = T["partner_threshold"]
@@ -528,8 +529,10 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
     both callers - see this module's own section docstring above for the field-by-field shape used
     by each step. `arc_authoring_needed`, when present, is a minimal `{"character_slug", "reason"}`
     signal only - each caller enriches it with the full authoring context (band/criterion/routines/
-    needs_candidates/prior_arc) and, on `reauthor_complete`, writes the completion tale itself, the
-    same division of labor the pre-rewrite simulate_pass_brief.py already used for this exact slot.
+    needs_candidates/prior_arc). A completion is NOT left to the caller any more (2026-10-17): this
+    function calls arc_completion.complete() the moment the tally flips the arc to complete - tale,
+    provisions reward, the telling, the children's inheritance - and returns it as
+    `result["arc_completion"]`. It also counts `arc.turns`, one per pass in which `p1` is drawn.
 
     Pursuit redesign (2026-10-17, TODO.md): the pursuit branch (arc chosen, need not met at home)
     now draws its destination with dice (location_context.destination_options), keeps it across
@@ -541,6 +544,12 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
     notes: list = []
     p1_char = load_char(p1)
     location_now = p1_char.get("location", "")
+
+    # One more turn of their own on the arc they are living (a pass in which they were the drawn p1;
+    # zeroed whenever an arc is authored). The count the completion reward is read from.
+    if (p1_char.get("arc") or {}).get("resolution") == "ongoing":
+        p1_char["arc"]["turns"] = p1_char["arc"].get("turns", 0) + 1
+        save_char(p1, p1_char)
 
     result = {
         "pass": pass_number,
@@ -557,6 +566,7 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
         "contested": False,
         "arc": {"gate": "miss", "inclined": None, "outcome": None, "tally_result": None, "matched_about": []},
         "arc_authoring_needed": None,
+        "arc_completion": None,
         "contested_hinder_slot": None,
         "survival": {},
         "notes": notes,
@@ -911,6 +921,16 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
 
     p1_char["arc"] = arc
     save_char(p1, p1_char)
+
+    if result["arc"]["tally_result"] == "complete":
+        # The completion: tale, provisions reward, the telling, the children's inheritance
+        # (arc_completion.py). After the save above, which it reads back and adds to.
+        done = arc_completion.complete(p1, pass_number)
+        result["arc_completion"] = done
+        notes.append(
+            f"{p1}'s completion after {done['turns']} turn(s): reward {done['reward']:g} provisions, "
+            f"filed as tale '{done['tale_id']}', told to {len(done['notified'])} ({len(done['children'])} child(ren) inherit it)"
+        )
 
     if contested and inclined == "hinder":
         result["contested_hinder_slot"] = {"traveler": p1, "supplier": p2, "matched_provide": need}

@@ -21,6 +21,21 @@
     "max_education_items": null,
     "max_experience_items": null
   },
+  "social_circle": {
+    "_comment": "Design session 2026-10-17 (class through inheritance, TODO.md): `social_circle` on a character is a stored map {character key: kind}, written by scripts/lore/update_social_circle.py. The author's sources: the parents and a share of their circles, characters met, characters referenced in knowledge, children and descendants. inherit_share is the part of EACH parent's circle that a newborn inherits (the author said 30%): a seeded draw per parent, rounded, at least one if the parent's circle has anyone to give, logged as `social_circle_inherit` in the draw audit. Kinds and which one wins when a person is several (strongest first): parent, child, descendant, met, inherited, mentioned.",
+    "inherit_share": 0.3
+  },
+  "notification": {
+    "_comment": "Who hears at once when something happens to a character (a death, a birth, an arc completion; one mechanism, scripts/lore/notify_death.py): relations are told for certain, and this share of the wider circle (rounded, at least one if the circle is non-empty) hears immediately. The author's 30%, which used to be hardcoded in three places. The arc-completion notification SHARES this knob; it has none of its own (logged in OPEN_QUESTIONS.md).",
+    "extended_share": 0.3
+  },
+  "arc_completion_reward": {
+    "_comment": "Design session 2026-10-17 (class through inheritance, TODO.md): a genuine arc completion (never a stall, reverse, transform or failed arc) grants the completer provisions: clamp(base + per_turn x turns, min, max), where `turns` is the character's OWN turns (passes in which they were the drawn p1) from the arc's start to its completion (`arc.turns`, counted by simulate_pass_lib.run_pass_mechanics, zeroed whenever an arc is authored). DEFAULTS ARE MY GUESS, the author's to confirm (OPEN_QUESTIONS.md, 'Arc completion reward'). Reasoning: completing needs three net advances, each a paid scene at arc_payment.arc_need_cost (3), so a completion costs at least 9 and, with stalls and reverses, usually more. The floor (min 9) repays three paid scenes; each turn adds 0.2 (the long road paid more), so a 30-turn arc, about what scripts/test/balance_economy.py --gens measures, gets 12 (four scenes) and a 45-turn one hits the cap, 15 (five), which is what stops one slow completion from founding a dynasty. Measured against the balance script (OPEN_QUESTIONS.md, 'Arc completion reward'). Bonus is the completer's own provisions from then on, so it is inherited at death with the rest.",
+    "base": 6,
+    "per_turn": 0.2,
+    "min": 9,
+    "max": 15
+  },
   "arc_meetable_odds_percent": 55,
   "_comment_arc_meetable_odds_percent": "Design session 2026-09-13: odds that ANYONE useful is actually present once p1 has arrived (or was already) at a location that can satisfy their arc's need - the 'missed connection' mechanic. Deliberately a real, non-trivial chance of a miss (not 90%+) since the whole point of this roll is that showing up doesn't guarantee anyone worth meeting is there this exact pass - 55 keeps it closer to a coin flip than a near-certainty, in the same range as survival's own arc_base (50) rather than borrowing a rare-event odds value like contested (15).",
   "odds_percent": {

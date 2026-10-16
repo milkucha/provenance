@@ -134,10 +134,13 @@ def rename_slug(old_slug: str, real_name: str) -> str:
         if parents and old_slug in parents:
             other["parents"] = [new_slug if p == old_slug else p for p in parents]
             changed = True
-        for field in ("partners", "partners_quality"):
+        for field in ("partners", "partners_quality", "social_circle"):
             d = other.get(field)
             if d and old_slug in d:
-                d[new_slug] = d.pop(old_slug)
+                if isinstance(d, list):  # the old bare-list social_circle
+                    other[field] = [new_slug if k == old_slug else k for k in d]
+                else:
+                    d[new_slug] = d.pop(old_slug)
                 changed = True
         if changed:
             path.write_text(json.dumps(other, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
@@ -339,6 +342,7 @@ def apply_arc(character_slug: str, about: list, needs: list, context: str, premi
         "premise": premise or "",
         "resolution": "ongoing",
         "history": [],
+        "turns": 0,
     }
     save_char(character_slug, character)
     print(call("register_arc_concept.py", [character_slug]).strip())

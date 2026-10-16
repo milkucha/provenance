@@ -83,6 +83,11 @@ What's inherited and how:
   subset of the union of both parents' own `partners` keys (never the parents themselves - that's
   the `parents` field), inherited at a scaled-down strength/quality since the child hasn't actually
   lived any of those connections - only grown up around them.
+- `social_circle` - **new 2026-10-17**, the social capital (see update_social_circle.py, which does
+  the work and owns the shape): the parents (kind `parent`), a seeded `social_circle.inherit_share`
+  (30%) of EACH parent's circle (`inherited`, the draw logged as `social_circle_inherit`), and whoever
+  the child's own knowledge refers to (`mentioned`); and the child goes into both parents' circles
+  (`child`) and every ancestor's (`descendant`). Written last, after every other save here.
 
 Cooldowns (both from _lore/tuning.json, and deliberately distinct from each other): a **parent**
 can't reproduce again for `parent_cooldown_passes` (checked by the caller before this script ever
@@ -99,7 +104,8 @@ them"):
 - The **circle** - reusing notify_death.py's own logic, unioned across both parents (everyone
   either parent has shared a scene with, or is named in either parent's backstory), minus the
   parents and the child themselves - gets the same 30%-sampled, immediate-notification treatment
-  a death gets. Everyone else outside that 30% may still hear later the ordinary way (a future
+  a death gets (`notification.extended_share`, the one knob a death and an arc completion share).
+  Everyone else outside that share may still hear later the ordinary way (a future
   hearsay draw), same as death's own "remainder" tier.
 
 What this script deliberately does NOT decide: the child's **name**. That's the one place in this
@@ -127,6 +133,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import anchor_epistemology as ae  # noqa: E402  (sibling module, sys.path adjusted above)
 import notify_death  # noqa: E402
+import update_social_circle  # noqa: E402
 import tuning  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent.parent
@@ -745,7 +752,7 @@ def main() -> None:
     extended_keys = notify_death.living_only(extended_keys, characters) - relations
 
     extended = sorted(extended_keys)
-    n_notify = 0 if not extended else max(1, round(0.30 * len(extended)))
+    n_notify = notify_death.notify_count(len(extended))
     from random import Random
     rng = Random(args.seed)
     sampled = sorted(rng.sample(extended, n_notify)) if n_notify else []
@@ -758,17 +765,26 @@ def main() -> None:
             "text": f"Heard that {name_a} and {name_b} now have a child, {args.name}.",
             "produced_by": {"scene_id": None, "pass_number": args.pass_number},
         })
+        for named in (a_key, b_key, key):  # the line names all three: weakest-kind mentions
+            if named != k:
+                update_social_circle.add_tie(notified_char, named, "mentioned")
         save_char(k, notified_char)
+
+    # Social capital (author's design: the social circle is inherited at birth): the child's own
+    # circle - parents, a seeded share of each parent's circle, knowledge refs - and the child into
+    # every ancestor's. Last, after every save above, so no stale copy overwrites it.
+    circle = update_social_circle.on_birth(key)
 
     print(f"born: {key} ({args.name})")
     print(f"tale written: _lore/tales/{tale_id}.md  (id: {tale_id}) - tag the birth-announcement hearsay claim 'about: \"tale: {tale_id}\"', not a made-up concept")
     print(f"parents: {a_key}, {b_key}  (last_reproduced_pass = {args.pass_number} on both, both notified directly)")
-    print(f"relations (guaranteed): {len(relations)}  |  extended circle: {len(extended)} -> sampled {len(sampled)} (30%)  |  total notified: {len(notified)}")
+    print(f"relations (guaranteed): {len(relations)}  |  extended circle: {len(extended)} -> sampled {len(sampled)} ({tuning.load()['notification']['extended_share']:.0%})  |  total notified: {len(notified)}")
     for k in notified:
         tag = "  [relation]" if k in relations else ""
         print(f"  notified: {k}{tag}")
     if extended and not sampled:
         print("  (extended circle non-empty but sample came back empty - shouldn't happen, check n_notify logic)")
+    print(f"social_circle: {len(circle['circle'])} ties ({sum(len(v) for v in circle['inherited'].values())} inherited from the parents' circles, share {tuning.load()['social_circle']['inherit_share']:.0%})")
     print(f"knowledge.education.items: {len(items)} total  ({len(inherited_items)} from parents, {len(general_items)} new from encodings.json's world-lore pools)")
     print(f"knowledge.experience: {len(inherited_experience)} inherited as family lore (wrapped 'Grew up hearing: ...', not lived firsthand)")
     print(f"routines: {len(routines)} inherited")
