@@ -54,14 +54,14 @@ Underneath sits a floor, conformance: outcomes checked against the stated odds a
 (2) Immersion is accorded by users satisfaction, measured in standardized scale with set of questions to compare accross runs and configuration settings.
 
 
-| Instrument | Asks | Doesn't tell you |
-|---|---|---|
-| `conformance_report.py` | Did each stochastic script land at its stated odds, and did every draw go through the audit log? | Anything about the prose |
-| `measure_derivation.py` | What share of hearsay references resolve to a real entry, and of experience entries carry a `produced_by` back to their scene? | Quality: a claim can resolve and be dull. It's the nearest thing to a slop meter, a proxy |
-| `measure_drift.py` | How far does a claim move per retelling? | Meaning; it's lexical (edit distance, word bigrams) |
-| `measure_divergence.py` | Same commit, same RNG seed, two runs: dice are identical, so what differs is the agent layer | Meaning, again; and only one run of the isolation pair is logged |
-| `record_tasting.py` (`/taste`) | A person scores 0 to 10: legibility, aliveness, curiosity, specificity | Anything beyond that rater |
-| `simulate_token_usage.py` | What did each pass cost? | Whether it was worth it |
+| Instrument | Asks |
+|---|---|
+| `conformance_report.py` | Did each stochastic script land at its stated odds, and did every draw go through the audit log? |
+| `measure_derivation.py` | What share of hearsay references resolve to a real entry, and of experience entries carry a `produced_by` back to their scene? |
+| `measure_drift.py` | How far does a claim move per retelling? |
+| `measure_divergence.py` | Same commit, same RNG seed, two runs: dice are identical, so what differs is the agent layer |
+| `record_tasting.py` (`/taste`) | A person scores 0 to 10: legibility, aliveness, curiosity, specificity |
+| `simulate_token_usage.py` | What did each pass cost? |
 
 
 ## Why
@@ -74,7 +74,7 @@ The idea of simulating a society solely (or mainly) via the conversations charac
 
 The simulation architecture resembles other systems that attempt something similar following different approaches, such like Dwarf Fortress and Talk of the Town. Other parts of the system are inspired by Levi-Strauss' mythemes and Bourdeau's concept of capitals. 
 
-## The parts of the system
+## The parts of the system [Work in Progress]
 
 ### Seeds
 
@@ -82,7 +82,9 @@ Content provided by author and encoded by agent. To be conceptualized as the *ar
 
 ### Lore
 
-![Lore blueprint: a hub with five clusters of sources and three small nodes.](assets/blueprints/Lore.png)
+<p align="center">
+  <img src="assets/blueprints/Lore.png" alt="Lore blueprint: a hub with five clusters of sources and three small nodes." width="100%">
+</p>
 
 *The sources of truth, "the stones that are the road". Materials, characters, tales, facts and groundings each feed the hub; contexts, tuning and, bracketed, encodings sit beside it.*
 
@@ -96,7 +98,9 @@ Content provided by author and encoded by agent. To be conceptualized as the *ar
 
 ### Encodings
 
-![Encodings blueprint: a tree rooted in "categories", one branch per category with its fields.](assets/blueprints/Encodings.png)
+<p align="center">
+  <img src="assets/blueprints/Encodings.png" alt="Encodings blueprint: a tree rooted in &quot;categories&quot;, one branch per category with its fields." width="100%">
+</p>
 
 *The repository of all knowledge, "the beating heart of the lore": location, time_systems, route, concept, conflict, tale, character, hearsay, and room for more.*
 
@@ -114,7 +118,9 @@ Each also has a secret lifespan, kept out of the file the model reads, so they c
 
 ### State transformation
 
-![State transformation blueprint: arrows among material, tales, hearsay, groundings, encodings and a character drawn twice, with a scene feeding back.](assets/blueprints/State%20Transformation.png)
+<p align="center">
+  <img src="assets/blueprints/State%20Transformation.png" alt="State transformation blueprint: arrows among material, tales, hearsay, groundings, encodings and a character drawn twice, with a scene feeding back." width="100%">
+</p>
 
 *Knowledge pool appendage and mutation; myth formation. Pink arrows: author input. Blue: the record and the character. Green: what a scene writes (to hearsay, to the character, to tales). Brown: groundings.*
 
@@ -124,7 +130,9 @@ Every claim keeps where it came from. `build_source_index.py` links a claim's `a
 
 ### Handling
 
-![Handling blueprint: one root with a line out to each skill.](assets/blueprints/Handling.png)
+<p align="center">
+  <img src="assets/blueprints/Handling.png" alt="Handling blueprint: one root with a line out to each skill." width="100%">
+</p>
 
 *The levers that can be pulled; the way to drive the vehicle. One root, one line out to each skill: eleven labelled (/start, /integrate, /tell, /character, /resolve, /simulate, /enact, /generate, /embody, /spawn, /package) and one node without a label.*
 
@@ -165,7 +173,7 @@ A run that's testing the design (not a casual showcase) writes a manifest (popul
 
 ---
 
-# Part II. Technical
+# Part II. Technical [In Continous Development]
 
 
 ## Getting started
