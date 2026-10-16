@@ -3,6 +3,8 @@
 Agent-driven world-building system: takes a seed (sociocultural parameters, a handful of authored facts) and grows a fictional society organically through procedural and semantic generation — not hand-written end to end. Designed to produce emergent, materially-grounded lore drift, not just mechanically-correct record-keeping.
 
 
+**What this repo is.** Provenance is an engine and it ships empty: no world, no lore, no cast. Whatever lore, characters or test populations a branch carries are test material, never the product. `provenance-standalone` carries none, ever; each corpus lives on its own branch cut from it (`corpus-three-cities`, `provenance-milkantis`), so a corpus shows how the *current* engine treats it. Engine changes are made on standalone and flow outward to the corpus branches (merge standalone into them), never the other way round. Don't describe the project as any particular world, and don't ask the user to restate this.
+
 ## Four core principles
 
 **1. Nothing gets decided silently.** Open questions go to the user or get logged, never guessed. See [OPEN_QUESTIONS.md](OPEN_QUESTIONS.md) — when a `/simulate` run surfaces a gap or a real disagreement about how something should work, that lands here, not only in chat history.
