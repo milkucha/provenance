@@ -67,6 +67,11 @@ Found while walking through one pass; each confirmed by reading `pass_prep.py`, 
 - **The brief's fields are never explained to the model.** The preamble covers `arc.gate`/`outcome`
   and little else; `motivated`, `matched_need`, `contested`, `survival`, `horizon_pre` are raw flags
   with no legend.
+- **Author's calls (2026-10-17):** (1) give the enacter each participant's whole knowledge sample and the
+  place's description, in the brief, resolved from refs to text (cost is a few hundred tokens per
+  character, to be measured); (2) add a legend of every brief field to the preamble; the composed
+  one-line sentence is not wanted for now; (3) name the failure modes in code with a structured
+  `pursuit` stage and reason; (4) `ending` leak: undecided, see the open question below.
 - Failure modes (arrived and nobody there, had the means but didn't find them, can't pay, no route,
   nowhere to look, died on the way) are not named by the code today: each branch only appends a
   free-text line to `notes`. Idea to discuss: each branch sets a structured `pursuit` stage and reason.
