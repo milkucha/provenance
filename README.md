@@ -13,7 +13,7 @@ Provenance is a storytelling and world-building engine for authors. Starting fro
 
 Characters, played by constrained agents, meet, talk and interpret one another, develop story arcs, reproduce and eventually die; with each of these things leaving a trace in the corpus that later characters draw and base what they know about the world, and thus what they say about it, on.
 
-It is both a tool for authors and an experiment in agent-based constrained social simulation. 
+It is both a tool for authors and an experiment in and laboratory for agent-based constrained social simulation. 
 
 Pre-alpha. Currently only text-based, but ships an embodiment layer (in progress) to instantiate characters in Minecraft. GUI planned but not built yet.
 
