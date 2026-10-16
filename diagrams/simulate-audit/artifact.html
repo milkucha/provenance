@@ -1,0 +1,625 @@
+<title>Pass Map</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap">
+<style>
+/* Layout: one sticky tab bar, five panels. The flow is a vertical rail of expandable steps; the rest are tables and cards. */
+:root{
+  --bg:#F4F6F9; --card:#FFFFFF; --fg:#1A2130; --muted:#5A6578; --line:#D6DBE4; --soft:#EAEEF4;
+  --read:#2563B0; --dice:#A8650A; --write:#23804F; --lore:#7143AA; --bad:#B8312F;
+  --read-bg:#E6EFFA; --dice-bg:#FBF0DD; --write-bg:#E1F3E9; --lore-bg:#EFE6F8; --bad-bg:#FBE6E5;
+  --serif:'Source Serif 4',Georgia,'Times New Roman',serif;
+  --sans:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#11151C; --card:#191F29; --fg:#E6E9F0; --muted:#98A3B5; --line:#2A3241; --soft:#222A37;
+  --read:#78AEEF; --dice:#E5A850; --write:#62C792; --lore:#BA9DEA; --bad:#F27573;
+  --read-bg:#1B2B42; --dice-bg:#3A2D17; --write-bg:#173326; --lore-bg:#2B2140; --bad-bg:#3D1C1D; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11151C; --card:#191F29; --fg:#E6E9F0; --muted:#98A3B5; --line:#2A3241; --soft:#222A37;
+  --read:#78AEEF; --dice:#E5A850; --write:#62C792; --lore:#BA9DEA; --bad:#F27573;
+  --read-bg:#1B2B42; --dice-bg:#3A2D17; --write-bg:#173326; --lore-bg:#2B2140; --bad-bg:#3D1C1D; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:15px/1.5 var(--sans);padding-block:0 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:980px;margin:0 auto}
+h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:30px} h2{font-size:23px;margin-top:6px} h3{font-size:17px}
+p{margin:0}
+code,.mono{font-family:var(--mono);font-size:.86em}
+header.top{padding-top:22px}
+.sub{color:var(--muted);max-width:68ch;margin-top:6px}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin:16px calc(-1*max(16px,env(safe-area-inset-left,0px))) 0;padding:8px max(16px,env(safe-area-inset-left,0px));display:flex;gap:6px;overflow-x:auto}
+nav button{font:500 13px var(--sans);color:var(--muted);background:none;border:1px solid transparent;border-radius:6px;padding:7px 12px;white-space:nowrap;cursor:pointer}
+nav button[aria-selected="true"]{color:var(--fg);background:var(--card);border-color:var(--line)}
+nav button:focus-visible,.step>button:focus-visible,.chk:focus-visible{outline:2px solid var(--read);outline-offset:2px}
+section.panel{padding-top:22px}
+section.panel[hidden]{display:none!important}
+.legend{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:12.5px;color:var(--muted);margin:12px 0}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:11px;height:11px;border-radius:2px;display:inline-block}
+.sw.read{background:var(--read)} .sw.dice{background:var(--dice)} .sw.write{background:var(--write)} .sw.lore{background:var(--lore)}
+.chip{font:500 11px var(--mono);letter-spacing:.04em;border-radius:4px;padding:2px 6px;border:1px solid var(--fg);white-space:nowrap;display:inline-block}
+.chip.ran{background:var(--fg);color:var(--bg)}
+.chip.read{background:none;color:var(--fg)}
+.chip.doc{background:none;color:var(--muted);border:1px dashed var(--muted)}
+.chip.bad{background:var(--bad);border-color:var(--bad);color:#fff}
+.chip.bug{background:var(--bad-bg);color:var(--bad);border-color:var(--bad)}
+.chip.mismatch{background:var(--dice-bg);color:var(--dice);border-color:var(--dice)}
+.chip.dead{background:var(--soft);color:var(--muted);border-color:var(--muted)}
+.chip.gap{background:var(--lore-bg);color:var(--lore);border-color:var(--lore)}
+.chip.ok{background:var(--write-bg);color:var(--write);border-color:var(--write)}
+.chip.mv{background:var(--write-bg);color:var(--write);border-color:var(--write)}
+.chip.later{background:var(--read-bg);color:var(--read);border-color:var(--read)}
+.chip.no{background:var(--soft);color:var(--muted);border-color:var(--muted)}
+.chip.met{background:var(--write-bg);color:var(--write);border-color:var(--write)}
+.chip.partly{background:var(--dice-bg);color:var(--dice);border-color:var(--dice)}
+.chip.notmet{background:var(--bad-bg);color:var(--bad);border-color:var(--bad)}
+.chip.unk{background:var(--soft);color:var(--muted);border-color:var(--muted);border-style:dashed}
+/* funnel */
+.funnel{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:14px 0}
+.funnel h3{margin-bottom:2px}
+.frow{display:grid;grid-template-columns:minmax(90px,1.3fr) 4fr;gap:10px;align-items:center;margin-top:7px;font-size:13px}
+.frow .lbl{min-width:0}
+.bar{display:flex;height:22px;border-radius:4px;overflow:hidden;background:var(--soft)}
+.bar i{display:block;height:100%} .bar .cont{background:var(--fg)} .bar .end{background:var(--muted);opacity:.45} .bar .endb{background:var(--bad);opacity:.75}
+.fnote{font-size:12.5px;color:var(--muted);margin-top:10px}
+.fnum{font-family:var(--mono);font-size:12px;color:var(--muted)}
+/* steps */
+.rail{position:relative;margin:18px 0 0;padding-left:34px}
+.rail::before{content:"";position:absolute;left:12px;top:8px;bottom:8px;width:2px;background:var(--line)}
+.step{position:relative;margin-bottom:12px}
+.step .dot{position:absolute;left:-31px;top:11px;width:20px;height:20px;border-radius:50%;background:var(--card);border:2px solid var(--fg);font:500 11px/16px var(--mono);text-align:center;color:var(--fg)}
+.step.bad .dot{border-color:var(--bad);color:var(--bad)}
+.step>button{all:unset;box-sizing:border-box;display:block;width:100%;cursor:pointer;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 14px}
+.step>button:hover{border-color:var(--muted)}
+.step.open>button{border-bottom-left-radius:0;border-bottom-right-radius:0;border-bottom-color:transparent}
+.sh{display:flex;gap:8px 12px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap}
+.st{font:600 16px var(--serif)}
+.scr{font:12px var(--mono);color:var(--muted);margin-top:2px;overflow-wrap:anywhere}
+.chips{display:flex;gap:5px;flex-wrap:wrap}
+.exits{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.exit{font-size:12px;border:1px dashed var(--muted);border-radius:12px;padding:1px 9px;color:var(--muted)}
+.exit.badx{border-color:var(--bad);color:var(--bad)}
+.detail{display:none;background:var(--card);border:1px solid var(--line);border-top:0;border-radius:0 0 10px 10px;padding:4px 14px 14px}
+.step.open .detail{display:block}
+.plain{margin:10px 0 12px;max-width:72ch}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:10px}
+.box{border-radius:7px;padding:8px 10px;min-width:0;border-left:4px solid}
+.box h4{margin:0 0 4px;font:600 11px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.box ul{margin:0;padding-left:16px;font-size:13px} .box li{margin:2px 0;overflow-wrap:anywhere}
+.box.read{background:var(--read-bg);border-color:var(--read)} .box.read h4{color:var(--read)}
+.box.dice{background:var(--dice-bg);border-color:var(--dice)} .box.dice h4{color:var(--dice)}
+.box.write{background:var(--write-bg);border-color:var(--write)} .box.write h4{color:var(--write)}
+.box.lore{background:var(--lore-bg);border-color:var(--lore)} .box.lore h4{color:var(--lore)}
+.conn{margin-top:12px} .conn h4,.cites h4{margin:0 0 5px;font:600 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.conn li{display:flex;gap:8px;align-items:baseline;font-size:13px;margin:4px 0;list-style:none}
+.conn ul{margin:0;padding:0}
+.conn li .chip{flex:none}
+.cites{margin-top:10px;font:12px var(--mono);color:var(--muted);overflow-wrap:anywhere}
+.fl{display:inline-block;margin-right:4px;border:1px solid var(--bad);color:var(--bad);border-radius:4px;padding:0 5px;font:500 11px var(--mono);text-decoration:none;cursor:pointer}
+/* matrix */
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--card)}
+table{border-collapse:collapse;font-size:12.5px;width:100%}
+th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+thead th{position:sticky;top:0;background:var(--card);font:500 11px var(--sans);color:var(--muted);vertical-align:bottom;min-width:84px}
+th.rowh{position:sticky;left:0;background:var(--card);font-weight:500;min-width:150px;z-index:1;border-right:1px solid var(--line)}
+tr.grp th{background:var(--soft);font:600 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);position:static}
+td.on{background:var(--write-bg);color:var(--fg)}
+td.off{color:var(--line);text-align:center}
+.rk{font:11px var(--mono);color:var(--muted);display:block;margin-top:2px;font-weight:400}
+.ctl{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:10px 0;font-size:13px}
+.chk{display:inline-flex;gap:6px;align-items:center;cursor:pointer}
+.note{font-size:13px;color:var(--muted);max-width:75ch;margin-top:8px}
+/* consequences */
+.cgrp{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:12px 0}
+.cgrp h3{display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;align-items:baseline}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+@media(max-width:640px){.cgrid{grid-template-columns:1fr}.frow{grid-template-columns:1fr}}
+.cgrid h4{margin:0 0 4px;font:600 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.cgrid ul{margin:0;padding-left:16px;font-size:13px} .cgrid li{margin:3px 0}
+.cand{border-top:1px dashed var(--line);margin-top:10px;padding-top:9px;font-size:13px}
+.cand .l1{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-weight:600}
+.cand p{margin-top:3px;max-width:75ch}
+.cand .why{color:var(--muted)}
+.lens{font:11px var(--mono);color:var(--muted)}
+/* findings */
+.fcard{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 14px;margin:10px 0;scroll-margin-top:70px}
+.fcard .fh{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.fcard .fid{font:600 12px var(--mono)}
+.fcard .ft{font-weight:600}
+.fcard p{margin-top:5px;font-size:13.5px;max-width:78ch}
+.fcard .at{font:12px var(--mono);color:var(--muted);margin-top:5px;overflow-wrap:anywhere}
+.fcard.flash{outline:2px solid var(--bad)}
+.stepref{font:500 11px var(--mono);border:1px solid var(--line);background:var(--soft);color:var(--fg);border-radius:4px;padding:1px 6px;cursor:pointer;text-decoration:none}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:640px){.two{grid-template-columns:1fr}}
+.irow{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:8px 0}
+.irow .ih{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.irow b{font-weight:600}
+.irow p{font-size:13.5px;margin-top:4px;max-width:80ch}
+.irow .ev{font:12px var(--mono);color:var(--muted);margin-top:4px;overflow-wrap:anywhere}
+.themebtn{float:right;font:500 12px var(--sans);color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:4px 9px;cursor:pointer;margin-top:4px}
+/* decision tree */
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:10px 0}
+.seg button{font:500 13px var(--sans);background:var(--card);color:var(--muted);border:0;padding:7px 14px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+.tctl{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 10px}
+.tctl button{font:500 12px var(--sans);background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:6px;padding:5px 10px;cursor:pointer}
+.tree,.tree ul{list-style:none;margin:0;padding:0}
+.tree ul{margin-left:11px;padding-left:12px;border-left:2px solid var(--line)}
+.tree li{margin:7px 0;position:relative}
+.edge{display:inline-block;font:500 11.5px var(--mono);color:var(--muted);margin-bottom:3px}
+.edge b{color:var(--fg);font-weight:500}
+.tn{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:7px 10px;border-left:4px solid var(--muted)}
+.tn.roll{border-left-color:var(--dice)} .tn.cond{border-left-color:var(--read)} .tn.leaf{border-left-color:var(--write)} .tn.scene{border-left-color:var(--lore);background:var(--lore-bg)}
+.tn.sp{box-shadow:0 0 0 2px var(--lore)}
+.tn.bad{border-color:var(--bad);border-left-color:var(--bad)}
+.tn .row{display:flex;gap:6px 10px;align-items:baseline;flex-wrap:wrap;cursor:pointer}
+.tn .tt{font-weight:600;font-size:13.5px}
+.tn .od{font:12px var(--mono);color:var(--dice)}
+.tn .ob{font:11.5px var(--mono);color:var(--muted)}
+.tn .sw2{font:600 10.5px var(--mono);letter-spacing:.06em;color:var(--lore);border:1px solid var(--lore);border-radius:10px;padding:0 6px}
+.tn .tog{font:12px var(--mono);color:var(--muted);width:14px;display:inline-block}
+.tn .dt{display:none;margin-top:7px;font-size:12.5px}
+.tn.show .dt{display:block}
+.tn .dt div{margin:3px 0;padding-left:8px;border-left:3px solid}
+.tn .dt .r{border-color:var(--read)} .tn .dt .d{border-color:var(--dice)} .tn .dt .w{border-color:var(--write)} .tn .dt .c{border-color:var(--line);font:12px var(--mono);color:var(--muted);overflow-wrap:anywhere}
+.tree li.collapsed>ul{display:none}
+.tree.onlypath li:not(.onpath){display:none}
+@media(prefers-reduced-motion:no-preference){.step>button{transition:border-color .15s}}
+</style>
+
+<div class="wrap">
+<header class="top">
+  <button class="themebtn" id="themebtn" type="button">Theme</button>
+  <h1>Pass Map</h1>
+  <p class="sub">One <code>/simulate</code> pass at commit <code>c444b49</code>, step by step: what reads what, which dice skew by what, and where a missing connection leaves the world flat. Audited 2026-10-16 on a scratch copy, no model called. Built to think with, nothing here is decided.</p>
+</header>
+<nav role="tablist" id="tabs">
+  <button role="tab" data-t="flow" aria-selected="true">1 Flow</button>
+  <button role="tab" data-t="state" aria-selected="false">2 State map</button>
+  <button role="tab" data-t="cons" aria-selected="false">3 Consequences</button>
+  <button role="tab" data-t="find" aria-selected="false">4 Findings</button>
+  <button role="tab" data-t="intent" aria-selected="false">5 Intent vs code</button>
+</nav>
+
+<section class="panel" id="p-flow">
+  <h2>The pass as a flow</h2>
+  <p class="sub">Two views of the same pass. Sequence: tap a step to open it, the dot turns red where a connection on it is broken. Decision tree: every roll and outcome.</p>
+  <div class="legend">
+    <span><i class="sw read"></i>state read</span><span><i class="sw dice"></i>dice</span><span><i class="sw write"></i>state written</span><span><i class="sw lore"></i>lore contribution</span>
+    <span><span class="chip ran">RAN</span> executed on a scratch copy</span><span><span class="chip read">READ</span> code only</span><span><span class="chip doc">DOC</span> docs only</span><span><span class="chip bad">BROKEN</span></span>
+  </div>
+  <div class="seg" role="group" aria-label="View"><button type="button" id="v-seq" aria-pressed="true">Sequence</button><button type="button" id="v-tree" aria-pressed="false">Decision tree</button></div>
+  <div id="seqview">
+    <div class="funnel" id="funnel"></div>
+    <div class="rail" id="rail"></div>
+  </div>
+  <div id="treeview" hidden>
+    <p class="sub">One pass as a tree. Amber = a roll, blue = a condition on state, green = where the pass ends and what it wrote, purple outline = the only path that ends in a scene. Red = the audit found this branch broken or unreachable. Counts: <b>A</b> corpus as it is, 40 passes. <b>B</b> travel fixture, 200 passes. Tap a node to open it, tap a title to fold its branches. This view only shows what exists.</p>
+    <div class="tctl"><button type="button" id="t-open">Expand all</button><button type="button" id="t-close">Collapse all</button><button type="button" id="t-path">Scene path only</button></div>
+    <ul class="tree" id="tree"></ul>
+  </div>
+</section>
+
+<section class="panel" id="p-state" hidden>
+  <h2>State parameters x dice and decisions</h2>
+  <p class="sub">Every cell with text is an influence that exists in code today. An empty cell is a connection that does not exist. Read a row to see what a parameter touches, a column to see what a roll listens to.</p>
+  <div class="ctl">
+    <label class="chk"><input type="checkbox" id="gaponly"> only parameters with a dead, dangling or one-sided problem</label>
+    <span class="chip gap">GAP</span><span style="color:var(--muted);font-size:12.5px">flag on the row</span>
+  </div>
+  <div class="scroll"><table id="matrix"></table></div>
+  <p class="note">Columns are the decision points of one pass, in order. "Scene text" is the model's input: it receives criterion, routine text and arc premise only, never knowledge or the hearsay pool. Odds quoted come from <code>_lore/tuning.json</code> and the roll scripts.</p>
+</section>
+
+<section class="panel" id="p-cons" hidden>
+  <h2>Narrative consequences</h2>
+  <p class="sub">The dice give randomness. These are the places where a parameter should lean on a die the way it would in the world (not eating, weaker). For each: what exists, what is missing, and candidates. Proposals only. Tags: S = makes the world more structurally organic (reproduces, mutates, exchanges), P = makes it read as alive.</p>
+  <div class="legend"><span><span class="chip mv">minimally viable</span> small, reuses an existing pattern</span><span><span class="chip later">later</span> worth it after the basics run</span><span><span class="chip no">probably not needed</span></span></div>
+  <div id="cons"></div>
+</section>
+
+<section class="panel" id="p-find" hidden>
+  <h2>Audit findings</h2>
+  <p class="sub">Verified three ways: RAN on a scratch copy of the three-cities corpus (seeded, 40 and 200 passes, plus two fixtures with a travel graph), READ in code, DOC-ONLY. Bugs are in <code>TODO.md</code>, design questions in <code>OPEN_QUESTIONS.md</code>, committed locally.</p>
+  <h3 style="margin-top:14px">Known gaps, checked</h3>
+  <div id="known"></div>
+  <h3 style="margin-top:20px">New findings</h3>
+  <div id="finds"></div>
+  <h3 style="margin-top:20px">Checked and working</h3>
+  <div id="works"></div>
+</section>
+
+<section class="panel" id="p-intent" hidden>
+  <h2>Intent against implementation</h2>
+  <p class="sub">README Part I (Objectives, Design Principles, Testability) taken as the target. Organic has two sides there: structural (the world produces, mutates and exchanges its own components) and perceived (it reads as alive). Each item is marked met, partly, not met or unknown.</p>
+  <div id="intent"></div>
+  <h3 style="margin-top:20px">Objectives with no instrument</h3>
+  <p class="note" style="margin-top:6px">Exchange with the environment; "responsive and unpredictable but legibly caused" (only the tasting touches it); model-agnostic (nothing measures it, the per-model-tier run is a TODO); lean per pass (<code>simulate_token_usage.py</code> reads the orchestrator transcript and does not split motivated from solo passes).</p>
+</section>
+</div>
+
+<script>
+const ST={ran:'RAN',read:'READ',doc:'DOC',bad:'BROKEN'};
+const chip=(s)=>`<span class="chip ${s}">${ST[s]}</span>`;
+const esc=(s)=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+
+/* ---------------- FLOW ---------------- */
+const STEPS=[
+{id:'s0',t:'Draw the participant',sc:'simulate_resolve_pair.py → pick_pair.py',
+ plain:'One living character is drawn, uniformly. Nobody else is chosen yet. A second person, if there is one, is found later in the pass.',
+ reads:['living pool (driver state file, or the orchestrator list)'],dice:['uniform 1/N over the pool'],writes:['draw-audit line only'],lore:['nothing'],
+ out:[['s1','p1 slug passed to pass_prep --p1','ran']],exits:[],
+ cites:['simulate_pass_lib.py:draw_participant','pick_pair.py:main','simulate_driver.py:do_one_pass'],f:[]},
+{id:'s1',t:'Survive or chase the arc',sc:'pass_prep.py → simulate_pass_brief.py → run_pass_mechanics → roll_survival.py',
+ plain:'p1 rolls whether to work or to pursue their arc. With no ongoing arc the roll is skipped and the answer is survive.',
+ reads:['energy','arc.resolution, arc.history (tally gives stage early/mid/late)','life.lived against the lifespan range (band only, never the span)','partners + partners_quality, ties of 3+ only (net affinity)','location pool per capita, and its trend since last upkeep','own provisions','location field, passed in as "home" (it is the current location)'],
+ dice:['P(arc)% = 50 + 20·energy + 25·arc pressure + 20·pool surplus×affinity − 20·affinity + 15·(falling trend only) + 20·personal cushion, clamped 2 to 95','arc pressure = stage weight (.2 / .5 / .8) + band bonus (0 / .1 / .3)'],
+ writes:['nothing, it only decides'],lore:['nothing'],
+ out:[['s2','choice = survive','ran'],['s3','choice = arc and arc.needs present','ran'],['s1','energy and pool written by apply_survival/upkeep are read here next pass','ran'],['s1','arc.history written in step 8 sets the stage read here','ran'],['s1','partners_quality written in step 8 feeds net affinity','read']],
+ exits:[],cites:['roll_survival.py:roll','tuning.json:survival.weights','simulate_pass_lib.py:run_pass_mechanics (Step 2)'],f:['F7']},
+{id:'s2',t:'Survive: work the routine',sc:'roll_routine.py · apply_upkeep.py · apply_survival.py · lib._write_back',
+ plain:'p1 picks one of their own routines by weight. The town pays upkeep, p1 eats if the pool can cover it and adds to the pool. The pass ends here.',
+ reads:['routines (location:weight)','population at that location (living characters whose location field matches)','location pool','energy'],
+ dice:['weighted pick over own routines'],
+ writes:['pool: −0.15 × population (floor 0), −2 if eaten, +3 contributed','energy: −1, +2 if ate, capped at 20','previous_per_capita checkpoint','location, places_visited, last_scene','life.lived +1 and the death checks (step 11)'],
+ lore:['nothing, unless a death follows: tale, 30% circle notice'],
+ out:[['s11','solo bookkeeping','ran'],['s1','the pool just written is the next pass\'s pool_surplus','ran']],exits:[['Pass ends, no scene, no record']],
+ cites:['simulate_pass_lib.py:run_pass_mechanics (Step 3)','apply_survival.py','apply_upkeep.py','provisions_lib.py:set_provisions (no floor, callers keep it ≥ 0)'],f:['F7','F8','F14']},
+{id:'s3',t:'Is the need available right here?',sc:'run_pass_mechanics Step 4 · location_context.location_provides',
+ plain:'If any character\'s routine at p1\'s current place has a context that provides the arc\'s need, the need counts as met locally. p1 does a routine (those that provide it are favored x3), pays the arc energy, and the pass ends. The arc does not tick and no scene is made.',
+ reads:['arc.needs','every character\'s routines at this location, dead ones included','contexts.json provides tags','own routines'],
+ dice:['weighted routine pick, weight x3 where the context provides the need'],
+ writes:['energy −1 base, −1 arc extra, ±eating','pool, location, last_scene','NOT arc.history'],lore:['nothing'],
+ out:[['s4','need not available here, go find it','ran'],['s2','available here: routine only, arc never advances','bad']],
+ exits:[['Local need: ends, arc frozen','x']],
+ cites:['simulate_pass_lib.py:run_pass_mechanics (Step 4)','location_context.py:location_provides'],f:['F2','F3']},
+{id:'s4',t:'Find the place, travel',sc:'location_context.resolve_arc_target → travel_graph.shortest_path / next_hop',
+ plain:'Only the first need is used. Prefer a place where someone p1 knows supplies it (tier 3), else any reachable place whose derived provides or description fits (tier 4). One hop per pass; a pass spent in transit lands on the hop.',
+ reads:['arc.needs[0]','places_visited','knowledge refs "location: x" (education and experience)','locations of partners, social_circle, parents','encodings locations and routes','contexts.json'],
+ dice:['none, breadth-first search'],
+ writes:['location = hop or target, places_visited, last_scene','energy and pool at the hop (arc choice cost)'],lore:['nothing'],
+ out:[['s5','arrived: location = target','ran'],['s4','hop written to location, next pass pathfinds from it (22 hops seen)','ran'],['s2','a survive roll next pass re-rolls a routine, ignoring the journey','read'],['s4','social_circle is read here and written by nothing','bad'],['s4','location ids vs display names do not match in the corpus','bad']],
+ exits:[['No reachable target: stays, ends'],['Mid-route: lands on the hop, ends']],
+ cites:['location_context.py:resolve_arc_target','travel_graph.py:reachable_set','simulate_pass_lib.py:run_pass_mechanics (Step 5)'],f:['F3','F7','F13','F11']},
+{id:'s5',t:'Missed connection',sc:'roll_meetable.py',
+ plain:'Is anyone there? About half the time. If so, one person is drawn from everyone who has a routine at this place. A known supplier counts x3.',
+ reads:['all characters\' routines at this location (dead included; not filtered by the need)','p1\'s partners / social_circle / parents for the favor'],
+ dice:['55% someone is present (arc_meetable_odds_percent)','weighted choice, known supplier x3'],
+ writes:['nothing of its own; p1 pays the arc energy at this place'],lore:['nothing'],
+ out:[['s6','chosen p2 slug','ran']],exits:[['Miss: ends, nothing recorded']],
+ cites:['roll_meetable.py:main','simulate_pass_lib.py:candidates_at'],f:['F3','F6']},
+{id:'s6',t:'p2 rolls their own routine',sc:'roll_routine.py (p2) · record_partner.py',
+ plain:'Being present is not enough. p2 rolls a routine of their own; it has to land here and its context has to provide the need. On a match both sides count one more shared pass.',
+ reads:['p2 routines','contexts.json'],dice:['weighted pick over p2\'s routines'],
+ writes:['partners[p2] +1 on p1 and partners[p1] +1 on p2, only on a match'],lore:['a relationship count'],
+ out:[['s7','need ∈ p2\'s context provides','ran']],exits:[['Mismatch: ends. p2 gets no upkeep, eating or energy cost either way','x']],
+ cites:['simulate_pass_lib.py:run_pass_mechanics (Step 7)','record_partner.py'],f:['F6','F10']},
+{id:'s7',t:'Payment gate',sc:'simulate_pass_lib.arc_payment_gate',
+ plain:'p1 must hold at least 3 provisions. Then a roll. Success moves 3 from p1 to p2 and makes the pass "motivated", the only way into a scene.',
+ reads:['p1.provisions (defaults to 2 if absent)','arc.history tally'],
+ dice:['odds = 30 + 40 × min(1, surplus/2) × (1 − |tally|/3), clamped 2 to 95. With exactly 3 provisions: 30%'],
+ writes:['p1.provisions −3 and p2.provisions +3'],lore:['nothing'],
+ out:[['s8','motivated = true','ran'],['s7','nothing ever creates provisions, so the default 2 can never pay 3','bad']],exits:[['cannot_afford or roll failed: ends','x']],
+ cites:['simulate_pass_lib.py:arc_payment_gate','tuning.json:arc_payment','_template.json (provisions: 2)'],f:['F1']},
+{id:'s8',t:'Contest, align, outcome, tally',sc:'roll_contested.py · check_arc_alignment.py · record_bond_quality.py · roll_arc_outcome.py · lib.tally',
+ plain:'All rolled before any scene is written. A rival claim may contest the visit. A word-overlap gate asks whether p2 knows anything about the arc; p2\'s criterion text decides help or hinder. The outcome is rolled, the tally moves, the arc may complete, transform or fail.',
+ reads:['p2.partners / partners_quality toward p1','15 sampled items of p2\'s education + tagged experience','p2.criterion.standard and wasted_life','arc.about, needs, history'],
+ dice:['contested 15%, ±10 if p2\'s tie to p1 is established (3+)','outcome weights adv/stall/rev: help 60/30/10, hinder 15/35/50, mixed 35/40/25, neutral 40/40/20; contested moves 20 from advance to reverse','tally ±3 ends the arc'],
+ writes:['arc.history +{pass, outcome} (the inclination is not stored)','arc.resolution; on transform arc.about ← p2\'s matched tags','partners_quality[p2→p1] ±1','leads (via the hinder slot, later)'],
+ lore:['arc completion tale (mechanical)','a transform copies tags out of another character\'s knowledge: the one place knowledge moves between characters'],
+ out:[['s9','brief JSON: arc.gate / inclined / outcome go to the enacter','ran'],['s1','arc.history sets next pass\'s stage','ran'],['s1','partners_quality feeds net affinity and roll_contested','read'],['s8','leads written, read by nothing','bad']],
+ exits:[['Gate miss: payment is spent, no tally, scene told not to advance anything']],
+ cites:['simulate_pass_lib.py:run_pass_mechanics (Step 8 chain)','roll_arc_outcome.py:WEIGHTS','check_arc_alignment.py','apply_contested_lead.py'],f:['F11']},
+{id:'s9',t:'Scene and record (the model)',sc:'enact_via_ollama.py or a Claude subagent · pass_record.py → record_hearsay.py, check_anchor_reference.py, check_resonance.py',
+ plain:'The only step where a model runs, and only on a motivated pass. It dramatizes what was already decided and returns claims. Claims are recorded as hearsay. Claim tags must be copied from tags in the brief.',
+ reads:['brief: location, arc.gate/outcome, each side\'s criterion, routine text, arc premise','NOT education, experience or the hearsay pool'],
+ dice:['none (lineage_coin.py has no call site here)'],
+ writes:['hearsay.md and encodings.hearsay.entries','scene file','arc content via write_arc.py when flagged (concept registered)'],
+ lore:['HEARSAY claims tagged to existing entries','scene transcript','criterion move, if the model volunteers one'],
+ out:[['s10','scene id → produced_by tags on experience','ran'],['s9','anchor and resonance check output is discarded by the driver','bad'],['s9','derived_from is never set, so no retelling edges exist','bad'],['s9','SKILL.md says the brief flags a live anchor; it does not','doc']],
+ exits:[],cites:['enact_via_ollama.py:REPLY_SCHEMA, known_tags, validate_reply','pass_prep.py:load_character_brief','simulate_driver.py:do_one_pass','pass_record.py'],f:['F4','F5','F16']},
+{id:'s10',t:'Apply: aging, death, birth',sc:'pass_apply.py → update_character.py · record_death.py · horizon.py · simulate_pass_reproduction.py · roll_death_legacy.py · generate_offspring.py',
+ plain:'Both sides age one step, experience and any criterion move are written. Energy death and lifespan death are checked. Then reproduction, and death-legacy for someone who died early.',
+ reads:['decisions JSON','brief.survival.died','lifespans.json (secret span)','partners, last_reproduced_pass, parents'],
+ dice:['reproduction 40%, only if partners ≥ 3, cooldown 10, not kin; coin for which name leads','death-legacy 40%, only band "established" with a non-empty circle; recipient uniform'],
+ writes:['life.lived, knowledge.experience (+produced_by), criterion.*','life.deceased, death tale, "learned that X died" for relations + ~30% of the circle','child file, birth tale, parents\' last_reproduced_pass'],
+ lore:['death tale','birth tale','child inherits knowledge and faint relationships','new character name is a judgment slot'],
+ out:[['s0','pool updated by the driver; a child joins 5 passes after birth','read'],['s10','a dead character\'s provisions vanish; a newborn has no energy/provisions fields','bad']],
+ exits:[],cites:['pass_apply.py:apply_participant','simulate_pass_reproduction.py:check_and_roll','generate_offspring.py'],f:['F10']},
+{id:'s11',t:'Solo bookkeeping',sc:'simulate_driver.apply_solo (no CLI)',
+ plain:'For every pass that never reached a scene: one step of aging, the energy-death check, the lifespan check. A death is recorded; shock candidates are not resolved and death-legacy never rolls.',
+ reads:['brief.survival.died','horizon.py band and ending'],dice:['none'],
+ writes:['life.lived +1','life.deceased and death tale on death'],lore:['death tale, circle notices on death'],
+ out:[['s0','back to the draw','ran'],['s11','manual path in SKILL.md has no script for this slice','doc']],exits:[],
+ cites:['simulate_driver.py:apply_solo'],f:['F8']}
+];
+function renderFunnel(){
+  const rows=[
+   ['Drawn',200,[['cont',89],['end',111]],'111 chose survive: ends'],
+   ['Arc chosen',89,[['cont',11],['endb',54],['end',24]],'54 had the need at home: ends, arc frozen (F2). 22 in transit, 2 no target'],
+   ['Roll for company',11,[['cont',9],['end',2]],'2 missed connection'],
+   ['Someone came',9,[['cont',6],['end',3]],'3: their own routine did not match'],
+   ['At payment',6,[['cont',3],['endb',2],['end',1]],'2 could not afford (provisions < 3), 1 failed the roll'],
+   ['Scene made',3,[['cont',3]],'3 passes reached a model call']
+  ];
+  document.getElementById('funnel').innerHTML=`<h3>Where 200 scratch passes ended</h3>
+  <div class="fnote" style="margin-top:2px">scripts/test/audit_simulate.py, travel fixture, seed 5: Gorff arcs need "crafted goods", only Terfila supplies it (via Salthos Cruzados), half of Gorff holds 8 provisions, the rest the default 2. Not a rate for any real world; it shows which gate eats the passes.</div>`+
+  rows.map(r=>`<div class="frow"><div class="lbl">${r[0]} <span class="fnum">${r[1]}</span></div><div><div class="bar" style="width:${Math.max(r[1]/200*100,4)}%">${r[2].map(x=>`<i class="${x[0]}" style="width:${x[1]/r[1]*100}%"></i>`).join('')}</div><div class="fnum">${r[3]}</div></div></div>`).join('')+
+  `<div class="fnote">Dark = continues. Grey = ends quietly. Red = ends because of a gap. On the unmodified corpus (40 passes, seed 7, every need available at home) 0 passes reached a scene.</div>`;
+}
+function renderRail(){
+  const rail=document.getElementById('rail');
+  rail.innerHTML=STEPS.map((s,i)=>{
+    const worst=s.out.some(o=>o[2]==='bad')?'bad':'';
+    const sts=[...new Set(s.out.map(o=>o[2]))];
+    const list=(a)=>a.map(x=>`<li>${esc(x)}</li>`).join('');
+    return `<article class="step ${worst}" id="${s.id}">
+    <span class="dot">${i}</span>
+    <button type="button" aria-expanded="false" aria-controls="${s.id}-d">
+      <div class="sh"><div style="min-width:0"><div class="st">${esc(s.t)}</div><div class="scr">${esc(s.sc)}</div></div><div class="chips">${sts.map(chip).join('')}</div></div>
+      ${s.exits.length?`<div class="exits">${s.exits.map(e=>`<span class="exit ${e[1]?'badx':''}">↳ ${esc(e[0])}</span>`).join('')}</div>`:''}
+    </button>
+    <div class="detail" id="${s.id}-d">
+      <p class="plain">${esc(s.plain)}</p>
+      <div class="cols">
+        <div class="box read"><h4>Reads</h4><ul>${list(s.reads)}</ul></div>
+        <div class="box dice"><h4>Dice</h4><ul>${list(s.dice)}</ul></div>
+        <div class="box write"><h4>Writes</h4><ul>${list(s.writes)}</ul></div>
+        <div class="box lore"><h4>Lore it contributes</h4><ul>${list(s.lore)}</ul></div>
+      </div>
+      <div class="conn"><h4>Connections</h4><ul>${s.out.map(o=>`<li>${chip(o[2])}<span>${o[0]===s.id?'↻ ':'→ step '+STEPS.findIndex(x=>x.id===o[0])+': '}${esc(o[1])}</span></li>`).join('')}</ul></div>
+      <div class="cites"><h4>Cited</h4>${s.cites.map(esc).join('<br>')}</div>
+      ${s.f.length?`<div class="cites"><h4>Findings</h4>${s.f.map(f=>`<a class="fl" data-f="${f}">${f}</a>`).join('')}</div>`:''}
+    </div></article>`}).join('');
+  rail.addEventListener('click',e=>{
+    const fl=e.target.closest('.fl'); if(fl){gotoFinding(fl.dataset.f);return}
+    const b=e.target.closest('.step>button'); if(!b)return;
+    const st=b.parentElement; const open=st.classList.toggle('open'); b.setAttribute('aria-expanded',open);
+  });
+}
+
+/* ---------------- STATE MAP ---------------- */
+const COLS=['Survive vs arc','Routine pick','Path target','Meet roll','Payment','Contested','Align help/hinder','Arc outcome','Reproduction','Death','Scene text (model)'];
+const ROWS=[
+['g','Character: body'],
+['energy','apply_survival','roll_survival, death check',{0:'±20 pts',9:'0 = death'},''],
+['provisions (personal)','arc_payment_gate only','roll_survival, payment gate',{0:'+20 cushion',4:'hard gate ≥ 3, surplus'},'no source, default 2 < cost 3'],
+['life.lived','update_character','horizon, roll_survival',{0:'via band → pressure',9:'meets secret span'},''],
+['places_visited','_write_back, offspring','travel_graph',{2:'reachable set'},''],
+['location (current)','_write_back','almost everything',{0:'pool proxy',1:'survive teleports home',2:'start node',3:'candidate pool'},''],
+['g','Character: relations'],
+['partners (count)','record_partner','net_affinity, contested, reproduction, favor',{0:'net affinity (≥3)',2:'known people\'s places',3:'known supplier ×3',5:'gates the shift',8:'≥3 eligibility'},'only counts shared passes'],
+['partners_quality','record_bond_quality','net_affinity, roll_contested',{0:'net affinity',5:'±10 pts'},'no effect on payment, outcome, reproduction'],
+['social_circle','nothing','3 readers',{2:'read',3:'read'},'GAP written by nothing'],
+['parents','generate_offspring','kin exclusion, circle',{2:'known people',3:'known supplier',8:'kin exclusion'},''],
+['g','Character: mind'],
+['knowledge.education','sampling, offspring','travel, alignment gate',{2:'"location:" refs',6:'peer\'s 15-item sample'},'p1\'s own never used'],
+['knowledge.experience','update_character, death notice','travel, alignment gate',{2:'"location:" refs',6:'peer\'s tagged items first'},'p1\'s own never used'],
+['criterion standard / wasted_life','authored, break move','alignment',{6:'peer\'s text sets direction',10:'in brief'},'p1\'s own skews no roll'],
+['criterion anchor / trusts / distrusts','authored, moves','anchor check (after scene)',{10:'in brief'},'gate output discarded by driver'],
+['criterion tempered / cost_ledger','update_character','no script',{},'GAP write-only for scripts'],
+['g','Character: plan'],
+['routines (loc, ctx, weight)','authored','many',{1:'weights, ×3 if provides need',2:'supplier + provides',3:'candidate pool, p2 roll'},'never change with experience'],
+['arc.needs','write_arc, legacy','pathing, payment',{2:'target tag',3:'favor, p2 match',4:'what is paid for'},''],
+['arc.about','write_arc, transform','alignment',{6:'word overlap',7:'transform copies peer tags',10:'in brief'},''],
+['arc.history (tally)','run_pass_mechanics','survival, payment',{0:'stage → pressure',4:'damps surplus term'},'inclination not stored'],
+['arc.premise / context','write_arc','brief, legacy',{10:'premise in brief'},'context rarely read'],
+['leads','apply_contested_lead','nothing',{},'GAP dead data'],
+['last_scene','_write_back','nothing',{},'GAP no script reads it'],
+['birth_pass, last_reproduced_pass','generate_offspring','cooldowns, pool admission',{8:'cooldown 10'},''],
+['g','World'],
+['location pool','upkeep, survival','roll_survival, eating',{0:'reliance + scarcity trend',9:'eat or not → energy'},'no effect on reproduction or movement'],
+['population (derived)','–','upkeep size',{},'a hop moves headcount'],
+['location provides (derived)','–','local check, tier 4',{2:'tier 4 targets',3:'local need'},'counts the dead\'s routines'],
+['contexts.json provides','authored','need ↔ provide',{2:'vocabulary',3:'p2 match',4:'what is bought'},'']
+];
+function renderMatrix(){
+  const only=document.getElementById('gaponly').checked;
+  const t=document.getElementById('matrix');
+  let h='<thead><tr><th class="rowh">Parameter<span class="rk">written by / read by</span></th>'+COLS.map(c=>`<th>${esc(c)}</th>`).join('')+'</tr></thead><tbody>';
+  let pendingGrp=null;
+  ROWS.forEach(r=>{
+    if(r[0]==='g'){pendingGrp=r[1];return}
+    if(only&&!r[4])return;
+    if(pendingGrp){h+=`<tr class="grp"><th colspan="${COLS.length+1}">${esc(pendingGrp)}</th></tr>`;pendingGrp=null}
+    h+=`<tr><th class="rowh">${esc(r[0])}${r[4]?`<br><span class="chip gap">GAP</span> <span class="rk" style="display:inline">${esc(r[4].replace(/^GAP /,''))}</span>`:''}<span class="rk">${esc(r[1])} / ${esc(r[2])}</span></th>`;
+    COLS.forEach((c,i)=>{const v=r[3][i];h+=v?`<td class="on">${esc(v)}</td>`:'<td class="off">·</td>'});
+    h+='</tr>';
+  });
+  t.innerHTML=h+'</tbody>';
+}
+
+/* ---------------- CONSEQUENCES ---------------- */
+const CONS=[
+{p:'energy (hunger, fatigue)',has:['Survive-vs-arc: ±20 points around mid','Reaching 0 is death, apart from the lifespan clock','Eating needs the town pool to hold 2'],miss:['Nothing else feels it. A starving character advances, reproduces and pays exactly like a fed one.'],
+ c:[['mv','Low energy weakens the arc outcome','In roll_arc_outcome, when energy ≤ 25% of cap move N points advance → stall (same shape as contested_outcome_shift, one tuning key).','The author\'s own example, and the pattern exists.','P'],
+    ['later','Low energy lowers reproduction odds','Flat 40% becomes 40 − N below a floor of energy.','Wait to see the first shift behave; it makes hardship visible in the population.','S'],
+    ['no','Hardship ages you','Extra life.lived tick when starving.','Touches the secret-lifespan contract; heavy for what it adds.','P']]},
+{p:'provisions (personal)',has:['Hard gate and surplus in the payment roll','Personal cushion pushes toward arc in the survive roll'],miss:['No faucet at all: default 2 is below the cost 3, only the payee gains (F1)','No inheritance, no estate, nothing earned by completing an arc'],
+ c:[['mv','A survive pass earns personal provisions','In apply_survival, survive adds +1 to character.provisions (or start at ≥ cost). Without it the payment gate never opens in a default world.','Unblocks the whole arc/scene pipeline; one line.','S'],
+    ['later','Arc completion pays out','Completion adds a grant; failure costs.','In the TODO sketch already; needs the faucet to be tuned first.','S'],
+    ['later','Inheritance at birth, estate at death','generate_offspring seeds the child; record_death hands the rest to children or circle.','Closes the economy loop; a bigger design pass.','S']]},
+{p:'location pool',has:['Eating, upkeep, reliance and scarcity terms in the survive roll'],miss:['A starving place changes nobody\'s plans beyond the survive roll: no moving away, no effect on births'],
+ c:[['later','Scarcity pulls people toward food','When pool per capita is near 0, a pass may take "nourishment" as the pathing need regardless of the arc.','Gives the pool a visible consequence (movement); needs travel to be reliable first.','S'],
+    ['no','Pool lowers reproduction','Extra shift on roll_reproduction.','Energy already carries this if the energy link is built.','P']]},
+{p:'age (life.lived, band)',has:['Band raises arc pressure; the secret span ends the life'],miss:['Age changes nothing else'],
+ c:[['no','Age-gated reproduction or outcomes','Band check in simulate_pass_reproduction.','Child cooldown and band overlap awkwardly; not clearly a gain.','P']]},
+{p:'relationships (partners, partners_quality)',has:['Net affinity in the survive roll','Contested shift ±10','Known supplier x3 in the meet roll','Reproduction needs 3+ shared passes'],miss:['Quality does nothing to payment, outcome or reproduction. A pair who dislike each other conceive at the same 40%.'],
+ c:[['mv','Quality gates or shifts reproduction','In roll_reproduction add a shift by partners_quality both ways (reuse roll_contested\'s established-tie rule).','Affection should matter to who has children; copies an existing pattern.','S/P'],
+    ['later','Quality shifts the payment odds','A friend asks less: ± points in arc_payment_gate by p2\'s tie to p1.','Makes the economy social; second priority.','P'],
+    ['later','Meet weights by tie strength','roll_meetable weights candidates by partners count, not only the supplier x3.','People you know turn up more often.','P']]},
+{p:'social_circle',has:['Read by known-circle checks (3 places)'],miss:['No writer. The field never fills.'],
+ c:[['mv','Stop storing it, derive it','Compute partners ∪ parents ∪ scene mates when read (social_circle.py already does most of this).','Fewer mechanics, no stale field, no new trigger to design.','S'],
+    ['later','Keep a persistent field with a writer','A batch-end script appends scene co-participants and backstory mentions.','Only if the derived version proves too slow or too coarse.','S']]},
+{p:'criterion',has:['p2\'s text sets help/hinder for the arc','Anchor shock check (after the scene, discarded by the driver)'],miss:['p1\'s own criterion skews no roll. A character who would count a life without the project as wasted leans no harder toward it.'],
+ c:[['later','wasted_life overlap raises arc pressure','Word overlap of own wasted_life against arc.about/needs adds to arc pressure in roll_survival.','Uses the existing word-overlap helper; shows the criterion in behavior.','P'],
+    ['no','Trust skews payment','trusts/distrusts overlap with p2.','Text overlap on two free-text fields is noisy.','P']]},
+{p:'knowledge (education, experience)',has:['Reach for travel','p2\'s knowledge decides the alignment gate and feeds transform'],miss:['p1\'s own expertise never helps their own arc','No knowledge reaches the scene, so nothing is retold and no claim has a parent (F5, F16)'],
+ c:[['mv','Sample a little knowledge into the scene','pass_prep adds one hearsay claim and one education item per participant; lineage_coin sets derived_from or oral_lore.','Restores retelling and gives the drift instrument input; costs a few lines per motivated pass.','S'],
+    ['later','Own knowledge helps the outcome','Same overlap check as the gate, run on p1\'s items, adds to advance.','Cultural capital in the Bourdieu sense; wait for retelling first.','P']]},
+{p:'routines / location',has:['Weights drive the routine pick; provides derives from routines'],miss:['Routines never change. A character who keeps trading in a city does not gain a routine there. Meet pool is not filtered by need or by life (F3, F6).'],
+ c:[['mv','Filter candidates: living, and providing the need','candidates_at skips deceased and keeps those whose context provides the need.','Two bugs, no new parameter.','S'],
+    ['later','Routines drift with experience','A repeated trade at a place nudges that routine\'s weight up.','Self-modifying, structurally organic; needs real runs to tune.','S']]},
+{p:'events that are not scenes',has:['location, places_visited, last_scene'],miss:['Travel, misses and refusals leave nothing in hearsay, tales or experience'],
+ c:[['later','One scripted experience line on arrival or refusal','Mechanical entry with produced_by, no model call.','Open question: also adds sludge to the pool.','S']]}
+];
+function renderCons(){
+  document.getElementById('cons').innerHTML=CONS.map(g=>`<div class="cgrp"><h3>${esc(g.p)}</h3>
+  <div class="cgrid"><div><h4>Exists today</h4><ul>${g.has.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div><div><h4>Missing</h4><ul>${g.miss.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></div>
+  ${g.c.map(c=>`<div class="cand"><div class="l1"><span class="chip ${c[0]}">${c[0]==='mv'?'minimally viable':c[0]==='later'?'later':'probably not needed'}</span><span>${esc(c[1])}</span><span class="lens">${c[4]}</span></div><p>${esc(c[2])}</p><p class="why">${esc(c[3])}</p></div>`).join('')}</div>`).join('');
+}
+
+/* ---------------- FINDINGS ---------------- */
+const KNOWN=[
+ ['leads / rivalry follow-up has no call site','Confirmed','read','roll_lead_followup.py has no caller (the lib wrapper is unused); apply_contested_lead still writes leads, nothing reads them. Tuning keys lead_expiry_passes and odds_percent.lead_followup are unused.',['s8']],
+ ['No dispatch for a death in a solo pass','Partly','read','apply_solo records the death, tale and circle notice, but shock candidates are not resolved and death-legacy never rolls. The manual path in SKILL.md has no script for this slice at all.',['s11','s2']],
+ ['social_circle is written by nothing','Confirmed','read','Three readers (simulate_pass_lib._known_circle, location_context._known_keys, travel_graph), no writer; update_character has no flag for it.',['s4']],
+ ['provisions_lib.set_provisions has no floor','Confirmed, not reachable','ran','Writing -5 stores -5. But apply_survival only eats when pool ≥ 2 and adds otherwise, apply_upkeep clamps at 0. Latent only.',['s2']]
+];
+const FINDS=[
+ ['F1','bug','ran','Nobody can pay, so no scene happens','provisions defaults to 2, the cost is 3, and nothing creates provisions. Corpus: 0 of 40 passes reached a scene. Fixture: cannot_afford for default characters (2 of 6 at the gate), paid only where the fixture set 8.','simulate_pass_lib.py:arc_payment_gate; _template.json',['s7']],
+ ['F2','bug','ran','A locally available need costs energy and goes nowhere','Step 4 returns after the routine roll: no history entry, no scene. 19 of 40 corpus passes, 54 of 200 fixture passes. In a three-city world every need is available at home. See OPEN_QUESTIONS.','run_pass_mechanics Step 4',['s3']],
+ ['F3','bug','ran','The dead can be met and make places "provide"','No deceased filter in candidates_at, location_provides, find_supplier_locations or travel_graph. 13 of 35 candidates at one corpus city were dead.','simulate_pass_lib.py:candidates_at; location_context.py',['s3','s4','s5']],
+ ['F4','mismatch','read','The criterion shock gate is not in the brief','SKILL.md says the brief flags a live anchor. pass_prep never runs check_anchor_reference; pass_record runs it after the scene, and the driver throws that and check_resonance away. Moves are model-volunteered; synthesis never fires.','SKILL.md Step 3 pt 4; pass_prep.py; simulate_driver.py',['s9']],
+ ['F5','bug','read','The drift instrument has no producer','REPLY_SCHEMA has no derived_from; lineage_coin has no call site on the unattended path. measure_drift ran and reported no retelling edges (RAN, but the claims were stubs, so the schema is the proof).','enact_via_ollama.py:REPLY_SCHEMA; measure_drift.py',['s9']],
+ ['F6','bug','ran','Meet pool is not filtered by the need','Everyone with a routine there is a candidate; p2 then has to roll that place and a providing context. 3 of 9 meetings in the fixture.','candidates_at; run_pass_mechanics Step 7',['s5','s6']],
+ ['F7','bug','read','A journey resets on a survive roll','Step 3 rolls a routine location, so a traveler is back home next time they choose survive. roll_survival is also given the current location as "home".','run_pass_mechanics Step 3',['s2','s4','s1']],
+ ['F8','mismatch','read','Solo death is recorded, not finished','See "Known gaps". pass_apply and pass_record still require --p2.','simulate_driver.py:apply_solo',['s11']],
+ ['F9','bug','ran','conformance_report: wrong invariant, thin coverage','"parents not also partners" fails 69 times on the pristine corpus, because partner counts now bump on any crossing and the kin exclusion lives in reproduction. Fixed-odds table lists a dead roll and misses survive, meetable, payment.','conformance_report.py:check_invariants, FIXED_ODDS_CHECKS',['s10']],
+ ['F10','bug','read','p2, newborns and the dead','p2 gets no upkeep, eating or energy cost. A newborn has no energy or provisions field (defaults apply). A dead character\'s provisions vanish.','run_pass_mechanics Step 7; generate_offspring.py',['s6','s10']],
+ ['F11','dead','read','Dead and write-only fields','leads, social_circle (no writer), last_scene, tempered and cost_ledger (prose only), arc.context; unused tuning keys home_visit_survival_shift and lead_expiry_passes.','grep across scripts/',['s4','s8']],
+ ['F12','mismatch','read','Stale documentation','diagrams/gen_simulate_pass.py and simulate-pass.html still draw the pair model with lead override. roll_contested.py and simulate_pass_reproduction.py say partner_threshold 5 (tuning: 3). enact_preamble.md still talks about who is home and who is visiting.','diagrams/; docstrings',[]],
+ ['F13','bug','ran','Location identity','travel_graph assumes character.location is an encodings location id. The corpus uses display names, ids are lowercase and routes is empty: location_context --live finds nothing, and I had to rewrite the ids to test travel.','travel_graph.py assumption 2',['s4']],
+ ['F15','gap','read','Passes that are not scenes leave no trace','Travel, misses, refusals and arrivals write only location, places_visited and last_scene. Most passes in every run here ended this way. README says each of these things leaves a trace in the corpus. Design question in OPEN_QUESTIONS.','simulate_pass_lib.py:_write_back',[]],
+ ['F16','mismatch','read','The enacter never sees what characters know','load_character_brief passes criterion, routine and arc premise only. Keeps outside knowledge out, and also keeps the hearsay pool out.','pass_prep.py:load_character_brief',['s9']]
+];
+const WORKS=[
+ ['ran','_write_back → location → next pass pathfinds from the hop (22 hops in the travel fixture)'],
+ ['ran','Upkeep floors at 0; pools drained to 0 in busy places over 200 passes'],
+ ['ran','Seeded runs write a draw audit line for every roll'],
+ ['ran','Payment transfers provisions, then contested, alignment, outcome and tally run in order'],
+ ['ran','Energy death through apply_solo and pass_apply records the death and tale'],
+ ['read','Arc tally, complete / transform / failed, and the re-author slot'],
+ ['read','Reproduction eligibility: threshold, cooldown, kin exclusion']
+];
+const FLASH=(id)=>{const el=document.getElementById('f-'+id);if(el){el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),1800)}};
+function renderFind(){
+  document.getElementById('known').innerHTML=KNOWN.map(k=>`<div class="fcard"><div class="fh">${chip(k[2])}<span class="chip ${k[1]==='Confirmed'?'bug':'mismatch'}">${k[1]}</span><span class="ft">${esc(k[0])}</span></div><p>${esc(k[3])}</p><div class="fh" style="margin-top:6px">${k[4].map(s=>`<a class="stepref" data-s="${s}">step ${STEPS.findIndex(x=>x.id===s)}</a>`).join('')}</div></div>`).join('');
+  document.getElementById('finds').innerHTML=FINDS.map(f=>`<div class="fcard" id="f-${f[0]}"><div class="fh"><span class="fid">${f[0]}</span>${chip(f[2])}<span class="chip ${f[1]}">${{bug:'BUG',mismatch:'DOC MISMATCH',dead:'DEAD FIELD',gap:'DESIGN GAP'}[f[1]]}</span><span class="ft">${esc(f[3])}</span></div><p>${esc(f[4])}</p><div class="at">${esc(f[5])}</div><div class="fh" style="margin-top:6px">${f[6].map(s=>`<a class="stepref" data-s="${s}">step ${STEPS.findIndex(x=>x.id===s)}</a>`).join('')}</div></div>`).join('');
+  document.getElementById('works').innerHTML=`<div class="fcard">${WORKS.map(w=>`<div class="conn"><ul><li>${chip(w[0])}<span>${esc(w[1])}</span></li></ul></div>`).join('')}</div>`;
+}
+document.getElementById('p-find').addEventListener('click',e=>{const a=e.target.closest('.stepref');if(a)gotoStep(a.dataset.s)});
+
+/* ---------------- INTENT ---------------- */
+const INTENT=[
+ ['Objective','Structural organic: the world produces its own components','partly','Births, deaths and finished arcs become tales by script (generate_offspring.write_birth_tale, record_death, simulate_pass_brief.write_arc_completion_tale). But a default-seeded world reaches a scene in about 0 of 40 passes (F1, F2), so production waits on the scenes.'],
+ ['Objective','Structural organic: it mutates','partly','Transform copies another character\'s tags into the arc (run_pass_mechanics), and a criterion can move. Retelling mutation is not wired: no knowledge in the scene, no derived_from (F5, F16).'],
+ ['Objective','Structural organic: it exchanges with its environment','partly','Pool, upkeep, eating and provision transfer exist. No faucet for personal provisions, no migration, no effect on births.'],
+ ['Objective','Immersive: responsive, unpredictable, legibly caused','partly','The survive roll prints its six inputs into the audit, so a choice can be explained. Most other dice are flat (state map). The cause of hardship rarely shows up in outcomes.'],
+ ['Objective','Model-agnostic','partly','All mechanics are plain Python; the enacter is a Claude subagent or Ollama behind two code paths. No provider interface yet (TODO lists a complete() design). Nothing measures it.'],
+ ['Objective','Token-lean pass loop','met','The model is called only on motivated passes; solo passes cost nothing. 3 of 200 in the fixture, 0 of 40 on the corpus. Lean partly because scenes are rare.'],
+ ['Principle','1 Negative space: claims presume what they speak about, credible by provenance','partly','Claim tags must copy a tag in the brief (enact_via_ollama.known_tags, validate_reply); arc concepts register mechanically. But about may be null (clean_reply), and the arc premise is authored in prose with no mechanical grounding check.'],
+ ['Principle','2 All knowledge self-contained; new knowledge only from author input and mutation through interaction','partly','Nothing outside the record reaches the enacter (met). But the preamble lets it invent personal texture, and knowledge hardly moves between characters during a pass: only the gate sample, the transform copy, death notices and offspring.'],
+ ['Principle','3 Imperfection over slop: contradiction, gaps, overlap allowed','unk','record_hearsay appends and never reconciles (good). The reply schema cannot carry inconsistent_with_record, and the exact-tag retry loop narrows vocabulary. No measure of contradiction exists.'],
+ ['Testability','Conformance: dice at stated odds, every draw audited','partly','Audit exists and logs every roll. The check covers three live dice and a wrong invariant (F9). No manifest in my run: it is written by the skill\'s setup step, not the driver.'],
+ ['Testability','Derivation: claims trace to entries; produced_by','partly','measure_derivation ran: 971 of 1280 experience entries carry produced_by (75.9%) on the corpus. No hearsay with about tags in my stub run. Solo passes add no entries.'],
+ ['Testability','Drift across retellings','notmet','Needs derived_from, which nothing produces on the unattended path (F5).'],
+ ['Testability','Divergence, seeded pair','unk','Seeding and audit work (RAN). I did not run a pair, and the agent layer was never called.'],
+ ['Testability','Tasting and token usage','unk','record_tasting and simulate_token_usage exist; neither was run here.']
+];
+function renderIntent(){
+  const L={met:'MET',partly:'PARTLY',notmet:'NOT MET',unk:'UNKNOWN'};
+  document.getElementById('intent').innerHTML=INTENT.map(i=>`<div class="irow"><div class="ih"><b>${esc(i[1])}</b><span class="chip ${i[2]}">${L[i[2]]}</span></div><p>${esc(i[3])}</p><div class="ev">${i[0]}</div></div>`).join('');
+}
+
+
+/* ---------------- DECISION TREE ---------------- */
+const N=(k,t,o,a,b,x,ch)=>({k,t,o,a,b,...x,ch:ch||[]});
+const TREE=N('roll','Draw p1','uniform 1/N',40,200,{p:1,r:'living pool',d:'one uniform draw; nobody else chosen yet',w:'draw-audit line only',c:'simulate_resolve_pair.py → pick_pair.py:main'},[
+ ['',N('roll','Survive or arc?','P(arc) = 50 ± weights, clamp 2 to 95','','',{p:1,r:'energy · arc tally and band · ties ≥ 3 · pool per capita and trend · own provisions',d:'50 + 20·energy + 25·arc pressure + 20·pool surplus×affinity − 20·affinity + 15·falling trend + 20·cushion. No ongoing arc: forced survive, no roll',w:'nothing, it only decides',c:'roll_survival.py:roll; tuning.json:survival.weights'},[
+  ['survive',N('leaf','Work a routine, pass ends','weighted routine pick',21,111,{r:'routines, population, pool, energy',d:'weighted pick over own routines',w:'pool −0.15×pop (floor 0), −2 eat, +3 contribute · energy −1, +2 if ate · location, places_visited, last_scene · lived +1 and death checks. Nothing in the record',c:'run_pass_mechanics Step 3; apply_survival.py; apply_upkeep.py; simulate_driver.py:apply_solo'})],
+  ['arc',N('cond','Does the arc have needs written?','',19,89,{p:1,r:'arc.needs',c:'run_pass_mechanics Step 4 precondition'},[
+    ['no',N('leaf','Routine, flag a first arc to author','routine pick',0,0,{w:'energy, pool, location, last_scene. A model is asked to author the arc (write_arc.py, concept registered). Ends',c:'run_pass_mechanics: arc_authoring_needed "first"'})],
+    ['yes',N('cond','Is the need available at p1\'s current place?','',19,89,{p:1,r:'arc.needs · every character\'s routines here, the dead included · contexts.json provides',c:'location_context.py:location_provides'},[
+      ['yes, available here',N('leaf','Routine x3 where it provides it, then ends','weights ×3',19,54,{bad:'F2',r:'p1 routines',d:'weighted pick; ×3 for routines whose context provides the need',w:'energy −1 base −1 arc extra ±eat · pool · location · last_scene. NOT arc.history: the arc never ticks, no payment, no scene',c:'run_pass_mechanics Step 4'})],
+      ['no',N('cond','Find the place (deterministic search)','',0,35,{p:1,r:'places_visited · "location:" refs in knowledge · places of partners, social_circle (never written), parents · routes · contexts',d:'none; tier 3 known supplier, else tier 4 any reachable place that provides it',c:'location_context.py:resolve_arc_target; travel_graph.py:shortest_path',bad:'F13'},[
+        ['no reachable target',N('leaf','Stay, pass ends','',0,2,{w:'energy, pool, last_scene',c:'run_pass_mechanics Step 5'})],
+        ['still travelling: land on the hop',N('leaf','Hop, pass ends','one hop per pass',0,22,{bad:'F7',w:'location = hop, places_visited, last_scene, context "route". Next pass pathfinds from here, but a survive roll sends the character back to a routine place',c:'travel_graph.py:next_hop'})],
+        ['arrived',N('cond','Does anyone have a routine here?','',0,11,{p:1,r:'every character\'s routines at this location, dead included',c:'simulate_pass_lib.py:candidates_at',bad:'F3'},[
+          ['nobody',N('leaf','Pass ends','',0,0,{w:'last_scene',c:'run_pass_mechanics Step 6'})],
+          ['someone',N('roll','Anyone useful present?','55% yes',0,11,{p:1,d:'55% (arc_meetable_odds_percent); on yes a weighted draw, known supplier ×3, not filtered by the need',c:'roll_meetable.py:main',bad:'F6'},[
+            ['miss 45%',N('leaf','Pass ends, nothing written','',0,2,{w:'last_scene only',c:'run_pass_mechanics Step 6'})],
+            ['hit 55%',N('roll','p2 rolls their own routine','weighted',0,9,{p:1,d:'weighted pick over p2\'s routines',r:'p2 routines, contexts',c:'run_pass_mechanics Step 7'},[
+              ['other place, or context lacks the need',N('leaf','Pass ends','',0,3,{w:'last_scene. No partner count, p2 gets no survival step',c:'run_pass_mechanics Step 7'})],
+              ['match',N('cond','Does p1 hold at least 3 provisions?','hard gate',0,6,{p:1,r:'p1.provisions (default 2)',w:'partners[p2] +1 and partners[p1] +1',c:'simulate_pass_lib.py:arc_payment_gate',bad:'F1'},[
+                ['no: cannot_afford',N('leaf','Pass ends, nothing paid','',0,2,{bad:'F1',w:'last_scene. Nothing in the engine ever creates provisions, so the default 2 stays below 3',c:'arc_payment_gate; _template.json'})],
+                ['yes',N('roll','Payment roll','30 + 40·surplus·(1−|tally|/3), 2 to 95',0,4,{p:1,d:'exactly 3 provisions: 30%',r:'p1.provisions, arc.history',c:'arc_payment_gate'},[
+                  ['fail',N('leaf','Pass ends','',0,1,{w:'last_scene. Partner counts already bumped',c:'arc_payment_gate'})],
+                  ['success: 3 provisions to p2',N('cond','Alignment gate (contested 15% first)','word overlap, 15 sampled items',0,3,{p:1,d:'contested 15%, ±10 if p2\'s tie to p1 is established. Gate: overlap of arc about/needs with a random 15 of p2\'s items; direction from p2\'s standard / wasted_life text',r:'p2 knowledge, criterion, partners_quality',w:'p1.provisions −3, p2.provisions +3',c:'roll_contested.py; check_arc_alignment.py'},[
+                    ['gate miss',N('scene','Scene is made, arc does not tick','',0,0,{sp:1,w:'scene, hearsay, lived +1, deaths, reproduction check. Payment already spent, no arc.history entry',c:'enact_via_ollama.py; pass_record.py; pass_apply.py'})],
+                    ['gate hit',N('roll','Arc outcome roll','help 60/30/10 · hinder 15/35/50 · mixed 35/40/25 · neutral 40/40/20',0,3,{p:1,d:'advance / stall / reverse by inclination; contested moves 20 points from advance to reverse',w:'arc.history +{pass, outcome}; tally ±3 completes, transforms (copies p2\'s tags) or fails the arc; partners_quality ±1',c:'roll_arc_outcome.py:WEIGHTS; simulate_pass_lib.py:tally'},[
+                      ['advance',N('scene','Scene (model), then apply','',0,2,{sp:1,p:1,w:'hearsay claims, scene file, experience (+produced_by), lived +1; death checks, reproduction 40%, death-legacy 40%; completion tale if the arc completes',c:'pass_record.py → record_hearsay.py; pass_apply.py:apply_participant; simulate_pass_reproduction.py'})],
+                      ['stall',N('scene','Scene (model), then apply','',0,1,{sp:1,p:1,w:'same writes',c:'pass_apply.py'})],
+                      ['reverse',N('scene','Scene (model), then apply','',0,0,{sp:1,p:1,w:'same writes',c:'pass_apply.py'})]
+                    ])]
+                  ])]
+                ])]
+              ])]
+            ])]
+          ])]
+        ])]
+      ])]
+    ])]
+  ])]
+ ])]
+]);
+function renderTree(){
+  const rows=[];
+  const cnt=(a,b)=>(a===''&&b==='')?'':`<span class="ob">A ${a} · B ${b}</span>`;
+  function node(e,n,top){
+    const open=n.ch.length;
+    const dt=[n.r?`<div class="r"><b>Reads</b> ${esc(n.r)}</div>`:'',n.d?`<div class="d"><b>Dice</b> ${esc(n.d)}</div>`:'',n.w?`<div class="w"><b>Writes</b> ${esc(n.w)}</div>`:'',n.c?`<div class="c">${esc(n.c)}</div>`:'',n.bad?`<div><a class="fl" data-f="${n.bad}">${n.bad}</a></div>`:''].join('');
+    const cls=['tn',n.k==='scene'?'scene':n.k,n.p?'':'',n.sp?'sp':'',n.bad?'bad':''].join(' ');
+    const edge=e?`<span class="edge">${n.p?'<b>':''}${esc(e)}${n.p?'</b>':''}</span><br>`:'';
+    return `<li class="${(n.p||n.sp)?'onpath':''}">${edge}<div class="${cls}"><div class="row"><span class="tog">${open?'▾':''}</span><span class="tt">${esc(n.t)}</span>${n.o?`<span class="od">${esc(n.o)}</span>`:''}${cnt(n.a,n.b)}${n.sp?'<span class="sw2">SCENE</span>':''}${n.bad?`<span class="chip bad">BROKEN ${n.bad}</span>`:''}</div><div class="dt">${dt}</div></div>${open?`<ul>${n.ch.map(c=>node(c[0],c[1])).join('')}</ul>`:''}</li>`;
+  }
+  document.getElementById('tree').innerHTML=node('',TREE);
+  const tr=document.getElementById('tree');
+  tr.addEventListener('click',e=>{
+    const fl=e.target.closest('.fl'); if(fl){gotoFinding(fl.dataset.f);return}
+    const tog=e.target.closest('.tog'); const row=e.target.closest('.row'); if(!row)return;
+    const li=row.closest('li');
+    if(tog&&tog.textContent){li.classList.toggle('collapsed');tog.textContent=li.classList.contains('collapsed')?'▸':'▾';return}
+    row.closest('.tn').classList.toggle('show');
+  });
+  const all=(f)=>tr.querySelectorAll('li').forEach(li=>{const t=li.querySelector(':scope>.tn .tog');if(t&&t.textContent){li.classList.toggle('collapsed',f);t.textContent=f?'▸':'▾'}});
+  document.getElementById('t-open').onclick=()=>{all(false);tr.classList.remove('onlypath')};
+  document.getElementById('t-close').onclick=()=>{all(true);tr.querySelector('li').classList.remove('collapsed');tr.querySelector('.tog').textContent='▾'};
+  document.getElementById('t-path').onclick=()=>{all(false);tr.classList.toggle('onlypath')};
+}
+function setView(v){
+  document.getElementById('seqview').hidden=v!=='seq';document.getElementById('treeview').hidden=v!=='tree';
+  document.getElementById('v-seq').setAttribute('aria-pressed',v==='seq');document.getElementById('v-tree').setAttribute('aria-pressed',v==='tree');
+}
+document.getElementById('v-seq').onclick=()=>setView('seq');document.getElementById('v-tree').onclick=()=>setView('tree');
+
+/* ---------------- nav ---------------- */
+function showTab(t){
+  document.querySelectorAll('section.panel').forEach(s=>s.hidden=s.id!=='p-'+t);
+  document.querySelectorAll('#tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===t));
+  try{history.replaceState(null,'','#'+t)}catch(e){}
+  window.scrollTo(0,0);
+}
+function gotoStep(id){showTab('flow');const el=document.getElementById(id);if(!el)return;el.classList.add('open');el.querySelector('button').setAttribute('aria-expanded','true');setTimeout(()=>el.scrollIntoView({behavior:'smooth',block:'start'}),30)}
+function gotoFinding(id){showTab('find');setTimeout(()=>{const el=document.getElementById('f-'+id);if(el){el.scrollIntoView({block:'center'});FLASH(id)}},30)}
+document.getElementById('tabs').addEventListener('click',e=>{const b=e.target.closest('button');if(b)showTab(b.dataset.t)});
+document.getElementById('gaponly').addEventListener('change',renderMatrix);
+document.getElementById('themebtn').addEventListener('click',()=>{
+  const r=document.documentElement,cur=r.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+  r.dataset.theme=cur==='dark'?'light':'dark';
+});
+renderFunnel();renderRail();renderTree();renderMatrix();renderCons();renderFind();renderIntent();
+const h=location.hash.replace('#','');if(['flow','state','cons','find','intent'].includes(h))showTab(h);
+</script>
