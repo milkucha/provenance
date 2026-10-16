@@ -34,9 +34,17 @@ PROVISIONS_PATH = ROOT / "_lore" / "provisions.json"
 
 sys.path.insert(0, str(SCRIPTS_DIR))
 import tuning  # noqa: E402
+import travel_graph  # noqa: E402
 
 _T = tuning.load()["survival"]
 STARTING_PROVISIONS_PER_CAPITA = _T["starting_provisions_per_capita"]
+
+
+def has_pool(location: str) -> bool:
+    """A road node (travel_graph.is_road) has NO provisions pool and no upkeep: whoever is on it
+    eats only what they carry. Every pool read/write below goes through this, so no pool is ever
+    lazily created for a road (author's decision 2026-10-17, TODO.md "Travel as nodes")."""
+    return not travel_graph.is_road(location)
 
 
 def _load() -> dict:
@@ -53,9 +61,10 @@ def _save(data: dict) -> None:
 
 
 def population_of(location: str) -> int:
-    """Living characters currently at exactly this location string. A transit-context route string
-    (e.g. "Tyrnea <-> the harvest fields") is its own bucket, same pre-existing gap TODO.md's
-    "transit context" entry already flags - not resolved here."""
+    """Living characters currently at exactly this location string. A road node (`road:<a>--<b>`)
+    is a location like any other, so its population is whoever is standing on it; it just has no
+    pool to divide among them. A transit-context route string (e.g. "Tyrnea <-> the harvest fields")
+    is its own bucket, same pre-existing gap TODO.md's "transit context" entry already flags."""
     count = 0
     for path in CHAR_DIR.glob("*.json"):
         if path.name in ("hearsay.md", "lifespans.json", "_template.json"):
@@ -71,6 +80,8 @@ def population_of(location: str) -> int:
 
 
 def get_provisions(location: str) -> float:
+    if not has_pool(location):
+        return 0.0  # a road holds nothing, and nothing is created for it
     data = _load()
     if location in data["pools"]:
         return data["pools"][location]
@@ -82,7 +93,10 @@ def get_provisions(location: str) -> float:
 
 def set_provisions(location: str, value: float) -> None:
     """Floored at 0: a pool (or anything standing in for one) never goes negative. Found by the
-    2026-10-16 audit (F14): the latent path stored -5 if anything ever pushed it there."""
+    2026-10-16 audit (F14): the latent path stored -5 if anything ever pushed it there. A no-op on a
+    road (no pool): whatever the rule says should land there simply has nowhere to go."""
+    if not has_pool(location):
+        return
     data = _load()
     data["pools"][location] = max(0, value)
     _save(data)

@@ -55,6 +55,8 @@ from pathlib import Path
 
 SCRIPTS_DIR = Path(__file__).resolve().parent
 ROOT = SCRIPTS_DIR.parent.parent
+sys.path.insert(0, str(SCRIPTS_DIR))
+import travel_graph  # noqa: E402
 BRIEF_PATH = ROOT / ".simulate_pass_brief.json"
 CHAR_DIR = ROOT / "_lore" / "characters"
 ENCODINGS_PATH = ROOT / "_lore" / "encodings.json"
@@ -126,10 +128,14 @@ def _place_text(loc: dict) -> str:
 def place_block(location: str | None, enc: dict | None = None) -> dict | None:
     """The scene's place, from encodings `locations` (description/composition, or the notes field
     this corpus' locations use), matched by id or by any of its names. None if the pass has no
-    resolvable place (a route hop, a made-up string)."""
+    resolvable place (a made-up string). A road node (`road:<a>--<b>`, derived from the connections
+    between places) is described from a template on its endpoints' names, no authoring needed
+    (travel_graph.describe_road)."""
     if not location:
         return None
     enc = enc or json.loads(ENCODINGS_PATH.read_text(encoding="utf-8"))
+    if travel_graph.is_road(location):
+        return travel_graph.describe_road(location, enc)
     norm = lambda x: "".join(ch for ch in str(x).lower() if ch.isalnum())
     want = norm(location)
     for loc in enc.get("locations", []) or []:

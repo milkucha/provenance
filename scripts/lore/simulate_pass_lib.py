@@ -193,6 +193,16 @@ def candidates_at(location: str, all_characters: dict, exclude: str) -> list:
     return out
 
 
+def present_on_road(road: str, all_characters: dict, exclude: str) -> list:
+    """Every LIVING character key (excluding `exclude`) whose `location` is exactly this road node: who
+    is standing on it right now (nobody has a routine on a road). Sorted, so a seeded draw over it is
+    reproducible. Travel is the only way onto a road, so these are other travellers."""
+    return [
+        key for key, char in sorted(all_characters.items())
+        if key != exclude and char.get("location") == road and not (char.get("life") or {}).get("deceased")
+    ]
+
+
 def _logged_rng(context_name: str, argv: list) -> tuple:
     """A `Random` seeded through rng_context like every scripted roll (so a seeded run replays it),
     plus the (seed, draw_index) the caller hands to `rng_context.log_draw` once it knows the result.
@@ -475,9 +485,11 @@ def tally(history: list) -> int:
 #           own-routine roll, apply, DONE                        - pursuit stage local_satisfied
 #   Step 5  arc, not locally satisfiable -> destination: the one kept from an earlier pass, or a
 #           weighted dice draw over location_context.destination_options() (known suppliers skewed,
-#           general places by hops). No option -> DONE (no_target); not there yet -> a mechanical
-#           "route" hop, the destination kept in p1's `pursuit` field, DONE (en_route / died_en_route);
-#           arrived -> Step 6
+#           general places by connections away). No option -> DONE (no_target); not there yet -> a mechanical
+#           "route" hop (one NODE per pass: roads are nodes, so a connection is two passes), the
+#           destination kept in p1's `pursuit` field, DONE (en_route / died_en_route). A hop onto a road
+#           where other living characters stand is a scene with one of them drawn uniformly, no arc
+#           outcome (met_on_road, the journey goes on); arrived -> Step 6
 #   Step 6  who's about at the arrival place: living residents with a routine there. None -> solo
 #           scene (arrived_empty). roll_meetable, favoring a known supplier - miss -> a scene with
 #           someone else who is there (arrived_nobody), no purchase, no arc outcome
@@ -512,6 +524,7 @@ PURSUIT_STAGES = (
     "local_satisfied",  # the need is met where they live; routine roll, nothing to travel for
     "no_target",        # nowhere reachable supplies the need, so the arc cannot move
     "en_route",         # chose or kept a destination; this pass is a step toward it, no scene
+    "met_on_road",      # a step onto a road node where someone else is also travelling; scene with them, nothing bought, no arc outcome, the journey goes on
     "arrived_nobody",   # at the destination, the person/place's supplier is not there; scene with someone else present
     "arrived_empty",    # at the destination, nobody else is there at all; solo scene
     "met_mismatch",     # met someone present, but what they are doing this pass does not supply the need; scene
@@ -590,7 +603,9 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
         character = load_char(p1)
         character["location"] = location
         visited = character.setdefault("places_visited", [])
-        if location not in visited:
+        # A road is passed through, not a place you know to go back to (decision 2026-10-17, logged in
+        # OPEN_QUESTIONS.md): it never enters places_visited, so it never becomes a "known" destination.
+        if location not in visited and not travel_graph.is_road(location):
             visited.append(location)
         character["last_scene"] = last_scene
         if pursuit is not _KEEP:
@@ -726,7 +741,7 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
         if chosen:
             target, path = chosen["location"], chosen["path"]
             notes.append(
-                f"{p1} settled on {target} for '{need}' ({chosen['hops']} hop(s), weight {chosen['weight']} of "
+                f"{p1} settled on {target} for '{need}' ({chosen['connections']} connection(s), weight {chosen['weight']} of "
                 f"{round(sum(o['weight'] for o in options), 2)})"
             )
 
@@ -751,11 +766,27 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
             _pursuit("died_en_route", "energy_depleted", hop, destination=target)
             _write_back(hop, f"Died on the road toward {target}, at {hop}.")
         else:
-            _pursuit("en_route", "keeping_destination" if journey else "destination_chosen", hop, destination=target)
-            _write_back(hop, f"Traveled toward {target}, passing through {hop}.", pursuit={
+            kept = {
                 "need": need, "target": target, "origin": (journey or {}).get("origin") or location_now,
                 "since_pass": (journey or {}).get("since_pass", pass_number),
-            })
+            }
+            fellow = present_on_road(hop, all_characters, exclude=p1) if travel_graph.is_road(hop) else []
+            if fellow:
+                # Someone else is on this road. The arrival/meeting logic applies in its bystander form:
+                # one of them drawn uniformly, a scene in the `route` context. Nothing was purchased and no
+                # supplier was sought here, so no payment gate and no arc outcome. The journey goes on.
+                p2 = draw_bystander(p1, fellow)
+                result["participant_2"] = p2
+                result["scene"] = "pair"
+                result["survival"].setdefault(p2, {"choice": None, "energy": load_char(p2).get("energy"), "died": False})
+                record_partner(p1, p2)
+                record_partner(p2, p1)
+                _pursuit("met_on_road", "fellow_traveller", hop, present=[p2], destination=target)
+                notes.append(f"{p1} is traveling toward {target} for '{need}' and met {p2} on the road at {hop} - scene, no purchase, arc doesn't advance")
+                _write_back(hop, f"Traveled toward {target}, and fell in with {p2} on the road at {hop}.", pursuit=kept)
+            else:
+                _pursuit("en_route", "keeping_destination" if journey else "destination_chosen", hop, destination=target)
+                _write_back(hop, f"Traveled toward {target}, passing through {hop}.", pursuit=kept)
         return result
 
     # Arrived (hop == target, or already at target with a length-1 path and hop is None). The

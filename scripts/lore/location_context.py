@@ -205,13 +205,18 @@ def destination_options(
       - a place where someone in the traveler's own circle supplies the need gets
         `known_supplier_weight`, flat: a warm lead is worth a longer walk, so distance does not erode it;
       - a place that merely provides it (a routine there, or its description/composition text
-        matches) gets `general_weight * hop_decay ** (hops - 1)`: the fewer connections away, the
-        heavier. A place at 0 or 1 hops carries the full `general_weight`;
+        matches) gets `general_weight * hop_decay ** (connections - 1)`: the fewer connections away,
+        the heavier. A place at 0 or 1 connections carries the full `general_weight`. Distance is
+        counted in CONNECTIONS, not node hops (roads are nodes now, so every connection is two hops;
+        `hop_decay` was defined per connection when a hop was one, and stays per connection, so the
+        tuning.json numbers keep their meaning: travel_graph.connections());
       - a place that is both gets the two added.
 
     Only places in the traveler's `reachable_set()` count, same as before. Returns a list sorted by
     location id (so a seeded draw over it is reproducible), each item
-    `{"location", "hops", "path", "suppliers": [slugs], "weight"}`; empty if there is nowhere to go."""
+    `{"location", "hops", "connections", "path", "suppliers": [slugs], "weight"}` (`hops` counts
+    nodes walked, roads included; `connections` is what the weight uses); empty if there is
+    nowhere to go."""
     cfg = {**DEFAULT_PURSUIT_WEIGHTS, **(weights or {})}
     graph = travel_graph.build_graph(encodings_data)
     reachable = travel_graph.reachable_set(traveler, encodings_data)
@@ -227,12 +232,13 @@ def destination_options(
         if not path:
             continue
         hops = len(path) - 1
+        conns = travel_graph.connections(path)
         weight = 0.0
         if loc in supplier_map:
             weight += cfg["known_supplier_weight"]
         if loc in general:
-            weight += cfg["general_weight"] * cfg["hop_decay"] ** (max(hops, 1) - 1)
-        options.append({"location": loc, "hops": hops, "path": path, "suppliers": supplier_map.get(loc, []), "weight": round(weight, 4)})
+            weight += cfg["general_weight"] * cfg["hop_decay"] ** (max(conns, 1) - 1)
+        options.append({"location": loc, "hops": hops, "connections": conns, "path": path, "suppliers": supplier_map.get(loc, []), "weight": round(weight, 4)})
     return options
 
 
@@ -342,7 +348,7 @@ def _demo() -> None:
     finally:
         globals()["_load_character"] = original_load
     print(f"  result: {result}")
-    assert result == ("gorff", ["terfila", "gorff"])
+    assert result == ("gorff", ["terfila", "road:gorff--terfila", "gorff"])
     print("  OK: pathed to known supplier's location")
     print()
 
@@ -372,7 +378,7 @@ def _demo() -> None:
 
         result2 = resolve_arc_target(lonely_traveler, "materials", encodings_data, all_characters, contexts_data)
         print(f"  resolve_arc_target result: {result2}")
-        assert result2 == ("gorff", ["terfila", "gorff"])
+        assert result2 == ("gorff", ["terfila", "road:gorff--terfila", "gorff"])
     finally:
         globals()["_load_character"] = original_load
     print("  OK: no known circle -> tier 3 empty -> tier 4 general fallback found gorff")
@@ -405,8 +411,8 @@ def _demo_destinations() -> None:
     }
     ctx = {"market": {"provides": ["materials"]}, "home": {"provides": ["nourishment"]}}
     people = [
-        {"routines": [{"location": "b", "context": "market", "weight": 100}]},   # general: b, 1 hop
-        {"routines": [{"location": "d", "context": "market", "weight": 100}]},   # general + known: d, 3 hops
+        {"routines": [{"location": "b", "context": "market", "weight": 100}]},   # general: b, 1 connection (2 hops)
+        {"routines": [{"location": "d", "context": "market", "weight": 100}]},   # general + known: d, 3 connections (6 hops)
     ]
     traveler = {"location": "a", "places_visited": ["b", "c", "d"], "partners": {"sup": 1, "ghost": 1}}
     fixtures = {
@@ -420,7 +426,7 @@ def _demo_destinations() -> None:
     finally:
         globals()["_load_character"] = original
     for o in opts:
-        print(f"  {o['location']}: hops={o['hops']} suppliers={o['suppliers']} weight={o['weight']}")
+        print(f"  {o["location"]}: hops={o["hops"]} connections={o["connections"]} suppliers={o['suppliers']} weight={o['weight']}")
     by = {o["location"]: o for o in opts}
     assert by["b"]["weight"] == 2.0 and by["b"]["suppliers"] == []          # near and general, the dead 'ghost' ignored
     assert by["d"]["weight"] == 6 + 2 * 0.25 and by["d"]["suppliers"] == ["sup"]  # known supplier, far, plus a decayed general share

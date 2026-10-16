@@ -63,6 +63,10 @@ as ease or worry. By `stage`:
   not come together today (a haggle that went nowhere, a refusal, bad timing). p1 leaves without it,
   and `arc.gate` is `"miss"` with no outcome: the scene is about the failed purchase, not the project.
 - `met_paid`: p1 paid and has what they came for. This is the scene the `arc` block decides.
+- `met_on_road`: p1 is on a journey (`destination` is where they are headed) and is on the road between
+  two places, where `present[0]` is also travelling. They came for nothing from each other: no purchase,
+  no supplier, and the project does not move (`arc.gate` is `"miss"`). Play two people sharing a stretch of
+  road, the way strangers or acquaintances do. `place` is the road, and `brief.context` is `route`.
 - `local_satisfied`, `no_target`, `en_route`, `died_en_route`, `arrived_empty`: no scene is played for
   these, so you should not see them.
 

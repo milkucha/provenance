@@ -25,6 +25,9 @@ Still flat per capita under the economy rewrite (author's call 2026-10-17): no p
 the pool, none on personal provisions. The arithmetic is economy_rules.upkeep(), shared with the
 balance script.
 
+A road node (`road:<a>--<b>`, travel_graph.is_road) has no pool and no upkeep: this script reports
+zeros and touches nothing.
+
 Usage:
     py scripts/lore/apply_upkeep.py --location Tyrnea
 """
@@ -48,6 +51,13 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--location", required=True)
     args = parser.parse_args()
+
+    if not provisions_lib.has_pool(args.location):
+        # a road node: no pool, so nothing to drain and nothing to checkpoint (and none is created)
+        print(f"population: {provisions_lib.population_of(args.location)}")
+        print("upkeep: 0")
+        print("pool: 0")
+        return
 
     pop = provisions_lib.population_of(args.location)
     pool = provisions_lib.get_provisions(args.location)

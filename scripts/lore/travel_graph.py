@@ -19,8 +19,16 @@ CHRONICLE.md's matching 2026-09-13 entry) settled the shape this module implemen
     who's there, is what makes it a *candidate* destination; connectivity is what makes it a
     *reachable* one. A known-but-disconnected location is knowledge, not a destination.
   - **Travel is unweighted BFS**, not a shortest-distance-in-miles calculation - nothing in the
-    design conversation introduced edge weights/distances, so none are invented here. Every route is
-    one hop, full stop.
+    design conversation introduced edge weights/distances, so none are invented here.
+  - **Roads are nodes (author's decision 2026-10-17, TODO.md "Travel as nodes").** Every connection
+    between two places gets ONE derived node in the middle, id `road:<a>--<b>` (the two endpoint ids
+    sorted), so A to B is two hops (A, road, B) and B to C through A is four (B, road, A, road, C).
+    Distance stays uniform: each connection is two hops, whatever it is. Roads are derived here at
+    graph-build time from `routes[].endpoints`, never stored in encodings.json, and are locations
+    like any other (a character's `location` can be a road id). A road has no provisions pool
+    (provisions_lib.has_pool). Two routes that connect the same pair share one road. Location ids
+    must not contain `--` or start with `road:` (build_graph raises), because the road id is
+    parsed back into its endpoints by road_endpoints().
 
 Assumptions made explicit here rather than guessed silently (both confirmed by reading the actual
 current schema and `scripts/graphs/graphifyish.py`, which already treats `routes[].endpoints` as an
@@ -93,11 +101,73 @@ def _load_character(key: str) -> dict | None:
         return json.load(f)
 
 
+ROAD_PREFIX = "road:"
+ROAD_SEP = "--"
+
+
+def road_id(a: str, b: str) -> str:
+    """The id of the derived road node between two places: `road:<a>--<b>`, endpoints sorted, so the
+    same connection has the same id whichever way it is walked (and in every process)."""
+    lo, hi = sorted((a, b))
+    return f"{ROAD_PREFIX}{lo}{ROAD_SEP}{hi}"
+
+
+def is_road(location_id) -> bool:
+    return isinstance(location_id, str) and location_id.startswith(ROAD_PREFIX)
+
+
+def road_endpoints(road: str) -> tuple[str, str] | None:
+    """(a, b) of a road id, or None if it is not one."""
+    if not is_road(road):
+        return None
+    a, sep, b = road[len(ROAD_PREFIX):].partition(ROAD_SEP)
+    return (a, b) if sep and a and b else None
+
+
+def connections(path: list[str]) -> int:
+    """How many connections a path of node hops spans: every connection is two hops (place, road,
+    place), so 2 hops = 1, 4 = 2; a path starting or ending on a road counts the half-connection
+    as a whole one (3 hops = 2)."""
+    return (max(len(path) - 1, 0) + 1) // 2
+
+
+def _road_sources(encodings_data: dict) -> dict[str, list[dict]]:
+    """{road id: [the routes[] entries that produced it]}, derived from `routes[].endpoints` like the
+    graph itself (a route with more than two endpoints makes a road for every pair)."""
+    out: dict[str, list[dict]] = {}
+    for route in encodings_data.get("routes", []) or []:
+        endpoints = [e for e in (route.get("endpoints") or []) if e]
+        for i, a in enumerate(endpoints):
+            for b in endpoints[i + 1:]:
+                if a != b:
+                    out.setdefault(road_id(a, b), []).append(route)
+    return out
+
+
+def describe_road(road: str, encodings_data: dict) -> dict | None:
+    """The enacter's place block for a road, from a template on its endpoints' names, no authoring
+    needed: {"name": "The road between A and B", "description": ...}. If a route on that pair carries
+    a `type` ("sea lane", "rail line") it replaces the word road; if it carries a `description`, that
+    is the description. None if `road` is not a road id."""
+    ends = road_endpoints(road)
+    if not ends:
+        return None
+    by_id = {loc.get("id"): loc for loc in encodings_data.get("locations", []) or [] if loc.get("id")}
+    name = lambda i: ((by_id.get(i) or {}).get("names") or [i])[0]
+    routes = _road_sources(encodings_data).get(road, [])
+    kind = next((str(r["type"]).strip() for r in routes if r.get("type")), "road")
+    text = next((str(r["description"]).strip() for r in routes if r.get("description")), "")
+    title = f"The {kind} between {name(ends[0])} and {name(ends[1])}"
+    return {"name": title, "description": text or f"{title}. No one lives here; whoever is on it is passing between the two."}
+
+
 def build_graph(encodings_data: dict) -> dict[str, set[str]]:
-    """Parse `locations[]` and `routes[].endpoints` into an adjacency map: {location_id: {ids of
-    every location directly reachable via one route}, ...}. Every location gets a node (even one
-    with no routes at all yet, i.e. an empty adjacency set) so lookups against a known location id
-    never KeyError. See module docstring assumption 1 for why a route with more than two endpoints
+    """Parse `locations[]` and `routes[].endpoints` into an adjacency map: {node_id: {ids of the
+    nodes one hop away}, ...}. Every location gets a node (even one with no routes at all yet, i.e.
+    an empty adjacency set) so lookups against a known location id never KeyError. Every connection
+    between two locations is SUBDIVIDED: a derived road node (`road_id(a, b)`) sits between them, so
+    the graph is bipartite, places on one side and roads on the other, and two connected places are
+    two hops apart. See module docstring assumption 1 for why a route with more than two endpoints
     connects every pair of its points rather than chaining them in order."""
     graph: dict[str, set[str]] = {}
 
@@ -108,12 +178,19 @@ def build_graph(encodings_data: dict) -> dict[str, set[str]]:
 
     for route in encodings_data.get("routes", []) or []:
         endpoints = [e for e in (route.get("endpoints") or []) if e]
+        for e in endpoints:
+            if is_road(e) or ROAD_SEP in e:
+                raise ValueError(f"location id {e!r} (route {route.get('id')!r}) cannot start with {ROAD_PREFIX!r} or contain {ROAD_SEP!r}: road ids are made from them")
         for i, a in enumerate(endpoints):
             graph.setdefault(a, set())
             for b in endpoints[i + 1:]:
                 graph.setdefault(b, set())
-                graph[a].add(b)
-                graph[b].add(a)
+                if a == b:
+                    continue
+                road = road_id(a, b)
+                graph.setdefault(road, set()).update((a, b))
+                graph[a].add(road)
+                graph[b].add(road)
 
     return graph
 
@@ -312,10 +389,11 @@ def _demo() -> None:
     graph = build_graph(encodings_data)
     for loc_id in sorted(graph):
         print(f"  {loc_id}: {sorted(graph[loc_id])}")
-    assert graph["terfila"] == {"gorff", "khan_ice", "lundria"}
-    assert graph["lundria"] == {"gorff", "khan_ice", "terfila"}
+    assert graph["terfila"] == {road_id("terfila", "gorff"), road_id("terfila", "khan_ice"), road_id("terfila", "lundria")}
+    assert graph["road:gorff--terfila"] == {"gorff", "terfila"}
     assert graph["isolatia"] == set()
-    print("  OK: r3's 3 endpoints formed a clique; isolatia has no edges")
+    assert sum(1 for n in graph if is_road(n)) == 5  # terfila-gorff, gorff-lundria, and r3's three pairs
+    print("  OK: r3's 3 endpoints formed a clique of roads; every connection has one road node; isolatia has no edges")
     print()
 
     print("=== reachable_set (with fake partner/social_circle files) ===")
@@ -340,9 +418,9 @@ def _demo() -> None:
     print("=== shortest_path + next_hop ===")
     result = shortest_path(graph, "terfila", {"lundria"})
     print(f"  terfila -> {{lundria}}: {result}")
-    assert result == ("lundria", ["terfila", "lundria"])
+    assert result == ("lundria", ["terfila", "road:lundria--terfila", "lundria"])
     print(f"  next_hop: {next_hop(result[1])}")
-    assert next_hop(result[1]) == "lundria"
+    assert next_hop(result[1]) == "road:lundria--terfila"
 
     result2 = shortest_path(graph, "terfila", {"terfila"})
     print(f"  terfila -> {{terfila}} (already there): {result2}")
@@ -352,6 +430,17 @@ def _demo() -> None:
     print(f"  terfila -> {{isolatia}} (unreachable): {result3}")
     assert result3 is None
     print("  OK: all path/next_hop cases behave as expected")
+    print()
+
+    print("=== uniform distance: A-B is 2 hops, B to C through A is 4 ===")
+    chain = {"locations": [{"id": "a"}, {"id": "b"}, {"id": "c"}], "routes": [{"id": "ab", "endpoints": ["a", "b"]}, {"id": "ac", "endpoints": ["a", "c"]}]}
+    g = build_graph(chain)
+    _, p_ab = shortest_path(g, "a", {"b"})
+    _, p_bc = shortest_path(g, "b", {"c"})
+    assert p_ab == ["a", "road:a--b", "b"] and len(p_ab) - 1 == 2 and connections(p_ab) == 1
+    assert p_bc == ["b", "road:a--b", "a", "road:a--c", "c"] and len(p_bc) - 1 == 4 and connections(p_bc) == 2
+    assert road_endpoints("road:a--b") == ("a", "b") and describe_road("road:a--b", chain)["name"] == "The road between a and b"
+    print("  OK: a->b", p_ab, "; b->c", p_bc)
 
 
 def main() -> None:

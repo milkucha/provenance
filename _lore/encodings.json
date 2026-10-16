@@ -39,7 +39,7 @@
     },
 
     "route": {
-      "description": "Ways between places: roads, highways, train lines, air routes, established paths.",
+      "description": "Ways between places: roads, highways, train lines, air routes, established paths. Author a connection as ONE entry with `endpoints` (the location ids it joins; more than two connects every pair), and optionally a `type` (\"road\", \"sea lane\", ...) and a `description`. Authoring a connection is all it takes: the engine derives a road node in the middle of every connection when it builds the travel graph (id `road:<a>--<b>`, ids sorted), never stored here, so A to B is two hops (A, road, B) and B to C through A is four. A road is a place like any other (a character can stand on one, two can meet on one), has no provisions pool (travellers eat what they carry) and gets its place block from a template on its endpoints' names, using your `type` and `description` if you gave them. Location ids must not contain `--` or start with `road:`.",
       "fields": ["names", "endpoints", "type", "description"],
       "path": "routes",
       "shape": "list",

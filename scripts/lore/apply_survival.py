@@ -18,6 +18,9 @@ the earlier design is in git and TODO.md):
   - **arc**: costs `arc_extra_cost` (1) extra personal energy. Pays nothing. What an arc costs in
     food is the payment gate's (simulate_pass_lib.arc_payment_gate), in provisions you could have
     eaten.
+  - **On a road node** (`road:<a>--<b>`): there is no pool (provisions_lib.has_pool), so eating takes
+    from the character's own provisions only: with none, no meal or half a meal, and the character can
+    starve on the road. Work there pays the worker as usual; the pool's share has nowhere to go.
   Personal provisions and the pool never go negative. This does NOT include per-capita upkeep -
   call apply_upkeep.py once per pass per location, not once per participant.
 
@@ -72,7 +75,7 @@ def main() -> None:
     with open(char_path, "w", encoding="utf-8") as f:
         json.dump(character, f, indent=2, ensure_ascii=False)
         f.write("\n")
-    pool = out["pool"]
+    pool = out["pool"] if provisions_lib.has_pool(args.location) else 0
     provisions_lib.set_provisions(args.location, pool)
 
     died = energy <= 0
