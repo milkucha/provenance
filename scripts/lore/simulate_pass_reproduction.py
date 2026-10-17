@@ -8,10 +8,12 @@ short coda written after the scene instead of being woven into its dialogue.
 
 Eligibility is plain arithmetic over already-known numbers, no roll needed for this part: partner
 count >= partner_threshold (5, _lore/tuning.json), neither parent within parent_cooldown_passes (10)
-of their last birth, and the pair not already related (parent/child/ancestor at any depth, or full/
+of their last birth, the pair not already related (parent/child/ancestor at any depth, or full/
 half siblings - see simulate_pass_lib.already_related()'s own docstring for why cousins are still
-allowed). Only when all three hold does roll_reproduction.py actually run - crossing the threshold
-makes a birth POSSIBLE, this script decides whether it happens now.
+allowed), and the scene not on a road (author's call 2026-10-17: no children born on roads; the guard
+is on p1's `location`, which the pass wrote back as the scene's place, and it costs no draw - the pair
+can roll at their next ordinary place). Only when all four hold does roll_reproduction.py actually run -
+crossing the threshold makes a birth POSSIBLE, this script decides whether it happens now.
 
 On a true roll, prints a judgment slot: the caller composes the child's name (a blend leading from
 name_lead's side - the one thing about a birth that can't be scripted, same as always) and calls
@@ -46,10 +48,12 @@ def check_and_roll(p1: str, p2: str, pass_number: int, ancestor_cache: dict | No
         for c in (p1_char, p2_char)
     )
     already_related = lib.already_related(p1, p1_char, p2, p2_char, cache=ancestor_cache)
+    on_road = lib.travel_graph.is_road(p1_char.get("location"))
 
     result = {
-        "eligible": threshold_met and cooldown_ok and not already_related,
+        "eligible": threshold_met and cooldown_ok and not already_related and not on_road,
         "reproduces": False, "name_lead": None, "other_parent": None,
+        "blocked": "road" if (on_road and threshold_met and cooldown_ok and not already_related) else None,
     }
     if not result["eligible"]:
         return result
@@ -75,6 +79,8 @@ def main() -> None:
     result = check_and_roll(p1, p2, args.pass_number)
 
     print(f"eligible: {'true' if result['eligible'] else 'false'}")
+    if result["blocked"]:
+        print(f"blocked: {result['blocked']}  (the scene was on a road; no births there)")
     print(f"reproduces: {'true' if result['reproduces'] else 'false'}")
     if result["reproduces"]:
         print(f"name_lead: {result['name_lead']}")
