@@ -21,6 +21,10 @@ and open questions that were live at a given point, even ones later settled else
 
 ---
 
+### 2026-10-17 (night) — Mundaneity is lore; class is three capitals; the roll gets a character
+
+Three positions taken while walking one pass step by step. First, failure and the ordinary count as lore: a pursuit that finds nobody, or can't pay, becomes a scene instead of a blank, and the arc outcome is only rolled once the purchase went through. Second, class is not an attribute: it falls out of three capitals handed down at their own moment, economic at the parent's death, social at birth, cultural when a parent completes an arc (told like a death); roads between places are nodes of their own, one per connection, and a journey costs food. Third, personality enters the work-or-pursue roll as traits that scale the existing weights, not as a model deciding. The argument that settled it: asking a decision model for the 'rational' choice homogenizes everyone, which is the brown the project is against, so the question to ask is how likely *this* person is to do this, and the dice still roll. Jev is parked for the agent decisions that are already closed choices (criterion move, `about` tags). Open items live in `TODO.md` and `OPEN_QUESTIONS.md`.
+
 ### 2026-10-17 — Work pays the worker; the numbers get run instead of argued
 
 The economy rewrite got built: `survive` is `work`, work pays the worker (2 to them, 1 to the pool),
