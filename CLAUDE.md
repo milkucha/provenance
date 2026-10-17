@@ -13,7 +13,7 @@ Agent-driven world-building system: takes a seed (sociocultural parameters, a ha
 
 **3. Write in the author's voice.** Project prose (README, TODO, LAB_REPORT, commit messages, in-repo notes) gets written in the author's own register, not default assistant prose. Lore content has its own voice per character. See [.claude/VOICE.md](.claude/VOICE.md) for both.
 
-**4. Keep these files current:** [CHRONICLE.md](CHRONICLE.md) for landmark sessions, [TODO.md](TODO.md) for design decisions and open gaps, [SESSION_LOG.md](SESSION_LOG.md) for where work left off between sessions.
+**4. Keep these files current:** [CHRONICLE.md](CHRONICLE.md) for landmark sessions, [TODO.md](TODO.md) for design decisions and open gaps, [SESSION_LOG.md](SESSION_LOG.md) for where work left off between sessions (overwritten at the end of each session, not appended).
 
 ---
 
