@@ -47,6 +47,9 @@ What's inherited and how:
      roughly the shape of what they'll come to value, without it being deterministic.
   3. Already-present items are excluded from step 2's draw (no point in "discovering" something a
      parent already knew).
+  4. The completion tale(s) of the parents' completed arcs (`tale: arc_complete_<key>`), guaranteed and
+     appended after the draws above (2026-10-17): a child born after a parent's completion still
+     inherits the culture of it, the same item living children get at completion time (arc_completion.py).
 - `knowledge.experience` - previously started empty outright ("the child hasn't lived either
   parent's experience"), which is still true - but some of what a parent lived can still reach a
   child as family lore, the way an actual family passes stories down. A random fraction
@@ -137,6 +140,7 @@ import notify_death  # noqa: E402
 import update_social_circle  # noqa: E402
 import tuning  # noqa: E402
 import temperament  # noqa: E402
+import arc_completion  # noqa: E402
 import rng_context  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent.parent
@@ -651,6 +655,17 @@ def main() -> None:
     world_enc = load_encodings()
     general_items = draw_general_knowledge(world_enc, skew_criterion, inherited_items, len(inherited_items))
     items = inherited_items + general_items
+    # Cultural capital (author's call 2026-10-17): the completion tale(s) of the parents' completed arcs are
+    # the newborn's by right, guaranteed and not sampled, in the shape living children get them at the
+    # moment of completion (arc_completion.complete): the education item `tale: <id>`.
+    completion_tales = []
+    for parent in (parent_a, parent_b):
+        for tid in arc_completion.tales_of(parent):
+            if tid not in completion_tales:
+                completion_tales.append(tid)
+    for tid in completion_tales:
+        if f"tale: {tid}" not in items:
+            items.append(f"tale: {tid}")
     pool_text = dict(general_knowledge_pool(world_enc))
 
     inherited_experience = draw_inherited_experience(
@@ -797,6 +812,8 @@ def main() -> None:
         print("  (extended circle non-empty but sample came back empty - shouldn't happen, check n_notify logic)")
     print(f"social_circle: {len(circle['circle'])} ties ({sum(len(v) for v in circle['inherited'].values())} inherited from the parents' circles, share {tuning.load()['social_circle']['inherit_share']:.0%})")
     print(f"knowledge.education.items: {len(items)} total  ({len(inherited_items)} from parents, {len(general_items)} new from encodings.json's world-lore pools)")
+    if completion_tales:
+        print(f"completion tales of the parents' arcs, in the child's education (guaranteed): {', '.join(completion_tales)}")
     print(f"knowledge.experience: {len(inherited_experience)} inherited as family lore (wrapped 'Grew up hearing: ...', not lived firsthand)")
     print(f"temperament: {temperament.fmt(child_temperament)}")
     print(f"routines: {len(routines)} inherited")

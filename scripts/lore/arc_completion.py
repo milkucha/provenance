@@ -20,7 +20,12 @@ interactive /enact path, the driver and /generate all get the same thing:
      and re-enters the knowledge sampling pool. The draw is logged as `arc_completion_notify`.
   4. THE CULTURAL CAPITAL. Every living child gets the tale as an education item (`tale: <id>`), in
      their knowledge itself, not just a line of hearsay: culture is inherited when a parent completes
-     an arc. (Children born after the completion do not receive it - open question.)
+     an arc. And a child born AFTER the completion gets it too (the author's answer 2026-10-17):
+     generate_offspring.py adds the completion tale(s) of both parents' completed arcs to the newborn's
+     education, guaranteed, not sampled, in this same `tale: <id>` shape. For that the completer carries
+     the list of their completions on their own file (`completed_tales`, written by complete()), because
+     a re-authored arc overwrites `arc` and with it `arc.completion`; tales_of() reads that list (and
+     `arc.completion.tale` for a completion written before the list existed).
 
 Mechanical throughout: no judgment call, the tale's words are the same templated sentence as before.
 """
@@ -110,6 +115,17 @@ def write_arc_completion_tale(key: str, name: str, arc: dict) -> str:
     return slug
 
 
+def tales_of(character: dict) -> list:
+    """The completion tale ids of every arc this character has completed, oldest first: their own
+    `completed_tales` list, plus `arc.completion.tale` (a completion recorded before the list existed,
+    or one not yet moved into it). Pure, so generate_offspring.py can call it on a parent it already holds."""
+    out = list(character.get("completed_tales") or [])
+    done = ((character.get("arc") or {}).get("completion") or {}).get("tale")
+    if done and done not in out:
+        out.append(done)
+    return out
+
+
 def _load(key: str) -> dict:
     return json.loads((CHAR_DIR / f"{key}.json").read_text(encoding="utf-8"))
 
@@ -133,6 +149,7 @@ def complete(key: str, pass_number: int | None = None) -> dict:
     character["provisions"] = character.get("provisions", default) + reward
     arc["completion"] = {"pass": pass_number, "turns": turns, "reward": reward, "tale": tale_id}
     character["arc"] = arc
+    character["completed_tales"] = tales_of({**character, "arc": {}}) + [tale_id]  # survives the arc being re-authored
     _save(key, character)
 
     # The telling: relations for certain, a share of the wider circle at once (notify_death's own
