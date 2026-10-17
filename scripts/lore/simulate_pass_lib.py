@@ -488,8 +488,10 @@ def tally(history: list) -> int:
 #   Step 2  roll_survival(p1)                                   - work vs. arc
 #   Step 3  work -> p1's own routine roll, apply, DONE        - no second participant, ever. Mid-journey
 #           (a kept destination) they work where they stand and the journey survives (audit F7)
-#   Step 4  arc, locally satisfiable (and standing at a place of their own routines) -> boosted
-#           own-routine roll, apply, DONE                        - pursuit stage local_satisfied
+#   Step 4  arc, the need is available where they live (standing at a place of their own routines
+#           that provides it) -> "already arrived": no travel, no destination draw, straight on to
+#           Step 6 at that place (audit F2, the author's call 2026-10-17); the pursuit carries
+#           `local: true` as the "need is available here" marker
 #   Step 5  arc, not locally satisfiable -> destination: the one kept from an earlier pass, or a
 #           weighted dice draw over location_context.destination_options() (known suppliers skewed,
 #           general places by connections away). No option -> DONE (no_target); not there yet -> a mechanical
@@ -497,9 +499,10 @@ def tally(history: list) -> int:
 #           destination kept in p1's `pursuit` field, DONE (en_route / died_en_route). A hop onto a road
 #           where other living characters stand is a scene with one of them drawn uniformly, no arc
 #           outcome (met_on_road, the journey goes on); arrived -> Step 6
-#   Step 6  who's about at the arrival place: living residents with a routine there. None -> solo
-#           scene (arrived_empty). roll_meetable, favoring a known supplier - miss -> a scene with
-#           someone else who is there (arrived_nobody), no purchase, no arc outcome
+#   Step 6  who's about at the arrival place: living residents with a routine there. None -> a
+#           REFLECTION scene (arrived_empty, `scene: "solo"`): the one character alone at that place,
+#           dispatched to the enacter with only them in it. roll_meetable, favoring a known supplier -
+#           miss -> a scene with someone else who is there (arrived_nobody), no purchase, no arc outcome
 #   Step 7  p2's own routine roll - routine elsewhere -> as a miss; context doesn't supply the need ->
 #           a scene with p2, no purchase (met_mismatch); match -> Step 8
 #   Step 8  arc_payment_gate() - fail -> a scene with p2, NO arc outcome rolled (met_cannot_pay);
@@ -512,7 +515,8 @@ def tally(history: list) -> int:
 #
 # Every exit of Steps 4-8 sets `result["pursuit"]` {stage, reason, need, place, supplier, present,
 # could_afford} (PURSUIT_STAGES, below), and `result["scene"]` ("pair" / "solo" / None) says whether
-# the pass is something to dramatize. `motivated` stays what it was: the payment went through.
+# the pass is something to dramatize ("solo" is the one-character reflection of arrived_empty).
+# `motivated` stays what it was: the payment went through.
 #
 # Partner tracking (record_partner, both directions) fires exactly once, at the point p1 and p2 are
 # BOTH confirmed present (Step 7, or a bystander scene) - the earliest point in the new algorithm
@@ -532,12 +536,11 @@ def tally(history: list) -> int:
 # Pursuit stages (brief["pursuit"]["stage"]). Every exit of the pursuit branch of run_pass_mechanics
 # sets exactly one. The legend the enacter reads is in enact_preamble.md; keep the two in step.
 PURSUIT_STAGES = (
-    "local_satisfied",  # the need is met where they live; routine roll, nothing to travel for
     "no_target",        # nowhere reachable supplies the need, so the arc cannot move
     "en_route",         # chose or kept a destination; this pass is a step toward it, no scene
     "met_on_road",      # a step onto a road node where someone else is also travelling; scene with them, nothing bought, no arc outcome, the journey goes on
     "arrived_nobody",   # at the destination, the person/place's supplier is not there; scene with someone else present
-    "arrived_empty",    # at the destination, nobody else is there at all; solo scene
+    "arrived_empty",    # at the destination (or at home, when the need is available there), nobody else is there at all; a one-character reflection scene
     "met_mismatch",     # met someone present, but what they are doing this pass does not supply the need; scene
     "met_cannot_pay",   # found the supplier, the purchase did not go through (reason: cannot_afford | payment_failed); scene, no arc outcome rolled
     "met_paid",         # found the supplier and paid; the arc outcome is rolled and the scene dramatizes it
@@ -562,8 +565,15 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
     passes (the character's `pursuit` field) until they arrive, turns a failed arrival into a scene
     instead of a dead pass, and names every exit in `result["pursuit"]` (see PURSUIT_STAGES).
     `result["scene"]` says what the driver should do with the pass: "pair" (a two-character scene,
-    `participant_2` set), "solo" (a scene-worthy situation with nobody else in it) or None (no
-    scene)."""
+    `participant_2` set), "solo" (a reflection: the one character alone at the place, arrived_empty and
+    nothing else; dispatched with only them) or None (no scene).
+
+    Need available at home (audit F2, 2026-10-17): a character at a place of their own routines that
+    provides the arc's need no longer takes an early return that burns energy and never advances the arc.
+    They are treated as already arrived there (`pursuit.local` true, no travel) and the pass continues as
+    any arrival does: who is meetable at that place (favouring a known supplier), that person's routine,
+    the payment gate, the arc outcome and the scene; nobody useful there falls to arrived_nobody /
+    arrived_empty."""
     notes: list = []
     p1_char = load_char(p1)
     location_now = p1_char.get("location", "")
@@ -742,45 +752,39 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
     # since eating comes out of the same provisions the payment would: the same number the payment
     # gate checks. Every exit of this branch runs _apply_p1 before it reports a stage.
 
+    local = False  # set by Step 4: the need is available at the character's own place
+
     def _pursuit(stage: str, reason: str | None, place: str | None, supplier: str | None = None,
                  present: list | None = None, **extra) -> None:
         result["pursuit"] = {
             "stage": stage, "reason": reason, "need": need, "place": place, "supplier": supplier,
-            "present": present or [], "could_afford": afford["v"], **extra,
+            "present": present or [], "could_afford": afford["v"], "local": local, **extra,
         }
 
-    # Step 4 - locally satisfiable. Only for someone standing at a place of their own routines: a
-    # visitor at the end of a failed trip is not "home", and the place providing the need is exactly
-    # why they came (so it must not read as "satisfied locally" and send them back to their desk).
+    # Step 4 - the need is available where they live. Only for someone standing at a place of their own
+    # routines: a visitor at the end of a failed trip is not "home", and the place providing the need is
+    # exactly why they came (they are an arrival and draw a destination again, the place itself an option).
+    # Audit F2 (the author's call 2026-10-17): this used to be an early return (a routine roll, the arc cost,
+    # no arc advance, ever). Now it only marks the pass `local` and treats them as already arrived.
     is_home = any(r.get("location") == location_now for r in p1_char.get("routines", []))
     if not journey and is_home:
         provides_here = location_context.location_provides(location_now, list(all_characters.values()), CONTEXTS)
         matched_need = next((n for n in needs if n in provides_here), None)
         if matched_need:
-            # Prefer (not force) whichever of p1's own routines has a context that provides the need.
-            boost_locations = {
-                r["location"] for r in p1_char.get("routines", [])
-                if matched_need in (CONTEXTS.get(r.get("context")) or {}).get("provides", [])
-            }
-            location = (
-                roll_routine_boosted(p1_char["routines"], boost_locations)
-                if boost_locations else _own_routine_roll(p1_char)
-            )
-            _apply_p1(location, "arc", resolve_context_for_location(p1_char, location))
+            local = True
             need = matched_need
-            _pursuit("local_satisfied", "need_provided_here", location)
-            notes.append(f"{p1} pursued their arc's need ('{matched_need}') locally at {location}")
-            _write_back(location, f"Pursued '{matched_need}' locally at {location}.")
-            return result
+            notes.append(f"{p1}'s need ('{matched_need}') is available at their own place, {location_now} - no journey, on to who is there")
 
     # Step 5 - destination. Kept from an earlier pass, or drawn now. Single-need MVP: resolves only
-    # the first of arc.needs.
-    if len(needs) > 1 and not journey:
+    # the first of arc.needs. A local pass has none: it is already there.
+    if len(needs) > 1 and not journey and not local:
         notes.append(f"{p1}'s arc has {len(needs)} needs - resolving only the first ('{need}') this pass")
     encodings_data = load_encodings()
     graph = travel_graph.build_graph(encodings_data)
     path = target = None
-    if journey:
+    if local:
+        target, path = location_now, [location_now]
+    elif journey:
         found = travel_graph.shortest_path(graph, location_now, {journey["target"]})
         if found:
             target, path = found
@@ -812,7 +816,7 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
         _write_back(location_now, f"Sought '{need}' but found no reachable path from {location_now}.")
         return result
 
-    hop = travel_graph.next_hop(path)
+    hop = None if local else travel_graph.next_hop(path)
 
     if hop is not None and hop != target:
         # Mid-journey - mechanical override, no roll_routine.py call, no second participant, no arc
@@ -850,7 +854,7 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
     # Arrived (hop == target, or already at target with a length-1 path and hop is None). The
     # journey ends here whatever happens next (the default of _write_back).
     location = target
-    result["travel"] = {"target": target, "path": path, "hop": hop}
+    result["travel"] = None if local else {"target": target, "path": path, "hop": hop}
 
     # Step 6 - who's about. Living residents with a routine here. Tier-3 (known supplier) favor: if
     # someone in p1's own circle supplies the need here and is a resident, they are favored in the
@@ -859,6 +863,23 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
     supplier_map = location_context.find_supplier_map(p1_char, need, list(all_characters.values()), CONTEXTS)
     favor = next((k for k in supplier_map.get(location, []) if k in candidates), None)
 
+    def _own_context_at(place: str) -> str | None:
+        """The context of p1's own routine at `place`, if they have one there (a reflection at their own
+        place then carries `routine`, what they do here), else None."""
+        return next((r["context"] for r in p1_char.get("routines", []) if r.get("location") == place), None)
+
+    # A failed visit is remembered for persistence only when it was a journey's destination; at their own
+    # place they simply try again, so a local failure clears it instead (nothing to retry elsewhere).
+    def _retry() -> dict | None:
+        return None if local else {"need": need, "place": location}
+
+    def _empty_place(reason: str, wanted: str | None) -> None:
+        """Nobody else is there: a reflection scene, p1 alone (`scene: "solo"`). Dispatched to the enacter
+        with only them in it. No payment, no arc outcome, no partner."""
+        result["context"] = _own_context_at(location)
+        _pursuit("arrived_empty", reason, location, supplier=wanted)
+        result["scene"] = "solo"
+
     def _bystander_scene(stage: str, reason: str, excluded: set, wanted: str | None) -> None:
         """Nobody useful: the scene goes to someone else who lives or works here, drawn uniformly. Their
         routine is rolled over the routines they have at this place (the draw already says they are
@@ -866,10 +887,9 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
         solo scene."""
         pool = [c for c in candidates if c not in excluded]
         if not pool:
-            _pursuit("arrived_empty", "no_one_else_present", location, supplier=wanted)
-            result["scene"] = "solo"
-            notes.append(f"{p1} arrived at {location} and found nobody else there - solo scene, arc doesn't advance")
-            _write_back(location, f"Arrived at {location} and found no one there.")
+            _empty_place("no_one_else_present", wanted)
+            notes.append(f"{p1} {'was at' if local else 'arrived at'} {location} and found nobody else there - reflection scene, arc doesn't advance")
+            _write_back(location, f"{'Was at' if local else 'Arrived at'} {location} and found no one there.")
             return
         p2 = draw_bystander(p1, pool)
         routine = roll_routine_at(load_char(p2), location)
@@ -881,24 +901,23 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
         record_partner(p2, p1)
         _pursuit(stage, reason, location, supplier=wanted, present=[p2])
         notes.append(
-            f"{p1} arrived at {location} for '{need}' but {'the person they came for' if wanted else 'no supplier'} "
+            f"{p1} {'was at' if local else 'arrived at'} {location} for '{need}' but {'the person they came for' if wanted else 'no supplier'} "
             f"was not there ({reason}); spent the pass with {p2} instead - arc doesn't advance"
         )
-        _write_back(location, f"Arrived at {location}, found no supplier, and spent the pass with {p2}.", retry={"need": need, "place": location})
+        _write_back(location, f"{'Was at' if local else 'Arrived at'} {location}, found no supplier, and spent the pass with {p2}.", retry=_retry())
 
     if not candidates:
         _apply_p1(location, "arc", None)
-        _pursuit("arrived_empty", "no_residents", location)
-        result["scene"] = "solo"
-        notes.append(f"{p1} arrived at {location} but nobody is around this pass - arc doesn't advance")
-        _write_back(location, f"Arrived at {location} but no one was around.")
+        _empty_place("no_residents", None)
+        notes.append(f"{p1} {'was at' if local else 'arrived at'} {location} but nobody is around this pass - reflection scene, arc doesn't advance")
+        _write_back(location, f"{'Was at' if local else 'Arrived at'} {location} but no one was around.")
         return result
 
     meet = roll_meetable(candidates, favor=favor)
     _apply_p1(location, "arc", None)
 
     if not meet["met"]:
-        notes.append(f"{p1} arrived at {location} but missed the connection this pass (odds {meet['odds_used']})")
+        notes.append(f"{p1} {'was at' if local else 'arrived at'} {location} but missed the connection this pass (odds {meet['odds_used']})")
         _bystander_scene("arrived_nobody", "supplier_absent", {favor} if favor else set(), favor)
         return result
 
@@ -929,7 +948,7 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
     if need not in p2_provides:
         _pursuit("met_mismatch", "context_does_not_provide", location, supplier=p2, present=[p2])
         notes.append(f"{p1} met {p2} at {location}, but {p2}'s own routine this pass ({p2_context}) doesn't provide '{need}' - scene, no purchase")
-        _write_back(location, f"Met {p2} at {location} but they had nothing to offer this pass.", retry={"need": need, "place": location})
+        _write_back(location, f"Met {p2} at {location} but they had nothing to offer this pass.", retry=_retry())
         return result
 
     # Step 8 - payment gate. No arc outcome is rolled unless the purchase goes through.
@@ -942,7 +961,7 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
             + (f", thrift hesitation {payment['hesitation']:g}" if payment.get("hesitation") else "")
             + ") - scene, no arc outcome"
         )
-        _write_back(location, f"Met {p2} at {location} but couldn't afford '{need}'.", retry={"need": need, "place": location})
+        _write_back(location, f"Met {p2} at {location} but couldn't afford '{need}'.", retry=_retry())
         return result
 
     result["motivated"] = True

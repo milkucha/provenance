@@ -34,7 +34,10 @@ Pursuit redesign (2026-10-17): a pass whose arc choice sends the character after
 `pursuit` object ({stage, reason, need, place, supplier, present, could_afford}; the stages are
 simulate_pass_lib.PURSUIT_STAGES) and a `scene` flag ("pair" / "solo" / null) saying whether there is
 something to dramatize. A failed arrival is a scene, not a dead pass; `motivated` still means only
-that the payment went through.
+that the payment went through. `pursuit.local` is true when the arc's need is available at the
+character's own place (no journey, they are treated as already arrived; audit F2, 2026-10-17), and the
+`arrived_empty` stage is the one `scene: "solo"`: the driver dispatches the enacter with only that
+character, as a reflection.
 
 Writes `.simulate_pass_brief.json` at the worktree root (same location as .simulate_snapshot.json) -
 `/enact`'s own Step 5b reads it back to write the scene and resolve the two judgment slots above;
