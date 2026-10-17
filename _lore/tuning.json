@@ -58,14 +58,14 @@
     "quality_scale": 0.25
   },
   "survival": {
-    "_comment": "Design session 2026-08-28: whether a character spends a pass working or pursuing their arc, and what that costs them and their location's shared provisions pool. Earlier history (energy_cap 5->10->20, upkeep_rate_per_capita 0.5->0.15, the 2026-08-31 split of eating from the choice) is in git. Economy rewrite 2026-10-17 (TODO.md, 'Economy rewrite'): the old `survive` choice is `work`, and work pays the worker: `work_personal` (2) to the character's own provisions, `work_pool` (1) to the location's pool (the old `survive_contribute`, 3, retired). Eating is universal, every pass, independent of the choice: `eat_amount` (2) units, half from the character's provisions and half from the pool, a shortfall on one side filled from the other, a half meal if both together fall short (energy +1 per unit eaten). `arc` costs `arc_extra_cost` extra energy and pays nothing. Upkeep stays flat per capita. See economy_rules.py (the pure rule) and apply_survival.py.",
+    "_comment": "Design session 2026-08-28: whether a character spends a pass working or pursuing their arc, and what that costs them and their location's shared provisions pool. Earlier history (energy_cap 5->10->20, upkeep_rate_per_capita 0.5->0.15, the 2026-08-31 split of eating from the choice) is in git. Economy rewrite 2026-10-17 (TODO.md, 'Economy rewrite'): the old `survive` choice is `work`, and work pays the worker: `work_personal` (2) to the character's own provisions, `work_pool` (1) to the location's pool (the old `survive_contribute`, 3, retired). Eating is universal, every pass, independent of the choice: `eat_amount` (2) units, half from the character's provisions and half from the pool, a shortfall on one side filled from the other, a half meal if both together fall short (energy +1 per unit eaten). `arc` costs `arc_extra_cost` extra energy and pays nothing. Upkeep stays flat per capita. See economy_rules.py (the pure rule) and apply_survival.py. ADOPTED 2026-10-17, author to review later: work_pool 4 (was 1), work_personal 3 (was 2), upkeep_rate_per_capita 0.05 (was 0.15), the proposal scripts/test/balance_economy.py found stable at N = 6, 12, 25 (OPEN_QUESTIONS.md had it as not adopted). Everything else in this block as it was.",
     "energy_cap": 20,
     "base_cost": 1,
     "arc_extra_cost": 1,
-    "work_personal": 2,
-    "work_pool": 1,
+    "work_personal": 3,
+    "work_pool": 4,
     "eat_amount": 2,
-    "upkeep_rate_per_capita": 0.15,
+    "upkeep_rate_per_capita": 0.05,
     "provides_provisions_threshold": 2,
     "starting_provisions_per_capita": 2,
     "odds_percent": {"arc_base": 50, "min": 2, "max": 95},
