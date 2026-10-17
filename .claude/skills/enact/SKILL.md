@@ -214,7 +214,7 @@ per-pass rewrite — see TODO.md's and CHRONICLE.md's matching entries).
 This one call runs, in order: **survival** (`roll_survival.py`, one roll against p1's own home
 `location` — work (which pays: +2 to p1's own provisions, +1 to the local pool) or pursue their
 arc (extra personal energy cost, pays nothing); eating, from p1's provisions and the pool, happens every
-pass either way — see `TODO.md`'s "Economy rewrite" entry for the rules). On **work**, p1 rolls their own routine, it's applied at that location, and the
+pass either way, and the second participant of a pair scene eats at the scene's location too (no pay, no arc cost) and can starve — see `TODO.md`'s "Economy rewrite" entry for the rules; the roll also reads the character's `temperament` traits and recent observations, see `temperament.py`). On **work**, p1 rolls their own routine, it's applied at that location, and the
 pass ends right there — no second participant, ever. On **arc**, the mechanics first check whether
 the need is satisfiable at p1's own current location (a plain `_lore/contexts.json` `provides` lookup
 against p1's own routines, favored but not forced when it matches); if not, p1 pathfinds

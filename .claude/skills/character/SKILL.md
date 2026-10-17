@@ -379,6 +379,16 @@ Update (or create) `_lore/characters/<slug>.json`:
   `deceased` starts `false` and is only ever set by `/enact`. **The span does not go here** — it goes
   in `_lore/characters/lifespans.json` (Step 5).
 
+**`temperament`** — `{risk, thrift, communality, persistence}`, each a number in [-1, 1], 0 neutral (a missing
+field reads 0, so older characters are neutral). It is the only one of the below that this skill MAY author, when
+the user gives the character a disposition: risk (bold + / cautious -), thrift (thrifty + / free with money -),
+communality (communal + / self-reliant -), persistence (persistent + / restless -). Otherwise leave it: children
+get the parents' mean plus noise (`generate_offspring.py`), a `/generate` cast gets a seeded random draw, and
+`scripts/lore/assign_temperament.py --root <root> [--key k --set risk=0.6] --apply` (dry run by default) does it
+for an existing population. It scales the work-or-arc roll and the payment odds (`temperament.py`, `tuning.json`
+`temperament`) and the enacter sees it as a few words. Not the deferred "temperament" of Step 6 (reinterpret or
+break), which is still unbuilt and which these traits do not feed.
+
 **Fields this skill never authors, present in `_template.json` only to document the full shape:**
 `energy` (personal resource, `_lore/tuning.json`'s `survival.energy_cap` — lazily defaulted
 on first touch by `apply_survival.py`/`roll_survival.py`, template shows the cap value rather than

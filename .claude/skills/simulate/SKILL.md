@@ -266,7 +266,13 @@ For pass 1 through N:
    location's pool (a shortfall on one side is filled from the other; if both fall short it is a half
    meal, energy +1 per unit actually eaten); then, on work, +2 to `p1`'s own provisions and +1 to the
    pool, on arc, -1 extra energy and nothing paid. Upkeep drains the pool flat per head
-   (`apply_upkeep.py`). Paying for an arc is paid out of the same food you eat. Knobs: `_lore/tuning.json`
+   (`apply_upkeep.py`). Paying for an arc is paid out of the same food you eat. The second participant of a
+   pair scene eats too (`apply_survival.py --choice eat`: base cost and the meal at the scene's location, no pay,
+   no arc cost, no second upkeep) and can starve: `survival.<p2>.died` goes through `record_death.py` like p1's.
+   **Temperament** (`temperament` on the character, `temperament.py`): the work-or-arc odds read four traits and a
+   window of the character's own `recent` observations; the payment gate adds a thrift hesitation; a failed
+   pursuit remembers its destination for the persistent. Knobs: `tuning.json` `temperament` (global, no per-town
+   overrides); `balance_economy.py --traits-report`; `assign_temperament.py` for an existing cast. Knobs: `_lore/tuning.json`
    `survival`; `scripts/test/balance_economy.py` runs them. On arc, it checks whether the need is satisfiable where `p1` lives and, if not,
    **draws a destination with dice** (`location_context.destination_options()`: places where someone in
    `p1`'s own circle supplies the need are skewed up, other places that provide it are weighted by how
