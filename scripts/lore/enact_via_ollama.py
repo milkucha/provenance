@@ -15,6 +15,12 @@ the exact reply schema and the writing rules sent alongside it.
 The fixed instruction preamble (scripts/lore/enact_preamble.md) is read fresh each call, never
 inlined here - so editing the writing rules never means editing this script.
 
+A brief with ONE entry under `characters` is a REFLECTION scene (2026-10-17: the pursuit stage
+arrived_empty, a character alone at a place): the same reply shape, with that character as the only
+speaker, the only entry under `participants`, and `claims` free to be empty. validate_reply() enforces the
+one-speaker and one-participant parts; the schema itself is unchanged, and `criterion_move` stays
+available exactly as before (only when a director's note flags the anchor as live; nothing widened).
+
 Usage:
     py scripts/lore/enact_via_ollama.py --brief-file .simulate_pass_brief_combined.json
     py scripts/lore/enact_via_ollama.py --brief-file brief.json --director-note "..." --out reply.json
@@ -206,6 +212,14 @@ def validate_reply(reply: dict, expected_slugs: list, brief: dict) -> list:
             problems.append("a scene turn has an empty line")
         if "*" in turn.get("line", ""):
             problems.append(f"possible stage direction (asterisk) in a line: {turn['line'][:60]!r}")
+    if len(expected_slugs) == 1:
+        # A reflection: every line is the one character's. The speaker label is their name (or slug).
+        only = expected_slugs[0]
+        allowed = {only.lower(), str(((brief.get("characters") or {}).get(only) or {}).get("name", only)).lower()}
+        for turn in reply.get("scene", []):
+            if str(turn.get("speaker", "")).strip().lower() not in allowed:
+                problems.append(f"a reflection has one speaker, {sorted(allowed)}; got {turn.get('speaker')!r}")
+                break
     participants = reply.get("participants", {})
     missing = [s for s in expected_slugs if s not in participants]
     extra = [s for s in participants if s not in expected_slugs]

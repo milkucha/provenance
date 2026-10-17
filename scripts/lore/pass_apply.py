@@ -59,8 +59,13 @@ normally 1, once per scene, same as /enact Step 8 point 5 always requires).
 Prints one combined JSON block: per participant {deceased, cause, band_after, ending, notified_circle,
 shock_candidates}, plus reproduction's own result, plus any death-legacy application.
 
+A REFLECTION scene (2026-10-17: arrived_empty, one character alone) has no `--p2`: the decisions
+payload names one participant, everything above runs for that one, and reproduction is skipped (no
+partner, so `reproduction_raw` is empty).
+
 Usage:
     py scripts/lore/pass_apply.py --json-file decisions.json --p1 khaoe --p2 farlis --pass-number 12
+    py scripts/lore/pass_apply.py --json-file decisions.json --p1 khaoe --pass-number 12      # a reflection
 """
 
 import argparse
@@ -208,33 +213,37 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--json-file", required=True)
     parser.add_argument("--p1", required=True)
-    parser.add_argument("--p2", required=True)
+    parser.add_argument("--p2", default=None, help="Omit for a reflection scene (one participant)")
     parser.add_argument("--pass-number", type=int, required=True)
     parser.add_argument("--scene-id", default=None, help="This pass's scene id (pass_record.py's hearsay_id) - threaded into update_character.py's --scene-id/--pass-number so knowledge.experience entries carry produced_by (measure_derivation.py's provenance-coverage instrument reads this). Optional; omitting it reproduces today's exact untagged output.")
     args = parser.parse_args()
 
-    p1, p2 = args.p1.lower(), args.p2.lower()
+    p1, p2 = args.p1.lower(), (args.p2.lower() if args.p2 else None)
+    slugs = [p1] + ([p2] if p2 else [])
     payload = json.loads(Path(args.json_file).read_text(encoding="utf-8"))
     participants = payload.get("participants", {})
 
     report = {"participants": {}}
-    for slug in (p1, p2):
+    for slug in slugs:
         report["participants"][slug] = apply_participant(
             slug, participants.get(slug, {"lived_delta": 1}), args.scene_id, args.pass_number,
         )
 
     # Knowledge changed for both: the circle writer re-reads it and adds whoever it now refers to
     # (mentioned). One call for both, not deterministic-draw work: no dice in it.
-    run([str(SCRIPTS_DIR / "update_social_circle.py"), "mentions", p1, p2])
+    run([str(SCRIPTS_DIR / "update_social_circle.py"), "mentions", *slugs])
 
-    _, repro_out, _ = run([
-        str(SCRIPTS_DIR / "simulate_pass_reproduction.py"),
-        "--p1", p1, "--p2", p2, "--pass-number", str(args.pass_number),
-    ])
+    if p2:
+        _, repro_out, _ = run([
+            str(SCRIPTS_DIR / "simulate_pass_reproduction.py"),
+            "--p1", p1, "--p2", p2, "--pass-number", str(args.pass_number),
+        ])
+    else:
+        repro_out = ""  # a reflection has no partner to reproduce with
     report["reproduction_raw"] = repro_out
 
     report["death_legacy"] = []
-    for slug in (p1, p2):
+    for slug in slugs:
         r = report["participants"][slug]
         if r["deceased"] and r["band_after"] == "established" and r["notified_circle"]:
             code, roll_out, _ = run(

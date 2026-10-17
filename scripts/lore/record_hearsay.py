@@ -12,7 +12,7 @@ Input is one JSON object, via --json-file or stdin:
 
     {
       "id": "<optional explicit id - auto-generated from participants+location if omitted>",
-      "participants": ["Name1", "Name2"],
+      "participants": ["Name1", "Name2"],       (ONE name = a reflection scene: `claims` may then be [])
       "location": "free text" | {"id": null, "as_named_in_dialog": "free text"},
       "summary": "...",
       "source_file": "<optional; defaults to null - use this for a scene that has no Blabber
@@ -82,9 +82,11 @@ def build_id(participants: list, location, existing_ids: set) -> str:
     return candidate
 
 
-def validate_claims(claims: list, existing_claim_ids: set) -> None:
-    if not claims:
-        raise SystemExit("claims must be a non-empty list.")
+def validate_claims(claims: list, existing_claim_ids: set, reflection: bool = False) -> None:
+    """A reflection (one participant, a character alone with their thoughts) may leave `claims` empty:
+    a thought nobody voiced is not hearsay. Any other scene must have at least one."""
+    if not claims and not reflection:
+        raise SystemExit("claims must be a non-empty list (only a one-participant reflection may leave it empty).")
     for i, c in enumerate(claims):
         if "text" not in c or not c["text"]:
             raise SystemExit(f"claim[{i}] is missing required 'text'.")
@@ -112,7 +114,7 @@ def render_md_section(entry: dict) -> str:
     lines.append(f"- **Participants:** {'; '.join(entry['participants'])}")
     lines.append(f"- **Location:** {location_summary(entry['location'])}")
     lines.append(f"- **Summary:** {entry['summary']}")
-    lines.append("- **Claims on record:**")
+    lines.append("- **Claims on record:**" if entry["claims"] else "- **Claims on record:** none (a reflection)")
     for c in entry["claims"]:
         lines.append(f"  - {c['text']}")
         if c.get("note"):
@@ -150,7 +152,7 @@ def main() -> None:
     entries = encodings["hearsay"]["entries"]
     existing_ids = {e["id"] for e in entries}
     existing_claim_ids = {f"{e['id']}#{i}" for e in entries for i in range(1, len(e["claims"]) + 1)}
-    validate_claims(data["claims"], existing_claim_ids)
+    validate_claims(data["claims"], existing_claim_ids, reflection=len(data["participants"]) == 1)
 
     entry_id = data.get("id") or build_id(data["participants"], data["location"], existing_ids)
     if entry_id in existing_ids:

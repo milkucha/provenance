@@ -57,14 +57,19 @@ call and no scene at all.
 `motivated`. A pass the mechanics call a "pair" scene (a payment that went through, a failed payment
 with the supplier present, a supplier who wasn't there so someone else is, a person met whose
 routine had nothing to offer) goes to the enacter, with its arc outcome rolled only if the payment
-went through. A "solo" scene (arrived, nobody else there) is flagged but NOT dispatched: the whole
-scene toolchain (`enact_via_ollama.py`'s reply shape, `pass_record.py`, `pass_apply.py`) wants two
-participants, and a solo pass has always been bookkept by `apply_solo()`. Making the enacter write
-one person alone is a separate piece of work, logged in OPEN_QUESTIONS.md. Those passes still need `p1`'s own mechanical per-pass bookkeeping (lived
-delta, the energy-death check, the post-lived-delta horizon/ending check) that `pass_apply.py` would
-otherwise own - `pass_apply.py` itself still hard-requires two participants (`--p2` is `required=True`,
-and it loops `for slug in (p1, p2)` unconditionally), which doesn't fit a solo pass, and patching that
-script was out of this task's own scope. `apply_solo()` below covers that p1-only slice directly,
+went through.
+
+**Reflection scenes (2026-10-17, the author's call):** a "solo" scene (the pursuit stage `arrived_empty`:
+arrived, or already at home with the need available there, and nobody else there) IS dispatched now, with
+ONLY that character: the enacter plays them alone reflecting on where they are, in their arc and life, at
+this place (enact_preamble.md, "A reflection"). The scene file, the hearsay entry (one participant, claims
+allowed to be empty) and the experience entries are written through the same `pass_record.py` /
+`pass_apply.py` as a pair scene, which now take a one-participant call (no `--p2`, no partner crossing, no
+reproduction). It is the ONLY solo pass dispatched: an ordinary work pass, no_target and en_route still
+resolve with no model call (the author has not decided to extend it; OPEN_QUESTIONS.md has the estimated
+cost). Those passes still need `p1`'s own mechanical per-pass bookkeeping (lived delta, the energy-death
+check, the post-lived-delta horizon/ending check) that `pass_apply.py` would otherwise own.
+`apply_solo()` below covers that p1-only slice directly,
 calling the same underlying scripts (`update_character.py`/`horizon.py`/`record_death.py`) `pass_apply.py`
 already calls for exactly this purpose - see its own docstring for what it deliberately does NOT
 attempt (death-legacy's shock-candidate criterion moves, which need a judgment call this driver has no
@@ -249,11 +254,15 @@ def do_one_pass(state, pass_number):
 
     # A two-participant scene (dialogue, hearsay, judgment content) happens when the mechanics set
     # `scene: "pair"` - see simulate_pass_lib.run_pass_mechanics()'s own section docstring: a payment
-    # that went through (`motivated`), or a failed arrival the redesign turns into a scene. Everything
-    # else (work, en route, no target, an empty place - `scene` "solo" or null) resolves with no
-    # Ollama dispatch, no scene, no hearsay: only p1's own mechanical bookkeeping via apply_solo()
-    # above. p2 never had any survival/energy effect applied unless there is a pair scene.
-    if not p2 or brief["brief"].get("scene") != "pair":
+    # that went through (`motivated`), or a failed arrival the redesign turns into a scene. A reflection
+    # (`scene: "solo"`, the pursuit stage arrived_empty, no p2) is dispatched with p1 alone. Everything
+    # else (work, en route, no target - `scene` null) resolves with no Ollama dispatch, no scene, no
+    # hearsay: only p1's own mechanical bookkeeping via apply_solo() above. p2 never had any
+    # survival/energy effect applied unless there is a pair scene.
+    scene_kind = brief["brief"].get("scene")
+    reflection = (scene_kind == "solo" and not p2
+                  and (brief["brief"].get("pursuit") or {}).get("stage") == "arrived_empty")
+    if not reflection and (not p2 or scene_kind != "pair"):
         solo = apply_solo(p1, pass_number, brief["brief"])
         result = {"status": "ok", "pass": pass_number, "p1": p1, "p2": p2, "deaths": [], "births": None}
         if solo["deceased"]:
@@ -269,58 +278,65 @@ def do_one_pass(state, pass_number):
     run([SCRIPTS / "enact_via_ollama.py", "--brief-file", brief_file, "--out", reply_file])
     reply = json.loads(reply_file.read_text(encoding="utf-8"))["reply"]
 
-    names = name_from_slug_map([p1, p2])
+    who = [p1] + ([p2] if p2 else [])  # a reflection has p1 alone
+    names = name_from_slug_map(who)
 
     # Write the scene file.
     hearsay = reply["hearsay"]
-    hearsay["participants"] = [names.get(p1, p1), names.get(p2, p2)]
+    hearsay["participants"] = [names.get(x, x) for x in who]
     hearsay_file = ROOT / f".pass_{pass_number}_hearsay.json"
     hearsay_file.write_text(json.dumps(hearsay, ensure_ascii=False), encoding="utf-8")
 
-    record_args = [SCRIPTS / "pass_record.py", "--json-file", hearsay_file, "--p1", p1, "--p2", p2, "--pass-number", pass_number]
+    record_args = [SCRIPTS / "pass_record.py", "--json-file", hearsay_file, "--p1", p1, "--pass-number", pass_number]
+    if p2:
+        record_args += ["--p2", p2]
     _, out, _ = run(record_args)
     record_report = json.loads(out)
     scene_id = record_report["hearsay_id"]
 
-    slug_to_name = {p1: names.get(p1, p1), p2: names.get(p2, p2)}
+    slug_to_name = {x: names.get(x, x) for x in who}
 
     def display_speaker(raw):
         return slug_to_name.get(raw.strip().lower(), raw)
 
     scene_path = ROOT / "_npcs" / "scenes" / f"{scene_id}.md"
-    lines = [f"# {scene_id}", "", f"- **Participants:** {names.get(p1, p1)}, {names.get(p2, p2)}",
-             "- **Format:** two-npc", f"- **Location:** {hearsay.get('location', brief['brief'].get('location', ''))}",
+    lines = [f"# {scene_id}", "", f"- **Participants:** {', '.join(names.get(x, x) for x in who)}",
+             "- **Format:** " + ("reflection" if reflection else "two-npc"),
+             f"- **Location:** {hearsay.get('location', brief['brief'].get('location', ''))}",
              "", "## Transcript", ""]
     for turn in reply["scene"]:
         lines.append(f"{display_speaker(turn['speaker'])}: {turn['line']}")
         lines.append("")
+    scene_path.parent.mkdir(parents=True, exist_ok=True)
     scene_path.write_text("\n".join(lines), encoding="utf-8")
 
     # Decisions payload for pass_apply.
     decisions = {"participants": {}}
-    for slug in (p1, p2):
+    for slug in who:
         pdata = reply["participants"].get(slug, {})
         pdata.setdefault("lived_delta", 1)
         decisions["participants"][slug] = pdata
     decisions_file = ROOT / f".pass_{pass_number}_decisions.json"
     decisions_file.write_text(json.dumps(decisions, ensure_ascii=False), encoding="utf-8")
 
-    apply_args = [SCRIPTS / "pass_apply.py", "--json-file", decisions_file, "--p1", p1, "--p2", p2,
+    apply_args = [SCRIPTS / "pass_apply.py", "--json-file", decisions_file, "--p1", p1,
                   "--pass-number", pass_number, "--scene-id", scene_id]
+    if p2:
+        apply_args += ["--p2", p2]
     _, out, _ = run(apply_args)
     apply_report = json.loads(out)
 
     # Deaths.
     result = {"status": "ok", "pass": pass_number, "p1": p1, "p2": p2, "deaths": [], "births": None}
-    for slug in (p1, p2):
+    for slug in who:
         pr = apply_report["participants"][slug]
         if pr["deceased"]:
             result["deaths"].append(slug)
             if slug in state["pool"]:
                 state["pool"].remove(slug)
 
-    # Reproduction.
-    repro_lines = apply_report["reproduction_raw"].splitlines()
+    # Reproduction (a reflection has no partner, so pass_apply.py leaves it empty).
+    repro_lines = (apply_report["reproduction_raw"] or "").splitlines()
     repro = {ln.split(":", 1)[0].strip(): ln.split(":", 1)[1].strip() for ln in repro_lines if ":" in ln}
     if repro.get("reproduces") == "true":
         PENDING_PATH.write_text(json.dumps({

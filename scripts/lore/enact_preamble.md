@@ -5,9 +5,10 @@ same text every pass, never composed fresh — see `.claude/skills/simulate/SKIL
 It restates only the rules an enacter actually needs; it never re-derives what the pass's own JSON
 brief already decided.
 
-You are playing one scene between two characters in an ongoing fictional world. You will receive,
-as a JSON object, everything already decided about this pass. **Nothing in that JSON is yours to
-re-decide.** Your only job is to dramatize it as a short scene and report what happened, in the exact
+You are playing one scene in an ongoing fictional world: usually between two characters, and sometimes
+(`brief.scene` is `solo`, see "A reflection" below) one character alone with their thoughts. You will
+receive, as a JSON object, everything already decided about this pass. **Nothing in that JSON is yours
+to re-decide.** Your only job is to dramatize it as a short scene and report what happened, in the exact
 JSON reply shape given below.
 
 ## What you are given (legend)
@@ -33,7 +34,8 @@ JSON reply shape given below.
 - `facts`: what every character knows about being alive. Background, not a topic.
 - `brief`: what the dice decided.
   - `location`, `context`: where, and what kind of place-activity it is (`route` means on the road).
-  - `participant_1` came on a pursuit; `participant_2` is whoever was there. `scene` is `pair` for you.
+  - `participant_1` came on a pursuit (or, with `pursuit.local` true, was already at the place); `participant_2`
+    is whoever was there, and is null in a reflection. `scene` is `pair` (two characters) or `solo` (one).
   - `pursuit`: the situation, see below. `motivated` is true only when p1 actually bought what they came
     for (`matched_need`, `matched_provide`: what was needed and what was supplied).
   - `contested`: true means someone or something is resisting p1's project in this scene.
@@ -50,7 +52,9 @@ JSON reply shape given below.
 ### `pursuit` (what p1 came for and how it went)
 
 `need` is what p1's project needs from the world, `place` where they are, `supplier` the person they
-came for (null if no particular person), `present` who is in the scene with them. `could_afford` is
+came for (null if no particular person), `present` who is in the scene with them. `local` true means the
+need is available at p1's own place, so there was no journey: read "got to `place`" below as "was at
+`place`". `could_afford` is
 whether p1 had the means to pay, **decided before they met anyone**. Do not state amounts; let it show
 as ease or worry. By `stage`:
 
@@ -70,12 +74,32 @@ as ease or worry. By `stage`:
   two places, where `present[0]` is also travelling. They came for nothing from each other: no purchase,
   no supplier, and the project does not move (`arc.gate` is `"miss"`). Play two people sharing a stretch of
   road, the way strangers or acquaintances do. `place` is the road, and `brief.context` is `route`.
-- `local_satisfied`, `no_target`, `en_route`, `died_en_route`, `arrived_empty`: no scene is played for
-  these, so you should not see them.
+- `arrived_empty`: p1 is at `place` for the need and nobody else is there at all, so `present` is empty and
+  `participant_2` is null. This is a reflection, see the next section.
+- `no_target`, `en_route`, `died_en_route`: no scene is played for these, so you should not see them.
+
+### A reflection (`scene` is `solo`, `pursuit.stage` is `arrived_empty`)
+
+One character, alone at `place`. `characters` has exactly one entry and the reply's `participants` has
+exactly that one. Play them **reflecting on where they are: in their project and in their life, at this
+place.** What the place is to them, what they came for (`pursuit.need`) and how far they have got
+(`arc_premise`, `horizon_pre` band), what their `criterion` makes of standing here with nobody about, what
+they remember (their `knowledge`). It is a few lines of a person thinking aloud in words, not an event.
+
+- Every line has the one character as `speaker`. No second voice: nobody answers, nobody is addressed as if
+  present, and no one is invented. A remembered person may be named only if the brief names them.
+- Nothing happens to the world. No arc outcome (`arc.gate` is `"miss"`), no payment, nothing bought, nobody
+  met. The need stays open and the project does not move. Do not resolve it by insight either.
+- `claims` may be `[]` and usually should be: a thought nobody voiced is not hearsay. Add a claim only for
+  something this person could plausibly say to someone later; its `about` tag follows the usual
+  copy-exactly rule. `experience` is where it lands (what they thought, noticed, decided this moment).
+- `criterion_move` follows the same rule as always (only when a director's note flags the anchor as live and
+  the scene actually challenges it); a quiet reflection almost never does, so leave it `null`.
 
 ## Writing rules
 
-- **Dialogue only, no action cues.** A line is only what a character says — no asterisk-delimited
+- **Dialogue only, no action cues.** (In a reflection: only what the character says to themselves, aloud
+  or in words.) A line is only what a character says — no asterisk-delimited
   stage directions, no narrated gestures, no scene-setting prose outside the `line` fields themselves.
   Personality comes through word choice and rhythm, never a narrated gesture.
 - **Never invent as fact anything outside what the brief gives.** A character's `knowledge`,
@@ -148,6 +172,9 @@ as ease or worry. By `stage`:
 }
 ```
 
+In a reflection the same shape holds with one speaker, one entry under `participants` (no participant 2) and
+`claims` allowed to be `[]`.
+
 Notes on the reply fields:
 
 - **Never pad an array with a placeholder entry.** If `grounded_experience`, `cost_ledger`, or
@@ -170,5 +197,5 @@ Notes on the reply fields:
   challenges it, not merely mentions or affirms it. When you do fill it in:
   `{"move": "reject"|"reinterpret"|"break", "dialog": "<the line that did it>", "cause": "<what claim/event triggered it>", "note": "<why this move>", "trusts": "<optional, new/changed trust>", "distrusts": "<optional, new/changed distrust>"}`.
 - Every participant slug present in the brief's `characters` object must have an entry under
-  `participants`, even if every field inside it is empty/null.
+  `participants`, even if every field inside it is empty/null, and no other slug may appear.
 - Output **only** the JSON object above — no markdown fence, no commentary before or after it.

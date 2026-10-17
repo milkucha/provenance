@@ -27,8 +27,13 @@ check_anchor_reference.py / check_resonance.py stdout (still text, not reparsed 
 clearly and the model needs to make judgment calls from prose, not from a rigid schema this script
 would have to reverse-engineer their own output to build).
 
+A REFLECTION scene (2026-10-17: arrived_empty, one character alone at a place) has no `--p2`: the
+hearsay payload then names one participant and may carry no claims, and the anchor-reference and
+resonance checks run for that one character only (and not at all with no claims: they read claims).
+
 Usage:
     py scripts/lore/pass_record.py --json-file hearsay.json --p1 khaoe --p2 farlis --pass-number 12
+    py scripts/lore/pass_record.py --json-file hearsay.json --p1 khaoe --pass-number 12      # a reflection
     py scripts/lore/pass_record.py --json-file hearsay.json --p1 khaoe --p2 farlis --pass-number 12 \\
         --arc-authoring-json arc.json --contested-hinder-json hinder.json
 """
@@ -53,13 +58,14 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--json-file", required=True, help="Hearsay payload, exact shape record_hearsay.py expects")
     parser.add_argument("--p1", required=True)
-    parser.add_argument("--p2", required=True)
+    parser.add_argument("--p2", default=None, help="Omit for a reflection scene (one participant)")
     parser.add_argument("--pass-number", type=int, required=True)
     parser.add_argument("--arc-authoring-json", default=None)
     parser.add_argument("--contested-hinder-json", default=None)
     args = parser.parse_args()
 
-    p1, p2 = args.p1.lower(), args.p2.lower()
+    p1, p2 = args.p1.lower(), (args.p2.lower() if args.p2 else None)
+    slugs = [p1] + ([p2] if p2 else [])
     report = {}
 
     if args.arc_authoring_json:
@@ -87,14 +93,12 @@ def main() -> None:
     entry_id = next(line.split(":", 1)[1].strip() for line in hearsay_out.splitlines() if line.startswith("id:"))
     report["hearsay_id"] = entry_id
 
-    report["anchor_reference"] = {
-        p1: run([str(SCRIPTS_DIR / "check_anchor_reference.py"), p1, "--hearsay-id", entry_id]),
-        p2: run([str(SCRIPTS_DIR / "check_anchor_reference.py"), p2, "--hearsay-id", entry_id]),
-    }
-    report["resonance"] = {
-        p1: run([str(SCRIPTS_DIR / "check_resonance.py"), p1, "--hearsay-id", entry_id]),
-        p2: run([str(SCRIPTS_DIR / "check_resonance.py"), p2, "--hearsay-id", entry_id]),
-    }
+    if json.loads(Path(args.json_file).read_text(encoding="utf-8")).get("claims"):
+        report["anchor_reference"] = {s: run([str(SCRIPTS_DIR / "check_anchor_reference.py"), s, "--hearsay-id", entry_id]) for s in slugs}
+        report["resonance"] = {s: run([str(SCRIPTS_DIR / "check_resonance.py"), s, "--hearsay-id", entry_id]) for s in slugs}
+    else:  # a reflection with no claims: both checks read an entry's claims, there is nothing for them to read
+        report["anchor_reference"] = {s: "no claims in this scene, nothing to check\n" for s in slugs}
+        report["resonance"] = {s: "no claims in this scene, nothing to check\n" for s in slugs}
 
     print(json.dumps(report, indent=2, ensure_ascii=False))
 
