@@ -264,16 +264,20 @@ For pass 1 through N:
    the trip is kept). **The economy**, every pass for `p1` (`apply_survival.py`, the pure rule in
    `economy_rules.py`): -1 energy; then eat 2 units, one from `p1`'s own `provisions` and one from the
    location's pool (a shortfall on one side is filled from the other; if both fall short it is a half
-   meal, energy +1 per unit actually eaten); then, on work, +2 to `p1`'s own provisions and +1 to the
-   pool, on arc, -1 extra energy and nothing paid. Upkeep drains the pool flat per head
+   meal, energy +1 per unit actually eaten); then, on work, +3 to `p1`'s own provisions and +4 to the
+   pool (the economy adopted 2026-10-17, author to review), on arc, -1 extra energy and nothing paid. Upkeep drains the pool flat per head
    (`apply_upkeep.py`). Paying for an arc is paid out of the same food you eat. The second participant of a
    pair scene eats too (`apply_survival.py --choice eat`: base cost and the meal at the scene's location, no pay,
    no arc cost, no second upkeep) and can starve: `survival.<p2>.died` goes through `record_death.py` like p1's.
    **Temperament** (`temperament` on the character, `temperament.py`): the work-or-arc odds read four traits and a
    window of the character's own `recent` observations; the payment gate adds a thrift hesitation; a failed
    pursuit remembers its destination for the persistent. Knobs: `tuning.json` `temperament` (global, no per-town
-   overrides); `balance_economy.py --traits-report`; `assign_temperament.py` for an existing cast. Knobs: `_lore/tuning.json`
-   `survival`; `scripts/test/balance_economy.py` runs them. On arc, it checks whether the need is satisfiable where `p1` lives and, if not,
+   overrides); `balance_economy.py --traits-report`; `assign_temperament.py` for an existing cast. Everybody has a
+   temperament (no neutrals, 2026-10-17): a cast without is drawn at the start of `/generate`, children get the
+   parents' mean plus noise, `/character` authors or draws it. Knobs: `_lore/tuning.json`
+   `survival`; `scripts/test/balance_economy.py` runs them. On arc, it checks whether the need is available where `p1` lives
+   (a place of their own routines that provides it): if so they count as **already arrived** (`pursuit.local` true, no journey,
+   no destination draw) and the pass goes straight on to who is about, below, exactly as an arrival would; if not it
    **draws a destination with dice** (`location_context.destination_options()`: places where someone in
    `p1`'s own circle supplies the need are skewed up, other places that provide it are weighted by how
    few connections away they are; knobs in `_lore/tuning.json` `pursuit`; the draw is logged as
@@ -287,8 +291,9 @@ For pass 1 through N:
    step lands on, the pass is a scene with one of them, drawn uniformly (`pursuit_bystander`, stage
    `met_on_road`): no purchase, no arc outcome, the journey goes on. With nobody there it is a plain
    no-scene step. A failure
-   at arrival starts the process over with a new draw. Once arrived, nobody living there means a solo
-   scene; otherwise a `roll_meetable.py` roll decides whether the person `p1` came for is there
+   at arrival starts the process over with a new draw. Once arrived (or already there, when the need is available at home),
+   nobody living there means a **reflection**: a `"solo"` scene, the one character alone at that place
+   (`arrived_empty`), dispatched to the enacter with only them in it (below); otherwise a `roll_meetable.py` roll decides whether the person `p1` came for is there
    (skewed toward a known supplier). If not, the scene is with someone else who is there
    (`pursuit_bystander` draw, uniform over living residents), no purchase, no arc outcome. If the
    supplier is there they roll their OWN routine, which may still not supply the need (a scene with
@@ -296,11 +301,13 @@ For pass 1 through N:
    tuning-configured cost): **a failed payment is a scene with the supplier and no arc outcome is
    rolled**; only success proceeds into the unchanged `roll_contested`/`check_arc_alignment`/
    `roll_arc_outcome`/`record_bond_quality` chain. Every exit of the pursuit branch sets
-   `brief.pursuit` = `{stage, reason, need, place, supplier, present, could_afford}`, with `stage` one
-   of `local_satisfied`, `no_target`, `en_route`, `met_on_road`, `arrived_nobody`, `arrived_empty`,
+   `brief.pursuit` = `{stage, reason, need, place, supplier, present, could_afford, local}`, with `stage` one
+   of `no_target`, `en_route`, `met_on_road`, `arrived_nobody`, `arrived_empty`,
    `met_mismatch`, `met_cannot_pay`, `met_paid`, `died_en_route` (`simulate_pass_lib.PURSUIT_STAGES`; `could_afford` is
    computed before any meeting), and `brief.scene` says what to do with the pass: `"pair"`
-   (dispatch the enacter), `"solo"` or null (no dispatch). The dead are never met and never make a
+   (dispatch the enacter), `"solo"` (the `arrived_empty` reflection: dispatch the enacter with only that
+   character) or null (no dispatch). `local` is the "need is available here" marker; the old stage `local_satisfied`
+   is gone (it used to end the pass with nothing happening). The dead are never met and never make a
    place provide anything.
    `p1` is definitionally the lead throughout; there's no symmetric primacy coin flip any more
    (`roll_home_visit.py`/`roll_arc_primacy.py` no longer exist). Prints the pre-scene horizon
@@ -328,16 +335,18 @@ For pass 1 through N:
    further to do for any of it (mechanical, not a judgment call — the arc's own already-authored
    `premise` is what got filed). `brief.arc_completion` carries the numbers for the orchestrator;
    the enacter is told to ignore it.
-   **A pass whose brief has `scene` other than `"pair"` (a solo work pass, an en-route travel pass, no
-   target, or an empty place; a `"solo"` scene is flagged but not dispatched, see OPEN_QUESTIONS.md)
-   never reaches a dialogue scene at all** — skip point 4's dispatch and point 5's
+   **A pass whose brief has `scene` null (a work pass, an en-route travel pass, no target) never reaches
+   a scene at all** — a `"solo"` scene is the one exception, a reflection (the author's call 2026-10-17):
+   dispatch the enacter with only `p1` (point 4), then call `pass_record.py` and `pass_apply.py` with no `--p2`
+   (a one-participant hearsay entry, claims allowed to be empty; no partner crossing, no reproduction). Extending
+   reflection to ordinary work passes or the other solo passes is NOT decided (OPEN_QUESTIONS.md). For the rest, skip point 4's dispatch and point 5's
    `pass_record.py`/`pass_apply.py` calls entirely for that pass; only the mechanical prep above (and,
    for `p1`, its own lived-delta/death/horizon bookkeeping) applies. See `simulate_driver.py`'s own
    `apply_solo()` for exactly what that bookkeeping covers on the Local/driver path — the same
    bookkeeping applies here even when running the manual per-pass sequence instead of the driver.
-4. **Dispatch the enacter — only for a pass that actually reached a genuine two-participant scene**
+4. **Dispatch the enacter — only for a pass that actually reached a scene**
    (the brief's own `scene: "pair"`, per point 3 above: a payment that went through, or a failed
-   arrival turned into a scene; `motivated` is true only for the former, and `arc.gate`/`outcome` are
+   arrival turned into a scene; or `scene: "solo"`, the one-character reflection; `motivated` is true only for the former, and `arc.gate`/`outcome` are
    only ever set then). How depends on Step 1's model choice —
    either way this is the ONE dispatch per pass, it does no tool-calling of its own, and it never sees
    anything beyond point 3's JSON plus, when relevant, a short director's note (below).

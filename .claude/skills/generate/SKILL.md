@@ -36,6 +36,12 @@ request suggests a reproducible/comparable run (the isolation experiment, a dive
 Default: none (free/unseeded, today's exact behavior). See `TESTING_BRIEF.md` (vault-side
 `projects/provenance/`).
 
+**Temperament (2026-10-17, no neutrals):** any starting character in `--pool` with no `temperament` is drawn one
+(seeded uniform per trait, `temperament_draw` in the draw audit) at the start of the run, always.
+`--keep-neutral` is a no-op now (accepted so an old command line still runs, it only prints a note). Children get
+the parents' mean plus noise. Births use `check_and_roll`, which does not roll for a pair whose scene is on a
+road, and a child born after a parent's arc completion has that completion tale in its education.
+
 ## Step 2 — Create the worktree
 
 Identical to `.claude/skills/simulate/SKILL.md`'s own Step 2, unchanged. Still worth doing even

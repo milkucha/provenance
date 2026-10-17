@@ -474,34 +474,41 @@ and `/enact` still never touches either registry or `data/`. `/embody` and `/spa
     orchestrating session does every mechanical step itself, directly, script by script — drawing the first
     participant (`pick_pair.py`: one uniform draw; a second participant, if any, is discovered during
     the pass, and a pass that is only a work roll, a step along the road or a dead end is recorded
-    mechanically and gets no scene), the
+    mechanically and gets no scene; the one exception is a character alone at a place with nobody else in it, which
+    gets a reflection, see below), the
     pre-scene mechanical block (`pass_prep.py`: the work-or-arc roll, the routine/location roll or
-    a weighted dice draw of where to go for the arc's need (people the character knows skewed up,
+    a weighted dice draw of where to go for the arc's need, unless the need is available at the character's own
+    place, in which case they count as already arrived there, no journey, and the pass goes on to who is about
+    (people the character knows skewed up,
     nearer places heavier, counted in connections), kept across passes until they arrive; the walk goes one
     node per pass and every connection has a road node in the middle (a road has no provisions pool, so a
     traveller eats from their own provisions and can starve on the way; if another traveller is on the same
     road the pass is a scene with them, `met_on_road`, nothing bought and no arc outcome rolled); at arrival the missed-connection
     roll, and a failed arrival (the supplier isn't there, the routine has nothing to offer, the
-    payment fails) is itself a scene with whoever is present, or a solo scene in an empty place, with
-    no arc outcome rolled; the payment gate, and only when it passes the contested/arc
+    payment fails) is itself a scene with whoever is present, or, in a place with nobody else in it
+    (`arrived_empty`), a reflection: the one character alone, reflecting on where they are, in their arc and life,
+    at this place, dispatched to the enacter with only them in it (no second speaker, no payment, no arc outcome,
+    no partner and no reproduction; hearsay claims allowed but usually none). Only that case: an ordinary work
+    pass is still no model call. A failed arrival carries no arc outcome either; the payment gate, and only when it passes the contested/arc
     gate/outcome rolls against `_lore/contexts.json`, tallied toward
     advance/stall/reverse/transform/resolve, plus the pass's economy: upkeep on the pool, then for `p1` a meal
     (one unit from their own provisions, one from the location's pool, a half meal if the two together
-    fall short, `economy_rules.py`), then work pays them 2 provisions and the pool 1, while an arc costs an
+    fall short, `economy_rules.py`), then work pays them 3 provisions and the pool 4 (the economy adopted 2026-10-17, upkeep 0.05 per head per pass; the author reviews it later), while an arc costs an
     extra point of energy and pays nothing; the second participant of a pair scene eats too (base cost and the
     meal at the scene's location, nothing earned, no arc cost, no second upkeep) and can starve, through the
     same death path; `scripts/test/balance_economy.py` runs these numbers on a toy town). **Temperament:** a
-    character carries `temperament` {risk, thrift, communality, persistence}, each in [-1, 1] (missing = 0, neutral,
-    the roll as it was). Risk moves the reserve wanted before pursuing (margin in meals, cautious about 5, bold 0)
-    and how loudly low energy and a falling pool or purse speak; communality scales the affinity-obligation term
+    character carries `temperament` {risk, thrift, communality, persistence}, each in [-1, 1]; everybody has one,
+    nobody is neutral (a character from old data with no field reads 0, so nothing crashes). Risk moves the reserve
+    wanted before pursuing (arc cost plus a margin of meals running straight from 0, bold, to 5, cautious; the
+    personal cushion in the work-or-arc roll is computed against that reserve) and how loudly low energy and a falling pool or purse speak; communality scales the affinity-obligation term
     only (leaning on the pool is not scaled); persistence adds to arc pressure and makes a failed pursuit retry the
-    same destination (the restless redraw); thrift adds a soft hesitation to the payment odds below a keep-level
-    (saver 3 meals, spender 0), the hard affordability gate unchanged. A character also keeps `recent`, its last
+    same destination (the restless redraw); thrift adds a soft hesitation to the payment odds for each meal that paying leaves them under a keep-level
+    (saver 3 meals, spender 0, not relative to anyone), the hard affordability gate unchanged. A character also keeps `recent`, its last
     few own observations (pool per head at home, own provisions, energy), and the roll reads the rates of change:
     declines push toward work, a rise pulls only the bold; the pool window follows risk (bold 2 observations,
     cautious 8) and the purse window follows thrift (spender 2, saver 8), each at most what exists. Traits are the
-    parents' mean plus seeded noise at birth, a seeded uniform draw for a starting cast with none
-    (`simulate_generate_population.py`), authored in `/character`, or assigned to an existing population with
+    parents' mean plus seeded noise at birth, a seeded uniform draw for any starting character with none
+    (`simulate_generate_population.py`, always; its `--keep-neutral` flag is a no-op now), authored or drawn in `/character`, or assigned to an existing population with
     `assign_temperament.py` (dry run unless `--apply`, `--root` required); the enacter sees a few words ("bold,
     thrifty"). Every knob is global, in `tuning.json` `temperament`. Every way the pursuit can end
     is named in the brief (`pursuit.stage` and `reason`, with `could_afford` decided before the
@@ -647,12 +654,13 @@ Provenance/
 │   │   │                               stored social_circle, {key: kind}; backfill_social_circle.py
 │   │   │                               does the same for a world that predates it, dry-run by default)
 │   │   ├── arc_completion.py          (a completed arc: filed as a tale, told like a death, handed
-│   │   │                               to the living children's knowledge, paid in provisions)
+│   │   │                               to the living children's knowledge and to children born later, paid in provisions)
 │   │   ├── temperament.py             (the four traits, the window of recent observations and the
 │   │   │                               pure helpers the roll, the payment gate and the birth draw share;
 │   │   │                               assign_temperament.py gives an existing cast one, dry run by default)
-│   │   ├── estate.py                  (at death, a character's provisions go to their living
-│   │   │                               children in equal shares, else into the local pool)
+│   │   ├── estate.py                  (at death, half of a character's provisions (the bequest tax) go
+│   │   │                               to the pool of the place they died in, the rest to their living
+│   │   │                               children in equal shares; with none, all of it to that pool)
 │   │   ├── enact_via_ollama.py        (/simulate's Local dispatch path — a locally-hosted Ollama
 │   │   │                               model plays one pass's scene, no Agent tool involved)
 │   │   ├── enact_preamble.md          (the fixed writing-rules preamble enact_via_ollama.py reads
@@ -761,7 +769,7 @@ string values, which parse fine either way. Anything named `_shared` is called d
 
 **Death and its circle** — a character's death isn't announced to the world, it propagates in two tiers. `scripts/lore/notify_death.py` computes who hears directly, in two parts: their *relations* (parents, children, partners) are always notified, and of the rest of their *circle* (everyone they've shared a recorded scene with, everyone named in their own backstory, and everyone in their stored `social_circle` who knows them) it mechanically notifies a share (`notification.extended_share` in `_lore/tuning.json`, 30%, rounded, at least one) immediately — a forced `knowledge.experience` entry, no attribution needed. Anyone notified whose `criterion.anchor` referenced the deceased gets that resolved as a shock, same reject/reinterpret/break machinery as any other (`/enact` Step 8 point 6). Everyone outside the circle only finds out the ordinary way: the death is recorded as a `_lore/tales/` entry (see `/tell`), which re-enters the normal sampling pool at ordinary odds, or they hear it from someone in the circle later, subject to the same `lineage_coin.py` traceable/untraceable rule as any retelling.
 
-**Class through inheritance** — class is not a stored attribute, it falls out of three capitals each handed down at its own moment. *Economic*: when a character dies, by any cause, their personal provisions are split equally among their living children, or go to the pool of the place they died in if there are none (`scripts/lore/estate.py`, called by `record_death.py`, which every death path already goes through). *Social*: at birth the child's `social_circle` is seeded with the parents and a seeded 30% of each parent's circle (`social_circle.inherit_share`). `social_circle` is a stored map `{character key: kind}` with one writer (`scripts/lore/update_social_circle.py`); the kinds are `parent`, `child`, `descendant`, `met` (shared a scene), `inherited` and `mentioned` (referenced in the character's knowledge), strongest first, a person keeping the strongest they qualify for. *Cultural*: when a character completes an arc (`scripts/lore/arc_completion.py`) it is already a tale; now it is also told, to the relations for certain and to a share of the wider circle, through the same mechanism and the same odds as a death, and every living child gets the tale in their `knowledge.education`. The completer is also paid provisions, `clamp(base + per_turn x turns, min, max)` (`arc_completion_reward` in `_lore/tuning.json`), where `turns` is their own turns on that arc (`arc.turns`, one per pass in which they were drawn); the bonus is part of their own provisions and so inherited like the rest. `scripts/test/balance_economy.py --gens` models generations to check that none of this concentrates wealth.
+**Class through inheritance** — class is not a stored attribute, it falls out of three capitals each handed down at its own moment. *Economic*: when a character dies, by any cause, half of their personal provisions (`estate.bequest_tax`, 0.5) go to the provisions pool of the place they died in and the other half is split equally among their living children; with none, all of it goes to that pool (`scripts/lore/estate.py`, called by `record_death.py`, which every death path already goes through). *Social*: at birth the child's `social_circle` is seeded with the parents and a seeded 30% of each parent's circle (`social_circle.inherit_share`). `social_circle` is a stored map `{character key: kind}` with one writer (`scripts/lore/update_social_circle.py`); the kinds are `parent`, `child`, `descendant`, `met` (shared a scene), `inherited` and `mentioned` (referenced in the character's knowledge), strongest first, a person keeping the strongest they qualify for. *Cultural*: when a character completes an arc (`scripts/lore/arc_completion.py`) it is already a tale; now it is also told, to the relations for certain and to a share of the wider circle, through the same mechanism and the same odds as a death, and every living child gets the tale in their `knowledge.education`; a child born after the completion gets its parents' completion tales too, guaranteed (`generate_offspring.py`), and none is born on a road. The completer is also paid provisions, `clamp(base + per_turn x turns, min, max)` (`arc_completion_reward` in `_lore/tuning.json`), where `turns` is their own turns on that arc (`arc.turns`, one per pass in which they were drawn); the bonus is part of their own provisions and so inherited like the rest. `scripts/test/balance_economy.py --gens` models generations to check that none of this concentrates wealth.
 
 **Three mutability classes.** Worth holding onto, since they're easy to conflate: `knowledge.education` is **frozen** at creation, `knowledge.experience` **appends freely** every scene, and `criterion` is **sticky-but-revisable** — it changes only when a referencing shock lands on a susceptible character, and the default outcome of any given scene is no change at all.
 

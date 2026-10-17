@@ -212,16 +212,17 @@ over the course of the mechanics below, not fixed up front (design session 2026-
 per-pass rewrite — see TODO.md's and CHRONICLE.md's matching entries).
 
 This one call runs, in order: **survival** (`roll_survival.py`, one roll against p1's own home
-`location` — work (which pays: +2 to p1's own provisions, +1 to the local pool) or pursue their
+`location` — work (which pays: +3 to p1's own provisions, +4 to the local pool; adopted 2026-10-17) or pursue their
 arc (extra personal energy cost, pays nothing); eating, from p1's provisions and the pool, happens every
 pass either way, and the second participant of a pair scene eats at the scene's location too (no pay, no arc cost) and can starve — see `TODO.md`'s "Economy rewrite" entry for the rules; the roll also reads the character's `temperament` traits and recent observations, see `temperament.py`). On **work**, p1 rolls their own routine, it's applied at that location, and the
 pass ends right there — no second participant, ever. On **arc**, the mechanics first check whether
-the need is satisfiable at p1's own current location (a plain `_lore/contexts.json` `provides` lookup
-against p1's own routines, favored but not forced when it matches); if not, p1 pathfinds
+the need is available at p1's own current place (a plain `_lore/contexts.json` `provides` lookup); if so p1
+counts as already arrived there (`pursuit.local`, no journey) and the pass goes straight on to who is about; if not, p1 pathfinds
 (`location_context.py`/`travel_graph.py`) toward a location that can satisfy it, preferring a known
 supplier over general knowledge of the world — this pass either arrives (if this hop reaches the
 target) or spends the pass in transit (a `route`-context step onto the next node, roads included, mechanically
-applied, no second participant unless someone else is standing on that road: `met_on_road`). Once arrived (locally or via travel), a `roll_meetable.py` roll decides whether
+applied, no second participant unless someone else is standing on that road: `met_on_road`). Once arrived (locally or via travel), nobody else there at all is a reflection scene (`arrived_empty`, `scene: "solo"`: p1
+alone, the enacter given only them); otherwise a `roll_meetable.py` roll decides whether
 anyone useful is actually present — a real chance of a "missed connection" miss, skewed toward a
 known supplier when the pathfinding target was found that way. If someone is found, they become `p2`
 and roll their OWN routine independently — if that doesn't actually land them at the same place doing
@@ -527,9 +528,10 @@ py scripts/lore/record_death.py <npc_key> [--cause "<only if the scene actually 
 
 This does the entire mechanical procedure in one call: sets `life.deceased: true` on the character's
 file (a plain, non-secret fact — unlike `life.span`, nothing about death itself is hidden, and it's
-what stops a future `/enact` run from accidentally reusing them, see the Step 1 guard below); moves
-their personal `provisions` to their living children in equal shares, or into the pool of the place
-they died in if they have none (`estate.py`, printed as the `estate:` line); records
+what stops a future `/enact` run from accidentally reusing them, see the Step 1 guard below); settles
+their personal `provisions` (`estate.py`, printed as the `estate:` line): the bequest tax (`estate.bequest_tax`, half)
+into the pool of the place they died in and the rest to their living children in equal shares, or all of it
+into that pool if they have none; records
 it as an objective fact of the world in the same shape `/tell` produces (a new
 `_lore/tales/<slug>.md` file, a matching `tales.entries` manifest row in `encodings.json`, and rows
 in `_lore/tales/_authors.md`/`_index.md`) — this is what makes death re-enter the ordinary sampling
@@ -611,14 +613,15 @@ py scripts/lore/simulate_pass_reproduction.py --p1 <slug> --p2 <slug> --pass-num
 Checks eligibility first (plain arithmetic, no roll needed for this part): either direction's
 partner count `>= partner_threshold` (5, `_lore/tuning.json`), neither parent within
 `parent_cooldown_passes` (10) of their last birth, the pair not already related (parent/child/
-ancestor at any depth, or full/half siblings — cousins are deliberately still allowed). Only when
+ancestor at any depth, or full/half siblings — cousins are deliberately still allowed), and the scene not
+on a road (no children are born on roads; the pair can roll at their next ordinary place). Only when
 eligible does the roll itself run, at 40% odds (`odds_percent.reproduction`).
 
 On `reproduces: true`, compose the child's name — a plausible blend of both parents' names leading
 from `name_lead`'s side (the one thing about a birth that can't be scripted) — then run
 `py scripts/lore/generate_offspring.py --parent-a <slug> --parent-b <slug> --name "<composed name>" --pass-number <N>`
 — writes a `tales.entries` birth tale (`id: birth_of_<key>`) and handles knowledge inheritance in
-the same call — **also seeds the child's own `partners`/`partners_quality`** with a scaled-down
+the same call (the parents' arc-completion tales, if any, are always in the child's education) — **also seeds the child's own `partners`/`partners_quality`** with a scaled-down
 random slice of both parents' own social ties (added 2026-08-28, `inherited_relationships` in
 `_lore/tuning.json`), so a family's social circle is on the child's file from birth even before
 they've lived a single scene of their own. **Also rewrite the inherited routine's `routine_actions`
