@@ -144,8 +144,13 @@ BASE_COST = TUNING["arc_payment"]["arc_need_cost"]
 TEMP = TUNING["temperament"]
 PAY = TUNING["arc_payment"]
 RICH = {"work_pool": 6, "upkeep_rate_per_capita": 0.05, "work_personal": 3}  # a setting where the pool is a commons, for calibration only
-PROPOSAL = {"work_pool": 4, "upkeep_rate_per_capita": 0.05, "work_personal": 3}  # adopted 2026-10-17 (tuning.json), kept for the calibrate tables
-OLD = {"work_pool": 1, "upkeep_rate_per_capita": 0.15, "work_personal": 2}  # the numbers before the adoption
+PROPOSAL = {"work_pool": 4, "upkeep_rate_per_capita": 0.05, "work_personal": 3}  # adopted 2026-10-17 (the first adoption), the economy BEFORE the calibration for variation, kept for the tables
+OLD = {"work_pool": 1, "upkeep_rate_per_capita": 0.15, "work_personal": 2}  # the numbers before that adoption
+# The temperament numbers BEFORE the calibration for variation (2026-10-17, second pass): the cushion divided by the
+# 2-unit threshold (no cushion_scale_meals), the cautious margin 5 meals, persistence pressure 0.3. Everything else was and is as tuning.json.
+BEFORE_TEMP = {**TUNING["temperament"], "cushion_scale_meals": 0,
+               "risk": {**TUNING["temperament"]["risk"], "margin_meals_cautious": 5},
+               "persistence": {**TUNING["temperament"]["persistence"], "pressure_k": 0.3}}
 CORE = ["work_pool", "work_personal", "upkeep_rate_per_capita", "eat_amount", "arc_need_cost"]
 SCAN_GRID = {
     "work_pool": [0, 1, 2, 3, 5, 8],
@@ -267,8 +272,10 @@ def simulate_t(pop: int, passes: int, seed: int, params: dict, traits: str = "on
     ckpt = None
     turns = [0] * pop
     works_i = [0] * pop
+    pct_sum = [0.0] * pop
     works = arcs = can = starved = 0
     floor = ceil = rate_pin = rate_n = info = 0
+    cfloor = cceil = 0  # personal cushion term pinned at -1 / +1
     pcs, round_work, cur = [], [], [0, 0]
     round_pc = []
     for tpass in range(passes):
@@ -284,9 +291,12 @@ def simulate_t(pop: int, passes: int, seed: int, params: dict, traits: str = "on
                        traits=tr[i], recent=recent[i] if (trend and not legacy) else None, t=t, cost=cost)
         pct = out["pct"]
         turns[i] += 1
+        pct_sum[i] += 100.0 - pct
         floor += out["pool_surplus"] <= -1.0
         ceil += out["pool_surplus"] >= 1.0
         info += -1.0 < out["pool_surplus"] < 1.0
+        cfloor += out["personal_cushion"] <= -1.0
+        cceil += out["personal_cushion"] >= 1.0
         if trend and not legacy and len(recent[i]) >= 2:
             rate_n += 1
             rate_pin += abs(out["trend"]) >= 1.0
@@ -332,6 +342,7 @@ def simulate_t(pop: int, passes: int, seed: int, params: dict, traits: str = "on
     done = works + arcs
     total = max(1, passes)
     shares = [works_i[k] / turns[k] for k in range(pop) if turns[k] >= 8]
+    odds = [pct_sum[k] / turns[k] / 100.0 for k in range(pop) if turns[k] >= 8]  # each character's mean chance of work: the share without the dice's noise
     surv = [(died_at.get(k, total) / total) for k in range(pop)]
     rp = round_pc[2:]
     rw = round_work[2:]
@@ -341,17 +352,20 @@ def simulate_t(pop: int, passes: int, seed: int, params: dict, traits: str = "on
         "alive": len(alive) / pop, "pc_mean": statistics.mean(pcs) if pcs else 0.0, "pc_end": pool / len(alive) if alive else 0.0,
         "pers_mean": statistics.mean(plist) if plist else 0.0, "pers_med": statistics.median(plist) if plist else 0.0,
         "work": works / done if done else 0.0, "starved": starved, "can_pay": can / arcs if arcs else 0.0,
-        "work_sd": _sd(shares), "surv_sd": _sd(surv),
+        "work_sd": _sd(shares), "odds_sd": _sd(odds), "surv_sd": _sd(surv),
         "osc": (_sd(rp) / statistics.mean(rp)) if rp and statistics.mean(rp) > 0 else 0.0,
         "ac1": _autocorr(rp, 1), "sync": (_sd(rw) / binom) if binom else 0.0,
         "pc_med": statistics.median(pcs) if pcs else 0.0, "info": info / max(1, done),
         "floor": floor / max(1, done), "ceil": ceil / max(1, done), "rate_pin": rate_pin / max(1, rate_n),
+        "cfloor": cfloor / max(1, done), "cceil": cceil / max(1, done),
+        "dead_frac": starved / pop, "extinct": float(not alive),
         "pc_series": rp,
+        "chars": [(tr[k]["risk"], tr[k]["thrift"], float(k not in alive), turns[k]) for k in range(pop)],
     }
 
 
 def average(runs: list) -> dict:
-    keys = [k for k in runs[0] if k not in ("traj", "pc_series")]
+    keys = [k for k in runs[0] if k not in ("traj", "pc_series", "chars")]
     return {k: statistics.mean(r[k] for r in runs) for k in keys}
 
 
@@ -503,7 +517,12 @@ def top_share(values: list, frac: float = 0.1) -> float:
 
 def simulate_generations(pop: int, gens: int, seed: int, params: dict, inheritance: bool = True,
                          reward: str = "on", tax: float = 0.0, birth_rate: float = 0.04, cap: float = 1.5,
-                         affinity: float = 0.0, pressure: float = 0.5, pay_rate: float = 0.35) -> dict:
+                         affinity: float = 0.0, pressure: float = 0.5, pay_rate: float = 0.35,
+                         traits: str | None = None, temp: dict | None = None, affinity_spread: float = 0.5) -> dict:
+    """The generations model. `traits` None is the model as it was (no temperament: the pre-temperament
+    roll, the cushion against the old threshold); "on"/"off" is the temperament model (T1 to T3 below):
+    traits drawn for founders and inherited (mean of the parents plus noise) by children, the window of
+    recent observations, the thrift-weighted payment odds, the second participant eating."""
     s = dict(BASE_S)
     s.update({k: v for k, v in params.items() if k != "arc_need_cost"})
     cost = params.get("arc_need_cost", BASE_COST)
@@ -514,13 +533,24 @@ def simulate_generations(pop: int, gens: int, seed: int, params: dict, inheritan
     if reward == "uncapped":
         rcfg["max"] = 10 ** 9
     rng = Random(seed)
+    trng = Random(seed * 7919 + 13)  # the traits' own stream
+    tcfg = dict(temp or TEMP) if traits else None
+    keep = (temp or TEMP)["recent_window_max"]
     start = s["starting_provisions_per_capita"]
 
     people = []
 
     def new_person(parents, weights, t, personal):
+        tr_ = None
+        if traits:
+            if parents and traits == "on":
+                tr_ = temperament.inherit(people[parents[0]]["tr"], people[parents[1]]["tr"], trng, tcfg["inherit_noise"])
+            else:
+                tr_ = temperament.draw_random(trng) if traits == "on" else dict(temperament.NEUTRAL)
         people.append({"id": len(people), "energy": s["energy_cap"], "personal": personal, "turns": 0, "span": rng.randint(life_lo, life_hi),
-                       "parents": parents, "alive": True, "ready": t, "last_birth": -10 ** 9, "arc_turns": 0, "tally": 0, "w": weights})
+                       "parents": parents, "alive": True, "ready": t, "last_birth": -10 ** 9, "arc_turns": 0, "tally": 0, "w": weights,
+                       "tr": tr_, "recent": [], "aff": affinity + trng.uniform(0.0, affinity_spread) if traits else affinity,
+                       "gen": 1 + max((people[q].get("gen", 0) for q in parents), default=-1), "cause": None})
         return len(people) - 1
 
     for i in range(pop):
@@ -531,7 +561,7 @@ def simulate_generations(pop: int, gens: int, seed: int, params: dict, inheritan
     total_passes = gens * int(round((life_lo + life_hi) / 2)) * pop
     marks = [round(total_passes * q / 4) for q in (1, 2, 3, 4)]
     snaps = []
-    stats = {"completions": 0, "comp_turns": 0, "failed": 0, "born": 0, "starved": 0, "aged": 0, "to_children": 0.0, "to_pool": 0.0, "vanished": 0.0, "reward_paid": 0.0}
+    stats = {"completions": 0, "comp_turns": 0, "failed": 0, "born": 0, "starved": 0, "aged": 0, "to_children": 0.0, "to_pool": 0.0, "vanished": 0.0, "reward_paid": 0.0, "extinct": 0}
 
     def alive_ids():
         return [p["id"] for p in people if p["alive"]]
@@ -544,12 +574,17 @@ def simulate_generations(pop: int, gens: int, seed: int, params: dict, inheritan
             for f, w in p["w"].items():
                 founders[f] = founders.get(f, 0.0) + w * p["personal"]
         tot = sum(vals)
+        by_gen = {}
+        for p in live:
+            by_gen.setdefault(p["gen"], []).append(p["personal"])
         return {"alive": len(live), "gini": gini(vals), "top10": top_share(vals), "mean": statistics.mean(vals) if vals else 0.0,
                 "max": max(vals) if vals else 0.0, "lineage_top": (max(founders.values()) / tot) if founders and tot > 0 else 0.0,
-                "gen": max(p.get("gen", 0) for p in live) if live else 0}
+                "gen": max(p.get("gen", 0) for p in live) if live else 0,
+                "by_gen": {g: {"n": len(v), "mean": statistics.mean(v), "max": max(v), "gini": gini(v)} for g, v in by_gen.items()}}
 
     def die(p, cause):
         p["alive"] = False
+        p["cause"] = cause
         stats[cause] += 1
         amount = p["personal"]
         kids = [q for q in people if q["alive"] and p["id"] in q["parents"]]
@@ -570,6 +605,7 @@ def simulate_generations(pop: int, gens: int, seed: int, params: dict, inheritan
     for t in range(1, total_passes + 1):
         live = [p for p in people if p["alive"]]
         if not live:
+            stats["extinct"] = 1
             break
         drawable = [p for p in live if p["ready"] <= t]
         if not drawable:
@@ -578,7 +614,11 @@ def simulate_generations(pop: int, gens: int, seed: int, params: dict, inheritan
         n = len(live)
         per_capita = pool / n
         trend = 0.0 if ckpt is None else per_capita - ckpt
-        pct = arc_odds(s, p["energy"], affinity, pressure, per_capita, trend, p["personal"])["pct"]
+        if traits:
+            p["recent"] = temperament.observe(p["recent"], per_capita, p["personal"], p["energy"], keep)
+            pct = arc_odds(s, p["energy"], p["aff"], pressure, per_capita, trend, p["personal"], traits=p["tr"], recent=p["recent"], t=tcfg, cost=cost)["pct"]
+        else:
+            pct = arc_odds(s, p["energy"], affinity, pressure, per_capita, trend, p["personal"])["pct"]
         choice = "arc" if rng.random() < pct / 100.0 else "work"
         pool = economy_rules.upkeep(pool, n, s["upkeep_rate_per_capita"])
         ckpt = pool / n
@@ -586,10 +626,23 @@ def simulate_generations(pop: int, gens: int, seed: int, params: dict, inheritan
         p["energy"], p["personal"], pool = r["energy"], r["personal"], r["pool"]
         p["turns"] += 1
         p["arc_turns"] += 1
-        if choice == "arc" and p["personal"] >= cost and rng.random() < pay_rate and n > 1:
-            p["personal"] -= cost
+        reached = choice == "arc" and p["personal"] >= cost and rng.random() < pay_rate and n > 1
+        paid = False
+        if reached:
             other = rng.choice([q for q in live if q is not p])
-            other["personal"] += cost
+            if traits:  # T3: the other participant eats; the payment goes through at the thrift-weighted odds
+                e = economy_rules.resolve_pass(other["energy"], other["personal"], pool, "eat", s)
+                other["energy"], other["personal"], pool = e["energy"], e["personal"], e["pool"]
+                if e["died"] and other["alive"]:
+                    die(other, "starved")
+                od = economy_rules.payment_odds(p["personal"], cost, 0.0, p["tr"]["thrift"], PAY, s, tcfg)
+                paid = rng.random() < od["pct"] / 100.0 and other["alive"]
+            else:
+                paid = True
+            if paid:
+                p["personal"] -= cost
+                other["personal"] += cost
+        if paid:
             weights = ARC_WEIGHTS["neutral"]
             outcome = rng.choices(["advance", "stall", "reverse"], weights=weights, k=1)[0]
             p["tally"] += {"advance": 1, "stall": 0, "reverse": -1}[outcome]
@@ -630,7 +683,9 @@ def simulate_generations(pop: int, gens: int, seed: int, params: dict, inheritan
         snaps.append(final)
     done = stats["completions"]
     return {"final": snaps[-1], "snaps": snaps, "stats": stats, "turns_per_completion": (stats["comp_turns"] / done) if done else 0.0,
-            "passes": t, "total_passes": total_passes}
+            "passes": t, "total_passes": total_passes,
+            # (risk, thrift, generation, cause of death or None) of every person ever born: the death/trait correlations
+            "people": [((p["tr"] or {}).get("risk", 0.0), (p["tr"] or {}).get("thrift", 0.0), p["gen"], p["cause"]) for p in people]}
 
 
 def run_generations(a) -> None:
@@ -644,6 +699,8 @@ def run_generations(a) -> None:
              (f"inheritance + reward + tax {tax:g} (tuning.json)", True, "on", tax),
              (f"... tax {tax:g}, reward NO cap", True, "uncapped", tax)] if a.compare else [
              (f"inheritance {a.inheritance}, reward {a.reward}, tax {tax:g}", a.inheritance == "on", a.reward, tax)]
+    if a.traits:
+        return run_generations_traits(a, pops, base, tax)
     cfg = TUNING["arc_completion_reward"]
     print(f"generations: {a.gens} x ~45 own turns x N passes; birth-rate {a.birth_rate}, cap {a.cap} x N, pay-rate {a.pay_rate}, {a.seeds} seeds")
     print("economy: " + ", ".join(f"{k}={fmt(v)}" for k, v in base.items()))
@@ -670,7 +727,55 @@ def run_generations(a) -> None:
             print("  ".join(x.ljust(w) if i == 0 else x.rjust(w) for i, (x, w) in enumerate(zip(r, widths))))
 
 
-T_COLS = ["alive", "pc_mean", "pc_med", "can_pay", "work", "work_sd", "surv_sd", "starved", "osc", "ac1", "sync", "info", "floor", "ceil", "rate_pin"]
+def _corr(xs, ys):
+    if len(xs) < 3:
+        return 0.0
+    mx, my = statistics.mean(xs), statistics.mean(ys)
+    sx = sum((x - mx) ** 2 for x in xs) ** 0.5
+    sy = sum((y - my) ** 2 for y in ys) ** 0.5
+    return sum((x - mx) * (y - my) for x, y in zip(xs, ys)) / (sx * sy) if sx and sy else 0.0
+
+
+def run_generations_traits(a, pops, base, tax) -> None:
+    temp = BEFORE_TEMP if a.before else None
+    if a.before:
+        base = dict(base, **PROPOSAL)
+    """--gens with --traits: the generations model WITH temperament (T1 to T3 apply, children inherit the traits),
+    inheritance, tax and reward on (or as set by --inheritance/--reward/--tax). Prints, per N: survival
+    (`extinct` share of runs, `starved` share of finished lifetimes, the correlation of starvation with risk
+    and with thrift over everyone ever born who died or lived on), the wealth of the living at the end, and
+    a by-generation table (mean, max personal provisions and Gini within each generation alive at the end)."""
+    print(f"generations with temperament (traits {a.traits}): {a.gens} x ~45 own turns x N passes; birth-rate {a.birth_rate}, cap {a.cap} x N, pay-rate {a.pay_rate}, {a.seeds} seeds; "
+          f"inheritance {a.inheritance}, reward {a.reward}, tax {tax:g}")
+    print("economy: " + ", ".join(f"{k}={fmt(v)}" for k, v in base.items()))
+    for n in pops:
+        runs = [simulate_generations(n, a.gens, a.seed_base + sd, base, inheritance=a.inheritance == "on", reward=a.reward, tax=tax, birth_rate=a.birth_rate,
+                                     cap=a.cap, affinity=a.affinity, pressure=a.pressure, pay_rate=a.pay_rate, traits=a.traits, temp=temp) for sd in range(a.seeds)]
+        m = lambda f: statistics.mean(f(r) for r in runs)
+        ended = lambda r: r["stats"]["starved"] + r["stats"]["aged"]
+        fin = sum(ended(r) for r in runs)
+        starved_share = sum(r["stats"]["starved"] for r in runs) / fin if fin else 0.0
+        ppl = [x for r in runs for x in r["people"]]
+        flag = [1.0 if x[3] == "starved" else 0.0 for x in ppl]
+        print(f"\nN = {n}: extinct {m(lambda r: r['stats']['extinct']):.2f} of runs; alive at end {m(lambda r: r['final']['alive']):.1f}; born {m(lambda r: r['stats']['born']):.0f}; "
+              f"completions {m(lambda r: r['stats']['completions']):.1f}; starved {starved_share * 100:.1f}% of finished lifetimes; "
+              f"correlation of starving with risk {_corr([x[0] for x in ppl], flag):+.2f}, with thrift {_corr([x[1] for x in ppl], flag):+.2f}")
+        print(f"  all living at the end: gini {m(lambda r: r['final']['gini']):.2f}, top10 {m(lambda r: r['final']['top10']):.2f}, mean {m(lambda r: r['final']['mean']):.2f}, max {m(lambda r: r['final']['max']):.1f}; "
+              f"gini at 1/4..4/4: " + ", ".join(f"{statistics.mean(r['snaps'][q]['gini'] for r in runs):.2f}" for q in range(4)) +
+              "; mean at 1/4..4/4: " + ", ".join(f"{statistics.mean(r['snaps'][q]['mean'] for r in runs):.2f}" for q in range(4)) +
+              "; max at 1/4..4/4: " + ", ".join(f"{statistics.mean(r['snaps'][q]['max'] for r in runs):.1f}" for q in range(4)))
+        gens = sorted({g for r in runs for g in r["final"]["by_gen"]})
+        print("  by generation (living at the end; mean over the runs that have one): gen  runs  n/run  mean  max  gini  starved-of-lifetimes%")
+        for g in gens:
+            have = [r for r in runs if g in r["final"]["by_gen"]]
+            mm = lambda k: statistics.mean(r["final"]["by_gen"][g][k] for r in have)
+            born_g = [x for x in ppl if x[2] == g]
+            done_g = [x for x in born_g if x[3]]
+            sp = (sum(1 for x in done_g if x[3] == "starved") / len(done_g) * 100) if done_g else 0.0
+            print(f"    {g:3d}  {len(have):4d}  {mm('n'):5.1f}  {mm('mean'):5.2f}  {mm('max'):5.1f}  {mm('gini'):4.2f}  {sp:5.1f}")
+
+
+T_COLS = ["alive", "pc_mean", "pc_med", "can_pay", "work", "work_sd", "odds_sd", "surv_sd", "starved", "osc", "ac1", "sync", "info", "floor", "ceil", "cfloor", "cceil", "rate_pin", "dead_frac", "extinct", "r_risk", "r_thrift"]
 
 
 def t_rows(label_kw: list, pops, seeds, seed_base, params, passes, kw) -> list:
@@ -678,7 +783,12 @@ def t_rows(label_kw: list, pops, seeds, seed_base, params, passes, kw) -> list:
     for n in pops:
         for label, extra in label_kw:
             runs = [simulate_t(n, passes or 40 * n, seed_base + sd, params, **{**kw, **extra}) for sd in range(seeds)]
-            rows.append((n, label, average(runs)))
+            m = average(runs)
+            ch = [c for r in runs for c in r["chars"]]  # (risk, thrift, died, turns) of every character in every run
+            m["r_risk"] = _corr([c[0] for c in ch], [c[2] for c in ch])
+            m["r_thrift"] = _corr([c[1] for c in ch], [c[2] for c in ch])
+            m["extinct"] = statistics.mean(r["extinct"] for r in runs)
+            rows.append((n, label, m))
     return rows
 
 
@@ -702,10 +812,13 @@ CASES = [
 def traits_report(a) -> None:
     pops = a.pop or [6, 12, 25]
     kw = dict(affinity=a.affinity, pressure=a.pressure, pay_rate=a.pay_rate)
-    for name, extra in (("CURRENT defaults (the adopted economy since 2026-10-17)", {}), ("TODAY'S OLD NUMBERS (work_pool 1, work_personal 2, upkeep 0.15; before the adoption)", OLD)):
+    for name, extra, temp in (("CURRENT tuning.json (the calibration for variation, 2026-10-17)", {}, None),
+                              ("BEFORE the calibration: the first-adopted economy (work_pool 4, work_personal 3, upkeep 0.05) with the old temperament numbers (cushion over the 2-unit threshold, cautious margin 5 meals, persistence pressure 0.3)", PROPOSAL, BEFORE_TEMP),
+                              ("TODAY'S OLD NUMBERS before any adoption (work_pool 1, work_personal 2, upkeep 0.15), current temperament", OLD, None)):
         params = dict(today(), **extra)
-        print(f"\n== {name}: " + ", ".join(f"{k}={fmt(v)}" for k, v in params.items()) + f" | {a.seeds} seeds, passes {a.passes or '40 x N'}; comfortable pool {TEMP['pool_comfortable_meals']:g} meal(s)/head, window {TEMP['recent_window_min']}..{TEMP['recent_window_max']}, trend scale {TEMP['trend_scale_meals']:g} meals")
-        print_t(t_rows(CASES, pops, a.seeds, a.seed_base, params, a.passes, kw))
+        t = temp or TEMP
+        print(f"\n== {name}: " + ", ".join(f"{k}={fmt(v)}" for k, v in params.items()) + f" | {a.seeds} seeds, passes {a.passes or '40 x N'}; comfortable pool {t['pool_comfortable_meals']:g} meal(s)/head, window {t['recent_window_min']}..{t['recent_window_max']}, trend scale {t['trend_scale_meals']:g} meals, cautious margin {t['risk']['margin_meals_cautious']:g} meals, cushion scale {t.get('cushion_scale_meals') or 'the 2-unit threshold'}, persistence pressure {t['persistence']['pressure_k']:g}")
+        print_t(t_rows(CASES, pops, a.seeds, a.seed_base, params, a.passes, dict(kw, temp=temp) if temp else kw))
 
 
 def calibrate(a) -> None:
@@ -763,6 +876,7 @@ def main() -> None:
     ap.add_argument("--legacy", action="store_true", help="with --traits: the roll as it was before temperament (baseline)")
     ap.add_argument("--traits-report", action="store_true", help="the full comparison (legacy / off / on / global window / trend off), current defaults and the proposal")
     ap.add_argument("--calibrate", action="store_true", help="the comfortable pool level and the trend scale: how often the terms sit at their limits")
+    ap.add_argument("--before", action="store_true", help="with --traits or --gens: the numbers BEFORE the 2026-10-17 calibration for variation (the first-adopted economy and the old temperament numbers), for the before/after tables")
     ap.add_argument("--journey", action="store_true", help="roads as nodes: energy on arriving after k connections of arc passes")
     ap.add_argument("--stop-pool", type=float, default=4.0, help="--journey: units in the pool of every place stopped at")
     a = ap.parse_args()
@@ -773,17 +887,20 @@ def main() -> None:
         return traits_report(a)
     if a.calibrate:
         return calibrate(a)
+    if a.gens:
+        return run_generations(a)
     if a.traits:
         pops = a.pop or [12]
         base = dict(today(), **{k: v[0] for k, v in parse_grid(a.set).items()})
         kw = dict(affinity=a.affinity, pressure=a.pressure, pay_rate=a.pay_rate)
+        if a.before:
+            base.update(PROPOSAL)
+            kw["temp"] = BEFORE_TEMP
         case = [(f"traits {a.traits}, window {a.window}, trend {a.trend}" + (", legacy" if a.legacy else ""),
                  dict(traits=a.traits, trend=a.trend == "on", window=a.window, legacy=a.legacy))]
         print("params: " + ", ".join(f"{k}={fmt(v)}" for k, v in base.items()) + f" | {a.seeds} seeds, passes {a.passes or '40 x N'}")
         return print_t(t_rows(case, pops, a.seeds, a.seed_base, base, a.passes, kw))
 
-    if a.gens:
-        return run_generations(a)
     if a.scan:
         return scan(a)
     pops = a.pop or [12]

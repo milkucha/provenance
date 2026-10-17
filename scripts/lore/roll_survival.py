@@ -155,7 +155,7 @@ def arc_odds(s: dict, energy: float, affinity: float, pressure: float,
     keeps; the engine always passes `t`). With `t` there is NO neutral centre (author's call 2026-10-17):
       - risk: the personal cushion is computed against the reserve wanted, arc_need_cost + margin meals x
         eat_amount, the margin running straight from 0 meals (bold) to 5 (cautious): (provisions -
-        reserve) / provides_provisions_threshold, clamped. The threat terms (negative energy, falling
+        reserve) / (cushion_scale_meals x eat_amount), clamped. The threat terms (negative energy, falling
         pool or purse) are scaled by 1 - threat_k x risk; the bold are pulled a little by a RISE (rise_pull).
       - the pool term is centred on `pool_comfortable_meals` x eat_amount, a plain world constant.
       - communality scales the affinity-obligation term only, never pool reliance.
@@ -170,7 +170,11 @@ def arc_odds(s: dict, energy: float, affinity: float, pressure: float,
     pool_surplus = max(-1.0, min(1.0, (per_capita - comfortable) / comfortable)) if comfortable else 0.0
     trend_normalized = max(-1.0, min(1.0, trend / threshold)) if threshold else 0.0
     reserve = temperament.reserve_wanted(tr["risk"], _COST if cost is None else cost, eat, t["risk"]) if t else threshold
-    personal_cushion = max(-1.0, min(1.0, (provisions - reserve) / threshold)) if threshold else 0.0
+    # the cushion is a distance from the reserve wanted, in units, over a scale: with temperament its own
+    # knob (`cushion_scale_meals` x eat_amount, so a cushion of that many meals above the reserve is a
+    # full +1 and that many below a full -1); without, the old provides_provisions_threshold
+    cushion_scale = (t["cushion_scale_meals"] * eat) if t and t.get("cushion_scale_meals") else threshold
+    personal_cushion = max(-1.0, min(1.0, (provisions - reserve) / cushion_scale)) if cushion_scale else 0.0
     threat = temperament.threat_factor(tr["risk"], t["risk"]) if t else 1.0
 
     w = s["weights"]

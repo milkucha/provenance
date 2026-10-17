@@ -644,13 +644,17 @@ def temperament_checks(tmp, lib, S, home_ctx, shop_ctx, need, detail):
     # ---- the new scale definitions (2026-10-17, no neutral centre) -----------------------------------------
     # replaces the old guarantee that trait 0 was the pre-temperament roll
     risk_cfg, thrift_cfg = t_["risk"], t_["thrift"]
-    ok["scale_risk_margin_runs_0_to_5_meals"] = (tm.margin_meals(1, risk_cfg), tm.margin_meals(-1, risk_cfg)) == (0, 5) and \
-        tm.reserve_wanted(1, cost, eat, risk_cfg) == cost and tm.reserve_wanted(-1, cost, eat, risk_cfg) == cost + 5 * eat
+    mc = risk_cfg["margin_meals_cautious"]  # the cautious end of the margin, whatever the knob says (0 meals is the bold end)
+    ok["scale_risk_margin_runs_from_0_to_the_cautious_knob"] = (tm.margin_meals(1, risk_cfg), tm.margin_meals(-1, risk_cfg)) == (risk_cfg["margin_meals_bold"], mc) and risk_cfg["margin_meals_bold"] == 0 and \
+        tm.reserve_wanted(1, cost, eat, risk_cfg) == cost and tm.reserve_wanted(-1, cost, eat, risk_cfg) == cost + mc * eat
     thr = s_["provides_provisions_threshold"]
+    cush_scale = t_["cushion_scale_meals"] * eat if t_.get("cushion_scale_meals") else thr  # the cushion's own scale (2026-10-17 calibration), else the old threshold
     clamp1 = lambda x: max(-1.0, min(1.0, x))
     ok["scale_cushion_computed_against_that_margin"] = all(
-        abs(rs.arc_odds(s_, 10, 0.5, 0.5, 2, 0.0, prov, traits={"risk": r}, t=t_)["personal_cushion"] - clamp1((prov - (cost + tm.margin_meals(r, risk_cfg) * eat)) / thr)) < 1e-9
+        abs(rs.arc_odds(s_, 10, 0.5, 0.5, 2, 0.0, prov, traits={"risk": r}, t=t_)["personal_cushion"] - clamp1((prov - (cost + tm.margin_meals(r, risk_cfg) * eat)) / cush_scale)) < 1e-9
         for r in (-1, -0.4, 0, 0.7, 1) for prov in (0, 3, 6, 8, 13, 20))
+    ok["scale_cushion_not_pinned_for_ordinary_holdings"] = all(  # holdings of 1 to 9 units, the range real characters have: the term is strictly between its limits for most (risk, holdings) pairs
+        sum(-1.0 < rs.arc_odds(s_, 10, 0.5, 0.5, 2, 0.0, prov, traits={"risk": r}, t=t_)["personal_cushion"] < 1.0 for prov in range(1, 10)) >= 6 for r in (-1, -0.5, 0, 0.5, 1))
     ok["scale_keep_level_runs_0_to_3_meals"] = (tm.keep_meals(-1, thrift_cfg), tm.keep_meals(1, thrift_cfg)) == (0, 3)
     ok["scale_hesitation_not_relative_to_a_neutral_payer"] = pay(0, cost)["hesitation"] == thrift_cfg["hesitation_per_meal"] * tm.keep_meals(0, thrift_cfg) and \
         pay(-1, cost)["hesitation"] == 0 and pay(1, cost)["hesitation"] == thrift_cfg["hesitation_per_meal"] * 3
@@ -854,6 +858,99 @@ def decision_checks(tmp, lib, S, home_ctx, shop_ctx, need, detail):
     ok["nodefault_generate_draws_even_with_keep_neutral"] = gen.returncode == 0 and all(set(got[k].get("temperament") or {}) == {"risk", "thrift", "communality", "persistence"} for k in ("probe_g3", "probe_g4")) and "no-op" in gen.stdout
     if gen.returncode != 0:
         detail["generate_error"] = (gen.stderr or gen.stdout)[-600:]
+
+    # ---- road work is rest (the author's decision 2026-10-17, option A) -------------------------------------
+    # a traveller standing on a road whose work-or-arc roll comes up "work": no pay, no pool, base cost and a
+    # meal from their own provisions, destination kept, still on the node, still findable there
+    s_ = T["survival"]
+    road = "road:ProbeHome--ProbeShop"
+    journey_ = {"need": need, "target": "ProbeShop", "origin": "ProbeHome", "since_pass": 1}
+    trav_arc = {"about": ["concept: probe_t"], "needs": [need], "context": home_ctx, "premise": "Probe walks toward a thing.", "resolution": "ongoing", "history": [], "turns": 0}
+    _write(tmp, "probe_t1", _blank("Probe Tee", road, routines=home, arc=trav_arc, provisions=6, energy=10, pursuit=dict(journey_)))
+    add_lifespans("probe_t1")
+    lib.roll_survival = lambda key, home_: {"choice": "work"}
+    pools_path = tmp / "_lore" / "provisions.json"
+    rr = lib.run_pass_mechanics("probe_t1", 920)
+    t1 = load_chars(tmp)["probe_t1"]
+    pools_after = json.loads(pools_path.read_text(encoding="utf-8")).get("pools", {}) if pools_path.exists() else {}
+    ok["roadrest_choice_is_rest"] = rr["survival"]["probe_t1"]["choice"] == "rest" and rr["scene"] is None and rr["participant_2"] is None
+    ok["roadrest_no_pay_only_the_meal"] = t1["provisions"] == 6 - s_["eat_amount"]  # the whole meal from their own provisions (no pool on a road), nothing earned
+    ok["roadrest_energy_is_base_cost_plus_meal_no_arc_cost"] = t1["energy"] == 10 - s_["base_cost"] + s_["eat_amount"]
+    ok["roadrest_no_pool_exists_or_is_fed"] = road not in pools_after
+    ok["roadrest_destination_kept_untouched"] = t1.get("pursuit") == journey_
+    ok["roadrest_stays_on_the_node"] = t1["location"] == road and rr["location"] == road
+    others = lib.load_all_characters()
+    ok["roadrest_findable_by_another_traveller"] = lib.present_on_road(road, others, exclude="someone_else") == ["probe_t1"]
+    # at a PLACE mid-journey a work roll is still work in place (pays, journey kept): only a road is rest
+    c_ = load_chars(tmp)["probe_t1"]; c_.update(location="ProbeHome", provisions=2, energy=10); _write(tmp, "probe_t1", c_)
+    wk = lib.run_pass_mechanics("probe_t1", 921)
+    t1b = load_chars(tmp)["probe_t1"]
+    ok["roadrest_a_place_mid_journey_is_still_work"] = wk["survival"]["probe_t1"]["choice"] == "work" and t1b["provisions"] > 2 and t1b.get("pursuit") == journey_ and t1b["location"] == "ProbeHome"
+    # a character left on a road with NO journey (arc finished, a dead end) is not parked there: their work roll
+    # sends them to a routine location as before (logged in OPEN_QUESTIONS.md)
+    c_ = load_chars(tmp)["probe_t1"]; c_.update(location=road, provisions=6, energy=10); c_.pop("pursuit", None); _write(tmp, "probe_t1", c_)
+    st = lib.run_pass_mechanics("probe_t1", 922)
+    t1c = load_chars(tmp)["probe_t1"]
+    ok["roadrest_stranded_without_a_journey_goes_to_a_routine_place"] = st["survival"]["probe_t1"]["choice"] == "work" and t1c["location"] == "ProbeHome" and t1c["provisions"] > 6 - s_["eat_amount"]
+    detail["roadrest"] = {"choice": rr["survival"]["probe_t1"]["choice"], "provisions_6_to": t1["provisions"], "energy_10_to": t1["energy"], "location": t1["location"]}
+
+    # ---- the Ollama context window (correctness, 2026-10-17) ----------------------------------------------------
+    eo = importlib.import_module("enact_via_ollama")
+    ecfg = eo.enacter_cfg()
+    ok["ctx_knob_in_tuning_and_default_12288"] = (T.get("enacter") or {}).get("num_ctx") == 12288 and ecfg["num_ctx"] == 12288
+    sent = {}
+
+    class _Resp:
+        def __init__(self, body): self.body = body
+        def read(self): return json.dumps(self.body).encode()
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+
+    def fake_urlopen_for(body):
+        def fake(req, timeout=0):
+            sent["payload"] = json.loads(req.data.decode())
+            return _Resp(body)
+        return fake
+    good_body = {"message": {"content": json.dumps({"scene": [], "hearsay": {}, "participants": {}})}, "prompt_eval_count": 7000, "eval_count": 900}
+    real_urlopen = eo.urllib.request.urlopen
+    try:
+        eo.urllib.request.urlopen = fake_urlopen_for(good_body)
+        eo.call_ollama("http://x", "m", "sys " * 100, "user " * 100, 0.5)
+        ok["ctx_num_ctx_sent_in_options"] = sent["payload"]["options"].get("num_ctx") == ecfg["num_ctx"] and "temperature" in sent["payload"]["options"]
+        eo.call_ollama("http://x", "m", "sys", "user", 0.5, num_ctx=16384)
+        ok["ctx_flag_overrides_the_knob"] = sent["payload"]["options"]["num_ctx"] == 16384
+        sent.clear()
+        try:
+            eo.call_ollama("http://x", "m", "a" * 40000, "b" * 20000, 0.5)  # ~17k tokens by the estimate
+            pre = False
+        except SystemExit as e:
+            pre = "will not fit" in str(e)
+        ok["ctx_preflight_refuses_a_prompt_that_cannot_fit_and_sends_nothing"] = pre and not sent
+        for label, body in (("at", {**good_body, "prompt_eval_count": ecfg["num_ctx"]}), ("under_margin", {**good_body, "prompt_eval_count": ecfg["num_ctx"] - ecfg["truncation_margin"]})):
+            eo.urllib.request.urlopen = fake_urlopen_for(body)
+            try:
+                eo.call_ollama("http://x", "m", "sys", "user", 0.5)
+                refused = False
+            except SystemExit as e:
+                refused = "TRUNCATED" in str(e)
+            ok[f"ctx_truncated_reply_refused_{label}"] = refused
+        eo.urllib.request.urlopen = fake_urlopen_for({**good_body, "prompt_eval_count": 9000, "eval_count": ecfg["num_ctx"] - 9000})
+        try:
+            eo.call_ollama("http://x", "m", "sys", "user", 0.5)
+            refused = False
+        except SystemExit as e:
+            refused = "ran out" in str(e)
+        ok["ctx_reply_that_filled_the_window_refused"] = refused
+        eo.urllib.request.urlopen = fake_urlopen_for({**good_body, "prompt_eval_count": ecfg["num_ctx"] - ecfg["truncation_margin"] - 10, "eval_count": 1})
+        ok["ctx_just_under_the_margin_is_accepted"] = eo.call_ollama("http://x", "m", "sys", "user", 0.5) is not None
+    finally:
+        eo.urllib.request.urlopen = real_urlopen
+    help_ = subprocess.run([sys.executable, str(S / "enact_via_ollama.py"), "--help"], capture_output=True, text=True, cwd=tmp).stdout
+    ok["ctx_cli_has_num_ctx_flag"] = "--num-ctx" in help_
+    # a real pair-scene brief and the preamble must fit with room to spare at the default window
+    pre_tokens = eo.estimate_tokens(eo.load_preamble(), chars_per_token=ecfg["chars_per_token"])
+    ok["ctx_preamble_alone_is_well_under_the_window"] = pre_tokens < ecfg["num_ctx"] // 2
+    detail["ollama_ctx"] = {"num_ctx": ecfg["num_ctx"], "preamble_chars": len(eo.load_preamble()), "preamble_tokens_est": pre_tokens}
     return ok
 
 
@@ -974,6 +1071,8 @@ def main():
         probes["F27"] = any(not scen[k] for k in scen if k.startswith("cultural_"))
         probes["F28"] = any(not scen[k] for k in scen if k.startswith("roadbirth_"))
         probes["F29"] = any(not scen[k] for k in scen if k.startswith("nodefault_"))
+        probes["F30"] = any(not scen[k] for k in scen if k.startswith("roadrest_"))   # a work roll on a road is not rest
+        probes["F31"] = any(not scen[k] for k in scen if k.startswith("ctx_"))       # the Ollama call can silently truncate its prompt
         result = {"root": str(root), "passes": a.passes, "seed": a.seed, "fixture": a.fixture, "fixture_info": fixture,
                   "observed": dict(counts), "static": extra, "probes": probes}
         if a.baseline:

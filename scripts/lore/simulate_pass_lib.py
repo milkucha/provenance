@@ -711,6 +711,15 @@ def run_pass_mechanics(p1: str, pass_number: int) -> dict:
     # Step 3 - work: p1's own routine roll, unweighted, apply at that location, done. No second
     # participant, matching how a "no ongoing arc" work-only pass already works today.
     if p1_survival["choice"] == "work":
+        if journey and travel_graph.is_road(location_now):
+            # ROAD WORK IS REST (the author's decision 2026-10-17, option A): there is no work on a road. The
+            # roll comes up "work" and means a day's rest: base energy cost and a meal from their own
+            # provisions (no pool exists), no pay, nothing to a pool. The kept destination is neither changed
+            # nor cleared and they stay on the node, where others can meet them.
+            _apply_p1(location_now, "rest", "route")
+            _write_back(location_now, f"Rested on the road, bound for {journey['target']}.", pursuit=_KEEP)
+            notes.append(f"{p1} rested on the road at {location_now} - still bound for {journey['target']} ('{journey['need']}')")
+            return result
         if journey:
             # Audit F7: a work roll mid-journey used to snap the traveler back to a routine
             # location and lose the trip. Now they work where they stand and the journey is kept.

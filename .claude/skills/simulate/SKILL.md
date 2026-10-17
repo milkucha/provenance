@@ -260,8 +260,9 @@ For pass 1 through N:
    debrief) each participant's own `criterion` and, if they have one, their arc's
    `premise`/`about`/`needs` — into one call. That mechanical block now runs the full asymmetric
    chain: `p1` rolls work vs. arc (`roll_survival.py`); on work, `p1` rolls their own
-   routine and the pass ends there, no second participant (mid-journey they work where they stand and
-   the trip is kept). **The economy**, every pass for `p1` (`apply_survival.py`, the pure rule in
+   routine and the pass ends there, no second participant (mid-journey at a place they work where they stand and
+   the trip is kept; mid-journey on a road node a work roll is **rest**, the author's decision 2026-10-17: base energy cost and a meal
+   from their own provisions, no pay, nothing to a pool, the destination kept and they stay on the node, where another traveller can meet them). **The economy**, every pass for `p1` (`apply_survival.py`, the pure rule in
    `economy_rules.py`): -1 energy; then eat 2 units, one from `p1`'s own `provisions` and one from the
    location's pool (a shortfall on one side is filled from the other; if both fall short it is a half
    meal, energy +1 per unit actually eaten); then, on work, +3 to `p1`'s own provisions and +4 to the
@@ -401,6 +402,15 @@ For pass 1 through N:
    exact error and stop this pass rather than switching model or method mid-run (same discipline as
    point 5 below, just reached one step earlier here). On success, its `reply` field is already shaped
    to drop into point 5's hearsay/decisions JSON almost as-is — see that point's Local note.
+
+   **The context window (added 2026-10-17, a correctness matter):** the call sends `num_ctx`
+   (`_lore/tuning.json` `enacter.num_ctx`, 12288; `--num-ctx` overrides for one call). Ollama otherwise gives the
+   model a few thousand tokens and silently drops what does not fit **from the start of the prompt, which is the
+   rules and the legend**; a pair-scene prompt is 7 to 9k tokens. The script estimates the prompt before sending
+   (characters / 3.5, plus room for the reply) and refuses one that cannot fit, and refuses any reply whose
+   `prompt_eval_count` shows the prompt was cut or the reply ran the window out. Both are loud failures like any
+   other script failure here: report and stop, do not retry with a different model. 12288 is sized for a 12 GB card
+   (the 14B model at 4-bit is about 9 GB, the cache about 0.2 MB a token); raise it only with the memory for it.
 
    **For a many-pass run on the Local path, `scripts/lore/simulate_driver.py` collapses this whole
    per-pass sequence (points 2-5 below, resolve pair through pass_apply) into one call** instead of

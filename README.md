@@ -482,7 +482,8 @@ and `/enact` still never touches either registry or `data/`. `/embody` and `/spa
     (people the character knows skewed up,
     nearer places heavier, counted in connections), kept across passes until they arrive; the walk goes one
     node per pass and every connection has a road node in the middle (a road has no provisions pool, so a
-    traveller eats from their own provisions and can starve on the way; if another traveller is on the same
+    traveller eats from their own provisions and can starve on the way; a work roll on a road is rest, not work: the traveller
+    pays the base energy cost and eats from their own provisions, earns nothing, feeds no pool, keeps the destination and stays on the node; if another traveller is on the same
     road the pass is a scene with them, `met_on_road`, nothing bought and no arc outcome rolled); at arrival the missed-connection
     roll, and a failed arrival (the supplier isn't there, the routine has nothing to offer, the
     payment fails) is itself a scene with whoever is present, or, in a place with nobody else in it
@@ -521,7 +522,10 @@ and `/enact` still never touches either registry or `data/`. `/embody` and `/spa
     **Local** (`scripts/lore/enact_via_ollama.py`, a plain script call to a locally-hosted Ollama
     model, no subagent involved) — `scripts/lore/simulate_driver.py` collapses the whole per-pass
     loop into one call for the Local path specifically, at real token-cost savings over a
-    subagent-per-pass design. Reproduction (`roll_reproduction.py`/`generate_offspring.py`, a new
+    subagent-per-pass design. The Local call names its context window (`num_ctx`, `_lore/tuning.json` `enacter.num_ctx`, 12288 by
+    default, `--num-ctx` to override; sized for a 12 GB card running `qwen2.5:14b`): a pair-scene prompt is 7 to 9k tokens and Ollama
+    otherwise clips an oversized prompt silently from the start, where the rules are. The script estimates the prompt before sending and fails
+    loudly when it cannot fit, and refuses a reply whose `prompt_eval_count` shows the prompt was cut. Reproduction (`roll_reproduction.py`/`generate_offspring.py`, a new
     character file with inherited knowledge and a birth tale) and an ongoing arc's needs
     (`suggest_arc_needs.py`, ranked by overlap with the character's own routine rather than left to
     whichever tag is easiest to reach for) are both mechanized the same way. A run can optionally

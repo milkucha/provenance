@@ -55,7 +55,9 @@ def resolve_pass(energy: float, personal: float, pool: float, choice: str, s: di
     extra energy), energy capped. `s` is tuning's `survival` block (or any dict with the same keys).
     `choice` is "work" or "arc" (the old "survive" is read as "work"), or "eat": the second
     participant of a pair scene (2026-10-17), who pays the base cost and eats but earns nothing and
-    pays no arc cost. Personal provisions and the pool never come out negative. Reports `died`
+    pays no arc cost, or "rest": a traveller whose work roll came up on a road node (the author's
+    decision 2026-10-17, option A): the same arithmetic as "eat" (base cost and a meal, no pay to the
+    worker, nothing to a pool, no arc cost), kept as its own word so the record says what happened. Personal provisions and the pool never come out negative. Reports `died`
     (energy 0 or below) and `ate`."""
     energy = energy - s["base_cost"]
     meal = eat(personal, pool, s["eat_amount"])
@@ -67,6 +69,7 @@ def resolve_pass(energy: float, personal: float, pool: float, choice: str, s: di
         pool += s["work_pool"]
     elif choice == "arc":
         energy -= s["arc_extra_cost"]
+    # "eat" and "rest" earn nothing and cost nothing extra: nothing to add
     energy = min(energy, s["energy_cap"])
     return {"energy": energy, "personal": personal, "pool": pool, "ate": meal["ate"],
             "units": meal["units"], "died": energy <= 0}

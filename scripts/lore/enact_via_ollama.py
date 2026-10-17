@@ -21,6 +21,16 @@ speaker, the only entry under `participants`, and `claims` free to be empty. val
 one-speaker and one-participant parts; the schema itself is unchanged, and `criterion_move` stays
 available exactly as before (only when a director's note flags the anchor as live; nothing widened).
 
+THE CONTEXT WINDOW (a correctness matter, 2026-10-17): Ollama gives a model whatever `num_ctx` it defaults
+to (a few thousand tokens) unless the request names one, and a prompt that does not fit is TRUNCATED
+SILENTLY FROM THE START, which is where the rules and the legend are. A pair-scene prompt is the
+preamble (about 4k tokens) plus the brief (about 4k, both characters' whole knowledge samples), 7 to 9k.
+So every call now sends `options.num_ctx` (tuning.json `enacter.num_ctx`, `--num-ctx` overrides), and two
+checks fail LOUDLY instead of letting a clipped prompt through: a pre-flight estimate (characters /
+`chars_per_token`, plus `reply_reserve_tokens` for the answer) that refuses to send what cannot fit, and a
+look at the response's own `prompt_eval_count` (and `eval_count`): at or above num_ctx less a small margin
+the prompt was cut or the reply ran the window out, and the reply is refused, not accepted.
+
 Usage:
     py scripts/lore/enact_via_ollama.py --brief-file .simulate_pass_brief_combined.json
     py scripts/lore/enact_via_ollama.py --brief-file brief.json --director-note "..." --out reply.json
@@ -36,6 +46,18 @@ from pathlib import Path
 
 SCRIPTS_DIR = Path(__file__).resolve().parent
 PREAMBLE_PATH = SCRIPTS_DIR / "enact_preamble.md"
+
+sys.path.insert(0, str(SCRIPTS_DIR))
+import tuning  # noqa: E402
+
+# Used only if _lore/tuning.json has no `enacter` block (an old root); the numbers live there.
+ENACTER_DEFAULTS = {"num_ctx": 12288, "reply_reserve_tokens": 1536, "chars_per_token": 3.5, "truncation_margin": 16}
+
+
+def enacter_cfg() -> dict:
+    cfg = dict(ENACTER_DEFAULTS)
+    cfg.update({k: v for k, v in (tuning.load().get("enacter") or {}).items() if not k.startswith("_")})
+    return cfg
 
 DEFAULT_HOST = "http://localhost:11434"
 DEFAULT_MODEL = "qwen2.5:14b"
@@ -120,7 +142,63 @@ def load_preamble() -> str:
     return PREAMBLE_PATH.read_text(encoding="utf-8")
 
 
-def call_ollama(host: str, model: str, system: str, user: str, temperature: float) -> dict:
+def estimate_tokens(*texts: str, chars_per_token: float = 3.5) -> int:
+    """A cheap estimate of the tokens in the texts (characters / chars_per_token, rounded up). Measured on
+    the preamble and a real brief it errs a little high for English with JSON punctuation, which is the
+    safe side for a pre-flight."""
+    return int(-(-sum(len(t) for t in texts) // chars_per_token))
+
+
+def check_fits(system: str, user: str, num_ctx: int, reply_reserve: int, chars_per_token: float = 3.5) -> int:
+    """The pre-flight: refuse (SystemExit, loud) a prompt that, by the estimate, plus the room kept for the
+    reply, would not fit in `num_ctx`. Returns the estimated prompt tokens when it fits."""
+    est = estimate_tokens(system, user, chars_per_token=chars_per_token)
+    if est + reply_reserve > num_ctx:
+        raise SystemExit(
+            f"the prompt will not fit the context window: about {est} tokens "
+            f"({len(system) + len(user)} characters / {chars_per_token}) plus {reply_reserve} kept for the reply "
+            f"is more than num_ctx {num_ctx}. Ollama would drop the START of the prompt (the rules and the legend) "
+            f"without a word. Raise `enacter.num_ctx` in _lore/tuning.json (or --num-ctx) if the GPU's memory "
+            f"allows it, or trim the brief (tuning.json `enacter_knowledge` caps)."
+        )
+    return est
+
+
+def check_not_truncated(body: dict, num_ctx: int, margin: int) -> None:
+    """Ollama reports the tokens it actually evaluated for the prompt (`prompt_eval_count`) and generated
+    (`eval_count`). A prompt that came back at or above num_ctx less `margin` was cut to fit (from the
+    start); a prompt plus reply that reached the window means the reply was cut or the context shifted.
+    Either way the reply is not to be trusted: raise (SystemExit), never accept it."""
+    pec = body.get("prompt_eval_count")
+    if pec is not None and pec >= num_ctx - margin:
+        raise SystemExit(
+            f"the prompt was TRUNCATED by Ollama: it evaluated {pec} prompt tokens against num_ctx {num_ctx} "
+            f"(margin {margin}); what did not fit was dropped from the start of the prompt, the rules and the "
+            f"legend. The reply is refused. Raise `enacter.num_ctx` in _lore/tuning.json (or --num-ctx), or trim the brief."
+        )
+    ec = body.get("eval_count")
+    if pec is not None and ec is not None and pec + ec >= num_ctx - margin:
+        raise SystemExit(
+            f"the context window ran out while the reply was being written: {pec} prompt + {ec} reply tokens "
+            f"against num_ctx {num_ctx}. The reply is refused. Raise `enacter.num_ctx` in _lore/tuning.json (or --num-ctx)."
+        )
+
+
+def parse_chat_body(body: dict, num_ctx: int, margin: int) -> dict:
+    """The model's reply from a /api/chat response body, after the truncation check. Pure, so it can be
+    tested with a stubbed body."""
+    check_not_truncated(body, num_ctx, margin)
+    content = body.get("message", {}).get("content", "")
+    if not content:
+        raise SystemExit(f"empty reply from Ollama: {json.dumps(body)[:500]}")
+    return json.loads(content)  # model was constrained to REPLY_SCHEMA; a parse failure here is real
+
+
+def call_ollama(host: str, model: str, system: str, user: str, temperature: float,
+                num_ctx: int | None = None, cfg: dict | None = None) -> dict:
+    cfg = cfg or enacter_cfg()
+    num_ctx = int(num_ctx or cfg["num_ctx"])
+    check_fits(system, user, num_ctx, int(cfg["reply_reserve_tokens"]), float(cfg["chars_per_token"]))
     payload = {
         "model": model,
         "messages": [
@@ -129,7 +207,7 @@ def call_ollama(host: str, model: str, system: str, user: str, temperature: floa
         ],
         "format": REPLY_SCHEMA,
         "stream": False,
-        "options": {"temperature": temperature},
+        "options": {"temperature": temperature, "num_ctx": num_ctx},
     }
     req = urllib.request.Request(
         f"{host}/api/chat",
@@ -144,10 +222,7 @@ def call_ollama(host: str, model: str, system: str, user: str, temperature: floa
         raise SystemExit(
             f"could not reach Ollama at {host} (is `ollama serve` running / the app open?): {e}"
         )
-    content = body.get("message", {}).get("content", "")
-    if not content:
-        raise SystemExit(f"empty reply from Ollama: {json.dumps(body)[:500]}")
-    return json.loads(content)  # model was constrained to REPLY_SCHEMA; a parse failure here is real
+    return parse_chat_body(body, num_ctx, int(cfg["truncation_margin"]))
 
 
 def known_tags(brief: dict) -> set:
@@ -266,6 +341,7 @@ def main() -> None:
     parser.add_argument("--model", default=DEFAULT_MODEL)
     parser.add_argument("--host", default=DEFAULT_HOST)
     parser.add_argument("--temperature", type=float, default=0.85)
+    parser.add_argument("--num-ctx", type=int, default=None, help="the context window sent to Ollama, in tokens (default: _lore/tuning.json enacter.num_ctx)")
     parser.add_argument("--max-retries", type=int, default=2)
     parser.add_argument("--out", default=None, help="also write the validated reply to this path")
     args = parser.parse_args()
@@ -285,7 +361,7 @@ def main() -> None:
     while attempt <= args.max_retries and problems:
         attempt += 1
         try:
-            reply = call_ollama(args.host, args.model, system, user, args.temperature)
+            reply = call_ollama(args.host, args.model, system, user, args.temperature, num_ctx=args.num_ctx)
         except json.JSONDecodeError as e:
             problems = [f"reply was not valid JSON: {e}"]
             reply = None
