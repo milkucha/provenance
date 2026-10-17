@@ -36,6 +36,10 @@
     "min": 9,
     "max": 15
   },
+  "estate": {
+    "_comment": "The author's answer 2026-10-17 (TODO.md, 'Bequeathal tax'): when a character dies and has living children, bequest_tax (0.5) of their personal provisions goes to the provisions pool of the place they died in and the rest is split equally among the living children. With no living children the whole estate goes to that pool, as it already did. A global knob, no per-town overrides. It is the sink against reward-driven wealth growth (arc_completion_reward is new money, eating the only other drain); scripts/test/balance_economy.py --gens measures what it does. Default is the author's half, not tuned by any run.",
+    "bequest_tax": 0.5
+  },
   "arc_meetable_odds_percent": 55,
   "_comment_arc_meetable_odds_percent": "Design session 2026-09-13: odds that ANYONE useful is actually present once p1 has arrived (or was already) at a location that can satisfy their arc's need - the 'missed connection' mechanic. Deliberately a real, non-trivial chance of a miss (not 90%+) since the whole point of this roll is that showing up doesn't guarantee anyone worth meeting is there this exact pass - 55 keeps it closer to a coin flip than a near-certainty, in the same range as survival's own arc_base (50) rather than borrowing a rare-event odds value like contested (15).",
   "odds_percent": {

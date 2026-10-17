@@ -66,9 +66,11 @@ arc_completion.reward_for, roll_arc_outcome.WEIGHTS).
   G4. Completion reward: on a completion only, personal provisions += arc_completion_reward
       (clamp(base + per_turn x turns, min, max)); `--reward off` leaves it out, `--reward uncapped`
       removes the max.
-  G5. Death: from age (G1) or starvation. `--inheritance on` splits the dead's personal provisions
-      equally among living children, or into the pool if there are none (estate.py); `off` is the old
-      rule, they vanish. The completion bonus is not a separate item, it is in the personal provisions.
+  G5. Death: from age (G1) or starvation. `--inheritance on` settles the dead's personal provisions with
+      the real rule (estate.split): `--tax` (default tuning's `estate.bequest_tax`, 0.5) of it into the pool
+      and the rest equally among living children, or all of it into the pool if there are none; `off` is the
+      old rule, they vanish. `--tax 0` is the old inheritance without the tax. The completion bonus is not a
+      separate item, it is in the personal provisions.
 Metrics (mean over seeds, at the end and at four checkpoints): `gini` and `top10` (share of all personal
 provisions held by the richest tenth of the living), `mean`/`max` personal provisions, `lineage_top`
 (share held by the richest founder LINE: each living person is credited to the founder who is
@@ -77,7 +79,7 @@ and `turns` (mean own turns per completed arc), `born`, `alive`, `gen` (deepest 
 
 Usage:
     py scripts/test/balance_economy.py --gens 6 --pop 12 --seeds 6
-    py scripts/test/balance_economy.py --gens 6 --pop 12 --seeds 6 --compare   # the four cases side by side
+    py scripts/test/balance_economy.py --gens 6 --pop 12 --seeds 6 --compare   # the five cases side by side
     py scripts/test/balance_economy.py --pop 12 --seeds 8
     py scripts/test/balance_economy.py --pop 6 12 25 --grid work_pool=0,1,2 upkeep_rate_per_capita=0.05,0.15
     py scripts/test/balance_economy.py --pop 12 --trace          # the run's trajectory, 10 checkpoints
@@ -129,6 +131,7 @@ sys.path.insert(0, str(LORE))
 import tuning  # noqa: E402
 import economy_rules  # noqa: E402
 import arc_completion  # noqa: E402
+import estate  # noqa: E402
 import temperament  # noqa: E402
 from roll_arc_outcome import WEIGHTS as ARC_WEIGHTS  # noqa: E402
 from roll_survival import arc_odds  # noqa: E402
@@ -139,7 +142,8 @@ BASE_COST = TUNING["arc_payment"]["arc_need_cost"]
 TEMP = TUNING["temperament"]
 PAY = TUNING["arc_payment"]
 RICH = {"work_pool": 6, "upkeep_rate_per_capita": 0.05, "work_personal": 3}  # a setting where the pool is a commons, for calibration only
-PROPOSAL = {"work_pool": 4, "upkeep_rate_per_capita": 0.05, "work_personal": 3}  # OPEN_QUESTIONS.md, not adopted
+PROPOSAL = {"work_pool": 4, "upkeep_rate_per_capita": 0.05, "work_personal": 3}  # adopted 2026-10-17 (tuning.json), kept for the calibrate tables
+OLD = {"work_pool": 1, "upkeep_rate_per_capita": 0.15, "work_personal": 2}  # the numbers before the adoption
 CORE = ["work_pool", "work_personal", "upkeep_rate_per_capita", "eat_amount", "arc_need_cost"]
 SCAN_GRID = {
     "work_pool": [0, 1, 2, 3, 5, 8],
@@ -496,7 +500,7 @@ def top_share(values: list, frac: float = 0.1) -> float:
 
 
 def simulate_generations(pop: int, gens: int, seed: int, params: dict, inheritance: bool = True,
-                         reward: str = "on", birth_rate: float = 0.04, cap: float = 1.5,
+                         reward: str = "on", tax: float = 0.0, birth_rate: float = 0.04, cap: float = 1.5,
                          affinity: float = 0.0, pressure: float = 0.5, pay_rate: float = 0.35) -> dict:
     s = dict(BASE_S)
     s.update({k: v for k, v in params.items() if k != "arc_need_cost"})
@@ -548,14 +552,15 @@ def simulate_generations(pop: int, gens: int, seed: int, params: dict, inheritan
         amount = p["personal"]
         kids = [q for q in people if q["alive"] and p["id"] in q["parents"]]
         if inheritance and amount > 0:
+            nonlocal pool
+            to_pool, share = estate.split(amount, len(kids), tax)  # the real rule
+            for q in kids:
+                q["personal"] += share
             if kids:
-                for q in kids:
-                    q["personal"] += amount / len(kids)
-                stats["to_children"] += amount
-            else:
-                nonlocal pool
-                pool += amount
-                stats["to_pool"] += amount
+                stats["to_children"] += share * len(kids)
+            if to_pool:
+                pool += to_pool
+                stats["to_pool"] += to_pool
         else:
             stats["vanished"] += amount
         p["personal"] = 0
@@ -630,11 +635,13 @@ def run_generations(a) -> None:
     pops = a.pop or [12]
     base = today()
     base.update({k: v[0] for k, v in parse_grid(a.set).items()})
-    cases = [("old rule (estate vanishes, no reward)", False, "off"),
-             ("inheritance only", True, "off"),
-             ("inheritance + reward (tuning.json defaults)", True, "on"),
-             ("inheritance + reward, NO cap", True, "uncapped")] if a.compare else [
-             ("inheritance " + a.inheritance + ", reward " + a.reward, a.inheritance == "on", a.reward)]
+    tax = a.tax if a.tax is not None else float((TUNING.get("estate") or {}).get("bequest_tax", 0.0))
+    cases = [("old rule (estate vanishes, no reward)", False, "off", 0.0),
+             ("inheritance only (no tax, no reward)", True, "off", 0.0),
+             ("inheritance + reward, no tax", True, "on", 0.0),
+             (f"inheritance + reward + tax {tax:g} (tuning.json)", True, "on", tax),
+             (f"... tax {tax:g}, reward NO cap", True, "uncapped", tax)] if a.compare else [
+             (f"inheritance {a.inheritance}, reward {a.reward}, tax {tax:g}", a.inheritance == "on", a.reward, tax)]
     cfg = TUNING["arc_completion_reward"]
     print(f"generations: {a.gens} x ~45 own turns x N passes; birth-rate {a.birth_rate}, cap {a.cap} x N, pay-rate {a.pay_rate}, {a.seeds} seeds")
     print("economy: " + ", ".join(f"{k}={fmt(v)}" for k, v in base.items()))
@@ -643,8 +650,8 @@ def run_generations(a) -> None:
         print(f"\nN = {n}")
         head = ["case", "alive", "gen", "born", "compl", "turns/c", "failed", "gini", "top10", "lineage", "mean", "max", "to_kids", "to_pool", "vanish", "reward"]
         rows = [head]
-        for label, inh, rw in cases:
-            runs = [simulate_generations(n, a.gens, a.seed_base + sd, base, inheritance=inh, reward=rw, birth_rate=a.birth_rate, cap=a.cap,
+        for label, inh, rw, tx in cases:
+            runs = [simulate_generations(n, a.gens, a.seed_base + sd, base, inheritance=inh, reward=rw, tax=tx, birth_rate=a.birth_rate, cap=a.cap,
                                          affinity=a.affinity, pressure=a.pressure, pay_rate=a.pay_rate) for sd in range(a.seeds)]
             m = lambda f: statistics.mean(f(r) for r in runs)
             rows.append([label, f"{m(lambda r: r['final']['alive']):.1f}", f"{m(lambda r: r['final']['gen']):.1f}", f"{m(lambda r: r['stats']['born']):.0f}", f"{m(lambda r: r['stats']['completions']):.1f}",
@@ -693,7 +700,7 @@ CASES = [
 def traits_report(a) -> None:
     pops = a.pop or [6, 12, 25]
     kw = dict(affinity=a.affinity, pressure=a.pressure, pay_rate=a.pay_rate)
-    for name, extra in (("CURRENT defaults", {}), ("PROPOSAL (work_pool 4, upkeep 0.05, work_personal 3; not adopted)", PROPOSAL)):
+    for name, extra in (("CURRENT defaults (the adopted economy since 2026-10-17)", {}), ("TODAY'S OLD NUMBERS (work_pool 1, work_personal 2, upkeep 0.15; before the adoption)", OLD)):
         params = dict(today(), **extra)
         print(f"\n== {name}: " + ", ".join(f"{k}={fmt(v)}" for k, v in params.items()) + f" | {a.seeds} seeds, passes {a.passes or '40 x N'}; comfortable pool {TEMP['pool_comfortable_meals']:g} meal(s)/head, window {TEMP['recent_window_min']}..{TEMP['recent_window_max']}, trend scale {TEMP['trend_scale_meals']:g} meals")
         print_t(t_rows(CASES, pops, a.seeds, a.seed_base, params, a.passes, kw))
@@ -737,9 +744,10 @@ def main() -> None:
     ap.add_argument("--pay-rate", type=float, default=0.35, help="chance an arc pass reaches a supplier and tries to pay")
     ap.add_argument("--trace", action="store_true", help="print the trajectory of the first cell, 10 checkpoints")
     ap.add_argument("--gens", type=int, default=0, help="run the generations model for this many generations (see GENERATIONS above)")
-    ap.add_argument("--compare", action="store_true", help="with --gens: the four cases (old rule, inheritance, inheritance + reward, no cap) side by side")
+    ap.add_argument("--compare", action="store_true", help="with --gens: the five cases (old rule, inheritance, + reward, + bequest tax, tax with no cap) side by side")
     ap.add_argument("--inheritance", choices=["on", "off"], default="on", help="with --gens (without --compare)")
     ap.add_argument("--reward", choices=["on", "off", "uncapped"], default="on", help="with --gens (without --compare)")
+    ap.add_argument("--tax", type=float, default=None, help="with --gens: the bequest tax (default tuning's estate.bequest_tax); 0 = none")
     ap.add_argument("--birth-rate", type=float, default=0.04, help="with --gens: chance per drawn adult turn of a birth")
     ap.add_argument("--cap", type=float, default=1.5, help="with --gens: the town's size cap, as a multiple of the starting population")
     ap.add_argument("--scan", action="store_true", help="scan the grid for the stable region (default grid: see SCAN_GRID)")

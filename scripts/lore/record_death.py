@@ -7,8 +7,9 @@ point 6. This is everything in that point EXCEPT the one genuine judgement call 
 other shock resolution. Everything else here is bookkeeping:
 
     - sets life.deceased: true on the character's own file
-    - moves their personal provisions to their living children (equal shares), or to the pool of the
-      place they died in if there are none (estate.py - the one function every death goes through)
+    - settles their personal provisions (estate.py - the one function every death goes through): the
+      bequest tax (`estate.bequest_tax`, half) to the pool of the place they died in, the rest in equal
+      shares to their living children; with no living children, all of it to that pool
     - writes _lore/tales/<slug>.md recording the death as an objective fact of the world
     - adds the matching row to encodings.json's tales.entries, _lore/tales/_authors.md, and
       _lore/tales/_index.md
@@ -186,7 +187,10 @@ def main() -> None:
     print(f"deceased: {key} ({name})")
     print(f"tale written: _lore/tales/{slug}.md  (id: {slug})")
     if inheritance["heirs"]:
-        print(f"estate: {inheritance['amount']:g} provisions split among {len(inheritance['heirs'])} living child(ren): {', '.join(inheritance['heirs'])}")
+        line = f"estate: {inheritance['to_heirs']:g} of {inheritance['amount']:g} provisions split among {len(inheritance['heirs'])} living child(ren): {', '.join(inheritance['heirs'])}"
+        if inheritance["pool"] is not None:
+            line += f"; bequest tax {inheritance['to_pool']:g} to the pool at {inheritance['pool'] or '(no location)'}"
+        print(line)
     elif inheritance["pool"] is not None:
         print(f"estate: {inheritance['amount']:g} provisions to the pool at {inheritance['pool'] or '(no location)'} (no living children)")
     else:
