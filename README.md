@@ -488,8 +488,22 @@ and `/enact` still never touches either registry or `data/`. `/embody` and `/spa
     advance/stall/reverse/transform/resolve, plus the pass's economy: upkeep on the pool, then for `p1` a meal
     (one unit from their own provisions, one from the location's pool, a half meal if the two together
     fall short, `economy_rules.py`), then work pays them 2 provisions and the pool 1, while an arc costs an
-    extra point of energy and pays nothing; `scripts/test/balance_economy.py` runs these numbers on a toy
-    town). Every way the pursuit can end
+    extra point of energy and pays nothing; the second participant of a pair scene eats too (base cost and the
+    meal at the scene's location, nothing earned, no arc cost, no second upkeep) and can starve, through the
+    same death path; `scripts/test/balance_economy.py` runs these numbers on a toy town). **Temperament:** a
+    character carries `temperament` {risk, thrift, communality, persistence}, each in [-1, 1] (missing = 0, neutral,
+    the roll as it was). Risk moves the reserve wanted before pursuing (margin in meals, cautious about 5, bold 0)
+    and how loudly low energy and a falling pool or purse speak; communality scales the affinity-obligation term
+    only (leaning on the pool is not scaled); persistence adds to arc pressure and makes a failed pursuit retry the
+    same destination (the restless redraw); thrift adds a soft hesitation to the payment odds below a keep-level
+    (saver 3 meals, spender 0), the hard affordability gate unchanged. A character also keeps `recent`, its last
+    few own observations (pool per head at home, own provisions, energy), and the roll reads the rates of change:
+    declines push toward work, a rise pulls only the bold; the pool window follows risk (bold 2 observations,
+    cautious 8) and the purse window follows thrift (spender 2, saver 8), each at most what exists. Traits are the
+    parents' mean plus seeded noise at birth, a seeded uniform draw for a starting cast with none
+    (`simulate_generate_population.py`), authored in `/character`, or assigned to an existing population with
+    `assign_temperament.py` (dry run unless `--apply`, `--root` required); the enacter sees a few words ("bold,
+    thrifty"). Every knob is global, in `tuning.json` `temperament`. Every way the pursuit can end
     is named in the brief (`pursuit.stage` and `reason`, with `could_afford` decided before the
     meeting, after the pass's eating), and the enacter is handed each participant's whole knowledge sample and the place, but
     only the life-stage band, never the lifespan. After the scene, every remaining write
@@ -634,6 +648,9 @@ Provenance/
 │   │   │                               does the same for a world that predates it, dry-run by default)
 │   │   ├── arc_completion.py          (a completed arc: filed as a tale, told like a death, handed
 │   │   │                               to the living children's knowledge, paid in provisions)
+│   │   ├── temperament.py             (the four traits, the window of recent observations and the
+│   │   │                               pure helpers the roll, the payment gate and the birth draw share;
+│   │   │                               assign_temperament.py gives an existing cast one, dry run by default)
 │   │   ├── estate.py                  (at death, a character's provisions go to their living
 │   │   │                               children in equal shares, else into the local pool)
 │   │   ├── enact_via_ollama.py        (/simulate's Local dispatch path — a locally-hosted Ollama
