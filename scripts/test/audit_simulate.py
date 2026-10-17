@@ -29,6 +29,14 @@ record_death.py, a birth through generate_offspring.py) - probes F17 (circle), F
 character file and encodings.json, so two runs of one seed - also under different PYTHONHASHSEED -
 can be compared byte for byte.
 
+Added with the author's answers of 2026-10-17 (bequest tax, reflection scenes, a need available at home,
+completion tales for later children, no births on roads, no neutral temperament): `decision_checks()`
+drives each through the REAL code and the probes F2 (a need available at home goes through the arrival
+pipeline), F24 (the new scale definitions), F25 (a character alone at an empty place gets a one-person
+reflection scene, dispatched through the driver with a stub enacter), F26 (the bequest tax), F27 (a child
+born after a completion has its parents' completion tale), F28 (no births on roads) and F29 (everybody has a
+temperament) read them. The enacter is always a stub: no model call anywhere in this file.
+
 Usage:
     py scripts/test/audit_simulate.py --root <corpus worktree> --passes 40 --seed 7 --fixture none
     py scripts/test/audit_simulate.py --root <corpus worktree> --passes 200 --seed 5 --fixture travel \\
@@ -50,7 +58,7 @@ import tempfile
 from pathlib import Path
 
 NOTE_PATTERNS = {
-    "local_noop": "pursued their arc's need",
+    "local_available": "is available at their own place",
     "no_target": "no reachable target",
     "travel_hop": "is traveling toward",
     "nobody_there": "nobody is around",
@@ -155,6 +163,9 @@ def run_passes(tmp, passes, seed, counts, births=False):
             counts["stage_" + pu["stage"]] += 1
             counts["stagereason_%s/%s" % (pu["stage"], pu["reason"])] += 1
             counts["could_afford_" + str(pu["could_afford"]).lower()] += 1
+            if pu.get("local"):
+                counts["pursuit_local"] += 1
+                counts["local_outcome_rolled"] += bool(b["arc"]["outcome"])
         if b.get("scene"):
             counts["scene_" + b["scene"]] += 1
         if journey_before and b["survival"].get(p1, {}).get("choice") in ("work", "survive"):  # "survive" is the pre-2026-10-17 name
@@ -219,6 +230,18 @@ def run_passes(tmp, passes, seed, counts, births=False):
                 circle = after[a_].get("social_circle") or {}
                 if not isinstance(circle, dict) or b_ not in circle:
                     counts["pair_scenes_without_circle_tie"] += 1
+            hs.unlink(); dec.unlink()
+        elif b.get("scene") == "solo":
+            # a reflection (arrived_empty): one participant, no claims, no partner, no reproduction
+            counts["reflections"] += 1
+            hs = tmp / f".h{n}.json"
+            hs.write_text(json.dumps({"participants": [p1], "location": b["location"], "summary": "stub reflection", "claims": []}))
+            rec = json.loads(sh([S / "pass_record.py", "--json-file", hs, "--p1", p1, "--pass-number", n], tmp))
+            dec = tmp / f".d{n}.json"
+            dec.write_text(json.dumps({"participants": {p1: {"lived_delta": 1}}}))
+            rep = json.loads(sh([S / "pass_apply.py", "--json-file", dec, "--p1", p1, "--pass-number", n, "--scene-id", rec["hearsay_id"]], tmp))
+            counts["reflection_reproduction_ran"] += bool(rep["reproduction_raw"].strip())  # must stay 0
+            counts["reflection_deaths"] += bool(rep["participants"][p1]["deceased"])
             hs.unlink(); dec.unlink()
         else:
             if drv.apply_solo(p1, n, b)["deceased"]:
@@ -288,7 +311,7 @@ def static_probes(tmp, counts, fixture_info):
     diagram = repo / "diagrams" / "gen_simulate_pass.py"
     return {
         "F1": default_prov < cost and not writers,
-        "F2": "history" not in mech_src.split("if matched_need:")[1].split("# Step 5")[0],
+        "F2": None,  # set from the scenario probes in main(): a need available at home goes through the arrival pipeline
         "F3": dead_cand > 0 or dead_provide_leak,
         "F4": "check_anchor_reference" not in prep_src and "check_anchor_reference" not in mech_src,
         "F5": "derived_from" not in src("enact_via_ollama.py").split("REPLY_SCHEMA")[1].split("def load_preamble")[0],
@@ -296,7 +319,9 @@ def static_probes(tmp, counts, fixture_info):
         # RAN since the pursuit redesign: a work roll taken mid-journey must leave the journey alone.
         # None when this run never rolled one.
         "F7": (counts["journey_reset"] > 0) if counts["work_midjourney"] else None,
-        "F8": 'add_argument("--p2", required=True' in src("pass_apply.py") and "roll_death_legacy" not in inspect.getsource(importlib.import_module("simulate_driver").apply_solo),
+        # pass_apply/pass_record take a one-participant call now (2026-10-17); what remains is that a solo pass's
+        # death (apply_solo) still has no death-legacy and no shock-candidate resolution
+        "F8": "roll_death_legacy" not in inspect.getsource(importlib.import_module("simulate_driver").apply_solo),
         "F9": counts.get("conformance_kin_invariant_failures", 0) > 0,
         "F10": None,
         "F11": bool(unused) or not social_writers or not lead_readers,
@@ -402,16 +427,23 @@ def scenario_probes(tmp):
         ok["completer_holds_reward"] = a["provisions"] > 20 and done["provisions"] == a["provisions"]
         detail["completion"] = {"turns": a["arc"]["turns"], "reward": done["reward"], "notified": done["notified"]}
 
-    # --- deaths through record_death.py: estate to the living child, and to the pool when childless
+    # --- deaths through record_death.py: the bequest tax (half) to the pool of the place they died in, the rest
+    # to the living child; the whole estate to that pool when childless; two heirs split the heirs' half equally
+    tax = float((T.get("estate") or {}).get("bequest_tax", 0.0))
+    pool_mod = importlib.import_module("provisions_lib")
+    pools = lambda: json.loads((tmp / "_lore" / "provisions.json").read_text(encoding="utf-8"))["pools"]
     before_c = load_chars(tmp)["probe_c"]["provisions"]
-    estate_a = load_chars(tmp)["probe_a"]["provisions"]
+    a_now = load_chars(tmp)["probe_a"]
+    estate_a, loc_a = a_now["provisions"], a_now["location"]
+    pool_a_before = pool_mod.get_provisions(loc_a)
     sh([S / "record_death.py", "probe_a", "--seed", "3"], tmp)
     after = load_chars(tmp)
-    ok["estate_to_living_child"] = abs(after["probe_c"]["provisions"] - (before_c + estate_a)) < 1e-9 and after["probe_a"]["provisions"] == 0
-    pool_mod = importlib.import_module("provisions_lib")
+    ok["estate_to_living_child"] = abs(after["probe_c"]["provisions"] - (before_c + estate_a * (1 - tax))) < 1e-9 and after["probe_a"]["provisions"] == 0
+    ok["bequest_tax_goes_to_the_pool_where_they_died"] = abs(pools()[loc_a] - (pool_a_before + estate_a * tax)) < 1e-9
+    ok["bequest_conserves_the_estate"] = abs((after["probe_c"]["provisions"] - before_c) + (pools()[loc_a] - pool_a_before) - estate_a) < 1e-9
     pool_before = pool_mod.get_provisions("ProbeHome")
     sh([S / "record_death.py", "probe_e", "--seed", "3"], tmp)
-    pool_after = json.loads((tmp / "_lore" / "provisions.json").read_text(encoding="utf-8"))["pools"]["ProbeHome"]
+    pool_after = pools()["ProbeHome"]
     ok["estate_to_pool_without_children"] = abs(pool_after - (pool_before + 4)) < 1e-9 and load_chars(tmp)["probe_e"]["provisions"] == 0
     # two heirs split equally
     _write(tmp, "probe_p", _blank("Probe Papa", "ProbeHome", provisions=5))
@@ -419,9 +451,12 @@ def scenario_probes(tmp):
         _write(tmp, k, _blank(k.title().replace("_", " "), "ProbeHome", parents=["probe_p"], provisions=0))
     lifespans["lifespans"].update({"probe_p": {"span": 99, "range": "30-60"}})
     (tmp / "_lore" / "characters" / "lifespans.json").write_text(json.dumps(lifespans, indent=2), encoding="utf-8")
+    pool_before = pool_mod.get_provisions("ProbeHome")
     sh([S / "record_death.py", "probe_p", "--seed", "3"], tmp)
     after = load_chars(tmp)
-    ok["estate_split_equally"] = after["probe_k1"]["provisions"] == after["probe_k2"]["provisions"] == 2.5
+    ok["estate_split_equally"] = after["probe_k1"]["provisions"] == after["probe_k2"]["provisions"] == 5 * (1 - tax) / 2
+    ok["bequest_two_heirs_pool_share"] = abs(pools()["ProbeHome"] - (pool_before + 5 * tax)) < 1e-9
+    detail["bequest"] = {"tax": tax, "completer_estate": estate_a, "died_at": loc_a}
 
     # --- a birth through generate_offspring.py: circle inheritance and propagation
     pool_live = [k for k in sorted(chars_before) if not load_chars(tmp)[k]['life'].get('deceased') and load_chars(tmp)[k].get('parents')]
@@ -464,6 +499,7 @@ def scenario_probes(tmp):
     # --- temperament and the second participant (2026-10-17): p2 eats, traits move the odds in the
     # stated directions, trends respond, a neutral character is unchanged, and the window is kept.
     ok.update(temperament_checks(tmp, lib, S, home_ctx, shop_ctx, need, detail))
+    ok.update(decision_checks(tmp, lib, S, home_ctx, shop_ctx, need, detail))
     ok["_detail"] = detail
     return ok
 
@@ -549,18 +585,20 @@ def temperament_checks(tmp, lib, S, home_ctx, shop_ctx, need, detail):
     # ---- traits move the odds in the stated directions ------------------------------------------------
     base = (10, 0.5, 0.5, 2, 0.0, 2)  # energy, affinity, pressure, pool per head, checkpoint trend, provisions
     odds = lambda traits=None, recent=None, args=base: rs.arc_odds(s_, *args, traits=traits, recent=recent, t=t_)
-    ok["trait_risk_bold_pursues_sooner"] = odds({"risk": 1})["pct"] > odds({"risk": 0})["pct"] > odds({"risk": -1})["pct"]
-    low = (3, 0.5, 0.5, 2, 0.0, 2)
+    # risk and the cushion: a purse of 8 sits between the bold reserve (3) and the cautious one (13)
+    mid = (10, 0.5, 0.5, 2, 0.0, 8)
+    ok["trait_risk_bold_pursues_sooner"] = odds({"risk": 1}, args=mid)["pct"] > odds({"risk": 0}, args=mid)["pct"] > odds({"risk": -1}, args=mid)["pct"]
+    low = (3, 0.5, 0.5, 2, 0.0, 20)  # a full purse: every cushion at its ceiling, so only the threat terms differ
     e_b, e_c = odds({"risk": 1}, args=low), odds({"risk": -1}, args=low)
     ok["trait_risk_scales_threat_terms"] = e_b["pct"] - odds({"risk": 0}, args=low)["pct"] > 0 and e_c["pct"] < odds({"risk": 0}, args=low)["pct"]
-    ok["trait_risk_cushion_centre_moves"] = odds({"risk": -1})["personal_cushion"] < odds({"risk": 0})["personal_cushion"] < odds({"risk": 1})["personal_cushion"]
+    ok["trait_risk_cushion_is_against_the_reserve"] = odds({"risk": -1}, args=mid)["personal_cushion"] < odds({"risk": 0}, args=mid)["personal_cushion"] < odds({"risk": 1}, args=mid)["personal_cushion"]
     ok["trait_communality_scales_obligation_only"] = (
         odds({"communality": 1})["pct"] < odds({"communality": 0})["pct"] < odds({"communality": -1})["pct"]
         and abs((odds({"communality": 0})["pct"] - odds({"communality": 1})["pct"]) - s_["weights"]["affinity_obligation"] * 0.5 * t_["communality"]["obligation_k"]) < 1e-9
         and odds({"communality": 1})["pool_surplus"] == odds({"communality": -1})["pool_surplus"]
         and abs(odds({"communality": 1}, args=(10, 0.0, 0.5, 2, 0.0, 2))["pct"] - odds({"communality": -1}, args=(10, 0.0, 0.5, 2, 0.0, 2))["pct"]) < 1e-9)  # no bond, no duty to scale
     ok["trait_persistence_adds_pressure"] = odds({"persistence": 1})["pct"] > odds({"persistence": 0})["pct"] > odds({"persistence": -1})["pct"]
-    # thrift: the hard gate is unchanged, the hesitation is soft and relative to a neutral payer
+    # thrift: the hard gate is unchanged, the hesitation is soft and relative to nobody
     cost = T["arc_payment"]["arc_need_cost"]
     pay = lambda thrift, prov: er.payment_odds(prov, cost, 0.0, thrift, T["arc_payment"], s_, t_)
     ok["trait_thrift_hesitates_below_keep_level"] = pay(1, cost + 1)["pct"] < pay(0, cost + 1)["pct"] < pay(-1, cost + 1)["pct"] and pay(1, cost + 1)["hesitation"] > 0
@@ -576,8 +614,9 @@ def temperament_checks(tmp, lib, S, home_ctx, shop_ctx, need, detail):
         return real.arc_payment_gate("probe_q1", "probe_s", c_["arc"])
     g1, g0 = gate(1, cost + 1), gate(0, cost + 1)
     ok["trait_thrift_hard_gate_unchanged"] = gate(1, cost - 0.5)["reason"] == "cannot_afford" and gate(-1, cost - 0.5)["reason"] == "cannot_afford"
-    ok["trait_thrift_shown_in_gate"] = g1["odds_used"] < g0["odds_used"] and g1["hesitation"] > 0 and g0["hesitation"] == 0
-    detail["gate"] = {"saver": [g1["odds_used"], g1["hesitation"]], "neutral": [g0["odds_used"], g0["hesitation"]]}
+    gs = gate(-1, cost + 1)
+    ok["trait_thrift_shown_in_gate"] = g1["odds_used"] < g0["odds_used"] < gs["odds_used"] and g1["hesitation"] > g0["hesitation"] > 0 and gs["hesitation"] == 0
+    detail["gate"] = {"saver": [g1["odds_used"], g1["hesitation"]], "middle": [g0["odds_used"], g0["hesitation"]], "spender": [gs["odds_used"], gs["hesitation"]]}
 
     # ---- trends respond -----------------------------------------------------------------------------------
     win = lambda pcs, ps=None: [{"pc": pc, "p": (ps[i] if ps else 2), "e": 15} for i, pc in enumerate(pcs)]
@@ -602,24 +641,22 @@ def temperament_checks(tmp, lib, S, home_ctx, shop_ctx, need, detail):
     # no window: the old checkpoint term, untouched
     ok["trend_no_window_is_checkpoint_term"] = abs(odds(n_, None, (10, 0.5, 0.5, 2, -1.0, 2))["pct"] - odds(n_, win([3]), (10, 0.5, 0.5, 2, -1.0, 2))["pct"]) < 1e-9 and odds(n_, None, (10, 0.5, 0.5, 2, -1.0, 2))["trend"] < 0
 
-    # ---- a neutral character is unchanged ------------------------------------------------------------------
-    th = s_["provides_provisions_threshold"]
-    def legacy(e, a, p, pc, tr, pr):
-        cl = lambda x: max(-1, min(1, x)); w = s_["weights"]
-        v = 50 + w["energy"] * (e / s_["energy_cap"] - .5) * 2 + w["arc_pressure"] * (p * 2 - 1) + w["pool_reliance"] * cl((pc - th) / th) * a - w["affinity_obligation"] * a + w["scarcity_pressure"] * min(0, cl(tr / th)) + w["personal_cushion"] * cl((pr - th) / th)
-        return max(s_["odds_percent"]["min"], min(s_["odds_percent"]["max"], v))
-    import random as _r
-    rr, same_none, same_zero = _r.Random(4), True, True
-    t_flat = {**t_, "pool_comfortable_meals": th / eat}  # the pre-temperament pool centre, for the comparison only
-    for _ in range(300):
-        a_ = (rr.uniform(1, 20), rr.uniform(-1, 1), rr.random(), rr.uniform(0, 6), rr.uniform(-2, 2), rr.uniform(0, 8))
-        want = legacy(*a_)
-        same_none &= abs(rs.arc_odds(s_, *a_)["pct"] - want) < 1e-9
-        same_zero &= abs(rs.arc_odds(s_, *a_, traits={}, t=t_flat)["pct"] - want) < 1e-9 and abs(rs.arc_odds(s_, *a_, traits={"risk": 0, "thrift": 0, "communality": 0, "persistence": 0}, t=t_flat)["pct"] - want) < 1e-9
-    ok["neutral_roll_is_the_old_roll"] = bool(same_none and same_zero)
-    ok["neutral_payment_odds_unchanged"] = all(abs(pay(0, cost + x)["pct"] - er.payment_odds(cost + x, cost, 0.0, 0, T["arc_payment"], s_, None)["pct"]) < 1e-9 for x in (0, 1, 2, 5))
-    ok["neutral_missing_field_reads_zero"] = tm.traits_of({}) == tm.traits_of({"temperament": {}}) == {k: 0.0 for k in tm.TRAITS} and tm.words({}, .4) == ""
-    ok["neutral_old_character_no_window_same_odds"] = abs(rs.arc_odds(s_, *base, traits=None, recent=None, t=t_)["pct"] - rs.arc_odds(s_, *base, traits={"risk": 0}, recent=None, t=t_)["pct"]) < 1e-9
+    # ---- the new scale definitions (2026-10-17, no neutral centre) -----------------------------------------
+    # replaces the old guarantee that trait 0 was the pre-temperament roll
+    risk_cfg, thrift_cfg = t_["risk"], t_["thrift"]
+    ok["scale_risk_margin_runs_0_to_5_meals"] = (tm.margin_meals(1, risk_cfg), tm.margin_meals(-1, risk_cfg)) == (0, 5) and \
+        tm.reserve_wanted(1, cost, eat, risk_cfg) == cost and tm.reserve_wanted(-1, cost, eat, risk_cfg) == cost + 5 * eat
+    thr = s_["provides_provisions_threshold"]
+    clamp1 = lambda x: max(-1.0, min(1.0, x))
+    ok["scale_cushion_computed_against_that_margin"] = all(
+        abs(rs.arc_odds(s_, 10, 0.5, 0.5, 2, 0.0, prov, traits={"risk": r}, t=t_)["personal_cushion"] - clamp1((prov - (cost + tm.margin_meals(r, risk_cfg) * eat)) / thr)) < 1e-9
+        for r in (-1, -0.4, 0, 0.7, 1) for prov in (0, 3, 6, 8, 13, 20))
+    ok["scale_keep_level_runs_0_to_3_meals"] = (tm.keep_meals(-1, thrift_cfg), tm.keep_meals(1, thrift_cfg)) == (0, 3)
+    ok["scale_hesitation_not_relative_to_a_neutral_payer"] = pay(0, cost)["hesitation"] == thrift_cfg["hesitation_per_meal"] * tm.keep_meals(0, thrift_cfg) and \
+        pay(-1, cost)["hesitation"] == 0 and pay(1, cost)["hesitation"] == thrift_cfg["hesitation_per_meal"] * 3
+    ok["scale_pool_level_is_a_world_constant"] = len({rs.arc_odds(s_, 10, 0.5, 0.5, 3, 0.0, 2, traits={k: v}, t=t_)["pool_surplus"] for k in tm.TRAITS for v in (-1, 0, 1)}) == 1
+    ok["scale_old_data_reads_zero_and_works"] = tm.traits_of({}) == tm.traits_of({"temperament": None}) == {k: 0.0 for k in tm.TRAITS} and tm.words({}, .4) == "" and \
+        abs(rs.arc_odds(s_, *base, traits=None, recent=None, t=t_)["pct"] - rs.arc_odds(s_, *base, traits={"risk": 0}, recent=None, t=t_)["pct"]) < 1e-9
 
     # ---- persistence retries the failed destination -----------------------------------------------------
     opts = [{"location": "A", "weight": 2.0}, {"location": "B", "weight": 2.0}]
@@ -627,6 +664,196 @@ def temperament_checks(tmp, lib, S, home_ctx, shop_ctx, need, detail):
     got = {p: tm.retry_adjust(opts, r_, "n", p, pc_)[0]["weight"] for p in (1, 0, -1)}
     ok["retry_persistent_pulled_restless_pushed"] = got[1] > got[0] == 2.0 > got[-1] > 0 and tm.retry_adjust(opts, r_, "other", 1, pc_) == opts
     detail["temperament"] = {"retry_weights_A": got, "windows_pool_by_risk": [tm.pool_window(x, t_) for x in (-1, 0, 1)], "windows_purse_by_thrift": [tm.personal_window(x, t_) for x in (-1, 0, 1)]}
+    return ok
+
+
+def decision_checks(tmp, lib, S, home_ctx, shop_ctx, need, detail):
+    """The author's answers of 2026-10-17, through the real code, no model: local_* (a need available at the
+    character's own place goes through the arrival pipeline), reflection_* (a one-person scene for
+    arrived_empty, dispatched by the driver with a stub enacter, and for nothing else), cultural_* (a child
+    born after a completion has its parents' completion tales), roadbirth_* (no births on roads), nodefault_*
+    (everybody has a temperament). The bequest tax is in scenario_probes (bequest_*, estate_*); the scales
+    are in temperament_checks (scale_*)."""
+    ok = {}
+    T = importlib.import_module("tuning").load()
+    enc_path = tmp / "_lore" / "encodings.json"
+    lifespans_path = tmp / "_lore" / "characters" / "lifespans.json"
+
+    def add_lifespans(*keys):
+        ls = json.loads(lifespans_path.read_text(encoding="utf-8"))
+        for k in keys:
+            ls["lifespans"][k] = {"span": 99, "range": "30-60"}
+        lifespans_path.write_text(json.dumps(ls, indent=2), encoding="utf-8")
+
+    # ---- a need available at home (audit F2) -------------------------------------------------------------
+    shop = [{"location": "ProbeHome", "context": shop_ctx, "weight": 100, "routine_actions": "probe"}]
+    home = [{"location": "ProbeHome", "context": home_ctx, "weight": 100, "routine_actions": "probe"}]
+    arc = {"about": ["concept: probe_l"], "needs": [need], "context": home_ctx, "premise": "Probe wants a thing at hand.", "resolution": "ongoing", "history": [], "turns": 0}
+    _write(tmp, "probe_l1", _blank("Probe L One", "ProbeHome", routines=home, arc=arc, provisions=8))
+    _write(tmp, "probe_l2", _blank("Probe L Two", "ProbeHome", routines=shop))
+    add_lifespans("probe_l1", "probe_l2")
+    lib.roll_survival = lambda key, home_: {"choice": "arc"}
+    lib.roll_meetable = lambda candidates, favor=None: {"met": True, "chosen": "probe_l2", "odds_used": 100}
+    lib.arc_payment_gate = lambda p1, p2, arc_: {"motivated": True, "reason": None, "odds_used": 100, "cost": 0}
+    lib.roll_contested = lambda strength=0, quality=0: False
+    lib.check_arc_alignment = lambda about, needs, peer: {"gate": "hit", "inclined": "help", "matched_about": []}
+    lib.roll_arc_outcome = lambda inclined, contested=False: "advance"
+    (tmp / ".simulate_rng_state.json").write_text(json.dumps({"rng_seed": 123, "draw_counter": 0}))
+    r = lib.run_pass_mechanics("probe_l1", 800)
+    pu = r.get("pursuit") or {}
+    after = load_chars(tmp)["probe_l1"]
+    ok["local_runs_the_arrival_pipeline"] = pu.get("stage") == "met_paid" and pu.get("local") is True and r["participant_2"] == "probe_l2" and r["scene"] == "pair" and r["travel"] is None
+    ok["local_advances_the_arc"] = r["arc"]["outcome"] == "advance" and len(after["arc"]["history"]) == 1 and after["location"] == "ProbeHome"
+    ok["local_stage_name_retired"] = "local_satisfied" not in lib.PURSUIT_STAGES
+    detail["local"] = {"stage": pu.get("stage"), "local": pu.get("local"), "outcome": r["arc"]["outcome"]}
+    lib.roll_meetable = lambda candidates, favor=None: {"met": False, "chosen": None, "odds_used": 10}
+    r2 = lib.run_pass_mechanics("probe_l1", 801)
+    ok["local_nobody_useful_is_arrived_nobody"] = (r2["pursuit"] or {}).get("stage") == "arrived_nobody" and r2["pursuit"]["local"] is True and r2["scene"] == "pair" and r2["arc"]["outcome"] is None
+    ok["local_failure_leaves_no_retry_memory"] = "failed_destination" not in load_chars(tmp)["probe_l1"]
+    # alone: the only supplier is p1's own routine at a place nobody else lives
+    olone = [{"location": "ProbeLone", "context": shop_ctx, "weight": 100, "routine_actions": "probe"}]
+    enc = json.loads(enc_path.read_text(encoding="utf-8"))
+    enc["locations"].append({"id": "ProbeLone", "names": ["ProbeLone"], "description": "A quiet stretch of nothing in particular.", "sources": []})
+    enc_path.write_text(json.dumps(enc, indent=1, ensure_ascii=False), encoding="utf-8")
+    arc_o = {**arc, "about": ["concept: probe_o"], "premise": "Probe wants to be left alone with a thing."}
+    _write(tmp, "probe_o1", _blank("Probe Lone", "ProbeLone", routines=olone, arc=arc_o, provisions=8, temperament={"risk": 0.5, "thrift": -0.5, "communality": 0.1, "persistence": 0.9}))
+    add_lifespans("probe_o1")
+    r3 = lib.run_pass_mechanics("probe_o1", 802)
+    ok["local_nobody_at_all_is_arrived_empty"] = (r3["pursuit"] or {}).get("stage") == "arrived_empty" and r3["pursuit"]["local"] is True and r3["scene"] == "solo" and r3["participant_2"] is None
+
+    # ---- a reflection scene (arrived_empty) --------------------------------------------------------------
+    pp = importlib.import_module("pass_prep")
+    eo = importlib.import_module("enact_via_ollama")
+    drv = importlib.import_module("simulate_driver")
+    hz = {"probe_o1": {"band": "early", "lived": 0, "ending": False}}
+    prep = pp.enacter_input(r3, hz)
+    ok["reflection_brief_has_one_participant"] = list(prep["characters"]) == ["probe_o1"] and list(prep["horizon_pre"]) == ["probe_o1"] and prep["brief"]["participant_2"] is None and prep["brief"]["scene"] == "solo" \
+        and prep["place"] is not None and prep["characters"]["probe_o1"].get("knowledge") is not None and "temperament" in prep["characters"]["probe_o1"] and "routine" in prep["characters"]["probe_o1"]
+    stub = {"scene": [{"speaker": "Probe Lone", "line": "Quiet, here."}, {"speaker": "Probe Lone", "line": "I came for something and found the wind."}],
+            "hearsay": {"location": "ProbeLone", "summary": "Probe Lone alone at ProbeLone.", "claims": []},
+            "participants": {"probe_o1": {"experience": ["Stood a while at ProbeLone, thinking of the thing they came for."], "grounded_experience": [], "cost_ledger": [], "criterion_move": None}}}
+    ok["reflection_reply_validates"] = eo.validate_reply(eo.clean_reply(json.loads(json.dumps(stub))), ["probe_o1"], prep) == []
+    two = json.loads(json.dumps(stub)); two["scene"].append({"speaker": "Somebody Else", "line": "Hello?"})
+    extra = json.loads(json.dumps(stub)); extra["participants"]["probe_l2"] = extra["participants"]["probe_o1"]
+    ok["reflection_refuses_a_second_speaker_or_participant"] = bool(eo.validate_reply(two, ["probe_o1"], prep)) and bool(eo.validate_reply(extra, ["probe_o1"], prep))
+    hs = tmp / ".h_empty.json"
+    hs.write_text(json.dumps({"participants": ["Probe A", "Probe B"], "location": "x", "summary": "s", "claims": []}))
+    bad = subprocess.run([sys.executable, str(S / "record_hearsay.py"), "--json-file", str(hs)], capture_output=True, text=True, cwd=tmp)
+    ok["reflection_empty_claims_only_for_one_participant"] = bad.returncode != 0 and "non-empty" in (bad.stderr + bad.stdout)
+    hs.unlink()
+
+    # the driver, end to end, with the model stubbed: p1 and the enacter's reply are fixed, everything else is the real driver
+    from pathlib import Path as _P
+    orig_run, calls = drv.run, []
+
+    def fake_run(args, allow_fail=False):
+        name = _P(str(args[0])).name
+        if name == "simulate_resolve_pair.py":
+            return 0, json.dumps({"participant_1": fake_run.p1}) + "\n", ""
+        if name == "pass_prep.py":
+            return 0, json.dumps(fake_run.prep), ""
+        if name == "enact_via_ollama.py":
+            calls.append(fake_run.p1)
+            out = args[args.index("--out") + 1]
+            _P(str(out)).write_text(json.dumps({"attempts": 1, "problems": [], "model": "stub", "reply": fake_run.reply}), encoding="utf-8")
+            return 0, "", ""
+        return orig_run(args, allow_fail)
+    drv.run = fake_run
+    try:
+        fake_run.p1, fake_run.prep, fake_run.reply = "probe_o1", prep, json.loads(json.dumps(stub))
+        (tmp / ".simulate_pass_brief.json").write_text(json.dumps(r3), encoding="utf-8")
+        lived_before = load_chars(tmp)["probe_o1"]["life"]["lived"]
+        state = {"pool": ["probe_o1", "probe_l1", "probe_l2"], "pending_children": [], "next_pass": 803}
+        res = drv.do_one_pass(state, 803)
+        enc2 = json.loads(enc_path.read_text(encoding="utf-8"))
+        entry = next((h for h in enc2["hearsay"]["entries"] if h["participants"] == ["Probe Lone"]), None)
+        scene_file = (tmp / "_npcs" / "scenes" / f"{entry['id']}.md") if entry else None
+        o1 = load_chars(tmp)["probe_o1"]
+        ok["reflection_dispatched_with_one_character"] = calls == ["probe_o1"] and res["status"] == "ok" and res["p2"] is None and entry is not None and entry["claims"] == []
+        ok["reflection_scene_file_written"] = bool(scene_file and scene_file.exists() and "reflection" in scene_file.read_text(encoding="utf-8") and "Probe Lone: Quiet, here." in scene_file.read_text(encoding="utf-8"))
+        ok["reflection_records_experience_and_life"] = any("Stood a while" in (e if isinstance(e, str) else e.get("text", "")) for e in o1["knowledge"]["experience"]) and o1["life"]["lived"] == lived_before + 1
+        ok["reflection_no_partner_no_arc_outcome"] = not o1.get("partners") and prep["brief"]["arc"]["outcome"] is None and not prep["brief"]["motivated"]
+        # an ordinary work pass, a no_target pass and an en_route pass are NOT dispatched
+        lib.roll_survival = lambda key, home_: {"choice": "work"}
+        rw = lib.run_pass_mechanics("probe_l2", 804)
+        calls.clear()
+        fake_run.p1, fake_run.prep = "probe_l2", pp.enacter_input(rw, {"probe_l2": {"band": "early", "lived": 0, "ending": False}})
+        (tmp / ".simulate_pass_brief.json").write_text(json.dumps(rw), encoding="utf-8")
+        drv.do_one_pass(state, 804)
+        ok["reflection_not_extended_to_work_passes"] = rw.get("scene") is None and calls == []
+        detail["reflection"] = {"hearsay_id": entry and entry["id"], "dispatches": 1, "work_pass_dispatches": len(calls)}
+    finally:
+        drv.run = orig_run
+
+    # ---- children born after a completion (cultural capital) ---------------------------------------------
+    ac = importlib.import_module("arc_completion")
+    cc_arc = {"about": ["concept: probe_cc"], "needs": [need], "context": home_ctx, "premise": "Probe CC wants the first thing.", "resolution": "complete",
+              "history": [{"pass": 1, "outcome": "advance"}] * 3, "turns": 12}
+    _write(tmp, "probe_cc", _blank("Probe Cee", "ProbeHome", provisions=2, arc=cc_arc, routines=home))
+    _write(tmp, "probe_cd", _blank("Probe Dee", "ProbeHome", routines=home))
+    add_lifespans("probe_cc", "probe_cd")
+    first = ac.complete("probe_cc", 900)
+    c_ = load_chars(tmp)["probe_cc"]
+    c_["arc"] = {**cc_arc, "about": ["concept: probe_cc2"], "premise": "Probe CC wants the second thing.", "resolution": "ongoing", "history": [], "turns": 0}  # re-authored: arc.completion is gone
+    c_["arc"].pop("completion", None)
+    _write(tmp, "probe_cc", c_)
+    c_["arc"].update(resolution="complete", history=cc_arc["history"], turns=5)
+    _write(tmp, "probe_cc", c_)
+    second = ac.complete("probe_cc", 901)
+    ok["cultural_completer_keeps_every_completion"] = load_chars(tmp)["probe_cc"].get("completed_tales") == [first["tale_id"], second["tale_id"]]
+    sh([S / "generate_offspring.py", "--parent-a", "probe_cc", "--parent-b", "probe_cd", "--name", "Probe Heir", "--pass-number", 905, "--seed", 21], tmp)
+    heir = load_chars(tmp)["probe_heir"]
+    items = heir["knowledge"]["education"]["items"]
+    ok["cultural_child_born_after_gets_both_tales"] = all(f"tale: {t}" in items for t in (first["tale_id"], second["tale_id"])) and len(items) == len(set(items))
+    _write(tmp, "probe_ce", _blank("Probe Eee", "ProbeHome", routines=home))
+    add_lifespans("probe_ce")
+    sh([S / "generate_offspring.py", "--parent-a", "probe_cd", "--parent-b", "probe_ce", "--name", "Probe Other", "--pass-number", 906, "--seed", 22], tmp)
+    other = load_chars(tmp)["probe_other"]
+    ok["cultural_no_completion_no_guaranteed_tale"] = not any(i.startswith("tale: arc_complete_probe_c") for i in other["knowledge"]["education"]["items"] if i not in set(load_chars(tmp)["probe_cd"]["knowledge"]["education"]["items"]))
+    detail["cultural"] = {"tales": [first["tale_id"], second["tale_id"]], "heir_items": len(items)}
+
+    # ---- no births on roads -------------------------------------------------------------------------------
+    rp = importlib.import_module("simulate_pass_reproduction")
+    road = "road:ProbeHome--ProbeShop"
+    for k in ("probe_rr1", "probe_rr2"):
+        _write(tmp, k, _blank(k.title().replace("_", " "), "ProbeHome", routines=home))
+    add_lifespans("probe_rr1", "probe_rr2")
+    for a_, b_ in (("probe_rr1", "probe_rr2"), ("probe_rr2", "probe_rr1")):
+        c_ = load_chars(tmp)[a_]; c_["partners"] = {b_: lib.PARTNER_THRESHOLD + 3}; _write(tmp, a_, c_)
+    audit_log = tmp / ".simulate_draw_audit.jsonl"
+    lines_before = len(audit_log.read_text(encoding="utf-8").splitlines()) if audit_log.exists() else 0
+    c_ = load_chars(tmp)["probe_rr1"]; c_["location"] = road; _write(tmp, "probe_rr1", c_)
+    on_road = rp.check_and_roll("probe_rr1", "probe_rr2", 910)
+    lines_after = len(audit_log.read_text(encoding="utf-8").splitlines()) if audit_log.exists() else 0
+    ok["roadbirth_not_rolled_on_a_road"] = on_road["eligible"] is False and on_road["reproduces"] is False and on_road["blocked"] == "road" and lines_after == lines_before
+    c_ = load_chars(tmp)["probe_rr1"]; c_["location"] = "ProbeHome"; _write(tmp, "probe_rr1", c_)
+    at_place = rp.check_and_roll("probe_rr1", "probe_rr2", 911)
+    lines_place = len(audit_log.read_text(encoding="utf-8").splitlines()) if audit_log.exists() else 0
+    ok["roadbirth_still_rolls_at_a_place"] = at_place["eligible"] is True and at_place["blocked"] is None and lines_place > lines_after
+    out_cli = subprocess.run([sys.executable, str(S / "simulate_pass_reproduction.py"), "--p1", "probe_rr1", "--p2", "probe_rr2", "--pass-number", "912"], capture_output=True, text=True, cwd=tmp).stdout
+    ok["roadbirth_cli_runs"] = "eligible:" in out_cli
+
+    # ---- everybody has a temperament ---------------------------------------------------------------------
+    template = json.loads((tmp / "_lore" / "characters" / "_template.json").read_text(encoding="utf-8"))
+    ok["nodefault_template_ships_null"] = template.get("temperament") is None
+    ok["nodefault_child_gets_all_four"] = set(heir.get("temperament") or {}) == {"risk", "thrift", "communality", "persistence"} and set(other.get("temperament") or {}) == {"risk", "thrift", "communality", "persistence"}
+    _write(tmp, "probe_g1", _blank("Probe Gee", "ProbeHome", routines=home))
+    _write(tmp, "probe_g2", _blank("Probe Gee Two", "ProbeHome", routines=home, temperament={"risk": 0, "thrift": 0, "communality": 0, "persistence": 0}))
+    add_lifespans("probe_g1", "probe_g2")
+    sh([S / "assign_temperament.py", "--root", tmp, "--key", "probe_g1", "--seed", 4, "--apply"], tmp)
+    tg1 = load_chars(tmp)["probe_g1"].get("temperament") or {}
+    ok["nodefault_character_skill_can_draw_one"] = set(tg1) == {"risk", "thrift", "communality", "persistence"} and any(tg1.values())
+    # /generate always draws for anyone without; --keep-neutral is accepted and changes nothing
+    _write(tmp, "probe_g3", _blank("Probe Gee Three", "ProbeHome", routines=home))
+    _write(tmp, "probe_g4", _blank("Probe Gee Four", "ProbeHome", routines=home))
+    add_lifespans("probe_g3", "probe_g4")
+    for g_ in (["init", "-q"], ["-c", "user.name=audit", "-c", "user.email=audit@example.invalid", "commit", "--allow-empty", "-q", "-m", "scratch"]):
+        subprocess.run(["git", *g_], cwd=tmp, capture_output=True)  # the run manifest records a commit; the scratch copy has none
+    gen = subprocess.run([sys.executable, str(S / "simulate_generate_population.py"), "--pool", "probe_g3", "probe_g4", "--passes", "1", "--seed", "5", "--keep-neutral"], capture_output=True, text=True, cwd=tmp)
+    got = load_chars(tmp)
+    ok["nodefault_generate_draws_even_with_keep_neutral"] = gen.returncode == 0 and all(set(got[k].get("temperament") or {}) == {"risk", "thrift", "communality", "persistence"} for k in ("probe_g3", "probe_g4")) and "no-op" in gen.stdout
+    if gen.returncode != 0:
+        detail["generate_error"] = (gen.stderr or gen.stdout)[-600:]
     return ok
 
 
@@ -739,7 +966,14 @@ def main():
         probes["F21"] = any(not scen[k] for k in scen if k.startswith("p2_"))                 # p2 does not eat / cannot starve
         probes["F22"] = any(not scen[k] for k in scen if k.startswith(("trait_", "retry_")))  # a trait does not move the odds as stated
         probes["F23"] = any(not scen[k] for k in scen if k.startswith(("trend_", "window_")))  # trends do not respond
-        probes["F24"] = any(not scen[k] for k in scen if k.startswith("neutral_"))            # a neutral character changed
+        probes["F24"] = any(not scen[k] for k in scen if k.startswith("scale_"))              # a scale is not the new definition
+        # 2026-10-17, the author's answers
+        probes["F2"] = any(not scen[k] for k in scen if k.startswith("local_"))
+        probes["F25"] = any(not scen[k] for k in scen if k.startswith("reflection_")) or counts["reflection_reproduction_ran"] > 0
+        probes["F26"] = any(not scen[k] for k in scen if k.startswith("bequest_"))
+        probes["F27"] = any(not scen[k] for k in scen if k.startswith("cultural_"))
+        probes["F28"] = any(not scen[k] for k in scen if k.startswith("roadbirth_"))
+        probes["F29"] = any(not scen[k] for k in scen if k.startswith("nodefault_"))
         result = {"root": str(root), "passes": a.passes, "seed": a.seed, "fixture": a.fixture, "fixture_info": fixture,
                   "observed": dict(counts), "static": extra, "probes": probes}
         if a.baseline:

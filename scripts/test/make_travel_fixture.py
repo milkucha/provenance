@@ -15,6 +15,11 @@ Shape (seeded, generic):
     travellers on one road.
   - Everyone knows every place (`places_visited`), so every place is a reachable destination.
   - Half of each travelling group starts with provisions to pay with (--rich), the rest with the default.
+  - Everyone has a temperament (no neutrals, 2026-10-17): four seeded uniform draws each, from their own
+    stream so nothing else in the fixture moves.
+  - `--far-residents N` puts only N people at the far end (default: the same as everywhere else). With 1,
+    a traveller who arrives and misses the one resident finds the place empty: the arrived_empty
+    reflection scene, which the seeded-pair test uses to run through it.
 
 Usage:
     py scripts/test/make_travel_fixture.py --out /tmp/travel_root --places 4 --per-place 6 --seed 3
@@ -34,7 +39,8 @@ REPO = HERE.parent.parent
 GREEK = ["alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta"]
 
 
-def build(out: Path, places: int = 4, per_place: int = 6, seed: int = 1, rich: float = 0.5, repo: Path = REPO) -> dict:
+def build(out: Path, places: int = 4, per_place: int = 6, seed: int = 1, rich: float = 0.5, repo: Path = REPO,
+          far_residents: int | None = None) -> dict:
     """Writes the root and returns {"places": [...], "characters": [...], "need": ..., "far_need": ...}."""
     if out.exists() and any(out.iterdir()):
         raise SystemExit(f"{out} is not empty; give --out a new directory.")
@@ -49,6 +55,9 @@ def build(out: Path, places: int = 4, per_place: int = 6, seed: int = 1, rich: f
             shutil.copy(repo / "_lore" / "characters" / name, chars_dir / name)
 
     rng = Random(seed)
+    trng = Random(seed * 31 + 7)
+    sys.path.insert(0, str(repo / "scripts" / "lore"))
+    import temperament
     ids = GREEK[:places]
     enc_path = out / "_lore" / "encodings.json"
     enc = json.loads(enc_path.read_text(encoding="utf-8"))
@@ -61,7 +70,7 @@ def build(out: Path, places: int = 4, per_place: int = 6, seed: int = 1, rich: f
     made = []
     for pi, place in enumerate(ids):
         far = pi == places - 1
-        for n in range(per_place):
+        for n in range(far_residents if (far and far_residents is not None) else per_place):
             key = f"{place}_{n}"
             c = json.loads(json.dumps(template))
             c.update(name=key.replace("_", " ").title(), origin=place, location=place, places_visited=list(ids))
@@ -79,6 +88,7 @@ def build(out: Path, places: int = 4, per_place: int = 6, seed: int = 1, rich: f
             if rng.random() < rich:
                 c["provisions"] = 8
             c["life"] = {"lived": 0, "deceased": False}
+            c["temperament"] = temperament.draw_random(trng)
             (chars_dir / f"{key}.json").write_text(json.dumps(c, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
             lifespans[key] = {"span": 400, "range": "300-500"}
             made.append(key)
@@ -93,8 +103,9 @@ def main() -> None:
     ap.add_argument("--per-place", type=int, default=6)
     ap.add_argument("--seed", type=int, default=1)
     ap.add_argument("--rich", type=float, default=0.5, help="share of characters starting with provisions to pay with")
+    ap.add_argument("--far-residents", type=int, default=None, help="residents at the far end (default: per-place); 1 makes an empty place likely")
     a = ap.parse_args()
-    info = build(Path(a.out).resolve(), a.places, a.per_place, a.seed, a.rich)
+    info = build(Path(a.out).resolve(), a.places, a.per_place, a.seed, a.rich, far_residents=a.far_residents)
     print(json.dumps({"out": a.out, **{k: info[k] for k in ("places", "need", "far_need")}, "characters": len(info["characters"])}))
 
 

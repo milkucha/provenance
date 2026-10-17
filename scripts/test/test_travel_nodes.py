@@ -8,10 +8,11 @@ no Ollama; every roll goes through the seeded rng_context.
      connection).
   2. Economy: on a road, apply_upkeep.py and apply_survival.py create no pool and drain nothing; with
      no provisions a traveller gets no meal and loses energy, and can die.
-  3. Seeded pair: scripts/test/audit_simulate.py run twice on a generated travel root with the same seed
-     under two different PYTHONHASHSEEDs (--dump keeps the end state): the draw audit (minus its wall
-     clock timestamp), every character file and the pools must be identical. Prints the pursuit-stage
-     distribution of the run.
+  3. Seeded pair: scripts/test/audit_simulate.py run on a generated travel root with the same seed under
+     three different PYTHONHASHSEEDs (--dump keeps the end state): the draw audit (minus its wall clock
+     timestamp), every character file and the pools must be identical. Prints the pursuit-stage
+     distribution of the run. Run a second time on a root whose far end has ONE resident, so the run
+     passes through an empty place (the arrived_empty reflection scene, a one-character scene).
 
 Usage:
     py scripts/test/test_travel_nodes.py                 # all three
@@ -132,13 +133,16 @@ def test_economy() -> None:
             capture_output=True, text=True, cwd=root).stdout.strip() == "1")
 
 
-def test_pair(passes: int, seed: int) -> None:
-    print(f"seeded pair, {passes} passes, seed {seed}, PYTHONHASHSEED 1 vs 2")
+def test_pair(passes: int, seed: int, lone_end: bool = False) -> None:
+    """Same seed, three PYTHONHASHSEEDs, identical end state. `lone_end`: the far end has one resident, so the
+    run passes through an empty place (arrived_empty, the one-character reflection scene)."""
+    hashseeds = ("1", "2", "3")
+    print(f"seeded pair, {passes} passes, seed {seed}, PYTHONHASHSEED {' vs '.join(hashseeds)}" + (", far end with one resident" if lone_end else ""))
     with tempfile.TemporaryDirectory() as td:
         td = Path(td)
-        make_travel_fixture.build(td / "root", places=4, per_place=6, seed=3)
+        make_travel_fixture.build(td / "root", places=4, per_place=6, seed=3, far_residents=1 if lone_end else None)
         outs = []
-        for hs in ("1", "2"):
+        for hs in hashseeds:
             env = {**os.environ, "PYTHONHASHSEED": hs}
             r = subprocess.run(
                 [sys.executable, str(HERE / "audit_simulate.py"), "--root", str(td / "root"), "--passes", str(passes), "--seed", str(seed),
@@ -154,15 +158,17 @@ def test_pair(passes: int, seed: int) -> None:
                 row.pop("timestamp", None)
             return rows
 
-        a, b = td / "dump1", td / "dump2"
-        la, lb = log(a), log(b)
-        check(f"draw logs identical ({len(la)} draws)", la == lb and len(la) > 0)
+        a = td / "dump1"
+        la = log(a)
         names = sorted(p.name for p in (a / "characters").glob("*.json"))
-        check(f"character files identical ({len(names)})", names == sorted(p.name for p in (b / "characters").glob("*.json"))
-              and all((a / "characters" / n).read_bytes() == (b / "characters" / n).read_bytes() for n in names))
-        pa, pb = a / "provisions.json", b / "provisions.json"
-        check("provisions pools identical", pa.read_bytes() == pb.read_bytes())
-        check("observed counts identical", outs[0]["observed"] == outs[1]["observed"])
+        for other in hashseeds[1:]:
+            b = td / f"dump{other}"
+            lb = log(b)
+            check(f"draw logs identical, hash seed 1 vs {other} ({len(la)} draws)", la == lb and len(la) > 0)
+            check(f"character files identical, 1 vs {other} ({len(names)})", names == sorted(p.name for p in (b / "characters").glob("*.json"))
+                  and all((a / "characters" / n).read_bytes() == (b / "characters" / n).read_bytes() for n in names))
+            check(f"provisions pools identical, 1 vs {other}", (a / "provisions.json").read_bytes() == (b / "provisions.json").read_bytes())
+            check(f"observed counts identical, 1 vs {other}", outs[0]["observed"] == outs[hashseeds.index(other)]["observed"])
         obs = outs[0]["observed"]
         stages = {k[len("stage_"):]: v for k, v in sorted(obs.items()) if k.startswith("stage_")}
         print("  pursuit stages:", stages)
@@ -171,6 +177,9 @@ def test_pair(passes: int, seed: int) -> None:
         check("no purchase and no arc outcome on a road scene", obs.get("road_meetings_with_outcome", 0) == 0 and obs.get("met_on_road_with_payment", 0) == 0)
         check("no road pool, road in places_visited, or direct place-to-place edge", not obs.get("road_pools_created") and not obs.get("roads_in_places_visited") and not obs.get("direct_place_to_place_edges"))
         check("the run had multi-hop journeys and road meetings", obs.get("longest_journey_passes", 0) >= 4 and obs.get("stage_met_on_road", 0) > 0)
+        if lone_end:
+            check(f"the run passed through an empty place ({obs.get('stage_arrived_empty', 0)} arrived_empty, {obs.get('reflections', 0)} reflection scene(s) recorded)",
+                  obs.get("stage_arrived_empty", 0) >= 1 and obs.get("reflections", 0) == obs.get("stage_arrived_empty", 0) and not obs.get("reflection_reproduction_ran"))
 
 
 def main() -> None:
@@ -183,6 +192,7 @@ def main() -> None:
     test_economy()
     if not a.skip_pair:
         test_pair(a.passes, a.seed)
+        test_pair(a.passes, a.seed, lone_end=True)
     print("all travel checks passed")
 
 
