@@ -136,7 +136,7 @@ Every claim keeps where it came from. `build_source_index.py` links a claim's `a
   <img src="assets/blueprints/Handling.png" alt="Handling blueprint: one root with a line out to each skill." width="100%">
 </p>
 
-*The levers that can be pulled; the way to drive the vehicle. One root, one line out to each skill: eleven labelled (/start, /integrate, /tell, /character, /resolve, /simulate, /enact, /generate, /embody, /spawn, /package) and one node without a label.*
+*The levers that can be pulled; the way to drive the vehicle. One root, one line out to each skill: fourteen labelled (/start, /integrate, /tell, /character, /resolve, /simulate, /enact, /generate, /embody, /spawn, /package, /taste, /audit-simulate, /enact-embody) and one node without a label.*
 
 Two kinds of lever: grow the record, or put it in motion. The walk-through is "Getting started" in Part II.
 
@@ -198,6 +198,9 @@ there into motion.
 - **Tell** (`/tell`) — knowledge with no material trace behind it: myth, legend, oral story, told
   directly by you to the system rather than excavated from a document or spoken by a character. Its
   own epistemological layer, distinct from both the objective record and from hearsay.
+- **Resolve** (`/resolve`) — surfaces one open item at a time (an unresolved conflict or an open
+  question in `unknowns.md`), with full detail and every other place in the record that mentions it.
+  Writes a decision only on your explicit call; never suggests or infers one.
 
 **Putting it in motion**
 
@@ -208,6 +211,20 @@ there into motion.
 - **Generate** (`/generate`) — the odd one out: mechanical and scene-less, fast-forwarding the
   population itself (births, arcs) with no prose at all, to grow a big starting cast before a
   showcase run.
+- **Audit-simulate** (`/audit-simulate`) — a design-testing run: same as `/simulate` but writes a
+  manifest and draw-audit log, then runs the test suite and asks for a tasting at the end.
+
+**Inspecting and shipping**
+
+- **Start** (`/start`) — live welcome banner: what's already in this copy of the world, plus the
+  two doors below.
+- **Taste** (`/taste`) — immersion tasting: scores a run 0–10 on legibility, aliveness, curiosity,
+  and specificity. Also folded inline into `/simulate` Step 4 on a design-testing run.
+- **Package** (`/package`) — zips the datapack + resource pack for release.
+- **Spawn** (`/spawn`) — builds a registered NPC's `spawn.mcfunction` and supporting functions
+  from `_npcs/templates/`.
+- **Embody** (`/embody`) — takes a scene `/enact` played and puts it in the game: converts the
+  transcript into a Blabber dialog, bakes gestures, and registers the NPC(s).
 
 Pick any door — they combine in any order, and the record only grows richer for it.
 
@@ -216,8 +233,8 @@ Pick any door — they combine in any order, and the record only grows richer fo
 **Starting a new session? Read Part I above plus §0–§2 first — that's the compulsory minimum for
 orientation.** Everything past that, read only the section(s) the task at hand actually needs.
 
-- [Getting started](#getting-started) — brand new to this repo? The two doors in: growing the record
-  vs. putting it in motion. Run `/start` for a live version of this.
+- [Getting started](#getting-started) — brand new to this repo? The doors in: growing the record,
+  putting it in motion, inspecting and shipping. Run `/start` for a live version of this.
 
 - [§0 System architecture](#0-system-architecture) — the lore engine, then the current embodiment stack built on it; start here every session
   - [Tier 1 — Content](#tier-1--content)
@@ -394,6 +411,14 @@ output rather than feeding it, and aren't part of the Tier 1–3 dependency stac
     invocation.
   - `simulate_token_usage.py` — reads Claude Code's own session transcript for a run's actual
     per-turn token cost, so cost is comparable across dispatch models rather than only guessed at.
+  - `audit_simulate.py` — audits a `/simulate` run against its manifest: verifies that every pass
+    was recorded, that the draw-audit log is complete, and that the run's outputs match its inputs.
+  - `balance_economy.py` — models the economy (provisions, upkeep, work pay, arc costs) across
+    generations to check that it doesn't collapse or explode; `--gens` runs multiple generations.
+  - `make_travel_fixture.py` — builds a throwaway lore root with a chain of places for testing
+    travel graph generation; the repo ships no places itself.
+  - `test_travel_nodes.py` — tests that travel nodes are generated correctly (road nodes in the
+    middle of connections, no provisions pools on roads, etc.).
 - **`graphs/graphifyish/`** — `scripts/graphs/graphifyish.py`'s output: a standalone
   `graphifyish.html` visualizing three graphs built from the repo's own live sources of truth (never
   hand-maintained except the concept graph's shape) — the **lore** graph (NPCs, dialogues, locations,
@@ -464,6 +489,15 @@ and `/enact` still never touches either registry or `data/`. `/embody` and `/spa
     the same category — optionally credited to an in-world source (`told_by`), into `_lore/tales/` and
     `encodings.json`'s `tales` category. Real-world provenance (`responsible` — who told the system) is
     recorded separately, in `_lore/tales/_authors.md`, never in `encodings.json`.
+  - **`/start`** (`start/SKILL.md`) — prints the live welcome banner: what's already in this copy of
+    the world, plus the two doors below. Reads the current state of `_lore/encodings.json`,
+    `_lore/characters/`, and the registries to show a snapshot.
+  - **`/taste`** (`taste/SKILL.md`) — immersion tasting: scores a run 0–10 on legibility, aliveness,
+    curiosity, and specificity. Also folded inline into `/simulate` Step 4 on a design-testing run.
+  - **`/package`** (`package/SKILL.md`) — zips the datapack + resource pack for release. Runs
+    `scripts/minecraft/package.py`.
+  - **`/audit-simulate`** (`audit-simulate/SKILL.md`) — a design-testing run: same as `/simulate` but
+    writes a manifest and draw-audit log, then runs the test suite and asks for a tasting at the end.
   - **`/simulate`** (`simulate/SKILL.md`) — batch-runs many `/enact`-equivalent character-vs-character
     scenes across an existing population, unattended, inside a dedicated git worktree
     (`simulate_setup_worktree.py` creates it from `HEAD`, so it branches from the current lore state
@@ -497,7 +531,10 @@ and `/enact` still never touches either registry or `data/`. `/embody` and `/spa
     fall short, `economy_rules.py`), then work pays them 3 provisions and the pool 4 (the economy adopted 2026-10-17, upkeep 0.05 per head per pass; the author reviews it later), while an arc costs an
     extra point of energy and pays nothing; the second participant of a pair scene eats too (base cost and the
     meal at the scene's location, nothing earned, no arc cost, no second upkeep) and can starve, through the
-    same death path; `scripts/test/balance_economy.py` runs these numbers on a toy town). **Temperament:** a
+    same death path; `scripts/test/balance_economy.py` runs these numbers on a toy town). **Modular pipeline:** the per-pass loop is factored into
+    `simulate_pass_lib.py` (shared helpers), `simulate_pass_brief.py` (builds the per-pass brief for the enacter),
+    `simulate_resolve_pair.py` (resolves a pair of characters for a pass), `simulate_pass_reproduction.py`
+    (simulate-specific reproduction logic), and `simulate_tally.py` (tallies arc outcomes). **Temperament:** a
     character carries `temperament` {risk, thrift, communality, persistence}, each in [-1, 1]; everybody has one,
     nobody is neutral (a character from old data with no field reads 0, so nothing crashes). Risk moves the reserve
     wanted before pursuing (arc cost plus a margin of meals running straight from 0, bold, to 5, cautious; the
@@ -607,7 +644,8 @@ Provenance/
 │                                       questions / where work stopped — see Part I)
 ├── GESTURES.md                        (the gesture rig's reference — §0 Tier 3)
 ├── assets/blueprints/                 (the drawings Part I embeds)
-├── diagrams/                          (gen_simulate_pass.py + simulate-pass.html, a pass diagram)
+├── diagrams/                          (gen_simulate_pass.py + simulate-pass.html, a pass diagram;
+│                                       simulate-audit/ holds the audit snapshot tooling)
 ├── .claude/                           (VOICE.md, settings.json, hooks/, and skills/ — one folder
 │                                       per slash command)
 ├── LAB_REPORT.md                      (the standing test of the whole system — read before a
@@ -634,12 +672,13 @@ Provenance/
 │   │   └── _authors.md                see _index.md; deliberately outside encodings.json)
 │   └── grounding/                     (objective, access-gated, NOT sampled — mechanics.json +
 │       └── _authors.md                world_state.json; see _index.md; outside encodings.json too)
+├── observations/                      (qualitative run observations — see _index.md)
 ├── graphs/
 │   └── graphifyish/                   (scripts/graphs/graphifyish.py's output — graph.json + a standalone
 │                                       graphifyish.html visualizing the lore/structure/concept graphs)
 ├── scripts/
 │   ├── lore/                          (only ever touch _lore/ — no embodiment awareness; what's
-│   │                                   listed here is a selection, the folder holds about 65 scripts)
+│   │                                   listed here is a selection, the folder holds about 73 scripts)
 │   │   ├── sample_lore_knowledge.py    (draws a character's education sample — §3 Step 1)
 │   │   ├── sample_grounding.py        (computes a character's live-gated grounding access — see
 │   │   │                               _lore/grounding/_index.md; never cached, never random)
@@ -673,8 +712,59 @@ Provenance/
 │   │   │                               for the Local dispatch path specifically)
 │   │   ├── rng_context.py             (per-run draw-audit log every stochastic script call is
 │   │   │                               recorded into, when the run opted into a --seed)
-│   │   └── run_manifest.py            (a run's own machine-readable starting state — pool, pass
-│   │                                   count, seed if any — scripts/test/ reads this back)
+│   │   ├── run_manifest.py            (a run's own machine-readable starting state — pool, pass
+│   │   │                               count, seed if any — scripts/test/ reads this back)
+│   │   ├── pass_prep.py               (the pre-scene mechanical block: work-or-arc roll, routine/
+│   │   │                               location roll, travel, arrival — produces the JSON the enacter reads)
+│   │   ├── pass_apply.py              (the post-scene mechanical block: update_character calls,
+│   │   │                               energy-death check, reproduction, death legacy)
+│   │   ├── pick_pair.py               (draws the first participant uniformly; discovers a second
+│   │   │                               during the pass, if any)
+│   │   ├── roll_routine.py            (rolls a character's routine/location for a work pass)
+│   │   ├── roll_arc_outcome.py        (rolls the contested/arc gate/outcome against contexts.json,
+│   │   │                               tallied toward advance/stall/reverse/transform/resolve)
+│   │   ├── roll_contested.py          (the contested gate: whether a pursuit can proceed)
+│   │   ├── roll_survival.py           (the payment gate and meal logic — economy_rules.py holds the shared math)
+│   │   ├── roll_reproduction.py       (whether a pair scene produces offspring)
+│   │   ├── roll_lead_followup.py      (the rivalry follow-up roll — leads has no call site yet)
+│   │   ├── roll_meetable.py           (whether anyone useful is present at a destination)
+│   │   ├── roll_death_legacy.py       (the death legacy roll)
+│   │   ├── apply_contested_lead.py    (applies a contested lead outcome)
+│   │   ├── apply_death_legacy.py      (applies a death legacy outcome)
+│   │   ├── apply_survival.py          (applies survival/economy outcomes)
+│   │   ├── apply_upkeep.py            (applies pool upkeep)
+│   │   ├── apply_language_layer.py    (applies the language layer to a scene)
+│   │   ├── record_bond_quality.py     (records bond quality between characters)
+│   │   ├── record_partner.py          (records a partner relationship)
+│   │   ├── record_hearsay.py          (records hearsay claims from a scene)
+│   │   ├── record_death.py            (records a death and triggers legacy)
+│   │   ├── check_anchor_reference.py  (checks if a claim references a criterion's anchor)
+│   │   ├── check_arc_alignment.py     (checks arc alignment with a character's routines)
+│   │   ├── check_needs_provides.py    (checks that arc needs match context provides)
+│   │   ├── check_resonance.py         (checks resonance between characters)
+│   │   ├── anchor_epistemology.py     (anchor epistemology: how a criterion's anchor shapes trust)
+│   │   ├── baseline_stats.py          (computes baseline statistics for a population)
+│   │   ├── bootstrap_lore.py          (bootstraps lore from scratch)
+│   │   ├── provisions_lib.py          (shared provisions/economy library)
+│   │   ├── simulate_pass_lib.py       (shared simulate pass helpers)
+│   │   ├── simulate_pass_brief.py     (builds the per-pass brief for the enacter)
+│   │   ├── simulate_pass_reproduction.py (simulate-specific reproduction logic)
+│   │   ├── simulate_resolve_pair.py   (resolves a pair of characters for a simulate pass)
+│   │   ├── simulate_tally.py          (tallies arc outcomes)
+│   │   ├── suggest_arc_needs.py       (suggests arc needs ranked by routine overlap)
+│   │   ├── register_arc_concept.py    (registers a new arc concept)
+│   │   ├── reset_reproduction_cooldown.py (resets reproduction cooldown)
+│   │   ├── resolve_conflict.py        (conflict resolution helper)
+│   │   ├── write_arc.py               (writes a new arc for a character)
+│   │   ├── location_context.py        (builds location context for the enacter)
+│   │   ├── list_open_unknowns.py      (lists open unknowns)
+│   │   ├── print_start_banner.py      (prints the /start welcome banner)
+│   │   ├── prune_orphan_pilot_tales.py (prunes orphan pilot tales)
+│   │   ├── backfill_lived.py          (backfills life.lived for old characters)
+│   │   ├── fix_encodings_summary_text.py (fixes encoding summary text)
+│   │   ├── fix_placeholder_backstory_text.py (fixes placeholder backstory text)
+│   │   ├── fix_stale_tale_refs.py     (fixes stale tale references)
+│   │   └── social_circle.py           (social circle helpers)
 │   ├── test/                          (read-only instruments that measure a /simulate run, never
 │   │   │                               change what it produces — see §0 "Simulating and evaluating
 │   │   │                               the lore" for what each one checks)
@@ -683,7 +773,11 @@ Provenance/
 │   │   ├── measure_divergence.py
 │   │   ├── measure_drift.py
 │   │   ├── record_tasting.py          (backs /taste)
-│   │   └── simulate_token_usage.py
+│   │   ├── simulate_token_usage.py
+│   │   ├── audit_simulate.py          (audits a simulate run against its manifest)
+│   │   ├── balance_economy.py          (models economy balance across generations)
+│   │   ├── make_travel_fixture.py     (builds a throwaway root with a chain of places for testing)
+│   │   └── test_travel_nodes.py       (tests travel node generation)
 │   ├── graphs/                        (builds the lore/structure/concept graphs)
 │   │   ├── graphifyish.py             (writes into graphs/graphifyish/)
 │   │   └── graphifyish_template.html  (the standalone page shell graphifyish.py fills in)
@@ -776,6 +870,14 @@ string values, which parse fine either way. Anything named `_shared` is called d
 **Class through inheritance** — class is not a stored attribute, it falls out of three capitals each handed down at its own moment. *Economic*: when a character dies, by any cause, half of their personal provisions (`estate.bequest_tax`, 0.5) go to the provisions pool of the place they died in and the other half is split equally among their living children; with none, all of it goes to that pool (`scripts/lore/estate.py`, called by `record_death.py`, which every death path already goes through). *Social*: at birth the child's `social_circle` is seeded with the parents and a seeded 30% of each parent's circle (`social_circle.inherit_share`). `social_circle` is a stored map `{character key: kind}` with one writer (`scripts/lore/update_social_circle.py`); the kinds are `parent`, `child`, `descendant`, `met` (shared a scene), `inherited` and `mentioned` (referenced in the character's knowledge), strongest first, a person keeping the strongest they qualify for. *Cultural*: when a character completes an arc (`scripts/lore/arc_completion.py`) it is already a tale; now it is also told, to the relations for certain and to a share of the wider circle, through the same mechanism and the same odds as a death, and every living child gets the tale in their `knowledge.education`; a child born after the completion gets its parents' completion tales too, guaranteed (`generate_offspring.py`), and none is born on a road. The completer is also paid provisions, `clamp(base + per_turn x turns, min, max)` (`arc_completion_reward` in `_lore/tuning.json`), where `turns` is their own turns on that arc (`arc.turns`, one per pass in which they were drawn); the bonus is part of their own provisions and so inherited like the rest. `scripts/test/balance_economy.py --gens` models generations to check that none of this concentrates wealth.
 
 **Three mutability classes.** Worth holding onto, since they're easy to conflate: `knowledge.education` is **frozen** at creation, `knowledge.experience` **appends freely** every scene, and `criterion` is **sticky-but-revisable** — it changes only when a referencing shock lands on a susceptible character, and the default outcome of any given scene is no change at all.
+
+**Anchor epistemology** — a criterion's anchor implies not just what a character counts as a life well spent, but *what they'd trust to tell them how to live it*. `scripts/lore/anchor_epistemology.py` derives `criterion.trusts`/`criterion.distrusts` from the anchor's own pool category: a life built on `hearsay` leans toward testimony and finds chronicles bloodless, one built on `era_libro`/`era_ensayo` leans the other way, one built on a `conflict` distrusts anyone who sounds certain. This makes a claim's credibility **subjective to the character** — it modulates whether they can dismiss a refuting claim, so a weak claim from a trusted kind of source can land where a well-sourced one from a distrusted kind gets waved off. Facts are exempt: nothing about a character's epistemology touches them. `check_anchor_reference.py` verifies that a claim actually references the anchor before applying a shock.
+
+**Language layer** — `scripts/lore/apply_language_layer.py` applies a character's language profile to their dialogue. A character's language is not stored as a static field but computed from their knowledge sample, origin, and the routes they've travelled — two characters from the same place who've travelled differently will speak differently. The layer modulates vocabulary, formality, and code-switching in the enacter's output.
+
+**Bond quality** — `scripts/lore/record_bond_quality.py` records the quality of a bond between two characters after a scene. Bonds are not binary (exists/doesn't) but graded: a single scene can strengthen, weaken, or leave a bond unchanged, and the quality affects how likely future scenes are to involve the same pair. `record_partner.py` handles the specific case of romantic/partner bonds.
+
+**Resonance** — `scripts/lore/check_resonance.py` checks whether two characters resonate: whether their criteria, temperaments, and knowledge samples align or clash enough that a scene between them would be meaningful. Resonance is not a stored attribute but computed live from the two characters' files, and it modulates the `pick_pair` draw — resonant pairs are more likely to be drawn, but not guaranteed.
 
 *The following four are specific to the current embodiment backend (Minecraft) — see §5 onward.*
 
