@@ -149,6 +149,18 @@ persistence pressure 1.5; old values in the comments). **None of this was audite
 agent only compiled it, and the balance script was mid-edit (it had planned to reorder `--gens`
 before `--traits` and add death-correlation columns). The author said to take best guesses and tune later.
 
+How far the halted agent had got (rough, read off the diffs, not from its plan):
+
+| Job | Done | What was left |
+|---|---|---|
+| 1. Calibrate for variation | ~40% | Values applied as first guesses; no before/after tables; the balance script was mid-edit (option reorder, death-correlation columns); the full search was cut on purpose. |
+| 2. Road work is rest | ~85% | Code, `--choice rest`, docs and an audit probe are in; the probe was never run. |
+| 3. Ollama context window | ~80% | Knob, pre-flight and truncation checks are in; the stubbed-body unit test wasn't confirmed run; the docs note is partial. |
+| Verification | ~10% | One audit run, seeded-pair identity, snapshot. |
+
+About 60 to 65% of the original spec, about 80% of the trimmed scope the author gave it (best guesses,
+minimal checks, commit). What remains of the trimmed scope is step 2 below.
+
 First things to do cold:
 1. `git log --oneline -15` and `git status`; the tree should be clean.
 2. One quick `scripts/test/audit_simulate.py` run against `diagrams/simulate-audit/findings-2026-10-17-decisions.json`
