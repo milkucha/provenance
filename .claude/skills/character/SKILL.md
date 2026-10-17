@@ -351,10 +351,7 @@ reject the claim, *and* does more damage if it lands anyway. Read it off the bac
 getting misery, or violating it and finding nothing broke. That's the character's own experience
 referencing their own anchor, so it passes the same gate.
 
-**Not yet built: temperament.** The disposition governing move 2 versus move 3 when a strong claim is
-accepted — whether a cornered character rebuilds the meaning or lets it go — is deferred to a future
-`/temperament` skill (see `TODO.md`). Until it exists, decide between reinterpretation and breaking
-on provenance, proximity, and susceptibility alone, and bias toward **reinterpretation**: breaking a
+**Reinterpret or break.** When a strong claim is accepted, decide between reinterpretation and breaking on provenance, proximity, and susceptibility alone, and bias toward **reinterpretation**: breaking a
 criterion should stay rare enough that when it happens it's the event of that character's life.
 
 ## Step 7 — Write the character file
@@ -394,8 +391,7 @@ that skips this is visibly unfinished. The other ways it gets made: children get
 now), `assign_temperament.py` without `--key` does it for an old population. A character from old data with no
 field reads 0 on every trait so nothing crashes, but nothing new is made that way. The traits scale the
 work-or-arc roll and the payment odds (`temperament.py`, `tuning.json` `temperament`) and the enacter sees them as a
-few words. Not the deferred "temperament" of Step 6 (reinterpret or break), which is still unbuilt and which these
-traits do not feed.
+few words.
 
 **Fields this skill never authors, present in `_template.json` only to document the full shape:**
 `energy` (personal resource, `_lore/tuning.json`'s `survival.energy_cap` — lazily defaulted

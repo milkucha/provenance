@@ -126,7 +126,12 @@ def _known_keys(traveler: dict) -> set[str]:
     `_known_people_locations` reads, for the same reason (see that function's docstring)."""
     keys: set[str] = set()
     keys.update((traveler.get("partners") or {}).keys())
-    keys.update(traveler.get("social_circle") or {})  # {key: kind} (update_social_circle.py); the old bare list iterates the same way
+    # {key: kind} (update_social_circle.py). `mentioned` (someone the traveler only knows OF, from their knowledge)
+    # is not "someone I know": the author excluded it from the known-supplier tier (2026-10-17), or nearly
+    # everyone counts as known. An old bare list never said how they knew each other, so it reads as mentioned.
+    circle = traveler.get("social_circle") or {}
+    if isinstance(circle, dict):
+        keys.update(k for k, kind in circle.items() if kind != "mentioned")
     keys.update(traveler.get("parents") or [])
     return keys
 

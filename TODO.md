@@ -979,12 +979,6 @@ Shipped this round: `_lore/facts/` (the fifth, never-sampled source of truth),
 (derivation, lifespan, and the reference model for how a criterion changes), and `/enact`'s facts
 loading, in-scene modulation, and Step 5b shock/drift resolution. Still open:
 
-- [ ] **`/temperament` skill.** The disposition that governs move 2 vs. move 3 when a character
-      accepts a refuting claim — rebuild the meaning, or let the criterion go. Deferred by the user
-      on 2026-07-31; until it exists, `/character` Step 6 says to decide on provenance, proximity,
-      and susceptibility alone and bias toward reinterpretation. Should be set at creation from the
-      backstory and drift slowly with `knowledge.experience` (the working split: knowledge changes
-      your criterion, experience changes your temperament).
 - [ ] **Inherited criteria (place/trade fallback).** `/character` Step 4e currently leaves
       `criterion` blank with `"derivation": "uncollided"` when nothing in the sample touches the
       backstory, origin, or location, because the fallback implies giving every place (and trade) its

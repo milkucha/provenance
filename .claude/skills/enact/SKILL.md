@@ -468,8 +468,7 @@ nobody's criterion. Only continue past this point when the gate in (1) actually 
 **3. Resolve, per `/character` Step 6** — three moves, not a degree: **reject the claim**, **accept
 and reinterpret** (increment `criterion.tempered`), or **accept and break** (clear
 `standard`/`wasted_life`, leave blank — no replacement, the gap is the point). Weigh provenance,
-proximity, and susceptibility; bias toward reinterpretation. Temperament isn't built yet
-(`/temperament`, see `TODO.md`), so don't pretend to consult it.
+proximity, and susceptibility; bias toward reinterpretation.
 
 Dismissal is gated by the claim's recorded credibility (`traceable` + no `inconsistent_with_record`/
 `inconsistent_with_facts` flag is hard to wave away; `oral_lore`, or a claim that IS flagged
