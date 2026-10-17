@@ -74,11 +74,15 @@ came back `AVAILABLE` before going any further. Ask, as plain conversation (not 
    and defaults blank, since it's ordinarily set later by whatever scene first actually places the
    character somewhere (see `/enact` Step 1). If the user volunteers a current location too, set both.
 3. **Knowledge** — how much of the lore they know. Follow the sampling flow in Step 3.
-4. **Routines and arc — required (2026-08-28), not optional.** Follow Step 8 below. When asking the
+4. **Temperament — required (2026-10-17), not optional; nobody is neutral.** Ask if the user has a
+   disposition in mind (bold or cautious, thrifty or free with money, communal or self-reliant,
+   persistent or restless) and author it; if not, draw it (`assign_temperament.py --root <root> --key
+   <slug> --seed N --apply`, no `--set`). See the `temperament` paragraph in Step 7.
+5. **Routines and arc — required (2026-08-28), not optional.** Follow Step 8 below. When asking the
    user to pick a context, list every context in `_lore/contexts.json` by name with a short (2-3 word)
    gloss of its texture — not the full `texture` paragraph — so the question stays scannable.
 
-Then run Step 4 (criterion), Step 5 (lifespan), and Step 8 (routines/arc) before writing the entry.
+Then run Step 4 (criterion), Step 5 (lifespan), the temperament (authored or drawn), and Step 8 (routines/arc) before writing the entry.
 
 ## Step 3 — Knowledge sampling (shared)
 
@@ -379,15 +383,19 @@ Update (or create) `_lore/characters/<slug>.json`:
   `deceased` starts `false` and is only ever set by `/enact`. **The span does not go here** — it goes
   in `_lore/characters/lifespans.json` (Step 5).
 
-**`temperament`** — `{risk, thrift, communality, persistence}`, each a number in [-1, 1], 0 neutral (a missing
-field reads 0, so older characters are neutral). It is the only one of the below that this skill MAY author, when
-the user gives the character a disposition: risk (bold + / cautious -), thrift (thrifty + / free with money -),
-communality (communal + / self-reliant -), persistence (persistent + / restless -). Otherwise leave it: children
-get the parents' mean plus noise (`generate_offspring.py`), a `/generate` cast gets a seeded random draw, and
-`scripts/lore/assign_temperament.py --root <root> [--key k --set risk=0.6] --apply` (dry run by default) does it
-for an existing population. It scales the work-or-arc roll and the payment odds (`temperament.py`, `tuning.json`
-`temperament`) and the enacter sees it as a few words. Not the deferred "temperament" of Step 6 (reinterpret or
-break), which is still unbuilt and which these traits do not feed.
+**`temperament`** — `{risk, thrift, communality, persistence}`, each a number in [-1, 1]. **Required for every
+character (2026-10-17, the author's call: no neutrals).** A new character gets one in this skill: either the user
+gives the character a disposition, which you author (risk: bold + / cautious -, thrift: thrifty + / free with
+money -, communality: communal + / self-reliant -, persistence: persistent + / restless -), or you draw it with
+`scripts/lore/assign_temperament.py --root <root> --key <slug> --seed N --apply` (no `--set`: a seeded uniform draw
+per trait; `--set risk=0.6 ...` authors instead; dry run without `--apply`). `_template.json` ships `null` so a copy
+that skips this is visibly unfinished. The other ways it gets made: children get the parents' mean plus noise
+(`generate_offspring.py`), a `/generate` cast gets a seeded draw for anyone without (`--keep-neutral` is a no-op
+now), `assign_temperament.py` without `--key` does it for an old population. A character from old data with no
+field reads 0 on every trait so nothing crashes, but nothing new is made that way. The traits scale the
+work-or-arc roll and the payment odds (`temperament.py`, `tuning.json` `temperament`) and the enacter sees them as a
+few words. Not the deferred "temperament" of Step 6 (reinterpret or break), which is still unbuilt and which these
+traits do not feed.
 
 **Fields this skill never authors, present in `_template.json` only to document the full shape:**
 `energy` (personal resource, `_lore/tuning.json`'s `survival.energy_cap` — lazily defaulted

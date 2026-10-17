@@ -83,6 +83,7 @@ _ARC_THRESHOLD = _T["arc_resolution_threshold"]
 _PARTNER_THRESHOLD = _T["partner_threshold"]
 _S = _T["survival"]
 _TEMP = _T["temperament"]
+_COST = _T["arc_payment"]["arc_need_cost"]
 
 
 def net_affinity(character: dict) -> float:
@@ -140,20 +141,23 @@ def arc_pressure(character: dict, key: str) -> float:
 
 def arc_odds(s: dict, energy: float, affinity: float, pressure: float,
              per_capita: float, trend: float, provisions: float,
-             traits: dict | None = None, recent: list | None = None, t: dict | None = None) -> dict:
+             traits: dict | None = None, recent: list | None = None, t: dict | None = None,
+             cost: float | None = None) -> dict:
     """The work-vs-arc odds as a pure function: `s` is tuning's `survival` block, the rest are the
     raw inputs (`per_capita` and `trend` are the location pool's per-capita provisions and its change
     since the last checkpoint; `provisions` is the character's own). Returns the clamped percentage
     chance of "arc" and the normalized terms. No I/O - the balance script calls this same function.
 
     Temperament (TODO.md, 'Temperament traits and recent trends'): `t` is tuning's `temperament`
-    block, `traits` the character's {risk, thrift, communality, persistence} (missing = 0) and `recent`
-    its window of own observations. With `t` None the roll is exactly the pre-temperament one. With
-    neutral traits and no window it is that roll too, except that the pool term is centred on the
-    world's `pool_comfortable_meals` instead of the old threshold. The traits only scale weights above:
-      - risk: the personal cushion is centred on the reserve wanted (arc_need_cost + margin meals), as a
-        difference from a neutral character's; the threat terms (negative energy, falling pool or purse)
-        are scaled by 1 - threat_k x risk; the bold are pulled a little by a RISE (rise_pull).
+    block, `traits` the character's {risk, thrift, communality, persistence} (an old character with none
+    reads 0 on each) and `recent` its window of own observations; `cost` is arc_payment.arc_need_cost.
+    With `t` None this is the roll as it was before temperament existed (a baseline the balance script
+    keeps; the engine always passes `t`). With `t` there is NO neutral centre (author's call 2026-10-17):
+      - risk: the personal cushion is computed against the reserve wanted, arc_need_cost + margin meals x
+        eat_amount, the margin running straight from 0 meals (bold) to 5 (cautious): (provisions -
+        reserve) / provides_provisions_threshold, clamped. The threat terms (negative energy, falling
+        pool or purse) are scaled by 1 - threat_k x risk; the bold are pulled a little by a RISE (rise_pull).
+      - the pool term is centred on `pool_comfortable_meals` x eat_amount, a plain world constant.
       - communality scales the affinity-obligation term only, never pool reliance.
       - persistence adds to the arc-pressure term.
       - thrift scales how much a falling purse (the character's own provisions) weighs.
@@ -165,8 +169,8 @@ def arc_odds(s: dict, energy: float, affinity: float, pressure: float,
     comfortable = t["pool_comfortable_meals"] * eat if t else threshold
     pool_surplus = max(-1.0, min(1.0, (per_capita - comfortable) / comfortable)) if comfortable else 0.0
     trend_normalized = max(-1.0, min(1.0, trend / threshold)) if threshold else 0.0
-    shift = temperament.reserve_shift(tr["risk"], eat, t["risk"]) if t else 0.0
-    personal_cushion = max(-1.0, min(1.0, (provisions - threshold - shift) / threshold)) if threshold else 0.0
+    reserve = temperament.reserve_wanted(tr["risk"], _COST if cost is None else cost, eat, t["risk"]) if t else threshold
+    personal_cushion = max(-1.0, min(1.0, (provisions - reserve) / threshold)) if threshold else 0.0
     threat = temperament.threat_factor(tr["risk"], t["risk"]) if t else 1.0
 
     w = s["weights"]

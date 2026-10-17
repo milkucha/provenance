@@ -78,10 +78,11 @@ def payment_odds(provisions: float, cost: float, ratio: float, thrift: float, pa
     them; the balance script calls this same one). `provisions` is the payer's own (the hard gate,
     provisions >= cost, is the caller's), `ratio` how near the arc is to resolving (0..1), `pay` is
     tuning's `arc_payment` block, `s` its `survival` block, `t` its `temperament` block (None: no
-    thrift, today's odds exactly). Odds are `base + surplus_weight x surplus_norm x (1 - ratio)`, less a
+    thrift, no hesitation: the pre-temperament odds, a baseline only). Odds are `base + surplus_weight x surplus_norm x (1 - ratio)`, less a
     soft hesitation for thrift: `hesitation_per_meal` for each meal paying leaves the payer below their
-    keep-level (temperament.hesitation), reported so the gate can show it. Returns the clamped
-    percentage `pct` and the `hesitation` in points (positive took odds off, negative a spender's bonus)."""
+    keep-level (temperament.hesitation: 0 meals for a spender to 3 for a saver, not relative to anyone),
+    reported so the gate can show it. Returns the clamped percentage `pct` and the `hesitation` in points
+    (never negative now)."""
     threshold = s["provides_provisions_threshold"]
     surplus = provisions - cost
     surplus_norm = min(1.0, surplus / threshold) if threshold else 0.0

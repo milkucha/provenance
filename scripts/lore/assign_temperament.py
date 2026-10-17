@@ -14,11 +14,15 @@ root on purpose (a scratch copy, a worktree), never at a real `_lore` by acciden
     with `--apply` every draw is appended to the root's draw audit (`.simulate_draw_audit.jsonl`).
   - With `--key K --set risk=0.6 thrift=-0.2 ...`: authors that one character's traits by hand (the other
     traits keep their value, or 0). No dice.
+  - With `--key K` and no `--set`: draws that one character's traits (seeded, the same uniform draw), the
+    way /character gives a new character one when the user has no disposition in mind. Nobody is left
+    without a temperament (2026-10-17).
 
 Usage:
     py scripts/lore/assign_temperament.py --root /path/to/root --seed 7            # dry run
     py scripts/lore/assign_temperament.py --root /path/to/root --seed 7 --apply
     py scripts/lore/assign_temperament.py --root /path/to/root --key khaoe --set risk=0.6 persistence=-0.4 --apply
+    py scripts/lore/assign_temperament.py --root /path/to/root --key khaoe --seed 7 --apply      # draw one
 """
 
 import argparse
@@ -62,6 +66,10 @@ def main() -> None:
             raise SystemExit(f"No character file for '{a.key}'.")
         c = json.loads(path.read_text(encoding="utf-8"))
         traits = temperament.traits_of(c)
+        seed = a.seed if a.seed is not None else secrets.randbelow(10 ** 9)
+        if not a.set:
+            traits = temperament.draw_random(Random(rng_context.derive_seed(seed, 0)))
+            print(f"seed: {seed}")
         for item in a.set:
             k, _, v = item.partition("=")
             if k not in temperament.TRAITS:
@@ -69,6 +77,8 @@ def main() -> None:
             traits[k] = temperament.clamp(float(v))
         c["temperament"] = {k: round(traits[k], 2) for k in temperament.TRAITS}
         write(path, c)
+        if a.apply and not a.set:
+            rng_context.log_draw(root, "assign_temperament.py", [path.stem, "--seed", str(seed)], {"temperament": temperament.fmt(c["temperament"])}, rng_context.derive_seed(seed, 0), 0)
         print(f"{path.stem}: {temperament.fmt(c['temperament'])}")
         return
 

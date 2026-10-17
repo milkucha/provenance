@@ -1,5 +1,5 @@
 """
-Temperament: four continuous traits per character, each in [-1, 1], neutral 0, and the pure helpers
+Temperament: four continuous traits per character, each in [-1, 1], and the pure helpers
 the work-or-pursue roll (roll_survival.arc_odds), the payment gate (economy_rules.payment_odds),
 the destination draw (simulate_pass_lib), the birth draw (generate_offspring.py), the enacter's brief
 (pass_prep.py) and the balance script all share. No file I/O, no tuning load, no dice of its own:
@@ -7,13 +7,18 @@ every number comes in as an argument, every random draw takes the caller's `Rand
 rng_context by the caller, so it lands in the draw audit). Design: TODO.md, "Temperament traits and
 recent trends in the work roll"; every default is in `_lore/tuning.json` `temperament`.
 
-The traits, on `character["temperament"]` = {risk, thrift, communality, persistence} (a missing field
-or a missing key reads 0.0, so every old character is neutral and behaves as before):
+The traits, on `character["temperament"]` = {risk, thrift, communality, persistence}. EVERY character gets
+one (author's call 2026-10-17: no neutrals): a `/generate` cast is drawn, a child is its parents' mean plus
+noise, `/character` authors or draws it. Only OLD data can lack the field, and then, so nothing crashes, a
+missing field or a missing key reads 0.0 on that trait. There is no neutral CENTRE any more: 0 is an
+ordinary value in the middle of a scale whose ends are defined directly (below), not "the old roll".
 
   risk         bold (+) / cautious (-). When I start: the reserve wanted before pursuing an arc, in
-               meals, and how loudly the threat terms (low energy, a falling pool or purse) speak.
+               meals of margin on top of the cost, from 0 (bold, +1) to 5 (cautious, -1), and how loudly
+               the threat terms (low energy, a falling pool or purse) speak.
   thrift       thrifty (+) / free with money (-). What I keep when I pay: a soft hesitation in the
-               payment odds below a keep-level, and how much a falling purse worries me.
+               payment odds for each meal that paying leaves them under their keep-level, from 0 meals
+               (spender, -1) to 3 (saver, +1), and how much a falling purse worries me.
   communality  communal (+) / self-reliant (-). The weight of "us": scales the affinity OBLIGATION
                term only; leaning on the pool is not scaled (the free rider still takes the net).
   persistence  persistent (+) / restless (-). Adds to arc pressure, and after a failed pursuit
@@ -30,7 +35,7 @@ the own-provisions window follows thrift (spender short, saver long), each min(w
 """
 
 TRAITS = ("risk", "thrift", "communality", "persistence")
-NEUTRAL = {k: 0.0 for k in TRAITS}
+NEUTRAL = {k: 0.0 for k in TRAITS}  # what old data without the field reads as; nothing new is made this way
 
 
 def clamp(x: float, lo: float = -1.0, hi: float = 1.0) -> float:
@@ -39,7 +44,8 @@ def clamp(x: float, lo: float = -1.0, hi: float = 1.0) -> float:
 
 def traits_of(source) -> dict:
     """The four traits as floats in [-1, 1]. `source` is a character dict (its `temperament` field is
-    read), a temperament dict itself, or None; anything missing reads 0.0."""
+    read), a temperament dict itself, or None; anything missing reads 0.0 (old data only: every character
+    made since 2026-10-17 has all four)."""
     if not source:
         return dict(NEUTRAL)
     block = source.get("temperament", source) if isinstance(source, dict) else {}
@@ -61,15 +67,10 @@ def margin_meals(risk: float, cfg: dict) -> float:
 
 
 def reserve_wanted(risk: float, cost: float, eat_amount: float, cfg: dict) -> float:
-    """The reserve a character wants in hand before pursuing: arc_need_cost + margin_meals x eat_amount."""
+    """The reserve a character wants in hand before pursuing: arc_need_cost + margin_meals x eat_amount,
+    margin from 0 meals (bold) to 5 (cautious). The personal-cushion term of the work-or-arc roll is
+    computed against exactly this; nothing is centred on a neutral character."""
     return cost + margin_meals(risk, cfg) * eat_amount
-
-
-def reserve_shift(risk: float, eat_amount: float, cfg: dict) -> float:
-    """How far the wanted reserve sits from a NEUTRAL character's, in provisions units. The personal
-    cushion term is centred where it always was for a neutral character and moves by this much for
-    everyone else, so risk 0 is exactly today's roll (the cost cancels out of the difference)."""
-    return (margin_meals(risk, cfg) - margin_meals(0.0, cfg)) * eat_amount
 
 
 def threat_factor(risk: float, cfg: dict) -> float:
@@ -95,23 +96,20 @@ def keep_meals(thrift: float, cfg: dict) -> float:
 
 
 def hesitation(thrift: float, left_after_paying: float, eat_amount: float, cfg: dict) -> float:
-    """Percentage points taken off the payment odds for a character's thrift: `hesitation_per_meal` per
-    meal that paying leaves them below their keep-level, measured against a NEUTRAL character's (so thrift
-    0 is exactly today's odds, a saver hesitates more and a spender less, even a negative amount: they pay
-    more readily than a neutral would). `left_after_paying` is provisions minus cost, in units."""
-    if not thrift:
-        return 0.0
+    """Percentage points taken off the payment odds: `hesitation_per_meal` for each meal that paying
+    leaves the payer below their keep-level (keep_meals: 0 for a spender, 3 for a saver, linear between).
+    Not relative to anyone: the middle of the scale (thrift 0, keep 1.5 meals) hesitates too when paying
+    leaves them under it, and a spender, whose keep-level is 0, never does. `left_after_paying` is
+    provisions minus cost, in units."""
     left_meals = left_after_paying / eat_amount if eat_amount else 0.0
-    short = max(0.0, keep_meals(thrift, cfg) - left_meals)
-    neutral_short = max(0.0, keep_meals(0.0, cfg) - left_meals)
-    return cfg["hesitation_per_meal"] * (short - neutral_short)
+    return cfg["hesitation_per_meal"] * max(0.0, keep_meals(thrift, cfg) - left_meals)
 
 
 # --- recent trends ---------------------------------------------------------------------------------
 
 def window_for(trait: float, cfg: dict, short_when_high: bool) -> int:
     """How many of its own last observations a character looks at, whole observations, linear across the
-    trait from `recent_window_min` to `recent_window_max` (neutral is their midpoint, 5 by default).
+    trait from `recent_window_min` to `recent_window_max` (the middle of the scale is their midpoint, 5 by default).
     The pool window follows risk with `short_when_high` (bold looks at a short stretch, cautious a long
     one); the personal-provisions window follows thrift the other way (a spender short, a saver long)."""
     lo, hi = cfg["recent_window_min"], cfg["recent_window_max"]
@@ -190,7 +188,7 @@ _WORDS = {
 
 def words(source, threshold: float) -> str:
     """A few words for the brief, in the order risk, thrift, communality, persistence; nothing for a
-    trait within `threshold` of zero. "" for a neutral character."""
+    trait within `threshold` of zero (so "" for a character whose traits all sit near the middle)."""
     tr = traits_of(source)
     out = []
     for k in TRAITS:
@@ -209,7 +207,7 @@ def draw_random(rng) -> dict:
 
 
 def inherit(parent_a, parent_b, rng, noise: float) -> dict:
-    """A child's traits: the mean of the parents' (a missing trait reads 0) plus gaussian noise with
+    """A child's traits: the mean of the parents' (a parent from old data with no field counts as 0) plus gaussian noise with
     standard deviation `noise`, clamped to [-1, 1], rounded to two places. Habitus: it runs in a family,
     and it wanders."""
     a, b = traits_of(parent_a), traits_of(parent_b)

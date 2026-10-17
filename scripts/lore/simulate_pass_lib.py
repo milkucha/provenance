@@ -290,9 +290,9 @@ def arc_payment_gate(p1_key: str, p2_key: str, arc: dict) -> dict:
 
     Thrift (2026-10-17, temperament): the hard gate above is unchanged; the odds also lose a soft
     hesitation, `hesitation_per_meal` for each meal that paying would leave the payer below their
-    keep-level (saver ~3 meals, spender 0), measured against a neutral character's. The odds are
+    keep-level (saver 3 meals, spender 0, linear between; not relative to anyone). The odds are
     economy_rules.payment_odds(); the returned `odds_used` is after it and `hesitation` is the points
-    it took off (negative for a spender), also logged in the draw audit."""
+    it took off, also logged in the draw audit."""
     cost = ARC_PAYMENT["arc_need_cost"]
     p1_char = load_char(p1_key)
     provisions = p1_char.get("provisions", SURVIVAL["starting_provisions_per_capita"])

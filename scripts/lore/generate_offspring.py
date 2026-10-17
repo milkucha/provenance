@@ -61,7 +61,7 @@ What's inherited and how:
   honest fallback, not a substitute for eventually hand-revising a child's routines. Not touched by
   this knowledge-inheritance retune - the union-of-both-parents' logic here was never the part that
   needed fixing.
-- `temperament` - **the mean of the parents' four traits plus seeded gaussian noise** (`temperament.inherit_noise`), clamped to [-1, 1]; a parent without the field reads neutral (2026-10-17).
+- `temperament` - **the mean of the parents' four traits plus seeded gaussian noise** (`temperament.inherit_noise`), clamped to [-1, 1]; a parent from old data without the field counts as 0 on each trait, but the child always gets all four (2026-10-17: no neutrals).
 - `arc` - none at birth. Seeded the normal way (context + routine_actions + criterion) the first
   time this character is actually a scene's home_frame - the fallback path (as of 2026-08-16, a
   hand-authored character gets `arc` at creation instead; a newborn still can't, since nothing is

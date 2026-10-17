@@ -89,8 +89,10 @@ the real temperament machinery, so the numbers in tuning's `temperament` block g
 Real, imported: `roll_survival.arc_odds` with traits and the window of recent observations,
 `economy_rules.payment_odds` (the payment gate's odds, thrift included), `temperament.*`. Stated, not measured:
   T1. Traits: with `--traits on` each character's four traits are drawn uniformly in [-1, 1] (seeded, its own
-      stream so the dice of the town are the same as with `off`); with `off` every trait is 0 (the neutral
-      character, still with the window, the trends and the comfortable pool level).
+      stream so the dice of the town are the same as with `off`); with `off` every trait is 0 (the middle of
+      each scale, NOT a neutral that reproduces the old roll: since 2026-10-17 nothing is centred on a neutral
+      character, the risk margin runs from 0 meals to 5 and the thrift keep-level from 0 to 3, so a 0 character
+      has a 2.5-meal margin and a 1.5-meal keep-level; it is a comparison column, not a baseline).
   T2. Each character keeps up to `recent_window_max` of its own observations (pool per capita, own provisions,
       energy) on its own turns, as the engine does; the roll reads them. `--trend off` gives no window, so the
       old checkpoint scarcity term. `--window global` forces one window length (the neutral 5) on everybody
@@ -279,7 +281,7 @@ def simulate_t(pop: int, passes: int, seed: int, params: dict, traits: str = "on
         if trend and not legacy:
             recent[i] = temperament.observe(recent[i], per_capita, personal[i], energy[i], keep)
         out = arc_odds(s, energy[i], aff[i], pressure, per_capita, tr_, personal[i],
-                       traits=tr[i], recent=recent[i] if (trend and not legacy) else None, t=t)
+                       traits=tr[i], recent=recent[i] if (trend and not legacy) else None, t=t, cost=cost)
         pct = out["pct"]
         turns[i] += 1
         floor += out["pool_surplus"] <= -1.0
@@ -690,7 +692,7 @@ def print_t(rows) -> None:
 
 CASES = [
     ("legacy (no temperament)", dict(legacy=True, traits="off")),
-    ("traits off (neutral)", dict(traits="off")),
+    ("traits all 0 (mid-scale)", dict(traits="off")),
     ("traits on", dict(traits="on")),
     ("on, one global window", dict(traits="on", window="global")),
     ("on, trend off", dict(traits="on", trend=False)),
