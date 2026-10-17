@@ -1,0 +1,632 @@
+{
+ "date": "2026-10-17",
+ "audited_engine_commit": "provenance-standalone (the author's answers: economy adopted, bequest tax, reflection scene, a need at home, completion tales for later children, no births on roads, no neutrals)",
+ "method": ".claude/skills/audit-simulate/SKILL.md",
+ "runner": "scripts/test/audit_simulate.py",
+ "runs": [
+  {
+   "fixture": "none",
+   "passes": 40,
+   "seed": 7,
+   "fixture_info": null,
+   "observed": {
+    "passes": 40,
+    "stage_arrived_nobody": 11,
+    "stagereason_arrived_nobody/supplier_absent": 11,
+    "could_afford_false": 16,
+    "pursuit_local": 16,
+    "local_outcome_rolled": 0,
+    "scene_pair": 16,
+    "choice_arc": 16,
+    "local_available": 16,
+    "missed_connection": 11,
+    "met_someone": 16,
+    "scene_deaths": 0,
+    "stage_met_cannot_pay": 3,
+    "stagereason_met_cannot_pay/cannot_afford": 3,
+    "pay_cannot_afford": 3,
+    "choice_work": 24,
+    "stage_met_mismatch": 2,
+    "stagereason_met_mismatch/context_does_not_provide": 2,
+    "p2_mismatch": 2,
+    "solo_deaths": 1,
+    "conformance_kin_invariant_failures": 69,
+    "circle_ties_by_kind": {
+     "met": 28,
+     "mentioned": 907
+    },
+    "characters_with_a_circle": 26,
+    "dead_holding_provisions": 0,
+    "ongoing_arc_turns": [
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     2,
+     2,
+     2,
+     2,
+     2,
+     2,
+     2,
+     3
+    ],
+    "candidates_at_biggest_city": 22,
+    "dead_among_candidates": 0,
+    "dead_routines_change_provides": false,
+    "encodings_locations": 3,
+    "encodings_locations_with_provides": 0,
+    "unused_tuning_keys": [
+     "home_visit_work_shift"
+    ],
+    "road_pools_created": 0,
+    "roads_in_places_visited": 0,
+    "direct_place_to_place_edges": 0
+   }
+  },
+  {
+   "fixture": "travel",
+   "passes": 200,
+   "seed": 5,
+   "fixture_info": {
+    "start": "Gorff",
+    "supplier": "Terfila",
+    "need": "crafted goods",
+    "supplier_context": "workshop",
+    "chain": [
+     "Gorff",
+     "Salthos Cruzados",
+     "Terfila"
+    ],
+    "seeded_provisions": 10
+   },
+   "observed": {
+    "passes": 200,
+    "stage_arrived_nobody": 14,
+    "stagereason_arrived_nobody/supplier_absent": 14,
+    "could_afford_false": 40,
+    "pursuit_local": 24,
+    "local_outcome_rolled": 3,
+    "scene_pair": 47,
+    "choice_arc": 64,
+    "local_available": 24,
+    "missed_connection": 14,
+    "met_someone": 47,
+    "scene_deaths": 3,
+    "choice_work": 136,
+    "solo_deaths": 2,
+    "stage_en_route": 9,
+    "stagereason_en_route/destination_chosen": 3,
+    "travel_hop": 29,
+    "travel_hop_pass": 29,
+    "road_hops": 23,
+    "work_midjourney": 23,
+    "longest_journey_passes": 5,
+    "stage_met_cannot_pay": 7,
+    "stagereason_met_cannot_pay/cannot_afford": 6,
+    "pay_cannot_afford": 6,
+    "stage_met_on_road": 20,
+    "stagereason_met_on_road/fellow_traveller": 20,
+    "could_afford_true": 24,
+    "met_on_road": 20,
+    "met_on_road_with_payment": 0,
+    "road_meetings_with_outcome": 0,
+    "stage_no_target": 8,
+    "stagereason_no_target/no_reachable_source": 8,
+    "no_target": 8,
+    "stage_met_mismatch": 3,
+    "stagereason_met_mismatch/context_does_not_provide": 3,
+    "p2_mismatch": 3,
+    "stagereason_en_route/keeping_destination": 6,
+    "place_hops_mid_journey": 6,
+    "stage_met_paid": 3,
+    "stagereason_met_paid/paid": 3,
+    "paid": 3,
+    "motivated": 3,
+    "gate_hit": 3,
+    "outcome_stall": 2,
+    "outcome_advance": 1,
+    "stagereason_met_cannot_pay/payment_failed": 1,
+    "pay_failed": 1,
+    "conformance_kin_invariant_failures": 57,
+    "circle_ties_by_kind": {
+     "met": 90,
+     "mentioned": 1390
+    },
+    "characters_with_a_circle": 46,
+    "dead_holding_provisions": 0,
+    "ongoing_arc_turns": [
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     1,
+     2,
+     2,
+     2,
+     2,
+     2,
+     2,
+     2,
+     2,
+     2,
+     2,
+     2,
+     2,
+     2,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     4,
+     4,
+     4,
+     4,
+     4,
+     4,
+     4,
+     4,
+     4,
+     4,
+     4,
+     4,
+     5,
+     5,
+     5,
+     5,
+     6,
+     6,
+     6,
+     7,
+     7,
+     7
+    ],
+    "candidates_at_biggest_city": 21,
+    "dead_among_candidates": 0,
+    "dead_routines_change_provides": false,
+    "encodings_locations": 3,
+    "encodings_locations_with_provides": 3,
+    "unused_tuning_keys": [
+     "home_visit_work_shift"
+    ],
+    "road_pools_created": 0,
+    "roads_in_places_visited": 0,
+    "direct_place_to_place_edges": 0
+   }
+  }
+ ],
+ "notes": "Sixth snapshot, after the author's answers of 2026-10-17. Same method: corpus-three-cities with provenance-standalone merged in a scratch worktree (lore data from the corpus side), run on a copy, diffed against findings-2026-10-17-temperament.json on both fixtures (none 40 passes seed 7, travel 200 passes seed 5): F2 fixed on both; nothing regressed; F4, F5, F6, F8, F9, F11, F12 still present (F8 now only means that a death on a solo pass has no death-legacy or shock resolution, pass_apply takes one participant), F13 present on the plain corpus only. New ids F25 to F29 are probes of the new work and all read False (not present); F24 was rewritten to check the new scale definitions instead of the old neutral guarantee. 80 scenario probes pass, with the enacter and the driver's model call stubbed: a need at home goes through the arrival pipeline, the reflection scene runs through the real driver and only arrived_empty is dispatched, the bequest tax, the completion tales for a later child, no births on a road, everybody has a temperament. The plain corpus has no empty place in 40 passes and the corpus travel fixture none in 200, so a reflection in the main loop is only seen on the generated travel root with a lone far end (scripts/test/test_travel_nodes.py: 5 in 120 passes). Same seed under PYTHONHASHSEED 1, 2 and 3: identical draw logs, character files, pools and digests on the corpus scratch copy (40 passes and the travel fixture, 200 passes, with --births) and on the generated travel root (once with a lone far end).",
+ "findings": [
+  {
+   "id": "F1",
+   "title": "Nobody can pay, so no scene happens",
+   "severity": "high",
+   "kind": "bug",
+   "verification": "RAN",
+   "status": "fixed",
+   "evidence": "provisions defaults to 2, the cost is 3, and nothing creates provisions. Corpus: 0 of 40 passes reached a scene. Fixture: cannot_afford for default characters (2 of 6 at the gate), paid only where the fixture set 8. After the redesign (2026-10-17): with nothing seeded, 9 of 9 purchase attempts in 200 travel-fixture passes ended met_cannot_pay/cannot_afford, and 10% of passes now dispatch the enacter for a scene that is only a failed purchase or a miss. Faucet still undecided, see OPEN_QUESTIONS. Economy rewrite (2026-10-17): work pays +2 provisions, apply_survival.py writes them, so the source exists. Payments stay rare: travel fixture 200 passes, 19 of 103 arc passes held the cost after eating, 3 paid; the balance script finds nobody holds 3 for long at today's numbers (OPEN_QUESTIONS.md).",
+   "where": "simulate_pass_lib.py:arc_payment_gate; _template.json",
+   "steps": [
+    7
+   ],
+   "probe": false
+  },
+  {
+   "id": "F2",
+   "title": "A locally available need costs energy and goes nowhere",
+   "severity": "high",
+   "kind": "bug",
+   "verification": "RAN",
+   "status": "fixed",
+   "evidence": "Fixed: a character at a place of their own routines that provides the need counts as already arrived (pursuit.local, no travel), then who is about, that person's routine, the payment gate, the arc outcome and the scene; nobody useful falls to arrived_nobody / arrived_empty. Before: Step 4 returned after the routine roll, no history entry, no scene (19 of 40 corpus passes, 54 of 200 fixture passes). Now 16 of 40 corpus passes and 24 of 200 fixture passes are local, and they reach the arrival stages (3 rolled an arc outcome in the fixture run).",
+   "where": "run_pass_mechanics Step 4",
+   "steps": [
+    3
+   ],
+   "probe": false
+  },
+  {
+   "id": "F3",
+   "title": "The dead can be met and make places \"provide\"",
+   "severity": "high",
+   "kind": "bug",
+   "verification": "RAN",
+   "status": "fixed",
+   "evidence": "Fixed: candidates_at, location_context_tally (so location_provides), find_supplier_map and travel_graph's known-people lookup skip life.deceased. 0 of 22 candidates dead at the biggest corpus city (was 13 of 35); dead routines no longer change what a place provides.",
+   "where": "simulate_pass_lib.py:candidates_at; location_context.py",
+   "steps": [
+    3,
+    4,
+    5
+   ],
+   "probe": false
+  },
+  {
+   "id": "F4",
+   "title": "The criterion shock gate is not in the brief",
+   "severity": "low",
+   "kind": "doc",
+   "verification": "READ",
+   "status": "open",
+   "evidence": "SKILL.md says the brief flags a live anchor. pass_prep never runs check_anchor_reference; pass_record runs it after the scene, and the driver throws that and check_resonance away. Moves are model-volunteered; synthesis never fires.",
+   "where": "SKILL.md Step 3 pt 4; pass_prep.py; simulate_driver.py",
+   "steps": [
+    9
+   ],
+   "probe": true
+  },
+  {
+   "id": "F5",
+   "title": "The drift instrument has no producer",
+   "severity": "medium",
+   "kind": "bug",
+   "verification": "READ",
+   "status": "open",
+   "evidence": "REPLY_SCHEMA has no derived_from; lineage_coin has no call site on the unattended path. measure_drift ran and reported no retelling edges (RAN, but the claims were stubs, so the schema is the proof).",
+   "where": "enact_via_ollama.py:REPLY_SCHEMA; measure_drift.py",
+   "steps": [
+    9
+   ],
+   "probe": true
+  },
+  {
+   "id": "F6",
+   "title": "Meet pool is not filtered by the need",
+   "severity": "medium",
+   "kind": "bug",
+   "verification": "RAN",
+   "status": "open",
+   "evidence": "Everyone with a routine there is a candidate; p2 then has to roll that place and a providing context. 3 of 9 meetings in the fixture. Unchanged by the redesign: a mismatch is now a scene (met_mismatch) instead of a dead pass.",
+   "where": "candidates_at; run_pass_mechanics Step 7",
+   "steps": [
+    5,
+    6
+   ],
+   "probe": true
+  },
+  {
+   "id": "F7",
+   "title": "A journey resets on a work roll",
+   "severity": "medium",
+   "kind": "bug",
+   "verification": "RAN",
+   "status": "fixed",
+   "evidence": "Fixed: the destination is kept in the character's pursuit field; a work roll mid-journey works in place and keeps it; roll_survival gets the origin as home. Travel fixture, 200 passes: 3 work rolls mid-journey (economy snapshot: 11, 0 resets), 0 resets.",
+   "where": "run_pass_mechanics Step 3",
+   "steps": [
+    2,
+    4,
+    1
+   ],
+   "probe": false
+  },
+  {
+   "id": "F8",
+   "title": "Solo death is recorded, not finished",
+   "severity": "low",
+   "kind": "doc",
+   "verification": "READ",
+   "status": "open",
+   "evidence": "pass_apply and pass_record take a one-participant call now (reflection). What remains: a death on a solo pass (apply_solo) has no death-legacy and no shock-candidate resolution.",
+   "where": "simulate_driver.py:apply_solo",
+   "steps": [
+    11
+   ],
+   "probe": true
+  },
+  {
+   "id": "F9",
+   "title": "conformance_report: wrong invariant, thin coverage",
+   "severity": "medium",
+   "kind": "bug",
+   "verification": "RAN",
+   "status": "open",
+   "evidence": "\"parents not also partners\" fails 69 times on the pristine corpus, because partner counts now bump on any crossing and the kin exclusion lives in reproduction. Fixed-odds table lists a dead roll and misses survive, meetable, payment.",
+   "where": "conformance_report.py:check_invariants, FIXED_ODDS_CHECKS",
+   "steps": [
+    10
+   ],
+   "probe": true
+  },
+  {
+   "id": "F10",
+   "title": "p2, newborns and the dead",
+   "severity": "medium",
+   "kind": "bug",
+   "verification": "READ",
+   "status": "open",
+   "evidence": "p2 gets no upkeep, eating or energy cost. A newborn has no energy or provisions field (defaults apply). A dead character's provisions vanish.",
+   "where": "run_pass_mechanics Step 7; generate_offspring.py",
+   "steps": [
+    6,
+    10
+   ],
+   "probe": null
+  },
+  {
+   "id": "F11",
+   "title": "Dead and write-only fields",
+   "severity": "low",
+   "kind": "dead-field",
+   "verification": "READ",
+   "status": "open",
+   "evidence": "leads, last_scene, tempered and cost_ledger (prose only), arc.context; unused tuning key home_visit_work_shift. social_circle left this list on 2026-10-17: update_social_circle.py writes it (birth, a scene, knowledge).",
+   "where": "grep across scripts/",
+   "steps": [
+    4,
+    8
+   ],
+   "probe": true
+  },
+  {
+   "id": "F12",
+   "title": "Stale documentation",
+   "severity": "low",
+   "kind": "doc",
+   "verification": "READ",
+   "status": "open",
+   "evidence": "diagrams/gen_simulate_pass.py and simulate-pass.html still draw the pair model with lead override. roll_contested.py and simulate_pass_reproduction.py say partner_threshold 5 (tuning: 3). enact_preamble.md still talks about who is home and who is visiting. (enact_preamble.md no longer says it: rewritten with a legend 2026-10-17; the diagrams still draw the old model, and now also lack the pursuit stages.)",
+   "where": "diagrams/; docstrings",
+   "steps": [],
+   "probe": true
+  },
+  {
+   "id": "F13",
+   "title": "Location identity",
+   "severity": "medium",
+   "kind": "bug",
+   "verification": "RAN",
+   "status": "open",
+   "evidence": "travel_graph assumes character.location is an encodings location id. The corpus uses display names, ids are lowercase and routes is empty: location_context --live finds nothing, and I had to rewrite the ids to test travel.",
+   "where": "travel_graph.py assumption 2",
+   "steps": [
+    4
+   ],
+   "probe": true
+  },
+  {
+   "id": "F15",
+   "title": "Passes that are not scenes leave no trace",
+   "severity": "low",
+   "kind": "gap",
+   "verification": "READ",
+   "status": "open",
+   "evidence": "Travel, misses, refusals and arrivals write only location, places_visited and last_scene. Most passes in every run here ended this way. README says each of these things leaves a trace in the corpus. Design question in OPEN_QUESTIONS.",
+   "where": "simulate_pass_lib.py:_write_back",
+   "steps": [],
+   "probe": null
+  },
+  {
+   "id": "F16",
+   "title": "The enacter never sees what characters know",
+   "severity": "low",
+   "kind": "doc",
+   "verification": "READ",
+   "status": "fixed",
+   "evidence": "Fixed: pass_prep.enacter_input puts each participant's whole knowledge sample (refs resolved to text), the place and the universal facts into the enacter's input; measured on 12 corpus pair scenes, about 11,100 characters (roughly 2,800 tokens) of knowledge per scene. tuning.json enacter_knowledge can cap it.",
+   "where": "pass_prep.py:load_character_brief",
+   "steps": [
+    9
+   ],
+   "probe": false
+  },
+  {
+   "id": "F14",
+   "title": "provisions_lib.set_provisions has no floor (latent, not reachable)",
+   "severity": "low",
+   "kind": "bug",
+   "verification": "RAN",
+   "status": "fixed",
+   "evidence": "Fixed: set_provisions floors at 0, and so does the payment gate's write to personal provisions.",
+   "where": "provisions_lib.py:set_provisions",
+   "steps": [
+    2
+   ],
+   "probe": false
+  },
+  {
+   "id": "F17",
+   "title": "social_circle has no writer",
+   "severity": "medium",
+   "kind": "dead-field",
+   "verification": "RAN",
+   "status": "fixed",
+   "evidence": "Fixed: update_social_circle.py writes a {key: kind} map (parent, child, descendant, met, inherited, mentioned). At birth: parents, a seeded 30% of each parent's circle (logged as social_circle_inherit), knowledge refs; the child into the parents' circles and every ancestor's. record_partner.py writes met; pass_apply.py refreshes mentions. Probes: a pair scene leaves a met tie both ways (0 misses), the birth scenario inherits 3 to 5 of 16 and writes descendant up the line, the readers (location_context, travel_graph) take the map, backfill_social_circle.py is a dry run by default and idempotent.",
+   "where": "update_social_circle.py; generate_offspring.py; record_partner.py; pass_apply.py",
+   "steps": [
+    4,
+    8
+   ],
+   "probe": false
+  },
+  {
+   "id": "F18",
+   "title": "A completed arc paid nothing and was told to no one",
+   "severity": "medium",
+   "kind": "gap",
+   "verification": "RAN",
+   "status": "fixed",
+   "evidence": "Fixed: arc_completion.complete() runs where run_pass_mechanics flips the arc to complete. The tale is filed, told like a death (same circle, same notification.extended_share), added to every living child's knowledge.education, and the completer is paid clamp(6 + 0.2 x turns, 9, 15) provisions. Probe (a synthetic completion through the real mechanics): reward is the formula, in range, tale in encodings, child has it, wider-circle share is the knob, completer holds the reward. No completion happens in the fixtures themselves (nobody can pay).",
+   "where": "arc_completion.py:complete; simulate_pass_lib.py:run_pass_mechanics",
+   "steps": [
+    8
+   ],
+   "probe": false
+  },
+  {
+   "id": "F19",
+   "title": "A dead character's provisions vanish",
+   "severity": "medium",
+   "kind": "gap",
+   "verification": "RAN",
+   "status": "fixed",
+   "evidence": "Fixed: estate.inherit() runs inside record_death.py, which every death path calls: provisions split equally among living children, else into the pool of the place of death. Probes through record_death.py: one heir gets all, two get 2.5 each, a childless death adds to the pool, the dead hold 0; no one who died in the run still holds provisions.",
+   "where": "estate.py; record_death.py",
+   "steps": [
+    11
+   ],
+   "probe": false
+  },
+  {
+   "id": "F21",
+   "title": "The second participant of a pair scene neither ate nor could starve",
+   "severity": "medium",
+   "kind": "gap",
+   "verification": "RAN",
+   "status": "fixed",
+   "evidence": "Fixed: _apply_p2 in run_pass_mechanics calls apply_survival.py --choice eat wherever a pair scene is confirmed (met_on_road, bystander, matched supplier): base cost and the meal at the scene's location, no work pay, no arc cost, no second upkeep; survival.<p2>.died goes through pass_apply.py / the generate loop to record_death.py. Probes: energy, provisions and pool after a scene, upkeep once, a p2 with 1 energy and an empty pool dies and its tale is filed.",
+   "where": "simulate_pass_lib.py; apply_survival.py; economy_rules.py",
+   "steps": [
+    2,
+    8
+   ],
+   "probe": true
+  },
+  {
+   "id": "F22",
+   "title": "The work roll and the payment gate could not see who the character is",
+   "severity": "medium",
+   "kind": "gap",
+   "verification": "RAN",
+   "status": "fixed",
+   "evidence": "Fixed: temperament traits (risk, thrift, communality, persistence) scale arc_odds, the payment odds and the destination draw. Probes: bold pursues sooner and shrugs off threat terms, communality scales only the obligation term, persistence adds pressure and weights the retried destination, thrift hesitates below the keep-level, the hard gate is unchanged and the gate returns the hesitation.",
+   "where": "roll_survival.py; economy_rules.py; temperament.py; simulate_pass_lib.py",
+   "steps": [
+    2,
+    8
+   ],
+   "probe": true
+  },
+  {
+   "id": "F23",
+   "title": "The roll saw only the present, not what had been happening",
+   "severity": "low",
+   "kind": "gap",
+   "verification": "RAN",
+   "status": "fixed",
+   "evidence": "Fixed: each character keeps recent (last 8 own observations); declines push toward work, only the bold are pulled by a rise; the pool window follows risk (2 to 8), the purse window thrift (2 to 8), each min(window, available); no window means the old checkpoint term. Probes: decline lowers odds, a rise changes nothing for a neutral and raises a bold's, cautious feel declines more, thrift scales the purse decline, window lengths, few observations, the window capped at the max.",
+   "where": "roll_survival.py; temperament.py; simulate_pass_lib.py",
+   "steps": [
+    2,
+    8
+   ],
+   "probe": true
+  },
+  {
+   "id": "F24",
+   "title": "The scales had a neutral centre",
+   "severity": "low",
+   "kind": "gap",
+   "verification": "RAN",
+   "status": "fixed",
+   "evidence": "Fixed (the author, no neutrals): risk margin runs 0 (bold) to 5 meals (cautious) and the cushion is computed against the reserve (cost + margin x eat_amount); thrift keep-level 0 (spender) to 3 meals (saver), the hesitation not relative to anyone; the pool comfortable level is a world constant; old data without the field reads 0 and works. Probes scale_*; the 'trait 0 equals the old roll' guarantee and its probe are removed.",
+   "where": "roll_survival.py; economy_rules.py",
+   "steps": [
+    2,
+    8
+   ],
+   "probe": false
+  },
+  {
+   "id": "F25",
+   "title": "A character alone at an empty place gets no scene",
+   "severity": "medium",
+   "kind": "gap",
+   "verification": "RAN",
+   "status": "fixed",
+   "evidence": "Fixed: the driver dispatches the enacter with only that character (a reflection); the preamble has the section, the reply check wants one speaker and one participant, pass_record/pass_apply/record_hearsay take one participant (claims may be empty), no partner crossing, no reproduction. Only arrived_empty: work, no_target and en_route are still not dispatched (open, OPEN_QUESTIONS.md).",
+   "where": "simulate_driver.py; pass_record.py; pass_apply.py; record_hearsay.py; enact_via_ollama.py; enact_preamble.md",
+   "steps": [
+    3,
+    9,
+    11
+   ],
+   "probe": false
+  },
+  {
+   "id": "F26",
+   "title": "Bequests went whole to the heirs, nothing for the commons",
+   "severity": "medium",
+   "kind": "gap",
+   "verification": "RAN",
+   "status": "fixed",
+   "evidence": "Fixed: estate.bequest_tax (0.5) goes to the pool of the place they died in, the rest to the children; all of it to the pool when childless. Probes bequest_* and estate_*.",
+   "where": "estate.py; record_death.py; tuning.json",
+   "steps": [
+    11
+   ],
+   "probe": false
+  },
+  {
+   "id": "F27",
+   "title": "A child born after a completion misses its parents' completion tale",
+   "severity": "low",
+   "kind": "gap",
+   "verification": "RAN",
+   "status": "fixed",
+   "evidence": "Fixed: arc_completion keeps completed_tales on the completer and generate_offspring puts both parents' completion tales into the newborn's education, guaranteed. Probes cultural_*.",
+   "where": "arc_completion.py; generate_offspring.py",
+   "steps": [
+    8
+   ],
+   "probe": false
+  },
+  {
+   "id": "F28",
+   "title": "Children could be born on roads",
+   "severity": "low",
+   "kind": "gap",
+   "verification": "RAN",
+   "status": "fixed",
+   "evidence": "Fixed: simulate_pass_reproduction.check_and_roll refuses a pair whose scene is on a road node, before any dice. Probes roadbirth_*.",
+   "where": "simulate_pass_reproduction.py",
+   "steps": [
+    11
+   ],
+   "probe": false
+  },
+  {
+   "id": "F29",
+   "title": "Characters could have no temperament",
+   "severity": "low",
+   "kind": "gap",
+   "verification": "RAN",
+   "status": "fixed",
+   "evidence": "Fixed: /generate always draws for anyone without (--keep-neutral is a no-op), /character authors or draws, the template ships null, a child is drawn from its parents. Probes nodefault_*.",
+   "where": "simulate_generate_population.py; assign_temperament.py; _template.json; character/SKILL.md",
+   "steps": [
+    2,
+    8
+   ],
+   "probe": false
+  }
+ ]
+}
